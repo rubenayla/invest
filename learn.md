@@ -43,6 +43,7 @@
     - Capital structure, how the company is financed. Shareholder return.
 - EBIT: Earnings before interest and taxes. But includes depreciation and amortization.
 - EBITDA: Earnings before interest, taxes, depreciation, and amortization = E + I(Interest) + T(Taxes) + D(Depreciation) + A(Amortization)
+    - "How much pure cash a business generates from its core operations, before any financing or accounting tricks."
 
 Debt to Equity
 Current ratio = Assets / Liabilities

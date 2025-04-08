@@ -1,4 +1,10 @@
-> The value of an asset is the present value of its future cash flows, discounted at the required rate of return.
+## My previous super simple model
+Value = Equity + operating profits * multiple compared to other companies
+Put estimated future values in there and you get your value
+
+## DCF -- Discounted Free Cash Flow
+> An asset is worth the present value of all future cash flows to its shareholders, discounted at the required rate of return.
+> = sum for all years: FCF / (1 + r)^n, where r is the discount rate, n is the year
 
 - financing cost = weighted average of cost of equity and cost of debt
     - Cost of equity = risk-free rate + beta * (market return - risk-free rate)
@@ -12,5 +18,5 @@
 Terminal value in year n = free cash flow in year (n+1) / (discount rate - perpetual growth rate)
 
 
-
+## Comparables -- Relative Valuation
 

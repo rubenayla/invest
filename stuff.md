@@ -12,7 +12,7 @@ I have lots of cash ready to buy so it's a great situation. I'm not sure how low
 ### STLD
 https://app.tikr.com/stock/financials?cid=34768&tid=2654552&ref=bvi61n&tab=is
 
-##
+## 2025-04-08
 Rallo https://youtu.be/VWClThyfDlQ?si=NUhi2H437V3OVa0T
 > The value of an asset is the present value of its future cash flows, discounted at the required rate of return.
 
@@ -25,3 +25,5 @@ Rallo https://youtu.be/VWClThyfDlQ?si=NUhi2H437V3OVa0T
     - Free cash flow = after tax operating income * (1 - reinvestment rate)
     > what happens when the company reinvests all its cash flows? It's not giving net income but its intrinsic value is increasing
     Affected by the growth, which increases with reinvestmente rate, and by the % of cash flow that can be extracted, which decreases with reinvestment rate
+
+
