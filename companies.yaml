@@ -1,0 +1,429 @@
+alb:
+  _ticker: ALB
+  cap: 11796185088
+  did_not_update: grossProfits
+  earnings: 1573476000.0
+  equity: 9412180000.0
+  equity_per_share: 82.59066338244286
+  fcf: -2525260544
+  gross: 1.0e-10
+  last_updated: 2024.06.17 16:47
+  margin_earnings: 0.040170003
+  margin_gross: -0.00485
+  margin_operating: -0.10560001
+  name: Albemarle Corporation
+  price_to_earnings_1yr: 36.365944
+  price_to_gross: 1.1796185088e+20
+  revenue: 9617203000.0
+  revenue_growth: -0.473
+  shares: 113961791.98145106
+  stock_price: 103.51
+  total_debt: 4280444000.0
+  valoration:
+    _value_to_gross: 6
+    gain_factor: 0.7979003321654222
+    target_stock_price: 82.59066338244286
+    value: 9412180000.0
+    warnings: 'cap/gross > 10, = 117961850880000000000.00
+
+      gross < .1, = 0.00
+
+      '
+ba:
+  _ticker: BA
+  cap: 108715794432
+  did_not_update: trailingPE
+  earnings: -2222000000.0
+  equity: -17233000000.0
+  equity_per_share: -28.099816829382487
+  fcf: 3065250048
+  gross: 5768000000.0
+  last_updated: 2024.06.17 16:47
+  margin_earnings: -0.02814
+  margin_gross: 0.11485
+  margin_operating: 0.0041
+  name: The Boeing Company
+  price_to_earnings_1yr: 1.0e-12
+  price_to_gross: 18.84809196116505
+  revenue: 77794000000.0
+  revenue_growth: -0.075
+  shares: 613278019.021831
+  stock_price: 177.27
+  total_debt: 52603000000.0
+  valoration:
+    _value_to_gross: 25
+    gain_factor: 1.167879981591965
+    target_stock_price: 207.03008433680765
+    value: 126967000000.0
+    warnings: 'cap/gross > 10, = 18.85
+
+      equity < 0, = -17233.00 million
+
+      '
+dis:
+  _ticker: DIS
+  cap: 185147932672
+  did_not_update: grossProfits
+  earnings: 2354000000.0
+  equity: 99277000000.0
+  equity_per_share: 53.60428035446771
+  fcf: 8282375168
+  gross: 29697000000.0
+  last_updated: 2024.06.17 16:47
+  margin_earnings: 0.019
+  margin_gross: 0.35027
+  margin_operating: 0.13504
+  name: The Walt Disney Company
+  price_to_earnings_1yr: 110.3913
+  price_to_gross: 6.234566881233794
+  revenue: 88898000000.0
+  revenue_growth: 0.012
+  shares: 1852034937.2011604
+  stock_price: 99.97
+  total_debt: 49895000000.0
+  valoration:
+    _value_to_gross: 9
+    gain_factor: 1.9797682572527775
+    target_stock_price: 197.91743267756016
+    value: 366550000000.0
+    warnings: ''
+dva:
+  _ticker: DVA
+  cap: 12286695424
+  did_not_update: grossProfits
+  earnings: 691535000.0
+  equity: 1056097000.0
+  equity_per_share: 12.133339956388912
+  fcf: 563649152
+  gross: 3641000000.0
+  last_updated: 2024.06.17 16:47
+  margin_earnings: 0.06611
+  margin_gross: 0.324
+  margin_operating: 0.14395
+  name: DaVita Inc.
+  price_to_earnings_1yr: 15.883787
+  price_to_gross: 3.374538704751442
+  revenue: 12140147000.0
+  revenue_growth: 0.069
+  shares: 87040914.02663644
+  stock_price: 141.16
+  total_debt: 11116421000.0
+  valoration:
+    _value_to_gross: 8
+    gain_factor: 2.456648916440171
+    target_stock_price: 346.7805610446945
+    value: 30184097000.0
+    warnings: ''
+googl:
+  _ticker: GOOGL
+  cap: 2181780996096
+  did_not_update: grossProfits
+  earnings: 73795000000.0
+  equity: 283379000000.0
+  equity_per_share: 22.96223750213453
+  fcf: 55064125440
+  gross: 175022000000.0
+  last_updated: 2024.06.17 16:47
+  margin_earnings: 0.25902
+  margin_gross: 0.57466
+  margin_operating: 0.32516
+  name: Alphabet Inc.
+  price_to_earnings_1yr: 26.968374
+  price_to_gross: 12.465752854475438
+  revenue: 307394000000.0
+  revenue_growth: 0.154
+  shares: 12341088274.766672
+  stock_price: 176.79
+  total_debt: 28504000000.0
+  valoration:
+    _value_to_gross: 13
+    cap/gross < 10: false
+    gain_factor: 1.172741445900566
+    target_stock_price: 207.32896022076105
+    value: 2558665000000.0
+    warnings: 'cap/gross > 10, = 12.47
+
+      '
+ko:
+  _ticker: KO
+  cap: 268622839808
+  did_not_update: grossProfits
+  earnings: 10714000000.0
+  equity: 25941000000.0
+  equity_per_share: 6.040475006368673
+  fcf: 10807749632
+  gross: 26631000000.0
+  last_updated: 2024.06.17 16:47
+  margin_earnings: 0.23406
+  margin_gross: 0.59981996
+  margin_operating: 0.32965
+  name: The Coca-Cola Company
+  price_to_earnings_1yr: 25.042168
+  price_to_gross: 10.086847651533926
+  revenue: 45754000000.0
+  revenue_growth: 0.029
+  shares: 4294529813.077538
+  stock_price: 62.55
+  total_debt: 42064000000.0
+  valoration:
+    _value_to_gross: 10
+    gain_factor: 1.0879603544095073
+    target_stock_price: 68.05192016831468
+    value: 292251000000.0
+    warnings: 'cap/gross > 10, = 10.09
+
+      '
+lnvgy:
+  _ticker: LNVGY
+  cap: 16674831360
+  did_not_update: grossProfits
+  earnings: 1010506000.0
+  equity: 5582593000.0
+  equity_per_share: 9.113026583556403
+  fcf: 1179440128
+  gross: 1700000000.0
+  last_updated: 2024.06.17 16:47
+  margin_earnings: 0.01777
+  margin_gross: 0.1724
+  margin_operating: 0.035350002
+  name: Lenovo Group Limited
+  price_to_earnings_1yr: 17.124224
+  price_to_gross: 9.808724329411765
+  revenue: 56863784000.0
+  revenue_growth: 0.095
+  shares: 612594833.2108744
+  stock_price: 27.22
+  total_debt: 3961689000.0
+  valoration:
+    _value_to_gross: 10
+    gain_factor: 1.3542921372009604
+    target_stock_price: 36.86383197461014
+    value: 22582593000.0
+    warnings: ''
+logi:
+  _ticker: LOGI
+  cap: 15008117760
+  did_not_update: grossProfits
+  earnings: 612143000.0
+  equity: 2233653000.0
+  equity_per_share: 14.69990510055806
+  fcf: 864059136
+  gross: 1800000000.0
+  last_updated: 2024.06.17 16:47
+  margin_earnings: 0.14241
+  margin_gross: 0.41621
+  margin_operating: 0.13385001
+  name: Logitech International S.A.
+  price_to_earnings_1yr: 25.251938
+  price_to_gross: 8.3378432
+  revenue: 4298467000.0
+  revenue_growth: 0.054
+  shares: 151950164.6248861
+  stock_price: 98.77
+  total_debt: 77027000.0
+  valoration:
+    _value_to_gross: 9
+    gain_factor: 1.228245493191013
+    target_stock_price: 121.31380736247635
+    value: 18433653000.0
+    warnings: ''
+meta:
+  _ticker: META
+  cap: 1267605438464
+  did_not_update: grossProfits
+  earnings: 39098000000.0
+  equity: 153168000000.0
+  equity_per_share: 60.91893939297981
+  fcf: 35132125184
+  gross: 109000000000.0
+  last_updated: 2024.06.17 16:47
+  margin_earnings: 0.32062998
+  margin_gross: 0.81496
+  margin_operating: 0.38579
+  name: Meta Platforms, Inc.
+  price_to_earnings_1yr: 28.737206
+  price_to_gross: 11.629407692330275
+  revenue: 134902000000.0
+  revenue_growth: 0.273
+  shares: 2514291967.7562675
+  stock_price: 504.16
+  total_debt: 37234000000.0
+  valoration:
+    _value_to_gross: 8
+    gain_factor: 0.8087437690723626
+    target_stock_price: 407.73625861552233
+    value: 1025168000000.0
+    warnings: 'cap/gross > 10, = 11.63
+
+      '
+mmm:
+  _ticker: MMM
+  cap: 55535312896
+  did_not_update: trailingPE
+  earnings: -6995000000.0
+  equity: 4807000000.0
+  equity_per_share: 8.7336556635289
+  fcf: 8903374848
+  gross: 14200000000.0
+  last_updated: 2024.06.17 16:47
+  margin_earnings: -0.21569
+  margin_gross: 0.4455
+  margin_operating: 0.21704
+  name: 3M Company
+  price_to_earnings_1yr: 1.0e-12
+  price_to_gross: 3.9109375278873237
+  revenue: 32681000000.0
+  revenue_growth: -0.003
+  shares: 550399533.1615461
+  stock_price: 100.9
+  total_debt: 16854000000.0
+  valoration:
+    _value_to_gross: 8
+    gain_factor: 2.1321028697855486
+    target_stock_price: 215.12917956136187
+    value: 118407000000.0
+    warnings: ''
+solv:
+  _ticker: SOLV
+  cap: 9296979968
+  did_not_update: trailingPE
+  earnings: 692000000.0
+  equity: 3409000000.0
+  equity_per_share: 20.005963295628344
+  fcf: 1624999936
+  gross: 1.0e-15
+  last_updated: 2024.06.17 16:47
+  margin_earnings: 0.15728
+  margin_gross: 0.57644004
+  margin_operating: 0.18899
+  name: Solventum Corporation
+  price_to_earnings_1yr: 1.0e-15
+  price_to_gross: 9.296979967999999e+24
+  revenue: 8241000000.0
+  revenue_growth: 0.002
+  shares: 170399192.96187684
+  stock_price: 54.56
+  total_debt: 8303000000.0
+  valoration:
+    _value_to_gross: 8
+    gain_factor: 0.36667821289641395
+    target_stock_price: 20.005963295628344
+    value: 3409000000.0
+    warnings: 'cap/gross > 10, = 9296979967999998859149312.00
+
+      gross < .1, = 0.00
+
+      '
+sqm:
+  _ticker: SQM
+  cap: 12014788608
+  did_not_update: grossProfits
+  earnings: 2012667000.0
+  equity: 5530675000.0
+  equity_per_share: 19.526871520967504
+  fcf: -24259376
+  gross: 2000000000.0
+  last_updated: 2024.06.17 16:47
+  margin_earnings: 0.06254
+  margin_gross: 0.37817
+  margin_operating: 0.30368
+  name: "Sociedad Qu\xEDmica y Minera de Chile S.A."
+  price_to_earnings_1yr: 30.115944
+  price_to_gross: 6.007394304
+  revenue: 7467490000.0
+  revenue_growth: -0.521
+  shares: 283234054.8797737
+  stock_price: 42.42
+  total_debt: 4491422000.0
+  valoration:
+    _value_to_gross: 8
+    gain_factor: 1.7920144667101245
+    target_stock_price: 76.01725367784348
+    value: 21530675000.0
+    warnings: ''
+stld:
+  _ticker: STLD
+  cap: 19149797376
+  did_not_update: grossProfits
+  earnings: 2450882000.0
+  equity: 8866666000.0
+  equity_per_share: 55.88142258263025
+  fcf: 1013231616
+  gross: 4045000000.0
+  last_updated: 2024.06.17 16:47
+  margin_earnings: 0.12893
+  margin_gross: 0.21351999
+  margin_operating: 0.15999
+  name: Steel Dynamics, Inc.
+  price_to_earnings_1yr: 8.335841
+  price_to_gross: 4.734189709765142
+  revenue: 18795316000.0
+  revenue_growth: -0.041
+  shares: 158669296.34601045
+  stock_price: 120.69
+  total_debt: 3071056000.0
+  valoration:
+    _value_to_gross: 8
+    gain_factor: 2.1528512908271513
+    target_stock_price: 259.8276222899289
+    value: 41226666000.0
+    warnings: ''
+syk:
+  _ticker: SYK
+  cap: 130711568384
+  did_not_update: grossProfits
+  earnings: 3165000000.0
+  equity: 18593000000.0
+  equity_per_share: 49.071503152318876
+  fcf: 2291875072
+  gross: 13000000000.0
+  last_updated: 2024.06.17 16:47
+  margin_earnings: 0.16033001
+  margin_gross: 0.63994
+  margin_operating: 0.18558
+  name: Stryker Corporation
+  price_to_earnings_1yr: 39.16895
+  price_to_gross: 10.05473602953846
+  revenue: 20498000000.0
+  revenue_growth: 0.097
+  shares: 378896076.2478984
+  stock_price: 344.98
+  total_debt: 12995000000.0
+  valoration:
+    _value_to_gross: 8
+    gain_factor: 0.9378894425002265
+    target_stock_price: 323.5530998737282
+    value: 122593000000.0
+    warnings: 'cap/gross > 10, = 10.05
+
+      '
+tsla:
+  _ticker: TSLA
+  cap: 590225211392
+  did_not_update: grossProfits
+  earnings: 14999000000.0
+  equity: 62634000000.0
+  equity_per_share: 18.89021025331132
+  fcf: -633124992
+  gross: 18000000000.0
+  last_updated: 2024.06.17 16:47
+  margin_earnings: 0.14368
+  margin_gross: 0.17778999
+  margin_operating: 0.054970004
+  name: Tesla, Inc.
+  price_to_earnings_1yr: 47.211735
+  price_to_gross: 32.79028952177778
+  revenue: 96773000000.0
+  revenue_growth: -0.087
+  shares: 3315685699.634852
+  stock_price: 178.01
+  total_debt: 9573000000.0
+  valoration:
+    _value_to_gross: 30
+    cap/gross < 10: false
+    gain_factor: 1.0210238200071713
+    target_stock_price: 181.75245019947656
+    value: 602634000000.0
+    warnings: 'cap/gross > 10, = 32.79
+
+      '
