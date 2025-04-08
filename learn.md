@@ -16,17 +16,18 @@
     - Buyin an asset spends cash. Right after the purchase, the net earnings **are unchanged**. The depreciation of the assets will slowly cause OpEx in the following years.
     - The sudden impact is visible in the cash flow statement
 - Depreciation/Amortization: The decrease in value of an asset over time. Depreciation is for physical assets (machinery, buildings), amortization for intangible assets (patents, trademarks). Doesn't affect the cash flow.
-- Equity = Assets - Liabilities
-- EV = Enterprise Value = Market cap + Total Debt - Cash (and equivalents)
-    - This is the money that you have to pay to get the company by itself, with no money accounts or debt, no storage or money.
-    - Since the Market Cap should account for the cash and debt, the EV measures the value of the company itself, ignoring the effect on the stock price of the cash and debt, which is included with the company when you buy it.
-    - You have to pay for the debt, but you get the cash of the company to pay
+- Equity (Book Equity) = Assets - Liabilities
+    > In accounting terms
+- Market Equity = Market Cap. DO NOT USE THE TERM Equity in Market terms. Just use Market cap in that case!
+- EV = Enterprise Value = EqV + Total Debt - Cash (and equivalents)
+    - EqV = Equity Value
+    > This is the money that you have to pay to get the company by itself, with no money accounts or debt, no storage or money. You have to pay for the debt, but you get the cash of the company to pay
     - A low EV for a valuable company means it's cheap to buy. It's good.
 - ROI = Return On Invested capital = (Gross Profit / Cost of the investment) ~= 10%
 - P/E ratio = Price / Earnings ~= 12
 - P/G ratio = Price / Gross Profit ~= 91
 - EPS = Earnings Per Share = Earnings / Shares
-- FCF = Free Cash Flow = net income adding depreciation, amortization, capex, working capital, interests etc.
+- FCF = Free Cash Flow = net income adding depreciation, amortization, capex, working capital, interests etc = net income * (1 - reinvestment rate)
     - How much did the cash balance vary from year to year. Money left for investors and creditors (after investments).
 - CARG = Compound Annual Growth Rate, Rate of Return ROR required to grow from beginning balance to ending balance
 - FCF = Free Cash Flow
@@ -60,9 +61,11 @@ Gross profit margin = Gross Profit / Revenue = (Revenue - COGS expenses) / Reven
 - TV = Terminal Value = The value of the company at the end of the projection period.
     - This is done with the Gordon Growth Model, which solves the integral for a constant growth rate g in perpetuity, assuming g < r, where r is the discount rate, usually the WACC. So the company is assumed to grow slower than the market. Otherwise, TV would be infinite.
     - $TV = \frac{FCF_{n+1}}{r-g}$
-- PV = Present Value = The present value of a company, including its future predicted cash flows, included in the TV
+- PV = Present Value = The present value of a company, including its future predicted cash flows (TV)
     - It's the value of all future cash flows beyond the projection period.
         - To understand this, think that the value of a company is the sum of all its future cash flows, discounted to the present. By discounted we mean that we value more the cash flows that we get sooner, because they can further generate more cash flows. It can't be infinity, since the value of the company should be infinity too. When we have a money-generating machine that can work forever, we don't give it an infinite value, because we value future money less, in such a way that the integral of all future cash flows converges to a finite value, which is the terminal value, TV.
+- NPV: Net Present Value, Present value of next 10 years of cash flows
+- 
 - Terminal value in year n = free cash flow in year (n+1) / (discount rate - perpetual growth rate)
 
 

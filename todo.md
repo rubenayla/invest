@@ -17,8 +17,8 @@ Questions to understand DCF model
 ## Check
 - Argetina
 - Japan
-    - Itochu
     - **Marubeni**
+    - Itochu
     - Mitsubishi
     - Mitsui & Co.
     - Sumitomo
@@ -28,3 +28,5 @@ Questions to understand DCF model
     - American Bitcoin
     - Affinity Partners
     - WLF
+- COINBASE:
+    - Matches cathie wood, peter thiel, marc andreessen, david scaks, dan loeb, ...
