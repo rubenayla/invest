@@ -1,26 +1,54 @@
 [Main](../README.md) > [money](./money.md)
 
-# TODO
-- STLD
-- ACGL
-- CSU (Constellation Software)
-- bekshire hathaway
-- Plug Power (PLUG) or Ballard Power (BLDP) provide hydrogen tech (not exclusively for aircraft). They’re more general hydrogen/fuel-cell plays.
-1. Virgin Galactic (Ticker: SPCE)
-    - 100M
-2. Rocket Lab (Ticker: RKLB)
-3. Astra Space (Ticker: ASTR)
-    - 12M
-4. Planet Labs (Ticker: PL)
-5. Redwire (Ticker: RDW)
-6. Lockheed Martin (Ticker: LMT) - large defense/space segments
-7. Northrop Grumman (Ticker: NOC) - significant space and defense
+# Watchlist
+- **Marubeni Corp. (8002)**
+- Sociedad Química y Minera de Chile (SQM)
+
+- **Coinbase Global Inc. (COIN)**
+- Qualcomm Inc. (QCOM)
+- CCI Inc. (CCI)
+- **Cresud SACIF y A (CRESY)**
+- [Mobileye N.V. (MBLY)](#mobileye-nv-mbly)
+- **YPF SA** (YPF) (Argentina oil company)
+- 3M Co. (MMM)
+- Walt Disney Co. (DIS)
+- Berkshire Hathaway Inc. (BRK.B)
+- Logitech International SA (LOGI)
+- Steel Dynamics Inc. (STLD)
+- Alphabet Inc. (GOOGL)
+- Amazon.com Inc. (AMZN)
+- Apple Inc. (AAPL)
+- Meta Platforms Inc. (META)
+- Arch Capital Corp. (ARCH)
+- Constellation Software Inc. (CSU)
+- Aerospace
+    - Virgin Galactic Holdings Inc. (SPCE)
+    - Rocket Lab USA Inc. (RKLB)
+    - Astra Space Inc. (ASTR)
+    - Planet Labs PBC (PL)
+    - Redwire Corp. (RDW)
+    - Lockheed Martin Corp. (LMT)
+    - Northrop Grumman Corp. (NOC)
+    - Plug Power Inc. (PLUG)
+    - Ballard Power Systems Inc. (BLDP)
+- Japan
+    - **Mitsui & Co.**
+    - **Mitsubishi**
+    - Itochu
+    - Sumitomo
+- Ulta Beauty Inc (ULTA)
+
+
+## Nope
+- NVIDIA Corp. (NVDA)
+- Netflix Inc. (NFLX)
+- Tesla Inc. (TSLA)
+    - Wait, $175
+- Microsoft Corp. (MSFT)
+- Sony Group Corp. (SONY)
+    - Didn't even drop
 
 # Refs
-- [LEARN](./learn.md)
-- [STUFF](./stuff.md)
-- [Script to analyze](analyze.py)
-- [Bitcoin](./bitcoin/README.md)
 - [TIKR](https://app.tikr.com/markets?fid=1)
 - [https://finviz.com/](https://finviz.com/)
 - [https://www.investing.com/](https://www.investing.com/)
@@ -51,16 +79,15 @@
     - Fidelity Investments
     - E*TRADE
 
+## Sociedad Química y Minera de Chile (SQM)
+USA has surplus with Chile, and they have commercial agreement, so shouldn't suffer from tariffs.
+
+## Mobileye N.V. (MBLY)
+- Why negative income, while huge growing revenue.
+- Israel.
+
+
 # TODO
-- Check
-    - QCOM
-    - CCI
-    - Cresy
-    - MBLY
-        - Why negative income, while huge growing revenue.
-        - Israel.
-    - Sony
-    - 
 - 
 - Update checklists to use check operating margin instead of gross
 - Check these stocks: BIDU, CSCO, IBM, META, ORCL, PYPL, QCOM, SAP
@@ -77,24 +104,6 @@
     - Discounted Cash Flow (DCF)
     - Multiples
     - Dividend discount
-
-# Checklist
-All data average of past 5 yrs. (PE, ROI, revenue, profit, income, Free Cash Flow)
-
-1. Price / Gross profit < 20 (PE < 22 before. 10 is average for consumer electronics)
-2. (ROI > 9%)
-3. Gross Profit Margin > 10%
-4. Revenue grows
-5. Profit (net income or gross profit) grows
-6. Shares outstanding not increasing
-7. Assets > Liabilities, Equity > 0
-    - Check equity per stock (stock value if company were to dissolve): Total equity / Shares outstanding
-8. Long Term Liabilities / (Free Cash Flow) or Total Debt / EBITDA < 5 (They can pay it in 5 yrs)
-
-If no risk, the companies don't have big investments:
-1. FCF growing
-2. ? FCF times PE < Market cap
-3. Price to free cash flow, (profit - investments) < 20
 
 ## Copypaste to do one
 Price:
