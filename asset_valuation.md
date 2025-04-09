@@ -20,6 +20,7 @@ Put estimated future values in there and you get your value
 
 ## DCF -- Discounted Free Cash Flow
 > [!NOTE] This ignores value in the form of book equity (SQM trading at $30/share with $18/share worth of book equity)
+> 
 > Also, profit reinvested in the business will only be considered with the growth rate, but a startup might take more than 10 years to take profits.
 
 > An asset is worth the present value of all future cash flows to its shareholders, discounted at the required rate of return.
