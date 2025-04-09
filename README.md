@@ -7,6 +7,7 @@
 - [https://www.macrotrends.net/](https://www.macrotrends.net/)
 - [https://finance.yahoo.com/](https://finance.yahoo.com/)
 - [https://ycharts.com/](https://ycharts.com/)
+- sec.gov
 - https://simplywall.st/
     - https://simplywall.st/screener/edit/user/423172/emerging-and-value
 - https://stockanalysis.com/stocks/sqm/statistics/

@@ -1,20 +1,22 @@
 # Watchlist
 - [Marubeni Corp. (8002)](#marubeni-corp-8002)
 - [Arch Capital Group Ltd. (ACGL)](#arch-capital-group-ltd-acgl)
+- [Steel Dynamics Inc. (STLD)](#steel-dynamics-inc-stld)
 - [Sociedad Quimica y Minera de Chile (SQM)](#sociedad-quimica-y-minera-de-chile-sqm)
 - [Meta Platforms Inc. (META)](#meta-platforms-inc-meta)
-
+- [Mitsubishi Corp. (8058.T)](#mitsubishi-corp-8058t)
 - [Coinbase Global Inc. (COIN)](#coinbase-global-inc-coin)
+
 - Qualcomm Inc. (QCOM)
 - CCI Inc. (CCI)
 - **Cresud SACIF y A (CRESY)**
 - [Mobileye N.V. (MBLY)](#mobileye-nv-mbly)
 - **YPF SA** (YPF) (Argentina oil company)
+- Nucor Corp. (NUE)
 - 3M Co. (MMM)
 - Walt Disney Co. (DIS)
 - Berkshire Hathaway Inc. (BRK.B)
 - Logitech International SA (LOGI)
-- Steel Dynamics Inc. (STLD)
 - Alphabet Inc. (GOOGL)
 - Amazon.com Inc. (AMZN)
 - Apple Inc. (AAPL)
@@ -31,7 +33,6 @@
     - Ballard Power Systems Inc. (BLDP)
 - Japan
     - **Mitsui & Co.**
-    - **Mitsubishi**
     - Itochu
     - Sumitomo
 - Ulta Beauty Inc (ULTA)
@@ -81,6 +82,18 @@ Resilience: Dominant platforms + large-scale AI investment (Llama, infra buildou
 
 → Not speculative like NVDA, but still growing and cheaper.
 
+## Mitsubishi Corp. (8058.T)
+Diversified exposure: energy, minerals, automotive, infrastructure, and food. A real macro hedge.
+
+Strong FCF and stable dividend (~3–4%).
+
+Governance improvements: Part of the Japan Inc. resurgence — more buybacks, higher ROE focus.
+
+Low valuation: Still trades around P/E 7–8 despite global reach.
+
+Better balance sheet and operating leverage than most industrials in the West.
+
+
 ## Arch Capital Group Ltd. (ACGL)
 High ROE, disciplined underwriting, growing in a hard insurance market.
 
@@ -89,6 +102,8 @@ Capital-efficient: They don't need major capex to grow.
 Stable: Grows book value >15%/yr with conservative risk profile.
 
 → Compounder with downside protection. Quiet outperformer.
+
+TODO UNDERSTAND IT BETTER
 
 ## Coinbase Global Inc. (COIN)
 Regulatory Environment: In March 2023, the SEC issued a Wells Notice to Coinbase, indicating potential enforcement actions over alleged securities law violations related to its exchange and staking services.
@@ -105,7 +120,14 @@ Founder-led, excellent capital allocation, long runway of small tuck-in acquisit
 ## Mobileye N.V. (MBLY)
 - Why negative income, while huge growing revenue.
 - Israel.
+- Competence with Tesla self-driving?
 
+
+
+## Walt Disney Co. (DIS)
+
+
+## Steel Dynamics Inc. (STLD)
 
 # TODO
 - 

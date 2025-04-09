@@ -1,6 +1,10 @@
 ## 
 
-fix dcf model so it uses averages of years and gets trends in auto mode
+learn acgl
+
+fixed? fix dcf model so it uses averages of years and gets trends in auto mode
+
+use second method of comparative valuation
 
 ## Investigate Japanese situation (estanflacion ya no, precio bajo?)
 Buffett’s Strategy: He holds them for dividends, stability, and diversification—similar to how he views utilities and railroads in the U.S.
@@ -25,3 +29,5 @@ Questions to understand DCF model
     - WLF
 - COINBASE:
     - Matches cathie wood, peter thiel, marc andreessen, david scaks, dan loeb, ...
+
+- IBKR Market screener 2.0

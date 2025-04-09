@@ -67,7 +67,9 @@ Gross profit margin = Gross Profit / Revenue = (Revenue - COGS expenses) / Reven
 - NPV: Net Present Value, Present value of next 10 years of cash flows
 - 
 - Terminal value in year n = free cash flow in year (n+1) / (discount rate - perpetual growth rate)
-
+- FX control means: you manually convert your EUR to JPY before buying the stock.
+- RTH: Regular Trading Hours
+- TSE: Tokyo Stock Exchange
 
 ## Ratios
 - P/E ratio = Price / Earnings ~= 12

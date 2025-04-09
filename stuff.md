@@ -25,3 +25,5 @@ Rallo https://youtu.be/VWClThyfDlQ?si=NUhi2H437V3OVa0T
     - Free cash flow = after tax operating income * (1 - reinvestment rate)
     > what happens when the company reinvests all its cash flows? It's not giving net income but its intrinsic value is increasing
     Affected by the growth, which increases with reinvestmente rate, and by the % of cash flow that can be extracted, which decreases with reinvestment rate
+
+![](stuff/20250409161842.png)
