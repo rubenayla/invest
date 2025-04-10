@@ -70,6 +70,7 @@ Gross profit margin = Gross Profit / Revenue = (Revenue - COGS expenses) / Reven
 - FX control means: you manually convert your EUR to JPY before buying the stock.
 - RTH: Regular Trading Hours
 - TSE: Tokyo Stock Exchange
+- ADR: American Depositary Receipt, a negotiable certificate issued by a bank representing a specified number of shares (or one share) in a foreign stock traded on a U.S. exchange. It allows U.S. investors to buy shares in foreign companies without dealing with the complexities of foreign stock ownership.
 
 ## Ratios
 - P/E ratio = Price / Earnings ~= 12

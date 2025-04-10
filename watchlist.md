@@ -1,51 +1,43 @@
+# Contents <!-- omit in toc -->
+- [Watchlist](#watchlist)
+    - [Marubeni Corp. (8002)](#marubeni-corp-8002)
+    - [Sociedad Quimica y Minera de Chile (SQM)](#sociedad-quimica-y-minera-de-chile-sqm)
+    - [Meta Platforms Inc. (META)](#meta-platforms-inc-meta)
+    - [Mitsubishi Corp. (8058.T)](#mitsubishi-corp-8058t)
+    - [Arch Capital Group Ltd. (ACGL)](#arch-capital-group-ltd-acgl)
+    - [Coinbase Global Inc. (COIN)](#coinbase-global-inc-coin)
+    - [Constellation Software Inc. (CSU)](#constellation-software-inc-csu)
+    - [Mobileye N.V. (MBLY)](#mobileye-nv-mbly)
+    - [Walt Disney Co. (DIS)](#walt-disney-co-dis)
+    - [Steel Dynamics Inc. (STLD)](#steel-dynamics-inc-stld)
+        - [Estimate stock price](#estimate-stock-price)
+    - [GOOGL 2023.03](#googl-202303)
+        - [Estimate stock price](#estimate-stock-price-1)
+    - [DIS - Disney !!!](#dis---disney-)
+        - [Estimate stock price](#estimate-stock-price-2)
+    - [LOGI (Logitech) 2023.03 !!!](#logi-logitech-202303-)
+        - [Estimate stock price](#estimate-stock-price-3)
+    - [Steel Dynamics - STLD !](#steel-dynamics---stld-)
+        - [Assuming old steel prices, what stock price?](#assuming-old-steel-prices-what-stock-price)
+    - [SKYWORKS - SWKS !!!](#skyworks---swks-)
+    - [Microsoft 202303](#microsoft-202303)
+        - [Estimate stock price](#estimate-stock-price-4)
+    - [3M Co (MMM)](#3m-co-mmm)
+        - [Estimate stock price](#estimate-stock-price-5)
+    - [Costco](#costco)
+    - [Nagarro SE - NA9](#nagarro-se---na9)
+    - [Ulta Beauty Inc (ULTA)](#ulta-beauty-inc-ulta)
+    - [FMC Corp. (FMC)](#fmc-corp-fmc)
+    - [Albemarle Corp. (ALB)](#albemarle-corp-alb)
+    - [Shinetsu Chemical Co. (4063)](#shinetsu-chemical-co-4063)
+- [Nope](#nope)
+    - [NVIDIA Corp. (NVDA)](#nvidia-corp-nvda)
+    - [Netflix Inc. (NFLX)](#netflix-inc-nflx)
+    - [Tesla Inc. (TSLA)](#tesla-inc-tsla)
+    - [Microsoft Corp. (MSFT)](#microsoft-corp-msft)
+    - [Sony Group Corp. (SONY)](#sony-group-corp-sony)
+
 # Watchlist
-- [Marubeni Corp. (8002)](#marubeni-corp-8002)
-- [Arch Capital Group Ltd. (ACGL)](#arch-capital-group-ltd-acgl)
-- [Steel Dynamics Inc. (STLD)](#steel-dynamics-inc-stld)
-- [Sociedad Quimica y Minera de Chile (SQM)](#sociedad-quimica-y-minera-de-chile-sqm)
-- [Meta Platforms Inc. (META)](#meta-platforms-inc-meta)
-- [Mitsubishi Corp. (8058.T)](#mitsubishi-corp-8058t)
-- [Coinbase Global Inc. (COIN)](#coinbase-global-inc-coin)
-
-- Qualcomm Inc. (QCOM)
-- CCI Inc. (CCI)
-- **Cresud SACIF y A (CRESY)**
-- [Mobileye N.V. (MBLY)](#mobileye-nv-mbly)
-- **YPF SA** (YPF) (Argentina oil company)
-- Nucor Corp. (NUE)
-- 3M Co. (MMM)
-- Walt Disney Co. (DIS)
-- Berkshire Hathaway Inc. (BRK.B)
-- Logitech International SA (LOGI)
-- Alphabet Inc. (GOOGL)
-- Amazon.com Inc. (AMZN)
-- Apple Inc. (AAPL)
-- Constellation Software Inc. (CSU)
-- Aerospace
-    - Virgin Galactic Holdings Inc. (SPCE)
-    - Rocket Lab USA Inc. (RKLB)
-    - Astra Space Inc. (ASTR)
-    - Planet Labs PBC (PL)
-    - Redwire Corp. (RDW)
-    - Lockheed Martin Corp. (LMT)
-    - Northrop Grumman Corp. (NOC)
-    - Plug Power Inc. (PLUG)
-    - Ballard Power Systems Inc. (BLDP)
-- Japan
-    - **Mitsui & Co.**
-    - Itochu
-    - Sumitomo
-- Ulta Beauty Inc (ULTA)
-
-
-## Nope
-- NVIDIA Corp. (NVDA)
-- Netflix Inc. (NFLX)
-- Tesla Inc. (TSLA)
-    - Wait, $175
-- Microsoft Corp. (MSFT)
-- Sony Group Corp. (SONY)
-    - Didn't even drop
 
 ## Marubeni Corp. (8002)
 Trades at low P/E (~6), solid ROE, diversified global exposure to energy, food, and metals.
@@ -67,6 +59,20 @@ Long-term growth: EV adoption still structural; also diversified into iodine and
 
 → You’re buying near asset value with high upside if lithium recovers.
 
+
+Shares: 160e6
+
+Checklist:
+- Price/Gross Profit = 22.5e9/4e9 = 5.6 < 10 ok (PE = 55)
+- Gross profit margin = 40% > .1 ok
+- Revenue grows ok
+- Gross profit grows ok
+- Shares outstanding not worrying
+- Equity = 4.9e9
+    - Equity per stock = 4.9e9$/286E6 stock = 17.1$/stock
+- Time to pay debt: Long term liabilities / free cash flow = 2300e6 / 3100e6 = **0.72** < 5
+
+
 ## Meta Platforms Inc. (META)
 Why: Exceptional FCF, efficient cost structure, growth in AI infra and WhatsApp monetization.
 
@@ -81,6 +87,20 @@ Valuation: Still trades at a discount to its earnings power.
 Resilience: Dominant platforms + large-scale AI investment (Llama, infra buildout).
 
 → Not speculative like NVDA, but still growing and cheaper.
+
+
+Price: 512e9
+Shares: 2.6e9
+
+Checklist:
+- Price/Gross Profit = 512e9/75e9 = 6.8 < 10 ok
+- Gross profit margin = 85% > .1 ok
+- Revenue grows ok
+- Gross profit grows ok
+- Shares outstanding not worrying
+- Equity = 126e9
+    - Equity per stock = 126e9/2.6e9 stock = 48$/stock
+- Time to pay debt: Long term liabilities / free cash flow = 10e9 / 19e9 = **0.52** < 5
 
 ## Mitsubishi Corp. (8058.T)
 Diversified exposure: energy, minerals, automotive, infrastructure, and food. A real macro hedge.
@@ -129,69 +149,6 @@ Founder-led, excellent capital allocation, long runway of small tuck-in acquisit
 
 ## Steel Dynamics Inc. (STLD)
 
-# TODO
-- 
-- Update checklists to use check operating margin instead of gross
-- Check these stocks: BIDU, CSCO, IBM, META, ORCL, PYPL, QCOM, SAP
-- Study LOGI in more depth. Great fundamentals. I would pay twice its stock value
-- Study skyworks in more depth
-- Study steel dynamics. What's going to happen with steel demand? If it falls back down after all these investments, the stock will collapse.
-
-- [ ] Create spreadsheet to calculate price according to assumptions in bad - medium - good scenarios.(https://youtu.be/H1gfAXvRoSM)
-- [ ] gdi? P/E = 12 cuando es predecible y crece
-
-- Valuation models
-    - Graham
-        - ![](readme/20230523133421.png)
-    - Discounted Cash Flow (DCF)
-    - Multiples
-    - Dividend discount
-
-## Copypaste to do one
-Price:
-Shares:
-
-Checklist:
-- Price/Gross Profit =  < 10
-- Gross profit margin =  > .1
-- Revenue grows 
-- Gross profit grows 
-- Shares outstanding 
-- Equity
-- Equity per share = $/share
-- Time to pay debt: Long term liabilities / free cash flow =  /  =  < 5
-
-### Estimate stock price
-- Value = Equity + PE_estimated * Gross Profit = 
-- Price per stock = Value / Shares = $/stock
-- Current price: $/stock
-
-# STOCKS
-
-
-Consider:
-- Shin-Etsu Chemical Co Ltd
-* FMC $90 stock check fundamentals
-
-
-## Microcaps
-Screeners:
-* Finviz
-* https://app.tikr.com/screener?sid=1&ref=bvi61n
-
-
-## SQM !!!
-Shares: 160e6
-
-Checklist:
-- Price/Gross Profit = 22.5e9/4e9 = 5.6 < 10 ok (PE = 55)
-- Gross profit margin = 40% > .1 ok
-- Revenue grows ok
-- Gross profit grows ok
-- Shares outstanding not worrying
-- Equity = 4.9e9
-    - Equity per stock = 4.9e9$/286E6 stock = 17.1$/stock
-- Time to pay debt: Long term liabilities / free cash flow = 2300e6 / 3100e6 = **0.72** < 5
 
 ### Estimate stock price
 - Value = Equity + PE_estimated * Gross Profit = 4.9e9 + 20 * 2e9 = 80e9
@@ -205,25 +162,6 @@ Equity = 1.5e9
 Value = 1.5e9 + 15 * 1e9 = 16.5e9
 Price per stock = 16.5e9 / 160e6 = 103$/stock
 
-
-## Meta 2023.03
-Price: 512e9
-Shares: 2.6e9
-
-Checklist:
-- Price/Gross Profit = 512e9/75e9 = 6.8 < 10 ok
-- Gross profit margin = 85% > .1 ok
-- Revenue grows ok
-- Gross profit grows ok
-- Shares outstanding not worrying
-- Equity = 126e9
-    - Equity per stock = 126e9/2.6e9 stock = 48$/stock
-- Time to pay debt: Long term liabilities / free cash flow = 10e9 / 19e9 = **0.52** < 5
-
-### Estimate stock price
-- Value = Equity + PE_estimated * Gross Profit = 126e9 + 15 * 75e9 = 1251e9
-- Price per stock = Value / Shares = 261e9 / 2.6e9 = 481$/stock
-- Current price: 232 $/stock
 
 ## GOOGL 2023.03
 Price: 1.2e12
@@ -347,7 +285,7 @@ Checklist:
 - Price per stock = Value / Shares = 1.7e12 / 7.4e9 = 230$/stock
 - Current price: 265 $/stock
 
-## MMM !!!
+## 3M Co (MMM)
 Cap: 54.6e9
 Shares: 552e6
 
@@ -373,93 +311,37 @@ Provides a wide range of essential products, so it's good for times of crisis.
 - Current price: 102$/stock
 - Gain factor = Price per stock / Current price = 
 
-## COSCO
-
-
-
+## Costco
 
 
 ## Nagarro SE - NA9
 
 
+## Ulta Beauty Inc (ULTA)
 
 
+## FMC Corp. (FMC)
 
 
+## Albemarle Corp. (ALB)
 
 
+## Shinetsu Chemical Co. (4063)
 
 
-## ASX
-Lithium provider for tesla,
+# Nope
+## NVIDIA Corp. (NVDA)
 
 
-## ALB (Albemarle) !!
-Price: 22.6e9
-Shares: 117.3e6
+## Netflix Inc. (NFLX)
 
-Checklist:
-- Price/Gross Profit = 18.8 < 10 nope
-- Gross profit margin = 35% > .1 ok
-- Revenue grows ok
-- Gross profit grows ok
-- Shares outstanding ok (~constant with some fluctuations, trend slightly up)
-- Equity 8.2e9
-- Equity per share = 70$/share
-- Time to pay debt: Long term liabilities / free cash flow = 3.1e9 / 500e6 = 6.2 < 5 nope
 
-### Estimate stock price
-- Value = Equity + PE_estimated * Gross Profit = 26.2e9
-- Price per stock = Value / Shares = 223$/stock
-- Current price: 186$/stock
+## Tesla Inc. (TSLA)
+- Wait, $175
 
-## FMC !!!
-Market cap = 14.5B
-Net Income = 500M
-Equity = 3.1B
 
-3.1B + 30 * 500M = 18.1B
+## Microsoft Corp. (MSFT)
 
-## Tesla - TSLA
-Net income = 8.4B
-Equity = 35.4B
-Market cap 750B
 
-35.4B + 100 * 8.4B = 875B
-
-## Boeing - BA
-Net Income = 4.8B
-EBITDA = 1.4B
-Equity = -15B
-Market cap = 76B
-
--15B + 15 * -4.8B (last income) = -87B Calculated market cap
--15B + 15 * +10B (income from 2018, more representative) = 135B Calculated market cap
-
-Checklist:
-- Price / Gross Profit = 125e9 / 5e9 = 25$ < 10 NO!
-- Gross profit margin = .08 < .1 NO!
-- Revenue grows ok
-- Gross profit grows ok
-- Shares increasing! -> NO!
-- Equity = -15e9 < 0 -> NO!
-    - Equity per stock = -15e9 / 600e6 = -25
-- Time to pay debt: Long term liabilities / free cash flow = 50e9 / 10e9 = 5 < 5 Careful!
-
-### Estimate stock price
-- Value = Equity + PE_estimated * Gross Profit = -15e9 + 15 * 5.8e9 = 72e9
-- Price per stock = Value / Shares = 72e9 / 600e6 = 120
-
-- If the gross profit were the same as in 2018:
-    - Value = Equity + PE_estimated * Gross Profit = -15e9 + 15 * 20e9 = 285e9
-    - Price per stock = Value / Shares = 285e9 / 600e6 = 475
-
-## SONY !!!
-Equity = 59B
-Net Income = 7.2B
-Market cap = 102B
-
-59B + 20 * 7.2B = 203B
-
-## DELTA AIRLINES - DAL
-3 + 15 * 3 = 48B
+## Sony Group Corp. (SONY)
+- Didn't even drop

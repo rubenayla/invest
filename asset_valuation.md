@@ -54,3 +54,10 @@ Put estimated future values in there and you get your value
 
 ## Comparables -- Relative Valuation
 
+
+## Residual Income Model (RIM) (Abnormal Earnings Model)
+> A company is worth it's current book equity + the present value of all future net income
+>
+> It considers "residual income", subtracting the "cost of equity" from the net income. It's basically the opportunity cost for the assets (at least they can get 4% risk-free with bonds)
+
+
