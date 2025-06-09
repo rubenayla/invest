@@ -27,3 +27,26 @@ Rallo https://youtu.be/VWClThyfDlQ?si=NUhi2H437V3OVa0T
     Affected by the growth, which increases with reinvestmente rate, and by the % of cash flow that can be extracted, which decreases with reinvestment rate
 
 ![](stuff/20250409161842.png)
+
+# notes to really intuitively understand bond markets and its behavior
+So right now (2025-06-09) USA interest rates are high, about 5%, yield curve is inverted, which means expectation of recession in the next 1-2 years, and inflation moderately high, trending down but hardly, at about 3%. It's sticky. Right now the rates are expected to stay high for a while, it's time to prepare, so at the end of the year the time may be good to buy bonds, until mid-recession there are investment opportunities and the bonds can be sold at a profit, using the liquidity for investment opportunities.
+
+Inflation is sticky because certain factors caused prices to rise, especially salaries, and once they rise they don't go back down. About housing, mortgage rates are high, which makes potential buyers stay renting. The rates make renting artificially more attractive, raising the short term renting price. Oil may cause price fluctuations affecting the behavior of the fed.
+
+The ideal interest rates behavior is high, giving me more money, but trending down, which means the value of the bond will rise, since bonds with such returns will be scarce. The fed will drop interest rates only if inflation is low enough, or if Trump can convince them.
+
+So ideally i should buy 1yr bonds now, and then when the rates start dropping, buy longer term.
+
+U.S.-domiciled ETFs (like SGOV/SHY) get hit with 15% dividend withholding tax for non-US investors, so choose UCITS ETFs, Ireland-based wrappers.
+gpt recommends: iShares $ Treasury Bond 1-3yr UCITS ETF (IB01 / IBGS). 4.7% gross yield to maturity, 1.9 years.
+Either IB01 (Xetra: German electronic stock exchange) or IBGS (London)
+I found this one at 1 year, even better.
+https://www.interactivebrokers.co.uk/portal/?loginType=1&action=ACCT_MGMT_MAIN&clt=0#/quote/354802220
+
+TER of .07%
+> Note: IB01 doesn't hold to maturity, they buy and sell constantly, so if rates drop, this won't benefit from the price appreciation of higher-than-market bonds. For that, consider IBGL or IBTL when rates start dropping. They are higher duration, which means more price appreciation when rates drop.
+> Gpt: yes, if you don't sell, this etf will accumulate yield internally, reflect that in price appreciation, just like holding T-bills to maturity.
+
+
+
+
