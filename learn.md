@@ -3,7 +3,7 @@
 # Definitions
 
 ## Income Statement --- Revenue, Income, Profit, Expenses, Net Income, EBIT, EBITDA, Free Cash Flow, Equity, Enterprise Value
-> - **Revenue** (all money in)
+> - **Revenue** (all money in) = Turnover
 > - `- Expenses` = COGS = Cost Of Goods Sold. Linked to production
 > - = **Gross Profit** Profit ignoring investment and R&D expenses -- Related to Gross Margin = Gross profit / Revenue
 > - `- Operating expenses` = OpEx -- marketing, R&D expenses, depreciation/amortization of assets, land rent --- Whole business expenses, unlinked to production

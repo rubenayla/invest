@@ -47,6 +47,19 @@ TER of .07%
 > Note: IB01 doesn't hold to maturity, they buy and sell constantly, so if rates drop, this won't benefit from the price appreciation of higher-than-market bonds. For that, consider IBGL or IBTL when rates start dropping. They are higher duration, which means more price appreciation when rates drop.
 > Gpt: yes, if you don't sell, this etf will accumulate yield internally, reflect that in price appreciation, just like holding T-bills to maturity.
 
+# 
+El Federal funds rate es el tipo que la fed cobra para préstamos a 1 día, anualizado.
+La fed controla el tipo efectivo de los bancos ajustando el suyo: Si desean incrementar los tipos, reducen liquidez en la economía al vender bonos. Eso lo hacen subiendo los tipos de interés que ellos pagan, haciendo que no tenga sentido la compra de bonos a interés inferior. Esto causa la subida de los tipos de interés en el mercado, y la fed absorbe liquidez de la economía.
+
+Este proceso permite a la fed financiarse, con la pega de tener que pagar grandes intereses. En la discusión de Trump con Powell, Trump quiere aumentar la liquidez de la economía con tipos bajos, pero Powell los mantiene altos. Por qué los mantiene altos? Para evitar demasiada inflación.
+
+Efecto: Imprimir dinero y financiar obras públicas con ello, aumentando en el proceso la cantidad de dinero circulando en la economía, por lo tanto los precios suben porque el valor del dinero baja, pero el mismo gobierno vende bonos (pide dinero) con tipos de interés altos, reduciendo la cantidad de dinero en la economía, con el efecto de eliminar la inflación EN EL CORTO PLAZO, ya que tendrá que devolver los intereses de los bonos en algún momento (endeudarse infinitamente es una locura). Al bajar los tipos se libera toda la inflación acumulada de golpe, y como financie los intereses imprimiendo dinero, la inflación será todavía mayor que la original. La causa de la inflación sistémica a largo plazo, la depreciación real del dinero, es la impresión, no los bonos.
+
+Conclusión: Sólo evita inflación a corto plazo, en el futuro el problema será todavía mayor si no baja los tipos.
+Estoy con Trump en este caso: deberíamos bajar los tipos y permitir que la inflación se sufra gradualmente, y ante todo dejar de endeudarnos a intereses tan altos, con el problemón de deuda que ya tenemos.
+
+#
+Si la curva de tipos se invierte, es indicador de recesión porque los tipos bajos a largo plazo solo tienen sentido si hay suficientes personas comprándolos como para mantener un precio inferior al corto-medio plazo. Esto ocurre porque los inversores no creen que puedan conseguir tipos similares con bonos o acciones, o cualquier otro activo a largo plazo. Es decir, esperan que los tipos a corto plazo, no sólo en bonos sino en el mercado en general, bajen en el futuro, y por lo tanto prefieren comprar bonos a largo plazo ahora, aunque tengan un tipo de interés más bajo que los a corto plazo. Si compran un bono a corto plazo con mayor interés, cuando el bono acabe no tendrán las mismas oportunidades que tienen ahora durante los años siguentes. Es decir, ellos mismos esperan recesión, como en un mercado de apuestas.
 
 
 
