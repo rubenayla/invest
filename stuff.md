@@ -61,5 +61,14 @@ Estoy con Trump en este caso: deberíamos bajar los tipos y permitir que la infl
 #
 Si la curva de tipos se invierte, es indicador de recesión porque los tipos bajos a largo plazo solo tienen sentido si hay suficientes personas comprándolos como para mantener un precio inferior al corto-medio plazo. Esto ocurre porque los inversores no creen que puedan conseguir tipos similares con bonos o acciones, o cualquier otro activo a largo plazo. Es decir, esperan que los tipos a corto plazo, no sólo en bonos sino en el mercado en general, bajen en el futuro, y por lo tanto prefieren comprar bonos a largo plazo ahora, aunque tengan un tipo de interés más bajo que los a corto plazo. Si compran un bono a corto plazo con mayor interés, cuando el bono acabe no tendrán las mismas oportunidades que tienen ahora durante los años siguentes. Es decir, ellos mismos esperan recesión, como en un mercado de apuestas.
 
+Sin embargo, el control directo sobre la recesión lo tiene la fed, al subir los tipos y vaciar la economía de liquidez, dando rentabilidad a los acreedores y chupando todo el dinero del resto de empresas. Básicamente es hacerle dumping a toda la economía con el dinero de los contribuyentes.
+
+Curva de tipos en 3d: https://www.nytimes.com/interactive/2015/03/19/upshot/3d-yield-curve-economic-growth.html
+
+Tipos bajos pueden ser el gobierno queriendo estimular la economía y dejarse de deudas, o simplemente que no necesitan subir los tipos para financiarse, porque la economía está en la mierda y no hay muchas alternativas más, entonces con poco interés que paguen ya tienen financiación.
+
+Básicamente pensar que la fed está tirando de la curva para arriba cuando se quiere financiar, y el mercado se queda abajo si tiene otras opciones mejores, no le interesa. Para convencerle tienes que tirar más fuerte subiendo mucho. Si la curva está abajo es porque o bien no quieres financiarte, o bien el mercado se ofrece fácilmente, porque no tiene alternativas mejores.
+
+
 
 
