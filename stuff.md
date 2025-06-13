@@ -69,6 +69,7 @@ Tipos bajos pueden ser el gobierno queriendo estimular la economía y dejarse de
 
 Básicamente pensar que la fed está tirando de la curva para arriba cuando se quiere financiar, y el mercado se queda abajo si tiene otras opciones mejores, no le interesa. Para convencerle tienes que tirar más fuerte subiendo mucho. Si la curva está abajo es porque o bien no quieres financiarte, o bien el mercado se ofrece fácilmente, porque no tiene alternativas mejores.
 
+En el corto plazo, me gusta pensar que la fed provoca recesiones al absorber dinero de la economía, en vez de pensar que la economía mejora cuando los tipos suben, porque si fuese así no tendría sentido que los tipos a corto plazo aumenten justo cuando vamos a entrar en crisis, que es lo que ha ocurrido históricamente.
 
-
+Hay algun lugar donde se pueda ver el flujo de dinero hacia o desde la fed?
 
