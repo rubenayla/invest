@@ -13,6 +13,8 @@ This framework is designed to be:
 
 ## Quick Start
 
+⚠️ **IMPORTANT: Always use `poetry run` for all commands** - This project requires Poetry dependency management.
+
 ```bash
 # Install with Poetry
 poetry install
@@ -22,6 +24,9 @@ poetry run systematic-invest
 
 # Use specific configuration
 poetry run systematic-invest configs/aggressive_growth.yaml
+
+# Alternative: Direct script execution (also requires poetry run)
+poetry run python scripts/systematic_analysis.py configs/sp500_top100.yaml --save-csv
 
 # List available configurations
 poetry run systematic-invest --list-configs
@@ -138,12 +143,17 @@ The framework generates:
 
 ## Usage Examples
 
+⚠️ **Remember: All commands must use `poetry run`**
+
 ```bash
 # Basic screening
 poetry run systematic-invest
 
 # Growth-focused analysis
 poetry run systematic-invest configs/aggressive_growth.yaml
+
+# Direct script execution
+poetry run python scripts/systematic_analysis.py configs/sp500_top100.yaml
 
 # Custom output location
 poetry run systematic-invest --output ~/investment-results/
@@ -173,6 +183,8 @@ poetry run systematic-invest --save-json --save-csv --verbose
 3. Add to configuration options
 
 ## Testing
+
+⚠️ **All test commands require `poetry run`**
 
 ```bash
 # Run all tests

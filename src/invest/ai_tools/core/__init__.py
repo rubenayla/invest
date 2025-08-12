@@ -1,0 +1,1 @@
+"""Core business logic shared across AI providers."""

@@ -67,6 +67,8 @@ class UniverseConfig(BaseModel):
     sectors: Optional[List[str]] = None     # Include specific sectors
     exclude_sectors: Optional[List[str]] = None  # Exclude sectors
     custom_tickers: Optional[List[str]] = None   # Custom ticker list
+    pre_screening_universe: Optional[str] = None # e.g., "sp500"
+    top_n_by_market_cap: Optional[int] = None    # Get top N by market cap
 
 
 class AnalysisConfig(BaseModel):

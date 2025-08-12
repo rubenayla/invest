@@ -91,15 +91,52 @@ class AnalysisPipeline:
         
         if universe_config.custom_tickers:
             tickers = universe_config.custom_tickers
+        elif hasattr(universe_config, 'pre_screening_universe') and universe_config.pre_screening_universe == "sp500":
+            from ..data.yahoo import get_sp500_tickers
+            tickers = get_sp500_tickers()
         elif universe_config.region == "US":
+            from ..data.yahoo import get_sp500_sample
             tickers = get_sp500_sample()
         else:
             # For non-US, use a smaller sample for now
             tickers = ['ASML', 'SAP', 'NESN.SW'] if universe_config.region == "EU" else ['TSM']
         
-        # Get stock data
+        # Optimization: If we need top N by market cap, pre-filter tickers first
+        if hasattr(universe_config, 'top_n_by_market_cap') and universe_config.top_n_by_market_cap:
+            logger.info(f"Pre-filtering to top {universe_config.top_n_by_market_cap} stocks by market cap...")
+            
+            # Get basic market cap data for sorting (faster than full data)
+            # Limit to 150 tickers max to avoid timeout (150 * 0.7s = ~105s < 2min timeout)
+            max_fetch = min(len(tickers), max(150, universe_config.top_n_by_market_cap * 1.5))
+            logger.info(f"Fetching market cap data for top {max_fetch} tickers...")
+            
+            ticker_market_caps = []
+            for i, ticker in enumerate(tickers[:max_fetch]):
+                try:
+                    import yfinance as yf
+                    stock = yf.Ticker(ticker)
+                    info = stock.info
+                    market_cap = info.get('marketCap', 0)
+                    if market_cap and market_cap > 0:
+                        ticker_market_caps.append((ticker, market_cap))
+                    
+                    # Log progress every 25 tickers
+                    if (i + 1) % 25 == 0:
+                        logger.info(f"Processed {i + 1}/{max_fetch} tickers for market cap...")
+                        
+                except Exception as e:
+                    logger.warning(f"Failed to get market cap for {ticker}: {e}")
+                    continue
+            
+            # Sort by market cap and take top N
+            ticker_market_caps.sort(key=lambda x: x[1], reverse=True)
+            tickers = [ticker for ticker, _ in ticker_market_caps[:universe_config.top_n_by_market_cap]]
+            logger.info(f"Pre-filtered to {len(tickers)} tickers by market cap")
+        
+        # Get full stock data for filtered tickers
         stocks_data = []
-        for ticker in tickers:
+        logger.info(f"Fetching full stock data for {len(tickers)} tickers...")
+        for i, ticker in enumerate(tickers):
             try:
                 from ..data.yahoo import get_stock_data
                 stock_data = get_stock_data(ticker)
@@ -107,10 +144,15 @@ class AnalysisPipeline:
                     # Apply universe filters
                     if self._passes_universe_filters(stock_data, universe_config):
                         stocks_data.append(stock_data)
+                
+                # Log progress every 20 tickers
+                if (i + 1) % 20 == 0:
+                    logger.info(f"Processed {i + 1}/{len(tickers)} tickers for full data... ({len(stocks_data)} passed filters)")
+                    
             except Exception as e:
                 logger.warning(f"Failed to get data for {ticker}: {e}")
                 continue
-        
+
         return stocks_data
     
     def _passes_universe_filters(self, stock_data: Dict, universe_config) -> bool:

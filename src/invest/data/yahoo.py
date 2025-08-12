@@ -1,6 +1,41 @@
 import yfinance as yf
 import pandas as pd
 from typing import List, Dict, Optional
+import requests
+from bs4 import BeautifulSoup
+
+
+def get_sp500_tickers() -> List[str]:
+    """Get the list of S&P 500 tickers from Wikipedia."""
+    url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    
+    # Get all wikitable tables and find the one with 'Symbol' header (constituents table)
+    tables = soup.find_all("table", {"class": "wikitable"})
+    constituents_table = None
+    
+    for table in tables:
+        header_row = table.find("tr")
+        if header_row:
+            headers = [th.text.strip() for th in header_row.find_all(["th", "td"])]
+            if headers and headers[0] == "Symbol":
+                constituents_table = table
+                break
+    
+    if not constituents_table:
+        raise ValueError("Could not find S&P 500 constituents table")
+    
+    tickers = []
+    for row in constituents_table.find_all("tr")[1:]:  # Skip header row
+        cells = row.find_all("td")
+        if len(cells) > 0:
+            ticker = cells[0].text.strip()
+            # Yahoo Finance uses dashes for some tickers, e.g. BRK-B
+            ticker = ticker.replace('.', '-')
+            tickers.append(ticker)
+    
+    return tickers
 
 
 def get_stock_data(ticker: str) -> Optional[Dict]:
@@ -71,14 +106,9 @@ def get_universe_data(tickers: List[str]) -> pd.DataFrame:
 
 
 # Common stock universes
-SP500_TICKERS = [
-    'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'TSLA', 'META', 'BRK.B', 'UNH', 'JNJ',
-    'V', 'WMT', 'JPM', 'PG', 'XOM', 'HD', 'CVX', 'MA', 'BAC', 'ABBV',
-    'PFE', 'AVGO', 'KO', 'LLY', 'MRK', 'PEP', 'TMO', 'COST', 'WFC', 'DIS'
-    # Add more as needed
-]
+SP500_TICKERS = get_sp500_tickers()
 
 
 def get_sp500_sample() -> List[str]:
     """Get a sample of S&P 500 tickers for testing."""
-    return SP500_TICKERS
+    return SP500_TICKERS[:30]
