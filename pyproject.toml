@@ -1,0 +1,40 @@
+[tool.poetry]
+name = "invest"
+version = "0.1.0"
+description = "Systematic investment analysis toolkit with objective, configuration-driven screening"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+packages = [{include = "invest", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+yfinance = "^0.2.0"
+pandas = "^2.0.0"
+numpy = "^1.24.0"
+pydantic = "^2.0.0"
+pyyaml = "^6.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0.0"
+ruff = "^0.1.0"
+
+[tool.poetry.scripts]
+systematic-invest = "scripts.systematic_analysis:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]  # Line too long (handled by line-length)
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

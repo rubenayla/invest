@@ -1,0 +1,347 @@
+from typing import List, Dict, Any
+import logging
+from ..config.schema import AnalysisConfig
+from ..data.yahoo import get_universe_data, get_sp500_sample
+from ..screening.quality import screen_quality
+from ..screening.value import screen_value
+from ..screening.growth import screen_growth
+from ..screening.risk import screen_risk, apply_cyclical_adjustments
+from ..dcf import calculate_dcf
+# from ..rim import RIMModel  # Import when available
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+class AnalysisPipeline:
+    """Systematic investment analysis pipeline."""
+    
+    def __init__(self, config: AnalysisConfig):
+        self.config = config
+        self.results = {}
+        
+    def run_analysis(self) -> Dict[str, Any]:
+        """Execute the complete analysis pipeline."""
+        logger.info(f"Starting analysis: {self.config.name}")
+        
+        # Step 1: Get stock universe
+        logger.info("Step 1: Building stock universe...")
+        stocks_data = self._get_universe()
+        logger.info(f"Universe contains {len(stocks_data)} stocks")
+        
+        if not stocks_data:
+            logger.error("No stocks found in universe")
+            return {"error": "No stocks found in universe"}
+        
+        # Step 2: Apply cyclical adjustments if needed
+        if self.config.risk.cyclical_adjustment:
+            logger.info("Applying cyclical adjustments...")
+            stocks_data = apply_cyclical_adjustments(stocks_data, self.config.risk)
+        
+        # Step 3: Quality screening
+        logger.info("Step 2: Quality assessment...")
+        quality_results = screen_quality(stocks_data, self.config.quality)
+        
+        # Step 4: Value screening
+        logger.info("Step 3: Value assessment...")
+        value_results = screen_value(stocks_data, self.config.value)
+        
+        # Step 5: Growth screening
+        logger.info("Step 4: Growth assessment...")
+        growth_results = screen_growth(stocks_data, self.config.growth)
+        
+        # Step 6: Risk screening
+        logger.info("Step 5: Risk assessment...")
+        risk_results = screen_risk(stocks_data, self.config.risk)
+        
+        # Step 7: Combine results
+        logger.info("Step 6: Combining screening results...")
+        combined_results = self._combine_screening_results(
+            stocks_data, quality_results, value_results, growth_results, risk_results
+        )
+        
+        # Step 8: Apply filters and ranking
+        logger.info("Step 7: Filtering and ranking...")
+        filtered_results = self._apply_filters(combined_results)
+        ranked_results = self._rank_results(filtered_results)
+        
+        # Step 9: Run valuation models on top candidates
+        logger.info("Step 8: Running valuation models...")
+        final_results = self._run_valuations(ranked_results[:self.config.max_results])
+        
+        # Step 10: Generate summary
+        summary = self._generate_summary(final_results)
+        
+        self.results = {
+            'config': self.config.dict(),
+            'summary': summary,
+            'stocks': final_results,
+            'total_universe': len(stocks_data),
+            'passed_screening': len(filtered_results),
+            'final_results': len(final_results)
+        }
+        
+        logger.info(f"Analysis complete: {len(final_results)} stocks selected")
+        return self.results
+    
+    def _get_universe(self) -> List[Dict]:
+        """Build the stock universe based on configuration."""
+        universe_config = self.config.universe
+        
+        if universe_config.custom_tickers:
+            tickers = universe_config.custom_tickers
+        elif universe_config.region == "US":
+            tickers = get_sp500_sample()
+        else:
+            # For non-US, use a smaller sample for now
+            tickers = ['ASML', 'SAP', 'NESN.SW'] if universe_config.region == "EU" else ['TSM']
+        
+        # Get stock data
+        stocks_data = []
+        for ticker in tickers:
+            try:
+                from ..data.yahoo import get_stock_data
+                stock_data = get_stock_data(ticker)
+                if stock_data:
+                    # Apply universe filters
+                    if self._passes_universe_filters(stock_data, universe_config):
+                        stocks_data.append(stock_data)
+            except Exception as e:
+                logger.warning(f"Failed to get data for {ticker}: {e}")
+                continue
+        
+        return stocks_data
+    
+    def _passes_universe_filters(self, stock_data: Dict, universe_config) -> bool:
+        """Check if stock passes universe-level filters."""
+        market_cap = stock_data.get('market_cap', 0)
+        sector = stock_data.get('sector', '')
+        
+        # Market cap filters
+        if universe_config.min_market_cap:
+            if not market_cap or market_cap < universe_config.min_market_cap * 1e6:
+                return False
+                
+        if universe_config.max_market_cap:
+            if market_cap and market_cap > universe_config.max_market_cap * 1e6:
+                return False
+        
+        # Sector filters
+        if universe_config.exclude_sectors and sector in universe_config.exclude_sectors:
+            return False
+            
+        if universe_config.sectors and sector not in universe_config.sectors:
+            return False
+            
+        return True
+    
+    def _combine_screening_results(self, stocks_data: List[Dict], quality_results: List[Dict],
+                                  value_results: List[Dict], growth_results: List[Dict],
+                                  risk_results: List[Dict]) -> List[Dict]:
+        """Combine all screening results into unified records."""
+        combined = []
+        
+        # Create lookup dictionaries
+        quality_lookup = {r['ticker']: r for r in quality_results}
+        value_lookup = {r['ticker']: r for r in value_results}
+        growth_lookup = {r['ticker']: r for r in growth_results}
+        risk_lookup = {r['ticker']: r for r in risk_results}
+        
+        for stock in stocks_data:
+            ticker = stock.get('ticker', '')
+            
+            combined_record = {
+                'ticker': ticker,
+                'basic_data': stock,
+                'quality': quality_lookup.get(ticker, {}),
+                'value': value_lookup.get(ticker, {}),
+                'growth': growth_lookup.get(ticker, {}),
+                'risk': risk_lookup.get(ticker, {})
+            }
+            
+            # Calculate composite score
+            quality_score = quality_lookup.get(ticker, {}).get('quality_score', 0)
+            value_score = value_lookup.get(ticker, {}).get('value_score', 0)
+            growth_score = growth_lookup.get(ticker, {}).get('growth_score', 0)
+            risk_score = risk_lookup.get(ticker, {}).get('overall_risk_score', 100)  # Higher risk = lower score
+            
+            # Composite score (weighted average, risk is inverted)
+            composite_score = (
+                quality_score * 0.3 +
+                value_score * 0.3 +
+                growth_score * 0.25 +
+                (100 - risk_score) * 0.15  # Invert risk score
+            )
+            
+            combined_record['composite_score'] = composite_score
+            combined_record['scores'] = {
+                'quality': quality_score,
+                'value': value_score,
+                'growth': growth_score,
+                'risk': risk_score,
+                'composite': composite_score
+            }
+            
+            combined.append(combined_record)
+        
+        return combined
+    
+    def _apply_filters(self, combined_results: List[Dict]) -> List[Dict]:
+        """Apply minimum score filters."""
+        filtered = []
+        
+        for result in combined_results:
+            scores = result.get('scores', {})
+            
+            # Apply minimum thresholds (configurable)
+            min_quality = 40
+            min_value = 30
+            min_growth = 20
+            max_risk = 80
+            min_composite = 50
+            
+            if (scores.get('quality', 0) >= min_quality and
+                scores.get('value', 0) >= min_value and
+                scores.get('growth', 0) >= min_growth and
+                scores.get('risk', 100) <= max_risk and
+                scores.get('composite', 0) >= min_composite):
+                
+                filtered.append(result)
+        
+        return filtered
+    
+    def _rank_results(self, filtered_results: List[Dict]) -> List[Dict]:
+        """Rank results based on configuration."""
+        sort_key = self.config.sort_by
+        
+        if sort_key == 'composite_score':
+            return sorted(filtered_results, key=lambda x: x.get('composite_score', 0), reverse=True)
+        elif sort_key == 'quality_score':
+            return sorted(filtered_results, key=lambda x: x.get('scores', {}).get('quality', 0), reverse=True)
+        elif sort_key == 'value_score':
+            return sorted(filtered_results, key=lambda x: x.get('scores', {}).get('value', 0), reverse=True)
+        elif sort_key == 'growth_score':
+            return sorted(filtered_results, key=lambda x: x.get('scores', {}).get('growth', 0), reverse=True)
+        else:
+            # Default to composite score
+            return sorted(filtered_results, key=lambda x: x.get('composite_score', 0), reverse=True)
+    
+    def _run_valuations(self, top_results: List[Dict]) -> List[Dict]:
+        """Run valuation models on top candidates."""
+        for result in top_results:
+            ticker = result['ticker']
+            stock_data = result['basic_data']
+            
+            try:
+                valuations = {}
+                
+                # Run DCF if configured
+                if 'dcf' in self.config.valuation.models:
+                    dcf_result = self._run_dcf_valuation(stock_data)
+                    if dcf_result:
+                        valuations['dcf'] = dcf_result
+                
+                # Run RIM if configured
+                if 'rim' in self.config.valuation.models:
+                    rim_result = self._run_rim_valuation(stock_data)
+                    if rim_result:
+                        valuations['rim'] = rim_result
+                
+                result['valuations'] = valuations
+                
+            except Exception as e:
+                logger.warning(f"Valuation failed for {ticker}: {e}")
+                result['valuations'] = {}
+        
+        return top_results
+    
+    def _run_dcf_valuation(self, stock_data: Dict) -> Dict:
+        """Run DCF valuation using the existing DCF function."""
+        try:
+            ticker = stock_data.get('ticker', '')
+            if not ticker:
+                return None
+            
+            # Use the existing DCF function
+            dcf_result = calculate_dcf(ticker, verbose=False)
+            
+            return {
+                'fair_value': dcf_result.get('fair_value_per_share', 0),
+                'current_price': dcf_result.get('current_price', 0),
+                'upside_downside': dcf_result.get('margin_of_safety', 0),
+                'model': 'DCF',
+                'confidence': 'medium',
+                'enterprise_value': dcf_result.get('enterprise_value', 0)
+            }
+        except Exception as e:
+            logger.warning(f"DCF valuation failed for {stock_data.get('ticker', 'unknown')}: {e}")
+            return None
+    
+    def _run_rim_valuation(self, stock_data: Dict) -> Dict:
+        """Run RIM valuation (placeholder implementation)."""
+        # This would integrate with your existing RIM model
+        current_price = stock_data.get('current_price', 0)
+        book_value = stock_data.get('price_to_book', 0)
+        
+        if not current_price or not book_value:
+            return None
+            
+        # Very rough RIM approximation
+        fair_value = current_price * 0.95  # Placeholder logic
+        
+        return {
+            'fair_value': fair_value,
+            'current_price': current_price,
+            'upside_downside': (fair_value / current_price - 1) if current_price > 0 else 0,
+            'model': 'RIM',
+            'confidence': 'medium'
+        }
+    
+    def _generate_summary(self, final_results: List[Dict]) -> Dict:
+        """Generate analysis summary."""
+        if not final_results:
+            return {
+                'top_picks': [],
+                'average_scores': {},
+                'sector_breakdown': {},
+                'key_insights': ["No stocks passed the screening criteria"]
+            }
+        
+        # Calculate average scores
+        avg_quality = sum(r.get('scores', {}).get('quality', 0) for r in final_results) / len(final_results)
+        avg_value = sum(r.get('scores', {}).get('value', 0) for r in final_results) / len(final_results)
+        avg_growth = sum(r.get('scores', {}).get('growth', 0) for r in final_results) / len(final_results)
+        avg_risk = sum(r.get('scores', {}).get('risk', 0) for r in final_results) / len(final_results)
+        
+        # Sector breakdown
+        sectors = {}
+        for result in final_results:
+            sector = result.get('basic_data', {}).get('sector', 'Unknown')
+            sectors[sector] = sectors.get(sector, 0) + 1
+        
+        # Top picks (top 5)
+        top_picks = [
+            {
+                'ticker': r['ticker'],
+                'composite_score': r.get('composite_score', 0),
+                'sector': r.get('basic_data', {}).get('sector', 'Unknown')
+            }
+            for r in final_results[:5]
+        ]
+        
+        return {
+            'top_picks': top_picks,
+            'average_scores': {
+                'quality': round(avg_quality, 1),
+                'value': round(avg_value, 1),
+                'growth': round(avg_growth, 1),
+                'risk': round(avg_risk, 1)
+            },
+            'sector_breakdown': sectors,
+            'key_insights': [
+                f"Found {len(final_results)} stocks meeting criteria",
+                f"Average composite score: {sum(r.get('composite_score', 0) for r in final_results) / len(final_results):.1f}",
+                f"Most represented sector: {max(sectors.items(), key=lambda x: x[1])[0] if sectors else 'None'}"
+            ]
+        }

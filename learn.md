@@ -181,3 +181,62 @@ If, ignoring the premium, the option is not better or worse than the market pric
     - Objective: Buy not expensive, WILL NOT GO UP.
 - I don't know.
 
+## A bond bought at 98.8 has a par value of $1000 and a coupon rate of 6%. Coupon payments are made semi-annually. The periodic interest payment is:
+- $30.00, paid twice a year
+- $60.00, paid once a year
+- $29.64, paid twice a year
+- I don't know
+
+## What is the clean price of a bond?
+- The price net of tax
+- The price excluding accrued interest
+- The price excluding the broker's commission
+- I don't know
+
+## The bond coupon payment is most likely to be taxed at a rate applicable to:
+- ordinary income
+- short-term capital gain
+- ordinary dividend income
+- I don't know
+
+## A 'buy-and-hold until maturity' investor purchases a fixed-rate bond. Which of the following sources of return is most likely exposed to interest rate risk?
+- Capital gain or loss
+- Redemption of principal
+- Reinvestment of coupon payments
+- I don't know
+
+## Relative to an otherwise similar option-free bond, a:
+- putable bond will trade at a higher price
+- callable bond will trade at a higher price
+- convertible bond will trade at a lower price
+- I don't know
+
+## Which of the following is NOT correct regarding callable bonds?
+- Prepayment risk involves the scenario where an issuer calls the bond prior to maturity
+- Prepayment risk is taken into account in the pricing of the bond
+- Issuers usually call their bonds when interest rates raise above current bond rates
+- I don't know
+
+## An investor paid $900 for a bond with a par value of $1000 and a coupon rate of 5%. Coupon payments are made semi-annually. Bond's current yield is:
+- 0.05
+- 0.055
+- 0.025
+- I don't know
+
+## If a bond is traded at a discount, then:
+- The current yield is higher than the nominal yield
+- the yield-to-maturity is lower than the current yield
+- the yield-to-maturity is lower than the nominal yield
+- I don't know
+
+## The term most likely used to refer to the legal contract that describes the form of the bond, the issuer's obligations, and the investor's rights is:
+- indenture
+- debenture
+- letter of credit
+- I don't know
+
+## Which of the following is correct regarding inflation risk?
+- Inflation risk is the risk that the bondholder realises a positive real yield-to-maturity
+- Inflation risk is the risk that the rate of the yield to call or maturity of the bond will not provide a positive return over the rate of inflation for the period of the investment
+- As the inflation rate rises, the market price of existing bonds tends to increase
+- I don't know

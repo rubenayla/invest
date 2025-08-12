@@ -71,5 +71,9 @@ Básicamente pensar que la fed está tirando de la curva para arriba cuando se q
 
 En el corto plazo, me gusta pensar que la fed provoca recesiones al absorber dinero de la economía, en vez de pensar que la economía mejora cuando los tipos suben, porque si fuese así no tendría sentido que los tipos a corto plazo aumenten justo cuando vamos a entrar en crisis, que es lo que ha ocurrido históricamente.
 
-Hay algun lugar donde se pueda ver el flujo de dinero hacia o desde la fed?
+Otro punto interesante es la expectativa de inflación. Como los bonos no están cubiertos, si el dolar de devalúa, los bonos también. Los bonos altos durante mucho tiempo acumulan liquidez en la fed, que en algún momento tendrá que volver, causando inseguridad en los bonos.
+
+# pending understand:
+When country like China can produce everything more cheaply, analogous to AI making everyone seem obsolete, think about absolute vs comparative advantage. The opportunity cost of AI doing some work may be higher than mine, so maybe even at a higher cost it will be worth for humans to work, like ants ignoring the advances of AI, at another level.
+https://youtube.com/shorts/s9DhveE_lSg?si=lH3w8AzeAOEdWmVY
 

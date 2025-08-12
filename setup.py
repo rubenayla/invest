@@ -9,5 +9,12 @@ setup(
         "yfinance",
         "pandas",
         "numpy",
+        "pydantic",
     ],
+    extras_require={
+        "dev": [
+            "pytest",
+            "ruff",
+        ]
+    },
 )
