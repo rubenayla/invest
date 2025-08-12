@@ -1,0 +1,10 @@
+# Python cache files
+__pycache__/
+*.pyc
+
+# Generated analysis reports
+*_screen_*_report.txt
+*_screen_*_results.csv
+
+# Test configs
+*_test*.yaml
