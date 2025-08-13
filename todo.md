@@ -1,11 +1,23 @@
-- Could I gain better analysis with an AI such as yourself, claude, or gemini (free) something like that? Maybe includes news, more external data that's not easily accessible via api but requires google searches and iteration? I'm interested in this too.
-  ✅ DONE: Claude Desktop integration complete with systematic screening + research tools
-
-- commit
-- Include more companies, not just the 30 biggest from the sp500
 - Add other markets, not just usa
 - Consider gold, bitcoin, etc. as alternatives to stocks, instructions for AI to consider waiting, like berkshire has sometimes done, to wait for better opportunities with treasuries, short-term bonds, etc.
-- What about berkshire hathaway? 
+
+# Analyze stocks like Berkshire correctly
+  Given the current system's capabilities, here are more feasible ways to improve the analysis for such businesses:
+
+   * Focus on Book Value Growth: For companies like Berkshire Hathaway, growth in book value per share is often a more meaningful metric
+     than traditional revenue or earnings growth. It directly reflects the compounding of their underlying assets. We could incorporate
+     this as a key growth metric in the screening process.
+   * Adjusting Thresholds/Weights: For identified holding companies, we could apply different, more lenient growth thresholds, or give
+     less weight to traditional growth metrics and more weight to balance sheet strength (e.g., high current ratio, low debt-to-equity)
+     and overall return on assets/equity, which reflect efficient capital deployment.
+   * Custom Configuration: We could create a specific configuration file tailored for holding companies, with adjusted metrics and
+     thresholds.
+
+  In summary, while a full automated Sum-of-the-Parts valuation is complex, we can make significant improvements by:
+   1. Developing methods to identify these "special kinds" of businesses.
+   2. Incorporating more relevant metrics like book value growth.
+   3. Adjusting the weighting or thresholds of existing metrics to better reflect their unique financial characteristics.
+
 
 ## AI Integration Roadmap (Cost-Effective Alternatives)
 
