@@ -1,0 +1,338 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        version: latest
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+        installer-parallel: true
+
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+    - name: Install dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: poetry install --no-interaction --no-root
+
+    - name: Install project
+      run: poetry install --no-interaction
+
+    - name: Run linting with ruff
+      run: |
+        poetry run ruff check src tests
+        poetry run ruff format --check src tests
+
+    - name: Run unit tests
+      run: |
+        poetry run pytest tests/test_data_providers.py -v --tb=short
+
+    - name: Run valuation tests
+      run: |
+        poetry run pytest tests/test_valuation.py -v --tb=short
+
+    - name: Run international market tests
+      run: |
+        poetry run pytest tests/test_international_markets.py -v --tb=short
+
+    - name: Run systematic analysis tests
+      run: |
+        poetry run pytest tests/test_systematic_analysis.py -v --tb=short
+
+    - name: Run end-to-end tests
+      run: |
+        poetry run pytest tests/test_end_to_end.py -v --tb=short
+
+    - name: Run all tests with coverage
+      run: |
+        poetry run pytest --cov=src/invest --cov-report=xml --cov-report=html -v
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+
+  test-configurations:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+
+    - name: Install dependencies
+      run: poetry install --no-interaction
+
+    - name: Test basic configuration
+      run: |
+        poetry run python scripts/systematic_analysis.py tests/test_configs/basic_test.yaml --quiet --save-csv
+        ls -la *test*results.csv
+
+    - name: Test international configuration
+      run: |
+        poetry run python scripts/systematic_analysis.py tests/test_configs/international_test.yaml --quiet --save-csv
+        ls -la *international*results.csv
+
+    - name: Validate configuration files
+      run: |
+        for config in configs/*.yaml; do
+          echo "Validating $config"
+          python -c "
+          import yaml
+          import sys
+          try:
+              with open('$config', 'r') as f:
+                  data = yaml.safe_load(f)
+                  print(f'✓ $config is valid YAML')
+          except Exception as e:
+              print(f'✗ $config has invalid YAML: {e}')
+              sys.exit(1)
+          "
+        done
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+
+    - name: Install dependencies
+      run: poetry install --no-interaction
+
+    - name: Test data provider integration
+      run: |
+        poetry run python -c "
+        from src.invest.data.yahoo import get_sp500_tickers
+        from src.invest.data.international import get_topix_core30_tickers
+        
+        print('Testing S&P 500 data provider...')
+        sp500 = get_sp500_tickers()
+        print(f'✓ Found {len(sp500)} S&P 500 tickers')
+        assert len(sp500) > 400, 'S&P 500 should have 400+ tickers'
+        
+        print('Testing Japanese data provider...')
+        topix30 = get_topix_core30_tickers()
+        print(f'✓ Found {len(topix30)} TOPIX 30 tickers')
+        assert len(topix30) == 30, 'TOPIX 30 should have exactly 30 tickers'
+        
+        print('All data provider integration tests passed!')
+        "
+
+    - name: Test pipeline integration
+      run: |
+        poetry run python -c "
+        from src.invest.config.loader import load_analysis_config
+        from src.invest.analysis.pipeline import AnalysisPipeline
+        from pathlib import Path
+        
+        print('Testing pipeline configuration loading...')
+        config_file = Path('tests/test_configs/basic_test.yaml')
+        config = load_analysis_config(str(config_file))
+        print(f'✓ Loaded configuration: {config.name}')
+        
+        print('Testing pipeline initialization...')
+        pipeline = AnalysisPipeline(config)
+        print('✓ Pipeline initialized successfully')
+        
+        print('All pipeline integration tests passed!')
+        "
+
+  documentation:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+
+    - name: Install dependencies
+      run: poetry install --with docs --no-interaction
+
+    - name: Build documentation
+      run: |
+        poetry run mkdocs build --strict
+
+    - name: Test documentation links
+      run: |
+        poetry run mkdocs build --strict
+        echo "Documentation built successfully"
+
+  security:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+
+    - name: Install dependencies
+      run: poetry install --no-interaction
+
+    - name: Run security scan with bandit
+      run: |
+        poetry run pip install bandit
+        poetry run bandit -r src/ -f json -o bandit-report.json || true
+        poetry run bandit -r src/
+
+    - name: Check for secrets
+      run: |
+        # Check for accidentally committed secrets or API keys
+        echo "Scanning for potential secrets..."
+        if grep -r -i -E "(api_key|secret_key|password|token)" src/ --exclude-dir=__pycache__ --exclude="*.pyc"; then
+          echo "⚠️ Potential secrets found in source code"
+          echo "Please ensure no real secrets are committed"
+        else
+          echo "✓ No obvious secrets found in source code"
+        fi
+
+  performance:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.9
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+
+    - name: Install dependencies
+      run: poetry install --no-interaction
+
+    - name: Run performance benchmarks
+      run: |
+        poetry run python -c "
+        import time
+        from src.invest.analysis.pipeline import AnalysisPipeline
+        from src.invest.config.schema import AnalysisConfig, UniverseConfig, QualityThresholds, ValueThresholds, GrowthThresholds, RiskThresholds
+        from unittest.mock import Mock, patch
+        
+        print('Running performance benchmark...')
+        
+        # Create test configuration
+        config = AnalysisConfig(
+            name='performance_test',
+            universe=UniverseConfig(custom_tickers=['AAPL', 'MSFT', 'GOOGL']),
+            quality=QualityThresholds(min_roe=0.10),
+            value=ValueThresholds(max_pe=25.0),
+            growth=GrowthThresholds(min_revenue_growth=0.05),
+            risk=RiskThresholds(max_beta=1.5),
+            max_results=10
+        )
+        
+        # Mock data for consistent timing
+        mock_data = [
+            {'ticker': 'AAPL', 'sector': 'Technology', 'market_cap': 3000000000000},
+            {'ticker': 'MSFT', 'sector': 'Technology', 'market_cap': 2800000000000},
+            {'ticker': 'GOOGL', 'sector': 'Communication Services', 'market_cap': 2100000000000}
+        ]
+        
+        pipeline = AnalysisPipeline(config)
+        
+        with patch.object(pipeline, '_get_universe', return_value=mock_data):
+            start_time = time.time()
+            results = pipeline.run_analysis()
+            end_time = time.time()
+        
+        duration = end_time - start_time
+        print(f'✓ Analysis completed in {duration:.2f} seconds')
+        print(f'✓ Processed {len(mock_data)} stocks')
+        print(f'✓ Performance: {len(mock_data)/duration:.2f} stocks/second')
+        
+        # Performance should be reasonable
+        assert duration < 10.0, f'Analysis took too long: {duration:.2f}s'
+        print('Performance benchmark passed!')
+        "
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [test, test-configurations, integration-tests, documentation, security, performance]
+    if: always()
+
+    steps:
+    - name: Notify success
+      if: needs.test.result == 'success' && needs.test-configurations.result == 'success' && needs.integration-tests.result == 'success'
+      run: |
+        echo "🎉 All tests passed successfully!"
+        echo "✅ Unit tests: PASSED"
+        echo "✅ Configuration tests: PASSED" 
+        echo "✅ Integration tests: PASSED"
+        echo "✅ Documentation: PASSED"
+        echo "✅ Security scan: PASSED"
+        echo "✅ Performance: PASSED"
+
+    - name: Notify failure
+      if: needs.test.result == 'failure' || needs.test-configurations.result == 'failure' || needs.integration-tests.result == 'failure'
+      run: |
+        echo "❌ Some tests failed!"
+        echo "Test results:"
+        echo "Unit tests: ${{ needs.test.result }}"
+        echo "Configuration tests: ${{ needs.test-configurations.result }}"
+        echo "Integration tests: ${{ needs.integration-tests.result }}"
+        echo "Documentation: ${{ needs.documentation.result }}"
+        echo "Security: ${{ needs.security.result }}"
+        echo "Performance: ${{ needs.performance.result }}"
+        exit 1

@@ -8,6 +8,19 @@ __pycache__/
 *_screen_*_report.txt
 *_screen_*_results.csv
 *_screen_*_data.json
+*_analysis_*_report.txt
+*_analysis_*_results.csv
+default_analysis_*.txt
+default_analysis_*.csv
+
+# Coverage reports
+.coverage
+coverage.xml
+htmlcov/
+
+# Backtesting reports (generated)
+backtesting/reports/*.csv
+backtesting/reports/*.html
 
 # MkDocs build output
 site/
