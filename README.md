@@ -204,7 +204,7 @@ poetry run pytest tests/test_systematic_analysis.py
 
 ## Dependencies
 
-- **Python 3.8+**
+- **Python 3.12+**
 - **yfinance** - Stock data and financials
 - **pandas** - Data manipulation  
 - **pydantic** - Configuration validation

@@ -2,7 +2,7 @@
 
 A configuration-driven, objective approach to investment analysis that eliminates conversational bias and provides consistent, reproducible results with comprehensive backtesting capabilities.
 
-![Framework Overview](https://img.shields.io/badge/Python-3.8%2B-blue)
+![Framework Overview](https://img.shields.io/badge/Python-3.12%2B-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Poetry](https://img.shields.io/badge/Dependency%20Management-Poetry-blue)
 ![CI](https://img.shields.io/badge/CI-GitHub%20Actions-green)
