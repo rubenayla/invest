@@ -92,7 +92,7 @@ class HistoricalDataProvider:
                 start = date - timedelta(days=10)
                 end = date + timedelta(days=1)
                 
-                data = yf.download(ticker, start=start, end=end, progress=False)
+                data = yf.download(ticker, start=start, end=end, progress=False, auto_adjust=True)
                 
                 if not data.empty:
                     # Get the last available price up to and including the date
@@ -100,7 +100,7 @@ class HistoricalDataProvider:
                     if not valid_prices.empty:
                         # Ensure we return a Python float, not pandas scalar
                         price_value = valid_prices.iloc[-1]
-                        prices[ticker] = float(price_value)
+                        prices[ticker] = float(price_value.item())
                         
             except Exception as e:
                 logger.warning(f"Could not get price for {ticker} on {date}: {e}")
@@ -118,7 +118,8 @@ class HistoricalDataProvider:
                     ticker, 
                     start=start_date, 
                     end=end_date, 
-                    progress=False
+                    progress=False,
+                    auto_adjust=True
                 )
                 self._price_cache[cache_key] = data
             except Exception as e:

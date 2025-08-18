@@ -11,6 +11,7 @@ from ..screening.value import screen_value
 from ..screening.growth import screen_growth
 from ..screening.risk import screen_risk, apply_cyclical_adjustments
 from ..dcf import calculate_dcf
+from ..simple_ratios import calculate_simple_ratios_valuation
 # from ..rim import RIMModel  # Import when available
 
 # Set up logging
@@ -332,6 +333,12 @@ class AnalysisPipeline:
                     if rim_result:
                         valuations['rim'] = rim_result
                 
+                # Run Simple Ratios if configured
+                if 'simple_ratios' in self.config.valuation.models:
+                    ratios_result = self._run_simple_ratios_valuation(stock_data)
+                    if ratios_result:
+                        valuations['simple_ratios'] = ratios_result
+                
                 result['valuations'] = valuations
                 
             except Exception as e:
@@ -381,6 +388,40 @@ class AnalysisPipeline:
             'model': 'RIM',
             'confidence': 'medium'
         }
+    
+    def _run_simple_ratios_valuation(self, stock_data: Dict) -> Dict:
+        """Run simple ratios valuation model."""
+        try:
+            # Extract valuation config for simple ratios
+            valuation_config = {
+                'pe_target': self.config.valuation.pe_target,
+                'pb_target': self.config.valuation.pb_target,
+                'ps_target': self.config.valuation.ps_target,
+                'ev_ebitda_target': self.config.valuation.ev_ebitda_target,
+                'dividend_yield_target': self.config.valuation.dividend_yield_target,
+                'peg_target': self.config.valuation.peg_target
+            }
+            
+            # Run simple ratios valuation
+            ratios_result = calculate_simple_ratios_valuation(stock_data, valuation_config)
+            
+            if ratios_result and ratios_result.get('valuation_price'):
+                return {
+                    'fair_value': ratios_result['valuation_price'],
+                    'current_price': ratios_result['current_price'],
+                    'upside_downside': ratios_result.get('upside_potential', 0) / 100,  # Convert percentage to decimal
+                    'model': 'Simple Ratios',
+                    'confidence': ratios_result.get('confidence', 'medium'),
+                    'composite_score': ratios_result.get('composite_score'),
+                    'component_scores': ratios_result.get('component_scores', {}),
+                    'sector_adjustments': ratios_result.get('sector_adjustments', {})
+                }
+            else:
+                return None
+                
+        except Exception as e:
+            logger.warning(f"Simple ratios valuation failed for {stock_data.get('ticker', 'unknown')}: {e}")
+            return None
     
     def _generate_summary(self, final_results: List[Dict]) -> Dict:
         """Generate analysis summary."""

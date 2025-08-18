@@ -15,6 +15,7 @@ from pathlib import Path
 
 from backtesting.core.engine import Backtester
 from backtesting.strategies.screening import ScreeningStrategy
+from backtesting.strategies.pipeline_strategy import PipelineStrategy
 
 # Setup logging
 logging.basicConfig(
@@ -66,7 +67,14 @@ def main():
     
     # Initialize strategy
     strategy_config = config.get('strategy', {})
-    strategy = ScreeningStrategy(strategy_config)
+    strategy_type = config.get('strategy_type', 'screening')
+    
+    if strategy_type == 'pipeline':
+        strategy = PipelineStrategy(strategy_config)
+        logger.info("Using real analysis pipeline strategy")
+    else:
+        strategy = ScreeningStrategy(strategy_config)
+        logger.info("Using basic screening strategy")
     
     # Run backtest
     logger.info(f"Running backtest from {config['start_date']} to {config['end_date']}")

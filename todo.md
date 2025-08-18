@@ -1,13 +1,9 @@
+the valuation models account for the dividends? Or they're measured indirectly? If a company has no dividends and instead reinvests, I assume its value would go up more quickly. however a company that pays dividends would have to be valued more for those dividends themselves.
 
-
-There are lots of untracked files that should either be committed or ignored. Take a look please.
-
-
+- Let's update the code to be able to value ETFs, and do the backtest with those. Should we make the code able to handle anything, or separate ETFs and stocks, so each one is separate and easier to understand/manage?
 - Consider gold, bitcoin, etc. as alternatives to stocks, instructions for AI to consider waiting, like berkshire has sometimes done, to wait for better opportunities with treasuries, short-term bonds, etc.
 
 - dashboard with the top companies and critical data
-- I'm thinking it would be cool to add some performance indicators, run the automatic analysis since x date until today and see what returns it gets. However, where can we get data old enough to do this? My idea is to have a pool of stocks to choose from, and the analysis would be run, deciding what to invest in. Then we simulate the profits, and whatever configuration achieves the highest profit wins.
-
 
 
 # Analyze stocks like Berkshire correctly
@@ -29,35 +25,10 @@ There are lots of untracked files that should either be committed or ignored. Ta
 
 
 
-
-
-
----
-
-- learn acgl
-
-fixed? fix dcf model so it uses averages of years and gets trends in auto mode
-
-use second method of comparative valuation
-
-- Investigate Japanese situation (estanflacion ya no, precio bajo?)
-- Argentina stocks, growth but might have fallen with Trump
-
-## Check
-
-- intersect of warren, sec.gov people, etc investments. people close to trump that hold stocks etc.
-    - Dominari Holdings
-    - American Bitcoin
-    - Affinity Partners
-    - WLF
-- COINBASE:
-    - Matches cathie wood, peter thiel, marc andreessen, david scaks, dan loeb, ...
-
+# Check
 - IBKR Market screener 2.0
+- Update checklists to use check operating margin instead of gross?
 
-
-- Update checklists to use check operating margin instead of gross
-- Check these stocks: BIDU, CSCO, IBM, META, ORCL, PYPL, QCOM, SAP
 - Study LOGI in more depth. Great fundamentals. I would pay twice its stock value
 - Study skyworks in more depth
 - Study steel dynamics. What's going to happen with steel demand? If it falls back down after all these investments, the stock will collapse.
@@ -100,5 +71,15 @@ This is my current wallet, what would you do with it? What modifications? Which 
 
 - Cognizant (CTSH)
 - HIG (Hartford)
+- NEM (Newmont)?
 - Argetina
 - MITSY
+- acgl
+- BIDU
+- CSCO
+- IBM
+- META
+- ORCL
+- PYPL
+- QCOM
+- SAP

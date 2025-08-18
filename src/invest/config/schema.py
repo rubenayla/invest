@@ -46,7 +46,7 @@ class RiskThresholds(BaseModel):
 
 class ValuationConfig(BaseModel):
     """Valuation model configuration."""
-    models: List[str] = Field(default=["dcf", "rim"])  # Models to run
+    models: List[str] = Field(default=["dcf", "rim"])  # Models to run: dcf, rim, simple_ratios
     scenarios: List[str] = Field(default=["base"])     # Scenarios: bear, base, bull
     
     # DCF specific
@@ -57,6 +57,14 @@ class ValuationConfig(BaseModel):
     # RIM specific  
     rim_years: int = 10                    # Projection years
     required_return: Optional[float] = None # Override required return
+    
+    # Simple ratios specific
+    pe_target: float = 15.0                # Target P/E ratio
+    pb_target: float = 2.5                 # Target P/B ratio
+    ps_target: float = 2.0                 # Target P/S ratio
+    ev_ebitda_target: float = 12.0         # Target EV/EBITDA
+    dividend_yield_target: float = 0.03    # Target dividend yield (3%)
+    peg_target: float = 1.0                # Target PEG ratio
 
 
 class UniverseConfig(BaseModel):

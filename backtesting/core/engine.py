@@ -32,6 +32,7 @@ class BacktestConfig:
     slippage: float = 0.001  # 0.1% slippage
     benchmark: str = 'SPY'
     name: str = 'backtest'  # Name of the backtest
+    strategy_type: str = 'screening'  # Strategy type: 'screening' or 'pipeline'
     strategy: Dict[str, Any] = None  # Strategy configuration
     
     def __post_init__(self):
@@ -176,6 +177,19 @@ class BacktestResults:
         self.holdings_history = holdings_history
         self.final_value = final_value  # Could be Series due to bug - handled in get_summary
         self.benchmark_data = benchmark_data
+        
+        # Add final value to portfolio_values for correct metrics calculation
+        if len(self.portfolio_values) > 0:
+            final_row = {
+                'date': config.end_date,
+                'value': float(final_value.iloc[0]) if hasattr(final_value, 'iloc') else float(final_value),
+                'cash': 0,  # Placeholder - all liquidated at end
+                'holdings': {}  # Placeholder - all liquidated at end
+            }
+            self.portfolio_values = pd.concat([
+                self.portfolio_values, 
+                pd.DataFrame([final_row])
+            ], ignore_index=True)
         
         # Calculate metrics
         self.metrics = PerformanceMetrics.calculate(

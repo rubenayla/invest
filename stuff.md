@@ -188,3 +188,16 @@ The pre-filter is just the first step to narrow down the universe of stocks. Aft
 3. CTSH (Cognizant Technology Solutions): A consistently strong performer, Cognizant also appeared in the top 5 of my previous, more
   limited screen. It is a reliable, high-quality company that offers a great combination of growth and value, making it a safe and
   solid addition to any portfolio.
+
+
+- intersect of warren, sec.gov people, etc investments. people close to trump that hold stocks etc.
+    - Dominari Holdings
+    - American Bitcoin
+    - Affinity Partners
+    - WLF
+- COINBASE:
+    - Matches cathie wood, peter thiel, marc andreessen, david scaks, dan loeb, ...
+
+# valuation models to think about
+DFC (Discounted Cash Flow), RIM (Residual Income Model), Instrinsic value, ...
+
