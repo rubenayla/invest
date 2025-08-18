@@ -1,6 +1,11 @@
 - Add other markets, not just usa
 - Consider gold, bitcoin, etc. as alternatives to stocks, instructions for AI to consider waiting, like berkshire has sometimes done, to wait for better opportunities with treasuries, short-term bonds, etc.
 
+- dashboard with the top companies and critical data
+- I'm thinking it would be cool to add some performance indicators, run the automatic analysis since x date until today and see what returns it gets. However, where can we get data old enough to do this? My idea is to have a pool of stocks to choose from, and the analysis would be run, deciding what to invest in. Then we simulate the profits, and whatever configuration achieves the highest profit wins.
+
+
+
 # Analyze stocks like Berkshire correctly
   Given the current system's capabilities, here are more feasible ways to improve the analysis for such businesses:
 

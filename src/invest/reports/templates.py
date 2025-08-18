@@ -236,13 +236,14 @@ def generate_full_report(analysis_results: Dict) -> str:
 
 def export_to_csv_format(analysis_results: Dict) -> str:
     """Export results in CSV format."""
-    stocks = analysis_results.get('stocks', [])
+    # Use all_stocks if available, otherwise fall back to stocks
+    stocks = analysis_results.get('all_stocks', analysis_results.get('stocks', []))
     
     if not stocks:
         return "No data to export"
     
     # CSV header
-    csv_data = "Ticker,Sector,Market_Cap_B,Current_Price,Composite_Score,Quality_Score,Value_Score,Growth_Score,Risk_Score,P_E,P_B,ROE,ROIC,Revenue_Growth,Debt_Equity\n"
+    csv_data = "Ticker,Sector,Market_Cap_B,Current_Price,Passes_Filters,Composite_Score,Quality_Score,Value_Score,Growth_Score,Risk_Score,P_E,P_B,ROE,ROIC,Revenue_Growth,Debt_Equity\n"
     
     # Data rows
     for stock in stocks:
@@ -257,6 +258,7 @@ def export_to_csv_format(analysis_results: Dict) -> str:
             basic.get('sector', ''),
             f"{basic.get('market_cap', 0)/1e9:.2f}",
             f"{basic.get('current_price', 0):.2f}",
+            "Y" if stock.get('passes_filters', False) else "N",
             f"{scores.get('composite', 0):.1f}",
             f"{scores.get('quality', 0):.1f}",
             f"{scores.get('value', 0):.1f}",

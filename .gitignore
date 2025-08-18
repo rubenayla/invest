@@ -1,10 +1,22 @@
 # Python cache files
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
 
-# Generated analysis reports
+# Generated analysis results
 *_screen_*_report.txt
 *_screen_*_results.csv
+*_screen_*_data.json
 
-# Test configs
-*_test*.yaml
+# MkDocs build output
+site/
+
+# IDE files (common ones)
+.vscode/
+.idea/
+.DS_Store
+
+# Personal/temporary configs
+# my_*.yaml
+# temp_*.yaml

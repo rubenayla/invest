@@ -1,14 +1,10 @@
-
-name: "sp500_full_screen"
-description: "A screen of the all S&P 500 companies."
+name: "sp500_subset_screen"
+description: "Analysis of S&P 500 subset including tech giants"
 
 universe:
-  pre_screening_universe: "sp500"
+  custom_tickers: ["TSLA", "AAPL", "GOOGL", "MSFT", "AMZN", "META", "NVDA", "BRK-B", "JPM", "JNJ", "V", "PG", "UNH", "HD", "DIS", "MA", "PYPL", "BAC", "XOM", "CVX"]
   region: "US"
   min_market_cap: 100  # $100M minimum
-  # exclude_sectors: 
-    # - "Real Estate"
-    # - "Utilities"  # Often regulated, different dynamics
 
 quality:
   min_roic: 0.08        # 8% minimum ROIC
@@ -30,13 +26,12 @@ risk:
   cyclical_adjustment: true
 
 valuation:
-  models: ["dcf", "rim"]
-  scenarios: ["bear", "base", "bull"]
+  models: ["dcf"]
+  scenarios: ["base"]
   dcf_years: 10
   terminal_growth_rate: 0.025  # 2.5%
-  rim_years: 10
 
-max_results: 503  # Full S&P 500 universe
+max_results: 503  # Include all
 sort_by: "composite_score"
 generate_reports: true
 save_data: true

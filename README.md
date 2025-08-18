@@ -35,57 +35,44 @@ poetry run systematic-invest --list-configs
 poetry run systematic-invest --save-csv --save-json --output results/
 ```
 
-## How It Works
+### Full S&P 500 Analysis
 
-### 1. Configuration-Driven Analysis
-Define your investment criteria in YAML configuration files:
+To analyze ALL S&P 500 stocks (takes 10-15 minutes):
 
-```yaml
-name: "conservative_value_screen"
-description: "Focus on quality companies at reasonable prices"
+```bash
+# Run full S&P 500 analysis with CSV output
+poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
 
-universe:
-  region: "US"
-  min_market_cap: 1000  # $1B minimum
+# Run quietly in background (no progress output)
+poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --quiet &
 
-quality:
-  min_roic: 0.12        # 12% minimum ROIC
-  min_roe: 0.15         # 15% minimum ROE
-  max_debt_equity: 0.6   # Maximum 60% debt/equity
-
-value:
-  max_pe: 25            # Maximum P/E ratio
-  max_pb: 3.5           # Maximum P/B ratio
-
-growth:
-  min_revenue_growth: 0.03  # Minimum 3% revenue growth
-
-valuation:
-  models: ["dcf", "rim"]
-  scenarios: ["bear", "base", "bull"]
+# Check progress (if running in background)
+tail -f sp500_full_screen_*_report.txt
 ```
 
-### 2. Systematic Pipeline
-Every stock goes through the same 5-step analysis:
+**Note**: The full S&P 500 analysis fetches data for 500+ stocks and can take 10-15 minutes. The resulting CSV will include ALL stocks with a `Passes_Filters` column indicating whether each stock meets the screening criteria.
 
-1. **Quality Assessment**: ROIC, ROE, debt levels, liquidity ratios
-2. **Value Analysis**: P/E, P/B, EV/EBITDA ratios vs. thresholds  
-3. **Growth Evaluation**: Revenue/earnings growth, sustainability
-4. **Risk Assessment**: Financial, market, and business risk factors
-5. **Valuation Models**: DCF and RIM models with multiple scenarios
+## How It Works
 
-### 3. Sector Context
-Automatically adjusts expectations based on sector characteristics:
-- Technology: Higher growth, higher multiples expected
-- Utilities: Lower growth, stable margins expected  
-- Energy: High cyclicality, volatile margins expected
+The framework uses a systematic, 5-step analysis pipeline:
+
+1. **Quality Assessment** - Financial strength and stability
+2. **Value Analysis** - Valuation attractiveness 
+3. **Growth Evaluation** - Business expansion prospects
+4. **Risk Assessment** - Financial and business risks
+5. **Valuation Models** - DCF and RIM intrinsic value calculations
+
+All analysis parameters are defined in YAML configuration files, ensuring consistent and reproducible results.
 
 ## Available Configurations
 
-- **`default_analysis.yaml`** - Conservative value investing approach
-- **`aggressive_growth.yaml`** - Growth-focused with higher risk tolerance
+The framework includes several pre-built strategies:
+- Conservative value investing
+- Aggressive growth focus
+- Full S&P 500 screening
+- Custom sector analysis
 
-Create your own configurations or modify existing ones to match your investment strategy.
+All configurations can be customized to match your investment criteria.
 
 ## Project Structure
 
@@ -110,77 +97,70 @@ scripts/
 
 ## Output Formats
 
-The framework generates:
-
-1. **Executive Summary** - High-level results and top picks
-2. **Detailed Stock Reports** - Comprehensive analysis for each stock
-3. **Screening Summary** - Process metrics and common issues
-4. **CSV Export** - Data for further analysis in Excel/Python
-5. **JSON Export** - Structured data for integration
+Multiple output formats for different use cases:
+- **Text Reports** - Human-readable analysis summaries
+- **CSV Export** - Structured data for spreadsheet analysis
+- **JSON Export** - Raw data for API integration
 
 ## Key Features
 
-### No AI Bias
-- Rule-based analysis, not conversational AI
-- Same methodology applied to every stock
-- Transparent, auditable criteria
-
-### Comprehensive Coverage
-- Screens entire S&P 500 universe (or custom lists)
-- 50+ financial metrics evaluated
-- Multiple valuation models
-- Sector-specific adjustments
-
-### Configurable Criteria
-- Define your own quality/value/growth thresholds
-- Adjust for different market conditions
-- Support for regional screens (US, EU, JP)
-
-### Professional Reports  
-- Standardized format for every stock
-- Flags potential concerns automatically
-- Export to multiple formats
+- **Systematic & Objective** - Eliminates human bias through consistent methodology
+- **Configurable** - Customize all screening criteria via YAML files
+- **Comprehensive** - Analyzes quality, value, growth, and risk dimensions
+- **Scalable** - Handle individual stocks or entire market indices
+- **Professional Output** - Multiple export formats with detailed reporting
 
 ## Usage Examples
 
 ⚠️ **Remember: All commands must use `poetry run`**
 
 ```bash
-# Basic screening
-poetry run systematic-invest
+# Run basic analysis
+poetry run python scripts/systematic_analysis.py
 
-# Growth-focused analysis
-poetry run systematic-invest configs/aggressive_growth.yaml
+# Full S&P 500 analysis with CSV output
+poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
 
-# Direct script execution
-poetry run python scripts/systematic_analysis.py configs/sp500_top100.yaml
-
-# Custom output location
-poetry run systematic-invest --output ~/investment-results/
-
-# Quick CSV export for spreadsheet analysis  
-poetry run systematic-invest --save-csv --quiet
-
-# Comprehensive analysis with all outputs
-poetry run systematic-invest --save-json --save-csv --verbose
+# Custom configuration with multiple output formats
+poetry run python scripts/systematic_analysis.py configs/my_strategy.yaml --save-csv --save-json
 ```
 
 ## Extending the Framework
 
-### Add New Screening Criteria
-1. Update configuration schema in `src/invest/config/schema.py`
-2. Implement screening logic in appropriate module
-3. Add to analysis pipeline
+The framework is designed for extensibility:
+- Add new screening criteria
+- Integrate additional data sources
+- Implement custom valuation models
+- Create sector-specific analysis modules
 
-### Add New Data Sources
-1. Create provider module in `src/invest/data/`
-2. Follow same interface pattern as Yahoo Finance provider
-3. Update universe definitions
+See the [Developer Guide](https://your-username.github.io/invest/developer-guide/architecture/) for detailed extension instructions.
 
-### Custom Valuation Models
-1. Implement model in `src/invest/`
-2. Integrate with pipeline in `src/invest/analysis/pipeline.py`
-3. Add to configuration options
+## Documentation
+
+Comprehensive documentation is available at [rubenayla.github.io/invest](https://rubenayla.github.io/invest).
+
+### Local Documentation
+
+Run the documentation locally:
+
+```bash
+# Install documentation dependencies
+poetry install --with docs
+
+# Start documentation server
+poetry run mkdocs serve
+```
+
+Then visit http://localhost:8000
+
+### Deploy Documentation
+
+Deploy to GitHub Pages:
+
+```bash
+# Deploy to GitHub Pages
+poetry run mkdocs gh-deploy
+```
 
 ## Testing
 
@@ -212,21 +192,15 @@ poetry run pytest tests/test_systematic_analysis.py
 - International stock coverage limited
 - No real-time data updates
 
-## Why This Approach?
+## Why Systematic Analysis?
 
-Traditional investment research often suffers from:
-- **Confirmation bias** - Cherry-picking supportive data
-- **Inconsistency** - Different analysis for different stocks  
-- **Incompleteness** - Missing important factors
-- **Subjectivity** - Results vary based on mood/phrasing
+This framework addresses common issues in investment research:
+- **Eliminates bias** - Consistent methodology for all stocks
+- **Ensures completeness** - All relevant factors evaluated
+- **Provides reproducibility** - Same inputs always yield same outputs
+- **Creates audit trail** - Clear, documented analysis process
 
-This systematic framework ensures:
-- **Objective analysis** - Same criteria applied consistently
-- **Comprehensive coverage** - All factors evaluated systematically
-- **Reproducible results** - Identical inputs = identical outputs  
-- **Audit trail** - Clear methodology and assumptions
-
-Perfect for investors who want disciplined, systematic analysis without conversational AI bias.
+Ideal for investors seeking disciplined, objective stock analysis.
 
 ---
 

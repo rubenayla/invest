@@ -10,7 +10,7 @@ from ..dcf import calculate_dcf
 # from ..rim import RIMModel  # Import when available
 
 # Set up logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
 
@@ -64,7 +64,7 @@ class AnalysisPipeline:
         # Step 8: Apply filters and ranking
         logger.info("Step 7: Filtering and ranking...")
         filtered_results = self._apply_filters(combined_results)
-        ranked_results = self._rank_results(filtered_results)
+        ranked_results = self._rank_results(combined_results)  # Rank ALL results, not just filtered
         
         # Step 9: Run valuation models on top candidates
         logger.info("Step 8: Running valuation models...")
@@ -73,16 +73,18 @@ class AnalysisPipeline:
         # Step 10: Generate summary
         summary = self._generate_summary(final_results)
         
+        # Include all analyzed stocks in results
         self.results = {
             'config': self.config.dict(),
             'summary': summary,
             'stocks': final_results,
+            'all_stocks': combined_results,  # Include ALL analyzed stocks
             'total_universe': len(stocks_data),
             'passed_screening': len(filtered_results),
             'final_results': len(final_results)
         }
         
-        logger.info(f"Analysis complete: {len(final_results)} stocks selected")
+        logger.info(f"Analysis complete: {len(final_results)} stocks selected from {len(combined_results)} analyzed")
         return self.results
     
     def _get_universe(self) -> List[Dict]:
@@ -141,13 +143,14 @@ class AnalysisPipeline:
                 from ..data.yahoo import get_stock_data
                 stock_data = get_stock_data(ticker)
                 if stock_data:
-                    # Apply universe filters
-                    if self._passes_universe_filters(stock_data, universe_config):
-                        stocks_data.append(stock_data)
+                    # Check filters and add filter status
+                    stock_data['passes_universe_filters'] = self._passes_universe_filters(stock_data, universe_config)
+                    stocks_data.append(stock_data)
                 
                 # Log progress every 20 tickers
                 if (i + 1) % 20 == 0:
-                    logger.info(f"Processed {i + 1}/{len(tickers)} tickers for full data... ({len(stocks_data)} passed filters)")
+                    passed_count = sum(1 for s in stocks_data if s['passes_universe_filters'])
+                    logger.info(f"Processed {i + 1}/{len(tickers)} tickers for full data... ({passed_count} passed filters)")
                     
             except Exception as e:
                 logger.warning(f"Failed to get data for {ticker}: {e}")
@@ -161,22 +164,32 @@ class AnalysisPipeline:
         sector = stock_data.get('sector', '')
         
         # Market cap filters
-        if universe_config.min_market_cap:
-            if not market_cap or market_cap < universe_config.min_market_cap * 1e6:
-                return False
-                
-        if universe_config.max_market_cap:
-            if market_cap and market_cap > universe_config.max_market_cap * 1e6:
-                return False
+        passes_filters = True
+        filter_reasons = []
+        
+        # Market cap filter
+        if universe_config.min_market_cap and (not market_cap or market_cap < universe_config.min_market_cap * 1e6):
+            passes_filters = False
+            filter_reasons.append(f"Market cap too low: {market_cap/1e6:.2f}M")
+        
+        if universe_config.max_market_cap and market_cap and market_cap > universe_config.max_market_cap * 1e6:
+            passes_filters = False
+            filter_reasons.append(f"Market cap too high: {market_cap/1e6:.2f}M")
         
         # Sector filters
         if universe_config.exclude_sectors and sector in universe_config.exclude_sectors:
-            return False
-            
+            passes_filters = False
+            filter_reasons.append(f"Excluded sector: {sector}")
+        
         if universe_config.sectors and sector not in universe_config.sectors:
-            return False
-            
-        return True
+            passes_filters = False
+            filter_reasons.append(f"Not in allowed sectors: {sector}")
+        
+        # Detailed logging
+        if not passes_filters:
+            logger.info(f"Filtering out {stock_data.get('ticker', 'Unknown')}: {', '.join(filter_reasons)}")
+        
+        return passes_filters
     
     def _combine_screening_results(self, stocks_data: List[Dict], quality_results: List[Dict],
                                   value_results: List[Dict], growth_results: List[Dict],
@@ -230,25 +243,32 @@ class AnalysisPipeline:
         return combined
     
     def _apply_filters(self, combined_results: List[Dict]) -> List[Dict]:
-        """Apply minimum score filters."""
+        """Apply minimum score filters and mark pass/fail status."""
         filtered = []
+        
+        # Apply minimum thresholds (configurable)
+        min_quality = 40
+        min_value = 30
+        min_growth = 20
+        max_risk = 80
+        min_composite = 50
         
         for result in combined_results:
             scores = result.get('scores', {})
             
-            # Apply minimum thresholds (configurable)
-            min_quality = 40
-            min_value = 30
-            min_growth = 20
-            max_risk = 80
-            min_composite = 50
-            
-            if (scores.get('quality', 0) >= min_quality and
+            # Check if passes filters
+            passes_filters = (
+                scores.get('quality', 0) >= min_quality and
                 scores.get('value', 0) >= min_value and
                 scores.get('growth', 0) >= min_growth and
                 scores.get('risk', 100) <= max_risk and
-                scores.get('composite', 0) >= min_composite):
-                
+                scores.get('composite', 0) >= min_composite
+            )
+            
+            # Add pass/fail flag to result
+            result['passes_filters'] = passes_filters
+            
+            if passes_filters:
                 filtered.append(result)
         
         return filtered
@@ -361,6 +381,12 @@ class AnalysisPipeline:
         for result in final_results:
             sector = result.get('basic_data', {}).get('sector', 'Unknown')
             sectors[sector] = sectors.get(sector, 0) + 1
+        
+        # Count total and filtered stocks
+        if 'total_universe' in self.results:
+            total_stocks = self.results['total_universe']
+            filtered_out_count = sum(1 for stock in stocks_data if not stock.get('passes_universe_filters', False))
+            # Add filter-out reasons to key insights
         
         # Top picks (top 5)
         top_picks = [

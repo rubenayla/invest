@@ -171,4 +171,20 @@ The pre-filter is just the first step to narrow down the universe of stocks. Aft
 
   So, it's a comprehensive, multi-stage process that goes far beyond a simple filter to identify the most promising investment
   opportunities.
-  
+
+# best companies to invest in from sp500 with the process of 2025-08-18
+✦ I have completed the systematic screen of all 500 companies in the S&P 500. After a thorough analysis of the results, here are my top 3
+   investment recommendations:
+
+1. HIG (The Hartford Financial Services Group, Inc.): My top pick. It is an exceptional company that achieved a perfect score of 100 in
+    all three of my screening categories: quality, value, and growth. This is a rare achievement that, combined with its low-risk
+  profile, makes it a truly outstanding investment opportunity.
+
+1. NEM (Newmont Corporation): A very close second, Newmont also boasts perfect scores in quality, value, and growth. Its impressive
+  growth in revenue, earnings, and free cash flow makes it a very attractive investment. However, as a mining company, it is subject
+  to the inherent volatility of the commodities market, which makes it a slightly riskier choice than The Hartford.
+    - Fluctuates a lot with gold prices so I will discard for now
+
+3. CTSH (Cognizant Technology Solutions): A consistently strong performer, Cognizant also appeared in the top 5 of my previous, more
+  limited screen. It is a reliable, high-quality company that offers a great combination of growth and value, making it a safe and
+  solid addition to any portfolio.

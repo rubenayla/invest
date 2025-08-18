@@ -171,6 +171,9 @@ def calculate_dcf(
 
     # Fair value per share.
     fair_value_per_share = estimated_market_cap / shares
+    
+    # Calculate margin of safety (always, not just when verbose)
+    margin = (fair_value_per_share - current_price) / current_price if current_price > 0 else 0
 
     if verbose:
         print(f"\nDCF Valuation for {ticker}")
@@ -178,7 +181,6 @@ def calculate_dcf(
         print(f"Current Price:        ${current_price:,.2f}")
         print(f"Estimated Market Cap: ${estimated_market_cap:,.2f}")
         print(f"Fair Value per Share: ${fair_value_per_share:,.2f}")
-        margin = (fair_value_per_share - current_price) / current_price
         print(f"Margin of Safety:      {margin * 100:.1f}%")
         print(f"Normalized FCF:       ${base_fcf:,.0f}")
         print("Growth Rates:         " + ", ".join(f"{g:.1%}" for g in growth_rates))
