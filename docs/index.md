@@ -1,6 +1,6 @@
 # Systematic Investment Analysis Framework
 
-A configuration-driven, objective approach to investment analysis that eliminates conversational bias and provides consistent, reproducible results.
+A configuration-driven, objective approach to investment analysis that eliminates conversational bias and provides consistent, reproducible results with comprehensive backtesting capabilities.
 
 ![Framework Overview](https://img.shields.io/badge/Python-3.8%2B-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
