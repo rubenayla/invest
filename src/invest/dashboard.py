@@ -258,9 +258,26 @@ class ValuationDashboard:
         last_updated = self.data.get('last_updated', 'Never')
         stocks = self.data.get('stocks', {})
         
+        # Sort stocks by best valuation (highest margin of safety)
+        def get_best_margin(stock_data):
+            """Get the best margin of safety across all models for a stock."""
+            valuations = stock_data.get('valuations', {})
+            margins = []
+            
+            for model_data in valuations.values():
+                margin = model_data.get('margin_of_safety')
+                if margin is not None:
+                    margins.append(margin)
+            
+            # Return best (highest) margin, or -999 if no data (to sort to bottom)
+            return max(margins) if margins else -999
+        
+        # Sort stocks from best to worst valuation
+        sorted_stocks = sorted(stocks.items(), key=lambda x: get_best_margin(x[1]), reverse=True)
+        
         # Generate stock table rows
         table_rows = ""
-        for ticker, stock_data in stocks.items():
+        for ticker, stock_data in sorted_stocks:
             current_price = stock_data.get('current_price', 0)
             valuations = stock_data.get('valuations', {})
             
@@ -308,6 +325,11 @@ class ValuationDashboard:
         .status {{ background: #ecf0f1; padding: 15px; border-radius: 8px; margin-bottom: 20px; }}
         table {{ width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
         th {{ background: #34495e; color: white; padding: 12px; text-align: left; }}
+        th.sortable {{ cursor: pointer; user-select: none; position: relative; }}
+        th.sortable:hover {{ background: #2c3e50; }}
+        th.sortable::after {{ content: ' ↕️'; font-size: 12px; opacity: 0.7; }}
+        th.sortable.asc::after {{ content: ' ▲'; }}
+        th.sortable.desc::after {{ content: ' ▼'; }}
         td {{ padding: 10px; border-bottom: 1px solid #ecf0f1; }}
         .ticker {{ font-weight: bold; color: #2c3e50; }}
         .price {{ color: #27ae60; font-weight: bold; }}
@@ -428,12 +450,12 @@ class ValuationDashboard:
     <table>
         <thead>
             <tr>
-                <th rowspan="2">
+                <th rowspan="2" class="sortable" onclick="sortTable(0, 'text')">
                     <span class="tooltip">Ticker
                         <span class="tooltiptext">Stock symbol traded on the exchange</span>
                     </span>
                 </th>
-                <th rowspan="2">
+                <th rowspan="2" class="sortable" onclick="sortTable(1, 'number')">
                     <span class="tooltip">Current Price
                         <span class="tooltiptext">Latest market price per share from live data feeds</span>
                     </span>
@@ -455,32 +477,32 @@ class ValuationDashboard:
                 </th>
             </tr>
             <tr>
-                <th>
+                <th class="sortable" onclick="sortTable(2, 'currency')">
                     <span class="tooltip">Fair Value
                         <span class="tooltiptext">Estimated intrinsic value per share based on the model's assumptions and calculations</span>
                     </span>
                 </th>
-                <th>
+                <th class="sortable" onclick="sortTable(3, 'percent')">
                     <span class="tooltip">Upside/Downside
                         <span class="tooltiptext">Percentage difference between fair value and current price. Positive = undervalued (potential upside), Negative = overvalued (potential downside)</span>
                     </span>
                 </th>
-                <th>
+                <th class="sortable" onclick="sortTable(4, 'currency')">
                     <span class="tooltip">Fair Value
                         <span class="tooltiptext">Enhanced DCF estimated intrinsic value considering dividend policy and reinvestment efficiency</span>
                     </span>
                 </th>
-                <th>
+                <th class="sortable" onclick="sortTable(5, 'percent')">
                     <span class="tooltip">Upside/Downside
                         <span class="tooltiptext">Enhanced DCF margin of safety. Shows how much the stock could gain/lose based on dividend-aware valuation</span>
                     </span>
                 </th>
-                <th>
+                <th class="sortable" onclick="sortTable(6, 'currency')">
                     <span class="tooltip">Fair Value
                         <span class="tooltiptext">Ratio-based fair value using sector-adjusted P/E, P/B, P/S multiples and dividend yield expectations</span>
                     </span>
                 </th>
-                <th>
+                <th class="sortable" onclick="sortTable(7, 'percent')">
                     <span class="tooltip">Upside/Downside
                         <span class="tooltiptext">Simple ratios margin of safety. Based on how current ratios compare to historical/sector averages</span>
                     </span>
@@ -579,6 +601,71 @@ class ValuationDashboard:
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }}, 3000);
+        }}
+        
+        // Table sorting functionality
+        function sortTable(columnIndex, dataType) {{
+            const table = document.querySelector('table');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            const headers = table.querySelectorAll('th.sortable');
+            const currentHeader = headers[columnIndex];
+            
+            // Determine sort direction
+            let ascending = true;
+            if (currentHeader.classList.contains('asc')) {{
+                ascending = false;
+            }}
+            
+            // Clear all sort indicators
+            headers.forEach(header => {{
+                header.classList.remove('asc', 'desc');
+            }});
+            
+            // Set current sort indicator
+            currentHeader.classList.add(ascending ? 'asc' : 'desc');
+            
+            // Sort rows based on data type
+            rows.sort((a, b) => {{
+                const aCell = a.cells[columnIndex];
+                const bCell = b.cells[columnIndex];
+                let aValue = aCell.textContent.trim();
+                let bValue = bCell.textContent.trim();
+                
+                // Handle placeholder values
+                if (aValue === '-' || aValue === 'Loading...') aValue = ascending ? 'zzz' : '';
+                if (bValue === '-' || bValue === 'Loading...') bValue = ascending ? 'zzz' : '';
+                
+                let comparison = 0;
+                
+                switch (dataType) {{
+                    case 'number':
+                    case 'currency':
+                        // Remove $ and convert to number
+                        const aNum = parseFloat(aValue.replace(/[$,]/g, '')) || 0;
+                        const bNum = parseFloat(bValue.replace(/[$,]/g, '')) || 0;
+                        comparison = aNum - bNum;
+                        break;
+                        
+                    case 'percent':
+                        // Remove % and convert to number
+                        const aPercent = parseFloat(aValue.replace('%', '')) || 0;
+                        const bPercent = parseFloat(bValue.replace('%', '')) || 0;
+                        comparison = aPercent - bPercent;
+                        break;
+                        
+                    case 'text':
+                    default:
+                        comparison = aValue.localeCompare(bValue);
+                        break;
+                }}
+                
+                return ascending ? comparison : -comparison;
+            }});
+            
+            // Clear tbody and re-append sorted rows
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row));
         }}
     </script>
 </body>
