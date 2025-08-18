@@ -1,3 +1,22 @@
+Hey let's move all these extra files to their own folder. Clean up a bit the main folder
+rubenayla@y540:~/repos/invest$ ls
+asset_valuation.md                                    htmlcov                                          sp500_test25_screen_20250813_000353_results.csv
+backtesting                                           INSTALL.md                                       sp500_test50_screen_20250813_000635_report.txt
+CLAUDE_DESKTOP_GUIDE.md                               learn.md                                         sp500_test50_screen_20250813_000635_results.csv
+CLAUDE.md                                             mkdocs.yml                                       sp500_top100_screen_20250812_234131_report.txt
+configs                                               poetry.lock                                      sp500_top100_screen_20250812_234131_results.csv
+conservative_value_screen_20250812_223153_report.txt  pyproject.toml                                   sp500_top100_screen_20250813_002407_report.txt
+coverage.xml                                          README.md                                        sp500_top100_screen_20250813_002407_results.csv
+dashboard                                             scripts                                          src
+default_analysis_20250818_132054_report.txt           setup.py                                         stuff
+default_analysis_20250818_132054_results.csv          site                                             stuff.md
+default_analysis_20250818_132206_report.txt           sp500_full_screen_20250813_003356_report.txt     tests
+default_analysis_20250818_132206_results.csv          sp500_full_screen_20250813_003356_results.csv    todo.md
+default_analysis_20250818_132302_report.txt           sp500_subset_screen_20250818_123218_report.txt   watchlist.md
+default_analysis_20250818_132302_results.csv          sp500_subset_screen_20250818_123218_results.csv
+docs                                                  sp500_test25_screen_20250813_000353_report.txt
+
+
 
 
 For testing, add an agent (how are they called? the ones that choose what to invest in. It's not the same as the valuation model, since it must choose one or several stocks to invest in, not just value them independently) that simply buys the biggest stocks of the sp500. If forced to diversity, the top x stocks, otherwise the top stock. Just that. I'd like it for comparison purposes and to see how it performs. Some curiosity.

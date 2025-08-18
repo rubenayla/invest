@@ -33,3 +33,9 @@ site/
 # Personal/temporary configs
 # my_*.yaml
 # temp_*.yaml
+
+# Dashboard backups
+dashboard/backups/
+
+# Pytest cache
+.pytest_cache/
