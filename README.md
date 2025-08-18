@@ -25,6 +25,9 @@ poetry run systematic-invest
 # Use specific configuration
 poetry run systematic-invest configs/aggressive_growth.yaml
 
+# International markets (Warren Buffett's Japanese favorites)
+poetry run python scripts/systematic_analysis.py configs/japan_buffett_favorites.yaml --save-csv
+
 # Alternative: Direct script execution (also requires poetry run)
 poetry run python scripts/systematic_analysis.py configs/sp500_top100.yaml --save-csv
 

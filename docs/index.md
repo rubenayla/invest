@@ -21,10 +21,10 @@ cat sp500_full_screen_*_results.csv
 
 ## Key Features
 
-### 🎯 **Dual Analysis Approach**
-**Systematic Screening**: Every stock goes through identical analysis steps, eliminating bias in the filtering process.
+### 🎯 **AI-Controlled Dual Analysis Approach**
+**Systematic Screening**: AI models (like Claude) run automated analysis pipelines on large stock universes, eliminating human bias in the filtering process.
 
-**AI-Powered Analysis**: Companies that pass filters can be analyzed further using conversational AI tools for qualitative insights.
+**AI Deep-Dive Analysis**: AI models then use specialized tools to perform qualitative analysis on companies that pass the systematic filters.
 
 ### ⚙️ **Configuration-Driven**
 Define your investment criteria in YAML files. No code changes needed to adjust screening parameters.
@@ -42,27 +42,28 @@ Automatically adjusts expectations based on sector characteristics:
 - Utilities: Lower growth, stable margins expected  
 - Energy: High cyclicality, volatile margins expected
 
-### 📈 **Complete Coverage**
-- Screens entire S&P 500 universe (or custom lists)
-- 50+ financial metrics evaluated
-- Multiple valuation models
-- Sector-specific adjustments
+### 📈 **Global Market Coverage**
+- Screens entire S&P 500 universe and international markets
+- Japanese markets (TOPIX, Berkshire holdings) - Warren Buffett's recent focus
+- European markets (FTSE, DAX) and other international opportunities
+- 50+ financial metrics evaluated with currency-aware analysis
+- Multiple valuation models with international considerations
 
-### 🤖 **AI-Powered Analysis**
-- Conversational AI tools for companies that pass filters
-- Qualitative business analysis
-- Industry context and competitive positioning
-- Integration with Claude Desktop and Gemini
+### 🤖 **AI-Controlled Research Process**
+- AI models execute the entire research workflow autonomously
+- AI runs systematic screening, interprets results, and performs deep-dive analysis
+- AI uses specialized tools for data gathering, analysis, and report generation
+- Seamless integration with Claude Desktop and Gemini ecosystems
 
 ## Philosophy
 
-This framework combines the best of both worlds:
+This framework empowers AI models to conduct comprehensive investment research:
 
-- **Systematic Screening**: Objective, bias-free filtering of large stock universes
-- **AI-Enhanced Analysis**: Conversational AI tools for deep-dive analysis of promising candidates
-- **Configurable**: Define your investment criteria in YAML files
-- **Reproducible**: Consistent methodology for the screening process
-- **Comprehensive**: Quality → Value → Growth → Risk → Valuation → AI Analysis pipeline
+- **AI-Driven Systematic Screening**: AI models run objective, bias-free filtering of large stock universes
+- **AI-Controlled Deep Analysis**: AI models autonomously use tools for qualitative analysis of promising candidates  
+- **Human-Configurable**: Humans define investment criteria in YAML files, AI executes the research
+- **AI-Reproducible**: AI follows consistent methodology for systematic screening
+- **End-to-End AI Workflow**: Quality → Value → Growth → Risk → Valuation → AI Deep-Dive pipeline
 
 ## Output Formats
 
@@ -73,23 +74,23 @@ The framework generates:
 3. **CSV Export** - Data for further analysis with pass/fail indicators
 4. **JSON Export** - Structured data for integration
 
-## Why This Hybrid Approach?
+## Why AI-Controlled Investment Research?
 
 Traditional investment research often suffers from:
 
-- **Confirmation bias** - Cherry-picking supportive data
-- **Inconsistency** - Different analysis for different stocks  
-- **Scale limitations** - Can't analyze hundreds of stocks manually
-- **Time constraints** - Deep analysis is time-consuming
+- **Human bias** - Cherry-picking supportive data, emotional decisions
+- **Inconsistency** - Different analysis methods for different stocks  
+- **Scale limitations** - Humans can't systematically analyze hundreds of stocks
+- **Time constraints** - Manual deep analysis is extremely time-consuming
 
-This hybrid framework provides:
+This AI-controlled framework provides:
 
-- **Systematic Filtering** - Objective screening of large universes (500+ stocks)
-- **Focused AI Analysis** - Deep, conversational analysis of promising candidates (10-50 stocks)
-- **Best of Both Worlds** - Quantitative rigor + qualitative insights
-- **Scalable Process** - Handle entire markets while maintaining analysis depth
+- **AI-Executed Systematic Filtering** - AI objectively screens large universes (500+ stocks) using consistent methodology
+- **AI-Driven Deep Analysis** - AI performs conversational analysis of promising candidates (10-50 stocks) using specialized tools
+- **Hybrid AI Approach** - Quantitative screening rigor + AI qualitative insights
+- **AI-Scalable Process** - AI handles entire markets while maintaining analysis depth autonomously
 
-Perfect for investors who want comprehensive coverage with deep insights on the most promising opportunities.
+Perfect for empowering AI models to provide comprehensive investment research with both breadth and depth.
 
 ## Getting Started
 
@@ -97,27 +98,31 @@ Perfect for investors who want comprehensive coverage with deep insights on the 
 2. **[Quick Start](getting-started/quickstart.md)** - Run your first analysis
 3. **[Configuration](getting-started/configuration.md)** - Customize screening criteria
 
-## Workflow
+## AI-Controlled Workflow
 
-### Step 1: Systematic Screening
+### Step 1: AI Runs Systematic Screening
 ```bash
-# Screen entire S&P 500 universe
+# AI model executes systematic analysis on US markets
 poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
 
-# Results: 25-50 companies that pass all filters
+# AI model analyzes international markets (Warren Buffett's Japanese favorites)
+poetry run python scripts/systematic_analysis.py configs/japan_buffett_favorites.yaml --save-csv
+
+# AI automatically filters to 25-50 companies globally that pass all criteria
 ```
 
-### Step 2: AI-Powered Deep Dive
+### Step 2: AI Performs Deep-Dive Analysis
 ```bash
-# Use AI tools to analyze promising candidates
-# Available integrations:
-# - Claude Desktop tools
-# - Gemini AI tools
-# - Custom research workflows
+# AI model uses specialized investment research tools to analyze promising candidates
+# AI automatically accesses:
+# - Claude Desktop investment tools
+# - Gemini AI research tools  
+# - Custom analysis workflows
+# - All available data sources and research capabilities
 ```
 
-### Step 3: Investment Decision
-Combine quantitative screening results with qualitative AI insights for informed investment decisions.
+### Step 3: AI Generates Investment Recommendations
+AI combines quantitative screening results with qualitative insights to provide comprehensive investment analysis and recommendations.
 
 ## Learn More
 

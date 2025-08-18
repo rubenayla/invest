@@ -2,6 +2,10 @@ from typing import List, Dict, Any
 import logging
 from ..config.schema import AnalysisConfig
 from ..data.yahoo import get_universe_data, get_sp500_sample
+from ..data.international import (
+    get_market_tickers, get_international_stock_data, 
+    get_buffett_favorites_japan, get_warren_buffett_international
+)
 from ..screening.quality import screen_quality
 from ..screening.value import screen_value
 from ..screening.growth import screen_growth
@@ -96,6 +100,15 @@ class AnalysisPipeline:
         elif hasattr(universe_config, 'pre_screening_universe') and universe_config.pre_screening_universe == "sp500":
             from ..data.yahoo import get_sp500_tickers
             tickers = get_sp500_tickers()
+        elif hasattr(universe_config, 'market'):
+            # New international market support
+            market = universe_config.market
+            if market == 'japan_buffett':
+                tickers = get_buffett_favorites_japan()
+            elif market == 'international_buffett':
+                tickers = get_warren_buffett_international()
+            else:
+                tickers = get_market_tickers(market)
         elif universe_config.region == "US":
             from ..data.yahoo import get_sp500_sample
             tickers = get_sp500_sample()
@@ -138,10 +151,19 @@ class AnalysisPipeline:
         # Get full stock data for filtered tickers
         stocks_data = []
         logger.info(f"Fetching full stock data for {len(tickers)} tickers...")
+        
+        # Determine if we're dealing with international markets
+        is_international = hasattr(universe_config, 'market') and universe_config.market not in ['usa_sp500', None]
+        
         for i, ticker in enumerate(tickers):
             try:
-                from ..data.yahoo import get_stock_data
-                stock_data = get_stock_data(ticker)
+                if is_international:
+                    # Use international data function for better currency/market handling
+                    stock_data = get_international_stock_data(ticker)
+                else:
+                    # Use standard US market function
+                    from ..data.yahoo import get_stock_data
+                    stock_data = get_stock_data(ticker)
                 if stock_data:
                     # Check filters and add filter status
                     stock_data['passes_universe_filters'] = self._passes_universe_filters(stock_data, universe_config)

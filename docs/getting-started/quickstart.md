@@ -160,3 +160,67 @@ poetry run python scripts/systematic_analysis.py configs/aggressive_growth.yaml 
 1. Copy an existing config: `cp configs/sp500_full.yaml configs/my_strategy.yaml`
 2. Edit the criteria in `configs/my_strategy.yaml`
 3. Run: `poetry run python scripts/systematic_analysis.py configs/my_strategy.yaml --save-csv`
+
+## 🤖 Using with AI Assistants
+
+Instead of running commands manually, you can instruct your AI assistant to use the framework. Here are practical examples:
+
+### Example Prompts for AI
+
+**Get Started with Screening:**
+```
+I want to find the best investment opportunities right now. Please screen the S&P 500 using conservative value criteria and show me the top 10 stocks with explanations of why they're attractive.
+```
+
+**International Opportunities:**
+```
+Warren Buffett has been investing in Japan recently. Please analyze the Japanese market using the japan_buffett_favorites configuration and explain why these companies might be undervalued.
+```
+
+**Deep Dive on Specific Stocks:**
+```
+I'm interested in Microsoft (MSFT). Please run it through the systematic screening and give me your detailed analysis - does it pass the filters, what are its strengths and weaknesses, and should I invest?
+```
+
+**Sector Analysis:**
+```
+I want to invest in the technology sector but need help finding quality companies at reasonable prices. Please screen tech stocks and recommend the best opportunities.
+```
+
+**Portfolio Construction:**
+```
+Please analyze the market and build me a diversified portfolio of 15-20 stocks. Focus on quality companies trading at reasonable valuations with good growth prospects.
+```
+
+**Market Comparison:**
+```
+Compare investment opportunities between US and international markets. Where can I find better value right now - S&P 500 or Japanese stocks?
+```
+
+**Follow-up Analysis:**
+```
+Looking at the screening results, can you explain why Tesla failed the filters while Google passed? What would need to change for Tesla to become attractive?
+```
+
+### What Happens When You Ask
+
+Your AI assistant will:
+
+1. **Execute the screening** using appropriate configuration files
+2. **Analyze results** and identify key patterns and opportunities  
+3. **Provide detailed explanations** of why stocks passed or failed filters
+4. **Give investment recommendations** based on the systematic analysis
+5. **Answer follow-up questions** about specific companies or strategies
+6. **Generate custom reports** tailored to your investment goals
+
+### AI-Powered Research Process
+
+The AI handles the complete workflow automatically:
+- Fetches and processes stock data for hundreds of companies
+- Applies systematic quality, value, growth, and risk filters
+- Calculates composite scores and rankings
+- Identifies the most promising investment opportunities
+- Provides detailed analysis of individual companies
+- Generates actionable investment recommendations
+
+This gives you the power of systematic analysis with the convenience of conversational AI interaction.

@@ -4,9 +4,11 @@ Portfolio management for backtesting.
 
 import pandas as pd
 import numpy as np
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 from dataclasses import dataclass
 import logging
+
+from .type_utils import validate_price_dict
 
 logger = logging.getLogger(__name__)
 
@@ -32,13 +34,13 @@ class Trade:
 class Portfolio:
     """Portfolio manager for backtesting."""
     
-    def __init__(self, initial_capital: float):
+    def __init__(self, initial_capital: float) -> None:
         """Initialize portfolio with starting capital."""
         self.initial_capital = initial_capital
         self.cash = initial_capital
-        self.holdings = {}  # {ticker: shares}
-        self.cost_basis = {}  # {ticker: average_cost_per_share}
-        self.trade_history = []
+        self.holdings: Dict[str, float] = {}  # {ticker: shares}
+        self.cost_basis: Dict[str, float] = {}  # {ticker: average_cost_per_share}
+        self.trade_history: List[Trade] = []
         
     def get_holdings(self) -> Dict[str, float]:
         """Get current holdings."""
@@ -51,18 +53,22 @@ class Portfolio:
         Parameters
         ----------
         current_prices : Dict[str, float]
-            Current prices for all holdings
+            Current prices for all holdings (must be Python floats, not pandas objects)
             
         Returns
         -------
         float
-            Total portfolio value (cash + holdings)
+            Total portfolio value (cash + holdings) as Python float
         """
+        # Validate and convert prices to ensure they're Python floats
+        validated_prices = validate_price_dict(current_prices)
+        
         holdings_value = sum(
-            shares * current_prices.get(ticker, 0)
+            shares * validated_prices.get(ticker, 0.0)
             for ticker, shares in self.holdings.items()
         )
-        return self.cash + holdings_value
+        # Ensure we return a Python float, not a pandas scalar
+        return float(self.cash + holdings_value)
     
     def get_weights(self, current_prices: Dict[str, float]) -> Dict[str, float]:
         """Get current portfolio weights."""

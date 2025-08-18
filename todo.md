@@ -1,4 +1,8 @@
-- Add other markets, not just usa
+
+
+There are lots of untracked files that should either be committed or ignored. Take a look please.
+
+
 - Consider gold, bitcoin, etc. as alternatives to stocks, instructions for AI to consider waiting, like berkshire has sometimes done, to wait for better opportunities with treasuries, short-term bonds, etc.
 
 - dashboard with the top companies and critical data
@@ -24,61 +28,7 @@
    3. Adjusting the weighting or thresholds of existing metrics to better reflect their unique financial characteristics.
 
 
-## AI Integration Roadmap (Cost-Effective Alternatives)
 
-### Phase 1: Claude Desktop (Current - FREE with subscription)
-✅ Systematic screening tools
-✅ Research and analysis tools  
-✅ Portfolio construction tools
-- Usage: Interactive analysis via Claude Desktop
-
-### Phase 2: Multi-Model Support (Future - Cost Reduction)
-- **Gemini Pro (Free tier)**: 
-  - 15 requests/minute free
-  - Web search capability built-in
-  - Good for news research, sector analysis
-  - Integration: `src/invest/ai/providers/gemini.py`
-
-- **Local Ollama Models (100% Free)**:
-  - Llama 3.1, Mistral, CodeLlama
-  - Zero API costs, runs locally
-  - Privacy: no data leaves your machine
-  - Good for: basic analysis, report generation
-  - Integration: `src/invest/ai/providers/ollama.py`
-
-- **OpenAI GPT-4 (Backup)**:
-  - More expensive but reliable
-  - Good API documentation
-  - Integration: `src/invest/ai/providers/openai.py`
-
-### Phase 3: Smart Routing System
-- Route queries to optimal AI based on:
-  - Complexity (simple → local, complex → cloud)
-  - Cost (free tier → Gemini/local, premium → Claude)
-  - Capabilities (web search → Gemini, reasoning → Claude)
-  
-### Phase 4: Automation Options
-- **Batch Analysis**: Run overnight with cheaper models
-- **Scheduled Screening**: Weekly systematic screening
-- **Alert System**: Monitor portfolio changes
-- **API Integration**: For programmatic access
-
-### Cost Comparison (Monthly estimates):
-- Claude Desktop: $0 (with existing subscription)
-- Gemini Pro: $0-15 (free tier + overage)
-- Local Ollama: $0 (hardware requirements: 8GB+ RAM)
-- OpenAI GPT-4: $20-100+ (depends on usage)
-
-### Next Steps:
-1. Test current Claude Desktop integration
-2. Add Gemini provider for web research
-3. Set up local Ollama for basic tasks
-4. Implement smart routing logic
-
-
-
-
-- Could we run our system with this set of stocks and etfs to invest, and let it decide what to buy in each period, and calculate the average return it would obtain from x to y? It should obviously not get data from the future of each decision, this is a test to see how it would have performed in the past.
 
 
 
@@ -94,8 +44,7 @@ use second method of comparative valuation
 - Argentina stocks, growth but might have fallen with Trump
 
 ## Check
-- Argetina
-- MITSY
+
 - intersect of warren, sec.gov people, etc investments. people close to trump that hold stocks etc.
     - Dominari Holdings
     - American Bitcoin
@@ -144,3 +93,12 @@ Checklist:
 
 ---
 EDGAR parsing? implement it?
+
+---
+# INVESTMENTS
+This is my current wallet, what would you do with it? What modifications? Which is the first stock you would sell, and what would you buy with it?
+
+- Cognizant (CTSH)
+- HIG (Hartford)
+- Argetina
+- MITSY

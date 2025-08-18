@@ -53,6 +53,7 @@ nav:
     - Understanding Results: user-guide/understanding-results.md
     - Configuration Options: user-guide/configuration-options.md
     - Output Formats: user-guide/output-formats.md
+    - Troubleshooting: user-guide/troubleshooting.md
   - Developer Guide:
     - Architecture: developer-guide/architecture.md
     - Pipeline Components: developer-guide/pipeline-components.md
@@ -68,7 +69,9 @@ nav:
     - Basic Stock Screening: tutorials/basic-screening.md
     - Custom Configurations: tutorials/custom-configurations.md
     - S&P 500 Analysis: tutorials/sp500-analysis.md
+    - International Markets: tutorials/international-markets.md
     - AI Tools Integration: tutorials/ai-tools.md
+  - Contributing: contributing.md
 
 plugins:
   - search

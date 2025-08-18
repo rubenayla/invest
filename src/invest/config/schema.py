@@ -62,9 +62,10 @@ class ValuationConfig(BaseModel):
 class UniverseConfig(BaseModel):
     """Stock universe configuration."""
     region: Region = Region.US
-    min_market_cap: Optional[float] = None  # USD millions
-    max_market_cap: Optional[float] = None  # USD millions
-    sectors: Optional[List[str]] = None     # Include specific sectors
+    market: Optional[str] = None                 # Market identifier (e.g., "japan_topix30", "japan_buffett")
+    min_market_cap: Optional[float] = None       # USD millions
+    max_market_cap: Optional[float] = None       # USD millions  
+    sectors: Optional[List[str]] = None          # Include specific sectors
     exclude_sectors: Optional[List[str]] = None  # Exclude sectors
     custom_tickers: Optional[List[str]] = None   # Custom ticker list
     pre_screening_universe: Optional[str] = None # e.g., "sp500"

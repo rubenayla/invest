@@ -5,7 +5,7 @@ Historical data provider for backtesting with no look-ahead bias.
 import pandas as pd
 import numpy as np
 import yfinance as yf
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Union
 from datetime import datetime, timedelta
 import logging
 from functools import lru_cache
@@ -19,11 +19,11 @@ class HistoricalDataProvider:
     Ensures no look-ahead bias by only using data available at each point in time.
     """
     
-    def __init__(self, cache_dir: Optional[str] = None):
+    def __init__(self, cache_dir: Optional[str] = None) -> None:
         """Initialize data provider with optional cache directory."""
         self.cache_dir = cache_dir
-        self._price_cache = {}
-        self._fundamental_cache = {}
+        self._price_cache: Dict[str, pd.DataFrame] = {}
+        self._fundamental_cache: Dict[str, Dict[str, Any]] = {}
         
     def get_data_as_of(self, date: pd.Timestamp, tickers: List[str], 
                         lookback_days: int = 365) -> Dict[str, Any]:
@@ -84,7 +84,7 @@ class HistoricalDataProvider:
     
     def get_prices(self, tickers: List[str], date: pd.Timestamp) -> Dict[str, float]:
         """Get prices for specific tickers on a specific date."""
-        prices = {}
+        prices: Dict[str, float] = {}
         
         for ticker in tickers:
             try:
@@ -98,7 +98,9 @@ class HistoricalDataProvider:
                     # Get the last available price up to and including the date
                     valid_prices = data[data.index <= date]['Close']
                     if not valid_prices.empty:
-                        prices[ticker] = valid_prices.iloc[-1]
+                        # Ensure we return a Python float, not pandas scalar
+                        price_value = valid_prices.iloc[-1]
+                        prices[ticker] = float(price_value)
                         
             except Exception as e:
                 logger.warning(f"Could not get price for {ticker} on {date}: {e}")

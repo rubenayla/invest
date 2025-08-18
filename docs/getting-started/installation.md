@@ -96,7 +96,57 @@ If you encounter issues:
 2. Review existing [GitHub issues](https://github.com/rubenayla/invest/issues)
 3. Create a new issue with detailed error information
 
+## 🤖 Ready to Use with AI
+
+Once installed, you can instruct your AI assistant to use the framework. Here are example prompts to get started:
+
+### Example AI Prompts
+
+**Basic Stock Screening:**
+```
+I have this investment analysis framework installed. Please screen the S&P 500 for quality value stocks and show me the top 10 opportunities. Use conservative criteria.
+```
+
+**International Analysis:**
+```
+Please analyze Warren Buffett's favorite Japanese stocks using the japan_buffett_favorites configuration. I want to understand why Berkshire invested in Japanese trading houses.
+```
+
+**Specific Stock Analysis:**
+```
+Can you run the systematic screening and then analyze Apple (AAPL) in detail? Tell me if it passes the filters and what concerns you might have about the stock.
+```
+
+**Custom Research:**
+```
+I'm looking for undervalued technology stocks with strong growth. Please run the analysis and identify companies that might be good long-term investments.
+```
+
+**Comparative Analysis:**
+```
+Please compare the top US stocks (S&P 500) vs Japanese opportunities (TOPIX 30) and tell me which market offers better value right now.
+```
+
+### How AI Uses the Framework
+
+The AI will automatically:
+1. **Run systematic screening** using the appropriate configuration files
+2. **Analyze the results** to identify opportunities and concerns
+3. **Provide detailed insights** on individual companies
+4. **Generate investment recommendations** based on the data
+5. **Answer follow-up questions** about specific stocks or strategies
+
+### AI-Controlled Workflow
+
+Your AI assistant can execute the complete investment research process:
+- Screen hundreds of stocks systematically
+- Identify companies that pass quality, value, growth, and risk filters
+- Perform deep-dive analysis on promising candidates
+- Generate comprehensive investment reports
+- Answer questions about specific companies or strategies
+
 ## Next Steps
 
 - [Quick Start Guide](quickstart.md) - Run your first analysis
 - [Configuration](configuration.md) - Customize screening criteria
+- [AI Tools Tutorial](../tutorials/ai-tools.md) - Learn how AI controls the framework

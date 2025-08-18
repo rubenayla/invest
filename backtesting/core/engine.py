@@ -5,13 +5,14 @@ Backtesting engine for evaluating investment strategies historically.
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Union
 from dataclasses import dataclass, field
 import logging
 
 from ..data.historical import HistoricalDataProvider
 from .portfolio import Portfolio
 from .metrics import PerformanceMetrics
+from .type_utils import ensure_python_types, validate_price_dict
 
 logger = logging.getLogger(__name__)
 
@@ -43,12 +44,12 @@ class BacktestConfig:
 class Backtester:
     """Main backtesting engine."""
     
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: Dict[str, Any]) -> None:
         """Initialize backtester with configuration."""
         self.config = BacktestConfig(**config)
         self.data_provider = HistoricalDataProvider()
         self.portfolio = Portfolio(self.config.initial_capital)
-        self.results = None
+        self.results: Optional['BacktestResults'] = None
         
     def run(self, strategy) -> 'BacktestResults':
         """
@@ -166,13 +167,14 @@ class Backtester:
 class BacktestResults:
     """Container for backtest results."""
     
-    def __init__(self, config, portfolio_values, transactions, 
-                 holdings_history, final_value, benchmark_data):
+    def __init__(self, config: BacktestConfig, portfolio_values: List[Dict[str, Any]], 
+                 transactions: List[Dict[str, Any]], holdings_history: List[Dict[str, float]],
+                 final_value: Union[float, pd.Series], benchmark_data: Optional[pd.DataFrame]) -> None:
         self.config = config
         self.portfolio_values = pd.DataFrame(portfolio_values)
         self.transactions = pd.DataFrame(transactions) if transactions else pd.DataFrame()
         self.holdings_history = holdings_history
-        self.final_value = final_value
+        self.final_value = final_value  # Could be Series due to bug - handled in get_summary
         self.benchmark_data = benchmark_data
         
         # Calculate metrics
@@ -182,6 +184,7 @@ class BacktestResults:
             benchmark_data=benchmark_data
         )
     
+    @ensure_python_types
     def get_summary(self) -> Dict[str, Any]:
         """Get summary of backtest results."""
         # Ensure scalar values for final_value
@@ -192,15 +195,15 @@ class BacktestResults:
             final_val = float(self.final_value)
         
         return {
-            'initial_capital': float(self.config.initial_capital),
+            'initial_capital': self.config.initial_capital,
             'final_value': final_val,
-            'total_return': float((final_val / self.config.initial_capital - 1) * 100),
-            'annualized_return': float(self.metrics['cagr']),
-            'sharpe_ratio': float(self.metrics['sharpe_ratio']),
-            'max_drawdown': float(self.metrics['max_drawdown']),
-            'win_rate': float(self.metrics['win_rate']),
-            'number_of_trades': int(len(self.transactions)),
-            'portfolio_turnover': float(self.metrics['turnover'])
+            'total_return': (final_val / self.config.initial_capital - 1) * 100,
+            'annualized_return': self.metrics['cagr'],
+            'sharpe_ratio': self.metrics['sharpe_ratio'],
+            'max_drawdown': self.metrics['max_drawdown'],
+            'win_rate': self.metrics['win_rate'],
+            'number_of_trades': len(self.transactions),
+            'portfolio_turnover': self.metrics['turnover']
         }
     
     def generate_report(self, filepath: str):
