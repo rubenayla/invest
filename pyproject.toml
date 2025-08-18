@@ -21,7 +21,6 @@ pytest = "^7.0.0"
 pytest-cov = "^4.0.0"
 pytest-mock = "^3.10.0"
 pytest-xdist = "^3.2.0"
-pytest-ruff = "^0.4.0"
 ruff = "^0.1.0"
 bandit = "^1.7.0"
 
@@ -59,8 +58,6 @@ addopts = """
     --cov-report=html:htmlcov
     --cov-report=xml
     --cov-fail-under=0
-    --ruff
-    --ruff-format
 """
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
