@@ -1,4 +1,3 @@
-the valuation models account for the dividends? Or they're measured indirectly? If a company has no dividends and instead reinvests, I assume its value would go up more quickly. however a company that pays dividends would have to be valued more for those dividends themselves.
 
 - Let's update the code to be able to value ETFs, and do the backtest with those. Should we make the code able to handle anything, or separate ETFs and stocks, so each one is separate and easier to understand/manage?
 - Consider gold, bitcoin, etc. as alternatives to stocks, instructions for AI to consider waiting, like berkshire has sometimes done, to wait for better opportunities with treasuries, short-term bonds, etc.

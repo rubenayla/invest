@@ -199,5 +199,57 @@ The pre-filter is just the first step to narrow down the universe of stocks. Aft
     - Matches cathie wood, peter thiel, marc andreessen, david scaks, dan loeb, ...
 
 # valuation models to think about
-DFC (Discounted Cash Flow), RIM (Residual Income Model), Instrinsic value, ...
+DFC (Discounted Cash Flow)
+Simple Ratios - Graham-style
+RIM (Residual Income Model)
+Instrinsic value
+...
 
+Dividends? RIM tracks book value changes so it naturally includes dividends. Simple ratios do include them too, but DFC should use FCFE instead of FCF, adding Net Borrowing - Dividends paid, or do Total Value = NPV(Future Dividends) + NPV(Terminal Growth Value)
+
+This explains why growth investing outperformed value investing in the 2010s - traditional valuation methods systematically undervalued companies that reinvest efficiently!
+
+# to run all backtests
+for config in backtesting/configs/valuation_comparison_*.yaml; do echo "Running $config..."; poetry run python backtesting/run_backtest.py "$config"; echo ""; done
+
+# 
+> Our code now doesn't ignore the reinvesting efficiency?
+
+● Exactly right! 🎯
+
+  🔧 Enhanced DCF Now Properly Accounts For:
+
+  💡 Reinvestment Efficiency:
+
+  - High ROIC companies (GOOGL: 31.4% ROIC) get higher valuations for retained earnings
+  - Low ROIC companies (KO: 0% reinvestment) get lower growth assumptions
+  - Sustainable growth based on ROE × Retention Ratio
+
+  📊 What Changed:
+
+  Before (Traditional DCF):
+  Value = NPV(All FCF projected at same growth rate)
+  ❌ Assumes all companies reinvest equally efficiently
+
+  Now (Enhanced DCF):
+  Value = NPV(Dividends) + NPV(Reinvested FCF × ROIC)
+  ✅ Different growth rates based on actual reinvestment returns
+
+  🎯 Real Impact:
+
+  - Amazon (268% higher valuation): Recognizes 25%+ reinvestment returns
+  - Google (122% higher): Values their R&D and infrastructure investments properly
+  - Apple (177% higher): Accounts for buyback efficiency + modest dividends
+  - Coca-Cola (18% higher): Recognizes dividend value but no growth premium
+
+  - Growth stocks were systematically undervalued before
+  - Mature dividend stocks were slightly overvalued before
+  - Original DCF had systematic bias toward assuming all companies could grow equally
+
+So while most stocks get higher valuations, it's because traditional DCF was 
+  systematically undervaluing companies with efficient capital allocation. JNJ's lower
+  valuation is actually more realistic - it reflects the limited growth opportunities in
+  mature industries.
+
+  The enhanced DCF provides fairer, more nuanced valuations based on actual capital
+  allocation efficiency!

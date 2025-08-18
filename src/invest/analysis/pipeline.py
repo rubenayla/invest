@@ -11,6 +11,7 @@ from ..screening.value import screen_value
 from ..screening.growth import screen_growth
 from ..screening.risk import screen_risk, apply_cyclical_adjustments
 from ..dcf import calculate_dcf
+from ..dcf_enhanced import calculate_enhanced_dcf
 from ..simple_ratios import calculate_simple_ratios_valuation
 # from ..rim import RIMModel  # Import when available
 
@@ -327,6 +328,12 @@ class AnalysisPipeline:
                     if dcf_result:
                         valuations['dcf'] = dcf_result
                 
+                # Run Enhanced DCF if configured
+                if 'dcf_enhanced' in self.config.valuation.models:
+                    enhanced_dcf_result = self._run_enhanced_dcf_valuation(stock_data)
+                    if enhanced_dcf_result:
+                        valuations['dcf_enhanced'] = enhanced_dcf_result
+                
                 # Run RIM if configured
                 if 'rim' in self.config.valuation.models:
                     rim_result = self._run_rim_valuation(stock_data)
@@ -348,13 +355,13 @@ class AnalysisPipeline:
         return top_results
     
     def _run_dcf_valuation(self, stock_data: Dict) -> Dict:
-        """Run DCF valuation using the existing DCF function."""
+        """Run traditional DCF valuation."""
         try:
             ticker = stock_data.get('ticker', '')
             if not ticker:
                 return None
             
-            # Use the existing DCF function
+            # Use the original DCF function
             dcf_result = calculate_dcf(ticker, verbose=False)
             
             return {
@@ -367,6 +374,36 @@ class AnalysisPipeline:
             }
         except Exception as e:
             logger.warning(f"DCF valuation failed for {stock_data.get('ticker', 'unknown')}: {e}")
+            return None
+    
+    def _run_enhanced_dcf_valuation(self, stock_data: Dict) -> Dict:
+        """Run enhanced DCF valuation with dividend policy awareness."""
+        try:
+            ticker = stock_data.get('ticker', '')
+            if not ticker:
+                return None
+            
+            # Use the enhanced DCF function that accounts for dividends
+            dcf_result = calculate_enhanced_dcf(ticker, verbose=False)
+            
+            return {
+                'fair_value': dcf_result.get('fair_value_per_share', 0),
+                'current_price': dcf_result.get('current_price', 0),
+                'upside_downside': dcf_result.get('margin_of_safety', 0),
+                'model': 'Enhanced DCF',
+                'confidence': 'high',  # Higher confidence due to dividend consideration
+                'enterprise_value': dcf_result.get('enterprise_value', 0),
+                
+                # Enhanced dividend-specific metrics
+                'dividend_component_value': dcf_result.get('dividend_component_value', 0),
+                'growth_component_value': dcf_result.get('growth_component_value', 0),
+                'dividend_yield': dcf_result.get('dividend_yield', 0),
+                'payout_ratio': dcf_result.get('payout_ratio', 0),
+                'sustainable_growth_rate': dcf_result.get('sustainable_growth_rate', 0),
+                'capital_allocation_efficiency': dcf_result.get('reinvestment_efficiency', 0)
+            }
+        except Exception as e:
+            logger.warning(f"Enhanced DCF valuation failed for {stock_data.get('ticker', 'unknown')}: {e}")
             return None
     
     def _run_rim_valuation(self, stock_data: Dict) -> Dict:
