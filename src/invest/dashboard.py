@@ -74,8 +74,8 @@ class ValuationDashboard:
         self._generate_html()
         print(f"Dashboard available at: {self.html_file.absolute()}")
         
-        # Update each stock incrementally
-        with ThreadPoolExecutor(max_workers=3) as executor:
+        # Update each stock incrementally with more workers for full S&P 500
+        with ThreadPoolExecutor(max_workers=6) as executor:
             # Submit all valuation tasks
             future_to_info = {}
             
@@ -96,9 +96,25 @@ class ValuationDashboard:
             completed_count = 0
             total_tasks = len(future_to_info)
             
+            # Initialize progress tracking
+            self.data['progress'] = {
+                'completed': 0,
+                'total': total_tasks,
+                'status': 'running',
+                'current_ticker': '',
+                'stocks_completed': 0,
+                'total_stocks': len(tickers)
+            }
+            
             for future in as_completed(future_to_info, timeout=timeout_per_stock * len(tickers)):
                 ticker, model = future_to_info[future]
                 completed_count += 1
+                
+                # Update progress tracking
+                self.data['progress']['completed'] = completed_count
+                self.data['progress']['current_ticker'] = ticker
+                stocks_with_data = len([t for t in self.data['stocks'] if self.data['stocks'][t].get('valuations')])
+                self.data['progress']['stocks_completed'] = stocks_with_data
                 
                 try:
                     result = future.result()
@@ -115,6 +131,9 @@ class ValuationDashboard:
                 # Save progress
                 self._save_data()
         
+        # Mark analysis as completed
+        self.data['progress']['status'] = 'completed'
+        self.data['progress']['completed'] = total_tasks
         self.data['last_updated'] = datetime.now().isoformat()
         self._save_data()
         self._generate_html()
@@ -200,6 +219,46 @@ class ValuationDashboard:
         except (ValueError, TypeError):
             return placeholder
     
+    def _format_progress_display(self, progress: Dict) -> str:
+        """Format progress information for HTML display."""
+        status = progress.get('status', 'not_started')
+        
+        if status == 'not_started':
+            return '<p><strong>📊 Analysis Status:</strong> Ready to start</p>'
+        
+        elif status == 'running':
+            completed = progress.get('completed', 0)
+            total = progress.get('total', 0)
+            stocks_done = progress.get('stocks_completed', 0)
+            total_stocks = progress.get('total_stocks', 0)
+            current = progress.get('current_ticker', '')
+            
+            if total > 0:
+                task_percent = (completed / total) * 100
+                stock_percent = (stocks_done / total_stocks) * 100 if total_stocks > 0 else 0
+                
+                return f'''
+                <p><strong>🔄 Analysis Running:</strong></p>
+                <div style="background: #3498db; color: white; padding: 8px; border-radius: 4px; margin: 5px 0;">
+                    <div>📈 <strong>Tasks:</strong> {completed:,}/{total:,} ({task_percent:.1f}%)</div>
+                    <div>🏢 <strong>Stocks:</strong> {stocks_done}/{total_stocks} ({stock_percent:.1f}%)</div>
+                    <div>⚡ <strong>Current:</strong> {current}</div>
+                    <div style="background: rgba(255,255,255,0.2); height: 6px; border-radius: 3px; margin-top: 5px;">
+                        <div style="background: #27ae60; height: 100%; width: {task_percent:.1f}%; border-radius: 3px;"></div>
+                    </div>
+                </div>
+                '''
+            else:
+                return '<p><strong>🔄 Analysis Starting...</strong></p>'
+        
+        elif status == 'completed':
+            total = progress.get('total', 0)
+            return f'''
+            <p><strong>✅ Analysis Complete!</strong> Processed {total:,} tasks</p>
+            '''
+        
+        return '<p><strong>📊 Analysis Status:</strong> Unknown</p>'
+    
     def _update_stock_data(self, ticker: str, model: str, result: Dict):
         """Update stock data with new valuation."""
         if ticker not in self.data['stocks']:
@@ -257,6 +316,7 @@ class ValuationDashboard:
         """Create HTML dashboard template with current data."""
         last_updated = self.data.get('last_updated', 'Never')
         stocks = self.data.get('stocks', {})
+        progress = self.data.get('progress', {'status': 'not_started', 'completed': 0, 'total': 0, 'stocks_completed': 0, 'total_stocks': 0})
         
         # Sort stocks by best valuation (highest margin of safety)
         def get_best_margin(stock_data):
@@ -318,7 +378,6 @@ class ValuationDashboard:
 <head>
     <title>Investment Valuation Dashboard</title>
     <meta charset="utf-8">
-    <meta http-equiv="refresh" content="10">
     <style>
         body {{ font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }}
         .header {{ background: #2c3e50; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }}
@@ -428,7 +487,18 @@ class ValuationDashboard:
     <div class="status">
         <p><strong>Last Updated:</strong> <span class="last-updated">{last_updated}</span></p>
         <p><strong>Stocks Analyzed:</strong> {len(stocks)}</p>
-        <p><em>Auto-refreshes every 10 seconds while updating...</em></p>
+        
+        <div id="progress-section">
+            {self._format_progress_display(progress)}
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 10px; margin: 10px 0;">
+            <p style="margin: 0;"><em>Auto-refresh:</em></p>
+            <button onclick="toggleAutoRefresh()" class="refresh-btn" id="autoRefreshBtn" style="font-size: 0.8em;">
+                ⏸️ Pause
+            </button>
+            <span id="refreshStatus" style="font-size: 0.9em; color: #7f8c8d;">Active (10s)</span>
+        </div>
         
         <div style="margin-top: 15px; padding: 10px; background: #34495e; border-radius: 5px; color: white;">
             <p style="margin: 0; font-size: 0.9em;">
@@ -585,22 +655,25 @@ class ValuationDashboard:
                 }});
                 
                 if (response.ok) {{
-                    btn.innerHTML = '✅ Updated!';
+                    btn.innerHTML = '🚀 Analysis Started!';
+                    btn.style.background = '#f39c12';
                     setTimeout(() => {{
-                        window.location.reload();
-                    }}, 1000);
+                        btn.innerHTML = '🔄 Update Data';
+                        btn.style.background = '#3498db';
+                        btn.disabled = false;
+                    }}, 3000);
+                    // Don't reload immediately - let user see progress
                 }} else {{
                     throw new Error('Update failed');
                 }}
             }} catch (error) {{
                 btn.innerHTML = '❌ Update failed - use command line';
                 console.error('Update error:', error);
+                setTimeout(() => {{
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }}, 3000);
             }}
-            
-            setTimeout(() => {{
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }}, 3000);
         }}
         
         // Table sorting functionality
@@ -667,6 +740,48 @@ class ValuationDashboard:
             tbody.innerHTML = '';
             rows.forEach(row => tbody.appendChild(row));
         }}
+        
+        // Auto-refresh control
+        let autoRefreshInterval = null;
+        let autoRefreshActive = true;
+        
+        function startAutoRefresh() {{
+            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+            autoRefreshInterval = setInterval(() => {{
+                window.location.reload();
+            }}, 10000); // 10 seconds
+        }}
+        
+        function stopAutoRefresh() {{
+            if (autoRefreshInterval) {{
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+            }}
+        }}
+        
+        function toggleAutoRefresh() {{
+            const btn = document.getElementById('autoRefreshBtn');
+            const status = document.getElementById('refreshStatus');
+            
+            if (autoRefreshActive) {{
+                // Pause
+                stopAutoRefresh();
+                btn.innerHTML = '▶️ Play';
+                status.textContent = 'Paused';
+                status.style.color = '#e74c3c';
+                autoRefreshActive = false;
+            }} else {{
+                // Play
+                startAutoRefresh();
+                btn.innerHTML = '⏸️ Pause';
+                status.textContent = 'Active (10s)';
+                status.style.color = '#27ae60';
+                autoRefreshActive = true;
+            }}
+        }}
+        
+        // Start auto-refresh by default
+        startAutoRefresh();
     </script>
 </body>
 </html>

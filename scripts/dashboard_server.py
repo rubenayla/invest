@@ -63,10 +63,16 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             # Run dashboard update in background thread
             def update_dashboard():
                 try:
-                    # Default tickers
-                    tickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'JNJ', 'PG', 'KO', 'JPM', 'HD', 'TSLA', 'NVDA']
+                    # Get full S&P 500 tickers for comprehensive analysis
+                    from src.invest.data.yahoo import get_sp500_tickers
+                    tickers = get_sp500_tickers()
+                    
+                    # Use full S&P 500 - complete investment universe
+                    # This ensures we don't miss hidden gems in mid/small cap stocks
+                    
+                    logger.info(f"Updating dashboard with {len(tickers)} stocks from S&P 500")
                     dashboard = ValuationDashboard()
-                    dashboard.update_dashboard(tickers, timeout_per_stock=30)
+                    dashboard.update_dashboard(tickers, timeout_per_stock=20)
                     logger.info("Dashboard updated successfully")
                 except Exception as e:
                     logger.error(f"Dashboard update failed: {e}")
