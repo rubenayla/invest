@@ -35,30 +35,13 @@ jobs:
         virtualenvs-create: true
         virtualenvs-in-project: true
 
-    - name: Load cached venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v4
-      with:
-        path: .venv
-        key: venv-${{ runner.os }}-3.12-${{ hashFiles('**/poetry.lock') }}
-
     - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      run: poetry install --no-interaction
-
-    - name: Install project
-      run: poetry install --no-interaction
-
-    - name: Run linting
-      run: |
-        poetry run ruff check src tests
-        poetry run ruff format --check src tests
+      run: poetry install
 
     - name: Run tests
-      run: |
-        poetry run pytest tests/ -v --tb=short --cov=src/invest --cov-report=xml
+      run: poetry run pytest
 
-    - name: Upload coverage to Codecov
+    - name: Upload coverage
       uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
