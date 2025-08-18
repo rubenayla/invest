@@ -2,8 +2,8 @@
 Enhanced DCF model with proper dividend policy accounting.
 
 This enhanced DCF model addresses the fundamental flaw in traditional DCF where
-dividend vs reinvestment policies are not properly valued. It uses the Dividend 
-Discount Model (DDM) combined with FCF analysis to properly value companies 
+dividend vs reinvestment policies are not properly valued. It uses the Dividend
+Discount Model (DDM) combined with FCF analysis to properly value companies
 based on their capital allocation strategies.
 
 Key Improvements:
@@ -15,10 +15,11 @@ Key Improvements:
 Author: Enhanced for proper dividend treatment
 """
 
-import yfinance as yf
-import numpy as np
-from typing import Dict, List, Optional, Tuple
 import logging
+from typing import Dict, List, Optional
+
+import numpy as np
+import yfinance as yf
 
 logger = logging.getLogger(__name__)
 
@@ -44,11 +45,11 @@ def calculate_enhanced_dcf(
 ) -> Dict:
     """
     Enhanced DCF with proper dividend policy accounting.
-    
+
     This model values companies by considering both dividend payments and
     reinvestment opportunities, providing a more accurate valuation that
     reflects different capital allocation strategies.
-    
+
     Parameters
     ----------
     ticker : str
@@ -81,21 +82,21 @@ def calculate_enhanced_dcf(
         Whether to use normalized FCF from historical data, default True
     verbose : bool
         Whether to print detailed output, default True
-        
+
     Returns
     -------
     Dict
         Comprehensive valuation results including dividend and growth components
     """
     stock = yf.Ticker(ticker)
-    
+
     try:
         info = stock.info
     except Exception as e:
         info = {}
         if verbose:
             print(f"Warning: Unable to retrieve market data for {ticker}: {e}")
-    
+
     # Fetch missing data
     if fcf is None:
         fcf = info.get("freeCashflow")
@@ -111,11 +112,11 @@ def calculate_enhanced_dcf(
         dividend_rate = info.get("dividendRate", 0)
     if roe is None:
         roe = info.get("returnOnEquity")
-    
+
     # Validate essential data
     if any(x is None for x in [fcf, shares, current_price]):
         raise RuntimeError(f"Missing essential data for {ticker}: fcf, shares, or current_price")
-    
+
     # Calculate payout ratio if not provided
     if payout_ratio is None and dividend_rate and shares:
         total_dividends = dividend_rate * shares
@@ -125,79 +126,71 @@ def calculate_enhanced_dcf(
             payout_ratio = 0.0
     elif payout_ratio is None:
         payout_ratio = 0.0
-    
+
     # Use normalized FCF if enabled
     base_fcf = _calculate_normalized_fcf(stock, fcf, use_normalized_fcf, verbose)
-    
+
     # Calculate dividend and reinvestment metrics
     dividend_metrics = _calculate_dividend_metrics(
         base_fcf, shares, dividend_rate, payout_ratio, roe
     )
-    
+
     # Determine growth rates based on reinvestment policy
     if growth_rates is None:
-        growth_rates = _calculate_sustainable_growth_rates(
-            dividend_metrics, info, projection_years
-        )
-    
+        growth_rates = _calculate_sustainable_growth_rates(dividend_metrics, info, projection_years)
+
     # Project future cash flows and dividends
     projections = _project_dividend_and_growth(
         base_fcf, dividend_metrics, growth_rates, projection_years
     )
-    
+
     # Calculate present values
     valuation = _calculate_present_values(
-        projections, discount_rate, terminal_growth, projection_years,
-        cash, debt, shares
+        projections, discount_rate, terminal_growth, projection_years, cash, debt, shares
     )
-    
+
     # Calculate margin of safety
-    margin_of_safety = (valuation['fair_value_per_share'] - current_price) / current_price
-    
+    margin_of_safety = (valuation["fair_value_per_share"] - current_price) / current_price
+
     # Prepare comprehensive results
     results = {
-        'ticker': ticker,
-        'fair_value_per_share': valuation['fair_value_per_share'],
-        'current_price': current_price,
-        'margin_of_safety': margin_of_safety,
-        
+        "ticker": ticker,
+        "fair_value_per_share": valuation["fair_value_per_share"],
+        "current_price": current_price,
+        "margin_of_safety": margin_of_safety,
         # Dividend-specific metrics
-        'dividend_component_value': valuation['dividend_pv'] / shares,
-        'growth_component_value': valuation['growth_pv'] / shares,
-        'dividend_yield': dividend_rate / current_price if current_price > 0 else 0,
-        'implied_terminal_yield': valuation.get('terminal_dividend_yield', 0),
-        
+        "dividend_component_value": valuation["dividend_pv"] / shares,
+        "growth_component_value": valuation["growth_pv"] / shares,
+        "dividend_yield": dividend_rate / current_price if current_price > 0 else 0,
+        "implied_terminal_yield": valuation.get("terminal_dividend_yield", 0),
         # Capital allocation analysis
-        'payout_ratio': payout_ratio,
-        'retention_ratio': 1 - payout_ratio,
-        'reinvestment_efficiency': dividend_metrics.get('reinvestment_roic', 0),
-        'sustainable_growth_rate': dividend_metrics.get('sustainable_growth', 0),
-        
+        "payout_ratio": payout_ratio,
+        "retention_ratio": 1 - payout_ratio,
+        "reinvestment_efficiency": dividend_metrics.get("reinvestment_roic", 0),
+        "sustainable_growth_rate": dividend_metrics.get("sustainable_growth", 0),
         # Traditional DCF components
-        'enterprise_value': valuation['enterprise_value'],
-        'terminal_value': valuation['terminal_value'],
-        'terminal_value_pv': valuation['terminal_pv'],
-        
+        "enterprise_value": valuation["enterprise_value"],
+        "terminal_value": valuation["terminal_value"],
+        "terminal_value_pv": valuation["terminal_pv"],
         # Scenario analysis
-        'high_dividend_scenario': valuation.get('high_dividend_value', 0) / shares,
-        'high_growth_scenario': valuation.get('high_growth_value', 0) / shares,
-        
+        "high_dividend_scenario": valuation.get("high_dividend_value", 0) / shares,
+        "high_growth_scenario": valuation.get("high_growth_value", 0) / shares,
         # Inputs and assumptions
-        'inputs': {
-            'base_fcf': base_fcf,
-            'normalized_fcf_used': use_normalized_fcf,
-            'shares': shares,
-            'cash': cash,
-            'debt': debt,
-            'discount_rate': discount_rate,
-            'terminal_growth': terminal_growth,
-            'growth_rates': growth_rates
-        }
+        "inputs": {
+            "base_fcf": base_fcf,
+            "normalized_fcf_used": use_normalized_fcf,
+            "shares": shares,
+            "cash": cash,
+            "debt": debt,
+            "discount_rate": discount_rate,
+            "terminal_growth": terminal_growth,
+            "growth_rates": growth_rates,
+        },
     }
-    
+
     if verbose:
         _print_enhanced_dcf_summary(results, ticker)
-    
+
     return results
 
 
@@ -205,7 +198,7 @@ def _calculate_normalized_fcf(stock, fcf: float, use_normalized: bool, verbose: 
     """Calculate normalized FCF from historical data if requested."""
     if not use_normalized:
         return fcf
-    
+
     try:
         cf_df = stock.cashflow
         if not cf_df.empty:
@@ -215,7 +208,7 @@ def _calculate_normalized_fcf(stock, fcf: float, use_normalized: bool, verbose: 
                 operating_cf = cf_df.loc["Total Cash From Operating Activities"]
                 capex = cf_df.loc["Capital Expenditures"]
                 normalized = (operating_cf - capex).mean()
-            
+
             if not np.isnan(normalized) and normalized != 0:
                 if verbose:
                     print(f"Using normalized FCF: ${normalized:,.0f} vs TTM: ${fcf:,.0f}")
@@ -223,156 +216,164 @@ def _calculate_normalized_fcf(stock, fcf: float, use_normalized: bool, verbose: 
     except Exception as e:
         if verbose:
             print(f"Could not calculate normalized FCF: {e}")
-    
+
     return fcf
 
 
-def _calculate_dividend_metrics(fcf: float, shares: float, dividend_rate: float, 
-                               payout_ratio: float, roe: Optional[float]) -> Dict:
+def _calculate_dividend_metrics(
+    fcf: float, shares: float, dividend_rate: float, payout_ratio: float, roe: Optional[float]
+) -> Dict:
     """Calculate comprehensive dividend and reinvestment metrics."""
     metrics = {}
-    
+
     # Basic dividend metrics
     total_dividends = dividend_rate * shares if dividend_rate else 0
     reinvested_fcf = fcf - total_dividends
-    
-    metrics['total_dividends'] = total_dividends
-    metrics['reinvested_fcf'] = reinvested_fcf
-    metrics['dividend_per_share'] = dividend_rate
-    metrics['payout_ratio'] = payout_ratio
-    metrics['retention_ratio'] = 1 - payout_ratio
-    
+
+    metrics["total_dividends"] = total_dividends
+    metrics["reinvested_fcf"] = reinvested_fcf
+    metrics["dividend_per_share"] = dividend_rate
+    metrics["payout_ratio"] = payout_ratio
+    metrics["retention_ratio"] = 1 - payout_ratio
+
     # Sustainable growth calculation
     # Growth = ROE × Retention Ratio (for equity-financed growth)
     if roe and roe > 0:
         sustainable_growth = roe * (1 - payout_ratio)
-        metrics['sustainable_growth'] = min(sustainable_growth, 0.25)  # Cap at 25%
-        
+        metrics["sustainable_growth"] = min(sustainable_growth, 0.25)  # Cap at 25%
+
         # Use a more conservative reinvestment ROIC estimate
         # High ROE companies often can't sustain those returns on incremental capital
         if reinvested_fcf > 0:
             # Cap reinvestment returns at a reasonable level (15-20% for excellent companies)
             conservative_roic = min(roe * 0.15, 0.20)  # 15% of ROE, capped at 20%
-            metrics['reinvestment_roic'] = conservative_roic
+            metrics["reinvestment_roic"] = conservative_roic
         else:
-            metrics['reinvestment_roic'] = 0
+            metrics["reinvestment_roic"] = 0
     else:
         # Fallback calculation based on FCF efficiency
         if reinvested_fcf > 0 and fcf > 0:
             # Assume reinvestment generates returns at cost of capital
-            metrics['sustainable_growth'] = min(reinvested_fcf / fcf * 0.12, 0.15)
-            metrics['reinvestment_roic'] = 0.12
+            metrics["sustainable_growth"] = min(reinvested_fcf / fcf * 0.12, 0.15)
+            metrics["reinvestment_roic"] = 0.12
         else:
-            metrics['sustainable_growth'] = 0.02  # Minimal growth
-            metrics['reinvestment_roic'] = 0.02
-    
+            metrics["sustainable_growth"] = 0.02  # Minimal growth
+            metrics["reinvestment_roic"] = 0.02
+
     return metrics
 
 
-def _calculate_sustainable_growth_rates(dividend_metrics: Dict, info: Dict, 
-                                      projection_years: int) -> List[float]:
+def _calculate_sustainable_growth_rates(
+    dividend_metrics: Dict, info: Dict, projection_years: int
+) -> List[float]:
     """Calculate growth rates based on reinvestment policy."""
-    sustainable_growth = dividend_metrics.get('sustainable_growth', 0.05)
-    
+    sustainable_growth = dividend_metrics.get("sustainable_growth", 0.05)
+
     # Start with sustainable growth and gradually decline
     growth_rates = []
     for i in range(projection_years):
         # Decline growth over time as opportunities diminish
         decline_factor = 1 - (i * 0.05)  # 5% decline per year
         year_growth = sustainable_growth * decline_factor
-        
+
         # Floor at 2% (inflation baseline)
         year_growth = max(year_growth, 0.02)
         growth_rates.append(year_growth)
-    
+
     return growth_rates
 
 
-def _project_dividend_and_growth(base_fcf: float, dividend_metrics: Dict, 
-                                growth_rates: List[float], projection_years: int) -> Dict:
+def _project_dividend_and_growth(
+    base_fcf: float, dividend_metrics: Dict, growth_rates: List[float], projection_years: int
+) -> Dict:
     """Project future dividends and cash flows based on capital allocation."""
     projections = {
-        'fcf_projections': [],
-        'dividend_projections': [],
-        'reinvestment_projections': [],
-        'years': list(range(1, projection_years + 1))
+        "fcf_projections": [],
+        "dividend_projections": [],
+        "reinvestment_projections": [],
+        "years": list(range(1, projection_years + 1)),
     }
-    
+
     current_fcf = base_fcf
-    current_dividend_per_share = dividend_metrics['dividend_per_share']
-    payout_ratio = dividend_metrics['payout_ratio']
-    
+    current_dividend_per_share = dividend_metrics["dividend_per_share"]
+    payout_ratio = dividend_metrics["payout_ratio"]
+
     for i, growth_rate in enumerate(growth_rates):
         # Grow FCF
-        current_fcf *= (1 + growth_rate)
-        projections['fcf_projections'].append(current_fcf)
-        
+        current_fcf *= 1 + growth_rate
+        projections["fcf_projections"].append(current_fcf)
+
         # Calculate dividends based on payout ratio
         total_dividends = current_fcf * payout_ratio
-        projections['dividend_projections'].append(total_dividends)
-        
+        projections["dividend_projections"].append(total_dividends)
+
         # Calculate reinvestment
         reinvestment = current_fcf * (1 - payout_ratio)
-        projections['reinvestment_projections'].append(reinvestment)
-        
+        projections["reinvestment_projections"].append(reinvestment)
+
         # Grow dividend per share (assuming constant share count)
-        current_dividend_per_share *= (1 + growth_rate * payout_ratio)
-    
-    projections['final_dividend_per_share'] = current_dividend_per_share
-    
+        current_dividend_per_share *= 1 + growth_rate * payout_ratio
+
+    projections["final_dividend_per_share"] = current_dividend_per_share
+
     return projections
 
 
-def _calculate_present_values(projections: Dict, discount_rate: float, 
-                            terminal_growth: float, projection_years: int,
-                            cash: float, debt: float, shares: float) -> Dict:
+def _calculate_present_values(
+    projections: Dict,
+    discount_rate: float,
+    terminal_growth: float,
+    projection_years: int,
+    cash: float,
+    debt: float,
+    shares: float,
+) -> Dict:
     """Calculate present values of dividend and growth components."""
-    
+
     # Present value of projected dividends
     dividend_pv = sum(
-        div / (1 + discount_rate) ** (i + 1) 
-        for i, div in enumerate(projections['dividend_projections'])
+        div / (1 + discount_rate) ** (i + 1)
+        for i, div in enumerate(projections["dividend_projections"])
     )
-    
+
     # Present value of projected FCF (for growth component)
     fcf_pv = sum(
-        fcf / (1 + discount_rate) ** (i + 1)
-        for i, fcf in enumerate(projections['fcf_projections'])
+        fcf / (1 + discount_rate) ** (i + 1) for i, fcf in enumerate(projections["fcf_projections"])
     )
-    
+
     # Terminal value using Gordon Growth Model
-    final_fcf = projections['fcf_projections'][-1]
+    final_fcf = projections["fcf_projections"][-1]
     terminal_fcf = final_fcf * (1 + terminal_growth)
     terminal_value = terminal_fcf / (discount_rate - terminal_growth)
     terminal_pv = terminal_value / (1 + discount_rate) ** projection_years
-    
+
     # Terminal dividend value
-    final_dividend = projections['dividend_projections'][-1] * (1 + terminal_growth)
+    final_dividend = projections["dividend_projections"][-1] * (1 + terminal_growth)
     terminal_dividend_value = final_dividend / (discount_rate - terminal_growth)
     terminal_dividend_pv = terminal_dividend_value / (1 + discount_rate) ** projection_years
-    
+
     # Enterprise value and equity value
     enterprise_value = fcf_pv + terminal_pv
     equity_value = enterprise_value - debt + cash
-    
+
     # Separate dividend value component
     total_dividend_value = dividend_pv + terminal_dividend_pv
     growth_value = equity_value - total_dividend_value
-    
+
     # Fair value per share
     fair_value_per_share = equity_value / shares
-    
+
     return {
-        'dividend_pv': dividend_pv,
-        'terminal_dividend_pv': terminal_dividend_pv,
-        'total_dividend_value': total_dividend_value,
-        'growth_pv': growth_value,
-        'enterprise_value': enterprise_value,
-        'equity_value': equity_value,
-        'terminal_value': terminal_value,
-        'terminal_pv': terminal_pv,
-        'fair_value_per_share': fair_value_per_share,
-        'terminal_dividend_yield': (final_dividend / shares) / fair_value_per_share
+        "dividend_pv": dividend_pv,
+        "terminal_dividend_pv": terminal_dividend_pv,
+        "total_dividend_value": total_dividend_value,
+        "growth_pv": growth_value,
+        "enterprise_value": enterprise_value,
+        "equity_value": equity_value,
+        "terminal_value": terminal_value,
+        "terminal_pv": terminal_pv,
+        "fair_value_per_share": fair_value_per_share,
+        "terminal_dividend_yield": (final_dividend / shares) / fair_value_per_share,
     }
 
 
@@ -381,36 +382,40 @@ def _print_enhanced_dcf_summary(results: Dict, ticker: str) -> None:
     print(f"\n{'='*60}")
     print(f"ENHANCED DCF VALUATION - {ticker}")
     print(f"{'='*60}")
-    
+
     # Price and valuation summary
-    print(f"\n📊 VALUATION SUMMARY")
+    print("\n📊 VALUATION SUMMARY")
     print(f"Current Price:           ${results['current_price']:>10,.2f}")
     print(f"Fair Value per Share:    ${results['fair_value_per_share']:>10,.2f}")
     print(f"Margin of Safety:        {results['margin_of_safety']:>10.1%}")
-    
+
     # Value component breakdown
-    print(f"\n💰 VALUE COMPONENTS")
-    print(f"Dividend Component:      ${results['dividend_component_value']:>10,.2f} ({results['dividend_component_value']/results['fair_value_per_share']:.1%})")
-    print(f"Growth Component:        ${results['growth_component_value']:>10,.2f} ({results['growth_component_value']/results['fair_value_per_share']:.1%})")
-    
+    print("\n💰 VALUE COMPONENTS")
+    print(
+        f"Dividend Component:      ${results['dividend_component_value']:>10,.2f} ({results['dividend_component_value']/results['fair_value_per_share']:.1%})"
+    )
+    print(
+        f"Growth Component:        ${results['growth_component_value']:>10,.2f} ({results['growth_component_value']/results['fair_value_per_share']:.1%})"
+    )
+
     # Dividend analysis
-    print(f"\n💸 DIVIDEND ANALYSIS")
+    print("\n💸 DIVIDEND ANALYSIS")
     print(f"Current Dividend Yield:  {results['dividend_yield']:>10.2%}")
     print(f"Payout Ratio:            {results['payout_ratio']:>10.1%}")
     print(f"Retention Ratio:         {results['retention_ratio']:>10.1%}")
     print(f"Implied Terminal Yield:  {results['implied_terminal_yield']:>10.2%}")
-    
+
     # Capital allocation efficiency
-    print(f"\n🏭 CAPITAL ALLOCATION")
+    print("\n🏭 CAPITAL ALLOCATION")
     print(f"Sustainable Growth:      {results['sustainable_growth_rate']:>10.1%}")
     print(f"Reinvestment ROIC:       {results['reinvestment_efficiency']:>10.1%}")
-    
+
     # Key assumptions
-    print(f"\n📋 KEY ASSUMPTIONS")
+    print("\n📋 KEY ASSUMPTIONS")
     print(f"Discount Rate:           {results['inputs']['discount_rate']:>10.1%}")
     print(f"Terminal Growth:         {results['inputs']['terminal_growth']:>10.1%}")
     print(f"Base FCF:                ${results['inputs']['base_fcf']:>10,.0f}")
-    
+
     print(f"\n{'='*60}")
 
 
@@ -418,7 +423,7 @@ def _print_enhanced_dcf_summary(results: Dict, ticker: str) -> None:
 def calculate_dcf_with_dividends(ticker: str, **kwargs) -> Dict:
     """
     Enhanced DCF calculation with dividend policy awareness.
-    
+
     This is a drop-in replacement for the original calculate_dcf function
     that provides enhanced dividend treatment while maintaining compatibility.
     """

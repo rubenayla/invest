@@ -72,7 +72,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                     
                     logger.info(f"Updating dashboard with {len(tickers)} stocks from S&P 500")
                     dashboard = ValuationDashboard()
-                    dashboard.update_dashboard(tickers, timeout_per_stock=20)
+                    dashboard.update_dashboard(tickers, timeout_per_stock=45)
                     logger.info("Dashboard updated successfully")
                 except Exception as e:
                     logger.error(f"Dashboard update failed: {e}")

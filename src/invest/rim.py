@@ -3,7 +3,7 @@ def rim_valuation(
     net_income: float,
     cost_of_equity: float,
     n_years: int = 10,
-    growth_rate: float = 0.0
+    growth_rate: float = 0.0,
 ) -> float:
     """
     Residual Income Model (RIM) valuation using net income directly.

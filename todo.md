@@ -1,5 +1,6 @@
-Can you check if i have github actions enabled? And what are they doing?
 
+
+For testing, add an agent (how are they called? the ones that choose what to invest in. It's not the same as the valuation model, since it must choose one or several stocks to invest in, not just value them independently) that simply buys the biggest stocks of the sp500. If forced to diversity, the top x stocks, otherwise the top stock. Just that. I'd like it for comparison purposes and to see how it performs. Some curiosity.
 
 Make sure the actions either work or are deleted
 

@@ -5,23 +5,24 @@ These tools provide Claude with easy access to financial data and metrics
 for individual stocks or groups of stocks.
 """
 
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
+
 from ..core.analysis import (
-    get_comprehensive_stock_data,
-    get_specific_financial_metrics,
+    analyze_stock_trend_indicators,
     compare_multiple_stocks,
+    get_comprehensive_stock_data,
     get_sector_stock_analysis,
-    analyze_stock_trend_indicators
+    get_specific_financial_metrics,
 )
 
 
 def get_stock_data_detailed(ticker: str) -> Dict[str, Any]:
     """
     Get comprehensive stock data for a single ticker.
-    
+
     Args:
         ticker: Stock ticker symbol (e.g., 'AAPL', 'MSFT')
-    
+
     Returns:
         Dict containing detailed stock information formatted for analysis
     """
@@ -29,17 +30,16 @@ def get_stock_data_detailed(ticker: str) -> Dict[str, Any]:
 
 
 def get_financial_metrics(
-    ticker: str, 
-    metric_categories: Optional[List[str]] = None
+    ticker: str, metric_categories: Optional[List[str]] = None
 ) -> Dict[str, Any]:
     """
     Get specific financial metrics for a stock.
-    
+
     Args:
         ticker: Stock ticker symbol
         metric_categories: Categories to include. Options:
                           ['valuation', 'profitability', 'growth', 'financial_health', 'efficiency']
-    
+
     Returns:
         Dict containing requested financial metrics
     """
@@ -47,17 +47,16 @@ def get_financial_metrics(
 
 
 def compare_stocks(
-    tickers: List[str], 
-    comparison_metrics: Optional[List[str]] = None
+    tickers: List[str], comparison_metrics: Optional[List[str]] = None
 ) -> Dict[str, Any]:
     """
     Compare multiple stocks side by side.
-    
+
     Args:
         tickers: List of stock ticker symbols
         comparison_metrics: Metrics to compare. Options:
                            ['valuation', 'profitability', 'growth', 'size', 'financial_health']
-    
+
     Returns:
         Dict containing side-by-side comparison of stocks
     """
@@ -65,35 +64,30 @@ def compare_stocks(
 
 
 def get_sector_stocks(
-    sector: str, 
-    min_market_cap: Optional[float] = None, 
-    max_results: int = 50
+    sector: str, min_market_cap: Optional[float] = None, max_results: int = 50
 ) -> Dict[str, Any]:
     """
     Get stocks from a specific sector with basic metrics.
-    
+
     Args:
         sector: Sector name (e.g., 'Technology', 'Healthcare')
         min_market_cap: Minimum market cap in billions (optional)
         max_results: Maximum number of stocks to return
-    
+
     Returns:
         Dict containing stocks from the specified sector
     """
     return get_sector_stock_analysis(sector, min_market_cap, max_results)
 
 
-def analyze_stock_trends(
-    ticker: str, 
-    trend_periods: Optional[List[str]] = None
-) -> Dict[str, Any]:
+def analyze_stock_trends(ticker: str, trend_periods: Optional[List[str]] = None) -> Dict[str, Any]:
     """
     Analyze trends in key metrics for a stock (using available data).
-    
+
     Args:
         ticker: Stock ticker symbol
         trend_periods: Time periods to analyze (limited by available data)
-    
+
     Returns:
         Dict containing trend analysis based on available data
     """

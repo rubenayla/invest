@@ -2,65 +2,131 @@
 Investment Dashboard - Live updating HTML dashboard showing valuation model comparisons.
 
 Simple approach:
-1. Show existing data immediately 
+1. Show existing data immediately
 2. Update incrementally as new data comes in
 3. Don't block on slow models/stocks
 """
 
 import json
-import os
-import time
-from datetime import datetime
-from typing import Dict, List, Any, Optional
-from pathlib import Path
-import pandas as pd
-from concurrent.futures import ThreadPoolExecutor, as_completed
 import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 from .dcf import calculate_dcf
-from .dcf_enhanced import calculate_enhanced_dcf  
+from .dcf_enhanced import calculate_enhanced_dcf
 from .simple_ratios import calculate_simple_ratios_valuation
 
 logger = logging.getLogger(__name__)
 
+
 class ValuationDashboard:
     """Live updating investment dashboard."""
-    
+
     def __init__(self, output_dir: str = "dashboard"):
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
-        
+
         self.html_file = self.output_dir / "valuation_dashboard.html"
         self.data_file = self.output_dir / "dashboard_data.json"
-        
+
         # Load existing data if available
         self.data = self._load_existing_data()
-        
+
     def _load_existing_data(self) -> Dict:
         """Load existing dashboard data."""
         if self.data_file.exists():
             try:
-                with open(self.data_file, 'r') as f:
+                with open(self.data_file, "r") as f:
                     data = json.load(f)
                     logger.info(f"Loaded existing data for {len(data.get('stocks', {}))} stocks")
                     return data
             except Exception as e:
                 logger.warning(f"Could not load existing data: {e}")
-        
+
         return {
-            'last_updated': None,
-            'stocks': {},
-            'model_status': {
-                'dcf': 'not_run',
-                'dcf_enhanced': 'not_run', 
-                'simple_ratios': 'not_run'
-            }
+            "last_updated": None,
+            "stocks": {},
+            "model_status": {
+                "dcf": "not_run",
+                "dcf_enhanced": "not_run",
+                "simple_ratios": "not_run",
+            },
         }
-    
+
+    def _initialize_stocks(self, tickers: List[str]):
+        """Initialize all stocks with pending status."""
+        for ticker in tickers:
+            if ticker not in self.data["stocks"]:
+                self.data["stocks"][ticker] = {
+                    "ticker": ticker,
+                    "status": "pending",
+                    "status_message": "Waiting to be analyzed",
+                    "current_price": None,
+                    "valuations": {},
+                    "models_attempted": 0,
+                    "models_completed": 0,
+                    "last_attempt": None,
+                }
+            # Reset status for existing stocks
+            else:
+                self.data["stocks"][ticker]["status"] = "pending"
+                self.data["stocks"][ticker]["status_message"] = "Waiting to be analyzed"
+                self.data["stocks"][ticker]["models_attempted"] = 0
+                self.data["stocks"][ticker]["models_completed"] = 0
+
+    def _prioritize_stock_updates(self, tickers: List[str]) -> List[str]:
+        """Prioritize stocks based on update needs and data freshness."""
+
+        def get_priority_score(ticker):
+            """Calculate priority score for stock (lower = higher priority)."""
+            stock_data = self.data["stocks"].get(ticker, {})
+
+            # Priority 1: Never analyzed (no valuations)
+            if not stock_data.get("valuations"):
+                return (1, ticker)
+
+            # Priority 2: Incomplete analysis (< 3 models)
+            completed_models = len(stock_data.get("valuations", {}))
+            if completed_models < 3:
+                return (2, -completed_models, ticker)  # Fewer models = higher priority
+
+            # Priority 3: Failed previously (rate limited, data missing)
+            status = stock_data.get("status", "pending")
+            if status in ["rate_limited", "data_missing", "model_failed"]:
+                return (3, ticker)
+
+            # Priority 4: Older data (parse last_attempt timestamp)
+            last_attempt = stock_data.get("last_attempt")
+            if last_attempt:
+                # More recent = lower priority (higher timestamp sort value)
+                return (4, last_attempt, ticker)
+
+            # Priority 5: Complete and recent (lowest priority)
+            return (5, ticker)
+
+        # Sort by priority score
+        prioritized = sorted(tickers, key=get_priority_score)
+
+        # Log prioritization for debugging
+        logger.info(f"Prioritized {len(prioritized)} stocks:")
+        logger.info(
+            f"  Never analyzed: {len([t for t in tickers if not self.data['stocks'].get(t, {}).get('valuations')])}"
+        )
+        logger.info(
+            f"  Incomplete: {len([t for t in tickers if 0 < len(self.data['stocks'].get(t, {}).get('valuations', {})) < 3])}"
+        )
+        logger.info(
+            f"  Failed previously: {len([t for t in tickers if self.data['stocks'].get(t, {}).get('status') in ['rate_limited', 'data_missing', 'model_failed']])}"
+        )
+
+        return prioritized
+
     def update_dashboard(self, tickers: List[str], timeout_per_stock: int = 30):
         """
         Update dashboard with latest valuations.
-        
+
         Parameters
         ----------
         tickers : List[str]
@@ -69,128 +135,148 @@ class ValuationDashboard:
             Max seconds per stock per model (prevents hanging)
         """
         logger.info(f"Updating dashboard for {len(tickers)} stocks")
-        
-        # Generate initial HTML with existing data
+
+        # Initialize all stocks with pending status
+        self._initialize_stocks(tickers)
+
+        # Generate initial HTML with all stocks
         self._generate_html()
         print(f"Dashboard available at: {self.html_file.absolute()}")
-        
-        # Update each stock incrementally with more workers for full S&P 500
-        with ThreadPoolExecutor(max_workers=6) as executor:
-            # Submit all valuation tasks
+
+        # Prioritize stocks that need updates
+        prioritized_tickers = self._prioritize_stock_updates(tickers)
+
+        # Update each stock incrementally with fewer workers to avoid rate limits
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            # Submit all valuation tasks in priority order
             future_to_info = {}
-            
-            for ticker in tickers:
+
+            for ticker in prioritized_tickers:
                 # DCF
-                future = executor.submit(self._safe_valuation, ticker, 'dcf', timeout_per_stock)
-                future_to_info[future] = (ticker, 'dcf')
-                
+                future = executor.submit(self._safe_valuation, ticker, "dcf", timeout_per_stock)
+                future_to_info[future] = (ticker, "dcf")
+
                 # Enhanced DCF
-                future = executor.submit(self._safe_valuation, ticker, 'dcf_enhanced', timeout_per_stock)
-                future_to_info[future] = (ticker, 'dcf_enhanced')
-                
+                future = executor.submit(
+                    self._safe_valuation, ticker, "dcf_enhanced", timeout_per_stock
+                )
+                future_to_info[future] = (ticker, "dcf_enhanced")
+
                 # Simple Ratios
-                future = executor.submit(self._safe_valuation, ticker, 'simple_ratios', timeout_per_stock)
-                future_to_info[future] = (ticker, 'simple_ratios')
-            
+                future = executor.submit(
+                    self._safe_valuation, ticker, "simple_ratios", timeout_per_stock
+                )
+                future_to_info[future] = (ticker, "simple_ratios")
+
             # Process results as they complete
             completed_count = 0
             total_tasks = len(future_to_info)
-            
+
             # Initialize progress tracking
-            self.data['progress'] = {
-                'completed': 0,
-                'total': total_tasks,
-                'status': 'running',
-                'current_ticker': '',
-                'stocks_completed': 0,
-                'total_stocks': len(tickers)
+            self.data["progress"] = {
+                "completed": 0,
+                "total": total_tasks,
+                "status": "running",
+                "current_ticker": "",
+                "stocks_completed": 0,
+                "total_stocks": len(tickers),
             }
-            
+
             for future in as_completed(future_to_info, timeout=timeout_per_stock * len(tickers)):
                 ticker, model = future_to_info[future]
                 completed_count += 1
-                
+
                 # Update progress tracking
-                self.data['progress']['completed'] = completed_count
-                self.data['progress']['current_ticker'] = ticker
-                stocks_with_data = len([t for t in self.data['stocks'] if self.data['stocks'][t].get('valuations')])
-                self.data['progress']['stocks_completed'] = stocks_with_data
-                
+                self.data["progress"]["completed"] = completed_count
+                self.data["progress"]["current_ticker"] = ticker
+                stocks_with_data = len(
+                    [t for t in self.data["stocks"] if self.data["stocks"][t].get("valuations")]
+                )
+                self.data["progress"]["stocks_completed"] = stocks_with_data
+
+                # Update stock status to analyzing
+                self._update_stock_status(ticker, "analyzing", f"Processing {model} model")
+
                 try:
                     result = future.result()
                     if result:
                         self._update_stock_data(ticker, model, result)
                         self._generate_html()  # Update HTML immediately
-                        logger.info(f"✅ Updated {ticker} {model} ({completed_count}/{total_tasks})")
+                        logger.info(
+                            f"✅ Updated {ticker} {model} ({completed_count}/{total_tasks})"
+                        )
                     else:
+                        self._handle_failed_valuation(ticker, model, "Model returned no result")
                         logger.warning(f"❌ Failed {ticker} {model}")
-                        
+
                 except Exception as e:
+                    self._handle_failed_valuation(ticker, model, str(e))
                     logger.error(f"❌ Error {ticker} {model}: {e}")
-                
+
                 # Save progress
                 self._save_data()
-        
+
         # Mark analysis as completed
-        self.data['progress']['status'] = 'completed'
-        self.data['progress']['completed'] = total_tasks
-        self.data['last_updated'] = datetime.now().isoformat()
+        self.data["progress"]["status"] = "completed"
+        self.data["progress"]["completed"] = total_tasks
+        self.data["last_updated"] = datetime.now().isoformat()
         self._save_data()
         self._generate_html()
-        
+
         logger.info("Dashboard update complete!")
-    
+
     def _safe_valuation(self, ticker: str, model: str, timeout: int) -> Optional[Dict]:
         """Run valuation with timeout protection."""
         try:
-            if model == 'dcf':
+            if model == "dcf":
                 result = calculate_dcf(ticker, verbose=False)
-            elif model == 'dcf_enhanced':
+            elif model == "dcf_enhanced":
                 result = calculate_enhanced_dcf(ticker, verbose=False)
-            elif model == 'simple_ratios':
+            elif model == "simple_ratios":
                 # Simple ratios needs basic stock data
                 import yfinance as yf
+
                 stock = yf.Ticker(ticker)
                 info = stock.info
                 stock_data = {
-                    'ticker': ticker,
-                    'current_price': info.get('currentPrice'),
-                    'pe_ratio': info.get('trailingPE'),
-                    'pb_ratio': info.get('priceToBook'),
-                    'ps_ratio': info.get('priceToSalesTrailing12Months'),
-                    'dividend_yield': info.get('dividendYield'),
-                    'ev_ebitda': info.get('enterpriseToEbitda'),
-                    'peg_ratio': info.get('pegRatio'),
-                    'sector': info.get('sector')
+                    "ticker": ticker,
+                    "current_price": info.get("currentPrice"),
+                    "pe_ratio": info.get("trailingPE"),
+                    "pb_ratio": info.get("priceToBook"),
+                    "ps_ratio": info.get("priceToSalesTrailing12Months"),
+                    "dividend_yield": info.get("dividendYield"),
+                    "ev_ebitda": info.get("enterpriseToEbitda"),
+                    "peg_ratio": info.get("pegRatio"),
+                    "sector": info.get("sector"),
                 }
                 result = calculate_simple_ratios_valuation(stock_data)
             else:
                 return None
-            
+
             # Convert any pandas Series to Python types
             if result:
                 result = self._clean_result(result)
-            
+
             return result
-            
+
         except Exception as e:
             logger.warning(f"Valuation failed for {ticker} {model}: {e}")
             return None
-    
+
     def _clean_result(self, result: Dict) -> Dict:
         """Clean result to ensure all values are Python types, not pandas Series."""
         cleaned = {}
         for key, value in result.items():
-            if hasattr(value, 'item'):  # pandas scalar
+            if hasattr(value, "item"):  # pandas scalar
                 cleaned[key] = value.item()
-            elif hasattr(value, 'iloc') and len(value) > 0:  # pandas Series with data
+            elif hasattr(value, "iloc") and len(value) > 0:  # pandas Series with data
                 cleaned[key] = float(value.iloc[0])
             elif value is None:
                 cleaned[key] = 0.0  # Default for None values
             else:
                 cleaned[key] = value
         return cleaned
-    
+
     def _safe_format(self, value: Any, format_str: str = ".2f", placeholder: str = "-") -> str:
         """Safely format numeric values with proper type handling."""
         try:
@@ -202,42 +288,42 @@ class ValuationDashboard:
             return f"{float_val:{format_str}}"
         except (ValueError, TypeError):
             return placeholder
-    
+
     def _safe_percent(self, value: Any, placeholder: str = "-") -> str:
         """Safely format percentage values with proper type handling."""
         try:
             if value is None:
                 return placeholder
-            
+
             float_val = float(value)
             if float_val == 0.0:
                 return placeholder
-                
+
             # All values from our models are already in decimal format (0.15 = 15%)
             # No need to divide by 100
             return f"{float_val:.1%}"
         except (ValueError, TypeError):
             return placeholder
-    
+
     def _format_progress_display(self, progress: Dict) -> str:
         """Format progress information for HTML display."""
-        status = progress.get('status', 'not_started')
-        
-        if status == 'not_started':
-            return '<p><strong>📊 Analysis Status:</strong> Ready to start</p>'
-        
-        elif status == 'running':
-            completed = progress.get('completed', 0)
-            total = progress.get('total', 0)
-            stocks_done = progress.get('stocks_completed', 0)
-            total_stocks = progress.get('total_stocks', 0)
-            current = progress.get('current_ticker', '')
-            
+        status = progress.get("status", "not_started")
+
+        if status == "not_started":
+            return "<p><strong>📊 Analysis Status:</strong> Ready to start</p>"
+
+        elif status == "running":
+            completed = progress.get("completed", 0)
+            total = progress.get("total", 0)
+            stocks_done = progress.get("stocks_completed", 0)
+            total_stocks = progress.get("total_stocks", 0)
+            current = progress.get("current_ticker", "")
+
             if total > 0:
                 task_percent = (completed / total) * 100
                 stock_percent = (stocks_done / total_stocks) * 100 if total_stocks > 0 else 0
-                
-                return f'''
+
+                return f"""
                 <p><strong>🔄 Analysis Running:</strong></p>
                 <div style="background: #3498db; color: white; padding: 8px; border-radius: 4px; margin: 5px 0;">
                     <div>📈 <strong>Tasks:</strong> {completed:,}/{total:,} ({task_percent:.1f}%)</div>
@@ -247,122 +333,222 @@ class ValuationDashboard:
                         <div style="background: #27ae60; height: 100%; width: {task_percent:.1f}%; border-radius: 3px;"></div>
                     </div>
                 </div>
-                '''
+                """
             else:
-                return '<p><strong>🔄 Analysis Starting...</strong></p>'
-        
-        elif status == 'completed':
-            total = progress.get('total', 0)
-            return f'''
+                return "<p><strong>🔄 Analysis Starting...</strong></p>"
+
+        elif status == "completed":
+            total = progress.get("total", 0)
+            return f"""
             <p><strong>✅ Analysis Complete!</strong> Processed {total:,} tasks</p>
-            '''
-        
-        return '<p><strong>📊 Analysis Status:</strong> Unknown</p>'
-    
+            """
+
+        return "<p><strong>📊 Analysis Status:</strong> Unknown</p>"
+
+    def _update_stock_status(self, ticker: str, status: str, message: str):
+        """Update stock status and message."""
+        if ticker in self.data["stocks"]:
+            self.data["stocks"][ticker]["status"] = status
+            self.data["stocks"][ticker]["status_message"] = message
+            self.data["stocks"][ticker]["last_attempt"] = datetime.now().isoformat()
+
+    def _handle_failed_valuation(self, ticker: str, model: str, error_message: str):
+        """Handle failed valuation attempt."""
+        if ticker not in self.data["stocks"]:
+            return
+
+        self.data["stocks"][ticker]["models_attempted"] += 1
+
+        # Determine failure type and status
+        if "Rate limited" in error_message or "Too Many Requests" in error_message:
+            status = "rate_limited"
+            message = "API rate limit exceeded"
+        elif "Missing essential" in error_message:
+            status = "data_missing"
+            message = "Essential financial data unavailable"
+        else:
+            status = "model_failed"
+            message = f"Model calculation failed: {error_message[:50]}..."
+
+        self._update_stock_status(ticker, status, message)
+
     def _update_stock_data(self, ticker: str, model: str, result: Dict):
         """Update stock data with new valuation."""
-        if ticker not in self.data['stocks']:
-            self.data['stocks'][ticker] = {
-                'ticker': ticker,
-                'current_price': result.get('current_price', 0),
-                'valuations': {}
+        if ticker not in self.data["stocks"]:
+            self.data["stocks"][ticker] = {
+                "ticker": ticker,
+                "status": "pending",
+                "status_message": "Waiting to be analyzed",
+                "current_price": result.get("current_price", 0),
+                "valuations": {},
+                "models_attempted": 0,
+                "models_completed": 0,
+                "last_attempt": None,
             }
-        
+
         # Normalize margin of safety to decimal format
-        margin_value = result.get('margin_of_safety', result.get('upside_potential', 0))
-        
+        margin_value = result.get("margin_of_safety", result.get("upside_potential", 0))
+
         # Simple ratios returns percentage format (multiply by 100), others return decimal
-        if model == 'simple_ratios' and margin_value != 0:
+        if model == "simple_ratios" and margin_value != 0:
             margin_value = margin_value / 100  # Convert -63.81 to -0.6381
-        
+
         # Store valuation result
-        self.data['stocks'][ticker]['valuations'][model] = {
-            'fair_value': result.get('fair_value_per_share', result.get('valuation_price', 0)),
-            'current_price': result.get('current_price', 0),
-            'margin_of_safety': margin_value,
-            'confidence': result.get('confidence', 'medium'),
-            'last_updated': datetime.now().isoformat(),
-            
+        self.data["stocks"][ticker]["valuations"][model] = {
+            "fair_value": result.get("fair_value_per_share", result.get("valuation_price", 0)),
+            "current_price": result.get("current_price", 0),
+            "margin_of_safety": margin_value,
+            "confidence": result.get("confidence", "medium"),
+            "last_updated": datetime.now().isoformat(),
             # Model-specific data
-            'model_data': result
+            "model_data": result,
         }
-        
+
+        # Update completion tracking
+        self.data["stocks"][ticker]["models_completed"] += 1
+        self.data["stocks"][ticker]["models_attempted"] += 1
+
         # Update current price
-        if result.get('current_price'):
-            self.data['stocks'][ticker]['current_price'] = result['current_price']
-        
+        if result.get("current_price"):
+            self.data["stocks"][ticker]["current_price"] = result["current_price"]
+
+        # Update status based on completion
+        completed = self.data["stocks"][ticker]["models_completed"]
+        if completed >= 3:
+            self._update_stock_status(
+                ticker, "completed", f"All {completed} models completed successfully"
+            )
+        else:
+            self._update_stock_status(ticker, "analyzing", f"{completed}/3 models completed")
+
         # Update model status
-        self.data['model_status'][model] = 'completed'
-    
+        self.data["model_status"][model] = "completed"
+
     def _save_data(self):
         """Save dashboard data to JSON."""
         try:
-            with open(self.data_file, 'w') as f:
+            with open(self.data_file, "w") as f:
                 json.dump(self.data, f, indent=2)
         except Exception as e:
             logger.error(f"Could not save data: {e}")
-    
+
     def _generate_html(self):
         """Generate HTML dashboard."""
         html_content = self._create_html_template()
-        
+
         try:
-            with open(self.html_file, 'w') as f:
+            with open(self.html_file, "w") as f:
                 f.write(html_content)
         except Exception as e:
             logger.error(f"Could not write HTML: {e}")
-    
+
     def _create_html_template(self) -> str:
         """Create HTML dashboard template with current data."""
-        last_updated = self.data.get('last_updated', 'Never')
-        stocks = self.data.get('stocks', {})
-        progress = self.data.get('progress', {'status': 'not_started', 'completed': 0, 'total': 0, 'stocks_completed': 0, 'total_stocks': 0})
-        
-        # Sort stocks by best valuation (highest margin of safety)
-        def get_best_margin(stock_data):
-            """Get the best margin of safety across all models for a stock."""
-            valuations = stock_data.get('valuations', {})
+        last_updated = self.data.get("last_updated", "Never")
+        stocks = self.data.get("stocks", {})
+        progress = self.data.get(
+            "progress",
+            {
+                "status": "not_started",
+                "completed": 0,
+                "total": 0,
+                "stocks_completed": 0,
+                "total_stocks": 0,
+            },
+        )
+
+        # Sort stocks by status priority, then by best valuation
+        def get_sort_key(stock_item):
+            """Get sort key for stock (status priority + best margin)."""
+            ticker, stock_data = stock_item
+            status = stock_data.get("status", "pending")
+
+            # Status priority (lower = higher priority)
+            status_priority = {
+                "completed": 1,
+                "analyzing": 2,
+                "pending": 3,
+                "data_missing": 4,
+                "rate_limited": 5,
+                "model_failed": 6,
+            }.get(status, 7)
+
+            # Best margin of safety
+            valuations = stock_data.get("valuations", {})
             margins = []
-            
             for model_data in valuations.values():
-                margin = model_data.get('margin_of_safety')
+                margin = model_data.get("margin_of_safety")
                 if margin is not None:
                     margins.append(margin)
-            
-            # Return best (highest) margin, or -999 if no data (to sort to bottom)
-            return max(margins) if margins else -999
-        
-        # Sort stocks from best to worst valuation
-        sorted_stocks = sorted(stocks.items(), key=lambda x: get_best_margin(x[1]), reverse=True)
-        
+
+            best_margin = max(margins) if margins else -999
+
+            # Return tuple: (status_priority, -best_margin) for sorting
+            return (status_priority, -best_margin)
+
+        # Sort stocks by status then by valuation
+        sorted_stocks = sorted(stocks.items(), key=get_sort_key)
+
         # Generate stock table rows
         table_rows = ""
         for ticker, stock_data in sorted_stocks:
-            current_price = stock_data.get('current_price', 0)
-            valuations = stock_data.get('valuations', {})
-            
+            current_price = stock_data.get("current_price", 0)
+            valuations = stock_data.get("valuations", {})
+            status = stock_data.get("status", "pending")
+            status_message = stock_data.get("status_message", "Unknown")
+
             # Get valuations for each model
-            dcf_val = valuations.get('dcf', {})
-            enh_dcf_val = valuations.get('dcf_enhanced', {})
-            ratios_val = valuations.get('simple_ratios', {})
-            
+            dcf_val = valuations.get("dcf", {})
+            enh_dcf_val = valuations.get("dcf_enhanced", {})
+            ratios_val = valuations.get("simple_ratios", {})
+
             # Use class methods for safe formatting
-            
+
             # Format valuation cells with proper handling for missing data
             def format_valuation_cell(val_dict):
-                fair_value = val_dict.get('fair_value')
+                fair_value = val_dict.get("fair_value")
                 if fair_value is None or fair_value == 0:
                     return "-", "-"
-                return f"${self._safe_format(fair_value)}", self._safe_percent(val_dict.get('margin_of_safety'))
-            
+                return f"${self._safe_format(fair_value)}", self._safe_percent(
+                    val_dict.get("margin_of_safety")
+                )
+
             dcf_value, dcf_margin = format_valuation_cell(dcf_val)
-            enh_dcf_value, enh_dcf_margin = format_valuation_cell(enh_dcf_val) 
+            enh_dcf_value, enh_dcf_margin = format_valuation_cell(enh_dcf_val)
             ratios_value, ratios_margin = format_valuation_cell(ratios_val)
-            
+
+            # Format status with appropriate styling
+            status_icons = {
+                "completed": "✅",
+                "analyzing": "🔄",
+                "pending": "⏳",
+                "data_missing": "❌",
+                "rate_limited": "🚫",
+                "model_failed": "⚠️",
+            }
+            status_names = {
+                "completed": "Completed",
+                "analyzing": "Analyzing",
+                "pending": "Pending",
+                "data_missing": "Data Missing",
+                "rate_limited": "Rate Limited",
+                "model_failed": "Model Failed",
+            }
+            status_icon = status_icons.get(status, "❓")
+            status_name = status_names.get(status, "Unknown")
+            status_class = f"status-{status.replace('_', '-')}"
+
+            # Combine status name with message for tooltip
+            tooltip_text = f"{status_name}: {status_message}"
+
+            # Format current price based on availability
+            price_display = f"${self._safe_format(current_price)}" if current_price else "-"
+
             table_rows += f"""
-            <tr>
+            <tr class="{status_class}">
                 <td class="ticker">{ticker}</td>
-                <td class="price">${self._safe_format(current_price, placeholder="Loading...")}</td>
+                <td class="status" title="{tooltip_text}">{status_icon}</td>
+                <td class="price">{price_display}</td>
                 <td class="valuation">{dcf_value}</td>
                 <td class="margin">{dcf_margin}</td>
                 <td class="valuation">{enh_dcf_value}</td>
@@ -371,7 +557,7 @@ class ValuationDashboard:
                 <td class="margin">{ratios_margin}</td>
             </tr>
             """
-        
+
         return f"""
 <!DOCTYPE html>
 <html>
@@ -391,6 +577,7 @@ class ValuationDashboard:
         th.sortable.desc::after {{ content: ' ▼'; }}
         td {{ padding: 10px; border-bottom: 1px solid #ecf0f1; }}
         .ticker {{ font-weight: bold; color: #2c3e50; }}
+        .status {{ text-align: center; font-size: 1.2em; cursor: help; }}
         .price {{ color: #27ae60; font-weight: bold; }}
         .valuation {{ color: #3498db; }}
         .margin {{ font-weight: bold; }}
@@ -400,14 +587,22 @@ class ValuationDashboard:
         .last-updated {{ color: #7f8c8d; font-size: 0.9em; }}
         .placeholder {{ color: #95a5a6; font-style: italic; }}
         .loading {{ color: #f39c12; font-style: italic; }}
-        
+
+        /* Status-based row styling */
+        .status-completed {{ background-color: rgba(39, 174, 96, 0.1); }}
+        .status-analyzing {{ background-color: rgba(52, 152, 219, 0.1); }}
+        .status-pending {{ background-color: rgba(241, 196, 15, 0.1); }}
+        .status-data-missing {{ background-color: rgba(231, 76, 60, 0.1); }}
+        .status-rate-limited {{ background-color: rgba(155, 89, 182, 0.1); }}
+        .status-model-failed {{ background-color: rgba(230, 126, 34, 0.1); }}
+
         /* Tooltip styles */
         .tooltip {{
             position: relative;
             cursor: help;
             border-bottom: 1px dotted #666;
         }}
-        
+
         .tooltip .tooltiptext {{
             visibility: hidden;
             width: 280px;
@@ -429,7 +624,7 @@ class ValuationDashboard:
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
             pointer-events: none;
         }}
-        
+
         .tooltip .tooltiptext::after {{
             content: "";
             position: absolute;
@@ -440,23 +635,23 @@ class ValuationDashboard:
             border-style: solid;
             border-color: #2c3e50 transparent transparent transparent;
         }}
-        
+
         .tooltip:hover .tooltiptext {{
             visibility: visible;
             opacity: 1;
         }}
-        
+
         /* Override any table stacking context */
         table {{
             position: relative;
             z-index: 1;
         }}
-        
+
         th {{
             position: relative;
             z-index: 2;
         }}
-        
+
         /* Refresh button hover effect */
         .refresh-btn {{
             background: #3498db;
@@ -468,11 +663,11 @@ class ValuationDashboard:
             font-size: 0.9em;
             transition: background-color 0.2s ease;
         }}
-        
+
         .refresh-btn:hover {{
             background: #2980b9;
         }}
-        
+
         .refresh-btn:active {{
             background: #21618c;
         }}
@@ -483,15 +678,15 @@ class ValuationDashboard:
         <h1>🎯 Investment Valuation Dashboard</h1>
         <p>Comparing DCF, Enhanced DCF, and Simple Ratios valuation models</p>
     </div>
-    
+
     <div class="status">
         <p><strong>Last Updated:</strong> <span class="last-updated">{last_updated}</span></p>
         <p><strong>Stocks Analyzed:</strong> {len(stocks)}</p>
-        
+
         <div id="progress-section">
             {self._format_progress_display(progress)}
         </div>
-        
+
         <div style="display: flex; align-items: center; gap: 10px; margin: 10px 0;">
             <p style="margin: 0;"><em>Auto-refresh:</em></p>
             <button onclick="toggleAutoRefresh()" class="refresh-btn" id="autoRefreshBtn" style="font-size: 0.8em;">
@@ -499,10 +694,10 @@ class ValuationDashboard:
             </button>
             <span id="refreshStatus" style="font-size: 0.9em; color: #7f8c8d;">Active (10s)</span>
         </div>
-        
+
         <div style="margin-top: 15px; padding: 10px; background: #34495e; border-radius: 5px; color: white;">
             <p style="margin: 0; font-size: 0.9em;">
-                <strong>🚀 To start dashboard:</strong> 
+                <strong>🚀 To start dashboard:</strong>
                 <code style="background: #2c3e50; padding: 2px 8px; border-radius: 3px; font-family: monospace;">
                     poetry run python scripts/dashboard_server.py
                 </code>
@@ -510,13 +705,13 @@ class ValuationDashboard:
             <p style="margin: 8px 0 0 0; font-size: 0.8em; color: #bdc3c7;">
                 Then visit <strong>http://localhost:8080</strong> and use the update button below
             </p>
-            <button onclick="updateDashboard()" 
+            <button onclick="updateDashboard()"
                     class="refresh-btn" style="margin-top: 8px;" id="updateBtn">
                 🔄 Update Data
             </button>
         </div>
     </div>
-    
+
     <table>
         <thead>
             <tr>
@@ -525,7 +720,12 @@ class ValuationDashboard:
                         <span class="tooltiptext">Stock symbol traded on the exchange</span>
                     </span>
                 </th>
-                <th rowspan="2" class="sortable" onclick="sortTable(1, 'number')">
+                <th rowspan="2" class="sortable" onclick="sortTable(1, 'text')">
+                    <span class="tooltip">Status
+                        <span class="tooltiptext">Analysis status: ✅ Completed, 🔄 Analyzing, ⏳ Pending, ❌ Data Missing, 🚫 Rate Limited, ⚠️ Model Failed</span>
+                    </span>
+                </th>
+                <th rowspan="2" class="sortable" onclick="sortTable(2, 'number')">
                     <span class="tooltip">Current Price
                         <span class="tooltiptext">Latest market price per share from live data feeds</span>
                     </span>
@@ -547,32 +747,32 @@ class ValuationDashboard:
                 </th>
             </tr>
             <tr>
-                <th class="sortable" onclick="sortTable(2, 'currency')">
+                <th class="sortable" onclick="sortTable(3, 'currency')">
                     <span class="tooltip">Fair Value
                         <span class="tooltiptext">Estimated intrinsic value per share based on the model's assumptions and calculations</span>
                     </span>
                 </th>
-                <th class="sortable" onclick="sortTable(3, 'percent')">
+                <th class="sortable" onclick="sortTable(4, 'percent')">
                     <span class="tooltip">Upside/Downside
                         <span class="tooltiptext">Percentage difference between fair value and current price. Positive = undervalued (potential upside), Negative = overvalued (potential downside)</span>
                     </span>
                 </th>
-                <th class="sortable" onclick="sortTable(4, 'currency')">
+                <th class="sortable" onclick="sortTable(5, 'currency')">
                     <span class="tooltip">Fair Value
                         <span class="tooltiptext">Enhanced DCF estimated intrinsic value considering dividend policy and reinvestment efficiency</span>
                     </span>
                 </th>
-                <th class="sortable" onclick="sortTable(5, 'percent')">
+                <th class="sortable" onclick="sortTable(6, 'percent')">
                     <span class="tooltip">Upside/Downside
                         <span class="tooltiptext">Enhanced DCF margin of safety. Shows how much the stock could gain/lose based on dividend-aware valuation</span>
                     </span>
                 </th>
-                <th class="sortable" onclick="sortTable(6, 'currency')">
+                <th class="sortable" onclick="sortTable(7, 'currency')">
                     <span class="tooltip">Fair Value
                         <span class="tooltiptext">Ratio-based fair value using sector-adjusted P/E, P/B, P/S multiples and dividend yield expectations</span>
                     </span>
                 </th>
-                <th class="sortable" onclick="sortTable(7, 'percent')">
+                <th class="sortable" onclick="sortTable(8, 'percent')">
                     <span class="tooltip">Upside/Downside
                         <span class="tooltiptext">Simple ratios margin of safety. Based on how current ratios compare to historical/sector averages</span>
                     </span>
@@ -583,7 +783,7 @@ class ValuationDashboard:
             {table_rows}
         </tbody>
     </table>
-    
+
     <div class="status" style="margin-top: 20px;">
         <h3>📊 Model Comparison Notes:</h3>
         <ul>
@@ -595,7 +795,7 @@ class ValuationDashboard:
             💡 <strong>Tip:</strong> Hover over column headers for detailed explanations of each metric
         </p>
     </div>
-    
+
     <script>
         // Color-code margins and handle placeholders
         document.querySelectorAll('.margin').forEach(cell => {{
@@ -611,25 +811,25 @@ class ValuationDashboard:
                 }}
             }}
         }});
-        
+
         // Style placeholder values
         document.querySelectorAll('.valuation').forEach(cell => {{
             if (cell.textContent.trim() === '-') {{
                 cell.classList.add('placeholder');
             }}
         }});
-        
+
         // Style loading prices
         document.querySelectorAll('.price').forEach(cell => {{
             if (cell.textContent.includes('Loading')) {{
                 cell.classList.add('loading');
             }}
         }});
-        
+
         // Dynamic tooltip positioning
         document.querySelectorAll('.tooltip').forEach(tooltip => {{
             const tooltipText = tooltip.querySelector('.tooltiptext');
-            
+
             tooltip.addEventListener('mouseenter', function(e) {{
                 const rect = tooltip.getBoundingClientRect();
                 tooltipText.style.left = (rect.left + rect.width/2 - 140) + 'px';
@@ -637,14 +837,14 @@ class ValuationDashboard:
                 tooltipText.style.transform = 'translateY(-100%)';
             }});
         }});
-        
+
         // Dashboard update function
         async function updateDashboard() {{
             const btn = document.getElementById('updateBtn');
             const originalText = btn.innerHTML;
             btn.innerHTML = '⏳ Updating...';
             btn.disabled = true;
-            
+
             try {{
                 // Make request to update endpoint
                 const response = await fetch('/update', {{
@@ -653,7 +853,7 @@ class ValuationDashboard:
                         'Content-Type': 'application/json',
                     }}
                 }});
-                
+
                 if (response.ok) {{
                     btn.innerHTML = '🚀 Analysis Started!';
                     btn.style.background = '#f39c12';
@@ -675,7 +875,7 @@ class ValuationDashboard:
                 }}, 3000);
             }}
         }}
-        
+
         // Table sorting functionality
         function sortTable(columnIndex, dataType) {{
             const table = document.querySelector('table');
@@ -683,34 +883,38 @@ class ValuationDashboard:
             const rows = Array.from(tbody.querySelectorAll('tr'));
             const headers = table.querySelectorAll('th.sortable');
             const currentHeader = headers[columnIndex];
-            
+
             // Determine sort direction
             let ascending = true;
             if (currentHeader.classList.contains('asc')) {{
                 ascending = false;
             }}
-            
+
             // Clear all sort indicators
             headers.forEach(header => {{
                 header.classList.remove('asc', 'desc');
             }});
-            
+
             // Set current sort indicator
             currentHeader.classList.add(ascending ? 'asc' : 'desc');
-            
+
+            // Save sort state to localStorage
+            localStorage.setItem('dashboardSortColumn', columnIndex);
+            localStorage.setItem('dashboardSortDirection', ascending ? 'asc' : 'desc');
+
             // Sort rows based on data type
             rows.sort((a, b) => {{
                 const aCell = a.cells[columnIndex];
                 const bCell = b.cells[columnIndex];
                 let aValue = aCell.textContent.trim();
                 let bValue = bCell.textContent.trim();
-                
+
                 // Handle placeholder values
                 if (aValue === '-' || aValue === 'Loading...') aValue = ascending ? 'zzz' : '';
                 if (bValue === '-' || bValue === 'Loading...') bValue = ascending ? 'zzz' : '';
-                
+
                 let comparison = 0;
-                
+
                 switch (dataType) {{
                     case 'number':
                     case 'currency':
@@ -719,50 +923,50 @@ class ValuationDashboard:
                         const bNum = parseFloat(bValue.replace(/[$,]/g, '')) || 0;
                         comparison = aNum - bNum;
                         break;
-                        
+
                     case 'percent':
                         // Remove % and convert to number
                         const aPercent = parseFloat(aValue.replace('%', '')) || 0;
                         const bPercent = parseFloat(bValue.replace('%', '')) || 0;
                         comparison = aPercent - bPercent;
                         break;
-                        
+
                     case 'text':
                     default:
                         comparison = aValue.localeCompare(bValue);
                         break;
                 }}
-                
+
                 return ascending ? comparison : -comparison;
             }});
-            
+
             // Clear tbody and re-append sorted rows
             tbody.innerHTML = '';
             rows.forEach(row => tbody.appendChild(row));
         }}
-        
+
         // Auto-refresh control
         let autoRefreshInterval = null;
         let autoRefreshActive = true;
-        
+
         function startAutoRefresh() {{
             if (autoRefreshInterval) clearInterval(autoRefreshInterval);
             autoRefreshInterval = setInterval(() => {{
                 window.location.reload();
             }}, 10000); // 10 seconds
         }}
-        
+
         function stopAutoRefresh() {{
             if (autoRefreshInterval) {{
                 clearInterval(autoRefreshInterval);
                 autoRefreshInterval = null;
             }}
         }}
-        
+
         function toggleAutoRefresh() {{
             const btn = document.getElementById('autoRefreshBtn');
             const status = document.getElementById('refreshStatus');
-            
+
             if (autoRefreshActive) {{
                 // Pause
                 stopAutoRefresh();
@@ -779,9 +983,40 @@ class ValuationDashboard:
                 autoRefreshActive = true;
             }}
         }}
-        
+
+        // Restore sort state from localStorage
+        function restoreSortState() {{
+            const savedColumn = localStorage.getItem('dashboardSortColumn');
+            const savedDirection = localStorage.getItem('dashboardSortDirection');
+
+            if (savedColumn !== null) {{
+                const columnIndex = parseInt(savedColumn);
+                const headers = document.querySelectorAll('th.sortable');
+
+                // Get data type from onclick attribute
+                const onclickAttr = headers[columnIndex]?.getAttribute('onclick');
+                if (onclickAttr) {{
+                    const match = onclickAttr.match(/sortTable\\(\\d+,\\s*'([^']+)'\\)/);
+                    if (match) {{
+                        const dataType = match[1];
+
+                        // Apply saved direction to header first
+                        if (savedDirection === 'desc') {{
+                            headers[columnIndex].classList.add('asc'); // Add asc so sortTable will flip to desc
+                        }}
+
+                        // Sort the table
+                        sortTable(columnIndex, dataType);
+                    }}
+                }}
+            }}
+        }}
+
         // Start auto-refresh by default
         startAutoRefresh();
+
+        // Restore sort state after page loads
+        restoreSortState();
     </script>
 </body>
 </html>
@@ -791,23 +1026,23 @@ class ValuationDashboard:
 def create_dashboard(tickers: List[str] = None) -> str:
     """
     Create and update valuation dashboard.
-    
+
     Parameters
     ----------
     tickers : List[str], optional
         Tickers to analyze. If None, uses default set.
-        
+
     Returns
     -------
     str
         Path to generated HTML dashboard
     """
     if tickers is None:
-        tickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'JNJ', 'JPM', 'PG', 'KO']
-    
+        tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "JNJ", "JPM", "PG", "KO"]
+
     dashboard = ValuationDashboard()
     dashboard.update_dashboard(tickers)
-    
+
     return str(dashboard.html_file.absolute())
 
 
