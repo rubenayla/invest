@@ -248,9 +248,12 @@ def _calculate_dividend_metrics(fcf: float, shares: float, dividend_rate: float,
         sustainable_growth = roe * (1 - payout_ratio)
         metrics['sustainable_growth'] = min(sustainable_growth, 0.25)  # Cap at 25%
         
-        # Estimate reinvestment ROIC (return on reinvested capital)
+        # Use a more conservative reinvestment ROIC estimate
+        # High ROE companies often can't sustain those returns on incremental capital
         if reinvested_fcf > 0:
-            metrics['reinvestment_roic'] = sustainable_growth
+            # Cap reinvestment returns at a reasonable level (15-20% for excellent companies)
+            conservative_roic = min(roe * 0.15, 0.20)  # 15% of ROE, capped at 20%
+            metrics['reinvestment_roic'] = conservative_roic
         else:
             metrics['reinvestment_roic'] = 0
     else:

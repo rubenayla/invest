@@ -112,10 +112,25 @@ def main():
     # Compare to benchmark if available
     if 'benchmark_return' in results.metrics:
         print(f"\nBenchmark Comparison ({config.get('benchmark', 'SPY')}):")
-        print(f"  Benchmark Return: {results.metrics['benchmark_return']:.2f}%")
-        print(f"  Alpha: {results.metrics.get('alpha', 0):.2f}%")
-        print(f"  Beta: {results.metrics.get('beta', 0):.2f}")
-        print(f"  Information Ratio: {results.metrics.get('information_ratio', 0):.2f}")
+        
+        # Convert pandas Series to scalar if needed
+        def safe_format(value):
+            if hasattr(value, 'item'):
+                return value.item()
+            elif hasattr(value, 'iloc') and len(value) > 0:
+                return float(value.iloc[-1])  # Get last value
+            else:
+                return float(value) if value is not None else 0
+        
+        benchmark_return = safe_format(results.metrics['benchmark_return'])
+        alpha = safe_format(results.metrics.get('alpha', 0))
+        beta = safe_format(results.metrics.get('beta', 0))
+        info_ratio = safe_format(results.metrics.get('information_ratio', 0))
+        
+        print(f"  Benchmark Return: {benchmark_return:.2f}%")
+        print(f"  Alpha: {alpha:.2f}%")
+        print(f"  Beta: {beta:.2f}")
+        print(f"  Information Ratio: {info_ratio:.2f}")
     
     print("\n" + "="*60)
     

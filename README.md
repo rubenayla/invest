@@ -38,6 +38,26 @@ poetry run systematic-invest --list-configs
 poetry run systematic-invest --save-csv --save-json --output results/
 ```
 
+### Interactive Dashboard
+
+View and update your investment analysis in a live web dashboard:
+
+```bash
+# Start the dashboard server (opens browser automatically)
+poetry run python scripts/dashboard_server.py
+
+# Then visit http://localhost:8080
+# Click "Update Data" button to refresh valuations with latest market data
+```
+
+**Dashboard Features:**
+- 📊 **Live Valuation Comparison**: DCF, Enhanced DCF, and Simple Ratios side-by-side
+- 🔄 **One-Click Updates**: Refresh all data with button click (no command line needed)
+- 💡 **Tooltips**: Hover over column headers for metric explanations
+- 📈 **Real-Time Prices**: Current market prices with upside/downside calculations
+- 🎯 **Professional UI**: Clean, responsive design with auto-refresh during updates
+```
+
 ### Full S&P 500 Analysis
 
 To analyze ALL S&P 500 stocks (takes 10-15 minutes):
@@ -95,7 +115,8 @@ configs/               # Analysis configurations
 └── sector_benchmarks.yaml
 
 scripts/
-└── systematic_analysis.py  # Main CLI
+├── systematic_analysis.py  # Main CLI
+└── dashboard_server.py     # Interactive web dashboard
 ```
 
 ## Output Formats
@@ -108,6 +129,7 @@ Multiple output formats for different use cases:
 ## Key Features
 
 - **Systematic & Objective** - Eliminates human bias through consistent methodology
+- **Interactive Dashboard** - Live web interface with one-click updates and real-time valuations
 - **Configurable** - Customize all screening criteria via YAML files
 - **Comprehensive** - Analyzes quality, value, growth, and risk dimensions
 - **Scalable** - Handle individual stocks or entire market indices

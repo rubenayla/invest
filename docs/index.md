@@ -12,7 +12,11 @@ A configuration-driven, objective approach to investment analysis that eliminate
 # Install dependencies
 poetry install
 
-# Run basic analysis
+# Launch interactive dashboard (recommended)
+poetry run python scripts/dashboard_server.py
+# Opens automatically at http://localhost:8080
+
+# Or run command-line analysis
 poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
 
 # View results

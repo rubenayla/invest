@@ -1,0 +1,1528 @@
+{
+  "last_updated": "2025-08-18T20:58:33.261212",
+  "stocks": {
+    "AAPL": {
+      "ticker": "AAPL",
+      "current_price": 231.49,
+      "valuations": {
+        "simple_ratios": {
+          "fair_value": 83.683018345422,
+          "current_price": 231.49,
+          "margin_of_safety": -0.6385026638497473,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:27.014377",
+          "model_data": {
+            "model": "simple_ratios",
+            "ticker": "AAPL",
+            "valuation_price": 83.683018345422,
+            "current_price": 231.49,
+            "upside_potential": -63.85026638497473,
+            "confidence": "medium",
+            "composite_score": 17.81331728395062,
+            "component_scores": {
+              "pe_score": 44.12794222222223,
+              "pb_score": 0,
+              "ps_score": 0,
+              "ev_ebitda_score": 0,
+              "dividend_yield_score": 50
+            },
+            "current_ratios": {
+              "pe": 35.071213,
+              "pb": 52.23877,
+              "ps": 8.407229,
+              "ev_ebitda": 24.582,
+              "dividend_yield": 0.45
+            },
+            "target_ratios": {
+              "pe_target": 22.5,
+              "pb_target": 3.25,
+              "ps_target": 3.6,
+              "ev_ebitda_target": 12.0,
+              "dividend_yield_target": 0.03,
+              "peg_target": 1.0
+            },
+            "sector_adjustments": {
+              "pe_adj": 1.5,
+              "pb_adj": 1.3,
+              "ps_adj": 1.8
+            }
+          }
+        },
+        "dcf": {
+          "fair_value": 89.17893647511859,
+          "current_price": 231.49,
+          "margin_of_safety": -0.614761171216387,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:27.338408",
+          "model_data": {
+            "ticker": "AAPL",
+            "fair_value_per_share": 89.17893647511859,
+            "current_price": 231.49,
+            "margin_of_safety": -0.614761171216387,
+            "fcf_projection": [
+              113103638000.00002,
+              122875792323.20003,
+              132312653173.62178,
+              141204063466.88916,
+              149337417522.582,
+              156505613563.66595,
+              162515429124.5107,
+              167195873483.2966,
+              170406034254.1759,
+              172041932183.016
+            ],
+            "TV": 1754827708266.7632,
+            "tv_pv": 565007556889.6832,
+            "npv_fcf": 804769522224.7628,
+            "enterprise_value": 1369777079114.446,
+            "estimated_market_cap": 1323451077450.446,
+            "discount_rate": 0.12,
+            "growth_rates": [
+              0.096,
+              0.0864,
+              0.07680000000000001,
+              0.0672,
+              0.0576,
+              0.048,
+              0.03839999999999999,
+              0.028799999999999996,
+              0.019199999999999995,
+              0.009599999999999997
+            ],
+            "inputs": {
+              "normalized_fcf": 103196750000.0,
+              "shares": 14840399872,
+              "cash": 55372001280,
+              "debt": 101698002944
+            }
+          }
+        },
+        "dcf_enhanced": {
+          "fair_value": 247.13785517477592,
+          "current_price": 231.49,
+          "margin_of_safety": 0.06759624681314921,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:27.405325",
+          "model_data": {
+            "ticker": "AAPL",
+            "fair_value_per_share": 247.13785517477592,
+            "current_price": 231.49,
+            "margin_of_safety": 0.06759624681314921,
+            "dividend_component_value": 17.721965799649503,
+            "growth_component_value": 206.4257643870048,
+            "dividend_yield": 0.004492634671044105,
+            "implied_terminal_yield": 0.027447695752962156,
+            "payout_ratio": 0.16267952179329587,
+            "retention_ratio": 0.8373204782067041,
+            "reinvestment_efficiency": 0.2,
+            "sustainable_growth_rate": 0.25,
+            "enterprise_value": 3713950595966.099,
+            "terminal_value": 6513797828475.367,
+            "terminal_value_pv": 2097268569331.6606,
+            "high_dividend_scenario": 0.0,
+            "high_growth_scenario": 0.0,
+            "inputs": {
+              "base_fcf": 103196750000.0,
+              "normalized_fcf_used": true,
+              "shares": 14840399872,
+              "cash": 55372001280,
+              "debt": 101698002944,
+              "discount_rate": 0.12,
+              "terminal_growth": 0.025,
+              "growth_rates": [
+                0.25,
+                0.2375,
+                0.225,
+                0.2125,
+                0.2,
+                0.1875,
+                0.175,
+                0.16249999999999998,
+                0.15,
+                0.1375
+              ]
+            }
+          }
+        }
+      }
+    },
+    "MSFT": {
+      "ticker": "MSFT",
+      "current_price": 515.635,
+      "valuations": {
+        "dcf": {
+          "fair_value": 167.875633749687,
+          "current_price": 515.635,
+          "margin_of_safety": -0.6744293274318325,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:27.733015",
+          "model_data": {
+            "ticker": "MSFT",
+            "fair_value_per_share": 167.875633749687,
+            "current_price": 515.635,
+            "margin_of_safety": -0.6744293274318325,
+            "fcf_projection": [
+              79807846500.0,
+              92808544694.85,
+              106247221966.66429,
+              119708744989.84067,
+              132709114695.73737,
+              144719289575.7016,
+              155196966140.9824,
+              163624161402.43774,
+              169547356045.206,
+              172616163189.62424
+            ],
+            "TV": 1760684864534.1672,
+            "tv_pv": 566893404450.3168,
+            "npv_fcf": 698573707982.7936,
+            "enterprise_value": 1265467112433.1104,
+            "estimated_market_cap": 1247848111089.1104,
+            "discount_rate": 0.12,
+            "growth_rates": [
+              0.181,
+              0.1629,
+              0.1448,
+              0.12669999999999998,
+              0.10859999999999999,
+              0.0905,
+              0.07239999999999998,
+              0.05429999999999999,
+              0.03619999999999999,
+              0.018099999999999995
+            ],
+            "inputs": {
+              "normalized_fcf": 67576500000.0,
+              "shares": 7433169920,
+              "cash": 94564999168,
+              "debt": 112184000512
+            }
+          }
+        },
+        "simple_ratios": {
+          "fair_value": 228.62037155627328,
+          "current_price": 515.635,
+          "margin_of_safety": -0.5566236357961091,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:27.798201",
+          "model_data": {
+            "model": "simple_ratios",
+            "ticker": "MSFT",
+            "valuation_price": 228.62037155627328,
+            "current_price": 515.635,
+            "upside_potential": -55.662363579610904,
+            "confidence": "medium",
+            "composite_score": 14.406312345679018,
+            "component_scores": {
+              "pe_score": 31.862724444444467,
+              "pb_score": 0,
+              "ps_score": 0,
+              "ev_ebitda_score": 0,
+              "dividend_yield_score": 50
+            },
+            "current_ratios": {
+              "pe": 37.830887,
+              "pb": 11.1599655,
+              "ps": 13.604815,
+              "ev_ebitda": 24.814,
+              "dividend_yield": 0.64
+            },
+            "target_ratios": {
+              "pe_target": 22.5,
+              "pb_target": 3.25,
+              "ps_target": 3.6,
+              "ev_ebitda_target": 12.0,
+              "dividend_yield_target": 0.03,
+              "peg_target": 1.0
+            },
+            "sector_adjustments": {
+              "pe_adj": 1.5,
+              "pb_adj": 1.3,
+              "ps_adj": 1.8
+            }
+          }
+        },
+        "dcf_enhanced": {
+          "fair_value": 244.2019329266995,
+          "current_price": 515.635,
+          "margin_of_safety": -0.5264054361579421,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:27.854151",
+          "model_data": {
+            "ticker": "MSFT",
+            "fair_value_per_share": 244.2019329266995,
+            "current_price": 515.635,
+            "margin_of_safety": -0.5264054361579421,
+            "dividend_component_value": 46.484739538563815,
+            "growth_component_value": 144.56376132882122,
+            "dividend_yield": 0.0064386630077477285,
+            "implied_terminal_yield": 0.06422232832587962,
+            "payout_ratio": 0.404093201366085,
+            "retention_ratio": 0.595906798633915,
+            "reinvestment_efficiency": 0.049921497,
+            "sustainable_growth_rate": 0.1983237297352173,
+            "enterprise_value": 1832813463580.6003,
+            "terminal_value": 3036715144843.3027,
+            "terminal_value_pv": 977741003789.1821,
+            "high_dividend_scenario": 0.0,
+            "high_growth_scenario": 0.0,
+            "inputs": {
+              "base_fcf": 67576500000.0,
+              "normalized_fcf_used": true,
+              "shares": 7433169920,
+              "cash": 94564999168,
+              "debt": 112184000512,
+              "discount_rate": 0.12,
+              "terminal_growth": 0.025,
+              "growth_rates": [
+                0.1983237297352173,
+                0.18840754324845643,
+                0.17849135676169559,
+                0.1685751702749347,
+                0.15865898378817386,
+                0.148742797301413,
+                0.1388266108146521,
+                0.12891042432789124,
+                0.11899423784113038,
+                0.10907805135436953
+              ]
+            }
+          }
+        }
+      }
+    },
+    "GOOGL": {
+      "ticker": "GOOGL",
+      "current_price": 203.225,
+      "valuations": {
+        "simple_ratios": {
+          "fair_value": 136.8104900960579,
+          "current_price": 203.225,
+          "margin_of_safety": -0.32680285350691163,
+          "confidence": "low",
+          "last_updated": "2025-08-18T20:58:28.179491",
+          "model_data": {
+            "model": "simple_ratios",
+            "ticker": "GOOGL",
+            "valuation_price": 136.8104900960579,
+            "current_price": 203.225,
+            "upside_potential": -32.680285350691165,
+            "confidence": "low",
+            "composite_score": 42.972250712250705,
+            "component_scores": {
+              "pe_score": 88.89343589743588,
+              "pb_score": 0,
+              "ps_score": 0,
+              "ev_ebitda_score": 57.258333333333326,
+              "dividend_yield_score": 50
+            },
+            "current_ratios": {
+              "pe": 21.66578,
+              "pb": 6.778008,
+              "ps": 6.6324086,
+              "ev_ebitda": 17.129,
+              "dividend_yield": 0.41
+            },
+            "target_ratios": {
+              "pe_target": 19.5,
+              "pb_target": 3.0,
+              "ps_target": 3.0,
+              "ev_ebitda_target": 12.0,
+              "dividend_yield_target": 0.03,
+              "peg_target": 1.0
+            },
+            "sector_adjustments": {
+              "pe_adj": 1.3,
+              "pb_adj": 1.2,
+              "ps_adj": 1.5
+            }
+          }
+        },
+        "dcf": {
+          "fair_value": 191.43442590188675,
+          "current_price": 203.225,
+          "margin_of_safety": -0.058017340869052726,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:28.454141",
+          "model_data": {
+            "ticker": "GOOGL",
+            "fair_value_per_share": 191.43442590188675,
+            "current_price": 203.225,
+            "margin_of_safety": -0.058017340869052726,
+            "fcf_projection": [
+              76610444500.0,
+              86125461706.90001,
+              95633712679.34178,
+              104871929324.1662,
+              113555325072.20715,
+              121390642502.18944,
+              128091405968.31029,
+              133394390175.39832,
+              137076075344.23932,
+              138967725183.98984
+            ],
+            "TV": 1417470796876.6965,
+            "tv_pv": 456387660243.18286,
+            "npv_fcf": 603706385536.2891,
+            "enterprise_value": 1060094045779.4719,
+            "estimated_market_cap": 1113574043219.472,
+            "discount_rate": 0.12,
+            "growth_rates": [
+              0.138,
+              0.12420000000000002,
+              0.11040000000000001,
+              0.0966,
+              0.0828,
+              0.069,
+              0.05519999999999999,
+              0.04139999999999999,
+              0.027599999999999996,
+              0.013799999999999998
+            ],
+            "inputs": {
+              "normalized_fcf": 67320250000.0,
+              "shares": 5816999936,
+              "cash": 95147999232,
+              "debt": 41668001792
+            }
+          }
+        },
+        "dcf_enhanced": {
+          "fair_value": 425.695427635804,
+          "current_price": 203.225,
+          "margin_of_safety": 1.0947000990813334,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:28.490591",
+          "model_data": {
+            "ticker": "GOOGL",
+            "fair_value_per_share": 425.695427635804,
+            "current_price": 203.225,
+            "margin_of_safety": 1.0947000990813334,
+            "dividend_component_value": 17.793935329196692,
+            "growth_component_value": 384.81800360825554,
+            "dividend_yield": 0.004133349735514823,
+            "implied_terminal_yield": 0.01599949564729026,
+            "payout_ratio": 0.09814467852366127,
+            "retention_ratio": 0.9018553214763387,
+            "reinvestment_efficiency": 0.0522435,
+            "sustainable_growth_rate": 0.25,
+            "enterprise_value": 2422790277872.9644,
+            "terminal_value": 4249266554057.3604,
+            "terminal_value_pv": 1368150105546.4417,
+            "high_dividend_scenario": 0.0,
+            "high_growth_scenario": 0.0,
+            "inputs": {
+              "base_fcf": 67320250000.0,
+              "normalized_fcf_used": true,
+              "shares": 5816999936,
+              "cash": 95147999232,
+              "debt": 41668001792,
+              "discount_rate": 0.12,
+              "terminal_growth": 0.025,
+              "growth_rates": [
+                0.25,
+                0.2375,
+                0.225,
+                0.2125,
+                0.2,
+                0.1875,
+                0.175,
+                0.16249999999999998,
+                0.15,
+                0.1375
+              ]
+            }
+          }
+        }
+      }
+    },
+    "AMZN": {
+      "ticker": "AMZN",
+      "current_price": 231.165,
+      "valuations": {
+        "dcf": {
+          "fair_value": 5.884120855783196,
+          "current_price": 231.165,
+          "margin_of_safety": -0.9745457969165608,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:28.941024",
+          "model_data": {
+            "ticker": "AMZN",
+            "fair_value_per_share": 5.884120855783196,
+            "current_price": 231.165,
+            "margin_of_safety": -0.9745457969165608,
+            "fcf_projection": [
+              9482077000.0,
+              10617081616.9,
+              11746739100.93816,
+              12840360511.235502,
+              13865021280.032097,
+              14787045195.154232,
+              15573715999.536436,
+              16195107267.91794,
+              16625897121.244556,
+              16847021552.957111
+            ],
+            "TV": 171839619840.16257,
+            "tv_pv": 55327758574.451904,
+            "npv_fcf": 73815799108.59602,
+            "enterprise_value": 129143557683.04793,
+            "estimated_market_cap": 62753558067.04793,
+            "discount_rate": 0.12,
+            "growth_rates": [
+              0.133,
+              0.11970000000000001,
+              0.10640000000000001,
+              0.0931,
+              0.0798,
+              0.0665,
+              0.05319999999999999,
+              0.03989999999999999,
+              0.026599999999999995,
+              0.013299999999999998
+            ],
+            "inputs": {
+              "normalized_fcf": 8369000000.0,
+              "shares": 10664899584,
+              "cash": 93180002304,
+              "debt": 159570001920
+            }
+          }
+        },
+        "simple_ratios": {
+          "fair_value": 112.18145960490772,
+          "current_price": 231.165,
+          "margin_of_safety": -0.5147126095866255,
+          "confidence": "high",
+          "last_updated": "2025-08-18T20:58:28.666369",
+          "model_data": {
+            "model": "simple_ratios",
+            "ticker": "AMZN",
+            "valuation_price": 112.18145960490772,
+            "current_price": 231.165,
+            "upside_potential": -51.47126095866255,
+            "confidence": "high",
+            "composite_score": 13.615854166666667,
+            "component_scores": {
+              "pe_score": 0,
+              "pb_score": 0,
+              "ps_score": 16.029000000000003,
+              "ev_ebitda_score": 42.44166666666666
+            },
+            "current_ratios": {
+              "pe": 35.238567,
+              "pb": 7.3828683,
+              "ps": 3.67942,
+              "ev_ebitda": 18.907
+            },
+            "target_ratios": {
+              "pe_target": 15.0,
+              "pb_target": 2.5,
+              "ps_target": 2.0,
+              "ev_ebitda_target": 12.0,
+              "dividend_yield_target": 0.03,
+              "peg_target": 1.0
+            },
+            "sector_adjustments": {}
+          }
+        },
+        "dcf_enhanced": {
+          "fair_value": 21.664453696450835,
+          "current_price": 231.165,
+          "margin_of_safety": -0.9062814279996936,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:29.131546",
+          "model_data": {
+            "ticker": "AMZN",
+            "fair_value_per_share": 21.664453696450835,
+            "current_price": 231.165,
+            "margin_of_safety": -0.9062814279996936,
+            "dividend_component_value": 0.0,
+            "growth_component_value": 21.664453696450835,
+            "dividend_yield": 0.0,
+            "implied_terminal_yield": 0.0,
+            "payout_ratio": 0.0,
+            "retention_ratio": 1.0,
+            "reinvestment_efficiency": 0.037155,
+            "sustainable_growth_rate": 0.2477,
+            "enterprise_value": 297439222830.8658,
+            "terminal_value": 520454024862.952,
+            "terminal_value_pv": 167572266881.77917,
+            "high_dividend_scenario": 0.0,
+            "high_growth_scenario": 0.0,
+            "inputs": {
+              "base_fcf": 8369000000.0,
+              "normalized_fcf_used": true,
+              "shares": 10664899584,
+              "cash": 93180002304,
+              "debt": 159570001920,
+              "discount_rate": 0.12,
+              "terminal_growth": 0.025,
+              "growth_rates": [
+                0.2477,
+                0.235315,
+                0.22293000000000002,
+                0.210545,
+                0.19816,
+                0.185775,
+                0.17339,
+                0.16100499999999998,
+                0.14862,
+                0.13623500000000002
+              ]
+            }
+          }
+        }
+      }
+    },
+    "JNJ": {
+      "ticker": "JNJ",
+      "current_price": 176.685,
+      "valuations": {
+        "simple_ratios": {
+          "fair_value": 133.26558248115816,
+          "current_price": 176.685,
+          "margin_of_safety": -0.24574478602508332,
+          "confidence": "low",
+          "last_updated": "2025-08-18T20:58:29.437721",
+          "model_data": {
+            "model": "simple_ratios",
+            "ticker": "JNJ",
+            "valuation_price": 133.26558248115816,
+            "current_price": 176.685,
+            "upside_potential": -24.574478602508332,
+            "confidence": "low",
+            "composite_score": 52.262289461711134,
+            "component_scores": {
+              "pe_score": 94.90542777777777,
+              "pb_score": 2.9471127272727493,
+              "ps_score": 19.41298461538463,
+              "ev_ebitda_score": 74.04166666666667,
+              "dividend_yield_score": 50
+            },
+            "current_ratios": {
+              "pe": 18.917023,
+              "pb": 5.4189544,
+              "ps": 4.6952624,
+              "ev_ebitda": 15.115,
+              "dividend_yield": 2.94
+            },
+            "target_ratios": {
+              "pe_target": 18.0,
+              "pb_target": 2.75,
+              "ps_target": 2.6,
+              "ev_ebitda_target": 12.0,
+              "dividend_yield_target": 0.03,
+              "peg_target": 1.0
+            },
+            "sector_adjustments": {
+              "pe_adj": 1.2,
+              "pb_adj": 1.1,
+              "ps_adj": 1.3
+            }
+          }
+        },
+        "dcf": {
+          "fair_value": 72.56845158785957,
+          "current_price": 176.69,
+          "margin_of_safety": -0.5892894244843535,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:29.432748",
+          "model_data": {
+            "ticker": "JNJ",
+            "fair_value_per_share": 72.56845158785957,
+            "current_price": 176.69,
+            "margin_of_safety": -0.5892894244843535,
+            "fcf_projection": [
+              19250310000.0,
+              20255176182.0,
+              21195016356.8448,
+              22055534020.932697,
+              22823066604.861153,
+              23484935536.402122,
+              24029786040.84665,
+              24447904317.957382,
+              24731500008.04569,
+              24874942708.092354
+            ],
+            "TV": 253724415622.54202,
+            "tv_pv": 81692471300.07278,
+            "npv_fcf": 124958029986.84248,
+            "enterprise_value": 206650501286.91528,
+            "estimated_market_cap": 174769502374.91528,
+            "discount_rate": 0.12,
+            "growth_rates": [
+              0.058,
+              0.0522,
+              0.046400000000000004,
+              0.0406,
+              0.0348,
+              0.029,
+              0.023199999999999995,
+              0.017399999999999995,
+              0.011599999999999997,
+              0.005799999999999999
+            ],
+            "inputs": {
+              "normalized_fcf": 18195000000.0,
+              "shares": 2408339968,
+              "cash": 18880000000,
+              "debt": 50760998912
+            }
+          }
+        },
+        "dcf_enhanced": {
+          "fair_value": 65.57113010708261,
+          "current_price": 176.685,
+          "margin_of_safety": -0.6288811721024274,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:29.475713",
+          "model_data": {
+            "ticker": "JNJ",
+            "fair_value_per_share": 65.57113010708261,
+            "current_price": 176.685,
+            "margin_of_safety": -0.6288811721024274,
+            "dividend_component_value": 46.81580117164971,
+            "growth_component_value": -13.237748546969263,
+            "dividend_yield": 0.029430908113308996,
+            "implied_terminal_yield": 0.1439617711408534,
+            "payout_ratio": 1.0,
+            "retention_ratio": 0.0,
+            "reinvestment_efficiency": 0.045318,
+            "sustainable_growth_rate": 0.0,
+            "enterprise_value": 189798572295.8152,
+            "terminal_value": 239306247985.26025,
+            "terminal_value_pv": 77050207200.18994,
+            "high_dividend_scenario": 0.0,
+            "high_growth_scenario": 0.0,
+            "inputs": {
+              "base_fcf": 18195000000.0,
+              "normalized_fcf_used": true,
+              "shares": 2408339968,
+              "cash": 18880000000,
+              "debt": 50760998912,
+              "discount_rate": 0.12,
+              "terminal_growth": 0.025,
+              "growth_rates": [
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02
+              ]
+            }
+          }
+        }
+      }
+    },
+    "PG": {
+      "ticker": "PG",
+      "current_price": 155.69,
+      "valuations": {
+        "simple_ratios": {
+          "fair_value": 89.66099261107182,
+          "current_price": 155.69,
+          "margin_of_safety": -0.4241056419097448,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:29.850462",
+          "model_data": {
+            "model": "simple_ratios",
+            "ticker": "PG",
+            "valuation_price": 89.66099261107182,
+            "current_price": 155.69,
+            "upside_potential": -42.41056419097448,
+            "confidence": "medium",
+            "composite_score": 31.762870370370365,
+            "component_scores": {
+              "pe_score": 40.553,
+              "pb_score": 0,
+              "ps_score": 0,
+              "ev_ebitda_score": 67.24166666666666,
+              "dividend_yield_score": 50
+            },
+            "current_ratios": {
+              "pe": 23.91705,
+              "pb": 7.117063,
+              "ps": 4.326843,
+              "ev_ebitda": 15.931,
+              "dividend_yield": 2.74
+            },
+            "target_ratios": {
+              "pe_target": 15.0,
+              "pb_target": 2.5,
+              "ps_target": 2.0,
+              "ev_ebitda_target": 12.0,
+              "dividend_yield_target": 0.03,
+              "peg_target": 1.0
+            },
+            "sector_adjustments": {}
+          }
+        },
+        "dcf_enhanced": {
+          "fair_value": 58.77218370807526,
+          "current_price": 155.69,
+          "margin_of_safety": -0.6225050824839408,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:30.272323",
+          "model_data": {
+            "ticker": "PG",
+            "fair_value_per_share": 58.77218370807526,
+            "current_price": 155.69,
+            "margin_of_safety": -0.6225050824839408,
+            "dividend_component_value": 35.74819501647304,
+            "growth_component_value": -2.4232030530221267,
+            "dividend_yield": 0.02716937504014388,
+            "implied_terminal_yield": 0.1277532233888139,
+            "payout_ratio": 0.8706605233788427,
+            "retention_ratio": 0.1293394766211573,
+            "reinvestment_efficiency": 0.046862999999999995,
+            "sustainable_growth_rate": 0.04040823928598196,
+            "enterprise_value": 164636201109.34906,
+            "terminal_value": 212631078223.36462,
+            "terminal_value_pv": 68461516455.346146,
+            "high_dividend_scenario": 0.0,
+            "high_growth_scenario": 0.0,
+            "inputs": {
+              "base_fcf": 14480250000.0,
+              "normalized_fcf_used": true,
+              "shares": 2342370048,
+              "cash": 9555999744,
+              "debt": 36525998080,
+              "discount_rate": 0.12,
+              "terminal_growth": 0.025,
+              "growth_rates": [
+                0.04040823928598196,
+                0.03838782732168286,
+                0.03636741535738376,
+                0.03434700339308466,
+                0.03232659142878557,
+                0.03030617946448647,
+                0.02828576750018737,
+                0.02626535553588827,
+                0.024244943571589173,
+                0.022224531607290078
+              ]
+            }
+          }
+        },
+        "dcf": {
+          "fair_value": 47.75577400237075,
+          "current_price": 155.7,
+          "margin_of_safety": -0.6932834039667903,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:30.234932",
+          "model_data": {
+            "ticker": "PG",
+            "fair_value_per_share": 47.75577400237075,
+            "current_price": 155.7,
+            "margin_of_safety": -0.6932834039667903,
+            "fcf_projection": [
+              14726414249.999998,
+              14951728388.025,
+              15155071894.10214,
+              15335417249.641956,
+              15491838505.588305,
+              15623519132.885805,
+              15729759062.989428,
+              15809980834.210676,
+              15863734769.046993,
+              15890703118.154373
+            ],
+            "TV": 162085171805.17462,
+            "tv_pv": 52187087369.471085,
+            "npv_fcf": 86644605608.73923,
+            "enterprise_value": 138831692978.21033,
+            "estimated_market_cap": 111861694642.21033,
+            "discount_rate": 0.12,
+            "growth_rates": [
+              0.017,
+              0.015300000000000001,
+              0.013600000000000001,
+              0.0119,
+              0.0102,
+              0.0085,
+              0.006799999999999999,
+              0.0050999999999999995,
+              0.0033999999999999994,
+              0.0016999999999999997
+            ],
+            "inputs": {
+              "normalized_fcf": 14480250000.0,
+              "shares": 2342370048,
+              "cash": 9555999744,
+              "debt": 36525998080
+            }
+          }
+        }
+      }
+    },
+    "KO": {
+      "ticker": "KO",
+      "current_price": 69.115,
+      "valuations": {
+        "simple_ratios": {
+          "fair_value": 31.885983744866373,
+          "current_price": 69.115,
+          "margin_of_safety": -0.5386532048778647,
+          "confidence": "high",
+          "last_updated": "2025-08-18T20:58:30.561932",
+          "model_data": {
+            "model": "simple_ratios",
+            "ticker": "KO",
+            "valuation_price": 31.885983744866373,
+            "current_price": 69.115,
+            "upside_potential": -53.86532048778647,
+            "confidence": "high",
+            "composite_score": 20.479879629629636,
+            "component_scores": {
+              "pe_score": 36.60756666666667,
+              "pb_score": 0,
+              "ps_score": 0,
+              "ev_ebitda_score": 21.40000000000002,
+              "dividend_yield_score": 50
+            },
+            "current_ratios": {
+              "pe": 24.508865,
+              "pb": 10.407318,
+              "ps": 6.320346,
+              "ev_ebitda": 21.432,
+              "dividend_yield": 2.92
+            },
+            "target_ratios": {
+              "pe_target": 15.0,
+              "pb_target": 2.5,
+              "ps_target": 2.0,
+              "ev_ebitda_target": 12.0,
+              "dividend_yield_target": 0.03,
+              "peg_target": 1.0
+            },
+            "sector_adjustments": {}
+          }
+        },
+        "dcf": {
+          "fair_value": 11.060708644137557,
+          "current_price": 69.115,
+          "margin_of_safety": -0.839966597060876,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:30.555791",
+          "model_data": {
+            "ticker": "KO",
+            "fair_value_per_share": 11.060708644137557,
+            "current_price": 69.115,
+            "margin_of_safety": -0.839966597060876,
+            "fcf_projection": [
+              8943480000.0,
+              9056167848.0,
+              9157596927.8976,
+              9247341377.790997,
+              9325019045.36444,
+              9390294178.681992,
+              9442879826.082611,
+              9482539921.352158,
+              9509091033.131943,
+              9522403760.578327
+            ],
+            "TV": 97128518357.89896,
+            "tv_pv": 31272783420.951553,
+            "npv_fcf": 52244853126.99386,
+            "enterprise_value": 83517636547.9454,
+            "estimated_market_cap": 47601637315.945404,
+            "discount_rate": 0.12,
+            "growth_rates": [
+              0.014,
+              0.0126,
+              0.011200000000000002,
+              0.0098,
+              0.0084,
+              0.007,
+              0.005599999999999999,
+              0.004199999999999999,
+              0.0027999999999999995,
+              0.0013999999999999998
+            ],
+            "inputs": {
+              "normalized_fcf": 8820000000.0,
+              "shares": 4303669760,
+              "cash": 14296999936,
+              "debt": 50212999168
+            }
+          }
+        },
+        "dcf_enhanced": {
+          "fair_value": 13.032734385555974,
+          "current_price": 69.115,
+          "margin_of_safety": -0.8114340680669033,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:30.909401",
+          "model_data": {
+            "ticker": "KO",
+            "fair_value_per_share": 13.032734385555974,
+            "current_price": 69.115,
+            "margin_of_safety": -0.8114340680669033,
+            "dividend_component_value": 12.699535597634364,
+            "growth_component_value": -8.345435694396775,
+            "dividend_yield": 0.029516024017941116,
+            "implied_terminal_yield": 0.19648060439468043,
+            "payout_ratio": 1.0,
+            "retention_ratio": 0.0,
+            "reinvestment_efficiency": 0.06355499699999999,
+            "sustainable_growth_rate": 0.0,
+            "enterprise_value": 92004584097.22943,
+            "terminal_value": 116003358462.76424,
+            "terminal_value_pv": 37349976779.6469,
+            "high_dividend_scenario": 0.0,
+            "high_growth_scenario": 0.0,
+            "inputs": {
+              "base_fcf": 8820000000.0,
+              "normalized_fcf_used": true,
+              "shares": 4303669760,
+              "cash": 14296999936,
+              "debt": 50212999168,
+              "discount_rate": 0.12,
+              "terminal_growth": 0.025,
+              "growth_rates": [
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02,
+                0.02
+              ]
+            }
+          }
+        }
+      }
+    },
+    "JPM": {
+      "ticker": "JPM",
+      "current_price": 291.3,
+      "valuations": {
+        "simple_ratios": {
+          "fair_value": 265.1849607632324,
+          "current_price": 291.3,
+          "margin_of_safety": -0.08964998021547398,
+          "confidence": "low",
+          "last_updated": "2025-08-18T20:58:31.155853",
+          "model_data": {
+            "model": "simple_ratios",
+            "ticker": "JPM",
+            "valuation_price": 265.1849607632324,
+            "current_price": 291.3,
+            "upside_potential": -8.964998021547398,
+            "confidence": "low",
+            "composite_score": 71.42857142857143,
+            "component_scores": {
+              "pe_score": 100,
+              "pb_score": 100,
+              "ps_score": 0,
+              "dividend_yield_score": 50
+            },
+            "current_ratios": {
+              "pe": 14.946126,
+              "pb": 2.377726,
+              "ps": 4.891676,
+              "dividend_yield": 1.93
+            },
+            "target_ratios": {
+              "pe_target": 15.0,
+              "pb_target": 2.5,
+              "ps_target": 2.0,
+              "ev_ebitda_target": 12.0,
+              "dividend_yield_target": 0.03,
+              "peg_target": 1.0
+            },
+            "sector_adjustments": {}
+          }
+        },
+        "dcf": {
+          "fair_value": 262.15335664717384,
+          "current_price": 291.3,
+          "margin_of_safety": -0.10005713475051896,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:31.413283",
+          "model_data": {
+            "ticker": "JPM",
+            "fair_value_per_share": 262.15335664717384,
+            "current_price": 291.3,
+            "margin_of_safety": -0.10005713475051896,
+            "fcf_projection": [
+              39041250000.0,
+              39041250000.0,
+              39041250000.0,
+              39041250000.0,
+              39041250000.0,
+              39041250000.0,
+              39041250000.0,
+              39041250000.0,
+              39041250000.0,
+              39041250000.0
+            ],
+            "TV": 398220750000.00006,
+            "tv_pv": 128216423755.07439,
+            "npv_fcf": 220591769807.94556,
+            "enterprise_value": 348808193563.01996,
+            "estimated_market_cap": 720856196635.02,
+            "discount_rate": 0.12,
+            "growth_rates": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "inputs": {
+              "normalized_fcf": 39041250000.0,
+              "shares": 2749750016,
+              "cash": 1537592000512,
+              "debt": 1165543997440
+            }
+          }
+        }
+      }
+    },
+    "HD": {
+      "ticker": "HD",
+      "current_price": 395.5,
+      "valuations": {
+        "dcf": {
+          "fair_value": 136.8413203101771,
+          "current_price": 395.5,
+          "margin_of_safety": -0.6540042470033448,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:31.818010",
+          "model_data": {
+            "ticker": "HD",
+            "fair_value_per_share": 136.8413203101771,
+            "current_price": 395.5,
+            "margin_of_safety": -0.6540042470033448,
+            "fcf_projection": [
+              16347642000.000002,
+              17730652513.2,
+              19063997582.19264,
+              20318408623.100914,
+              21464366869.443806,
+              22473192112.307663,
+              23318184135.730434,
+              23975756928.358032,
+              24426501158.61116,
+              24656110269.502106
+            ],
+            "TV": 251492324748.92148,
+            "tv_pv": 80973797777.12863,
+            "npv_fcf": 115756463420.43526,
+            "enterprise_value": 196730261197.5639,
+            "estimated_market_cap": 136147261133.5639,
+            "discount_rate": 0.12,
+            "growth_rates": [
+              0.094,
+              0.08460000000000001,
+              0.0752,
+              0.0658,
+              0.0564,
+              0.047,
+              0.037599999999999995,
+              0.028199999999999992,
+              0.018799999999999997,
+              0.009399999999999999
+            ],
+            "inputs": {
+              "normalized_fcf": 14943000000.0,
+              "shares": 994928000,
+              "cash": 1368999936,
+              "debt": 61952000000
+            }
+          }
+        },
+        "simple_ratios": {
+          "fair_value": 160.26401780598172,
+          "current_price": 395.5,
+          "margin_of_safety": -0.5947812444855076,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:31.589044",
+          "model_data": {
+            "model": "simple_ratios",
+            "ticker": "HD",
+            "valuation_price": 160.26401780598172,
+            "current_price": 395.5,
+            "upside_potential": -59.47812444855076,
+            "confidence": "medium",
+            "composite_score": 35.81799537037036,
+            "component_scores": {
+              "pe_score": 21.121666666666663,
+              "pb_score": 0,
+              "ps_score": 79.26074999999999,
+              "ev_ebitda_score": 50.33333333333332,
+              "dividend_yield_score": 50
+            },
+            "current_ratios": {
+              "pe": 26.83175,
+              "pb": 49.46842,
+              "ps": 2.414785,
+              "ev_ebitda": 17.96,
+              "dividend_yield": 2.3
+            },
+            "target_ratios": {
+              "pe_target": 15.0,
+              "pb_target": 2.5,
+              "ps_target": 2.0,
+              "ev_ebitda_target": 12.0,
+              "dividend_yield_target": 0.03,
+              "peg_target": 1.0
+            },
+            "sector_adjustments": {}
+          }
+        },
+        "dcf_enhanced": {
+          "fair_value": 479.63372889118546,
+          "current_price": 395.5,
+          "margin_of_safety": 0.21272750667809218,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:31.939629",
+          "model_data": {
+            "ticker": "HD",
+            "fair_value_per_share": 479.63372889118546,
+            "current_price": 395.5,
+            "margin_of_safety": 0.21272750667809218,
+            "dividend_component_value": 196.54760967585983,
+            "growth_component_value": 28.111351537242744,
+            "dividend_yield": 0.023261694058154234,
+            "implied_terminal_yield": 0.15685245506750758,
+            "payout_ratio": 0.8353395295644085,
+            "retention_ratio": 0.1646604704355915,
+            "reinvestment_efficiency": 0.2,
+            "sustainable_growth_rate": 0.25,
+            "enterprise_value": 537784026682.2494,
+            "terminal_value": 943204906655.5624,
+            "terminal_value_pv": 303686736564.11664,
+            "high_dividend_scenario": 0.0,
+            "high_growth_scenario": 0.0,
+            "inputs": {
+              "base_fcf": 14943000000.0,
+              "normalized_fcf_used": true,
+              "shares": 994928000,
+              "cash": 1368999936,
+              "debt": 61952000000,
+              "discount_rate": 0.12,
+              "terminal_growth": 0.025,
+              "growth_rates": [
+                0.25,
+                0.2375,
+                0.225,
+                0.2125,
+                0.2,
+                0.1875,
+                0.175,
+                0.16249999999999998,
+                0.15,
+                0.1375
+              ]
+            }
+          }
+        }
+      }
+    },
+    "TSLA": {
+      "ticker": "TSLA",
+      "current_price": 335.299,
+      "valuations": {
+        "simple_ratios": {
+          "fair_value": 110.64867,
+          "current_price": 335.299,
+          "margin_of_safety": -0.67,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:32.173374",
+          "model_data": {
+            "model": "simple_ratios",
+            "ticker": "TSLA",
+            "valuation_price": 110.64867,
+            "current_price": 335.299,
+            "upside_potential": -67.0,
+            "confidence": "medium",
+            "composite_score": 0.0,
+            "component_scores": {
+              "pe_score": 0,
+              "pb_score": 0,
+              "ps_score": 0,
+              "ev_ebitda_score": 0
+            },
+            "current_ratios": {
+              "pe": 198.3787,
+              "pb": 13.980234,
+              "ps": 11.664045,
+              "ev_ebitda": 91.954
+            },
+            "target_ratios": {
+              "pe_target": 15.0,
+              "pb_target": 2.5,
+              "ps_target": 2.0,
+              "ev_ebitda_target": 12.0,
+              "dividend_yield_target": 0.03,
+              "peg_target": 1.0
+            },
+            "sector_adjustments": {}
+          }
+        },
+        "dcf": {
+          "fair_value": 20.470276741079292,
+          "current_price": 335.299,
+          "margin_of_safety": -0.9389491864244173,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:32.599662",
+          "model_data": {
+            "ticker": "TSLA",
+            "fair_value_per_share": 20.470276741079292,
+            "current_price": 335.299,
+            "margin_of_safety": -0.9389491864244173,
+            "fcf_projection": [
+              4743250000.0,
+              4743250000.0,
+              4743250000.0,
+              4743250000.0,
+              4743250000.0,
+              4743250000.0,
+              4743250000.0,
+              4743250000.0,
+              4743250000.0,
+              4743250000.0
+            ],
+            "TV": 48381150000.00001,
+            "tv_pv": 15577435455.47995,
+            "npv_fcf": 26800420379.509827,
+            "enterprise_value": 42377855834.98978,
+            "estimated_market_cap": 66025853786.98978,
+            "discount_rate": 0.12,
+            "growth_rates": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "inputs": {
+              "normalized_fcf": 4743250000.0,
+              "shares": 3225449984,
+              "cash": 36781998080,
+              "debt": 13134000128
+            }
+          }
+        },
+        "dcf_enhanced": {
+          "fair_value": 28.31367942006051,
+          "current_price": 335.299,
+          "margin_of_safety": -0.9155569225674383,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:32.564345",
+          "model_data": {
+            "ticker": "TSLA",
+            "fair_value_per_share": 28.31367942006051,
+            "current_price": 335.299,
+            "margin_of_safety": -0.9155569225674383,
+            "dividend_component_value": 0.0,
+            "growth_component_value": 28.31367942006051,
+            "dividend_yield": 0.0,
+            "implied_terminal_yield": 0.0,
+            "payout_ratio": 0.0,
+            "retention_ratio": 1.0,
+            "reinvestment_efficiency": 0.012265499999999999,
+            "sustainable_growth_rate": 0.08177,
+            "enterprise_value": 67676358880.4153,
+            "terminal_value": 94550232746.22229,
+            "terminal_value_pv": 30442644457.704792,
+            "high_dividend_scenario": 0.0,
+            "high_growth_scenario": 0.0,
+            "inputs": {
+              "base_fcf": 4743250000.0,
+              "normalized_fcf_used": true,
+              "shares": 3225449984,
+              "cash": 36781998080,
+              "debt": 13134000128,
+              "discount_rate": 0.12,
+              "terminal_growth": 0.025,
+              "growth_rates": [
+                0.08177,
+                0.07768149999999999,
+                0.07359299999999999,
+                0.0695045,
+                0.065416,
+                0.06132749999999999,
+                0.05723899999999999,
+                0.05315049999999999,
+                0.049061999999999995,
+                0.0449735
+              ]
+            }
+          }
+        }
+      }
+    },
+    "NVDA": {
+      "ticker": "NVDA",
+      "current_price": 182.3601,
+      "valuations": {
+        "dcf_enhanced": {
+          "fair_value": 38.60396936206898,
+          "current_price": 182.3601,
+          "margin_of_safety": -0.788309123749828,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:33.257452",
+          "model_data": {
+            "ticker": "NVDA",
+            "fair_value_per_share": 38.60396936206898,
+            "current_price": 182.3601,
+            "margin_of_safety": -0.788309123749828,
+            "dividend_component_value": 0.2820352019470783,
+            "growth_component_value": 37.95605914280628,
+            "dividend_yield": 0.0002193462276013229,
+            "implied_terminal_yield": 0.002796434334335419,
+            "payout_ratio": 0.01759471875101813,
+            "retention_ratio": 0.9824052812489819,
+            "reinvestment_efficiency": 0.1731945,
+            "sustainable_growth_rate": 0.25,
+            "enterprise_value": 898052178934.3176,
+            "terminal_value": 1575069506673.9993,
+            "terminal_value_pv": 507130226919.13824,
+            "high_dividend_scenario": 0.0,
+            "high_growth_scenario": 0.0,
+            "inputs": {
+              "base_fcf": 24953500000.0,
+              "normalized_fcf_used": true,
+              "shares": 24387600384,
+              "cash": 53690998784,
+              "debt": 10284999680,
+              "discount_rate": 0.12,
+              "terminal_growth": 0.025,
+              "growth_rates": [
+                0.25,
+                0.2375,
+                0.225,
+                0.2125,
+                0.2,
+                0.1875,
+                0.175,
+                0.16249999999999998,
+                0.15,
+                0.1375
+              ]
+            }
+          }
+        },
+        "dcf": {
+          "fair_value": 130.396571555156,
+          "current_price": 182.3799,
+          "margin_of_safety": -0.2850277275338127,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:33.128583",
+          "model_data": {
+            "ticker": "NVDA",
+            "fair_value_per_share": 130.396571555156,
+            "current_price": 182.3799,
+            "margin_of_safety": -0.2850277275338127,
+            "fcf_projection": [
+              42221322000.0,
+              68516761341.6,
+              106447640420.30975,
+              158010877439.9078,
+              223616993752.95752,
+              300988473591.48083,
+              384302083081.6027,
+              464083195529.34344,
+              528312309790.6045,
+              564871521628.1143
+            ],
+            "TV": 5761689520606.766,
+            "tv_pv": 1855109823180.4556,
+            "npv_fcf": 1281543656246.3499,
+            "enterprise_value": 3136653479426.8057,
+            "estimated_market_cap": 3180059478530.8057,
+            "discount_rate": 0.12,
+            "growth_rates": [
+              0.692,
+              0.6228,
+              0.5536,
+              0.48439999999999994,
+              0.41519999999999996,
+              0.346,
+              0.27679999999999993,
+              0.20759999999999995,
+              0.13839999999999997,
+              0.06919999999999998
+            ],
+            "inputs": {
+              "normalized_fcf": 24953500000.0,
+              "shares": 24387600384,
+              "cash": 53690998784,
+              "debt": 10284999680
+            }
+          }
+        },
+        "simple_ratios": {
+          "fair_value": 60.178833,
+          "current_price": 182.3601,
+          "margin_of_safety": -0.67,
+          "confidence": "medium",
+          "last_updated": "2025-08-18T20:58:33.042361",
+          "model_data": {
+            "model": "simple_ratios",
+            "ticker": "NVDA",
+            "valuation_price": 60.178833,
+            "current_price": 182.3601,
+            "upside_potential": -67.0,
+            "confidence": "medium",
+            "composite_score": 4.938271604938273,
+            "component_scores": {
+              "pe_score": 0,
+              "pb_score": 0,
+              "ps_score": 0,
+              "ev_ebitda_score": 0,
+              "dividend_yield_score": 44.44444444444445
+            },
+            "current_ratios": {
+              "pe": 58.829033,
+              "pb": 53.045376,
+              "ps": 29.945295,
+              "ev_ebitda": 49.402,
+              "dividend_yield": 0.02
+            },
+            "target_ratios": {
+              "pe_target": 22.5,
+              "pb_target": 3.25,
+              "ps_target": 3.6,
+              "ev_ebitda_target": 12.0,
+              "dividend_yield_target": 0.03,
+              "peg_target": 1.0
+            },
+            "sector_adjustments": {
+              "pe_adj": 1.5,
+              "pb_adj": 1.3,
+              "ps_adj": 1.8
+            }
+          }
+        }
+      }
+    }
+  },
+  "model_status": {
+    "dcf": "completed",
+    "dcf_enhanced": "completed",
+    "simple_ratios": "completed"
+  }
+}

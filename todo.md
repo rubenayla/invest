@@ -1,9 +1,12 @@
+- modelos de inversion: gestion de riesgo, diversificación?
+
+
 
 - Let's update the code to be able to value ETFs, and do the backtest with those. Should we make the code able to handle anything, or separate ETFs and stocks, so each one is separate and easier to understand/manage?
 - Consider gold, bitcoin, etc. as alternatives to stocks, instructions for AI to consider waiting, like berkshire has sometimes done, to wait for better opportunities with treasuries, short-term bonds, etc.
 
 - dashboard with the top companies and critical data
-
+- investigate levels.vc
 
 # Analyze stocks like Berkshire correctly
   Given the current system's capabilities, here are more feasible ways to improve the analysis for such businesses:

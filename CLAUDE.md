@@ -36,6 +36,9 @@ poetry run pytest
 # Install dependencies
 poetry install
 
+# Start interactive dashboard (main interface)
+poetry run python scripts/dashboard_server.py
+
 # Run systematic analysis
 poetry run python scripts/systematic_analysis.py configs/sp500_top100.yaml --save-csv
 

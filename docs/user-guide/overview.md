@@ -126,6 +126,24 @@ Top candidates undergo detailed valuation:
 - Focuses on economic profits
 - Alternative valuation perspective
 
+## Interactive Dashboard
+
+The **Interactive Dashboard** provides a live web interface for real-time investment analysis:
+
+```bash
+poetry run python scripts/dashboard_server.py
+# Opens automatically at http://localhost:8080
+```
+
+**Key Features:**
+- **Live Valuations**: Compare DCF, Enhanced DCF, and Simple Ratios side-by-side
+- **One-Click Updates**: Refresh all data with button click
+- **Real-Time Prices**: Current market data with upside/downside calculations
+- **Interactive Tooltips**: Hover explanations for all metrics
+- **Professional Interface**: Clean, responsive design with visual feedback
+
+See [Dashboard Guide](dashboard.md) for detailed usage instructions.
+
 ## Output Formats
 
 ### 1. Executive Summary Report
@@ -269,6 +287,7 @@ The framework automatically adjusts expectations by sector:
 
 ## Next Steps
 
+- **[Interactive Dashboard](dashboard.md)** - Live web interface for real-time analysis
 - **[Running Analysis](running-analysis.md)** - Detailed execution guide
 - **[Understanding Results](understanding-results.md)** - In-depth result interpretation  
 - **[Configuration Options](configuration-options.md)** - Advanced customization
