@@ -1,6 +1,9 @@
+Can you check if i have github actions enabled? And what are they doing?
+
+
+Make sure the actions either work or are deleted
+
 - modelos de inversion: gestion de riesgo, diversificación?
-
-
 
 - Let's update the code to be able to value ETFs, and do the backtest with those. Should we make the code able to handle anything, or separate ETFs and stocks, so each one is separate and easier to understand/manage?
 - Consider gold, bitcoin, etc. as alternatives to stocks, instructions for AI to consider waiting, like berkshire has sometimes done, to wait for better opportunities with treasuries, short-term bonds, etc.

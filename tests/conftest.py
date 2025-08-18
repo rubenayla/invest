@@ -59,10 +59,12 @@ def mock_stock_data():
             'ev_to_revenue': 1.2,
             'return_on_equity': 0.18,
             'return_on_assets': 0.12,
-            'debt_to_equity': 35.0,
+            'debt_to_equity': 35.0,  # 35% as percentage
             'current_ratio': 2.2,
             'revenue_growth': 0.065,
             'earnings_growth': 0.080,
+            'free_cash_flow': 4000000000,
+            'shares_outstanding': 1111111111,  # market_cap / current_price
             'target_high_price': 55.0,
             'target_low_price': 40.0,
             'target_mean_price': 47.5,
@@ -86,10 +88,12 @@ def mock_stock_data():
             'ev_to_revenue': 2.8,
             'return_on_equity': 0.05,
             'return_on_assets': 0.02,
-            'debt_to_equity': 250.0,
+            'debt_to_equity': 250.0,  # 250% as percentage (high debt)
             'current_ratio': 0.8,
             'revenue_growth': -0.10,
             'earnings_growth': -0.15,
+            'free_cash_flow': 200000000,
+            'shares_outstanding': 200000000,  # market_cap / current_price
             'target_high_price': 30.0,
             'target_low_price': 15.0,
             'target_mean_price': 22.0,

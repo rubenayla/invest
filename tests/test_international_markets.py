@@ -385,15 +385,15 @@ class TestInternationalPipelineIntegration:
         sample_currencies = ['JPY', 'EUR', 'GBP', 'USD']
         
         for currency in sample_currencies:
-            with patch('invest.data.international.get_international_stock_data') as mock_data:
-                mock_data.return_value = {
-                    'ticker': f'TEST.{currency}',
-                    'market_cap': 1000000000000,
-                    'trailing_pe': 15.0,
+            with patch('yfinance.Ticker') as mock_ticker:
+                mock_info = {
                     'currency': currency,
-                    'country': 'TestCountry',
+                    'financialCurrency': currency,
+                    'marketCap': 1000000000000,
+                    'trailingPE': 15.0,
                     'sector': 'Technology'
                 }
+                mock_ticker.return_value.info = mock_info
                 
                 result = get_international_stock_data(f'TEST.{currency}')
                 assert result['currency'] == currency

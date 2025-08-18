@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from invest.config.schema import AnalysisConfig, QualityThresholds, ValueThresholds, GrowthThresholds, RiskThresholds
+from invest.config.schema import AnalysisConfig, QualityThresholds, ValueThresholds, GrowthThresholds, RiskThresholds, UniverseConfig
 from invest.config.loader import load_analysis_config
 from invest.screening.quality import assess_quality
 from invest.screening.value import assess_value  
@@ -228,6 +228,7 @@ class TestAnalysisPipeline:
         """Create a mock configuration for testing."""
         return AnalysisConfig(
             name="test_pipeline",
+            universe=UniverseConfig(market='usa_sp500'),
             quality=QualityThresholds(min_roic=0.12, min_roe=0.15),
             value=ValueThresholds(max_pe=25, max_pb=3.0),
             growth=GrowthThresholds(min_revenue_growth=0.05),

@@ -20,14 +20,14 @@ RESULTS OVERVIEW
 • Total Universe Screened: {analysis_results.get('total_universe', 0)} stocks
 • Passed Initial Screening: {analysis_results.get('passed_screening', 0)} stocks
 • Final Recommendations: {analysis_results.get('final_results', 0)} stocks
-• Success Rate: {(analysis_results.get('final_results', 0) / analysis_results.get('total_universe', 1) * 100):.1f}%
+• Success Rate: {(analysis_results.get('final_results', 0) / max(analysis_results.get('total_universe', 1), 1) * 100):.1f}%
 
 AVERAGE QUALITY METRICS
 ----------------------
-• Quality Score: {summary.get('average_scores', {}).get('quality', 0):.1f}/100
-• Value Score: {summary.get('average_scores', {}).get('value', 0):.1f}/100
-• Growth Score: {summary.get('average_scores', {}).get('growth', 0):.1f}/100
-• Risk Score: {summary.get('average_scores', {}).get('risk', 0):.1f}/100
+• Quality Score: {(summary.get('average_scores', {}).get('quality') or 0):.1f}/100
+• Value Score: {(summary.get('average_scores', {}).get('value') or 0):.1f}/100
+• Growth Score: {(summary.get('average_scores', {}).get('growth') or 0):.1f}/100
+• Risk Score: {(summary.get('average_scores', {}).get('risk') or 0):.1f}/100
 
 TOP RECOMMENDATIONS
 ------------------"""
@@ -64,16 +64,16 @@ COMPANY OVERVIEW
 ---------------
 • Sector: {basic_data.get('sector', 'N/A')}
 • Industry: {basic_data.get('industry', 'N/A')}
-• Market Cap: ${basic_data.get('market_cap', 0)/1e9:.2f}B
-• Current Price: ${basic_data.get('current_price', 0):.2f}
+• Market Cap: ${(basic_data.get('market_cap', 0) or 0)/1e9:.2f}B
+• Current Price: ${(basic_data.get('current_price') or 0):.2f}
 
 COMPOSITE SCORING
 ----------------
-• Overall Score: {scores.get('composite', 0):.1f}/100
-• Quality Score: {scores.get('quality', 0):.1f}/100
-• Value Score: {scores.get('value', 0):.1f}/100  
-• Growth Score: {scores.get('growth', 0):.1f}/100
-• Risk Score: {scores.get('risk', 0):.1f}/100
+• Overall Score: {(scores.get('composite') or 0):.1f}/100
+• Quality Score: {(scores.get('quality') or 0):.1f}/100
+• Value Score: {(scores.get('value') or 0):.1f}/100  
+• Growth Score: {(scores.get('growth') or 0):.1f}/100
+• Risk Score: {(scores.get('risk') or 0):.1f}/100
 
 QUALITY ANALYSIS
 ---------------"""
@@ -82,10 +82,10 @@ QUALITY ANALYSIS
     quality_metrics = quality.get('quality_metrics', {})
     
     report += f"""
-• ROIC: {quality_metrics.get('roic', 0):.1%}
-• ROE: {quality_metrics.get('roe', 0):.1%}
-• Current Ratio: {quality_metrics.get('current_ratio', 0):.2f}
-• Debt/Equity: {quality_metrics.get('debt_to_equity', 0):.1f}"""
+• ROIC: {(quality_metrics.get('roic') or 0):.1%}
+• ROE: {(quality_metrics.get('roe') or 0):.1%}
+• Current Ratio: {(quality_metrics.get('current_ratio') or 0):.2f}
+• Debt/Equity: {(quality_metrics.get('debt_to_equity') or 0):.1f}"""
     
     quality_flags = quality.get('quality_flags', [])
     if quality_flags:
@@ -99,10 +99,10 @@ QUALITY ANALYSIS
     value_metrics = value.get('value_metrics', {})
     
     report += f"""
-• P/E Ratio: {value_metrics.get('pe_ratio', 0):.1f}
-• P/B Ratio: {value_metrics.get('pb_ratio', 0):.2f}
-• EV/EBITDA: {value_metrics.get('ev_ebitda', 0):.1f}
-• EV/EBIT: {value_metrics.get('ev_ebit', 0):.1f}"""
+• P/E Ratio: {(value_metrics.get('pe_ratio') or 0):.1f}
+• P/B Ratio: {(value_metrics.get('pb_ratio') or 0):.2f}
+• EV/EBITDA: {(value_metrics.get('ev_ebitda') or 0):.1f}
+• EV/EBIT: {(value_metrics.get('ev_ebit') or 0):.1f}"""
     
     value_flags = value.get('value_flags', [])
     if value_flags:
@@ -116,9 +116,9 @@ QUALITY ANALYSIS
     growth_metrics = growth.get('growth_metrics', {})
     
     report += f"""
-• Revenue Growth: {growth_metrics.get('revenue_growth', 0):.1%}
-• Earnings Growth: {growth_metrics.get('earnings_growth', 0):.1%}
-• FCF Growth: {growth_metrics.get('fcf_growth', 0):.1%}
+• Revenue Growth: {(growth_metrics.get('revenue_growth') or 0):.1%}
+• Earnings Growth: {(growth_metrics.get('earnings_growth') or 0):.1%}
+• FCF Growth: {(growth_metrics.get('fcf_growth') or 0):.1%}
 • Growth Quality: {growth.get('growth_quality', 'N/A')}"""
     
     growth_flags = growth.get('growth_flags', [])
@@ -134,9 +134,9 @@ QUALITY ANALYSIS
     
     report += f"""
 • Risk Level: {risk.get('risk_level', 'N/A').upper()}
-• Financial Risk: {risk_metrics.get('financial_risk_score', 0):.1f}/100
-• Estimated Beta: {risk_metrics.get('estimated_beta', 0):.2f}
-• Business Risk: {risk_metrics.get('business_risk_score', 0):.1f}/100
+• Financial Risk: {(risk_metrics.get('financial_risk_score') or 0):.1f}/100
+• Estimated Beta: {(risk_metrics.get('estimated_beta') or 0):.2f}
+• Business Risk: {(risk_metrics.get('business_risk_score') or 0):.1f}/100
 • Sector Risk: {risk_metrics.get('sector_risk_level', 'N/A')}"""
     
     risk_flags = risk.get('risk_flags', [])
@@ -153,9 +153,9 @@ QUALITY ANALYSIS
         for model, val_result in valuations.items():
             report += f"""
 • {model.upper()} Model:
-  - Fair Value: ${val_result.get('fair_value', 0):.2f}
-  - Current Price: ${val_result.get('current_price', 0):.2f}
-  - Upside/Downside: {val_result.get('upside_downside', 0):.1%}
+  - Fair Value: ${(val_result.get('fair_value') or 0):.2f}
+  - Current Price: ${(val_result.get('current_price') or 0):.2f}
+  - Upside/Downside: {(val_result.get('upside_downside') or 0):.1%}
   - Confidence: {val_result.get('confidence', 'N/A')}"""
     
     report += f"\n\n{'='*50}\n"
@@ -188,10 +188,10 @@ SCORE DISTRIBUTIONS
         risk_scores = [s.get('scores', {}).get('risk', 0) for s in stocks]
         
         report += f"""
-Quality Scores:  Min: {min(quality_scores):.1f}  Max: {max(quality_scores):.1f}  Avg: {sum(quality_scores)/len(quality_scores):.1f}
-Value Scores:    Min: {min(value_scores):.1f}  Max: {max(value_scores):.1f}  Avg: {sum(value_scores)/len(value_scores):.1f}
-Growth Scores:   Min: {min(growth_scores):.1f}  Max: {max(growth_scores):.1f}  Avg: {sum(growth_scores)/len(growth_scores):.1f}
-Risk Scores:     Min: {min(risk_scores):.1f}  Max: {max(risk_scores):.1f}  Avg: {sum(risk_scores)/len(risk_scores):.1f}"""
+Quality Scores:  Min: {min(quality_scores):.1f}  Max: {max(quality_scores):.1f}  Avg: {sum(quality_scores)/max(len(quality_scores), 1):.1f}
+Value Scores:    Min: {min(value_scores):.1f}  Max: {max(value_scores):.1f}  Avg: {sum(value_scores)/max(len(value_scores), 1):.1f}
+Growth Scores:   Min: {min(growth_scores):.1f}  Max: {max(growth_scores):.1f}  Avg: {sum(growth_scores)/max(len(growth_scores), 1):.1f}
+Risk Scores:     Min: {min(risk_scores):.1f}  Max: {max(risk_scores):.1f}  Avg: {sum(risk_scores)/max(len(risk_scores), 1):.1f}"""
         
         # Most common flags/concerns
         all_flags = []
@@ -253,23 +253,38 @@ def export_to_csv_format(analysis_results: Dict) -> str:
         value_metrics = stock.get('value', {}).get('value_metrics', {})
         growth_metrics = stock.get('growth', {}).get('growth_metrics', {})
         
+        # Safe division helper
+        def safe_divide(value, divisor, default=0):
+            if value is None or divisor is None or divisor == 0:
+                return default
+            return value / divisor
+        
+        # Safe formatting helper  
+        def safe_format(value, format_str, default="0"):
+            if value is None:
+                return default
+            try:
+                return format_str.format(value)
+            except (TypeError, ValueError):
+                return default
+        
         row = [
-            stock.get('ticker', ''),
-            basic.get('sector', ''),
-            f"{basic.get('market_cap', 0)/1e9:.2f}",
-            f"{basic.get('current_price', 0):.2f}",
+            str(stock.get('ticker') or ''),
+            str(basic.get('sector') or ''),
+            str(safe_format(safe_divide(basic.get('market_cap'), 1e9), "{:.2f}") or "0"),
+            str(safe_format(basic.get('current_price', 0), "{:.2f}") or "0"),
             "Y" if stock.get('passes_filters', False) else "N",
-            f"{scores.get('composite', 0):.1f}",
-            f"{scores.get('quality', 0):.1f}",
-            f"{scores.get('value', 0):.1f}",
-            f"{scores.get('growth', 0):.1f}",
-            f"{scores.get('risk', 0):.1f}",
-            f"{value_metrics.get('pe_ratio', 0):.1f}",
-            f"{value_metrics.get('pb_ratio', 0):.2f}",
-            f"{quality_metrics.get('roe', 0):.3f}",
-            f"{quality_metrics.get('roic', 0):.3f}",
-            f"{growth_metrics.get('revenue_growth', 0):.3f}",
-            f"{quality_metrics.get('debt_to_equity', 0):.1f}"
+            str(safe_format(scores.get('composite', 0), "{:.1f}") or "0"),
+            str(safe_format(scores.get('quality', 0), "{:.1f}") or "0"),
+            str(safe_format(scores.get('value', 0), "{:.1f}") or "0"),
+            str(safe_format(scores.get('growth', 0), "{:.1f}") or "0"),
+            str(safe_format(scores.get('risk', 0), "{:.1f}") or "0"),
+            str(safe_format(value_metrics.get('pe_ratio', 0), "{:.1f}") or "0"),
+            str(safe_format(value_metrics.get('pb_ratio', 0), "{:.2f}") or "0"),
+            str(safe_format(quality_metrics.get('roe', 0), "{:.3f}") or "0"),
+            str(safe_format(quality_metrics.get('roic', 0), "{:.3f}") or "0"),
+            str(safe_format(growth_metrics.get('revenue_growth', 0), "{:.3f}") or "0"),
+            str(safe_format(quality_metrics.get('debt_to_equity', 0), "{:.1f}") or "0")
         ]
         
         csv_data += ",".join(row) + "\n"
