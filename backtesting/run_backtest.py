@@ -16,6 +16,7 @@ from pathlib import Path
 from backtesting.core.engine import Backtester
 from backtesting.strategies.screening import ScreeningStrategy
 from backtesting.strategies.pipeline_strategy import PipelineStrategy
+from backtesting.strategies.market_cap import MarketCapStrategy
 
 # Setup logging
 logging.basicConfig(
@@ -72,6 +73,9 @@ def main():
     if strategy_type == 'pipeline':
         strategy = PipelineStrategy(strategy_config)
         logger.info("Using real analysis pipeline strategy")
+    elif strategy_type == 'market_cap':
+        strategy = MarketCapStrategy(strategy_config)
+        logger.info("Using market cap weighted strategy")
     else:
         strategy = ScreeningStrategy(strategy_config)
         logger.info("Using basic screening strategy")
