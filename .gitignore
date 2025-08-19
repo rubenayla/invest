@@ -4,7 +4,8 @@ __pycache__/
 *.pyo
 *.egg-info/
 
-# Generated analysis results
+# Generated analysis results (organized in folder)
+analysis_results/
 *_screen_*_report.txt
 *_screen_*_results.csv
 *_screen_*_data.json
