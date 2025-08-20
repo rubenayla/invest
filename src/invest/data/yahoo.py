@@ -113,3 +113,83 @@ SP500_TICKERS = get_sp500_tickers()
 def get_sp500_sample() -> List[str]:
     """Get a sample of S&P 500 tickers for testing."""
     return SP500_TICKERS[:30]
+
+
+def get_russell_2000_sample() -> List[str]:
+    """Get a sample of smaller US companies similar to Russell 2000."""
+    # Major small-cap and mid-cap US stocks
+    russell_2000_sample = [
+        # Technology
+        'CYBR', 'FRPT', 'TENB', 'ESTC', 'NET', 'DDOG', 'SNOW', 'MDB', 'OKTA', 'ZS',
+        'CRWD', 'S', 'FSLY', 'PLAN', 'TWLO', 'ZM', 'DOCN', 'PATH', 'GTLB', 'BILL',
+        # Healthcare & Biotech
+        'MRNA', 'NVAX', 'REGN', 'VRTX', 'ALNY', 'BMRN', 'TECB', 'ROIV', 'HALO', 'IONS',
+        'SRPT', 'RARE', 'FOLD', 'ARWR', 'EDIT', 'NTLA', 'CRSP', 'BLUE', 'SAGE', 'PTCT',
+        # Financial Services
+        'SOFI', 'UPST', 'AFRM', 'PYPL', 'SQ', 'HOOD', 'COIN', 'OPEN', 'RKT', 'WISH',
+        # Consumer & Retail
+        'PTON', 'ROKU', 'NFLX', 'DIS', 'SPOT', 'UBER', 'LYFT', 'DASH', 'ABNB', 'ETSY',
+        'W', 'CHWY', 'RVLV', 'STMP', 'FTCH', 'REAL', 'CVNA', 'CARG', 'VROOM', 'KMX',
+        # Energy & Materials
+        'FSLR', 'ENPH', 'SEDG', 'RUN', 'SPWR', 'PLUG', 'BE', 'BLDP', 'FCEL', 'CLNE',
+        # Industrial & Transportation
+        'SPCE', 'RKLB', 'JOBY', 'LILM', 'EVTL', 'ACHR', 'BLDE', 'EH', 'NKLA', 'RIDE',
+        # Real Estate & REITs
+        'RDFN', 'Z', 'OPEN', 'COMP', 'EXPI', 'HOUS', 'RMAX', 'PFGC', 'CIGI', 'NMRK',
+    ]
+    return russell_2000_sample
+
+
+def get_sp600_smallcap() -> List[str]:
+    """Get S&P SmallCap 600 representative stocks."""
+    # Representative S&P 600 small-cap stocks
+    sp600_sample = [
+        # Technology
+        'CACI', 'SAIC', 'MAXR', 'KTOS', 'AVAV', 'KRNT', 'PLTK', 'ADTN', 'CSGS', 'NTCT',
+        # Healthcare
+        'GKOS', 'OMCL', 'PCVX', 'PDCO', 'HSTM', 'TMDX', 'NEOG', 'ATRC', 'CRVL', 'IRTC',
+        # Consumer Discretionary
+        'BOOT', 'CREE', 'DORM', 'EXPR', 'FIZZ', 'GIII', 'HIBB', 'KIRK', 'LOVE', 'MCFT',
+        # Industrials
+        'AAON', 'AEIS', 'AGCO', 'AIT', 'ALGT', 'AMRC', 'ARCB', 'TILE', 'BLKB', 'BRC',
+        # Financial Services
+        'BANF', 'BHLB', 'BRKL', 'CATY', 'CBSH', 'CHCO', 'CIZN', 'CNB', 'COLB', 'CVBF',
+        # Materials & Energy
+        'BCPC', 'CBT', 'CENX', 'CRC', 'CPE', 'CRK', 'EQT', 'FANG', 'HCC', 'MGY',
+    ]
+    return sp600_sample
+
+
+def get_nasdaq_smallcap() -> List[str]:
+    """Get NASDAQ small-cap stocks for broader market exposure."""
+    nasdaq_smallcap = [
+        # Biotech & Life Sciences
+        'ACAD', 'ADMA', 'AGTC', 'AIMT', 'AKBA', 'ALNA', 'AMRN', 'ANIK', 'ARDX', 'ARNA',
+        'AXSM', 'BCRX', 'BDTX', 'BIIB', 'BPMC', 'BPTH', 'BTAI', 'CAPR', 'CARA', 'CBIO',
+        # Technology & Software
+        'ADBE', 'APPS', 'ATUS', 'AVID', 'BAND', 'BBOX', 'BLFS', 'CAMP', 'CIEN', 'CLDR',
+        'CLSK', 'CMPR', 'COMM', 'COUP', 'CRNC', 'CRTO', 'DAKT', 'DCOM', 'DGII', 'DIOD',
+        # Consumer & Services
+        'CAKE', 'CBRL', 'CHUY', 'CMG', 'DENN', 'DIN', 'DNKN', 'EAT', 'FRGI', 'JACK',
+        'KRUS', 'LOCO', 'NDLS', 'NOODLES', 'PBPB', 'PZZA', 'QSR', 'RRGB', 'RUTH', 'SHAK',
+    ]
+    return nasdaq_smallcap
+
+
+def get_emerging_growth_stocks() -> List[str]:
+    """Get emerging growth companies across different sectors."""
+    emerging_growth = [
+        # FinTech & Digital Payments
+        'AFRM', 'SOFI', 'UPST', 'MELI', 'PAGS', 'STNE', 'NU', 'BKNG', 'PYPL', 'SQ',
+        # Cloud & SaaS
+        'SNOW', 'DDOG', 'CRWD', 'ZS', 'OKTA', 'NET', 'MDB', 'ESTC', 'TENB', 'FRPT',
+        # E-commerce & Marketplaces
+        'SHOP', 'ETSY', 'MELI', 'SE', 'BABA', 'JD', 'PDD', 'CPNG', 'GRAB', 'UBER',
+        # Electric Vehicles & Clean Energy
+        'TSLA', 'NIO', 'XPEV', 'LI', 'LCID', 'RIVN', 'ENPH', 'SEDG', 'FSLR', 'RUN',
+        # Streaming & Digital Media
+        'ROKU', 'FUBO', 'NFLX', 'DIS', 'SPOT', 'RBLX', 'U', 'TWTR', 'SNAP', 'PINS',
+        # Healthcare Innovation
+        'TDOC', 'VEEV', 'DXCM', 'ILMN', 'ISRG', 'NVTA', 'PACB', 'TMO', 'DHR', 'A',
+    ]
+    return emerging_growth

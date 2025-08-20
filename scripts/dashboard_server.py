@@ -21,6 +21,7 @@ import time
 import webbrowser
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse
+from typing import List
 import json
 import subprocess
 import logging
@@ -58,19 +59,27 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             self.send_error(404)
     
     def handle_update(self):
-        """Handle dashboard update request."""
+        """Handle dashboard update request with universe selection."""
         try:
+            # Parse request body to get universe selection
+            content_length = int(self.headers.get('Content-Length', 0))
+            request_body = self.rfile.read(content_length).decode('utf-8')
+            
+            # Default to S&P 500 if no universe specified
+            universe = 'sp500'
+            if request_body:
+                try:
+                    request_data = json.loads(request_body)
+                    universe = request_data.get('universe', 'sp500')
+                except json.JSONDecodeError:
+                    pass
+            
             # Run dashboard update in background thread
             def update_dashboard():
                 try:
-                    # Get full S&P 500 tickers for comprehensive analysis
-                    from src.invest.data.yahoo import get_sp500_tickers
-                    tickers = get_sp500_tickers()
+                    tickers = get_universe_tickers(universe)
+                    logger.info(f"Updating dashboard with {len(tickers)} stocks from {universe}")
                     
-                    # Use full S&P 500 - complete investment universe
-                    # This ensures we don't miss hidden gems in mid/small cap stocks
-                    
-                    logger.info(f"Updating dashboard with {len(tickers)} stocks from S&P 500")
                     dashboard = ValuationDashboard()
                     dashboard.update_dashboard(tickers, timeout_per_stock=45)
                     logger.info("Dashboard updated successfully")
@@ -86,10 +95,58 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
             self.end_headers()
-            self.wfile.write(json.dumps({'status': 'update_started'}).encode())
+            self.wfile.write(json.dumps({
+                'status': 'update_started',
+                'universe': universe,
+                'estimated_stocks': len(get_universe_tickers(universe))
+            }).encode())
             
         except Exception as e:
             self.send_error(500, f"Update failed: {e}")
+
+
+def get_universe_tickers(universe: str) -> List[str]:
+    """Get tickers for specified universe."""
+    from src.invest.data.yahoo import (
+        get_sp500_tickers, get_russell_2000_sample, get_sp600_smallcap,
+        get_nasdaq_smallcap, get_emerging_growth_stocks
+    )
+    from src.invest.data.international import (
+        get_major_japanese_stocks, get_topix_core30_tickers, get_buffett_favorites_japan,
+        get_ftse100_tickers, get_dax_tickers, get_warren_buffett_international
+    )
+    
+    universe_map = {
+        'sp500': get_sp500_tickers,
+        'russell2000': get_russell_2000_sample,
+        'sp600': get_sp600_smallcap,
+        'nasdaq_small': get_nasdaq_smallcap,
+        'growth_stocks': get_emerging_growth_stocks,
+        'japan_major': get_major_japanese_stocks,
+        'japan_topix30': get_topix_core30_tickers,
+        'japan_buffett': get_buffett_favorites_japan,
+        'uk_ftse': get_ftse100_tickers,
+        'germany_dax': get_dax_tickers,
+        'international_buffett': get_warren_buffett_international,
+        'global_mix': lambda: (
+            get_sp500_tickers()[:100] +  # Top 100 S&P 500
+            get_major_japanese_stocks()[:20] +  # Top 20 Japanese
+            get_ftse100_tickers()[:20] +  # Top 20 UK
+            get_dax_tickers()[:10] +  # Top 10 German
+            get_emerging_growth_stocks()[:30]  # 30 growth stocks
+        ),
+        'small_cap_focus': lambda: (
+            get_russell_2000_sample()[:50] +
+            get_sp600_smallcap()[:30] +
+            get_nasdaq_smallcap()[:20]
+        ),
+    }
+    
+    if universe in universe_map:
+        return universe_map[universe]()
+    else:
+        logger.warning(f"Unknown universe '{universe}', defaulting to S&P 500")
+        return get_sp500_tickers()
     
     def log_message(self, format, *args):
         """Override to reduce log noise."""

@@ -147,6 +147,28 @@
             <p style="margin: 8px 0 0 0; font-size: 0.8em; color: #bdc3c7;">
                 Then visit <strong>http://localhost:8080</strong> and use the update button below
             </p>
+            
+            <div style="margin: 12px 0; padding: 8px; background: #2c3e50; border-radius: 3px;">
+                <label for="universeSelect" style="font-size: 0.9em; color: #ecf0f1; margin-right: 8px;">
+                    📈 Stock Universe:
+                </label>
+                <select id="universeSelect" style="padding: 4px 8px; border-radius: 3px; border: none; background: #ecf0f1; font-size: 0.9em;">
+                    <option value="sp500">🇺🇸 S&P 500 (~500 stocks)</option>
+                    <option value="russell2000">🇺🇸 Russell 2000 Sample (~80 stocks)</option>
+                    <option value="sp600">🇺🇸 S&P SmallCap 600 (~60 stocks)</option>
+                    <option value="nasdaq_small">🇺🇸 NASDAQ Small Cap (~60 stocks)</option>
+                    <option value="growth_stocks">🚀 Emerging Growth (~60 stocks)</option>
+                    <option value="japan_major">🇯🇵 Japan Major (~35 stocks)</option>
+                    <option value="japan_topix30">🇯🇵 TOPIX Core 30 (~30 stocks)</option>
+                    <option value="japan_buffett">🇯🇵 Buffett's Japan (~15 stocks)</option>
+                    <option value="uk_ftse">🇬🇧 UK FTSE 100 (~22 stocks)</option>
+                    <option value="germany_dax">🇩🇪 German DAX (~14 stocks)</option>
+                    <option value="international_buffett">🌍 Buffett International (~40 stocks)</option>
+                    <option value="global_mix">🌍 Global Mix (~180 stocks)</option>
+                    <option value="small_cap_focus">🔍 Small Cap Focus (~100 stocks)</option>
+                </select>
+            </div>
+            
             <button onclick="updateDashboard()" 
                     class="refresh-btn" style="margin-top: 8px;" id="updateBtn">
                 🔄 Update Data
@@ -6319,27 +6341,39 @@
         // Dashboard update function
         async function updateDashboard() {
             const btn = document.getElementById('updateBtn');
+            const universeSelect = document.getElementById('universeSelect');
+            const selectedUniverse = universeSelect.value;
+            const universeName = universeSelect.options[universeSelect.selectedIndex].text;
+            
             const originalText = btn.innerHTML;
             btn.innerHTML = '⏳ Updating...';
             btn.disabled = true;
             
             try {
-                // Make request to update endpoint
+                // Make request to update endpoint with selected universe
                 const response = await fetch('/update', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    }
+                    },
+                    body: JSON.stringify({
+                        universe: selectedUniverse
+                    })
                 });
                 
                 if (response.ok) {
-                    btn.innerHTML = '🚀 Analysis Started!';
+                    const result = await response.json();
+                    btn.innerHTML = `🚀 Analyzing ${universeName}...`;
                     btn.style.background = '#f39c12';
+                    
+                    // Show universe info in console for debugging
+                    console.log(`Started analysis of ${result.estimated_stocks} stocks from ${result.universe}`);
+                    
                     setTimeout(() => {
                         btn.innerHTML = '🔄 Update Data';
                         btn.style.background = '#3498db';
                         btn.disabled = false;
-                    }, 3000);
+                    }, 5000);
                     // Don't reload immediately - let user see progress
                 } else {
                     throw new Error('Update failed');
