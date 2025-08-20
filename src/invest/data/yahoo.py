@@ -6,12 +6,16 @@ import yfinance as yf
 from bs4 import BeautifulSoup
 
 from ..config.logging_config import get_logger, log_data_fetch, log_error_with_context
+from ..caching.cache_decorators import cached_api_call, cache_result_by_ticker
 
 logger = get_logger(__name__)
 
 
+@cached_api_call(data_type='sp500_tickers', ttl=24*3600, key_prefix='sp500')
 def get_sp500_tickers() -> List[str]:
     """Get the list of S&P 500 tickers from Wikipedia."""
+    logger.info("Fetching S&P 500 tickers from Wikipedia (not cached)")
+    
     url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
@@ -40,30 +44,29 @@ def get_sp500_tickers() -> List[str]:
             ticker = ticker.replace(".", "-")
             tickers.append(ticker)
 
+    logger.info(f"Successfully fetched {len(tickers)} S&P 500 tickers")
     return tickers
 
 
+@cache_result_by_ticker('stock_info', ttl=24*3600)  # 24 hours
 def get_stock_data(ticker: str) -> Optional[Dict]:
     """
     Get basic stock data from Yahoo Finance.
     
-    DEPRECATED: Use the new provider system instead:
-    from src.invest.data.providers import get_stock_info
-    stock_info = get_stock_info(ticker)
-    stock_data = stock_info.to_dict()
+    This function is now cached to improve performance and reduce API calls.
     """
     try:
-        # Use the new provider system internally for consistency
-        from .providers import get_provider_manager
-        manager = get_provider_manager()
+        log_data_fetch(logger, ticker, "stock_data", True)
         
-        # Ensure we have providers setup
-        if not manager.providers:
-            from .providers import setup_default_providers
-            setup_default_providers()
+        stock = yf.Ticker(ticker)
+        info = stock.info
         
-        stock_info = manager.get_stock_info(ticker)
-        return stock_info.to_dict()
+        if not info or 'regularMarketPrice' not in info:
+            log_data_fetch(logger, ticker, "stock_data", False, error="No market data available")
+            return None
+            
+        log_data_fetch(logger, ticker, "stock_data", True)
+        return info
         
     except Exception as e:
         log_data_fetch(logger, ticker, "stock_data", False, error=str(e))

@@ -35,12 +35,21 @@ class ValuationDefaults:
     DCF_PROJECTION_YEARS: int = 10
     DCF_TERMINAL_GROWTH: float = 0.025
     DCF_DISCOUNT_RATE: float = 0.12
+    TERMINAL_GROWTH_RATE: float = 0.025
+    
+    # Growth and risk parameters
+    DEFAULT_GROWTH_RATE: float = 0.05
+    MAX_GROWTH_RATE: float = 0.25
+    RISK_FREE_RATE: float = 0.045
+    EQUITY_RISK_PREMIUM: float = 0.065
     
     # RIM Model defaults
     RIM_PROJECTION_YEARS: int = 10
     RIM_COST_OF_EQUITY: float = 0.12
     RIM_ROE_DECAY_RATE: float = 0.05
     RIM_MAX_SUSTAINABLE_ROE: float = 0.30
+    ROE_FADE_RATE: float = 0.7  # How much ROE fades toward cost of equity
+    RETENTION_RATIO: float = 0.6  # Portion of earnings retained
     
     # Enhanced DCF defaults
     ENHANCED_DCF_PROJECTION_YEARS: int = 10
@@ -49,6 +58,12 @@ class ValuationDefaults:
     # Multi-stage DCF defaults
     MULTI_STAGE_HIGH_GROWTH_YEARS: int = 5
     MULTI_STAGE_TRANSITION_YEARS: int = 5
+    
+    # Simple ratios defaults (industry multiples)
+    DEFAULT_PE_MULTIPLE: float = 15.0
+    DEFAULT_PB_MULTIPLE: float = 1.5
+    DEFAULT_PS_MULTIPLE: float = 2.0
+    DEFAULT_PCF_MULTIPLE: float = 10.0
 
 
 @dataclass(frozen=True)
