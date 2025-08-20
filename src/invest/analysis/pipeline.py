@@ -3,6 +3,7 @@ from typing import Any, Dict, List
 
 from ..config.schema import AnalysisConfig
 from ..config.constants import ANALYSIS_LIMITS
+from ..data.concurrent_fetcher import ConcurrentDataFetcher, fetch_multiple_stocks_basic
 from ..data.international import (
     get_buffett_favorites_japan,
     get_international_stock_data,
@@ -146,24 +147,22 @@ class AnalysisPipeline:
             )
             logger.info(f"Fetching market cap data for top {max_fetch} tickers...")
 
+            # Use concurrent fetching for market cap data
+            def progress_callback(completed: int, total: int):
+                if completed % 25 == 0:
+                    logger.info(f"Processed {completed}/{total} tickers for market cap...")
+            
+            fetcher_results = fetch_multiple_stocks_basic(
+                tickers[:max_fetch], 
+                progress_callback=progress_callback
+            )
+            
             ticker_market_caps = []
-            for i, ticker in enumerate(tickers[:max_fetch]):
-                try:
-                    import yfinance as yf
-
-                    stock = yf.Ticker(ticker)
-                    info = stock.info
-                    market_cap = info.get("marketCap", 0)
+            for ticker, stock_data in fetcher_results.items():
+                if stock_data and 'marketCap' in stock_data:
+                    market_cap = stock_data.get('marketCap', 0)
                     if market_cap and market_cap > 0:
                         ticker_market_caps.append((ticker, market_cap))
-
-                    # Log progress every 25 tickers
-                    if (i + 1) % 25 == 0:
-                        logger.info(f"Processed {i + 1}/{max_fetch} tickers for market cap...")
-
-                except Exception as e:
-                    logger.warning(f"Failed to get market cap for {ticker}: {e}")
-                    continue
 
             # Sort by market cap and take top N
             ticker_market_caps.sort(key=lambda x: x[1], reverse=True)
@@ -173,7 +172,6 @@ class AnalysisPipeline:
             logger.info(f"Pre-filtered to {len(tickers)} tickers by market cap")
 
         # Get full stock data for filtered tickers
-        stocks_data = []
         logger.info(f"Fetching full stock data for {len(tickers)} tickers...")
 
         # Determine if we're dealing with international markets
@@ -182,33 +180,56 @@ class AnalysisPipeline:
             None,
         ]
 
-        for i, ticker in enumerate(tickers):
-            try:
-                if is_international:
-                    # Use international data function for better currency/market handling
+        stocks_data = []
+        
+        if is_international:
+            # For international markets, fall back to sequential processing for now
+            # TODO: Implement concurrent international data fetching
+            logger.info("Using sequential fetching for international markets...")
+            for i, ticker in enumerate(tickers):
+                try:
                     stock_data = get_international_stock_data(ticker)
-                else:
-                    # Use standard US market function
-                    from ..data.yahoo import get_stock_data
+                    if stock_data:
+                        # Check filters and add filter status
+                        stock_data["passes_universe_filters"] = self._passes_universe_filters(
+                            stock_data, universe_config
+                        )
+                        stocks_data.append(stock_data)
 
-                    stock_data = get_stock_data(ticker)
+                    # Log progress every 20 tickers
+                    if (i + 1) % 20 == 0:
+                        passed_count = sum(1 for s in stocks_data if s["passes_universe_filters"])
+                        logger.info(
+                            f"Processed {i + 1}/{len(tickers)} tickers for full data... ({passed_count} passed filters)"
+                        )
+
+                except Exception as e:
+                    logger.warning(f"Failed to get data for {ticker}: {e}")
+                    continue
+        else:
+            # Use concurrent fetching for US markets
+            logger.info("Using concurrent fetching for US markets...")
+            
+            def full_progress_callback(completed: int, total: int):
+                if completed % 20 == 0:
+                    logger.info(f"Processed {completed}/{total} tickers for full data...")
+            
+            fetcher_results = fetch_multiple_stocks_basic(
+                tickers,
+                progress_callback=full_progress_callback
+            )
+            
+            for ticker in tickers:
+                stock_data = fetcher_results.get(ticker)
                 if stock_data:
-                    # Check filters and add filter status
+                    # Check filters and add filter status  
                     stock_data["passes_universe_filters"] = self._passes_universe_filters(
                         stock_data, universe_config
                     )
                     stocks_data.append(stock_data)
 
-                # Log progress every 20 tickers
-                if (i + 1) % 20 == 0:
-                    passed_count = sum(1 for s in stocks_data if s["passes_universe_filters"])
-                    logger.info(
-                        f"Processed {i + 1}/{len(tickers)} tickers for full data... ({passed_count} passed filters)"
-                    )
-
-            except Exception as e:
-                logger.warning(f"Failed to get data for {ticker}: {e}")
-                continue
+        passed_count = sum(1 for s in stocks_data if s["passes_universe_filters"])
+        logger.info(f"Completed fetching data for {len(tickers)} tickers. {passed_count} passed universe filters.")
 
         return stocks_data
 

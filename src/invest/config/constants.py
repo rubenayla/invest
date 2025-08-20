@@ -56,8 +56,11 @@ class DataProviderConfig:
     """Configuration for external data providers."""
     
     # Rate limiting
+    REQUESTS_PER_SECOND: float = 2.0  # Conservative limit for Yahoo Finance
     REQUESTS_PER_MINUTE: int = 100
-    RETRY_ATTEMPTS: int = 3
+    MAX_CONCURRENT_REQUESTS: int = 10
+    RETRY_DELAY_SECONDS: float = 1.0
+    MAX_RETRIES: int = 3
     RETRY_BACKOFF_MULTIPLIER: int = 2
     RETRY_MAX_WAIT: int = 60
     
