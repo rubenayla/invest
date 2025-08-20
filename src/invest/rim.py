@@ -21,10 +21,11 @@ from typing import Dict, List, Optional
 
 import numpy as np
 import yfinance as yf
+from .config.constants import VALUATION_DEFAULTS
 
 logger = logging.getLogger(__name__)
 
-PROJECTION_YEARS = 10
+PROJECTION_YEARS = VALUATION_DEFAULTS.RIM_PROJECTION_YEARS
 
 
 def rim_valuation(
@@ -77,8 +78,8 @@ def calculate_rim(
     book_value_per_share: Optional[float] = None,
     roe: Optional[float] = None,
     current_price: Optional[float] = None,
-    cost_of_equity: float = 0.12,
-    roe_decay_rate: float = 0.05,  # ROE fades toward cost of equity over time
+    cost_of_equity: float = VALUATION_DEFAULTS.RIM_COST_OF_EQUITY,
+    roe_decay_rate: float = VALUATION_DEFAULTS.RIM_ROE_DECAY_RATE,
     terminal_roe: Optional[float] = None,
     projection_years: int = PROJECTION_YEARS,
     use_sector_adjustment: bool = True,
@@ -171,14 +172,24 @@ def calculate_rim(
                     logger.info(f"Adjusted cost of equity for {sector} sector: {adjusted_cost_of_equity:.1%}")
                 break
     
+    # Calculate sustainable ROE first (before projections)
+    sustainable_roe = _estimate_sustainable_roe(info, roe)
+    
     # Set terminal ROE (long-term sustainable level)
     if terminal_roe is None:
         terminal_roe = adjusted_cost_of_equity  # Long-run, ROE converges to cost of equity
     
+    # Use sustainable ROE for projections instead of current ROE
+    # This prevents extreme current ROE from distorting the entire valuation
+    normalized_initial_roe = min(sustainable_roe, roe) if sustainable_roe < roe else roe
+    
+    if verbose and normalized_initial_roe != roe:
+        print(f"⚠️  Using normalized ROE {normalized_initial_roe:.1%} instead of current {roe:.1%} for projections")
+    
     # Calculate residual income projections
     projections = _project_residual_income(
         book_value_per_share=book_value_per_share,
-        initial_roe=roe,
+        initial_roe=normalized_initial_roe,
         cost_of_equity=adjusted_cost_of_equity,
         terminal_roe=terminal_roe,
         roe_decay_rate=roe_decay_rate,
@@ -208,7 +219,7 @@ def calculate_rim(
     
     # Quality metrics
     roe_spread = roe - adjusted_cost_of_equity
-    sustainable_roe = _estimate_sustainable_roe(info, roe)
+    # sustainable_roe already calculated above
     
     results = {
         'ticker': ticker,
@@ -314,7 +325,7 @@ def _estimate_sustainable_roe(info: Dict, current_roe: float) -> float:
     else:
         equity_multiplier = 1.5  # Conservative default
     
-    # Conservative sustainable ROE
+    # Conservative sustainable ROE with extreme ROE protection
     if profit_margin and asset_turnover:
         sustainable_roe = profit_margin * asset_turnover * equity_multiplier
         # Cap at reasonable levels and don't exceed current ROE significantly
@@ -323,6 +334,24 @@ def _estimate_sustainable_roe(info: Dict, current_roe: float) -> float:
     else:
         # Fallback: conservative estimate based on current ROE
         sustainable_roe = min(current_roe * 0.8, 0.15)  # 80% of current, max 15%
+    
+    # Special handling for extreme ROE cases (>50%)
+    if current_roe > 0.50:  # More than 50% ROE is likely unsustainable
+        # Use industry/sector median ROE as reality check
+        sector = info.get('sector', '')
+        if 'consumer' in sector.lower():
+            sector_median_roe = 0.15  # Consumer companies typically 10-20% ROE
+        elif 'financial' in sector.lower():
+            sector_median_roe = 0.12  # Financial companies 10-15%
+        else:
+            sector_median_roe = 0.12  # General default
+        
+        # For extreme ROE, bias toward sector median
+        extreme_adjustment = min(current_roe * 0.3, sector_median_roe * 1.5)
+        sustainable_roe = min(sustainable_roe, extreme_adjustment)
+        
+        # Absolute cap: no sustainable ROE above configured maximum
+        sustainable_roe = min(sustainable_roe, VALUATION_DEFAULTS.RIM_MAX_SUSTAINABLE_ROE)
     
     return sustainable_roe
 

@@ -2,6 +2,7 @@ import logging
 from typing import Any, Dict, List
 
 from ..config.schema import AnalysisConfig
+from ..config.constants import ANALYSIS_LIMITS
 from ..data.international import (
     get_buffett_favorites_japan,
     get_international_stock_data,
@@ -135,8 +136,14 @@ class AnalysisPipeline:
             )
 
             # Get basic market cap data for sorting (faster than full data)
-            # Limit to 150 tickers max to avoid timeout (150 * 0.7s = ~105s < 2min timeout)
-            max_fetch = min(len(tickers), max(150, universe_config.top_n_by_market_cap * 1.5))
+            # Limit to prevent timeout during market cap fetching
+            max_fetch = min(
+                len(tickers), 
+                max(
+                    ANALYSIS_LIMITS.MAX_TICKERS_FOR_MARKET_CAP_FETCH,
+                    universe_config.top_n_by_market_cap * ANALYSIS_LIMITS.MARKET_CAP_FETCH_MULTIPLIER
+                )
+            )
             logger.info(f"Fetching market cap data for top {max_fetch} tickers...")
 
             ticker_market_caps = []
@@ -308,12 +315,12 @@ class AnalysisPipeline:
         """Apply minimum score filters and mark pass/fail status."""
         filtered = []
 
-        # Apply minimum thresholds (configurable)
-        min_quality = 40
-        min_value = 30
-        min_growth = 20
-        max_risk = 80
-        min_composite = 50
+        # Apply minimum thresholds (now from configuration)
+        min_quality = ANALYSIS_LIMITS.MIN_QUALITY_SCORE
+        min_value = ANALYSIS_LIMITS.MIN_VALUE_SCORE
+        min_growth = ANALYSIS_LIMITS.MIN_GROWTH_SCORE
+        max_risk = ANALYSIS_LIMITS.MAX_RISK_SCORE
+        min_composite = ANALYSIS_LIMITS.MIN_COMPOSITE_SCORE
 
         for result in combined_results:
             scores = result.get("scores", {})

@@ -19,8 +19,9 @@ Date: YYYY-MM-DD
 """
 
 import yfinance as yf
+from .config.constants import VALUATION_DEFAULTS
 
-PROJECTION_YEARS = 10  # Number of years for FCF projection
+PROJECTION_YEARS = VALUATION_DEFAULTS.DCF_PROJECTION_YEARS
 
 
 def project_fcfs(initial_fcf: float, growth_rates: list[float]) -> list[float]:
@@ -64,8 +65,8 @@ def calculate_dcf(
     debt: float = None,
     current_price: float = None,
     growth_rates: list[float] = None,
-    discount_rate: float = 0.12,
-    terminal_growth: float = 0.02,
+    discount_rate: float = VALUATION_DEFAULTS.DCF_DISCOUNT_RATE,
+    terminal_growth: float = VALUATION_DEFAULTS.DCF_TERMINAL_GROWTH,
     projection_years: int = PROJECTION_YEARS,
     use_normalized_fcf: bool = True,
     verbose: bool = True,
@@ -156,6 +157,33 @@ def calculate_dcf(
 
     if any(x is None for x in [base_fcf, shares, current_price]):
         raise RuntimeError(f"Missing essential data for {ticker}: fcf, shares, or current_price.")
+
+    # Check for inappropriate DCF application (biotech/pharma with negative FCF)
+    sector = info.get('sector', '').lower()
+    industry = info.get('industry', '').lower()
+    
+    is_biotech_pharma = (
+        'biotechnology' in industry or 
+        'pharmaceutical' in industry or
+        'biotech' in industry or
+        ('healthcare' in sector and any(keyword in industry for keyword in ['drug', 'medicine', 'therapeutic']))
+    )
+    
+    if is_biotech_pharma and base_fcf < 0:
+        # DCF is inappropriate for pre-profitability biotech companies
+        raise RuntimeError(
+            f"DCF not suitable for {ticker}: Biotech/pharma company with negative FCF (${base_fcf:,.0f}). "
+            f"Use pipeline-based valuation methods instead."
+        )
+    
+    if base_fcf < 0 and abs(base_fcf) > info.get('totalCash', 0):
+        # Very negative FCF that exceeds cash reserves suggests unsustainable model
+        years_of_cash = info.get('totalCash', 0) / abs(base_fcf) if base_fcf < 0 else float('inf')
+        if years_of_cash < 2:
+            raise RuntimeError(
+                f"DCF not suitable for {ticker}: Severe negative FCF (${base_fcf:,.0f}) with limited cash runway "
+                f"({years_of_cash:.1f} years). Company may face financial distress."
+            )
 
     # If growth rates are not provided, infer from revenueGrowth or default to 5%.
     if growth_rates is None:

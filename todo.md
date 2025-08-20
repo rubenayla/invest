@@ -1,9 +1,6 @@
-You did the etf strategies and modified the notes folder, let's commit all that.
-
+Can you check for bad habits or things we could improve in this project, so it grows with no problems and keeps being organized? Good practice and so on.
 
 Analyze APA and the other top stocks
-
-- Consider gold, bitcoin, etc. as alternatives to stocks, instructions for AI to consider waiting, like berkshire has sometimes done, to wait for better opportunities with treasuries, short-term bonds, etc.
 
 - investigate levels.vc
 
@@ -45,14 +42,14 @@ Analyze APA and the other top stocks
     - Dividend discount
 
 ## Advanced Valuation Models to Implement
-- [ ] **Residual Income Model (RIM)** ⭐⭐⭐ - Perfect for financial companies
+- [x] **Residual Income Model (RIM)** ⭐⭐⭐ - Perfect for financial companies
     - RIM = Book Value + PV(Abnormal Earnings)
     - Abnormal Earnings = (ROE - Cost of Equity) × Book Value
     - Great for banks, insurance companies where DCF struggles
-- [ ] **Monte Carlo DCF** ⭐⭐ - Add confidence intervals
+- [x] **Monte Carlo DCF** ⭐⭐ - Add confidence intervals
     - Use probability distributions for growth rates, discount rates
     - Output: "Fair Value: $45.67 (Range: $38.12 - $52.34, 68% confidence)"
-- [ ] **Multi-Stage DCF** ⭐⭐⭐ - More realistic growth phases
+- [x] **Multi-Stage DCF** ⭐⭐⭐ - More realistic growth phases
     - Phase 1: High growth (Years 1-5)
     - Phase 2: Transition (Years 6-10)
     - Phase 3: Terminal stable growth
@@ -114,3 +111,8 @@ This is my current wallet, what would you do with it? What modifications? Which 
 - PYPL
 - QCOM
 - SAP
+
+
+---
+
+- Consider gold, bitcoin, etc. as alternatives to stocks, instructions for AI to consider waiting, like berkshire has sometimes done, to wait for better opportunities with treasuries, short-term bonds, etc.

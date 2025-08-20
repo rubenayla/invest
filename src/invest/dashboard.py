@@ -18,6 +18,8 @@ from .dcf import calculate_dcf
 from .dcf_enhanced import calculate_enhanced_dcf
 from .simple_ratios import calculate_simple_ratios_valuation
 from .rim import calculate_rim
+from .multi_stage_dcf import calculate_multi_stage_dcf
+from .config.constants import ANALYSIS_LIMITS
 
 logger = logging.getLogger(__name__)
 
@@ -54,6 +56,7 @@ class ValuationDashboard:
                 "dcf_enhanced": "not_run",
                 "simple_ratios": "not_run",
                 "rim": "not_run",
+                "multi_stage_dcf": "not_run",
             },
         }
 
@@ -89,9 +92,9 @@ class ValuationDashboard:
             if not stock_data.get("valuations"):
                 return (1, ticker)
 
-            # Priority 2: Incomplete analysis (< 3 models)
+            # Priority 2: Incomplete analysis (< 5 models)
             completed_models = len(stock_data.get("valuations", {}))
-            if completed_models < 3:
+            if completed_models < 5:
                 return (2, -completed_models, ticker)  # Fewer models = higher priority
 
             # Priority 3: Failed previously (rate limited, data missing)
@@ -117,7 +120,7 @@ class ValuationDashboard:
             f"  Never analyzed: {len([t for t in tickers if not self.data['stocks'].get(t, {}).get('valuations')])}"
         )
         logger.info(
-            f"  Incomplete: {len([t for t in tickers if 0 < len(self.data['stocks'].get(t, {}).get('valuations', {})) < 3])}"
+            f"  Incomplete: {len([t for t in tickers if 0 < len(self.data['stocks'].get(t, {}).get('valuations', {})) < 5])}"
         )
         logger.info(
             f"  Failed previously: {len([t for t in tickers if self.data['stocks'].get(t, {}).get('status') in ['rate_limited', 'data_missing', 'model_failed']])}"
@@ -125,7 +128,7 @@ class ValuationDashboard:
 
         return prioritized
 
-    def update_dashboard(self, tickers: List[str], timeout_per_stock: int = 30):
+    def update_dashboard(self, tickers: List[str], timeout_per_stock: int = ANALYSIS_LIMITS.DEFAULT_TIMEOUT_PER_STOCK):
         """
         Update dashboard with latest valuations.
 
@@ -173,6 +176,10 @@ class ValuationDashboard:
                 # RIM (Residual Income Model)
                 future = executor.submit(self._safe_valuation, ticker, "rim", timeout_per_stock)
                 future_to_info[future] = (ticker, "rim")
+                
+                # Multi-Stage DCF
+                future = executor.submit(self._safe_valuation, ticker, "multi_stage_dcf", timeout_per_stock)
+                future_to_info[future] = (ticker, "multi_stage_dcf")
 
             # Process results as they complete
             completed_count = 0
@@ -205,12 +212,18 @@ class ValuationDashboard:
 
                 try:
                     result = future.result()
-                    if result:
+                    if result and not result.get("failed", False):
+                        # Successful valuation
                         self._update_stock_data(ticker, model, result)
                         self._generate_html()  # Update HTML immediately
                         logger.info(
                             f"✅ Updated {ticker} {model} ({completed_count}/{total_tasks})"
                         )
+                    elif result and result.get("failed", False):
+                        # Model rejected/failed - still save the failure result
+                        self._update_stock_data(ticker, model, result)
+                        self._generate_html()
+                        logger.warning(f"❌ Model rejected for {ticker} {model}: {result.get('failure_reason', 'Unknown reason')}")
                     else:
                         self._handle_failed_valuation(ticker, model, "Model returned no result")
                         logger.warning(f"❌ Failed {ticker} {model}")
@@ -258,6 +271,11 @@ class ValuationDashboard:
                 result = calculate_simple_ratios_valuation(stock_data)
             elif model == "rim":
                 result = calculate_rim(ticker, verbose=False)
+            elif model == "multi_stage_dcf":
+                result = calculate_multi_stage_dcf(ticker, verbose=False)
+            elif model == "monte_carlo":
+                # Use smaller iteration count for dashboard to avoid timeouts
+                result = calculate_monte_carlo_valuation(ticker, iterations=500, verbose=False)
             else:
                 return None
 
@@ -269,7 +287,13 @@ class ValuationDashboard:
 
         except Exception as e:
             logger.warning(f"Valuation failed for {ticker} {model}: {e}")
-            return None
+            # Return failure result instead of None to show in dashboard
+            return {
+                "failed": True,
+                "failure_reason": str(e),
+                "fair_value": None,
+                "margin_of_safety": None
+            }
 
     def _clean_result(self, result: Dict) -> Dict:
         """Clean result to ensure all values are Python types, not pandas Series."""
@@ -312,6 +336,60 @@ class ValuationDashboard:
             return f"{float_val:.1%}"
         except (ValueError, TypeError):
             return placeholder
+
+    def _format_stock_analysis_summary(self, stocks_dict) -> str:
+        """Format detailed stock analysis summary with breakdown by status."""
+        if not stocks_dict:
+            return "<p><strong>📊 Stocks:</strong> No stocks loaded</p>"
+        
+        # Count stocks by status
+        status_counts = {}
+        completed_stocks = 0
+        failed_stocks = 0
+        analyzing_stocks = 0
+        pending_stocks = 0
+        
+        # Convert dict to items if needed
+        if isinstance(stocks_dict, dict):
+            stock_items = list(stocks_dict.items())
+        else:
+            stock_items = list(stocks_dict)
+            
+        for ticker, stock_data in stock_items:
+            status = stock_data.get("status", "pending")
+            valuations = stock_data.get("valuations", {})
+            
+            # Count by completion status
+            if status == "completed":
+                completed_stocks += 1
+            elif status in ["data_missing", "rate_limited", "model_failed"]:
+                failed_stocks += 1
+            elif status == "analyzing":
+                analyzing_stocks += 1
+            else:
+                pending_stocks += 1
+            
+            # Track detailed status counts
+            status_counts[status] = status_counts.get(status, 0) + 1
+        
+        total_stocks = len(stock_items)
+        
+        # Create summary with color-coded status
+        return f"""
+        <div style="background: #f8f9fa; padding: 12px; border-radius: 6px; margin: 8px 0;">
+            <p style="margin: 0 0 8px 0;"><strong>📊 Stock Analysis Summary:</strong></p>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px; font-size: 0.9em;">
+                <div><strong>🎯 Total:</strong> <span style="color: #2c3e50;">{total_stocks}</span></div>
+                <div><strong>✅ Completed:</strong> <span style="color: #27ae60;">{completed_stocks}</span></div>
+                <div><strong>🔄 Analyzing:</strong> <span style="color: #f39c12;">{analyzing_stocks}</span></div>
+                <div><strong>⏳ Pending:</strong> <span style="color: #95a5a6;">{pending_stocks}</span></div>
+                <div><strong>❌ Failed:</strong> <span style="color: #e74c3c;">{failed_stocks}</span></div>
+            </div>
+            <div style="margin-top: 8px; padding: 6px; background: #ecf0f1; border-radius: 3px; font-size: 0.85em; color: #7f8c8d;">
+                <strong>Progress:</strong> {completed_stocks + analyzing_stocks}/{total_stocks} stocks have started analysis ({((completed_stocks + analyzing_stocks) / total_stocks * 100):.1f}%)
+            </div>
+        </div>
+        """
 
     def _format_progress_display(self, progress: Dict) -> str:
         """Format progress information for HTML display."""
@@ -401,8 +479,8 @@ class ValuationDashboard:
         if model == "simple_ratios" and margin_value != 0:
             margin_value = margin_value / 100  # Convert -63.81 to -0.6381
 
-        # Store valuation result
-        self.data["stocks"][ticker]["valuations"][model] = {
+        # Store valuation result with failure handling
+        valuation_data = {
             "fair_value": result.get("fair_value_per_share", result.get("valuation_price", 0)),
             "current_price": result.get("current_price", 0),
             "margin_of_safety": margin_value,
@@ -411,6 +489,13 @@ class ValuationDashboard:
             # Model-specific data
             "model_data": result,
         }
+        
+        # If model failed, add failure info at top level for dashboard display
+        if result.get("failed", False):
+            valuation_data["failed"] = True
+            valuation_data["failure_reason"] = result.get("failure_reason", "Model failed")
+        
+        self.data["stocks"][ticker]["valuations"][model] = valuation_data
 
         # Update completion tracking
         self.data["stocks"][ticker]["models_completed"] += 1
@@ -422,12 +507,12 @@ class ValuationDashboard:
 
         # Update status based on completion
         completed = self.data["stocks"][ticker]["models_completed"]
-        if completed >= 3:
+        if completed >= 5:
             self._update_stock_status(
                 ticker, "completed", f"All {completed} models completed successfully"
             )
         else:
-            self._update_stock_status(ticker, "analyzing", f"{completed}/3 models completed")
+            self._update_stock_status(ticker, "analyzing", f"{completed}/5 models completed")
 
         # Update model status
         self.data["model_status"][model] = "completed"
@@ -510,11 +595,19 @@ class ValuationDashboard:
             enh_dcf_val = valuations.get("dcf_enhanced", {})
             ratios_val = valuations.get("simple_ratios", {})
             rim_val = valuations.get("rim", {})
+            multi_stage_val = valuations.get("multi_stage_dcf", {})
 
             # Use class methods for safe formatting
 
-            # Format valuation cells with proper handling for missing data
+            # Format valuation cells with proper handling for missing data and failures
             def format_valuation_cell(val_dict):
+                # Check if model failed
+                if val_dict.get("failed", False):
+                    failure_reason = val_dict.get("failure_reason", "Model failed")
+                    # Truncate long error messages for display
+                    short_reason = failure_reason[:50] + "..." if len(failure_reason) > 50 else failure_reason
+                    return f'<span title="{failure_reason}">❌</span>', f'<span title="{failure_reason}">❌</span>'
+                
                 fair_value = val_dict.get("fair_value")
                 if fair_value is None or fair_value == 0:
                     return "-", "-"
@@ -526,6 +619,7 @@ class ValuationDashboard:
             enh_dcf_value, enh_dcf_margin = format_valuation_cell(enh_dcf_val)
             ratios_value, ratios_margin = format_valuation_cell(ratios_val)
             rim_value, rim_margin = format_valuation_cell(rim_val)
+            multi_stage_value, multi_stage_margin = format_valuation_cell(multi_stage_val)
 
             # Format status with appropriate styling
             status_icons = {
@@ -567,6 +661,8 @@ class ValuationDashboard:
                 <td class="margin">{ratios_margin}</td>
                 <td class="valuation">{rim_value}</td>
                 <td class="margin">{rim_margin}</td>
+                <td class="valuation">{multi_stage_value}</td>
+                <td class="margin">{multi_stage_margin}</td>
             </tr>
             """
 
@@ -688,12 +784,12 @@ class ValuationDashboard:
 <body>
     <div class="header">
         <h1>🎯 Investment Valuation Dashboard</h1>
-        <p>Comparing DCF, Enhanced DCF, Simple Ratios, and RIM valuation models</p>
+        <p>Comparing 5 valuation models: DCF, Enhanced DCF, Simple Ratios, RIM, and Multi-Stage DCF</p>
     </div>
 
     <div class="status">
         <p><strong>Last Updated:</strong> <span class="last-updated">{last_updated}</span></p>
-        <p><strong>Stocks Analyzed:</strong> {len(stocks)}</p>
+        {self._format_stock_analysis_summary(stocks)}
 
         <div id="progress-section">
             {self._format_progress_display(progress)}
@@ -785,6 +881,11 @@ class ValuationDashboard:
                         <span class="tooltiptext">Values companies based on ROE vs Cost of Equity. Excellent for financial companies and mature businesses with stable book values.</span>
                     </span>
                 </th>
+                <th colspan="2" class="model-header">
+                    <span class="tooltip">Multi-Stage DCF
+                        <span class="tooltiptext">Advanced DCF with realistic growth phases: High Growth → Transition → Terminal. Adapts to company size, industry maturity, and competitive position.</span>
+                    </span>
+                </th>
             </tr>
             <tr>
                 <th class="sortable" onclick="sortTable(3, 'currency')">
@@ -827,6 +928,16 @@ class ValuationDashboard:
                         <span class="tooltiptext">RIM margin of safety. Perfect for banks and asset-heavy companies where book value is meaningful</span>
                     </span>
                 </th>
+                <th class="sortable" onclick="sortTable(11, 'currency')">
+                    <span class="tooltip">Fair Value
+                        <span class="tooltiptext">Multi-stage DCF fair value using realistic growth phases adapted to company size and industry maturity</span>
+                    </span>
+                </th>
+                <th class="sortable" onclick="sortTable(12, 'percent')">
+                    <span class="tooltip">Upside/Downside
+                        <span class="tooltiptext">Multi-stage DCF margin of safety. More realistic than linear growth models for most companies</span>
+                    </span>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -841,6 +952,7 @@ class ValuationDashboard:
             <li><strong>Enhanced DCF:</strong> Accounts for dividend policy and reinvestment efficiency</li>
             <li><strong>Simple Ratios:</strong> Benjamin Graham-style ratio-based valuation</li>
             <li><strong>RIM:</strong> Residual Income Model - perfect for banks and asset-heavy companies</li>
+            <li><strong>Multi-Stage DCF:</strong> Advanced DCF with realistic growth phases - adapts to company maturity</li>
         </ul>
         <p style="margin-top: 15px; font-size: 0.9em; color: #7f8c8d;">
             💡 <strong>Tip:</strong> Hover over column headers for detailed explanations of each metric
