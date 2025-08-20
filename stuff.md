@@ -253,3 +253,8 @@ So while most stocks get higher valuations, it's because traditional DCF was
 
   The enhanced DCF provides fairer, more nuanced valuations based on actual capital
   allocation efficiency!
+
+# 
+CNC had low costs due to healthy insurers, but they thought they had sicker ones, so they were surprised when they got a 1.8B payment due to the ACA risk adjustment program. This means it's fundamentally more inefficient, which caused a giant drop that July 2.
+
+How efficient is it now? How much should we pay for it? Let's do a detailed analysis of the company, its competitors, and the industry. Let's use several different valuation methods 

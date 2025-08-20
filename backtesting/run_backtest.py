@@ -17,6 +17,7 @@ from backtesting.core.engine import Backtester
 from backtesting.strategies.screening import ScreeningStrategy
 from backtesting.strategies.pipeline_strategy import PipelineStrategy
 from backtesting.strategies.market_cap import MarketCapStrategy
+from backtesting.strategies.etf_portfolio import ETFPortfolioStrategy
 
 # Setup logging
 logging.basicConfig(
@@ -76,6 +77,9 @@ def main():
     elif strategy_type == 'market_cap':
         strategy = MarketCapStrategy(strategy_config)
         logger.info("Using market cap weighted strategy")
+    elif strategy_type == 'etf_portfolio':
+        strategy = ETFPortfolioStrategy(strategy_config)
+        logger.info(f"Using ETF portfolio strategy: {strategy_config.get('strategy_type', 'core_satellite')}")
     else:
         strategy = ScreeningStrategy(strategy_config)
         logger.info("Using basic screening strategy")

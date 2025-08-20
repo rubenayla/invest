@@ -25,6 +25,8 @@
     - A low EV for a valuable company means it's cheap to buy. It's good.
 - ROI = Return On Invested capital = (Gross Profit / Cost of the investment) ~= 10%
 - P/E ratio = Price / Earnings ~= 12
+- P/TBV = Price / Tangible Book Value
+    - Excludes Goodwill from the book value to actually reflect the tangible assets of the company. If 1 it means you liquidate the company and get about the same amount of money as the market cap.
 - P/G ratio = Price / Gross Profit ~= 91
 - EPS = Earnings Per Share = Earnings / Shares
 - FCF = Free Cash Flow = net income adding depreciation, amortization, capex, working capital, interests etc = net income * (1 - reinvestment rate)

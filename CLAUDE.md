@@ -136,4 +136,46 @@ def analyze_stock(ticker):
     return perform_analysis(ticker)
 ```
 
+## Claude Desktop Integration
+
+### Available AI Tools
+The framework provides Claude Desktop integration with these tools:
+
+#### 🔍 Screening Tools
+- `systematic_screen()` - Run systematic stock screening
+- `get_screening_configs()` - See available screening configurations
+- `create_custom_screen()` - Create custom screening criteria
+
+#### 📊 Research Tools  
+- `research_stock()` - Deep research on specific stocks
+- `analyze_sector()` - Sector-wide analysis
+- `get_recent_news()` - Recent news research framework
+- `compare_competitive_position()` - Competitive analysis
+
+#### 📈 Data Tools
+- `get_stock_data_detailed()` - Comprehensive stock data
+- `get_financial_metrics()` - Specific financial metrics
+- `compare_stocks()` - Side-by-side stock comparison
+- `analyze_stock_trends()` - Trend analysis
+
+#### 💼 Portfolio Tools
+- `build_portfolio()` - Construct optimized portfolios
+- `analyze_portfolio_risk()` - Risk analysis
+- `optimize_allocation()` - Rebalancing recommendations
+
+### Integration Best Practices
+
+1. **Start with Systematic Screening**: Use the framework's objective analysis first
+2. **Ask Follow-up Questions**: Dive deeper into specific results
+3. **Get Specific Research**: Use AI for real-time market research
+4. **Combine Both**: Systematic data + AI analysis for comprehensive insights
+
+### Example Usage
+```
+User: "Find undervalued growth stocks in the technology sector"
+Claude: [Uses systematic_screen then researches top picks]
+```
+
+The AI tools complement the command-line interface - use systematic screening for objective analysis, then discuss results interactively.
+
 ## Remember: ALWAYS use `poetry run` for ALL commands!
