@@ -140,6 +140,19 @@ def get_universe_tickers(universe: str) -> List[str]:
             get_sp600_smallcap()[:30] +
             get_nasdaq_smallcap()[:20]
         ),
+        'all_universes': lambda: list(set(
+            get_sp500_tickers() +
+            get_russell_2000_sample() +
+            get_sp600_smallcap() +
+            get_nasdaq_smallcap() +
+            get_emerging_growth_stocks() +
+            get_major_japanese_stocks() +
+            get_topix_core30_tickers() +
+            get_buffett_favorites_japan() +
+            get_ftse100_tickers() +
+            get_dax_tickers() +
+            get_warren_buffett_international()
+        )),
     }
     
     if universe in universe_map:
