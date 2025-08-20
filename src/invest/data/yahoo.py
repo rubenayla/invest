@@ -44,55 +44,59 @@ def get_sp500_tickers() -> List[str]:
 
 
 def get_stock_data(ticker: str) -> Optional[Dict]:
-    """Get basic stock data from Yahoo Finance."""
+    """
+    Get basic stock data from Yahoo Finance.
+    
+    DEPRECATED: Use the new provider system instead:
+    from src.invest.data.providers import get_stock_info
+    stock_info = get_stock_info(ticker)
+    stock_data = stock_info.to_dict()
+    """
     try:
-        stock = yf.Ticker(ticker)
-        info = stock.info
-
-        # Get key financial metrics
-        return {
-            "ticker": ticker,
-            "market_cap": info.get("marketCap"),
-            "enterprise_value": info.get("enterpriseValue"),
-            "trailing_pe": info.get("trailingPE"),
-            "forward_pe": info.get("forwardPE"),
-            "price_to_book": info.get("priceToBook"),
-            "ev_to_ebitda": info.get("enterpriseToEbitda"),
-            "ev_to_revenue": info.get("enterpriseToRevenue"),
-            "return_on_equity": info.get("returnOnEquity"),
-            "return_on_assets": info.get("returnOnAssets"),
-            "debt_to_equity": info.get("debtToEquity"),
-            "current_ratio": info.get("currentRatio"),
-            "revenue_growth": info.get("revenueGrowth"),
-            "earnings_growth": info.get("earningsGrowth"),
-            "sector": info.get("sector"),
-            "industry": info.get("industry"),
-            "current_price": info.get("currentPrice"),
-            "target_high_price": info.get("targetHighPrice"),
-            "target_low_price": info.get("targetLowPrice"),
-            "target_mean_price": info.get("targetMeanPrice"),
-        }
+        # Use the new provider system internally for consistency
+        from .providers import get_provider_manager
+        manager = get_provider_manager()
+        
+        # Ensure we have providers setup
+        if not manager.providers:
+            from .providers import setup_default_providers
+            setup_default_providers()
+        
+        stock_info = manager.get_stock_info(ticker)
+        return stock_info.to_dict()
+        
     except Exception as e:
         log_data_fetch(logger, ticker, "stock_data", False, error=str(e))
         return None
 
 
 def get_financials(ticker: str) -> Optional[Dict]:
-    """Get detailed financial statements."""
+    """
+    Get detailed financial statements.
+    
+    DEPRECATED: Use the new provider system instead:
+    from src.invest.data.providers import get_provider_manager
+    financial_statements = get_provider_manager().get_financial_statements(ticker)
+    """
     try:
-        stock = yf.Ticker(ticker)
-
-        # Get financial statements
-        income_stmt = stock.financials
-        balance_sheet = stock.balance_sheet
-        cash_flow = stock.cashflow
-
+        # Use the new provider system internally for consistency
+        from .providers import get_provider_manager
+        manager = get_provider_manager()
+        
+        # Ensure we have providers setup
+        if not manager.providers:
+            from .providers import setup_default_providers
+            setup_default_providers()
+        
+        financial_statements = manager.providers[manager.primary_provider].get_financial_statements(ticker)
+        
         return {
             "ticker": ticker,
-            "income_statement": income_stmt.to_dict() if not income_stmt.empty else {},
-            "balance_sheet": balance_sheet.to_dict() if not balance_sheet.empty else {},
-            "cash_flow": cash_flow.to_dict() if not cash_flow.empty else {},
+            "income_statement": financial_statements.financials,
+            "balance_sheet": financial_statements.balance_sheet,
+            "cash_flow": financial_statements.cash_flow,
         }
+        
     except Exception as e:
         log_data_fetch(logger, ticker, "financials", False, error=str(e))
         return None
