@@ -19,13 +19,14 @@ Output Example:
 - Key risk factors: Revenue growth uncertainty, margin compression risk
 """
 
-import logging
 from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import yfinance as yf
 
-logger = logging.getLogger(__name__)
+from .config.logging_config import get_logger, log_data_fetch, log_valuation_result, log_error_with_context
+
+logger = get_logger(__name__)
 
 # Monte Carlo parameters
 DEFAULT_ITERATIONS = 10000
@@ -91,7 +92,9 @@ def calculate_monte_carlo_dcf(
         info = stock.info
         financials = stock.financials
         cashflow = stock.cashflow
+        log_data_fetch(logger, ticker, "market_data", True)
     except Exception as e:
+        log_data_fetch(logger, ticker, "market_data", False, error=str(e))
         raise RuntimeError(f"Could not fetch data for {ticker}: {e}")
     
     # Extract base financial metrics
@@ -172,6 +175,18 @@ def calculate_monte_carlo_dcf(
         } if iterations <= 1000 else {},  # Only store for small runs
     }
     
+    # Log the Monte Carlo valuation result
+    log_valuation_result(
+        logger,
+        ticker,
+        "Monte Carlo DCF",
+        results['fair_value'],
+        margin_of_safety=results['margin_of_safety_median'],
+        confidence_range=results['confidence_intervals'][0.68]['range_pct'],
+        probability_of_loss=results['probability_of_loss'],
+        iterations=iterations
+    )
+    
     if verbose:
         _print_monte_carlo_analysis(results, ticker)
     
@@ -222,7 +237,10 @@ def _extract_base_metrics(info: Dict, financials, cashflow, ticker: str) -> Dict
         else:
             annual_volatility = 0.25  # Default 25%
     except Exception as e:
-        logger.debug(f"Could not calculate volatility for {ticker}: {e}")
+        logger.debug(
+            f"Could not calculate volatility for {ticker}",
+            extra={"ticker": ticker, "error": str(e), "fallback_volatility": 0.25}
+        )
         annual_volatility = 0.25
     
     return {
@@ -335,7 +353,10 @@ def _run_monte_carlo_simulation(
             
         except Exception as e:
             # Handle individual scenario failures gracefully
-            logger.debug(f"Scenario {i} failed: {e}")
+            logger.debug(
+                f"Monte Carlo scenario {i} failed",
+                extra={"ticker": base_metrics['ticker'], "scenario": i, "error": str(e)}
+            )
             continue
     
     return {

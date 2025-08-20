@@ -20,6 +20,9 @@ Date: YYYY-MM-DD
 
 import yfinance as yf
 from .config.constants import VALUATION_DEFAULTS
+from .config.logging_config import get_logger, log_data_fetch, log_valuation_result, log_error_with_context
+
+logger = get_logger(__name__)
 
 PROJECTION_YEARS = VALUATION_DEFAULTS.DCF_PROJECTION_YEARS
 
@@ -104,11 +107,14 @@ def calculate_dcf(
 
     try:
         info = stock.info
+        log_data_fetch(logger, ticker, "market_data", True)
     except Exception as e:
         info = {}
+        log_data_fetch(logger, ticker, "market_data", False, error=str(e))
         if verbose:
-            print(
-                f"Warning: Unable to retrieve market data for ticker '{ticker}'. Using manual inputs. Error: {e}"
+            logger.warning(
+                f"Unable to retrieve market data for {ticker}, using manual inputs",
+                extra={"ticker": ticker, "error": str(e)}
             )
 
     # Autofill inputs from stock.info if missing:
@@ -147,8 +153,9 @@ def calculate_dcf(
         except Exception as e:
             norm_fcf = fcf
             if verbose:
-                print(
-                    "Warning: Could not compute normalized FCF; falling back to TTM FCF. Error:", e
+                logger.warning(
+                    f"Could not compute normalized FCF for {ticker}, using TTM FCF",
+                    extra={"ticker": ticker, "error": str(e), "fallback_fcf": fcf}
                 )
     else:
         norm_fcf = fcf
@@ -215,6 +222,19 @@ def calculate_dcf(
     margin = (fair_value_per_share - current_price) / current_price if current_price > 0 else 0
 
     if verbose:
+        logger.info(
+            f"DCF valuation completed for {ticker}",
+            extra={
+                "ticker": ticker,
+                "current_price": current_price,
+                "fair_value_per_share": fair_value_per_share,
+                "margin_of_safety": margin,
+                "estimated_market_cap": estimated_market_cap,
+                "normalized_fcf": base_fcf,
+                "growth_rates": growth_rates
+            }
+        )
+        # Still print summary for user when verbose=True
         print(f"\nDCF Valuation for {ticker}")
         print("-" * 40)
         print(f"Current Price:        ${current_price:,.2f}")

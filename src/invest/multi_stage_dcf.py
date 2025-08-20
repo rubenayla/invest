@@ -17,14 +17,14 @@ The model automatically adjusts phase durations and growth rates based on:
 Author: Multi-stage growth modeling
 """
 
-import logging
 from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import yfinance as yf
 from .config.constants import VALUATION_DEFAULTS
+from .config.logging_config import get_logger, log_data_fetch, log_valuation_result
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 def calculate_multi_stage_dcf(
     ticker: str,
@@ -76,8 +76,10 @@ def calculate_multi_stage_dcf(
     
     try:
         info = stock.info
+        log_data_fetch(logger, ticker, "market_data", True)
     except Exception as e:
         info = {}
+        log_data_fetch(logger, ticker, "market_data", False, error=str(e))
         if verbose:
             logger.warning(f"Unable to retrieve market data for {ticker}: {e}")
     
@@ -176,6 +178,18 @@ def calculate_multi_stage_dcf(
             "total_projection_years": high_growth_years + transition_years,
         },
     }
+    
+    # Log the multi-stage DCF valuation result
+    log_valuation_result(
+        logger,
+        ticker,
+        "Multi-Stage DCF",
+        results['fair_value_per_share'],
+        margin_of_safety=results['margin_of_safety'],
+        high_growth_rate=results['high_growth_rate'],
+        terminal_growth_rate=results['terminal_growth_rate'],
+        company_stage=company_profile['stage']
+    )
     
     if verbose:
         _print_multi_stage_dcf_summary(results, ticker, growth_phases, company_profile)

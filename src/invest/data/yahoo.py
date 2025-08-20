@@ -5,6 +5,10 @@ import requests
 import yfinance as yf
 from bs4 import BeautifulSoup
 
+from ..config.logging_config import get_logger, log_data_fetch, log_error_with_context
+
+logger = get_logger(__name__)
+
 
 def get_sp500_tickers() -> List[str]:
     """Get the list of S&P 500 tickers from Wikipedia."""
@@ -69,7 +73,7 @@ def get_stock_data(ticker: str) -> Optional[Dict]:
             "target_mean_price": info.get("targetMeanPrice"),
         }
     except Exception as e:
-        print(f"Error fetching data for {ticker}: {e}")
+        log_data_fetch(logger, ticker, "stock_data", False, error=str(e))
         return None
 
 
@@ -90,7 +94,7 @@ def get_financials(ticker: str) -> Optional[Dict]:
             "cash_flow": cash_flow.to_dict() if not cash_flow.empty else {},
         }
     except Exception as e:
-        print(f"Error fetching financials for {ticker}: {e}")
+        log_data_fetch(logger, ticker, "financials", False, error=str(e))
         return None
 
 

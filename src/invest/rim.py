@@ -16,14 +16,14 @@ This model is based on the insight that a company's value comes from its ability
 to earn returns above what investors require, applied to the capital employed.
 """
 
-import logging
 from typing import Dict, List, Optional
 
 import numpy as np
 import yfinance as yf
 from .config.constants import VALUATION_DEFAULTS
+from .config.logging_config import get_logger, log_data_fetch, log_valuation_result
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 PROJECTION_YEARS = VALUATION_DEFAULTS.RIM_PROJECTION_YEARS
 
@@ -123,10 +123,10 @@ def calculate_rim(
     
     try:
         info = stock.info
+        log_data_fetch(logger, ticker, "market_data", True)
     except Exception as e:
         info = {}
-        if verbose:
-            logger.warning(f"Could not retrieve market data for {ticker}: {e}")
+        log_data_fetch(logger, ticker, "market_data", False, error=str(e))
     
     # Fetch missing data
     if book_value_per_share is None:
@@ -168,8 +168,15 @@ def calculate_rim(
         for sector_key, adjustment in sector_adjustments.items():
             if sector_key in sector:
                 adjusted_cost_of_equity += adjustment
-                if verbose:
-                    logger.info(f"Adjusted cost of equity for {sector} sector: {adjusted_cost_of_equity:.1%}")
+                logger.info(
+                    f"Applied sector adjustment for {sector}",
+                    extra={
+                        "ticker": ticker,
+                        "sector": sector,
+                        "adjustment": adjustment,
+                        "adjusted_cost_of_equity": adjusted_cost_of_equity
+                    }
+                )
                 break
     
     # Calculate sustainable ROE first (before projections)
@@ -183,8 +190,18 @@ def calculate_rim(
     # This prevents extreme current ROE from distorting the entire valuation
     normalized_initial_roe = min(sustainable_roe, roe) if sustainable_roe < roe else roe
     
-    if verbose and normalized_initial_roe != roe:
-        print(f"⚠️  Using normalized ROE {normalized_initial_roe:.1%} instead of current {roe:.1%} for projections")
+    if normalized_initial_roe != roe:
+        logger.warning(
+            f"Using normalized ROE for {ticker}",
+            extra={
+                "ticker": ticker,
+                "original_roe": roe,
+                "normalized_roe": normalized_initial_roe,
+                "reason": "extreme_roe_adjustment"
+            }
+        )
+        if verbose:
+            print(f"⚠️  Using normalized ROE {normalized_initial_roe:.1%} instead of current {roe:.1%} for projections")
     
     # Calculate residual income projections
     projections = _project_residual_income(
@@ -257,6 +274,17 @@ def calculate_rim(
         # Projections for analysis
         'projections': projections,
     }
+    
+    # Log the valuation result
+    log_valuation_result(
+        logger, 
+        ticker, 
+        "RIM", 
+        fair_value_per_share,
+        margin_of_safety=margin_of_safety,
+        roe_spread=roe_spread,
+        sustainable_roe=sustainable_roe
+    )
     
     if verbose:
         _print_rim_analysis(results, ticker)

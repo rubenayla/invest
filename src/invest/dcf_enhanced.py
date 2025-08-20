@@ -21,7 +21,10 @@ from typing import Dict, List, Optional
 import numpy as np
 import yfinance as yf
 
-logger = logging.getLogger(__name__)
+from .config.logging_config import get_logger, log_data_fetch, log_valuation_result
+
+logger = get_logger(__name__)
+
 
 PROJECTION_YEARS = 10
 
@@ -94,6 +97,7 @@ def calculate_enhanced_dcf(
         info = stock.info
     except Exception as e:
         info = {}
+        log_data_fetch(logger, ticker, "market_data", False, error=str(e))
         if verbose:
             print(f"Warning: Unable to retrieve market data for {ticker}: {e}")
 
@@ -221,6 +225,17 @@ def calculate_enhanced_dcf(
         },
     }
 
+    # Log the enhanced DCF valuation result
+    log_valuation_result(
+        logger,
+        ticker,
+        "Enhanced DCF",
+        results['fair_value_per_share'],
+        margin_of_safety=results['margin_of_safety'],
+        dividend_yield=results['dividend_yield'],
+        sustainable_growth_rate=results['sustainable_growth_rate']
+    )
+    
     if verbose:
         _print_enhanced_dcf_summary(results, ticker)
 
@@ -247,6 +262,10 @@ def _calculate_normalized_fcf(stock, fcf: float, use_normalized: bool, verbose: 
                     print(f"Using normalized FCF: ${normalized:,.0f} vs TTM: ${fcf:,.0f}")
                 return normalized
     except Exception as e:
+        logger.warning(
+            f"Could not calculate normalized FCF for {ticker}",
+            extra={"ticker": ticker, "error": str(e), "fallback_fcf": fcf}
+        )
         if verbose:
             print(f"Could not calculate normalized FCF: {e}")
 
