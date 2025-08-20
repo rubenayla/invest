@@ -17,6 +17,7 @@ from typing import Any, Dict, List, Optional
 from .dcf import calculate_dcf
 from .dcf_enhanced import calculate_enhanced_dcf
 from .simple_ratios import calculate_simple_ratios_valuation
+from .rim import calculate_rim
 
 logger = logging.getLogger(__name__)
 
@@ -52,6 +53,7 @@ class ValuationDashboard:
                 "dcf": "not_run",
                 "dcf_enhanced": "not_run",
                 "simple_ratios": "not_run",
+                "rim": "not_run",
             },
         }
 
@@ -168,6 +170,10 @@ class ValuationDashboard:
                 )
                 future_to_info[future] = (ticker, "simple_ratios")
 
+                # RIM (Residual Income Model)
+                future = executor.submit(self._safe_valuation, ticker, "rim", timeout_per_stock)
+                future_to_info[future] = (ticker, "rim")
+
             # Process results as they complete
             completed_count = 0
             total_tasks = len(future_to_info)
@@ -250,6 +256,8 @@ class ValuationDashboard:
                     "sector": info.get("sector"),
                 }
                 result = calculate_simple_ratios_valuation(stock_data)
+            elif model == "rim":
+                result = calculate_rim(ticker, verbose=False)
             else:
                 return None
 
@@ -501,6 +509,7 @@ class ValuationDashboard:
             dcf_val = valuations.get("dcf", {})
             enh_dcf_val = valuations.get("dcf_enhanced", {})
             ratios_val = valuations.get("simple_ratios", {})
+            rim_val = valuations.get("rim", {})
 
             # Use class methods for safe formatting
 
@@ -516,6 +525,7 @@ class ValuationDashboard:
             dcf_value, dcf_margin = format_valuation_cell(dcf_val)
             enh_dcf_value, enh_dcf_margin = format_valuation_cell(enh_dcf_val)
             ratios_value, ratios_margin = format_valuation_cell(ratios_val)
+            rim_value, rim_margin = format_valuation_cell(rim_val)
 
             # Format status with appropriate styling
             status_icons = {
@@ -555,6 +565,8 @@ class ValuationDashboard:
                 <td class="margin">{enh_dcf_margin}</td>
                 <td class="valuation">{ratios_value}</td>
                 <td class="margin">{ratios_margin}</td>
+                <td class="valuation">{rim_value}</td>
+                <td class="margin">{rim_margin}</td>
             </tr>
             """
 
@@ -676,7 +688,7 @@ class ValuationDashboard:
 <body>
     <div class="header">
         <h1>🎯 Investment Valuation Dashboard</h1>
-        <p>Comparing DCF, Enhanced DCF, and Simple Ratios valuation models</p>
+        <p>Comparing DCF, Enhanced DCF, Simple Ratios, and RIM valuation models</p>
     </div>
 
     <div class="status">
@@ -768,6 +780,11 @@ class ValuationDashboard:
                         <span class="tooltiptext">Benjamin Graham-style valuation using P/E, P/B, P/S ratios with sector adjustments. Based on mean reversion of fundamental multiples.</span>
                     </span>
                 </th>
+                <th colspan="2" class="model-header">
+                    <span class="tooltip">RIM (Residual Income Model)
+                        <span class="tooltiptext">Values companies based on ROE vs Cost of Equity. Excellent for financial companies and mature businesses with stable book values.</span>
+                    </span>
+                </th>
             </tr>
             <tr>
                 <th class="sortable" onclick="sortTable(3, 'currency')">
@@ -800,6 +817,16 @@ class ValuationDashboard:
                         <span class="tooltiptext">Simple ratios margin of safety. Based on how current ratios compare to historical/sector averages</span>
                     </span>
                 </th>
+                <th class="sortable" onclick="sortTable(9, 'currency')">
+                    <span class="tooltip">Fair Value
+                        <span class="tooltiptext">RIM fair value based on book value plus present value of residual income (ROE above cost of equity)</span>
+                    </span>
+                </th>
+                <th class="sortable" onclick="sortTable(10, 'percent')">
+                    <span class="tooltip">Upside/Downside
+                        <span class="tooltiptext">RIM margin of safety. Perfect for banks and asset-heavy companies where book value is meaningful</span>
+                    </span>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -813,6 +840,7 @@ class ValuationDashboard:
             <li><strong>Traditional DCF:</strong> Standard discounted cash flow analysis</li>
             <li><strong>Enhanced DCF:</strong> Accounts for dividend policy and reinvestment efficiency</li>
             <li><strong>Simple Ratios:</strong> Benjamin Graham-style ratio-based valuation</li>
+            <li><strong>RIM:</strong> Residual Income Model - perfect for banks and asset-heavy companies</li>
         </ul>
         <p style="margin-top: 15px; font-size: 0.9em; color: #7f8c8d;">
             💡 <strong>Tip:</strong> Hover over column headers for detailed explanations of each metric
