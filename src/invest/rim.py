@@ -21,7 +21,9 @@ from typing import Dict, List, Optional
 import numpy as np
 import yfinance as yf
 from .config.constants import VALUATION_DEFAULTS
-from .config.logging_config import get_logger, log_data_fetch, log_valuation_result
+from .config.logging_config import get_logger, log_data_fetch, log_valuation_result, log_error_with_context
+from .error_handling import handle_valuation_error, create_error_context, ErrorHandlingContext
+from .exceptions import InsufficientDataError, ModelNotSuitableError
 
 logger = get_logger(__name__)
 
@@ -119,7 +121,11 @@ def calculate_rim(
     Dict
         RIM valuation results including fair value, margin of safety, and components
     """
-    stock = yf.Ticker(ticker)
+    # Create error context for comprehensive error handling
+    error_context = create_error_context(ticker=ticker, model="RIM", function_name="calculate_rim")
+    
+    try:
+        stock = yf.Ticker(ticker)
     
     try:
         info = stock.info
@@ -148,7 +154,7 @@ def calculate_rim(
         missing_data.append("current_price")
         
     if missing_data:
-        raise RuntimeError(f"Missing essential data for {ticker} RIM: {', '.join(missing_data)}")
+        raise InsufficientDataError(ticker, missing_data)
     
     # Sector-based cost of equity adjustments
     sector = info.get('sector', '').lower()
@@ -178,6 +184,31 @@ def calculate_rim(
                     }
                 )
                 break
+    
+    # Check for RIM model suitability
+    sector = info.get('sector', '').lower()
+    
+    # RIM is less suitable for:
+    if book_value_per_share <= 0:
+        raise ModelNotSuitableError(
+            "RIM", 
+            ticker, 
+            f"Negative or zero book value (${book_value_per_share:.2f}). Book value must be positive for RIM."
+        )
+    
+    if roe <= 0:
+        raise ModelNotSuitableError(
+            "RIM", 
+            ticker,
+            f"Negative or zero ROE ({roe:.1%}). Companies with negative ROE cannot generate residual income."
+        )
+    
+    # Warning for asset-light businesses (but don't fail)
+    if 'software' in sector or 'technology' in sector:
+        logger.warning(
+            f"RIM may be less reliable for asset-light {sector} companies",
+            extra={"ticker": ticker, "sector": sector, "reason": "intangible_heavy_business"}
+        )
     
     # Calculate sustainable ROE first (before projections)
     sustainable_roe = _estimate_sustainable_roe(info, roe)
@@ -289,7 +320,24 @@ def calculate_rim(
     if verbose:
         _print_rim_analysis(results, ticker)
     
-    return results
+        return results
+    
+    except Exception as e:
+        # Handle any unexpected errors with comprehensive error context
+        error_info = handle_valuation_error(e, ticker, "RIM")
+        
+        # Log the error with full context
+        log_error_with_context(
+            logger, 
+            error_info.technical_message,
+            ticker=ticker, 
+            model="RIM", 
+            error_id=error_info.error_id,
+            user_message=error_info.user_message
+        )
+        
+        # Re-raise the original exception to maintain existing behavior
+        raise
 
 
 def _project_residual_income(

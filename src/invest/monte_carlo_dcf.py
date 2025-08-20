@@ -25,6 +25,8 @@ import numpy as np
 import yfinance as yf
 
 from .config.logging_config import get_logger, log_data_fetch, log_valuation_result, log_error_with_context
+from .error_handling import handle_valuation_error, create_error_context, ErrorHandlingContext
+from .exceptions import InsufficientDataError, ModelNotSuitableError
 
 logger = get_logger(__name__)
 
@@ -85,9 +87,12 @@ def calculate_monte_carlo_dcf(
     Dict
         Monte Carlo results with confidence intervals, risk metrics, and sensitivity analysis
     """
+    # Create error context for comprehensive error handling
+    error_context = create_error_context(ticker=ticker, model="Monte Carlo DCF", function_name="calculate_monte_carlo_dcf")
     
-    # Get base company data
-    stock = yf.Ticker(ticker)
+    try:
+        # Get base company data
+        stock = yf.Ticker(ticker)
     try:
         info = stock.info
         financials = stock.financials
@@ -95,14 +100,37 @@ def calculate_monte_carlo_dcf(
         log_data_fetch(logger, ticker, "market_data", True)
     except Exception as e:
         log_data_fetch(logger, ticker, "market_data", False, error=str(e))
-        raise RuntimeError(f"Could not fetch data for {ticker}: {e}")
+        raise InsufficientDataError(ticker, ["market_data"])
     
     # Extract base financial metrics
     base_metrics = _extract_base_metrics(info, financials, cashflow, ticker)
     
     # Validate we have essential data
-    if not base_metrics['revenue'] or not base_metrics['current_price']:
-        raise RuntimeError(f"Missing essential financial data for {ticker}")
+    missing_data = []
+    if not base_metrics['revenue']:
+        missing_data.append("revenue")
+    if not base_metrics['current_price']:
+        missing_data.append("current_price")
+    if not base_metrics['shares_outstanding']:
+        missing_data.append("shares_outstanding")
+        
+    if missing_data:
+        raise InsufficientDataError(ticker, missing_data)
+        
+    # Check for Monte Carlo DCF model suitability
+    if base_metrics['revenue'] <= 0:
+        raise ModelNotSuitableError(
+            "Monte Carlo DCF",
+            ticker,
+            f"Zero or negative revenue (${base_metrics['revenue']:,.0f}) makes revenue-based projections unreliable."
+        )
+        
+    if base_metrics['fcf_margin'] <= 0:
+        logger.warning(
+            f"Negative FCF margin for Monte Carlo DCF: {ticker}",
+            extra={"ticker": ticker, "fcf_margin": base_metrics['fcf_margin'], "reason": "negative_margins"}
+        )
+        # Continue with warning rather than fail - Monte Carlo can handle this
     
     # Run Monte Carlo simulation
     simulation_results = _run_monte_carlo_simulation(
@@ -190,7 +218,24 @@ def calculate_monte_carlo_dcf(
     if verbose:
         _print_monte_carlo_analysis(results, ticker)
     
-    return results
+        return result
+    
+    except Exception as e:
+        # Handle any unexpected errors with comprehensive error context
+        error_info = handle_valuation_error(e, ticker, "Monte Carlo DCF")
+        
+        # Log the error with full context
+        log_error_with_context(
+            logger, 
+            error_info.technical_message,
+            ticker=ticker, 
+            model="Monte Carlo DCF", 
+            error_id=error_info.error_id,
+            user_message=error_info.user_message
+        )
+        
+        # Re-raise the original exception to maintain existing behavior
+        raises
 
 
 def _extract_base_metrics(info: Dict, financials, cashflow, ticker: str) -> Dict:
@@ -418,7 +463,11 @@ def _analyze_monte_carlo_results(
     margins_of_safety = margins_of_safety[valid_mask]
     
     if len(fair_values) < 100:
-        raise RuntimeError("Too few valid simulation results")
+        raise ModelNotSuitableError(
+            "Monte Carlo DCF",
+            base_metrics.get('ticker', 'Unknown'),
+            f"Monte Carlo simulation failed - only {len(fair_values)} valid scenarios out of {len(simulation_results['fair_values'])} iterations."
+        )
     
     # Central statistics  
     median_value = np.median(fair_values)

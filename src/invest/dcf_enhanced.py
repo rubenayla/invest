@@ -21,7 +21,9 @@ from typing import Dict, List, Optional
 import numpy as np
 import yfinance as yf
 
-from .config.logging_config import get_logger, log_data_fetch, log_valuation_result
+from .config.logging_config import get_logger, log_data_fetch, log_valuation_result, log_error_with_context
+from .error_handling import handle_valuation_error, create_error_context, ErrorHandlingContext
+from .exceptions import InsufficientDataError, ModelNotSuitableError
 
 logger = get_logger(__name__)
 
@@ -91,7 +93,11 @@ def calculate_enhanced_dcf(
     Dict
         Comprehensive valuation results including dividend and growth components
     """
-    stock = yf.Ticker(ticker)
+    # Create error context for comprehensive error handling
+    error_context = create_error_context(ticker=ticker, model="Enhanced DCF", function_name="calculate_enhanced_dcf")
+    
+    try:
+        stock = yf.Ticker(ticker)
 
     try:
         info = stock.info
@@ -149,9 +155,13 @@ def calculate_enhanced_dcf(
             if verbose:
                 logger.warning(f"Enhanced DCF may not be suitable for financial company {ticker} ({sector}). Missing: {missing_data}")
             # Skip enhanced DCF for financials - they need different models
-            raise RuntimeError(f"Enhanced DCF not applicable to financial company {ticker}. Missing: {', '.join(missing_data)}")
+            raise ModelNotSuitableError(
+                "Enhanced DCF",
+                ticker,
+                f"Enhanced DCF not applicable to financial company ({sector}). Use bank-specific valuation models like P/B or RIM instead."
+            )
         else:
-            raise RuntimeError(f"Missing essential data for {ticker}: {', '.join(missing_data)}")
+            raise InsufficientDataError(ticker, missing_data)
 
     # Calculate payout ratio if not provided
     if payout_ratio is None and dividend_rate and shares:
@@ -163,6 +173,15 @@ def calculate_enhanced_dcf(
     elif payout_ratio is None:
         payout_ratio = 0.0
 
+    # Check for Enhanced DCF model suitability
+    if fcf <= 0:
+        # Enhanced DCF requires positive FCF for dividend analysis
+        raise ModelNotSuitableError(
+            "Enhanced DCF",
+            ticker, 
+            f"Negative FCF (${fcf:,.0f}) makes dividend-based valuation inappropriate. Use traditional DCF or other methods."
+        )
+    
     # Use normalized FCF if enabled
     base_fcf = _calculate_normalized_fcf(stock, fcf, use_normalized_fcf, verbose)
 
@@ -239,7 +258,24 @@ def calculate_enhanced_dcf(
     if verbose:
         _print_enhanced_dcf_summary(results, ticker)
 
-    return results
+        return results
+    
+    except Exception as e:
+        # Handle any unexpected errors with comprehensive error context
+        error_info = handle_valuation_error(e, ticker, "Enhanced DCF")
+        
+        # Log the error with full context
+        log_error_with_context(
+            logger, 
+            error_info.technical_message,
+            ticker=ticker, 
+            model="Enhanced DCF", 
+            error_id=error_info.error_id,
+            user_message=error_info.user_message
+        )
+        
+        # Re-raise the original exception to maintain existing behavior
+        raise
 
 
 def _calculate_normalized_fcf(stock, fcf: float, use_normalized: bool, verbose: bool) -> float:

@@ -22,7 +22,9 @@ from typing import Dict, List, Optional, Tuple
 import numpy as np
 import yfinance as yf
 from .config.constants import VALUATION_DEFAULTS
-from .config.logging_config import get_logger, log_data_fetch, log_valuation_result
+from .config.logging_config import get_logger, log_data_fetch, log_valuation_result, log_error_with_context
+from .error_handling import handle_valuation_error, create_error_context, ErrorHandlingContext
+from .exceptions import InsufficientDataError, ModelNotSuitableError
 
 logger = get_logger(__name__)
 
@@ -72,7 +74,11 @@ def calculate_multi_stage_dcf(
     Dict
         Comprehensive multi-stage DCF valuation results
     """
-    stock = yf.Ticker(ticker)
+    # Create error context for comprehensive error handling
+    error_context = create_error_context(ticker=ticker, model="Multi-Stage DCF", function_name="calculate_multi_stage_dcf")
+    
+    try:
+        stock = yf.Ticker(ticker)
     
     try:
         info = stock.info
@@ -116,7 +122,31 @@ def calculate_multi_stage_dcf(
         missing_data.append("current_price")
         
     if missing_data:
-        raise RuntimeError(f"Missing essential data for {ticker}: {', '.join(missing_data)}")
+        raise InsufficientDataError(ticker, missing_data)
+    
+    # Check for Multi-Stage DCF model suitability
+    if fcf <= 0:
+        # Multi-stage DCF is inappropriate for companies with negative FCF
+        sector = info.get('sector', '').lower()
+        industry = info.get('industry', '').lower()
+        
+        # Exception for early-stage biotech (they often have negative FCF but high potential)
+        is_early_biotech = (
+            'biotechnology' in industry or 
+            ('healthcare' in sector and any(keyword in industry for keyword in ['drug', 'biotech', 'pharmaceutical']))
+        )
+        
+        if not is_early_biotech:
+            raise ModelNotSuitableError(
+                "Multi-Stage DCF",
+                ticker, 
+                f"Negative FCF (${fcf:,.0f}) makes multi-stage growth projections unrealistic. Use single-stage DCF or other valuation methods."
+            )
+        else:
+            logger.warning(
+                f"Multi-Stage DCF applied to biotech with negative FCF: {ticker}",
+                extra={"ticker": ticker, "fcf": fcf, "reason": "biotech_exception"}
+            )
     
     # Analyze company characteristics to determine growth phases
     company_profile = _analyze_company_profile(info, stock, verbose)
@@ -194,7 +224,24 @@ def calculate_multi_stage_dcf(
     if verbose:
         _print_multi_stage_dcf_summary(results, ticker, growth_phases, company_profile)
     
-    return results
+        return results
+    
+    except Exception as e:
+        # Handle any unexpected errors with comprehensive error context
+        error_info = handle_valuation_error(e, ticker, "Multi-Stage DCF")
+        
+        # Log the error with full context
+        log_error_with_context(
+            logger, 
+            error_info.technical_message,
+            ticker=ticker, 
+            model="Multi-Stage DCF", 
+            error_id=error_info.error_id,
+            user_message=error_info.user_message
+        )
+        
+        # Re-raise the original exception to maintain existing behavior
+        raise
 
 
 def _analyze_company_profile(info: Dict, stock, verbose: bool) -> Dict:
