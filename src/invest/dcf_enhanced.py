@@ -100,6 +100,22 @@ def calculate_enhanced_dcf(
     # Fetch missing data
     if fcf is None:
         fcf = info.get("freeCashflow")
+        
+        # If FCF not in info, try to get it from cashflow statement (common for financial companies)
+        if fcf is None:
+            try:
+                cf = stock.cashflow
+                if not cf.empty and 'Free Cash Flow' in cf.index:
+                    # Get most recent FCF value
+                    fcf_values = cf.loc['Free Cash Flow'].dropna()
+                    if not fcf_values.empty:
+                        fcf = fcf_values.iloc[0]  # Most recent value
+                        if verbose:
+                            logger.info(f"Retrieved FCF from cashflow statement for {ticker}: ${fcf:,.0f}")
+            except Exception as e:
+                if verbose:
+                    logger.warning(f"Could not retrieve FCF from cashflow statement for {ticker}: {e}")
+    
     if shares is None:
         shares = info.get("sharesOutstanding")
     if cash is None:
@@ -113,9 +129,25 @@ def calculate_enhanced_dcf(
     if roe is None:
         roe = info.get("returnOnEquity")
 
-    # Validate essential data
-    if any(x is None for x in [fcf, shares, current_price]):
-        raise RuntimeError(f"Missing essential data for {ticker}: fcf, shares, or current_price")
+    # Validate essential data with better error handling
+    missing_data = []
+    if fcf is None:
+        missing_data.append("fcf")
+    if shares is None:
+        missing_data.append("shares")  
+    if current_price is None:
+        missing_data.append("current_price")
+        
+    if missing_data:
+        # For financial companies, try alternative approaches
+        sector = info.get("sector", "").lower()
+        if "financial" in sector:
+            if verbose:
+                logger.warning(f"Enhanced DCF may not be suitable for financial company {ticker} ({sector}). Missing: {missing_data}")
+            # Skip enhanced DCF for financials - they need different models
+            raise RuntimeError(f"Enhanced DCF not applicable to financial company {ticker}. Missing: {', '.join(missing_data)}")
+        else:
+            raise RuntimeError(f"Missing essential data for {ticker}: {', '.join(missing_data)}")
 
     # Calculate payout ratio if not provided
     if payout_ratio is None and dividend_rate and shares:
@@ -156,6 +188,7 @@ def calculate_enhanced_dcf(
     results = {
         "ticker": ticker,
         "fair_value_per_share": valuation["fair_value_per_share"],
+        "fair_value": valuation["fair_value_per_share"],  # Add compatibility with dashboard
         "current_price": current_price,
         "margin_of_safety": margin_of_safety,
         # Dividend-specific metrics
