@@ -182,7 +182,7 @@ class ValuationModel(ABC):
             
             # Check if model is suitable
             if not self.is_suitable(ticker, data):
-                raise ModelNotSuitableError(f'{self.name} model not suitable for {ticker}')
+                raise ModelNotSuitableError(self.name, ticker, 'Model not suitable for this company')
             
             # Validate inputs
             self._validate_inputs(ticker, data)

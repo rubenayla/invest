@@ -410,9 +410,9 @@ class TestEndToEndWorkflows:
     
     @pytest.mark.integration
     @pytest.mark.performance
-    def test_performance_benchmarks(self, performance_test_config):
+    def test_performance_benchmarks(self):
         """Test that system meets performance benchmarks."""
-        max_time = performance_test_config['max_execution_time_seconds']
+        max_time = 10.0  # seconds
         
         # Test cache initialization time
         start_time = time.time()

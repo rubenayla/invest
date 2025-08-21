@@ -67,7 +67,7 @@ class RIMModel(ValuationModel):
         
         # Check for extreme ROE that might indicate data issues
         if roe > 1.0:  # 100%+ ROE is suspicious
-            raise ModelNotSuitableError(f'Extreme ROE ({roe:.1%}) suggests data quality issues for {ticker}')
+            raise ModelNotSuitableError('rim', ticker, f'Extreme ROE ({roe:.1%}) suggests data quality issues')
     
     def _calculate_valuation(self, ticker: str, data: Dict[str, Any]) -> ValuationResult:
         """Perform RIM calculation."""
