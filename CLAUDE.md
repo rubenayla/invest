@@ -85,6 +85,8 @@ Files changed: 24, +5983/-13 lines  ← THIS IS A DISASTER
 
 ### Fixed Tests:
 - ✅ `test_model_registry_initialization` - Updated to expect 11 models instead of 5
+- ✅ `test_valuation_model_execution_with_mocked_data` - Fixed model names (tech_model -> tech, etc.)
+- ✅ `test_model_suitability_detection` - Fixed by model name corrections
 
 ### Still Failing Tests (don't fix all at once - violates our rules):
 - Integration tests expecting old model counts
