@@ -88,16 +88,16 @@ class REITModel(ValuationModel):
         dividend_yield = self._safe_float(info.get('dividendYield'))
         dividend_rate = self._safe_float(info.get('dividendRate'))
         payout_ratio = self._safe_float(info.get('payoutRatio'))
-        shares_outstanding = self._get_shares_outstanding(data)
+        shares_outstanding = self._get_shares_outstanding(data, ticker)
         
         # Calculate FFO-based valuation
-        ffo_valuation = self._calculate_ffo_valuation(data)
+        ffo_valuation = self._calculate_ffo_valuation(data, ticker)
         
         # Calculate dividend discount model valuation
         ddm_valuation = self._calculate_dividend_discount_valuation(data)
         
         # Calculate NAV-based valuation (simplified)
-        nav_valuation = self._calculate_nav_valuation(data)
+        nav_valuation = self._calculate_nav_valuation(data, ticker)
         
         # Weighted average of different approaches
         valuations = []
@@ -161,7 +161,7 @@ class REITModel(ValuationModel):
         
         return result
     
-    def _calculate_ffo_valuation(self, data: Dict[str, Any]) -> Optional[float]:
+    def _calculate_ffo_valuation(self, data: Dict[str, Any], ticker: str = "UNKNOWN") -> Optional[float]:
         """Calculate valuation based on Funds From Operations (FFO)."""
         try:
             # Try to estimate FFO from available data
@@ -188,7 +188,7 @@ class REITModel(ValuationModel):
             
             # Apply REIT-specific FFO multiple (typically 12-20x)
             ffo_multiple = 15.0  # Conservative middle ground
-            shares_outstanding = self._get_shares_outstanding(data)
+            shares_outstanding = self._get_shares_outstanding(data, ticker)
             
             ffo_per_share = estimated_ffo / shares_outstanding
             return ffo_per_share * ffo_multiple
@@ -223,7 +223,7 @@ class REITModel(ValuationModel):
             logger.debug(f"Dividend discount valuation failed: {e}")
             return None
     
-    def _calculate_nav_valuation(self, data: Dict[str, Any]) -> Optional[float]:
+    def _calculate_nav_valuation(self, data: Dict[str, Any], ticker: str = "UNKNOWN") -> Optional[float]:
         """Calculate Net Asset Value based valuation."""
         try:
             balance_sheet = data.get('balance_sheet')
@@ -238,7 +238,7 @@ class REITModel(ValuationModel):
             if not book_value or book_value <= 0:
                 return None
             
-            shares_outstanding = self._get_shares_outstanding(data)
+            shares_outstanding = self._get_shares_outstanding(data, ticker)
             book_value_per_share = book_value / shares_outstanding
             
             # REITs often trade at premium/discount to book value
@@ -251,7 +251,7 @@ class REITModel(ValuationModel):
             logger.debug(f"NAV valuation failed: {e}")
             return None
     
-    def _get_shares_outstanding(self, data: Dict[str, Any]) -> float:
+    def _get_shares_outstanding(self, data: Dict[str, Any], ticker: str = "UNKNOWN") -> float:
         """Get shares outstanding."""
         info = data.get('info', {})
         shares = self._safe_float(info.get('sharesOutstanding'))

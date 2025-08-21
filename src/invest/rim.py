@@ -171,7 +171,7 @@ def calculate_rim(
             'energy': +0.01,         # Commodity risk
         }
         
-            for sector_key, adjustment in sector_adjustments.items():
+        for sector_key, adjustment in sector_adjustments.items():
             if sector_key in sector:
                 adjusted_cost_of_equity += adjustment
                 logger.info(
@@ -215,7 +215,7 @@ def calculate_rim(
     
         # Set terminal ROE (long-term sustainable level)
         if terminal_roe is None:
-        terminal_roe = adjusted_cost_of_equity  # Long-run, ROE converges to cost of equity
+            terminal_roe = adjusted_cost_of_equity  # Long-run, ROE converges to cost of equity
     
         # Use sustainable ROE for projections instead of current ROE
         # This prevents extreme current ROE from distorting the entire valuation

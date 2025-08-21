@@ -93,7 +93,6 @@ def calculate_monte_carlo_dcf(
     try:
         # Get base company data
         stock = yf.Ticker(ticker)
-    try:
         info = stock.info
         financials = stock.financials
         cashflow = stock.cashflow
@@ -218,24 +217,8 @@ def calculate_monte_carlo_dcf(
     if verbose:
         _print_monte_carlo_analysis(results, ticker)
     
-        return result
+    return results
     
-    except Exception as e:
-        # Handle any unexpected errors with comprehensive error context
-        error_info = handle_valuation_error(e, ticker, "Monte Carlo DCF")
-        
-        # Log the error with full context
-        log_error_with_context(
-            logger, 
-            error_info.technical_message,
-            ticker=ticker, 
-            model="Monte Carlo DCF", 
-            error_id=error_info.error_id,
-            user_message=error_info.user_message
-        )
-        
-        # Re-raise the original exception to maintain existing behavior
-        raises
 
 
 def _extract_base_metrics(info: Dict, financials, cashflow, ticker: str) -> Dict:
@@ -465,7 +448,7 @@ def _analyze_monte_carlo_results(
     if len(fair_values) < 100:
         raise ModelNotSuitableError(
             "Monte Carlo DCF",
-            base_metrics.get('ticker', 'Unknown'),
+            "Unknown",
             f"Monte Carlo simulation failed - only {len(fair_values)} valid scenarios out of {len(simulation_results['fair_values'])} iterations."
         )
     

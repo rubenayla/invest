@@ -4,203 +4,78 @@
 
 ⚠️ **IMPORTANT**: This project uses Poetry dependency management. ALL Python commands must be prefixed with `poetry run`.
 
-### Wrong:
 ```bash
+# Wrong:
 python scripts/systematic_analysis.py
-python -c "from src.invest.data.yahoo import get_sp500_tickers; print(len(get_sp500_tickers()))"
 pytest
-```
 
-### Correct:
-```bash
+# Correct:
 poetry run python scripts/systematic_analysis.py
-poetry run python -c "from src.invest.data.yahoo import get_sp500_tickers; print(len(get_sp500_tickers()))"
 poetry run pytest
 ```
 
-## CRITICAL LESSON: Debugging Approach and Simplicity
+## CRITICAL LESSON: The ab0fe64 Disaster
 
-⚠️ **IMPORTANT DEBUGGING PRINCIPLES** (learned from Growth DCF integration issues):
+⚠️ **What happened**: Previous Claude instance attempted "comprehensive code quality improvements" and:
+- Added 6,000 lines across 24 files in a single commit
+- Introduced massive syntax errors and undefined variables
+- Broke the entire test suite with orphaned try/except blocks
+- Created architectural changes when only bug fixes were needed
 
-### Always Start Simple
-1. **Debug existing code first** - Don't create new abstractions until you understand the current problem
-2. **Make minimal changes** - Fix the specific issue, don't rebuild entire systems
-3. **Test incrementally** - Small changes, immediate testing, not large refactors
-4. **Follow the simplicity principle** - Simple is better than complex
+## IRON RULES - Never Break These:
 
-### Systematic Debugging Process
-1. **Identify the exact problem** - "Growth DCF data exists but doesn't display" 
-2. **Find the simplest root cause** - Usually a missing import, wrong file path, or data format issue
-3. **Make the minimal fix** - Add the missing piece, don't rebuild everything
-4. **Test immediately** - Verify the fix works before moving on
+1. **ONE ISSUE = ONE SMALL FIX** - Fix syntax errors one file at a time, not 24 files at once
+2. **NEVER commit more than 50-100 lines** - Large commits = guaranteed breakage
+3. **Test after EVERY change** - If tests fail, stop and fix before continuing
+4. **NO architectural changes for bug fixes** - Syntax errors don't need refactoring
 
-### What NOT to do
-- ❌ Create modular components when a simple fix would work
-- ❌ Build abstraction layers without understanding the current code
-- ❌ Jump between multiple solutions simultaneously  
-- ❌ Make large architectural changes for small bugs
-- ❌ Overcomplicate when the user explicitly asks for simplicity
+## NEVER Do These:
+- ❌ **NEVER** attempt "comprehensive refactoring" - this ALWAYS breaks code
+- ❌ **NEVER** change more than one file for syntax fixes
+- ❌ **NEVER** add new features while fixing bugs  
+- ❌ **NEVER** create "modular components" when fixing syntax errors
+- ❌ **NEVER** make commits with "23 major tasks completed"
 
-### Remember: The user values organization and simplicity above all else.
+## Emergency Stop Conditions:
+If you find yourself doing ANY of these, STOP IMMEDIATELY:
+- Creating new directories/files while fixing bugs
+- Refactoring code architecture
+- Adding more than 100 lines in a single change
+- Working on multiple files simultaneously for "efficiency"
 
-## Project Status and Context
+## COMMIT DISCIPLINE - Mandatory Rules
 
-### Fixed Issues (Don't repeat these mistakes):
-1. **S&P 500 Web Scraping**: Fixed broken scraping that was getting dates instead of stock tickers from Wikipedia
-2. **Pipeline Optimization**: Added market cap pre-filtering to avoid timeout when analyzing 100+ stocks  
-3. **Universe Size Issue**: User reported "only 29 stocks analyzed" - this was due to broken web scraping and inefficient pipeline, now fixed
+### Before Every Commit:
+1. **Run the linter**: `poetry run ruff check src tests --select=E9,F63,F7,F82`
+2. **Check for syntax errors**: Must pass with zero errors
+3. **Run tests**: `poetry run pytest` (at minimum, run relevant tests)
+4. **Verify changes are minimal**: `git diff --stat` should show reasonable line counts
 
-### Current State:
-- ✅ **S&P 500 ticker fetching**: Working correctly (503 tickers)
-- ✅ **Pipeline optimization**: Can handle 50+ stocks efficiently with pre-filtering
-- ✅ **Systematic screening**: Working end-to-end
-- ✅ **AI tools integration**: Both Claude Desktop and Gemini have identical tools
+### Good Commit Examples:
+```
+Fix syntax error in monte_carlo_dcf.py line 175
+- Remove orphaned except block
+- Fix indentation issue
 
-### Key Commands:
-```bash
-# Install dependencies
-poetry install
-
-# Start interactive dashboard (main interface)
-poetry run python scripts/dashboard_server.py
-
-# Run systematic analysis
-poetry run python scripts/systematic_analysis.py configs/sp500_top100.yaml --save-csv
-
-# Test S&P 500 data fetching
-poetry run python -c "from src.invest.data.yahoo import get_sp500_tickers; print(f'Found {len(get_sp500_tickers())} tickers')"
-
-# Run tests  
-poetry run pytest
+Files changed: 1, +2/-5 lines
 ```
 
-### Architecture:
-- `src/invest/analysis/pipeline.py` - Main analysis pipeline with optimization
-- `src/invest/data/yahoo.py` - Data provider with S&P 500 web scraping
-- `src/invest/ai_tools/` - AI integration (Claude Desktop + Gemini)
-- `configs/` - YAML screening configurations
+### BAD Commit Examples (NEVER DO):
+```
+Complete comprehensive code quality improvements and system refactoring
+- 23 major tasks completed
+- New caching system, modular dashboard, unified interfaces
 
-### Performance Notes:
-- Pre-filtering optimization limits market cap fetching to 150 tickers max to avoid 2-minute timeout
-- Successfully tested with 25 and 50 stock universes
-- Full 100 stock analysis should work with the optimizations in place
-
-## Systematic Analysis Workflow
-
-### Analysis Pipeline Stages
-1. **Universe Selection**
-   - Source tickers (S&P 500, custom list)
-   - Apply initial market cap and sector filters
-
-2. **Screening Process**
-   - Quality Assessment
-     - ROIC, ROE
-     - Debt levels
-     - Liquidity ratios
-
-   - Value Analysis
-     - P/E ratio
-     - P/B ratio
-     - EV/EBITDA
-
-   - Growth Evaluation
-     - Revenue growth
-     - Earnings growth
-
-   - Risk Assessment
-     - Financial risk
-     - Market volatility
-
-3. **Valuation Models**
-   - Discounted Cash Flow (DCF)
-   - Residual Income Model (RIM) [Planned]
-
-### Composite Scoring
-- Quality: 30%
-- Value: 30%
-- Growth: 25%
-- Risk: 15% (inverted)
-
-### Configuration Options
-- Customize screening thresholds
-- Define investment universe
-- Select valuation models
-
-### Debugging and Monitoring
-- Verbose logging available with `--verbose` flag
-- Save results in multiple formats (JSON, CSV)
-
-## Coding Standards
-
-### Core Philosophy
-- **Value simplicity** - Simple is better than complex
-- **Readability first** - Code should be easy to understand and audit
-
-### Python Style Guidelines
-- **Single quotes for strings** - Use `'hello'` not `"hello"`
-- **Guard clauses** - Use early returns to avoid deep indentation and improve readability
-- **Numpydoc docstrings** - Follow NumPy-style documentation format
-
-### Project Standards
-- **Poetry + pyproject.toml** - PEP 621-compliant dependency management
-- **Ruff linter** - Use Ruff for fast, modern Python linting
-- **Minimal configurations** - Keep .gitignore, configs simple and project-specific
-
-### Code Structure Example
-```python
-def analyze_stock(ticker):
-    # Guard clause - early return
-    if not ticker:
-        return None
-    
-    # Guard clause - avoid deep nesting
-    if not is_valid_ticker(ticker):
-        return None
-    
-    # Main logic at base level
-    return perform_analysis(ticker)
+Files changed: 24, +5983/-13 lines  ← THIS IS A DISASTER
 ```
 
-## Claude Desktop Integration
+### Commit Size Limits:
+- **Bug fixes**: 1 file, <50 lines changed
+- **Feature additions**: 1-3 files, <200 lines changed  
+- **Refactoring**: ONLY when specifically requested, 1 file at a time
 
-### Available AI Tools
-The framework provides Claude Desktop integration with these tools:
+## Remember: The user values WORKING CODE above all else. Broken code helps nobody.
 
-#### 🔍 Screening Tools
-- `systematic_screen()` - Run systematic stock screening
-- `get_screening_configs()` - See available screening configurations
-- `create_custom_screen()` - Create custom screening criteria
+---
 
-#### 📊 Research Tools  
-- `research_stock()` - Deep research on specific stocks
-- `analyze_sector()` - Sector-wide analysis
-- `get_recent_news()` - Recent news research framework
-- `compare_competitive_position()` - Competitive analysis
-
-#### 📈 Data Tools
-- `get_stock_data_detailed()` - Comprehensive stock data
-- `get_financial_metrics()` - Specific financial metrics
-- `compare_stocks()` - Side-by-side stock comparison
-- `analyze_stock_trends()` - Trend analysis
-
-#### 💼 Portfolio Tools
-- `build_portfolio()` - Construct optimized portfolios
-- `analyze_portfolio_risk()` - Risk analysis
-- `optimize_allocation()` - Rebalancing recommendations
-
-### Integration Best Practices
-
-1. **Start with Systematic Screening**: Use the framework's objective analysis first
-2. **Ask Follow-up Questions**: Dive deeper into specific results
-3. **Get Specific Research**: Use AI for real-time market research
-4. **Combine Both**: Systematic data + AI analysis for comprehensive insights
-
-### Example Usage
-```
-User: "Find undervalued growth stocks in the technology sector"
-Claude: [Uses systematic_screen then researches top picks]
-```
-
-The AI tools complement the command-line interface - use systematic screening for objective analysis, then discuss results interactively.
-
-## Remember: ALWAYS use `poetry run` for ALL commands!
+📋 **For project-specific details, see PROJECT.md**

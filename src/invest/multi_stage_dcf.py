@@ -79,8 +79,6 @@ def calculate_multi_stage_dcf(
     
     try:
         stock = yf.Ticker(ticker)
-    
-    try:
         info = stock.info
         log_data_fetch(logger, ticker, "market_data", True)
     except Exception as e:
@@ -224,24 +222,8 @@ def calculate_multi_stage_dcf(
     if verbose:
         _print_multi_stage_dcf_summary(results, ticker, growth_phases, company_profile)
     
-        return results
+    return results
     
-    except Exception as e:
-        # Handle any unexpected errors with comprehensive error context
-        error_info = handle_valuation_error(e, ticker, "Multi-Stage DCF")
-        
-        # Log the error with full context
-        log_error_with_context(
-            logger, 
-            error_info.technical_message,
-            ticker=ticker, 
-            model="Multi-Stage DCF", 
-            error_id=error_info.error_id,
-            user_message=error_info.user_message
-        )
-        
-        # Re-raise the original exception to maintain existing behavior
-        raise
 
 
 def _analyze_company_profile(info: Dict, stock, verbose: bool) -> Dict:

@@ -183,7 +183,7 @@ def calculate_enhanced_dcf(
             )
     
         # Use normalized FCF if enabled
-        base_fcf = _calculate_normalized_fcf(stock, fcf, use_normalized_fcf, verbose)
+        base_fcf = _calculate_normalized_fcf(stock, fcf, use_normalized_fcf, verbose, ticker)
 
         # Calculate dividend and reinvestment metrics
         dividend_metrics = _calculate_dividend_metrics(
@@ -278,7 +278,7 @@ def calculate_enhanced_dcf(
         raise
 
 
-def _calculate_normalized_fcf(stock, fcf: float, use_normalized: bool, verbose: bool) -> float:
+def _calculate_normalized_fcf(stock, fcf: float, use_normalized: bool, verbose: bool, ticker: str = "UNKNOWN") -> float:
     """Calculate normalized FCF from historical data if requested."""
     if not use_normalized:
         return fcf
