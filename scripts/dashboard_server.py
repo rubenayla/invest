@@ -29,7 +29,7 @@ import logging
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.invest.dashboard import ValuationDashboard
+from src.invest.dashboard_components.dashboard import ValuationDashboard
 
 logger = logging.getLogger(__name__)
 
@@ -177,9 +177,9 @@ def main():
     """Start the dashboard server."""
     # Ensure dashboard exists
     dashboard = ValuationDashboard()
-    if not dashboard.html_file.exists():
+    if not dashboard.html_generator.html_file.exists():
         print("🔧 Creating initial dashboard...")
-        dashboard._generate_html()
+        dashboard._generate_and_save_html()
     
     # Start server
     port = 8080

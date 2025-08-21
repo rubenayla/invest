@@ -97,7 +97,7 @@ class HTMLGenerator:
             <ul>
                 <li><strong>Fair Value:</strong> Estimated intrinsic value per share from each model</li>
                 <li><strong>Margin of Safety:</strong> How much upside/downside vs current price</li>
-                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases)</li>
+                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases)</li>
                 <li><strong>Consensus:</strong> Average of all successful models</li>
             </ul>
             <p class="disclaimer">⚠️ This is for educational purposes. Not investment advice. Do your own research.</p>
@@ -185,18 +185,19 @@ class HTMLGenerator:
         
         return f'''
         <div class="table-container">
-            <table class="stock-table" id="stockTable">
+            <table class="stock-table results-table" id="stockTable">
                 <thead>
                     <tr>
-                        <th onclick="sortTable(0)">Stock 🔄</th>
-                        <th onclick="sortTable(1)">Price 🔄</th>
-                        <th onclick="sortTable(2)">Status 🔄</th>
-                        <th title="Discounted Cash Flow">DCF 🔄</th>
-                        <th title="Enhanced DCF with Dividends">Enh. DCF 🔄</th>
-                        <th title="Simple Ratios (P/E, P/B)">Ratios 🔄</th>
-                        <th title="Residual Income Model">RIM 🔄</th>
-                        <th title="Multi-Stage DCF">Multi-DCF 🔄</th>
-                        <th onclick="sortTable(8)">Consensus 🔄</th>
+                        <th title="Stock ticker symbol">Stock</th>
+                        <th title="Current market price per share">Price</th>
+                        <th title="Analysis completion status">Status</th>
+                        <th title="Discounted Cash Flow - Values future cash flows discounted to present value">DCF</th>
+                        <th title="Enhanced DCF with Dividend Policy - Accounts for dividend vs reinvestment strategies">Enh. DCF</th>
+                        <th title="Growth-Adjusted DCF - Separates maintenance CapEx from growth CapEx, solving traditional DCF bias against reinvestment">Growth DCF</th>
+                        <th title="Simple Ratios - P/E, P/B, and other multiple-based valuations">Ratios</th>
+                        <th title="Residual Income Model - Values excess returns above cost of equity based on book value">RIM</th>
+                        <th title="Multi-Stage DCF - Models different growth phases over time">Multi-DCF</th>
+                        <th title="Consensus valuation - Average of all successful model results">Consensus</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -212,12 +213,46 @@ class HTMLGenerator:
         status = stock_data.get("status", "pending")
         status_message = stock_data.get("status_message", "Unknown")
         
+        # Create meaningful status based on what actually worked
+        working_models = []
+        failed_models = []
+        
+        model_names = {
+            "dcf": "DCF",
+            "dcf_enhanced": "Enh.DCF", 
+            "growth_dcf": "Growth",
+            "simple_ratios": "Ratios",
+            "rim": "RIM",
+            "multi_stage_dcf": "Multi",
+            "ensemble": "Consensus"
+        }
+        
+        for model_key, result in valuations.items():
+            model_name = model_names.get(model_key, model_key.upper())
+            if result and result.get("fair_value"):
+                working_models.append(model_name)
+            else:
+                failed_models.append(model_name)
+        
+        # Create better status
+        if working_models:
+            if len(working_models) >= 3:
+                new_status = "completed"
+                new_message = f"✅ Working: {', '.join(working_models[:3])}{'...' if len(working_models) > 3 else ''}"
+            else:
+                new_status = "partial"
+                new_message = f"⚠️ Working: {', '.join(working_models)} | Failed: {', '.join(failed_models[:2])}"
+        else:
+            new_status = "failed"
+            new_message = f"❌ All models failed or unsuitable for {ticker}"
+        
         # Format status
-        status_html = self._format_status_cell(status, status_message)
+        status_html = self._format_status_cell(new_status, new_message)
         
         # Format valuation columns
         dcf_html = self._format_valuation_cell(valuations.get("dcf", {}))
         enh_dcf_html = self._format_valuation_cell(valuations.get("dcf_enhanced", {}))
+        growth_dcf_html = self._format_valuation_cell(valuations.get("growth_dcf", {}))
         ratios_html = self._format_valuation_cell(valuations.get("simple_ratios", {}))
         rim_html = self._format_valuation_cell(valuations.get("rim", {}))
         multi_dcf_html = self._format_valuation_cell(valuations.get("multi_stage_dcf", {}))
@@ -232,6 +267,7 @@ class HTMLGenerator:
             <td>{status_html}</td>
             <td>{dcf_html}</td>
             <td>{enh_dcf_html}</td>
+            <td>{growth_dcf_html}</td>
             <td>{ratios_html}</td>
             <td>{rim_html}</td>
             <td>{multi_dcf_html}</td>
@@ -242,6 +278,8 @@ class HTMLGenerator:
         """Format the status cell with icon and tooltip."""
         status_icons = {
             "completed": "✅",
+            "partial": "⚠️",
+            "failed": "❌", 
             "analyzing": "🔄", 
             "pending": "⏳",
             "data_missing": "❌",
@@ -250,7 +288,17 @@ class HTMLGenerator:
         }
         
         icon = status_icons.get(status, "❓")
-        display_name = status.replace("_", " ").title()
+        
+        # Custom display names for better readability
+        display_names = {
+            "completed": "Complete",
+            "partial": "Partial", 
+            "failed": "Failed",
+            "analyzing": "Running",
+            "pending": "Pending"
+        }
+        
+        display_name = display_names.get(status, status.replace("_", " ").title())
         
         return f'<span title="{message}">{icon} {display_name}</span>'
     
@@ -386,17 +434,16 @@ class HTMLGenerator:
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
         }
         
         .container {
-            max-width: 1400px;
-            margin: 0 auto;
+            width: 100%;
+            margin: 0;
             padding: 20px;
             background: rgba(255, 255, 255, 0.95);
             min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
         
         .dashboard-header {
@@ -542,6 +589,22 @@ class HTMLGenerator:
             background: #2c3e50;
         }
         
+        .stock-table th.sorted,
+        .stock-table th.sort-asc,
+        .stock-table th.sort-desc {
+            background: #2c3e50;
+        }
+        
+        .stock-table th.sort-asc::after {
+            content: ' ↑';
+            color: #bdc3c7;
+        }
+        
+        .stock-table th.sort-desc::after {
+            content: ' ↓';
+            color: #bdc3c7;
+        }
+        
         .stock-table td {
             padding: 10px 8px;
             border-bottom: 1px solid #ecf0f1;
@@ -648,6 +711,88 @@ class HTMLGenerator:
         return """
         let isUpdating = false;
         
+        // Simple, reliable table sorting
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.getElementById('stockTable');
+            if (!table) return;
+            
+            // Add click handlers to all headers
+            const headers = table.querySelectorAll('th');
+            headers.forEach((header, columnIndex) => {
+                header.style.cursor = 'pointer';
+                header.style.userSelect = 'none';
+                header.addEventListener('click', () => sortTableByColumn(columnIndex));
+            });
+        });
+        
+        function sortTableByColumn(columnIndex) {
+            const table = document.getElementById('stockTable');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            // Determine sort direction
+            const header = table.querySelectorAll('th')[columnIndex];
+            const isAscending = !header.classList.contains('sort-asc');
+            
+            // Clear all sort classes
+            table.querySelectorAll('th').forEach(h => {
+                h.classList.remove('sort-asc', 'sort-desc');
+            });
+            
+            // Add sort class to current header
+            header.classList.add(isAscending ? 'sort-asc' : 'sort-desc');
+            
+            // Sort rows
+            rows.sort((rowA, rowB) => {
+                const cellA = rowA.cells[columnIndex];
+                const cellB = rowB.cells[columnIndex];
+                
+                if (!cellA || !cellB) return 0;
+                
+                let textA = cellA.textContent.trim();
+                let textB = cellB.textContent.trim();
+                
+                // Check for empty/placeholder values - always put these last
+                const isEmptyA = textA === '-' || textA === 'N/A' || textA === '';
+                const isEmptyB = textB === '-' || textB === 'N/A' || textB === '';
+                
+                if (isEmptyA && isEmptyB) return 0;  // Both empty, equal
+                if (isEmptyA) return 1;              // A is empty, put it last
+                if (isEmptyB) return -1;             // B is empty, put it last
+                
+                // Extract percentage values from margin divs if they exist
+                const marginA = cellA.querySelector('.margin');
+                const marginB = cellB.querySelector('.margin');
+                
+                let comparison = 0;
+                
+                if (marginA && marginB) {
+                    // Both have margin percentages - sort by percentage value
+                    const percentA = parseFloat(marginA.textContent.replace(/[%+]/g, ''));
+                    const percentB = parseFloat(marginB.textContent.replace(/[%+]/g, ''));
+                    comparison = percentB - percentA; // Higher percentages first
+                } else if (marginA || marginB) {
+                    // One has percentage, one doesn't - percentage goes first
+                    comparison = marginA ? -1 : 1;
+                } else {
+                    // No percentages, sort by dollar values or text
+                    const numA = parseFloat(textA.replace(/[$,%]/g, ''));
+                    const numB = parseFloat(textB.replace(/[$,%]/g, ''));
+                    
+                    if (!isNaN(numA) && !isNaN(numB)) {
+                        comparison = numB - numA; // Higher values first
+                    } else {
+                        comparison = textA.localeCompare(textB);
+                    }
+                }
+                
+                return isAscending ? comparison : -comparison;
+            });
+            
+            // Rebuild table
+            rows.forEach(row => tbody.appendChild(row));
+        }
+        
         function updateDashboard() {
             if (isUpdating) return;
             
@@ -657,9 +802,11 @@ class HTMLGenerator:
             const progressSection = document.getElementById('progressSection');
             
             // Show progress section and disable button
-            progressSection.style.display = 'block';
-            button.disabled = true;
-            button.textContent = '🔄 Updating...';
+            if (progressSection) progressSection.style.display = 'block';
+            if (button) {
+                button.disabled = true;
+                button.textContent = '🔄 Updating...';
+            }
             isUpdating = true;
             
             const requestData = { universe: universe };
@@ -685,11 +832,9 @@ class HTMLGenerator:
         
         function startProgressPolling() {
             const pollInterval = setInterval(() => {
-                // Reload the page to get updated data
                 location.reload();
             }, 3000);
             
-            // Stop polling after 10 minutes
             setTimeout(() => {
                 clearInterval(pollInterval);
                 resetUpdateButton();
@@ -715,38 +860,6 @@ class HTMLGenerator:
             }
         });
         
-        // Table sorting functionality
-        function sortTable(columnIndex) {
-            const table = document.getElementById('stockTable');
-            const tbody = table.tBodies[0];
-            const rows = Array.from(tbody.rows);
-            
-            // Determine sort direction
-            const currentSort = table.getAttribute('data-sort');
-            const isAsc = currentSort !== columnIndex + '-asc';
-            
-            rows.sort((a, b) => {
-                const aVal = a.cells[columnIndex].textContent.trim();
-                const bVal = b.cells[columnIndex].textContent.trim();
-                
-                // Try numeric comparison first
-                const aNum = parseFloat(aVal.replace(/[$%,]/g, ''));
-                const bNum = parseFloat(bVal.replace(/[$%,]/g, ''));
-                
-                if (!isNaN(aNum) && !isNaN(bNum)) {
-                    return isAsc ? aNum - bNum : bNum - aNum;
-                }
-                
-                // Fallback to string comparison
-                return isAsc ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
-            });
-            
-            // Re-append sorted rows
-            rows.forEach(row => tbody.appendChild(row));
-            
-            // Update sort indicator
-            table.setAttribute('data-sort', columnIndex + (isAsc ? '-asc' : '-desc'));
-        }
         
         // Auto-refresh when update is in progress
         document.addEventListener('DOMContentLoaded', function() {

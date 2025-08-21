@@ -18,6 +18,31 @@ poetry run python -c "from src.invest.data.yahoo import get_sp500_tickers; print
 poetry run pytest
 ```
 
+## CRITICAL LESSON: Debugging Approach and Simplicity
+
+⚠️ **IMPORTANT DEBUGGING PRINCIPLES** (learned from Growth DCF integration issues):
+
+### Always Start Simple
+1. **Debug existing code first** - Don't create new abstractions until you understand the current problem
+2. **Make minimal changes** - Fix the specific issue, don't rebuild entire systems
+3. **Test incrementally** - Small changes, immediate testing, not large refactors
+4. **Follow the simplicity principle** - Simple is better than complex
+
+### Systematic Debugging Process
+1. **Identify the exact problem** - "Growth DCF data exists but doesn't display" 
+2. **Find the simplest root cause** - Usually a missing import, wrong file path, or data format issue
+3. **Make the minimal fix** - Add the missing piece, don't rebuild everything
+4. **Test immediately** - Verify the fix works before moving on
+
+### What NOT to do
+- ❌ Create modular components when a simple fix would work
+- ❌ Build abstraction layers without understanding the current code
+- ❌ Jump between multiple solutions simultaneously  
+- ❌ Make large architectural changes for small bugs
+- ❌ Overcomplicate when the user explicitly asks for simplicity
+
+### Remember: The user values organization and simplicity above all else.
+
 ## Project Status and Context
 
 ### Fixed Issues (Don't repeat these mistakes):

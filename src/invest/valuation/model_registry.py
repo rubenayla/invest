@@ -10,8 +10,11 @@ import logging
 
 from .base import ValuationModel, ValuationResult
 from .dcf_model import DCFModel, EnhancedDCFModel, MultiStageDCFModel
+from .growth_dcf_model import GrowthAdjustedDCFModel
 from .rim_model import RIMModel
 from .ratios_model import SimpleRatiosModel
+from .sector_models import REITModel, BankModel, TechModel, UtilityModel
+from .ensemble_model import EnsembleModel
 
 logger = logging.getLogger(__name__)
 
@@ -29,8 +32,14 @@ class ModelRegistry:
         'dcf': DCFModel,
         'dcf_enhanced': EnhancedDCFModel,
         'multi_stage_dcf': MultiStageDCFModel,
+        'growth_dcf': GrowthAdjustedDCFModel,
         'rim': RIMModel,
         'simple_ratios': SimpleRatiosModel,
+        'reit': REITModel,
+        'bank': BankModel,
+        'tech': TechModel,
+        'utility': UtilityModel,
+        'ensemble': EnsembleModel,
     }
     
     # Model metadata for user interfaces and documentation
@@ -59,6 +68,14 @@ class ModelRegistry:
             'complexity': 'high',
             'data_requirements': ['Cash flow statement', 'Balance sheet', 'Growth forecasts'],
         },
+        'growth_dcf': {
+            'name': 'Growth-Adjusted DCF',
+            'description': 'DCF that separates maintenance from growth CapEx, valuing reinvestment properly',
+            'suitable_for': ['Reinvestment-heavy companies', 'Asset-heavy growth companies', 'Amazon/Tesla-type businesses'],
+            'time_horizon': '10 years',
+            'complexity': 'high',
+            'data_requirements': ['Multi-year cash flow data', 'CapEx breakdown', 'ROIC calculation data'],
+        },
         'rim': {
             'name': 'Residual Income Model',
             'description': 'Values companies based on returns above cost of equity',
@@ -74,6 +91,46 @@ class ModelRegistry:
             'time_horizon': 'Current',
             'complexity': 'low',
             'data_requirements': ['Basic financial metrics', 'Market data'],
+        },
+        'reit': {
+            'name': 'REIT Valuation',
+            'description': 'Specialized valuation for Real Estate Investment Trusts using FFO, NAV, and dividend models',
+            'suitable_for': ['REITs', 'Real estate investment trusts'],
+            'time_horizon': '5-10 years',
+            'complexity': 'medium',
+            'data_requirements': ['Financial statements', 'Dividend data', 'Asset valuations'],
+        },
+        'bank': {
+            'name': 'Bank Valuation',
+            'description': 'Specialized valuation for banks using P/B ratios, ROE analysis, and dividend models',
+            'suitable_for': ['Banks', 'Financial institutions', 'Credit services'],
+            'time_horizon': '5-10 years',
+            'complexity': 'medium',
+            'data_requirements': ['Balance sheet', 'ROE/ROA metrics', 'Regulatory data'],
+        },
+        'tech': {
+            'name': 'Technology Valuation',
+            'description': 'Growth-focused valuation for technology companies using revenue multiples and PEG ratios',
+            'suitable_for': ['Technology companies', 'High-growth companies', 'Software/internet companies'],
+            'time_horizon': '10+ years',
+            'complexity': 'medium',
+            'data_requirements': ['Revenue data', 'Growth metrics', 'Forward estimates'],
+        },
+        'utility': {
+            'name': 'Utility Valuation',
+            'description': 'Dividend-focused valuation for utility companies with regulated returns',
+            'suitable_for': ['Utilities', 'Regulated companies', 'Infrastructure companies'],
+            'time_horizon': '10+ years',
+            'complexity': 'medium',
+            'data_requirements': ['Dividend data', 'Regulatory filings', 'Rate base information'],
+        },
+        'ensemble': {
+            'name': 'Ensemble Valuation',
+            'description': 'Combines multiple valuation models with intelligent weighting for robust results',
+            'suitable_for': ['All companies', 'When high confidence is needed', 'Complex valuations'],
+            'time_horizon': 'Varies by constituent models',
+            'complexity': 'high',
+            'data_requirements': ['Sufficient data for multiple models'],
         },
     }
     
@@ -247,26 +304,72 @@ class ModelRegistry:
         
         # Check company characteristics
         info = data.get('info', {})
-        sector = info.get('sector', '')
+        sector = info.get('sector', '').lower()
+        industry = info.get('industry', '').lower()
         market_cap = info.get('marketCap', 0)
         
-        # Simple ratios - always suitable for quick screening
-        recommendations.append('simple_ratios')
+        # Always recommend ensemble first if we can get multiple models
+        potential_models = []
+        
+        # Check for sector-specific models
+        sector_model_added = False
+        
+        # REIT model
+        if any(keyword in sector or keyword in industry for keyword in ['reit', 'real estate']):
+            potential_models.append('reit')
+            sector_model_added = True
+        
+        # Bank model
+        elif any(keyword in sector or keyword in industry for keyword in ['bank', 'financial services', 'commercial banking']):
+            potential_models.append('bank')
+            sector_model_added = True
+        
+        # Tech model
+        elif any(keyword in sector or keyword in industry for keyword in ['technology', 'software', 'internet', 'computer']):
+            potential_models.append('tech')
+            sector_model_added = True
+        
+        # Utility model
+        elif any(keyword in sector or keyword in industry for keyword in ['utilities', 'utility', 'electric', 'gas', 'power']):
+            potential_models.append('utility')
+            sector_model_added = True
+        
+        # Add simple ratios
+        potential_models.append('simple_ratios')
         
         # DCF models - good for most companies
         if self._has_positive_cash_flow(data):
+            # Check for growth/reinvestment characteristics for Growth-Adjusted DCF
+            if self._is_reinvestment_heavy(data):
+                potential_models.append('growth_dcf')
+            
             if market_cap > 10_000_000_000:  # Large cap
-                recommendations.extend(['dcf_enhanced', 'dcf'])
+                potential_models.extend(['dcf_enhanced', 'dcf'])
             elif market_cap > 1_000_000_000:  # Mid cap
-                recommendations.extend(['dcf', 'multi_stage_dcf'])
+                potential_models.extend(['dcf', 'multi_stage_dcf'])
             else:  # Small cap
-                recommendations.append('multi_stage_dcf')
+                potential_models.append('multi_stage_dcf')
         
-        # RIM - especially good for financial companies
-        if 'Financial' in sector or 'Bank' in sector:
-            recommendations.insert(1, 'rim')  # High priority for financials
+        # RIM - especially good for financial companies (if not using bank model)
+        if not sector_model_added and ('financial' in sector or 'bank' in sector):
+            potential_models.append('rim')
         elif self._has_stable_roe(data):
-            recommendations.append('rim')
+            potential_models.append('rim')
+        
+        # If we can run multiple models, recommend ensemble first
+        if len(potential_models) >= 3:
+            recommendations.append('ensemble')
+        
+        # Add individual models in priority order
+        if sector_model_added:
+            recommendations.extend([m for m in potential_models if m in ['reit', 'bank', 'tech', 'utility']])
+        
+        recommendations.append('simple_ratios')
+        
+        # Add remaining models
+        for model in potential_models:
+            if model not in recommendations:
+                recommendations.append(model)
         
         return recommendations
     
@@ -293,6 +396,62 @@ class ModelRegistry:
             info = data.get('info', {})
             roe = info.get('returnOnEquity')
             return roe is not None and 0.05 < roe < 0.3  # 5% to 30% ROE range
+        except:
+            return False
+    
+    def _is_reinvestment_heavy(self, data: Dict[str, Any]) -> bool:
+        """Check if company is reinvestment-heavy and suitable for Growth-Adjusted DCF."""
+        try:
+            info = data.get('info', {})
+            cashflow = data.get('cashflow')
+            financials = data.get('financials')
+            
+            # Check 1: High CapEx intensity (>3% of revenue)
+            if cashflow is not None and not cashflow.empty and financials is not None and not financials.empty:
+                try:
+                    if 'Capital Expenditures' in cashflow.index and 'Total Revenue' in financials.index:
+                        capex = abs(cashflow.loc['Capital Expenditures'].iloc[0])
+                        revenue = financials.loc['Total Revenue'].iloc[0]
+                        if revenue > 0:
+                            capex_intensity = capex / revenue
+                            if capex_intensity > 0.03:  # >3% CapEx/Revenue
+                                return True
+                except:
+                    pass
+            
+            # Check 2: Industry characteristics (known reinvestment-heavy sectors)
+            sector = info.get('sector', '').lower()
+            industry = info.get('industry', '').lower()
+            
+            reinvestment_keywords = [
+                'e-commerce', 'retail', 'fulfillment', 'logistics', 'transportation',
+                'manufacturing', 'automotive', 'electric vehicles', 'energy',
+                'data center', 'cloud', 'infrastructure', 'telecom',
+                'materials', 'mining', 'oil', 'pipeline'
+            ]
+            
+            if any(keyword in sector or keyword in industry for keyword in reinvestment_keywords):
+                return True
+            
+            # Check 3: Specific company indicators (Amazon, Tesla, etc.)
+            company_name = info.get('longName', '').lower()
+            ticker = info.get('symbol', '').lower()
+            
+            known_reinvestment_companies = [
+                'amazon', 'tesla', 'netflix', 'starbucks', 'walmart', 'target',
+                'home depot', 'lowes', 'costco', 'facebook', 'meta', 'google',
+                'alphabet', 'microsoft', 'apple'
+            ]
+            
+            if any(company in company_name for company in known_reinvestment_companies):
+                return True
+            
+            if ticker in ['amzn', 'tsla', 'nflx', 'sbux', 'wmt', 'tgt', 'hd', 'low', 'cost', 
+                         'meta', 'googl', 'goog', 'msft', 'aapl']:
+                return True
+            
+            return False
+            
         except:
             return False
     
@@ -366,4 +525,34 @@ def calculate_rim(ticker: str, verbose: bool = False) -> Optional[dict]:
 def calculate_simple_ratios_valuation(ticker: str, verbose: bool = False) -> Optional[dict]:
     """Backward compatibility wrapper for Simple Ratios model."""
     result = run_valuation('simple_ratios', ticker, verbose)
+    return result.to_dict() if result else None
+
+def calculate_reit_valuation(ticker: str, verbose: bool = False) -> Optional[dict]:
+    """Backward compatibility wrapper for REIT model."""
+    result = run_valuation('reit', ticker, verbose)
+    return result.to_dict() if result else None
+
+def calculate_bank_valuation(ticker: str, verbose: bool = False) -> Optional[dict]:
+    """Backward compatibility wrapper for Bank model."""
+    result = run_valuation('bank', ticker, verbose)
+    return result.to_dict() if result else None
+
+def calculate_tech_valuation(ticker: str, verbose: bool = False) -> Optional[dict]:
+    """Backward compatibility wrapper for Tech model."""
+    result = run_valuation('tech', ticker, verbose)
+    return result.to_dict() if result else None
+
+def calculate_utility_valuation(ticker: str, verbose: bool = False) -> Optional[dict]:
+    """Backward compatibility wrapper for Utility model."""
+    result = run_valuation('utility', ticker, verbose)
+    return result.to_dict() if result else None
+
+def calculate_ensemble_valuation(ticker: str, verbose: bool = False) -> Optional[dict]:
+    """Backward compatibility wrapper for Ensemble model."""
+    result = run_valuation('ensemble', ticker, verbose)
+    return result.to_dict() if result else None
+
+def calculate_growth_dcf_valuation(ticker: str, verbose: bool = False) -> Optional[dict]:
+    """Backward compatibility wrapper for Growth-Adjusted DCF model."""
+    result = run_valuation('growth_dcf', ticker, verbose)
     return result.to_dict() if result else None
