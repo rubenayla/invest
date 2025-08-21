@@ -82,7 +82,7 @@ class EnsembleModel(ValuationModel):
         model_selection : str
             Strategy for selecting models ('auto', 'all', 'recommended')
         """
-        super().__init__('ensemble_model')
+        super().__init__('ensemble')
         self.model_selection = model_selection
         
     def is_suitable(self, ticker: str, data: Dict[str, Any]) -> bool:

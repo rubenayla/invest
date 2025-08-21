@@ -33,7 +33,7 @@ class UtilityModel(ValuationModel):
     """
     
     def __init__(self):
-        super().__init__('utility_model')
+        super().__init__('utility')
     
     def is_suitable(self, ticker: str, data: Dict[str, Any]) -> bool:
         """Check if company is a utility suitable for this model."""

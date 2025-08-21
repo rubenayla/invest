@@ -32,7 +32,7 @@ class TechModel(ValuationModel):
     """
     
     def __init__(self):
-        super().__init__('tech_model')
+        super().__init__('tech')
     
     def is_suitable(self, ticker: str, data: Dict[str, Any]) -> bool:
         """Check if company is a tech company suitable for this model."""

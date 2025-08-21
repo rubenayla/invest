@@ -31,7 +31,7 @@ class BankModel(ValuationModel):
     """
     
     def __init__(self):
-        super().__init__('bank_model')
+        super().__init__('bank')
     
     def is_suitable(self, ticker: str, data: Dict[str, Any]) -> bool:
         """Check if company is a bank suitable for this model."""

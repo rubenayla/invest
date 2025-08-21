@@ -30,7 +30,7 @@ class REITModel(ValuationModel):
     """
     
     def __init__(self):
-        super().__init__('reit_model')
+        super().__init__('reit')
     
     def is_suitable(self, ticker: str, data: Dict[str, Any]) -> bool:
         """Check if company is a REIT suitable for this model."""
