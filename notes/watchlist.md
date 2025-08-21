@@ -1,43 +1,28 @@
-# Contents <!-- omit in toc -->
-- [Watchlist](#watchlist)
-    - [Marubeni Corp. (8002)](#marubeni-corp-8002)
-    - [Sociedad Quimica y Minera de Chile (SQM)](#sociedad-quimica-y-minera-de-chile-sqm)
-    - [Meta Platforms Inc. (META)](#meta-platforms-inc-meta)
-    - [Mitsubishi Corp. (8058.T)](#mitsubishi-corp-8058t)
-    - [Arch Capital Group Ltd. (ACGL)](#arch-capital-group-ltd-acgl)
-    - [Coinbase Global Inc. (COIN)](#coinbase-global-inc-coin)
-    - [Constellation Software Inc. (CSU)](#constellation-software-inc-csu)
-    - [Mobileye N.V. (MBLY)](#mobileye-nv-mbly)
-    - [Walt Disney Co. (DIS)](#walt-disney-co-dis)
-    - [Steel Dynamics Inc. (STLD)](#steel-dynamics-inc-stld)
-        - [Estimate stock price](#estimate-stock-price)
-    - [GOOGL 2023.03](#googl-202303)
-        - [Estimate stock price](#estimate-stock-price-1)
-    - [DIS - Disney !!!](#dis---disney-)
-        - [Estimate stock price](#estimate-stock-price-2)
-    - [LOGI (Logitech) 2023.03 !!!](#logi-logitech-202303-)
-        - [Estimate stock price](#estimate-stock-price-3)
-    - [Steel Dynamics - STLD !](#steel-dynamics---stld-)
-        - [Assuming old steel prices, what stock price?](#assuming-old-steel-prices-what-stock-price)
-    - [SKYWORKS - SWKS !!!](#skyworks---swks-)
-    - [Microsoft 202303](#microsoft-202303)
-        - [Estimate stock price](#estimate-stock-price-4)
-    - [3M Co (MMM)](#3m-co-mmm)
-        - [Estimate stock price](#estimate-stock-price-5)
-    - [Costco](#costco)
-    - [Nagarro SE - NA9](#nagarro-se---na9)
-    - [Ulta Beauty Inc (ULTA)](#ulta-beauty-inc-ulta)
-    - [FMC Corp. (FMC)](#fmc-corp-fmc)
-    - [Albemarle Corp. (ALB)](#albemarle-corp-alb)
-    - [Shinetsu Chemical Co. (4063)](#shinetsu-chemical-co-4063)
-- [Nope](#nope)
-    - [NVIDIA Corp. (NVDA)](#nvidia-corp-nvda)
-    - [Netflix Inc. (NFLX)](#netflix-inc-nflx)
-    - [Tesla Inc. (TSLA)](#tesla-inc-tsla)
-    - [Microsoft Corp. (MSFT)](#microsoft-corp-msft)
-    - [Sony Group Corp. (SONY)](#sony-group-corp-sony)
+# Summary (Main updates, then in detail below)
+- MOH (Molina Healthcare)
+  - Giant crash like CNC, but they have a better balance sheet and are more efficient.
+  - Their Medical Cost Ratio went from 88% to 90%, but it was already expected. The sudden fall seems quite irrational, since it affected CNC not MOH. "wait, if Centene got hit, maybe all Medicaid/ACA insurers are riskier than we thought".
+- SQM
+    - Low costs of lithium production, so one of the few that can survive long-term while benefiting from high lithium prices if they grow
+- Cognizant (CTSH)
+  - 
+- HIG (Hartford)
+- NEM (Newmont)?
+- IBM
+- MITSY
+- acgl
+- BIDU
+- CSCO
+- META
+- ORCL
+- PYPL
+- QCOM
+- SAP
 
-# Watchlist
+- CNC (Centene)
+  - Giant crash due to unexpected ACA risk adjustment payment (they have healthier patients for the same costs)
+
+# Detail notes
 
 ## Marubeni Corp. (8002)
 Trades at low P/E (~6), solid ROE, diversified global exposure to energy, food, and metals.

@@ -1,4 +1,11 @@
-Can you check for bad habits or things we could improve in this project, so it grows with no problems and keeps being organized? Good practice and so on.
+sqm is in there?
+
+why most models say this is overpriced: 8031.T
+
+how much upside has bitcoin left? Should i sell bitcoin to invest in cheap stocks? let's look at the total money invested in bitcoin vs gold, stocks, and bonds.
+
+
+That red X looks as if the stocks is bad. Leave it with a simple x 
 
 Analyze APA and the other top stocks
 
@@ -53,14 +60,15 @@ Analyze APA and the other top stocks
     - Phase 1: High growth (Years 1-5)
     - Phase 2: Transition (Years 6-10)
     - Phase 3: Terminal stable growth
-- [ ] **Sector-Specific Models** ⭐⭐
-    - REITs: FFO (Funds From Operations) based
-    - Banks: ROE/Book value, regulatory capital ratios
-    - Tech: Revenue multiples, user-based metrics  
-    - Utilities: Dividend discount, regulatory frameworks
-- [ ] **Ensemble/Blended Model** ⭐⭐⭐
-    - Weighted average of all models: 0.3×DCF + 0.3×Enhanced DCF + 0.2×RIM + 0.2×Ratios
-    - Automatically adjust weights based on sector and data quality
+- [x] **Sector-Specific Models** ⭐⭐ - COMPLETED! ✅
+    - REITs: FFO (Funds From Operations) based ✅
+    - Banks: ROE/Book value, regulatory capital ratios ✅
+    - Tech: Revenue multiples, PEG growth metrics ✅  
+    - Utilities: Dividend discount, regulatory frameworks ✅
+- [x] **Ensemble/Blended Model** ⭐⭐⭐ - COMPLETED! ✅
+    - Intelligent weighted average of all suitable models ✅
+    - Automatically adjust weights based on sector, confidence, and data quality ✅
+    - Comprehensive consensus metrics and uncertainty quantification ✅
 - [ ] **Real Options Valuation** ⭐ - For high-growth tech companies
     - Value growth opportunities as call options
     - Especially good for companies with significant R&D or expansion potential
@@ -91,26 +99,6 @@ EDGAR parsing? implement it?
 # INVESTMENTS
 This is my current wallet, what would you do with it? What modifications? Which is the first stock you would sell, and what would you buy with it?
 
-- MOH (Molina Healthcare)
-  - Giant crash like CNC, but they have a better balance sheet and are more efficient.
-  - Their Medical Cost Ratio went from 88% to 90%, but it was already expected. The sudden fall seems quite irrational, since it affected CNC not MOH. "wait, if Centene got hit, maybe all Medicaid/ACA insurers are riskier than we thought".
-- CNC (Centene)
-  - Giant crash due to unexpected ACA risk adjustment payment (they have healthier patients for the same costs)
-- Cognizant (CTSH)
-  - 
-- HIG (Hartford)
-- NEM (Newmont)?
-- IBM
-- Argetina
-- MITSY
-- acgl
-- BIDU
-- CSCO
-- META
-- ORCL
-- PYPL
-- QCOM
-- SAP
 
 
 ---

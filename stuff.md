@@ -1,3 +1,6 @@
+how does the assemble model identify the company type?
+
+
 
 ## DCF for Qualcomm (QCOM)
 ---
@@ -258,3 +261,20 @@ So while most stocks get higher valuations, it's because traditional DCF was
 CNC had low costs due to healthy insurers, but they thought they had sicker ones, so they were surprised when they got a 1.8B payment due to the ACA risk adjustment program. This means it's fundamentally more inefficient, which caused a giant drop that July 2.
 
 How efficient is it now? How much should we pay for it? Let's do a detailed analysis of the company, its competitors, and the industry. Let's use several different valuation methods 
+
+
+# Choose model
+If cash flows are stable and forecastable  → Traditional DCF
+If buybacks/dividends/reinvestment matter  → Enhanced DCF
+If you need fast, conservative filters     → Simple Ratios
+If assets/book & ROE are informative       → RIM
+
+# 
+DCF is more flexible (danger: you can bend it until it “says what you want”).
+
+RIM is more conservative (danger: you may underestimate firms with light assets but durable moats, because book equity is small relative to their actual earning power).
+
+So if you’re worried about being fooled with crazy-high values, DCF is the riskier one.
+
+GIII has no moat, good margins and all but any company could come and do the same
+APA is cheap but not realiable income. Could be a good bet if i think oil prices will rise. CVX and XOM are better compounding ones.
