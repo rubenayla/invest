@@ -1,26 +1,37 @@
 # Summary (Main updates, then in detail below)
-- MOH (Molina Healthcare)
+## Wallet
+- **MOH** (Molina Healthcare)
   - Giant crash like CNC, but they have a better balance sheet and are more efficient.
   - Their Medical Cost Ratio went from 88% to 90%, but it was already expected. The sudden fall seems quite irrational, since it affected CNC not MOH. "wait, if Centene got hit, maybe all Medicaid/ACA insurers are riskier than we thought".
-- SQM
+- **TSLA**
+- **SQM**
     - Low costs of lithium production, so one of the few that can survive long-term while benefiting from high lithium prices if they grow
-- Cognizant (CTSH)
-  - 
-- HIG (Hartford)
-- NEM (Newmont)?
+- **BRK.B**
+- **STLD**
+- **CVX**
+- **8002** (Marubeni Corp.)
+
+## Watchlist
+- META
+- ORCL
 - IBM
+- NEM (Newmont)?
+- HIG (Hartford)
+    - Huge profits, margins growing, suffered 2008 crisis but recovered and became supposedly more reliable
 - MITSY
 - acgl
 - BIDU
 - CSCO
-- META
 - ORCL
 - PYPL
 - QCOM
 - SAP
 
+## Nope
 - CNC (Centene)
   - Giant crash due to unexpected ACA risk adjustment payment (they have healthier patients for the same costs)
+- Cognizant (CTSH)
+  - 
 
 # Detail notes
 
@@ -314,7 +325,6 @@ Provides a wide range of essential products, so it's good for times of crisis.
 ## Shinetsu Chemical Co. (4063)
 
 
-# Nope
 ## NVIDIA Corp. (NVDA)
 
 
@@ -330,3 +340,6 @@ Provides a wide range of essential products, so it's good for times of crisis.
 
 ## Sony Group Corp. (SONY)
 - Didn't even drop
+
+## JD
+cheap but has scary low margins and competence with pinduoduo and alibaba

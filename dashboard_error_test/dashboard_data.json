@@ -1,0 +1,1246 @@
+{
+  "last_updated": "2025-08-21T13:10:48.675169",
+  "update_started": null,
+  "stocks": {
+    "0700.HK": {
+      "ticker": "0700.HK",
+      "status": "model_failed",
+      "status_message": "reit valuation failed",
+      "current_price": 593.0,
+      "valuations": {
+        "dcf": {
+          "ticker": "0700.HK",
+          "model": "dcf",
+          "fair_value_per_share": 1269.8463200856424,
+          "fair_value": 1269.8463200856424,
+          "current_price": 593.0,
+          "margin_of_safety": 1.141393457142736,
+          "enterprise_value": 11765169661746.1,
+          "inputs": {
+            "free_cash_flow": 162473000000.0,
+            "wacc": 0.080165,
+            "growth_rate": 0.201,
+            "terminal_growth": 0.025,
+            "projection_years": 10
+          },
+          "outputs": {
+            "projected_fcfs": [
+              195130073000.0,
+              234351217673.0,
+              281455812425.273,
+              338028430722.7529,
+              405972145298.0263,
+              487572546502.9296,
+              585574628350.0186,
+              703275128648.3723,
+              844633429506.6952,
+              1014404748837.541
+            ],
+            "pv_fcfs": [
+              180648394458.25406,
+              200857018829.86682,
+              223326324788.03708,
+              248309208380.60162,
+              276086856420.1789,
+              306971911291.9183,
+              341311989799.33057,
+              379493595653.4381,
+              421946469641.00775,
+              469148426433.78595
+            ],
+            "terminal_value": 18848270960907.812,
+            "pv_terminal": 8717069466049.68,
+            "equity_value": 11539576661746.1,
+            "shares_outstanding": 9087380480.0
+          },
+          "calculated_at": "2025-08-21T13:10:44.589992",
+          "confidence": null,
+          "warnings": []
+        },
+        "dcf_enhanced": {
+          "ticker": "0700.HK",
+          "model": "dcf_enhanced",
+          "fair_value_per_share": 1269.8463200856424,
+          "fair_value": 1269.8463200856424,
+          "current_price": 593.0,
+          "margin_of_safety": 1.141393457142736,
+          "enterprise_value": 11765169661746.1,
+          "inputs": {
+            "free_cash_flow": 162473000000.0,
+            "wacc": 0.080165,
+            "growth_rate": 0.201,
+            "terminal_growth": 0.025,
+            "projection_years": 10
+          },
+          "outputs": {
+            "projected_fcfs": [
+              195130073000.0,
+              234351217673.0,
+              281455812425.273,
+              338028430722.7529,
+              405972145298.0263,
+              487572546502.9296,
+              585574628350.0186,
+              703275128648.3723,
+              844633429506.6952,
+              1014404748837.541
+            ],
+            "pv_fcfs": [
+              180648394458.25406,
+              200857018829.86682,
+              223326324788.03708,
+              248309208380.60162,
+              276086856420.1789,
+              306971911291.9183,
+              341311989799.33057,
+              379493595653.4381,
+              421946469641.00775,
+              469148426433.78595
+            ],
+            "terminal_value": 18848270960907.812,
+            "pv_terminal": 8717069466049.68,
+            "equity_value": 11539576661746.1,
+            "shares_outstanding": 9087380480.0
+          },
+          "calculated_at": "2025-08-21T13:10:44.592956",
+          "confidence": null,
+          "warnings": []
+        },
+        "growth_dcf": {
+          "ticker": "0700.HK",
+          "model": "growth_dcf",
+          "fair_value_per_share": 1593.3113118352771,
+          "fair_value": 1593.3113118352771,
+          "current_price": 593.0,
+          "margin_of_safety": 1.6868656186092363,
+          "enterprise_value": 14704619113735.09,
+          "inputs": {
+            "operating_cash_flow": 258521000000.0,
+            "total_capex": 96048000000.0,
+            "maintenance_capex": 56213000000.0,
+            "growth_capex": 39835000000.0,
+            "normalized_fcf": 202308000000.0,
+            "roic": 0.09499046391940193,
+            "wacc": 0.080165,
+            "growth_rate": 0.201,
+            "terminal_growth": 0.025,
+            "capex_intensity": 0.1454706273466241
+          },
+          "outputs": {
+            "projected_normalized_fcfs": [
+              242971908000.0,
+              291809261508.0,
+              350462923071.10803,
+              420905970608.40076,
+              505508070700.68933,
+              607115192911.528,
+              729145346686.7451,
+              875703561370.7809,
+              1051719977206.3079,
+              1263115692624.776
+            ],
+            "pv_normalized_fcfs": [
+              224939623113.1355,
+              250102981821.18073,
+              278081294216.38184,
+              309189461197.0158,
+              343777610733.1898,
+              382235038619.61926,
+              424994590069.2605,
+              472537531463.41693,
+              525398967090.7349,
+              584173861841.4528
+            ],
+            "base_business_value": 14649744535575.324,
+            "growth_investment_value": 54874578159.766174,
+            "terminal_value_base": 23469474937739.42,
+            "pv_terminal_base": 10854313575409.936,
+            "equity_value": 14479026113735.09,
+            "shares_outstanding": 9087380480.0,
+            "maintenance_capex_methods": {
+              "depreciation_estimate": 56213000000.0,
+              "industry_estimate": 13205140000.0,
+              "historical_estimate": 28814400000.0,
+              "conservative_estimate": 9903855000.0,
+              "method_used": "maximum_of_estimates"
+            }
+          },
+          "calculated_at": "2025-08-21T13:10:44.596861",
+          "confidence": null,
+          "warnings": []
+        },
+        "simple_ratios": {
+          "ticker": "0700.HK",
+          "model": "simple_ratios",
+          "fair_value_per_share": 271.39973842933097,
+          "fair_value": 271.39973842933097,
+          "current_price": 593.0,
+          "margin_of_safety": -0.5423275911815667,
+          "enterprise_value": null,
+          "inputs": {
+            "current_price": 593.0,
+            "eps": 24.21,
+            "book_value": 122.528,
+            "revenue_per_share": 76.941,
+            "cash_per_share": 31.178180371732385
+          },
+          "outputs": {
+            "valuations_calculated": 4,
+            "individual_valuations": {
+              "pe_valuation": {
+                "eps": 24.21,
+                "multiple": 18.015,
+                "fair_value": 436.14315000000005
+              },
+              "pb_valuation": {
+                "book_value": 122.528,
+                "multiple": 1.5,
+                "fair_value": 183.792
+              },
+              "ps_valuation": {
+                "revenue_per_share": 76.941,
+                "multiple": 2.0,
+                "fair_value": 153.882
+              },
+              "pcf_valuation": {
+                "cash_per_share": 31.178180371732385,
+                "multiple": 10.0,
+                "fair_value": 311.78180371732384
+              }
+            },
+            "average_fair_value": 271.39973842933097,
+            "valuation_range": {
+              "min": 153.882,
+              "max": 436.14315000000005,
+              "std_dev": 112.08996111507189
+            }
+          },
+          "calculated_at": "2025-08-21T13:10:44.599071",
+          "confidence": "high",
+          "warnings": []
+        },
+        "rim": {
+          "ticker": "0700.HK",
+          "model": "rim",
+          "fair_value_per_share": 541.620124994728,
+          "fair_value": 541.620124994728,
+          "current_price": 593.0,
+          "margin_of_safety": -0.08664397134109944,
+          "enterprise_value": null,
+          "inputs": {
+            "book_equity": 973548000000.0,
+            "net_income": 194073000000.0,
+            "roe": 0.19934610311972292,
+            "cost_of_equity": 0.080165,
+            "roe_spread": 0.11918110311972292,
+            "projection_years": 10
+          },
+          "outputs": {
+            "projected_book_values": [
+              1089991800000.0,
+              1220363170657.4714,
+              1366327956134.3093,
+              1529751248317.6555,
+              1712721218374.4492,
+              1917575798742.4956,
+              2146932556492.0996,
+              2403722139770.638,
+              2691225724698.1655,
+              3013116941198.6445
+            ],
+            "projected_residual_incomes": [
+              129906425115.45241,
+              145444228885.64014,
+              162840473035.40338,
+              182317441273.27136,
+              204124004142.42273,
+              228538799009.81442,
+              255873790406.37527,
+              286478256211.16547,
+              320743250613.7031,
+              359106600880.7798
+            ],
+            "pv_residual_incomes": [
+              120265353085.36418,
+              124656891097.28154,
+              129208787895.9596,
+              133926899047.35759,
+              138817293935.7942,
+              143886263571.61142,
+              149140328683.93832,
+              154586248108.96573,
+              160231027484.5216,
+              166081928262.13293
+            ],
+            "terminal_value": 5465153116281.21,
+            "pv_terminal": 2527559130279.324,
+            "equity_value": 4921908151452.252,
+            "shares_outstanding": 9087380480.0,
+            "roe_spread": 0.11918110311972292
+          },
+          "calculated_at": "2025-08-21T13:10:44.601663",
+          "confidence": null,
+          "warnings": []
+        },
+        "utility": {
+          "ticker": "0700.HK",
+          "model": "utility",
+          "fair_value_per_share": 229.15199854980514,
+          "fair_value": 229.15199854980514,
+          "current_price": 593.0,
+          "margin_of_safety": -0.6135716719227569,
+          "enterprise_value": null,
+          "inputs": {
+            "current_price": 593.0,
+            "dividend_yield": 0.76,
+            "dividend_rate": 4.5,
+            "payout_ratio": 0.186,
+            "book_value": 122.528,
+            "roe": 0.19829,
+            "beta": 0.541
+          },
+          "outputs": {
+            "individual_valuations": {
+              "dividend_discount": 83.61279796972718,
+              "yield_comparison": 593.0
+            },
+            "valuation_methods_used": 2,
+            "average_fair_value": 229.15199854980514,
+            "dividend_sustainability_score": 100
+          },
+          "calculated_at": "2025-08-21T13:10:44.604444",
+          "confidence": "medium",
+          "warnings": []
+        },
+        "tech": {
+          "ticker": "0700.HK",
+          "model": "tech",
+          "fair_value_per_share": 550.8420773173509,
+          "fair_value": 550.8420773173509,
+          "current_price": 593.0,
+          "margin_of_safety": -0.07109261835185343,
+          "enterprise_value": null,
+          "inputs": {
+            "current_price": 593.0,
+            "revenue_per_share": 76.941,
+            "revenue_growth": 0.145,
+            "earnings_growth": 0.201,
+            "forward_pe": 21.865782,
+            "ps_ratio": 7.652776
+          },
+          "outputs": {
+            "individual_valuations": {
+              "growth_adjusted": 545.1120000000001,
+              "revenue_multiple": 507.8106000000001,
+              "forward_earnings": 678.0,
+              "dcf_growth": 454.2791365867546
+            },
+            "valuation_methods_used": 4,
+            "average_fair_value": 550.8420773173509
+          },
+          "calculated_at": "2025-08-21T13:10:44.606664",
+          "confidence": "high",
+          "warnings": []
+        },
+        "multi_stage_dcf": {
+          "ticker": "0700.HK",
+          "model": "multi_stage_dcf",
+          "fair_value_per_share": 879.8221866129754,
+          "fair_value": 879.8221866129754,
+          "current_price": 593.0,
+          "margin_of_safety": 0.4836799099712908,
+          "enterprise_value": 8220871964497.67,
+          "inputs": {
+            "free_cash_flow": 162473000000.0,
+            "wacc": 0.080165,
+            "high_growth_rate": 0.201,
+            "moderate_growth_rate": 0.1005,
+            "terminal_growth": 0.025,
+            "high_growth_years": 5,
+            "moderate_growth_years": 5
+          },
+          "outputs": {
+            "high_growth_fcfs": [
+              195130073000.0,
+              234351217673.0,
+              281455812425.273,
+              338028430722.7529,
+              405972145298.0263
+            ],
+            "moderate_growth_fcfs": [
+              446772345900.47797,
+              491672966663.476,
+              541086099813.1554,
+              595465252844.3776,
+              655309510755.2375
+            ],
+            "pv_fcfs": [
+              180648394458.25406,
+              200857018829.86682,
+              223326324788.03708,
+              248309208380.60162,
+              276086856420.1789,
+              281284419963.99335,
+              286579831942.689,
+              291974934434.02563,
+              297471604194.40106,
+              303071753311.7055
+            ],
+            "terminal_value": 12176058162315.207,
+            "pv_terminal": 5631261617773.917,
+            "equity_value": 7995278964497.67,
+            "shares_outstanding": 9087380480.0
+          },
+          "calculated_at": "2025-08-21T13:10:44.611983",
+          "confidence": null,
+          "warnings": []
+        },
+        "ensemble": {
+          "ticker": "0700.HK",
+          "model": "ensemble",
+          "fair_value_per_share": 453.55444119485793,
+          "fair_value": 453.55444119485793,
+          "current_price": 593.0,
+          "margin_of_safety": -0.23515271299349422,
+          "enterprise_value": null,
+          "inputs": {
+            "current_price": 593.0,
+            "models_attempted": 3,
+            "models_successful": 3,
+            "model_selection_strategy": "auto"
+          },
+          "outputs": {
+            "weighted_fair_value": 453.55444119485793,
+            "total_weight": 1.0,
+            "model_count": 3,
+            "constituent_models": [
+              "rim",
+              "tech",
+              "simple_ratios"
+            ],
+            "individual_valuations": {
+              "rim": 541.620124994728,
+              "tech": 550.8420773173509,
+              "simple_ratios": 271.39973842933097
+            }
+          },
+          "calculated_at": "2025-08-21T13:10:44.643674",
+          "confidence": "medium",
+          "warnings": []
+        }
+      },
+      "models_attempted": 11,
+      "models_completed": 9,
+      "last_attempt": "2025-08-21T13:10:44.649069",
+      "errors": {
+        "bank": {
+          "timestamp": "2025-08-21T13:10:44.603472",
+          "message": "Valuation failed"
+        },
+        "reit": {
+          "timestamp": "2025-08-21T13:10:44.612478",
+          "message": "Valuation failed"
+        }
+      },
+      "analysis_summary": {
+        "total_models": 9,
+        "successful_models": 9,
+        "average_fair_value": 784.3771687895122,
+        "valuation_range": {
+          "min": 229.15199854980514,
+          "max": 1593.3113118352771,
+          "spread": 1364.159313285472
+        },
+        "consensus_rating": "Strong Buy"
+      }
+    },
+    "1605.T": {
+      "ticker": "1605.T",
+      "status": "model_failed",
+      "status_message": "tech valuation failed",
+      "current_price": 2391.0,
+      "valuations": {
+        "dcf": {
+          "ticker": "1605.T",
+          "model": "dcf",
+          "fair_value_per_share": 14981.379679526184,
+          "fair_value": 14981.379679526184,
+          "current_price": 2391.0,
+          "margin_of_safety": 5.26573805082651,
+          "enterprise_value": 18761090561167.67,
+          "inputs": {
+            "free_cash_flow": 353676000000.0,
+            "wacc": 0.06775,
+            "growth_rate": 0.123,
+            "terminal_growth": 0.025,
+            "projection_years": 10
+          },
+          "outputs": {
+            "projected_fcfs": [
+              397178148000.0,
+              446031060204.0,
+              500892880609.092,
+              562502704924.0103,
+              631690537629.6636,
+              709388473758.1122,
+              796643256030.36,
+              894630376522.0942,
+              1004669912834.3118,
+              1128244312112.9321
+            ],
+            "pv_fcfs": [
+              371976724888.78485,
+              391224408382.21063,
+              411468050211.40015,
+              432759185565.3499,
+              455152016286.479,
+              478703548854.80304,
+              503473739512.0055,
+              529525646894.85565,
+              556925592566.5398,
+              585743329854.5767
+            ],
+            "terminal_value": 27051471810894.86,
+            "pv_terminal": 14044138318150.666,
+            "equity_value": 17938854561167.67,
+            "shares_outstanding": 1197410048.0
+          },
+          "calculated_at": "2025-08-21T13:10:44.608570",
+          "confidence": null,
+          "warnings": []
+        },
+        "dcf_enhanced": {
+          "ticker": "1605.T",
+          "model": "dcf_enhanced",
+          "fair_value_per_share": 14981.379679526184,
+          "fair_value": 14981.379679526184,
+          "current_price": 2391.0,
+          "margin_of_safety": 5.26573805082651,
+          "enterprise_value": 18761090561167.67,
+          "inputs": {
+            "free_cash_flow": 353676000000.0,
+            "wacc": 0.06775,
+            "growth_rate": 0.123,
+            "terminal_growth": 0.025,
+            "projection_years": 10
+          },
+          "outputs": {
+            "projected_fcfs": [
+              397178148000.0,
+              446031060204.0,
+              500892880609.092,
+              562502704924.0103,
+              631690537629.6636,
+              709388473758.1122,
+              796643256030.36,
+              894630376522.0942,
+              1004669912834.3118,
+              1128244312112.9321
+            ],
+            "pv_fcfs": [
+              371976724888.78485,
+              391224408382.21063,
+              411468050211.40015,
+              432759185565.3499,
+              455152016286.479,
+              478703548854.80304,
+              503473739512.0055,
+              529525646894.85565,
+              556925592566.5398,
+              585743329854.5767
+            ],
+            "terminal_value": 27051471810894.86,
+            "pv_terminal": 14044138318150.666,
+            "equity_value": 17938854561167.67,
+            "shares_outstanding": 1197410048.0
+          },
+          "calculated_at": "2025-08-21T13:10:44.617112",
+          "confidence": null,
+          "warnings": []
+        },
+        "rim": {
+          "ticker": "1605.T",
+          "model": "rim",
+          "fair_value_per_share": 6113.140095828833,
+          "fair_value": 6113.140095828833,
+          "current_price": 2391.0,
+          "margin_of_safety": 1.556729442002858,
+          "enterprise_value": null,
+          "inputs": {
+            "book_equity": 4821805000000.0,
+            "net_income": 427344000000.0,
+            "roe": 0.0886273916095736,
+            "cost_of_equity": 0.06775,
+            "roe_spread": 0.020877391609573595,
+            "projection_years": 10
+          },
+          "outputs": {
+            "projected_book_values": [
+              5078211400000.0,
+              5348252578254.4,
+              5632653583662.319,
+              5932178020638.505,
+              6247630099358.205,
+              6579856795026.752,
+              6929750121971.401,
+              7298249528661.271,
+              7686344420085.9,
+              8095076814264.909
+            ],
+            "projected_residual_incomes": [
+              106019808074.00098,
+              111657563503.12877,
+              117595114667.18634,
+              123848403634.57523,
+              130434220216.06044,
+              137370247044.68732,
+              144675107052.88733,
+              152368413474.24728,
+              160470822504.19418,
+              169004088760.98798
+            ],
+            "pv_residual_incomes": [
+              99292725894.63918,
+              97937493866.30478,
+              96600759203.55354,
+              95282269438.52292,
+              93981775549.24751,
+              92699031912.62677,
+              91433796258.0342,
+              90185829621.55997,
+              88954896300.87804,
+              87740763810.7293
+            ],
+            "terminal_value": 3012578625110.1523,
+            "pv_terminal": 1564021033721.0322,
+            "equity_value": 7319935375577.128,
+            "shares_outstanding": 1197410048.0,
+            "roe_spread": 0.020877391609573595
+          },
+          "calculated_at": "2025-08-21T13:10:44.622256",
+          "confidence": null,
+          "warnings": []
+        },
+        "simple_ratios": {
+          "ticker": "1605.T",
+          "model": "simple_ratios",
+          "fair_value_per_share": 5331.7514769297195,
+          "fair_value": 5331.7514769297195,
+          "current_price": 2391.0,
+          "margin_of_safety": 1.2299253353951147,
+          "enterprise_value": null,
+          "inputs": {
+            "current_price": 2391.0,
+            "eps": 362.51,
+            "book_value": 3830.232,
+            "revenue_per_share": 1757.611,
+            "cash_per_share": 595.9954957718878
+          },
+          "outputs": {
+            "valuations_calculated": 4,
+            "individual_valuations": {
+              "pe_valuation": {
+                "eps": 362.51,
+                "multiple": 16.845,
+                "fair_value": 6106.480949999999
+              },
+              "pb_valuation": {
+                "book_value": 3830.232,
+                "multiple": 1.5,
+                "fair_value": 5745.348
+              },
+              "ps_valuation": {
+                "revenue_per_share": 1757.611,
+                "multiple": 2.0,
+                "fair_value": 3515.222
+              },
+              "pcf_valuation": {
+                "cash_per_share": 595.9954957718878,
+                "multiple": 10.0,
+                "fair_value": 5959.954957718878
+              }
+            },
+            "average_fair_value": 5331.7514769297195,
+            "valuation_range": {
+              "min": 3515.222,
+              "max": 6106.480949999999,
+              "std_dev": 1056.6085834131948
+            }
+          },
+          "calculated_at": "2025-08-21T13:10:44.623643",
+          "confidence": "high",
+          "warnings": []
+        },
+        "multi_stage_dcf": {
+          "ticker": "1605.T",
+          "model": "multi_stage_dcf",
+          "fair_value_per_share": 11753.516158970304,
+          "fair_value": 11753.516158970304,
+          "current_price": 2391.0,
+          "margin_of_safety": 3.9157323960561707,
+          "enterprise_value": 14896014348081.406,
+          "inputs": {
+            "free_cash_flow": 353676000000.0,
+            "wacc": 0.06775,
+            "high_growth_rate": 0.123,
+            "moderate_growth_rate": 0.0615,
+            "terminal_growth": 0.025,
+            "high_growth_years": 5,
+            "moderate_growth_years": 5
+          },
+          "outputs": {
+            "high_growth_fcfs": [
+              397178148000.0,
+              446031060204.0,
+              500892880609.092,
+              562502704924.0103,
+              631690537629.6636
+            ],
+            "moderate_growth_fcfs": [
+              670539505693.888,
+              711777685294.0621,
+              755552012939.647,
+              802018461735.4353,
+              851342597132.1647
+            ],
+            "pv_fcfs": [
+              371976724888.78485,
+              391224408382.21063,
+              411468050211.40015,
+              432759185565.3499,
+              455152016286.479,
+              452487815769.7003,
+              449839209964.4458,
+              447206107588.16125,
+              444588417892.609,
+              441986050660.7394
+            ],
+            "terminal_value": 20412307884455.406,
+            "pv_terminal": 10597326360871.527,
+            "equity_value": 14073778348081.406,
+            "shares_outstanding": 1197410048.0
+          },
+          "calculated_at": "2025-08-21T13:10:44.627614",
+          "confidence": null,
+          "warnings": []
+        },
+        "growth_dcf": {
+          "ticker": "1605.T",
+          "model": "growth_dcf",
+          "fair_value_per_share": 17764.17845686352,
+          "fair_value": 17764.17845686352,
+          "current_price": 2391.0,
+          "margin_of_safety": 6.429602031310548,
+          "enterprise_value": 22093241778713.51,
+          "inputs": {
+            "operating_cash_flow": 654737000000.0,
+            "total_capex": 301061000000.0,
+            "maintenance_capex": 240848800000.0,
+            "growth_capex": 60212200000.0,
+            "normalized_fcf": 413888200000.0,
+            "roic": 0.12259377396981282,
+            "wacc": 0.06775,
+            "growth_rate": 0.123,
+            "terminal_growth": 0.025,
+            "capex_intensity": 0.13286966361657965
+          },
+          "outputs": {
+            "projected_normalized_fcfs": [
+              464796448600.0,
+              521966411777.8,
+              586168280426.4694,
+              658266978918.925,
+              739233817325.9529,
+              830159576857.045,
+              932269204810.4615,
+              1046938317002.1483,
+              1175711729993.4126,
+              1320324272782.6023
+            ],
+            "pv_normalized_fcfs": [
+              435304564364.3175,
+              457829103986.0722,
+              481519160642.8087,
+              506435043223.4832,
+              532640181259.63165,
+              560201286400.905,
+              589188522246.0466,
+              619675682961.6581,
+              651740381143.4718,
+              685464245398.3787
+            ],
+            "base_business_value": 21955105809833.508,
+            "growth_investment_value": 138135968880.00305,
+            "terminal_value_base": 31656897768471.746,
+            "pv_terminal_base": 16435107638206.736,
+            "equity_value": 21271005778713.51,
+            "shares_outstanding": 1197410048.0,
+            "maintenance_capex_methods": {
+              "depreciation_estimate": 359230000000.0,
+              "industry_estimate": 90633480000.0,
+              "historical_estimate": 90318300000.0,
+              "conservative_estimate": 33987555000.0,
+              "method_used": "maximum_of_estimates"
+            }
+          },
+          "calculated_at": "2025-08-21T13:10:44.633438",
+          "confidence": null,
+          "warnings": []
+        },
+        "utility": {
+          "ticker": "1605.T",
+          "model": "utility",
+          "fair_value_per_share": 2926.6773955214308,
+          "fair_value": 2926.6773955214308,
+          "current_price": 2391.0,
+          "margin_of_safety": 0.22403906128039763,
+          "enterprise_value": null,
+          "inputs": {
+            "current_price": 2391.0,
+            "dividend_yield": 4.21,
+            "dividend_rate": 100.0,
+            "payout_ratio": 0.2566,
+            "book_value": 3830.232,
+            "roe": 0.09244,
+            "beta": 0.35
+          },
+          "outputs": {
+            "individual_valuations": {
+              "dividend_discount": 2397.6608187134498,
+              "regulated_roe": 4165.489953882353,
+              "yield_comparison": 2391.0
+            },
+            "valuation_methods_used": 3,
+            "average_fair_value": 2926.6773955214308,
+            "dividend_sustainability_score": 95
+          },
+          "calculated_at": "2025-08-21T13:10:44.661455",
+          "confidence": "high",
+          "warnings": []
+        },
+        "ensemble": {
+          "ticker": "1605.T",
+          "model": "ensemble",
+          "fair_value_per_share": 4491.193885008964,
+          "fair_value": 4491.193885008964,
+          "current_price": 2391.0,
+          "margin_of_safety": 0.8783746905098133,
+          "enterprise_value": null,
+          "inputs": {
+            "current_price": 2391.0,
+            "models_attempted": 3,
+            "models_successful": 3,
+            "model_selection_strategy": "auto"
+          },
+          "outputs": {
+            "weighted_fair_value": 4491.193885008964,
+            "total_weight": 1.0,
+            "model_count": 3,
+            "constituent_models": [
+              "rim",
+              "utility",
+              "simple_ratios"
+            ],
+            "individual_valuations": {
+              "rim": 6113.140095828833,
+              "utility": 2926.6773955214308,
+              "simple_ratios": 5331.7514769297195
+            }
+          },
+          "calculated_at": "2025-08-21T13:10:44.665707",
+          "confidence": "medium",
+          "warnings": []
+        }
+      },
+      "models_attempted": 11,
+      "models_completed": 8,
+      "last_attempt": "2025-08-21T13:10:44.666481",
+      "errors": {
+        "bank": {
+          "timestamp": "2025-08-21T13:10:44.627775",
+          "message": "Valuation failed"
+        },
+        "reit": {
+          "timestamp": "2025-08-21T13:10:44.636589",
+          "message": "Valuation failed"
+        },
+        "tech": {
+          "timestamp": "2025-08-21T13:10:44.639245",
+          "message": "Valuation failed"
+        }
+      },
+      "analysis_summary": {
+        "total_models": 8,
+        "successful_models": 8,
+        "average_fair_value": 9792.902103521892,
+        "valuation_range": {
+          "min": 2926.6773955214308,
+          "max": 17764.17845686352,
+          "spread": 14837.501061342089
+        },
+        "consensus_rating": "Strong Buy"
+      }
+    },
+    "SQM": {
+      "ticker": "SQM",
+      "status": "model_failed",
+      "status_message": "utility valuation failed",
+      "current_price": 44.36,
+      "valuations": {
+        "dcf_enhanced": {
+          "ticker": "SQM",
+          "model": "dcf_enhanced",
+          "fair_value_per_share": 4.997533982634096,
+          "fair_value": 4.997533982634096,
+          "current_price": 44.36,
+          "margin_of_safety": -0.8873414341155524,
+          "enterprise_value": 4154579845.846091,
+          "inputs": {
+            "free_cash_flow": 302886000.0,
+            "wacc": 0.1139,
+            "growth_rate": 0.05,
+            "terminal_growth": 0.025,
+            "projection_years": 10
+          },
+          "outputs": {
+            "projected_fcfs": [
+              318030300.0,
+              333931815.0,
+              350628405.75,
+              368159826.0375,
+              386567817.339375,
+              405896208.20634377,
+              426191018.61666095,
+              447500569.547494,
+              469875598.0248687,
+              493369377.9261122
+            ],
+            "pv_fcfs": [
+              285510638.2978723,
+              269132031.7916922,
+              253693000.6116139,
+              239139645.0688523,
+              225421157.4847786,
+              212489644.81463107,
+              200299961.44659537,
+              188809551.59253532,
+              177978300.72013834,
+              167768395.50780612
+            ],
+            "terminal_value": 5688454582.387682,
+            "pv_terminal": 1934337518.5095754,
+            "equity_value": 713742845.8460908,
+            "shares_outstanding": 142819008.0
+          },
+          "calculated_at": "2025-08-21T13:10:44.641594",
+          "confidence": null,
+          "warnings": []
+        },
+        "dcf": {
+          "ticker": "SQM",
+          "model": "dcf",
+          "fair_value_per_share": 4.997533982634096,
+          "fair_value": 4.997533982634096,
+          "current_price": 44.36,
+          "margin_of_safety": -0.8873414341155524,
+          "enterprise_value": 4154579845.846091,
+          "inputs": {
+            "free_cash_flow": 302886000.0,
+            "wacc": 0.1139,
+            "growth_rate": 0.05,
+            "terminal_growth": 0.025,
+            "projection_years": 10
+          },
+          "outputs": {
+            "projected_fcfs": [
+              318030300.0,
+              333931815.0,
+              350628405.75,
+              368159826.0375,
+              386567817.339375,
+              405896208.20634377,
+              426191018.61666095,
+              447500569.547494,
+              469875598.0248687,
+              493369377.9261122
+            ],
+            "pv_fcfs": [
+              285510638.2978723,
+              269132031.7916922,
+              253693000.6116139,
+              239139645.0688523,
+              225421157.4847786,
+              212489644.81463107,
+              200299961.44659537,
+              188809551.59253532,
+              177978300.72013834,
+              167768395.50780612
+            ],
+            "terminal_value": 5688454582.387682,
+            "pv_terminal": 1934337518.5095754,
+            "equity_value": 713742845.8460908,
+            "shares_outstanding": 142819008.0
+          },
+          "calculated_at": "2025-08-21T13:10:44.647154",
+          "confidence": null,
+          "warnings": []
+        },
+        "multi_stage_dcf": {
+          "ticker": "SQM",
+          "model": "multi_stage_dcf",
+          "fair_value_per_share": 3.018662002233179,
+          "fair_value": 3.018662002233179,
+          "current_price": 44.36,
+          "margin_of_safety": -0.9319508114915875,
+          "enterprise_value": 3871959312.6462364,
+          "inputs": {
+            "free_cash_flow": 302886000.0,
+            "wacc": 0.1139,
+            "high_growth_rate": 0.05,
+            "moderate_growth_rate": 0.025,
+            "terminal_growth": 0.025,
+            "high_growth_years": 5,
+            "moderate_growth_years": 5
+          },
+          "outputs": {
+            "high_growth_fcfs": [
+              318030300.0,
+              333931815.0,
+              350628405.75,
+              368159826.0375,
+              386567817.339375
+            ],
+            "moderate_growth_fcfs": [
+              396232012.77285933,
+              406137813.0921808,
+              416291258.4194853,
+              426698539.87997234,
+              437366003.3769716
+            ],
+            "pv_fcfs": [
+              285510638.2978723,
+              269132031.7916922,
+              253693000.6116139,
+              239139645.0688523,
+              225421157.4847786,
+              207430367.5571398,
+              190875416.77535528,
+              175641711.27995256,
+              161623802.91045094,
+              148724659.2900729
+            ],
+            "terminal_value": 5042746383.14281,
+            "pv_terminal": 1714766881.5784552,
+            "equity_value": 431122312.6462364,
+            "shares_outstanding": 142819008.0
+          },
+          "calculated_at": "2025-08-21T13:10:44.655221",
+          "confidence": null,
+          "warnings": []
+        },
+        "simple_ratios": {
+          "ticker": "SQM",
+          "model": "simple_ratios",
+          "fair_value_per_share": 46.10938474116835,
+          "fair_value": 46.10938474116835,
+          "current_price": 44.36,
+          "margin_of_safety": 0.039436085238240506,
+          "enterprise_value": null,
+          "inputs": {
+            "current_price": 44.36,
+            "eps": 2.11,
+            "book_value": 18.392,
+            "revenue_per_share": 15.687,
+            "cash_per_share": 9.38255389646734
+          },
+          "outputs": {
+            "valuations_calculated": 4,
+            "individual_valuations": {
+              "pe_valuation": {
+                "eps": 2.11,
+                "multiple": 15.0,
+                "fair_value": 31.65
+              },
+              "pb_valuation": {
+                "book_value": 18.392,
+                "multiple": 1.5,
+                "fair_value": 27.588
+              },
+              "ps_valuation": {
+                "revenue_per_share": 15.687,
+                "multiple": 2.0,
+                "fair_value": 31.374
+              },
+              "pcf_valuation": {
+                "cash_per_share": 9.38255389646734,
+                "multiple": 10.0,
+                "fair_value": 93.8255389646734
+              }
+            },
+            "average_fair_value": 46.10938474116835,
+            "valuation_range": {
+              "min": 27.588,
+              "max": 93.8255389646734,
+              "std_dev": 27.595644752275184
+            }
+          },
+          "calculated_at": "2025-08-21T13:10:44.658681",
+          "confidence": "high",
+          "warnings": []
+        },
+        "ensemble": {
+          "ticker": "SQM",
+          "model": "ensemble",
+          "fair_value_per_share": 46.10938474116835,
+          "fair_value": 46.10938474116835,
+          "current_price": 44.36,
+          "margin_of_safety": 0.039436085238240506,
+          "enterprise_value": null,
+          "inputs": {
+            "current_price": 44.36,
+            "models_attempted": 2,
+            "models_successful": 1,
+            "model_selection_strategy": "auto"
+          },
+          "outputs": {
+            "weighted_fair_value": 46.10938474116835,
+            "total_weight": 1.0,
+            "model_count": 1,
+            "constituent_models": [
+              "simple_ratios"
+            ],
+            "individual_valuations": {
+              "simple_ratios": 46.10938474116835
+            }
+          },
+          "calculated_at": "2025-08-21T13:10:44.674034",
+          "confidence": "low",
+          "warnings": []
+        }
+      },
+      "models_attempted": 11,
+      "models_completed": 5,
+      "last_attempt": "2025-08-21T13:10:46.671007",
+      "errors": {
+        "growth_dcf": {
+          "timestamp": "2025-08-21T13:10:44.651612",
+          "message": "Valuation failed"
+        },
+        "reit": {
+          "timestamp": "2025-08-21T13:10:44.659785",
+          "message": "Valuation failed"
+        },
+        "rim": {
+          "timestamp": "2025-08-21T13:10:44.663947",
+          "message": "Valuation failed"
+        },
+        "bank": {
+          "timestamp": "2025-08-21T13:10:44.666586",
+          "message": "Valuation failed"
+        },
+        "tech": {
+          "timestamp": "2025-08-21T13:10:46.670861",
+          "message": "Valuation failed"
+        },
+        "utility": {
+          "timestamp": "2025-08-21T13:10:46.670956",
+          "message": "Valuation failed"
+        }
+      },
+      "analysis_summary": {
+        "total_models": 5,
+        "successful_models": 5,
+        "average_fair_value": 21.046499889967613,
+        "valuation_range": {
+          "min": 3.018662002233179,
+          "max": 46.10938474116835,
+          "spread": 43.09072273893517
+        },
+        "consensus_rating": "Strong Sell"
+      }
+    }
+  },
+  "model_status": {
+    "dcf": "not_run",
+    "dcf_enhanced": "not_run",
+    "simple_ratios": "not_run",
+    "rim": "not_run",
+    "multi_stage_dcf": "not_run"
+  },
+  "progress": {
+    "completed": 0,
+    "total": 0,
+    "status": "idle",
+    "current_ticker": "",
+    "stocks_completed": 0,
+    "total_stocks": 0
+  },
+  "engine_stats": {
+    "dcf": {
+      "attempts": 3,
+      "successes": 3,
+      "failures": 0,
+      "success_rate": 1.0
+    },
+    "dcf_enhanced": {
+      "attempts": 3,
+      "successes": 3,
+      "failures": 0,
+      "success_rate": 1.0
+    },
+    "multi_stage_dcf": {
+      "attempts": 3,
+      "successes": 3,
+      "failures": 0,
+      "success_rate": 1.0
+    },
+    "growth_dcf": {
+      "attempts": 3,
+      "successes": 2,
+      "failures": 1,
+      "success_rate": 0.6666666666666666
+    },
+    "rim": {
+      "attempts": 3,
+      "successes": 2,
+      "failures": 1,
+      "success_rate": 0.6666666666666666
+    },
+    "simple_ratios": {
+      "attempts": 3,
+      "successes": 3,
+      "failures": 0,
+      "success_rate": 1.0
+    },
+    "reit": {
+      "attempts": 3,
+      "successes": 0,
+      "failures": 3,
+      "success_rate": 0.0
+    },
+    "bank": {
+      "attempts": 3,
+      "successes": 0,
+      "failures": 3,
+      "success_rate": 0.0
+    },
+    "tech": {
+      "attempts": 3,
+      "successes": 1,
+      "failures": 2,
+      "success_rate": 0.3333333333333333
+    },
+    "utility": {
+      "attempts": 3,
+      "successes": 2,
+      "failures": 1,
+      "success_rate": 0.6666666666666666
+    },
+    "ensemble": {
+      "attempts": 3,
+      "successes": 3,
+      "failures": 0,
+      "success_rate": 1.0
+    }
+  }
+}

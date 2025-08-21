@@ -1,11 +1,13 @@
-sqm is in there?
+check wallet design in stuff.md
+
+
+database_migration_plan.md
 
 why most models say this is overpriced: 8031.T
 
 how much upside has bitcoin left? Should i sell bitcoin to invest in cheap stocks? let's look at the total money invested in bitcoin vs gold, stocks, and bonds.
 
-
-That red X looks as if the stocks is bad. Leave it with a simple x 
+What symbol to put when a model failed to evaluate the stock (nonsense values, can't apply it), an x instead of -
 
 Analyze APA and the other top stocks
 
