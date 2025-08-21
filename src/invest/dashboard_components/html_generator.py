@@ -76,6 +76,7 @@ class HTMLGenerator:
                 <label for="universe">Select Universe:</label>
                 <select id="universe">
                     <option value="all_universes">All Universes Combined</option>
+                    <option value="nyse">NYSE - All Listed Companies</option>
                     <option value="sp500">S&P 500</option>
                     <option value="russell2000">Russell 2000 Sample</option>
                     <option value="global_mix">Global Mix (US+International)</option>

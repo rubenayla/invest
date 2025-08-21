@@ -109,7 +109,7 @@ def get_universe_tickers(universe: str) -> List[str]:
     """Get tickers for specified universe."""
     from src.invest.data.yahoo import (
         get_sp500_tickers, get_russell_2000_sample, get_sp600_smallcap,
-        get_nasdaq_smallcap, get_emerging_growth_stocks
+        get_nasdaq_smallcap, get_emerging_growth_stocks, get_nyse_tickers
     )
     from src.invest.data.international import (
         get_major_japanese_stocks, get_topix_core30_tickers, get_buffett_favorites_japan,
@@ -122,6 +122,7 @@ def get_universe_tickers(universe: str) -> List[str]:
         'sp600': get_sp600_smallcap,
         'nasdaq_small': get_nasdaq_smallcap,
         'growth_stocks': get_emerging_growth_stocks,
+        'nyse': get_nyse_tickers,
         'japan_major': get_major_japanese_stocks,
         'japan_topix30': get_topix_core30_tickers,
         'japan_buffett': get_buffett_favorites_japan,
@@ -146,6 +147,7 @@ def get_universe_tickers(universe: str) -> List[str]:
             get_sp600_smallcap() +
             get_nasdaq_smallcap() +
             get_emerging_growth_stocks() +
+            get_nyse_tickers() +
             get_major_japanese_stocks() +
             get_topix_core30_tickers() +
             get_buffett_favorites_japan() +

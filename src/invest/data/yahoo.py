@@ -204,3 +204,91 @@ def get_emerging_growth_stocks() -> List[str]:
         'TDOC', 'VEEV', 'DXCM', 'ILMN', 'ISRG', 'NVTA', 'PACB', 'TMO', 'DHR', 'A',
     ]
     return emerging_growth
+
+
+@cached_api_call(data_type='nyse_tickers', ttl=24*3600, key_prefix='nyse')
+def get_nyse_tickers() -> List[str]:
+    """Get all NYSE-listed tickers from NASDAQ's API."""
+    logger.info("Fetching NYSE tickers from NASDAQ API (not cached)")
+    
+    try:
+        # Use NASDAQ's API to get all NYSE listings
+        url = "https://api.nasdaq.com/api/screener/stocks"
+        params = {
+            'tableonly': 'true',
+            'limit': '25000',
+            'exchange': 'NYSE'
+        }
+        
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+        
+        response = requests.get(url, params=params, headers=headers)
+        response.raise_for_status()
+        
+        data = response.json()
+        
+        if 'data' not in data or 'table' not in data['data'] or 'rows' not in data['data']['table']:
+            logger.warning("Unexpected NYSE API response format, falling back to hardcoded list")
+            return _get_nyse_fallback_tickers()
+        
+        tickers = []
+        for row in data['data']['table']['rows']:
+            symbol = row.get('symbol', '').strip()
+            if symbol and len(symbol) <= 5:  # Filter out weird symbols
+                # Skip symbols with special characters that might cause issues
+                if not any(char in symbol for char in ['.', '/', '+', '=']):
+                    tickers.append(symbol)
+        
+        if len(tickers) < 1000:  # Sanity check - NYSE should have many tickers
+            logger.warning(f"Got only {len(tickers)} NYSE tickers, falling back to hardcoded list")
+            return _get_nyse_fallback_tickers()
+        
+        logger.info(f"Successfully fetched {len(tickers)} NYSE tickers")
+        return sorted(tickers)
+        
+    except Exception as e:
+        logger.error(f"Failed to fetch NYSE tickers from API: {e}")
+        return _get_nyse_fallback_tickers()
+
+
+def _get_nyse_fallback_tickers() -> List[str]:
+    """Fallback list of major NYSE tickers including key companies like SQM."""
+    logger.info("Using fallback NYSE ticker list")
+    
+    # Major NYSE companies across sectors, including SQM
+    fallback_tickers = [
+        # Large Cap Tech & Communication
+        'T', 'VZ', 'IBM', 'CRM', 'ORCL', 'ACN', 'TXN', 'NOW', 'ADBE', 'INTU',
+        # Financial Services
+        'JPM', 'BAC', 'WFC', 'C', 'GS', 'MS', 'AXP', 'V', 'MA', 'COF', 'USB', 'PNC',
+        # Healthcare & Pharma
+        'JNJ', 'PFE', 'ABT', 'MRK', 'BMY', 'LLY', 'UNH', 'CVS', 'ANTM', 'CI', 'HUM',
+        # Consumer Goods
+        'PG', 'KO', 'PEP', 'WMT', 'HD', 'NKE', 'MCD', 'SBUX', 'DIS', 'CMCSA',
+        # Industrial & Manufacturing  
+        'GE', 'CAT', 'BA', 'MMM', 'HON', 'LMT', 'RTX', 'UPS', 'FDX', 'DE', 'EMR',
+        # Energy & Utilities
+        'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'OXY', 'KMI', 'WMB', 'EPD', 'ET',
+        # Materials & Mining (including SQM!)
+        'SQM', 'FCX', 'NEM', 'GOLD', 'AA', 'X', 'CLF', 'NUE', 'STLD', 'DD',
+        # Real Estate & REITs
+        'AMT', 'PLD', 'CCI', 'EQIX', 'PSA', 'EXR', 'AVB', 'EQR', 'UDR', 'ESS',
+        # Retail & E-commerce
+        'COST', 'TGT', 'LOW', 'TJX', 'ROST', 'DG', 'DLTR', 'BBY', 'GPS', 'M',
+        # Transportation & Logistics
+        'UNP', 'CSX', 'NSC', 'CP', 'KSU', 'JBHT', 'CHRW', 'XPO', 'ODFL', 'SAIA',
+        # Aerospace & Defense
+        'LHX', 'NOC', 'GD', 'LMT', 'RTX', 'TDG', 'HII', 'TXT', 'CW', 'KTOS',
+        # International Companies on NYSE
+        'NVO', 'ASML', 'SAP', 'UL', 'SNY', 'DEO', 'BCS', 'ING', 'E', 'MT',
+        # Energy Infrastructure
+        'ENB', 'TRP', 'PPL', 'AEP', 'DTE', 'ED', 'EIX', 'PCG', 'PEG', 'SO',
+        # Biotech & Life Sciences
+        'GILD', 'AMGN', 'REGN', 'VRTX', 'BIIB', 'CELG', 'MYL', 'AGN', 'ZTS', 'TMO',
+        # Chemicals & Specialty Materials
+        'LIN', 'APD', 'ECL', 'PPG', 'SHW', 'NEM', 'VMC', 'MLM', 'ALB', 'CE',
+    ]
+    
+    return sorted(fallback_tickers)
