@@ -75,9 +75,13 @@ class HTMLGenerator:
             <div class="universe-selector">
                 <label for="universe">Select Universe:</label>
                 <select id="universe">
-                    <option value="sp500">S&P 500 (Top 25)</option>
-                    <option value="dow30">Dow Jones 30</option>
-                    <option value="nasdaq100">NASDAQ 100 (Top 25)</option>
+                    <option value="all_universes">All Universes Combined</option>
+                    <option value="sp500">S&P 500</option>
+                    <option value="russell2000">Russell 2000 Sample</option>
+                    <option value="global_mix">Global Mix (US+International)</option>
+                    <option value="small_cap_focus">Small Cap Focus</option>
+                    <option value="japan_major">Japan Major Stocks</option>
+                    <option value="uk_ftse">UK FTSE 100</option>
                     <option value="custom">Custom Tickers</option>
                 </select>
                 <input type="text" id="customTickers" placeholder="AAPL,MSFT,GOOGL..." style="display:none;">
