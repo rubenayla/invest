@@ -106,11 +106,15 @@ class DataManager:
             if ticker not in self.data["stocks"]:
                 self.data["stocks"][ticker] = self._create_stock_structure(ticker)
             else:
+                # Ensure existing stock has complete structure
+                self._ensure_stock_structure(ticker)
+                
                 # Reset status for existing stocks
-                self.data["stocks"][ticker]["status"] = "pending"
-                self.data["stocks"][ticker]["status_message"] = "Waiting to be analyzed"
-                self.data["stocks"][ticker]["models_attempted"] = 0
-                self.data["stocks"][ticker]["models_completed"] = 0
+                stock = self.data["stocks"][ticker]
+                stock["status"] = "pending"
+                stock["status_message"] = "Waiting to be analyzed"
+                stock["models_attempted"] = 0
+                stock["models_completed"] = 0
         
         logger.info(f"Initialized {len(tickers)} stocks")
     
@@ -135,12 +139,57 @@ class DataManager:
             },
         }
     
+    def _ensure_stock_structure(self, ticker: str) -> Dict:
+        """Ensure stock has complete structure with all required fields."""
+        stock = self.data["stocks"][ticker]
+        
+        # Check and add missing required fields
+        required_fields = {
+            "ticker": ticker,
+            "status": "pending",
+            "status_message": "Waiting to be analyzed", 
+            "current_price": None,
+            "valuations": {},
+            "models_attempted": 0,
+            "models_completed": 0,
+            "last_attempt": None,
+            "errors": {},
+            "analysis_summary": {
+                "total_models": 0,
+                "successful_models": 0,
+                "average_fair_value": None,
+                "valuation_range": None,
+                "consensus_rating": None,
+            }
+        }
+        
+        for field, default_value in required_fields.items():
+            if field not in stock:
+                logger.warning(f"Stock {ticker} missing field '{field}', adding default")
+                stock[field] = default_value
+        
+        # Ensure analysis_summary has all required subfields
+        if isinstance(stock.get("analysis_summary"), dict):
+            summary_fields = {
+                "total_models": 0,
+                "successful_models": 0,
+                "average_fair_value": None,
+                "valuation_range": None,
+                "consensus_rating": None,
+            }
+            for field, default_value in summary_fields.items():
+                if field not in stock["analysis_summary"]:
+                    stock["analysis_summary"][field] = default_value
+        
+        return stock
+    
     def update_stock_data(self, ticker: str, model: str, result: Optional[Dict]):
         """Update stock data with valuation result."""
         if ticker not in self.data["stocks"]:
             self.data["stocks"][ticker] = self._create_stock_structure(ticker)
         
-        stock = self.data["stocks"][ticker]
+        # Ensure complete stock structure (defensive programming)
+        stock = self._ensure_stock_structure(ticker)
         stock["models_attempted"] += 1
         stock["last_attempt"] = datetime.now().isoformat()
         
@@ -167,7 +216,19 @@ class DataManager:
     def _update_analysis_summary(self, ticker: str):
         """Update analysis summary for a stock."""
         stock = self.data["stocks"][ticker]
-        valuations = stock["valuations"]
+        
+        # Ensure stock structure is complete (defensive programming)
+        if "analysis_summary" not in stock:
+            logger.warning(f"Stock {ticker} missing analysis_summary field, reinitializing structure")
+            stock["analysis_summary"] = {
+                "total_models": 0,
+                "successful_models": 0,
+                "average_fair_value": None,
+                "valuation_range": None,
+                "consensus_rating": None,
+            }
+        
+        valuations = stock.get("valuations", {})
         
         if not valuations:
             return
@@ -175,6 +236,8 @@ class DataManager:
         # Calculate summary statistics
         fair_values = []
         for model, result in valuations.items():
+            if not isinstance(result, dict):
+                continue
             fair_value = result.get("fair_value")
             if fair_value and isinstance(fair_value, (int, float)):
                 fair_values.append(fair_value)
@@ -209,9 +272,11 @@ class DataManager:
     def update_stock_status(self, ticker: str, status: str, message: str):
         """Update stock status and message."""
         if ticker in self.data["stocks"]:
-            self.data["stocks"][ticker]["status"] = status
-            self.data["stocks"][ticker]["status_message"] = message
-            self.data["stocks"][ticker]["last_attempt"] = datetime.now().isoformat()
+            # Ensure complete stock structure (defensive programming)
+            stock = self._ensure_stock_structure(ticker)
+            stock["status"] = status
+            stock["status_message"] = message
+            stock["last_attempt"] = datetime.now().isoformat()
     
     def get_stock_data(self, ticker: str) -> Optional[Dict]:
         """Get data for a specific stock."""
