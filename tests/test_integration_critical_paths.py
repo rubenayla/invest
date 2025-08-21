@@ -50,6 +50,9 @@ class TestUnifiedValuationModels:
     @patch('yfinance.Ticker')
     def test_valuation_model_execution_with_mocked_data(self, mock_ticker):
         """Test valuation models execute correctly with mocked data."""
+        # Clear cache to ensure clean test state
+        clear_all_caches()
+        
         # Setup mock data
         mock_stock = Mock()
         mock_stock.info = {
@@ -59,6 +62,7 @@ class TestUnifiedValuationModels:
             'trailingEps': 6.0,
             'bookValue': 3.5,
             'revenuePerShare': 24.0,
+            'priceToSalesTrailing12Months': 6.25,  # 150 / 24 = 6.25
             'sector': 'Technology'
         }
         
