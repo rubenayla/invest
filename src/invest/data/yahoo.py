@@ -54,6 +54,7 @@ def get_stock_data(ticker: str) -> Optional[Dict]:
     Get basic stock data from Yahoo Finance.
     
     This function is now cached to improve performance and reduce API calls.
+    Returns normalized data with consistent field names.
     """
     try:
         log_data_fetch(logger, ticker, "stock_data", True)
@@ -65,8 +66,32 @@ def get_stock_data(ticker: str) -> Optional[Dict]:
             log_data_fetch(logger, ticker, "stock_data", False, error="No market data available")
             return None
             
+        # Transform raw yfinance data to normalized format
+        result = {
+            "ticker": info.get("symbol", ticker),
+            "sector": info.get("sector"),
+            "industry": info.get("industry"),
+            "market_cap": info.get("marketCap"),
+            "enterprise_value": info.get("enterpriseValue"),
+            "current_price": info.get("currentPrice") or info.get("regularMarketPrice"),
+            "trailing_pe": info.get("trailingPE"),
+            "forward_pe": info.get("forwardPE"),
+            "price_to_book": info.get("priceToBook"),
+            "ev_to_ebitda": info.get("enterpriseToEbitda"),
+            "ev_to_revenue": info.get("enterpriseToRevenue"),
+            "return_on_equity": info.get("returnOnEquity"),
+            "return_on_assets": info.get("returnOnAssets"),
+            "debt_to_equity": info.get("debtToEquity"),
+            "current_ratio": info.get("currentRatio"),
+            "revenue_growth": info.get("revenueGrowth"),
+            "earnings_growth": info.get("earningsGrowth"),
+            "country": info.get("country"),
+            "currency": info.get("currency"),
+            "exchange": info.get("exchange"),
+        }
+        
         log_data_fetch(logger, ticker, "stock_data", True)
-        return info
+        return result
         
     except Exception as e:
         log_data_fetch(logger, ticker, "stock_data", False, error=str(e))

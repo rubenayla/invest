@@ -178,6 +178,13 @@ class TestValuationModelPerformance:
     """Test valuation model performance."""
     
     @pytest.fixture(autouse=True)
+    def setup_clean_cache(self):
+        """Ensure clean cache for each test."""
+        reset_cache_manager()
+        yield
+        reset_cache_manager()
+    
+    @pytest.fixture(autouse=True)
     def setup_mock_data(self):
         """Setup mock data for performance tests."""
         with patch('yfinance.Ticker') as mock_ticker:
@@ -211,7 +218,7 @@ class TestValuationModelPerformance:
             mock_ticker.return_value = mock_stock
             yield
     
-    def test_single_valuation_performance(self, clean_cache):
+    def test_single_valuation_performance(self):
         """Test single valuation model performance."""
         ticker = 'AAPL'
         model = 'simple_ratios'
@@ -242,7 +249,7 @@ class TestValuationModelPerformance:
         assert speedup >= 2.0, f"Cache speedup was {speedup:.1f}x (should be >= 2x)"
         assert cached_result.fair_value == result.fair_value, "Cached result should match original"
     
-    def test_multiple_models_performance(self, clean_cache):
+    def test_multiple_models_performance(self):
         """Test performance of running multiple models."""
         ticker = 'AAPL'
         
@@ -263,7 +270,7 @@ class TestValuationModelPerformance:
             assert result.is_valid(), f"Result for {model_name} should be valid"
     
     @pytest.mark.slow
-    def test_concurrent_valuation_performance(self, clean_cache):
+    def test_concurrent_valuation_performance(self):
         """Test concurrent valuation performance."""
         tickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA']
         model = 'simple_ratios'
@@ -297,6 +304,13 @@ class TestValuationModelPerformance:
 class TestDashboardPerformance:
     """Test dashboard component performance."""
     
+    @pytest.fixture(autouse=True)
+    def setup_clean_cache(self):
+        """Ensure clean cache for each test."""
+        reset_cache_manager()
+        yield
+        reset_cache_manager()
+    
     def test_valuation_engine_initialization_performance(self):
         """Test ValuationEngine initialization performance."""
         metrics = PerformanceMetrics()
@@ -318,7 +332,7 @@ class TestDashboardPerformance:
         assert isinstance(stats, dict), "Should return statistics"
     
     @pytest.mark.slow
-    def test_dashboard_update_performance(self, clean_cache):
+    def test_dashboard_update_performance(self):
         """Test dashboard update performance with multiple tickers."""
         import tempfile
         
@@ -372,8 +386,15 @@ class TestDashboardPerformance:
 class TestDataProviderPerformance:
     """Test data provider performance."""
     
+    @pytest.fixture(autouse=True)
+    def setup_clean_cache(self):
+        """Ensure clean cache for each test."""
+        reset_cache_manager()
+        yield
+        reset_cache_manager()
+    
     @patch('requests.get')
-    def test_sp500_ticker_fetch_performance(self, mock_get, clean_cache):
+    def test_sp500_ticker_fetch_performance(self, mock_get):
         """Test S&P 500 ticker fetching performance."""
         # Mock the response
         mock_response = Mock()
@@ -413,7 +434,7 @@ class TestDataProviderPerformance:
         assert cached_tickers == tickers, "Cached result should match"
     
     @patch('yfinance.Ticker')
-    def test_stock_data_fetch_performance(self, mock_ticker, clean_cache):
+    def test_stock_data_fetch_performance(self, mock_ticker):
         """Test stock data fetching performance."""
         # Setup mock
         mock_stock = Mock()
@@ -457,7 +478,14 @@ class TestDataProviderPerformance:
 class TestMemoryUsage:
     """Test memory usage patterns."""
     
-    def test_cache_memory_efficiency(self, clean_cache):
+    @pytest.fixture(autouse=True)
+    def setup_clean_cache(self):
+        """Ensure clean cache for each test."""
+        reset_cache_manager()
+        yield
+        reset_cache_manager()
+    
+    def test_cache_memory_efficiency(self):
         """Test cache memory usage is reasonable."""
         cache_manager = get_cache_manager()
         
@@ -475,7 +503,7 @@ class TestMemoryUsage:
         # 1000 * 1KB = 1MB of data, but Python objects have overhead
         assert memory_increase < 50, f"Memory increased by {memory_increase:.1f}MB for 1MB of data (should be < 50MB)"
     
-    def test_valuation_memory_efficiency(self, clean_cache):
+    def test_valuation_memory_efficiency(self):
         """Test valuation models don't leak memory."""
         with patch('yfinance.Ticker') as mock_ticker:
             # Setup mock

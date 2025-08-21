@@ -28,6 +28,11 @@ from invest.data.yahoo import (  # noqa: E402
 
 class TestYahooFinanceDataProvider:
     """Test Yahoo Finance data provider functionality."""
+    
+    def setup_method(self):
+        """Clear cache before each test."""
+        from src.invest.caching.cache_decorators import clear_all_caches
+        clear_all_caches()
 
     def test_sp500_tickers_structure(self):
         """Test that S&P 500 tickers are returned in correct format."""
@@ -77,6 +82,7 @@ class TestYahooFinanceDataProvider:
             "revenueGrowth": 0.081,
             "sector": "Technology",
             "currentPrice": 193.6,
+            "regularMarketPrice": 193.6,  # Required field to pass validation
         }
         mock_ticker.return_value = mock_stock
 
@@ -240,6 +246,11 @@ class TestInternationalDataProvider:
 
 class TestDataIntegration:
     """Integration tests for data providers."""
+    
+    def setup_method(self):
+        """Clear cache before each test."""
+        from src.invest.caching.cache_decorators import clear_all_caches
+        clear_all_caches()
 
     @patch("invest.data.yahoo.get_stock_data")
     def test_us_international_data_consistency(self, mock_get_data):
@@ -318,6 +329,11 @@ class TestDataIntegration:
 
 class TestDataQuality:
     """Test data quality and validation."""
+    
+    def setup_method(self):
+        """Clear cache before each test."""
+        from src.invest.caching.cache_decorators import clear_all_caches
+        clear_all_caches()
 
     @patch("yfinance.Ticker")
     def test_missing_data_handling(self, mock_ticker):
@@ -329,6 +345,7 @@ class TestDataQuality:
             "marketCap": None,  # Missing market cap
             "trailingPE": None,  # Missing P/E
             "sector": "Technology",
+            "regularMarketPrice": 50.0,  # Required field to pass validation
         }
         mock_ticker.return_value = mock_stock
 
