@@ -501,6 +501,10 @@ def run_all_suitable_models(ticker: str, verbose: bool = False) -> Dict[str, Val
     """Run all suitable models from the global registry."""
     return _registry.run_all_suitable_models(ticker, verbose)
 
+def get_registry_stats() -> Dict[str, Any]:
+    """Get statistics from the global registry."""
+    return _registry.get_registry_stats()
+
 # Backward compatibility functions that maintain the old interface
 def calculate_dcf(ticker: str, verbose: bool = False) -> Optional[dict]:
     """Backward compatibility wrapper for DCF model."""

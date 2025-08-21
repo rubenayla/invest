@@ -140,7 +140,7 @@ class TestDashboardComponentsIntegration:
         
         # Test engine initialization
         available_models = engine.get_available_models()
-        expected_models = ['dcf', 'dcf_enhanced', 'multi_stage_dcf', 'rim', 'simple_ratios']
+        expected_models = ['bank', 'dcf', 'dcf_enhanced', 'ensemble', 'growth_dcf', 'multi_stage_dcf', 'reit', 'rim', 'simple_ratios', 'tech', 'utility']
         assert set(available_models) == set(expected_models)
         
         # Test statistics tracking
@@ -383,10 +383,11 @@ class TestEndToEndWorkflows:
         ticker = 'AAPL'
         
         # Test complete workflow
-        registry = ModelRegistry()
+        from src.invest.valuation.model_registry import get_registry_stats
         
-        # 1. Get suitable models
-        models = registry.get_model_recommendations(ticker)
+        # 1. Get suitable models (use global registry via convenience function)
+        from src.invest.valuation.model_registry import _registry
+        models = _registry.get_model_recommendations(ticker)
         assert len(models) > 0
         
         # 2. Run all suitable models
@@ -400,8 +401,8 @@ class TestEndToEndWorkflows:
             assert result.fair_value is not None
             assert result.is_valid()
         
-        # 4. Test registry statistics
-        stats = registry.get_registry_stats()
+        # 4. Test registry statistics (from global registry)
+        stats = get_registry_stats()
         assert isinstance(stats, dict)
         for model_name in results.keys():
             assert model_name in stats
@@ -409,7 +410,7 @@ class TestEndToEndWorkflows:
     
     @pytest.mark.integration
     @pytest.mark.performance
-    def test_performance_benchmarks(self, clean_cache, performance_test_config):
+    def test_performance_benchmarks(self, performance_test_config):
         """Test that system meets performance benchmarks."""
         max_time = performance_test_config['max_execution_time_seconds']
         
@@ -454,6 +455,9 @@ class TestErrorHandlingAndResilience:
     
     def test_network_error_resilience(self):
         """Test system handles network errors gracefully."""
+        # Clear cache to ensure clean test state
+        clear_all_caches()
+        
         with patch('yfinance.Ticker') as mock_ticker:
             # Simulate network error
             mock_ticker.side_effect = Exception("Network error")
