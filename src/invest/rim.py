@@ -126,42 +126,42 @@ def calculate_rim(
     
     try:
         stock = yf.Ticker(ticker)
-    
-    try:
-        info = stock.info
-        log_data_fetch(logger, ticker, "market_data", True)
-    except Exception as e:
-        info = {}
-        log_data_fetch(logger, ticker, "market_data", False, error=str(e))
-    
-    # Fetch missing data
-    if book_value_per_share is None:
-        book_value_per_share = info.get('bookValue')
-    
-    if roe is None:
-        roe = info.get('returnOnEquity')
         
-    if current_price is None:
-        current_price = info.get('currentPrice') or info.get('regularMarketPrice')
-    
-    # Validate essential data
-    missing_data = []
-    if book_value_per_share is None or book_value_per_share <= 0:
-        missing_data.append("book_value_per_share")
-    if roe is None:
-        missing_data.append("roe") 
-    if current_price is None or current_price <= 0:
-        missing_data.append("current_price")
+        try:
+            info = stock.info
+            log_data_fetch(logger, ticker, "market_data", True)
+        except Exception as e:
+            info = {}
+            log_data_fetch(logger, ticker, "market_data", False, error=str(e))
         
-    if missing_data:
-        raise InsufficientDataError(ticker, missing_data)
+        # Fetch missing data
+        if book_value_per_share is None:
+            book_value_per_share = info.get('bookValue')
+        
+        if roe is None:
+            roe = info.get('returnOnEquity')
+            
+        if current_price is None:
+            current_price = info.get('currentPrice') or info.get('regularMarketPrice')
+        
+        # Validate essential data
+        missing_data = []
+        if book_value_per_share is None or book_value_per_share <= 0:
+            missing_data.append("book_value_per_share")
+        if roe is None:
+            missing_data.append("roe") 
+        if current_price is None or current_price <= 0:
+            missing_data.append("current_price")
+            
+        if missing_data:
+            raise InsufficientDataError(ticker, missing_data)
     
-    # Sector-based cost of equity adjustments
-    sector = info.get('sector', '').lower()
-    adjusted_cost_of_equity = cost_of_equity
-    
-    if use_sector_adjustment:
-        sector_adjustments = {
+        # Sector-based cost of equity adjustments
+        sector = info.get('sector', '').lower()
+        adjusted_cost_of_equity = cost_of_equity
+        
+        if use_sector_adjustment:
+            sector_adjustments = {
             'financial': -0.01,      # Banks often have lower risk due to regulation
             'utilities': -0.02,      # Regulated utilities, lower risk
             'consumer staples': -0.01,  # Stable demand
@@ -171,7 +171,7 @@ def calculate_rim(
             'energy': +0.01,         # Commodity risk
         }
         
-        for sector_key, adjustment in sector_adjustments.items():
+            for sector_key, adjustment in sector_adjustments.items():
             if sector_key in sector:
                 adjusted_cost_of_equity += adjustment
                 logger.info(
@@ -185,44 +185,44 @@ def calculate_rim(
                 )
                 break
     
-    # Check for RIM model suitability
-    sector = info.get('sector', '').lower()
+        # Check for RIM model suitability
+        sector = info.get('sector', '').lower()
     
-    # RIM is less suitable for:
-    if book_value_per_share <= 0:
-        raise ModelNotSuitableError(
+        # RIM is less suitable for:
+        if book_value_per_share <= 0:
+            raise ModelNotSuitableError(
             "RIM", 
             ticker, 
             f"Negative or zero book value (${book_value_per_share:.2f}). Book value must be positive for RIM."
         )
     
-    if roe <= 0:
-        raise ModelNotSuitableError(
+        if roe <= 0:
+            raise ModelNotSuitableError(
             "RIM", 
             ticker,
             f"Negative or zero ROE ({roe:.1%}). Companies with negative ROE cannot generate residual income."
         )
     
-    # Warning for asset-light businesses (but don't fail)
-    if 'software' in sector or 'technology' in sector:
-        logger.warning(
+        # Warning for asset-light businesses (but don't fail)
+        if 'software' in sector or 'technology' in sector:
+            logger.warning(
             f"RIM may be less reliable for asset-light {sector} companies",
             extra={"ticker": ticker, "sector": sector, "reason": "intangible_heavy_business"}
         )
     
-    # Calculate sustainable ROE first (before projections)
-    sustainable_roe = _estimate_sustainable_roe(info, roe)
+        # Calculate sustainable ROE first (before projections)
+            sustainable_roe = _estimate_sustainable_roe(info, roe)
     
-    # Set terminal ROE (long-term sustainable level)
-    if terminal_roe is None:
+        # Set terminal ROE (long-term sustainable level)
+        if terminal_roe is None:
         terminal_roe = adjusted_cost_of_equity  # Long-run, ROE converges to cost of equity
     
-    # Use sustainable ROE for projections instead of current ROE
-    # This prevents extreme current ROE from distorting the entire valuation
-    normalized_initial_roe = min(sustainable_roe, roe) if sustainable_roe < roe else roe
+        # Use sustainable ROE for projections instead of current ROE
+        # This prevents extreme current ROE from distorting the entire valuation
+        normalized_initial_roe = min(sustainable_roe, roe) if sustainable_roe < roe else roe
     
-    if normalized_initial_roe != roe:
-        logger.warning(
+        if normalized_initial_roe != roe:
+            logger.warning(
             f"Using normalized ROE for {ticker}",
             extra={
                 "ticker": ticker,
@@ -234,42 +234,42 @@ def calculate_rim(
         if verbose:
             print(f"⚠️  Using normalized ROE {normalized_initial_roe:.1%} instead of current {roe:.1%} for projections")
     
-    # Calculate residual income projections
-    projections = _project_residual_income(
+        # Calculate residual income projections
+            projections = _project_residual_income(
         book_value_per_share=book_value_per_share,
         initial_roe=normalized_initial_roe,
         cost_of_equity=adjusted_cost_of_equity,
         terminal_roe=terminal_roe,
         roe_decay_rate=roe_decay_rate,
         projection_years=projection_years
-    )
+        )
     
-    # Calculate present value of residual income
-    pv_residual_income = _calculate_present_value(
+        # Calculate present value of residual income
+            pv_residual_income = _calculate_present_value(
         projections['residual_income'],
         adjusted_cost_of_equity,
         projection_years
-    )
+        )
     
-    # Calculate terminal value (assume no residual income growth beyond terminal year)
-    terminal_residual_income = projections['residual_income'][-1]
-    terminal_value = terminal_residual_income / adjusted_cost_of_equity  # Perpetuity
-    pv_terminal_value = terminal_value / ((1 + adjusted_cost_of_equity) ** projection_years)
+        # Calculate terminal value (assume no residual income growth beyond terminal year)
+        terminal_residual_income = projections['residual_income'][-1]
+        terminal_value = terminal_residual_income / adjusted_cost_of_equity  # Perpetuity
+        pv_terminal_value = terminal_value / ((1 + adjusted_cost_of_equity) ** projection_years)
     
-    # Fair value = Current Book Value + PV of all future residual income
-    fair_value_per_share = book_value_per_share + pv_residual_income + pv_terminal_value
+        # Fair value = Current Book Value + PV of all future residual income
+        fair_value_per_share = book_value_per_share + pv_residual_income + pv_terminal_value
     
-    # Calculate margin of safety
-    margin_of_safety = (fair_value_per_share - current_price) / current_price
+        # Calculate margin of safety
+        margin_of_safety = (fair_value_per_share - current_price) / current_price
     
-    # Additional analysis
-    current_residual_income = (roe - adjusted_cost_of_equity) * book_value_per_share
+        # Additional analysis
+        current_residual_income = (roe - adjusted_cost_of_equity) * book_value_per_share
     
-    # Quality metrics
-    roe_spread = roe - adjusted_cost_of_equity
-    # sustainable_roe already calculated above
+        # Quality metrics
+        roe_spread = roe - adjusted_cost_of_equity
+        # sustainable_roe already calculated above
     
-    results = {
+        results = {
         'ticker': ticker,
         'current_price': current_price,
         'fair_value': fair_value_per_share,
@@ -304,10 +304,10 @@ def calculate_rim(
         
         # Projections for analysis
         'projections': projections,
-    }
+        }
     
-    # Log the valuation result
-    log_valuation_result(
+        # Log the valuation result
+        log_valuation_result(
         logger, 
         ticker, 
         "RIM", 
@@ -315,11 +315,11 @@ def calculate_rim(
         margin_of_safety=margin_of_safety,
         roe_spread=roe_spread,
         sustainable_roe=sustainable_roe
-    )
+        )
     
-    if verbose:
-        _print_rim_analysis(results, ticker)
-    
+        if verbose:
+            _print_rim_analysis(results, ticker)
+        
         return results
     
     except Exception as e:

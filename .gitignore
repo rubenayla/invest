@@ -40,3 +40,22 @@ dashboard/backups/
 
 # Pytest cache
 .pytest_cache/
+
+# Temporary debug/analysis files
+debug_*.py
+analyze_*.py
+test_*.py
+demo_*.py
+fix_*.py
+inspect_*.py
+investigate_*.py
+explore_*.py
+explain_*.py
+ensemble_selection_explained.py
+*.py.backup
+
+# Temporary cache directories
+.cache/
+
+# Dashboard backup files
+dashboard/dashboard_data_backup.json

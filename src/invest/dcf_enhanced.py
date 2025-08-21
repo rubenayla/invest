@@ -98,168 +98,168 @@ def calculate_enhanced_dcf(
     
     try:
         stock = yf.Ticker(ticker)
-
-    try:
-        info = stock.info
-    except Exception as e:
-        info = {}
-        log_data_fetch(logger, ticker, "market_data", False, error=str(e))
-        if verbose:
-            print(f"Warning: Unable to retrieve market data for {ticker}: {e}")
-
-    # Fetch missing data
-    if fcf is None:
-        fcf = info.get("freeCashflow")
         
-        # If FCF not in info, try to get it from cashflow statement (common for financial companies)
-        if fcf is None:
-            try:
-                cf = stock.cashflow
-                if not cf.empty and 'Free Cash Flow' in cf.index:
-                    # Get most recent FCF value
-                    fcf_values = cf.loc['Free Cash Flow'].dropna()
-                    if not fcf_values.empty:
-                        fcf = fcf_values.iloc[0]  # Most recent value
-                        if verbose:
-                            logger.info(f"Retrieved FCF from cashflow statement for {ticker}: ${fcf:,.0f}")
-            except Exception as e:
-                if verbose:
-                    logger.warning(f"Could not retrieve FCF from cashflow statement for {ticker}: {e}")
-    
-    if shares is None:
-        shares = info.get("sharesOutstanding")
-    if cash is None:
-        cash = info.get("totalCash", 0)
-    if debt is None:
-        debt = info.get("totalDebt", 0)
-    if current_price is None:
-        current_price = info.get("currentPrice")
-    if dividend_rate is None:
-        dividend_rate = info.get("dividendRate", 0)
-    if roe is None:
-        roe = info.get("returnOnEquity")
-
-    # Validate essential data with better error handling
-    missing_data = []
-    if fcf is None:
-        missing_data.append("fcf")
-    if shares is None:
-        missing_data.append("shares")  
-    if current_price is None:
-        missing_data.append("current_price")
-        
-    if missing_data:
-        # For financial companies, try alternative approaches
-        sector = info.get("sector", "").lower()
-        if "financial" in sector:
+        try:
+            info = stock.info
+        except Exception as e:
+            info = {}
+            log_data_fetch(logger, ticker, "market_data", False, error=str(e))
             if verbose:
-                logger.warning(f"Enhanced DCF may not be suitable for financial company {ticker} ({sector}). Missing: {missing_data}")
-            # Skip enhanced DCF for financials - they need different models
+                print(f"Warning: Unable to retrieve market data for {ticker}: {e}")
+
+        # Fetch missing data
+        if fcf is None:
+            fcf = info.get("freeCashflow")
+            
+            # If FCF not in info, try to get it from cashflow statement (common for financial companies)
+            if fcf is None:
+                try:
+                    cf = stock.cashflow
+                    if not cf.empty and 'Free Cash Flow' in cf.index:
+                        # Get most recent FCF value
+                        fcf_values = cf.loc['Free Cash Flow'].dropna()
+                        if not fcf_values.empty:
+                            fcf = fcf_values.iloc[0]  # Most recent value
+                            if verbose:
+                                logger.info(f"Retrieved FCF from cashflow statement for {ticker}: ${fcf:,.0f}")
+                except Exception as e:
+                    if verbose:
+                        logger.warning(f"Could not retrieve FCF from cashflow statement for {ticker}: {e}")
+        
+        if shares is None:
+            shares = info.get("sharesOutstanding")
+        if cash is None:
+            cash = info.get("totalCash", 0)
+        if debt is None:
+            debt = info.get("totalDebt", 0)
+        if current_price is None:
+            current_price = info.get("currentPrice")
+        if dividend_rate is None:
+            dividend_rate = info.get("dividendRate", 0)
+        if roe is None:
+            roe = info.get("returnOnEquity")
+
+        # Validate essential data with better error handling
+        missing_data = []
+        if fcf is None:
+            missing_data.append("fcf")
+        if shares is None:
+            missing_data.append("shares")  
+        if current_price is None:
+            missing_data.append("current_price")
+            
+        if missing_data:
+            # For financial companies, try alternative approaches
+            sector = info.get("sector", "").lower()
+            if "financial" in sector:
+                if verbose:
+                    logger.warning(f"Enhanced DCF may not be suitable for financial company {ticker} ({sector}). Missing: {missing_data}")
+                # Skip enhanced DCF for financials - they need different models
+                raise ModelNotSuitableError(
+                    "Enhanced DCF",
+                    ticker,
+                    f"Enhanced DCF not applicable to financial company ({sector}). Use bank-specific valuation models like P/B or RIM instead."
+                )
+            else:
+                raise InsufficientDataError(ticker, missing_data)
+
+        # Calculate payout ratio if not provided
+        if payout_ratio is None and dividend_rate and shares:
+            total_dividends = dividend_rate * shares
+            if fcf > 0:
+                payout_ratio = min(total_dividends / fcf, 1.0)  # Cap at 100%
+            else:
+                payout_ratio = 0.0
+        elif payout_ratio is None:
+            payout_ratio = 0.0
+
+        # Check for Enhanced DCF model suitability
+        if fcf <= 0:
+            # Enhanced DCF requires positive FCF for dividend analysis
             raise ModelNotSuitableError(
                 "Enhanced DCF",
-                ticker,
-                f"Enhanced DCF not applicable to financial company ({sector}). Use bank-specific valuation models like P/B or RIM instead."
+                ticker, 
+                f"Negative FCF (${fcf:,.0f}) makes dividend-based valuation inappropriate. Use traditional DCF or other methods."
             )
-        else:
-            raise InsufficientDataError(ticker, missing_data)
+    
+        # Use normalized FCF if enabled
+        base_fcf = _calculate_normalized_fcf(stock, fcf, use_normalized_fcf, verbose)
 
-    # Calculate payout ratio if not provided
-    if payout_ratio is None and dividend_rate and shares:
-        total_dividends = dividend_rate * shares
-        if fcf > 0:
-            payout_ratio = min(total_dividends / fcf, 1.0)  # Cap at 100%
-        else:
-            payout_ratio = 0.0
-    elif payout_ratio is None:
-        payout_ratio = 0.0
-
-    # Check for Enhanced DCF model suitability
-    if fcf <= 0:
-        # Enhanced DCF requires positive FCF for dividend analysis
-        raise ModelNotSuitableError(
-            "Enhanced DCF",
-            ticker, 
-            f"Negative FCF (${fcf:,.0f}) makes dividend-based valuation inappropriate. Use traditional DCF or other methods."
+        # Calculate dividend and reinvestment metrics
+        dividend_metrics = _calculate_dividend_metrics(
+            base_fcf, shares, dividend_rate, payout_ratio, roe
         )
-    
-    # Use normalized FCF if enabled
-    base_fcf = _calculate_normalized_fcf(stock, fcf, use_normalized_fcf, verbose)
 
-    # Calculate dividend and reinvestment metrics
-    dividend_metrics = _calculate_dividend_metrics(
-        base_fcf, shares, dividend_rate, payout_ratio, roe
-    )
+        # Determine growth rates based on reinvestment policy
+        if growth_rates is None:
+            growth_rates = _calculate_sustainable_growth_rates(dividend_metrics, info, projection_years)
 
-    # Determine growth rates based on reinvestment policy
-    if growth_rates is None:
-        growth_rates = _calculate_sustainable_growth_rates(dividend_metrics, info, projection_years)
+        # Project future cash flows and dividends
+        projections = _project_dividend_and_growth(
+            base_fcf, dividend_metrics, growth_rates, projection_years
+        )
 
-    # Project future cash flows and dividends
-    projections = _project_dividend_and_growth(
-        base_fcf, dividend_metrics, growth_rates, projection_years
-    )
+        # Calculate present values
+        valuation = _calculate_present_values(
+            projections, discount_rate, terminal_growth, projection_years, cash, debt, shares
+        )
 
-    # Calculate present values
-    valuation = _calculate_present_values(
-        projections, discount_rate, terminal_growth, projection_years, cash, debt, shares
-    )
+        # Calculate margin of safety
+        margin_of_safety = (valuation["fair_value_per_share"] - current_price) / current_price
 
-    # Calculate margin of safety
-    margin_of_safety = (valuation["fair_value_per_share"] - current_price) / current_price
+        # Prepare comprehensive results
+        results = {
+            "ticker": ticker,
+            "fair_value_per_share": valuation["fair_value_per_share"],
+            "fair_value": valuation["fair_value_per_share"],  # Add compatibility with dashboard
+            "current_price": current_price,
+            "margin_of_safety": margin_of_safety,
+            # Dividend-specific metrics
+            "dividend_component_value": valuation["dividend_pv"] / shares,
+            "growth_component_value": valuation["growth_pv"] / shares,
+            "dividend_yield": dividend_rate / current_price if current_price > 0 else 0,
+            "implied_terminal_yield": valuation.get("terminal_dividend_yield", 0),
+            # Capital allocation analysis
+            "payout_ratio": payout_ratio,
+            "retention_ratio": 1 - payout_ratio,
+            "reinvestment_efficiency": dividend_metrics.get("reinvestment_roic", 0),
+            "sustainable_growth_rate": dividend_metrics.get("sustainable_growth", 0),
+            # Traditional DCF components
+            "enterprise_value": valuation["enterprise_value"],
+            "terminal_value": valuation["terminal_value"],
+            "terminal_value_pv": valuation["terminal_pv"],
+            # Scenario analysis
+            "high_dividend_scenario": valuation.get("high_dividend_value", 0) / shares,
+            "high_growth_scenario": valuation.get("high_growth_value", 0) / shares,
+            # Inputs and assumptions
+            "inputs": {
+                "base_fcf": base_fcf,
+                "normalized_fcf_used": use_normalized_fcf,
+                "shares": shares,
+                "cash": cash,
+                "debt": debt,
+                "discount_rate": discount_rate,
+                "terminal_growth": terminal_growth,
+                "growth_rates": growth_rates,
+            },
+        }
 
-    # Prepare comprehensive results
-    results = {
-        "ticker": ticker,
-        "fair_value_per_share": valuation["fair_value_per_share"],
-        "fair_value": valuation["fair_value_per_share"],  # Add compatibility with dashboard
-        "current_price": current_price,
-        "margin_of_safety": margin_of_safety,
-        # Dividend-specific metrics
-        "dividend_component_value": valuation["dividend_pv"] / shares,
-        "growth_component_value": valuation["growth_pv"] / shares,
-        "dividend_yield": dividend_rate / current_price if current_price > 0 else 0,
-        "implied_terminal_yield": valuation.get("terminal_dividend_yield", 0),
-        # Capital allocation analysis
-        "payout_ratio": payout_ratio,
-        "retention_ratio": 1 - payout_ratio,
-        "reinvestment_efficiency": dividend_metrics.get("reinvestment_roic", 0),
-        "sustainable_growth_rate": dividend_metrics.get("sustainable_growth", 0),
-        # Traditional DCF components
-        "enterprise_value": valuation["enterprise_value"],
-        "terminal_value": valuation["terminal_value"],
-        "terminal_value_pv": valuation["terminal_pv"],
-        # Scenario analysis
-        "high_dividend_scenario": valuation.get("high_dividend_value", 0) / shares,
-        "high_growth_scenario": valuation.get("high_growth_value", 0) / shares,
-        # Inputs and assumptions
-        "inputs": {
-            "base_fcf": base_fcf,
-            "normalized_fcf_used": use_normalized_fcf,
-            "shares": shares,
-            "cash": cash,
-            "debt": debt,
-            "discount_rate": discount_rate,
-            "terminal_growth": terminal_growth,
-            "growth_rates": growth_rates,
-        },
-    }
-
-    # Log the enhanced DCF valuation result
-    log_valuation_result(
-        logger,
-        ticker,
-        "Enhanced DCF",
-        results['fair_value_per_share'],
-        margin_of_safety=results['margin_of_safety'],
-        dividend_yield=results['dividend_yield'],
-        sustainable_growth_rate=results['sustainable_growth_rate']
-    )
-    
-    if verbose:
-        _print_enhanced_dcf_summary(results, ticker)
+        # Log the enhanced DCF valuation result
+        log_valuation_result(
+            logger,
+            ticker,
+            "Enhanced DCF",
+            results['fair_value_per_share'],
+            margin_of_safety=results['margin_of_safety'],
+            dividend_yield=results['dividend_yield'],
+            sustainable_growth_rate=results['sustainable_growth_rate']
+        )
+        
+        if verbose:
+            _print_enhanced_dcf_summary(results, ticker)
 
         return results
-    
+
     except Exception as e:
         # Handle any unexpected errors with comprehensive error context
         error_info = handle_valuation_error(e, ticker, "Enhanced DCF")
