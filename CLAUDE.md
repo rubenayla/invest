@@ -76,6 +76,26 @@ Files changed: 24, +5983/-13 lines  ← THIS IS A DISASTER
 
 ## Remember: The user values WORKING CODE above all else. Broken code helps nobody.
 
+## Current Status: Test Suite Partially Broken
+
+⚠️ **Known Issue**: The ab0fe64 disaster commit broke many integration tests by:
+- Adding 6 new valuation models without updating test expectations
+- Creating complex new components that tests don't account for
+- Changing internal APIs that tests relied on
+
+### Fixed Tests:
+- ✅ `test_model_registry_initialization` - Updated to expect 11 models instead of 5
+
+### Still Failing Tests (don't fix all at once - violates our rules):
+- Integration tests expecting old model counts
+- Performance tests referencing removed/changed components
+- Valuation tests with outdated assumptions
+
+### Approach for Test Fixes:
+1. **Only fix tests when they block real work** - don't fix all tests at once
+2. **One test at a time** - separate commits for each test fix  
+3. **Document what was changed and why** - help future debugging
+
 ---
 
 📋 **For project-specific details, see PROJECT.md**
