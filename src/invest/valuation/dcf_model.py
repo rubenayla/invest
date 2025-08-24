@@ -20,7 +20,29 @@ from ..exceptions import InsufficientDataError, ModelNotSuitableError
 
 
 class DCFModel(ValuationModel):
-    """Standard Discounted Cash Flow valuation model."""
+    """
+    Standard Discounted Cash Flow valuation model.
+    
+    Discounts projected future free cash flows to present value. Best for
+    companies with positive and predictable cash flows.
+    
+    Data Requirements
+    -----------------
+    Required fields:
+        - currentPrice: Current stock price
+        - sharesOutstanding: Number of shares outstanding
+        
+    Required (at least one):
+        - freeCashflow: Free cash flow from operations
+        - operatingCashFlow: Operating cash flow (alternative)
+        
+    Optional fields (improve accuracy):
+        - revenueGrowth: Historical revenue growth rate
+        - beta: Stock beta for discount rate calculation
+        - totalDebt: Total debt for enterprise value calculation
+        - totalCash: Total cash for enterprise value calculation
+        - sector: Company sector for sector-specific assumptions
+    """
     
     def __init__(self):
         super().__init__('dcf')

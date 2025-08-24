@@ -12,6 +12,7 @@ from datetime import datetime
 import logging
 
 from ..exceptions import ModelNotSuitableError, InsufficientDataError, ValuationError
+from .model_requirements import ModelDataRequirements, FieldRequirement
 
 logger = logging.getLogger(__name__)
 
@@ -287,3 +288,59 @@ class ValuationModel(ABC):
             return default
         
         return valid_values.iloc[0]
+    
+    def get_required_fields(self) -> FieldRequirement:
+        """
+        Get the data field requirements for this model.
+        
+        Returns
+        -------
+        FieldRequirement
+            Object describing required, optional, and conditional fields
+            
+        Raises
+        ------
+        ValueError
+            If this model is not documented in ModelDataRequirements
+        """
+        return ModelDataRequirements.get_requirements(self.name)
+    
+    def validate_data_completeness(self, data: Dict[str, Any]) -> tuple[bool, str]:
+        """
+        Validate if the provided data meets this model's requirements.
+        
+        This provides a more detailed check than is_suitable(), specifically
+        focused on data completeness rather than business logic suitability.
+        
+        Parameters
+        ----------
+        data : Dict[str, Any]
+            Company financial data
+            
+        Returns
+        -------
+        tuple[bool, str]
+            (is_valid, error_message) - error_message is empty if valid
+        """
+        try:
+            requirements = self.get_required_fields()
+            return requirements.validate_data(data)
+        except ValueError as e:
+            return False, f"Model {self.name} not found in requirements registry: {e}"
+    
+    @classmethod
+    def get_minimal_mock_data(cls, model_name: str) -> Dict[str, Any]:
+        """
+        Get minimal mock data for testing this model.
+        
+        Parameters
+        ----------
+        model_name : str
+            Name of the model (e.g., 'simple_ratios', 'dcf')
+            
+        Returns
+        -------
+        Dict[str, Any]
+            Minimal data dictionary that satisfies the model's requirements
+        """
+        return ModelDataRequirements.get_minimal_mock_data(model_name)

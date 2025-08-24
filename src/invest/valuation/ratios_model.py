@@ -13,7 +13,28 @@ from ..exceptions import InsufficientDataError, ModelNotSuitableError
 
 
 class SimpleRatiosModel(ValuationModel):
-    """Simple ratios-based valuation model using market multiples."""
+    """
+    Simple ratios-based valuation model using market multiples.
+    
+    Uses P/E, P/B, P/S ratios for quick valuation. Best for mature companies
+    with stable earnings and established market comparables.
+    
+    Data Requirements
+    -----------------
+    Required fields:
+        - currentPrice: Current stock price
+        
+    Required (at least one):
+        - trailingEps: Trailing twelve months earnings per share
+        - bookValue: Book value per share
+        - revenuePerShare: Revenue per share
+        
+    Optional fields (improve accuracy):
+        - totalCash: Total cash on balance sheet
+        - sharesOutstanding: Shares outstanding
+        - sector: Company sector for industry-specific multiples  
+        - beta: Stock beta for risk adjustment
+    """
     
     def __init__(self):
         super().__init__('simple_ratios')
