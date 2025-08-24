@@ -459,3 +459,127 @@ APA is cheap but not realiable income. Could be a good bet if i think oil prices
 # 2025-08-21
 The market will open in 35 minutes, i set a limit buy order at 174.6 when the price is 173.6 just in case, to not overpay but have almost guaranteed execution.
 
+# market caps of stuff
+Bonds: 145T
+stocks: 126T
+Gold: 20T
+Bitcoin: 2.1T
+
+Hipoteca 1.5-3% es prácticamente dinero gratis (inflación españa 6%)
+
+# 2025-08-24
+● 🎯 FINAL WATCHLIST RECOMMENDATIONS
+
+  🏆 TOP PICKS (Consistent with Previous Analysis)
+
+  1. QCOM (+73.4% upside) ⭐⭐⭐
+
+  - Why: Solid fundamentals, reasonable P/E (15.2x), dominant in 5G/mobile chips
+  - Risk: Cyclical semiconductor industry, China exposure
+  - Action: STRONG BUY - Best risk-adjusted opportunity
+
+  2. ACGL (+43.7% upside) ⭐⭐
+
+  - Why: Insurance hard market, disciplined underwriting, P/E only 9.7x
+  - Risk: Insurance cycle turns, catastrophic losses
+  - Action: BUY - Solid value with downside protection
+
+  3. CSCO (+38.5% upside) ⭐⭐
+
+  - Why: Enterprise networking dominance, steady cash flows, dividend
+  - Risk: Cloud transition, slower growth
+  - Action: BUY - Reliable value play
+
+  🚫 AVOID (Overvalued)
+
+  NVIDIA (-45.5% upside)
+
+  - Why Overvalued: P/E of 57.4x despite AI hype, $4.3T market cap unsustainable
+  - Reality Check: Even strong growth can't justify current valuation
+  - Action: SELL/AVOID - Bubble territory
+
+  PLTR (-76.7% upside)
+
+  - Why Overvalued: P/E of 529x, revenue/share only $1.51
+  - Action: STRONG SELL - Extremely overpriced
+
+  ORCL (-67.8% upside)
+
+  - Why Overvalued: P/E 54x for mature enterprise software
+  - Action: SELL - Better opportunities elsewhere
+
+  ⚠️ DATA QUALITY ISSUES
+
+  MITSY (+13,945% upside) - IGNORE
+
+  - Problem: Currency mismatch (USD price vs Yen fundamentals)
+  - Action: DO NOT TRADE - Fix data pipeline first
+
+  BIDU (+1,010% upside) - HIGH RISK/REWARD
+
+  - Problem: Geopolitical discount not captured in models
+  - Opportunity: Strong fundamentals (P/E 8.3x, solid FCF)
+  - Action: SPECULATIVE BUY - Only if comfortable with China risk
+
+  📈 MY CONSISTENT RECOMMENDATIONS
+
+  Portfolio Allocation:
+  1. 40% QCOM - Core position, best risk/reward
+  2. 25% ACGL - Defensive value, insurance cycle play
+  3. 20% CSCO - Steady dividend, enterprise moat
+  4. 10% META - Hold if owned (fair value)
+  5. 5% Cash - Wait for better opportunities
+
+  Avoid: NVDA, PLTR, ORCL (all overvalued)
+  Speculative: BIDU (only if China-risk tolerant)
+  Data Issues: MITSY (currency problems)
+
+---
+
+● Why PLTR Revenue is Growing 48% 🚀
+
+  The data shows accelerating growth - from 17% in 2023 to 29% in 2024, with recent quarters hitting $1B+ run rate!
+
+  Primary Growth Drivers:
+
+  1. AI Boom Timing 🤖
+
+  - PLTR built AI/ML platforms before the 2023 ChatGPT boom
+  - Every enterprise now wants AI analytics capabilities
+  - PLTR is a "picks and shovels" play on AI adoption
+
+  2. Government Expansion 🏛️
+
+  - Defense/intelligence agencies massively increasing AI spending
+  - Ukraine war showed importance of data-driven warfare
+  - Multi-year contracts provide predictable growth
+  - High security clearance = pricing power
+
+  3. Commercial Breakthrough 🏢
+
+  - Finally cracked Fortune 500 adoption after years of trying
+  - Land-and-expand model: start with pilot, grow into enterprise-wide
+  - Q2 2024: $678M → Q2 2025: $1,004M (+48% growth!)
+
+  4. Network Effects Kicking In 🔄
+
+  - More data = better AI insights = more valuable platform
+  - Customers become increasingly dependent (high switching costs)
+  - Platform improves as user base grows
+
+  Recent Acceleration Factors:
+
+  - Q4 2024: $828M (+14% QoQ) - big enterprise deals closing
+  - Q1 2025: $884M (+7% QoQ) - steady commercial growth
+  - Q2 2025: $1,004M (+14% QoQ) - breakthrough $1B quarterly run rate
+
+  Quality of Growth ✅
+
+  - Recurring: Long-term contracts, not one-time sales
+  - Sticky: Deep platform integration, hard to replace
+  - Expanding: Existing customers buying more modules
+  - Profitable: 80% gross margins, 27% operating margins
+
+  This explains why people recommend PLTR despite high P/E - the revenue growth is real, accelerating, and high-quality. The question is whether 48% growth can continue long enough to
+  justify the $159 price.
+

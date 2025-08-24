@@ -12,6 +12,8 @@
 - **8002** (Marubeni Corp.)
 
 ## Watchlist
+- QCOM
+- ASML
 - META
 - ORCL
 - IBM
@@ -24,8 +26,9 @@
 - CSCO
 - ORCL
 - PYPL
-- QCOM
 - SAP
+- PLTR
+    - Palantir
 
 ## Nope
 - CNC (Centene)

@@ -45,11 +45,20 @@ If you find yourself doing ANY of these, STOP IMMEDIATELY:
 
 ## COMMIT DISCIPLINE - Mandatory Rules
 
+### 🚨 CRITICAL: GitHub Actions Test Requirement
+**ALL TESTS MUST PASS BEFORE COMMITTING** - GitHub Actions will catch failures and send email alerts!
+- Run the FULL test suite: `poetry run pytest`
+- If any tests fail, either:
+  - Fix the code causing the failure
+  - Update the test if the expected behavior has changed (and inform the user)
+- NEVER commit with failing tests - this breaks CI/CD and triggers email alerts
+
 ### Before Every Commit:
 1. **Run the linter**: `poetry run ruff check src tests --select=E9,F63,F7,F82`
 2. **Check for syntax errors**: Must pass with zero errors
-3. **Run tests**: `poetry run pytest` (at minimum, run relevant tests)
+3. **Run FULL test suite**: `poetry run pytest` - ALL tests must pass (not just relevant ones)
 4. **Verify changes are minimal**: `git diff --stat` should show reasonable line counts
+5. **Confirm test status**: If any tests need updating, inform the user BEFORE committing
 
 ### Good Commit Examples:
 ```
@@ -105,6 +114,58 @@ From ab0fe64 disaster (6,000 lines, 24 files, massive failures) to 15/15 passing
 1. **Only fix tests when they block real work** - don't fix all tests at once
 2. **One test at a time** - separate commits for each test fix  
 3. **Document what was changed and why** - help future debugging
+
+---
+
+## CODING STANDARDS - Mandatory Style Rules
+
+### ✅ Code Style Requirements:
+- **Single quotes for strings**: `'hello'` not `"hello"`
+- **Poetry + pyproject.toml**: PEP 621-compliant dependency management
+- **Ruff linter**: Use for code formatting and linting
+- **Numpydoc docstrings**: Standard format for function documentation
+- **Type hints**: Always include type annotations
+
+### ✅ Code Structure Rules:
+- **Guard clauses**: Use early returns to avoid deep indentation
+  ```python
+  # Good
+  def process_data(data):
+      if not data:
+          return None
+      if len(data) < 5:
+          return []
+      # main logic here
+  
+  # Bad 
+  def process_data(data):
+      if data:
+          if len(data) >= 5:
+              # main logic buried in nested conditions
+  ```
+
+- **NEVER use nested conditionals after assertions**: Assertions handle edge cases completely
+  ```python
+  # Good
+  assert data is not None, "Data cannot be None"
+  # Continue with main logic - no if/else needed
+  
+  # Bad
+  assert data is not None, "Data cannot be None" 
+  if data:  # ← This is redundant after assertion
+  ```
+
+### ✅ Test Standards:
+- **Independent test functions**: Each test should run in isolation
+- **Use parameters**: Avoid rewriting similar tests, use `@pytest.mark.parametrize`
+  ```python
+  @pytest.mark.parametrize('model_name,expected_fields', [
+      ('simple_ratios', ['currentPrice', 'trailingEps']),
+      ('dcf', ['currentPrice', 'sharesOutstanding']),
+  ])
+  def test_model_requirements(model_name, expected_fields):
+      # Single test handles multiple cases
+  ```
 
 ---
 

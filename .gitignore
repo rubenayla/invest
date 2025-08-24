@@ -16,6 +16,7 @@ default_analysis_*.csv
 
 # Coverage reports
 .coverage
+.coverage.*
 coverage.xml
 htmlcov/
 

@@ -1,7 +1,13 @@
+database_migration_plan.md
+
+- Create parameter that includes the 5 year past earning growth as in the video, and use it in filter. It certainly matches with high PE companies, might wanna do it for small caps that combine that with low PE. Might want to do the analysis of the video taking the second derivative of the earnings too, see if there's correlation too
+    - https://youtu.be/-xq7a-tptno?si=kl6EQT-Jfxu1xmyG
+    - https://www.hellostocks.ai/superinvestor/strategies
+
+
 check wallet design in stuff.md
 
 
-database_migration_plan.md
 
 why most models say this is overpriced: 8031.T
 
