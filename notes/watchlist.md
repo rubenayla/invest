@@ -8,6 +8,7 @@
     - Low costs of lithium production, so one of the few that can survive long-term while benefiting from high lithium prices if they grow
 - **BRK.B**
 - **STLD**
+    - todo analyze again
 - **CVX**
 - **8002** (Marubeni Corp.)
 

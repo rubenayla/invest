@@ -183,6 +183,7 @@ If, ignoring the premium, the option is not better or worse than the market pric
     - Objective: Buy not expensive, WILL NOT GO UP.
 - I don't know.
 
+# Bonds
 ## A bond bought at 98.8 has a par value of $1000 and a coupon rate of 6%. Coupon payments are made semi-annually. The periodic interest payment is:
 - $30.00, paid twice a year
 - $60.00, paid once a year
