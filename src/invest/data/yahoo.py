@@ -143,7 +143,26 @@ def get_universe_data(tickers: List[str]) -> pd.DataFrame:
 
 
 # Common stock universes
-SP500_TICKERS = get_sp500_tickers()
+# Use a lazy-loading class to avoid network calls at import time
+class _LazySP500Tickers:
+    def __init__(self):
+        self._tickers = None
+    
+    def __call__(self):
+        if self._tickers is None:
+            self._tickers = get_sp500_tickers()
+        return self._tickers
+    
+    def __iter__(self):
+        return iter(self())
+    
+    def __getitem__(self, key):
+        return self()[key]
+    
+    def __len__(self):
+        return len(self())
+
+SP500_TICKERS = _LazySP500Tickers()
 
 
 def get_sp500_sample() -> List[str]:
