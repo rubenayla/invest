@@ -19,6 +19,8 @@ from pathlib import Path
 from typing import List, Dict, Optional, Set
 import yfinance as yf
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import tempfile
+import os
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -46,10 +48,21 @@ class StockDataCache:
             }
     
     def save_index(self):
-        """Save cache index"""
+        """Save cache index atomically to prevent corruption"""
         self.index['last_updated'] = datetime.now().isoformat()
-        with open(self.index_file, 'w') as f:
-            json.dump(self.index, f, indent=2)
+        
+        # Write to temporary file first, then atomic rename
+        temp_file = self.index_file.with_suffix('.tmp')
+        try:
+            with open(temp_file, 'w') as f:
+                json.dump(self.index, f, indent=2)
+            # Atomic rename prevents corruption from concurrent writes
+            os.rename(temp_file, self.index_file)
+        except Exception as e:
+            # Clean up temp file if write failed
+            if temp_file.exists():
+                temp_file.unlink()
+            raise e
     
     def get_update_order(self, tickers: List[str]) -> List[str]:
         """Get tickers in update order: empty stocks first, then oldest to newest"""
@@ -76,8 +89,9 @@ class StockDataCache:
         return None
     
     def save_stock_data(self, ticker: str, data: Dict):
-        """Save stock data to cache"""
+        """Save stock data to cache atomically"""
         cache_file = self.cache_dir / f'{ticker}.json'
+        temp_file = cache_file.with_suffix('.tmp')
         
         # Add metadata
         data['_cache_metadata'] = {
@@ -86,9 +100,15 @@ class StockDataCache:
             'data_source': 'yfinance'
         }
         
-        # Save data
-        with open(cache_file, 'w') as f:
-            json.dump(data, f, indent=2)
+        # Save data atomically
+        try:
+            with open(temp_file, 'w') as f:
+                json.dump(data, f, indent=2)
+            os.rename(temp_file, cache_file)
+        except Exception as e:
+            if temp_file.exists():
+                temp_file.unlink()
+            raise e
         
         # Update index
         self.index['stocks'][ticker] = {
