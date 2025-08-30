@@ -254,99 +254,68 @@ class AsyncStockDataFetcher:
 
 
 def get_universe_tickers(universe: str, max_stocks: int = 1000) -> List[str]:
-    """Get ticker list for a universe (expanded, no limits)"""
+    """Get ticker list for a universe using dynamic index manager."""
+    from scripts.index_manager import IndexManager
     
-    # Try to load real S&P 500 list from file or use comprehensive list
     try:
-        import json
-        with open('sp500_tickers.json', 'r') as f:
-            sp500_expanded = json.load(f)
-    except:
-        # Comprehensive S&P 500 list
-        sp500_expanded = [
-        # Top 100 S&P 500 by market cap (approximate)
-        'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'TSLA', 'META', 'NVDA', 'BRK-B', 'UNH',
-        'JNJ', 'JPM', 'V', 'PG', 'HD', 'DIS', 'MA', 'PYPL', 'BAC', 'ADBE',
-        'CRM', 'NFLX', 'XOM', 'CVX', 'KO', 'PEP', 'TMO', 'ABBV', 'COST', 'AVGO',
-        'WMT', 'NKE', 'DHR', 'LIN', 'ABT', 'PFE', 'MRK', 'ORCL', 'ACN', 'VZ',
-        'CSCO', 'MDT', 'TXN', 'WFC', 'NEE', 'CMCSA', 'HON', 'IBM', 'QCOM', 'UPS',
-        # Next 50
-        'LOW', 'UNP', 'GS', 'MS', 'CAT', 'AXP', 'BA', 'MMM', 'GE', 'F',
-        'GM', 'DAL', 'AAL', 'CCL', 'NCLH', 'MGM', 'LVS', 'WYNN', 'MAR', 'HLT',
-        'SBUX', 'MCD', 'YUM', 'CMG', 'DPZ', 'QSR', 'WEN', 'DRI', 'EXR', 'AMT',
-        'CCI', 'EQIX', 'PSA', 'O', 'WELL', 'ARE', 'VTR', 'ESS', 'AVB', 'EQR',
-        'DLR', 'BXP', 'REG', 'HST', 'SLG', 'VNO', 'KIM', 'SPG', 'FRT', 'PLD',
-        # Next 100 (150-250)
-        'INTC', 'AMD', 'MU', 'AMAT', 'LRCX', 'KLAC', 'MCHP', 'ADI', 'TER', 'QRVO',
-        'SWKS', 'MXIM', 'ON', 'MPWR', 'CRUS', 'SLAB', 'DIOD', 'LITE', 'RMBS', 'POWI',
-        'BKS', 'GRMN', 'FFIV', 'JNPR', 'NTAP', 'AKAM', 'CTSH', 'GLW', 'HPE', 'WDC',
-        'STX', 'FLIR', 'ZBRA', 'KEYS', 'TYL', 'PAYC', 'COUP', 'RNG', 'FTNT', 'PANW',
-        'ZS', 'CRWD', 'OKTA', 'DDOG', 'NET', 'SNOW', 'MDB', 'TEAM', 'WDAY', 'VEEV',
-        'ZM', 'DOCU', 'WORK', 'TWLO', 'ESTC', 'BILL', 'SMAR', 'PLAN', 'GTLB', 'FIVN',
-        'TENB', 'NEWR', 'SUMO', 'S', 'AI', 'PLTR', 'RBLX', 'U', 'DASH', 'ABNB',
-        'COIN', 'HOOD', 'AFRM', 'SQ', 'PYPL', 'MELI', 'SHOP', 'SPOT', 'UBER', 'LYFT',
-        'TWTR', 'PINS', 'SNAP', 'MTCH', 'ROKU', 'NFLX', 'DIS', 'CMCSA', 'CHTR', 'T',
-        'VZ', 'TMUS', 'S', 'LUMN', 'WIN', 'SHEN', 'LBRDA', 'LBRDK', 'QVC', 'NWSA',
-        # Next 100 (250-350)  
-        'NRDS', 'DISCA', 'DISCK', 'FOXA', 'FOX', 'PARA', 'WBD', 'LYV', 'MSG', 'MSGS',
-        'NYCB', 'PNC', 'USB', 'TFC', 'COF', 'C', 'GS', 'MS', 'BLK', 'SCHW',
-        'SPGI', 'MCO', 'ICE', 'CME', 'NDAQ', 'CBOE', 'MSCI', 'FACTSET', 'TRU', 'VRSK',
-        'AON', 'MMC', 'AJG', 'BRO', 'WTW', 'HUB', 'RYAN', 'RGA', 'AFG', 'ALL',
-        'TRV', 'PGR', 'CB', 'AIG', 'MET', 'PRU', 'AFL', 'GL', 'CINF', 'L',
-        'FNF', 'OLD', 'RLI', 'Y', 'EEFT', 'FISV', 'FLT', 'BR', 'CPAY', 'TSS',
-        'MA', 'V', 'AXP', 'COF', 'DFS', 'SYF', 'ALLY', 'TREE', 'WRLD', 'CACC',
-        'LOAN', 'ENVA', 'CURO', 'FCFS', 'OMF', 'RMBL', 'OPRT', 'RCUS', 'BLFS', 'CUBI',
-        # Next 150 (350-500)
-        'JEF', 'SF', 'EWBC', 'COLB', 'WAL', 'PBCT', 'HBAN', 'RF', 'KEY', 'FITB',
-        'CFG', 'MTB', 'ZION', 'CMA', 'STI', 'BBT', 'HCBK', 'FULT', 'PB', 'ONB',
-        'ASB', 'BOH', 'UMBF', 'OZK', 'CVBF', 'BANF', 'WAFD', 'TCBI', 'HOPE', 'IBOC',
-        'VBTX', 'TOWN', 'MBWM', 'LKFN', 'TBBK', 'CCBG', 'PFBC', 'RBCAA', 'HAFC', 'WSFS',
-        'CAR', 'HSY', 'K', 'GIS', 'CPB', 'CAG', 'SJM', 'MKC', 'CLX', 'CHD',
-        'KMB', 'PG', 'CL', 'UL', 'KO', 'PEP', 'MNST', 'KDP', 'DPS', 'COKE',
-        'BF.B', 'STZ', 'TAP', 'SAM', 'BREW', 'DEO', 'BTI', 'PM', 'MO', 'UVV',
-        'TPG', 'VVV', 'LNDC', 'RMCF', 'JJSF', 'SENEA', 'SENEB', 'LW', 'RGR', 'SWBI',
-        'VSTO', 'OLN', 'AXTA', 'RPM', 'SHW', 'NUE', 'STLD', 'RS', 'CMC', 'CLF'
-    ]
-    
-    universe_configs = {
-        'sp500': sp500_expanded,
-        'international': [
-            # Major international stocks
-            'ASML.AS', '7203.T', 'TSM', 'UL', 'NVO', 'BABA', 'SAP', 'SHOP.TO', 
-            '005930.KS', 'TTE', 'SHEL', 'MC.PA', 'LVMH.PA', 'RY.TO', 'TD.TO'
-        ],
-        'japan': [
-            # Japanese stocks (Topix 30)
-            '7203.T', '6098.T', '4063.T', '4502.T', '9984.T', '9432.T', '8316.T',
-            '6758.T', '7267.T', '6861.T', '6954.T', '6920.T', '6752.T', '4543.T'
-        ],
-        'growth': [
-            # High growth stocks
-            'TSLA', 'SHOP', 'ROKU', 'ZM', 'SNOW', 'PLTR', 'RBLX', 'U', 'DDOG', 'CRWD'
-        ],
-        'tech': [
-            # Tech focused
-            'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'NVDA', 'ORCL', 'CRM', 'ADBE', 'INTC',
-            'AMD', 'QCOM', 'CSCO', 'IBM', 'NOW', 'INTU', 'TXN', 'MU', 'AMAT', 'LRCX'
-        ],
-        'all': []  # Will be populated with all universes combined
-    }
-    
-    if universe == 'all':
-        # Combine all universes (excluding 'all' itself)
-        base_tickers = []
-        for u, tickers in universe_configs.items():
-            if u != 'all':
-                base_tickers.extend(tickers)
-        # Remove duplicates while preserving order
-        base_tickers = list(dict.fromkeys(base_tickers))
-    elif universe in universe_configs:
-        base_tickers = universe_configs[universe]
-    else:
-        # Default mixed universe
-        base_tickers = universe_configs['sp500'][:50]
-    
-    return base_tickers[:max_stocks]
+        # Initialize the index manager
+        index_manager = IndexManager()
+        
+        # Map universe names to index manager methods
+        if universe == 'sp500':
+            tickers = index_manager.get_index_tickers('sp500')
+        elif universe == 'international':
+            # Combine multiple international indices
+            tickers = []
+            tickers.extend(index_manager.get_index_tickers('ftse100'))
+            # Add more indices as they become available
+            tickers = list(dict.fromkeys(tickers))  # Remove duplicates
+        elif universe == 'all':
+            # Get all known tickers from the registry
+            tickers = index_manager.get_all_tickers()
+        elif universe == 'cached':
+            # Return all companies in our registry
+            tickers = list(index_manager.companies['companies'].keys())
+        else:
+            # Fallback universes - small curated lists for specific themes
+            universe_configs = {
+                'japan': [
+                    '7203.T', '6098.T', '4063.T', '4502.T', '9984.T', '9432.T', '8316.T',
+                    '6758.T', '7267.T', '6861.T', '6954.T', '6920.T', '6752.T', '4543.T'
+                ],
+                'growth': [
+                    'TSLA', 'SHOP', 'ROKU', 'ZM', 'SNOW', 'PLTR', 'RBLX', 'U', 'DDOG', 'CRWD'
+                ],
+                'tech': [
+                    'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'NVDA', 'ORCL', 'CRM', 'ADBE', 'INTC',
+                    'AMD', 'QCOM', 'CSCO', 'IBM', 'NOW', 'INTU', 'TXN', 'MU', 'AMAT', 'LRCX'
+                ],
+            }
+            tickers = universe_configs.get(universe, [])
+        
+        # Log the result
+        logger.info(f"Universe '{universe}': {len(tickers)} tickers (from dynamic index manager)")
+        
+        return tickers[:max_stocks]
+        
+    except Exception as e:
+        logger.error(f"Failed to get dynamic tickers for {universe}: {e}")
+        
+        # Fallback to legacy sp500_tickers.json for S&P 500
+        if universe == 'sp500':
+            try:
+                import json
+                with open('sp500_tickers.json', 'r') as f:
+                    fallback_tickers = json.load(f)
+                logger.info(f"Fallback: loaded {len(fallback_tickers)} S&P 500 tickers from file")
+                return fallback_tickers[:max_stocks]
+            except:
+                pass
+        
+        # Final fallback - minimal set
+        fallback_tickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'NVDA', 'ORCL', 'CRM', 'ADBE']
+        logger.warning(f"Using minimal fallback: {len(fallback_tickers)} tickers")
+        return fallback_tickers
 
 
 async def main():

@@ -117,7 +117,8 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                             except Exception as fallback_error:
                                 logger.error(f"Both new system and fallback failed: {fallback_error}")
                                 # Last resort: use old method with small dataset
-                                tickers = get_universe_tickers(universe)
+                                from scripts.data_fetcher import get_universe_tickers
+                                tickers = get_universe_tickers(universe, 1000)
                                 config_path = create_temp_config(tickers, universe)
                                 run_systematic_analysis_for_dashboard(config_path)
                 except Exception as e:
@@ -736,83 +737,6 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             return 0
 
 
-def get_universe_tickers(universe: str) -> List[str]:
-    """Get tickers dynamically from configs and existing data."""
-    try:
-        from src.invest.config.loader import load_analysis_config, list_available_configs
-    except ImportError:
-        logger.warning("Could not import config loader - using existing data only")
-        load_analysis_config = None
-    import glob
-    
-    # Load from existing dashboard data  
-    existing_tickers = []
-    dashboard_data_path = get_dashboard_dir() / 'dashboard_data.json'
-    
-    if dashboard_data_path.exists():
-        try:
-            with open(dashboard_data_path, 'r') as f:
-                data = json.load(f)
-                existing_tickers = list(data.get('stocks', {}).keys())
-                logger.info(f"Found {len(existing_tickers)} existing tickers in dashboard data")
-        except Exception as e:
-            logger.warning(f"Could not load existing dashboard data: {e}")
-    
-    # Clean universe to config mapping
-    universe_configs = {
-        'sp500': ['sp500_top100.yaml', 'sp500_subset.yaml'],
-        'international': ['international_value.yaml', 'mixed_international.yaml'], 
-        'japan': ['japan_buffett_favorites.yaml', 'japan_topix30.yaml'],
-        'growth': ['aggressive_growth.yaml'],
-        'mixed': ['simple_mixed.yaml', 'mixed_international.yaml'],
-        'tech': ['test_tech_giants.yaml'],
-        'watchlist': ['watchlist_analysis.yaml'],
-    }
-    
-    # Handle existing data
-    if universe == 'existing' and existing_tickers:
-        return existing_tickers[:50]
-    
-    # Load tickers from configs (if available)
-    tickers = []
-    if load_analysis_config:
-        tickers = load_tickers_from_configs(universe_configs.get(universe, ['simple_mixed.yaml']))
-    
-    # Fallback to existing + defaults
-    if not tickers:
-        fallback = ['AAPL', 'MSFT', 'GOOGL', 'TSLA', '7203.T', 'ASML.AS']
-        tickers = (existing_tickers + fallback)[:30]
-        logger.info("Using fallback tickers")
-    
-    return list(dict.fromkeys(tickers))[:30]  # Unique + limited to 30 for faster dashboard updates
-
-
-def load_tickers_from_configs(config_files):
-    """Load tickers from config files - cleaner than inline logic"""
-    from pathlib import Path
-    import yaml
-    
-    configs_dir = Path(__file__).parent.parent / 'configs'
-    
-    for config_file in config_files:
-        config_path = configs_dir / config_file
-        if not config_path.exists():
-            continue
-            
-        try:
-            # Load YAML directly instead of using config loader
-            with open(config_path, 'r') as f:
-                config_data = yaml.safe_load(f)
-                
-            custom_tickers = config_data.get('universe', {}).get('custom_tickers', [])
-            if custom_tickers:
-                logger.info(f"Loaded {len(custom_tickers)} tickers from {config_file}")
-                return custom_tickers[:30]  # Limit even config tickers
-                
-        except Exception as e:
-            logger.warning(f"Could not load config {config_file}: {e}")
-    
-    return []
 
 
 def create_temp_config(tickers: List[str], universe_name: str) -> str:

@@ -1,0 +1,37 @@
+{
+  "indices": {
+    "ftse100": {
+      "tickers": [
+        "SHEL",
+        "AZN",
+        "UL",
+        "BP.L",
+        "HSBA.L",
+        "VOD.L",
+        "GSK.L",
+        "RIO.L",
+        "BHP.L",
+        "BATS.L",
+        "DGE.L",
+        "LLOY.L",
+        "NWG.L",
+        "BARC.L",
+        "PRU.L",
+        "REL.L",
+        "BT-A.L",
+        "AAL.L",
+        "AV.L",
+        "CRH.L"
+      ],
+      "last_updated": "2025-08-30T20:03:01.052885",
+      "count": 20
+    }
+  },
+  "refresh_intervals": {
+    "sp500": 7,
+    "ftse100": 30,
+    "dax": 30,
+    "nikkei225": 90,
+    "asx200": 90
+  }
+}

@@ -1,3 +1,5 @@
+
+
 invest in warren style, human like instructions or can be programmed,
 
 why is acgl so cheap?

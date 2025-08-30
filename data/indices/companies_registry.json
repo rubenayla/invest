@@ -1,0 +1,246 @@
+{
+  "companies": {
+    "SHEL": {
+      "name": "Shell plc",
+      "sector": "Energy",
+      "industry": "Oil & Gas Integrated",
+      "country": "United Kingdom",
+      "market_cap": 214737387520,
+      "discovered_date": "2025-08-30T20:03:01.580616",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:01.580628"
+    },
+    "AZN": {
+      "name": "AstraZeneca PLC",
+      "sector": "Healthcare",
+      "industry": "Drug Manufacturers - General",
+      "country": "United Kingdom",
+      "market_cap": 247728357376,
+      "discovered_date": "2025-08-30T20:03:01.912065",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:01.912078"
+    },
+    "UL": {
+      "name": "Unilever PLC",
+      "sector": "Consumer Defensive",
+      "industry": "Household & Personal Products",
+      "country": "United Kingdom",
+      "market_cap": 154956283904,
+      "discovered_date": "2025-08-30T20:03:02.259571",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:02.259583"
+    },
+    "BP.L": {
+      "name": "BP p.l.c.",
+      "sector": "Energy",
+      "industry": "Oil & Gas Integrated",
+      "country": "United Kingdom",
+      "market_cap": 66822533120,
+      "discovered_date": "2025-08-30T20:03:02.654740",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:02.654752"
+    },
+    "HSBA.L": {
+      "name": "HSBC Holdings plc",
+      "sector": "Financial Services",
+      "industry": "Banks - Diversified",
+      "country": "United Kingdom",
+      "market_cap": 164166303744,
+      "discovered_date": "2025-08-30T20:03:03.068171",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:03.068182"
+    },
+    "VOD.L": {
+      "name": "Vodafone Group Public Limited Company",
+      "sector": "Communication Services",
+      "industry": "Telecom Services",
+      "country": "United Kingdom",
+      "market_cap": 21307838464,
+      "discovered_date": "2025-08-30T20:03:03.429324",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:03.429339"
+    },
+    "GSK.L": {
+      "name": "GSK plc",
+      "sector": "Healthcare",
+      "industry": "Drug Manufacturers - General",
+      "country": "United Kingdom",
+      "market_cap": 58798510080,
+      "discovered_date": "2025-08-30T20:03:03.824724",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:03.824739"
+    },
+    "RIO.L": {
+      "name": "Rio Tinto Group",
+      "sector": "Basic Materials",
+      "industry": "Other Industrial Metals & Mining",
+      "country": "United Kingdom",
+      "market_cap": 75341520896,
+      "discovered_date": "2025-08-30T20:03:04.167212",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:04.167223"
+    },
+    "BHP.L": {
+      "name": "BHP Group Limited",
+      "sector": "Basic Materials",
+      "industry": "Other Industrial Metals & Mining",
+      "country": "Australia",
+      "market_cap": 105319047168,
+      "discovered_date": "2025-08-30T20:03:04.506339",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:04.506351"
+    },
+    "BATS.L": {
+      "name": "British American Tobacco p.l.c.",
+      "sector": "Consumer Defensive",
+      "industry": "Tobacco",
+      "country": "United Kingdom",
+      "market_cap": 91374452736,
+      "discovered_date": "2025-08-30T20:03:04.928131",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:04.928143"
+    },
+    "DGE.L": {
+      "name": "Diageo plc",
+      "sector": "Consumer Defensive",
+      "industry": "Beverages - Wineries & Distilleries",
+      "country": "United Kingdom",
+      "market_cap": 45846781952,
+      "discovered_date": "2025-08-30T20:03:05.279597",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:05.279612"
+    },
+    "LLOY.L": {
+      "name": "Lloyds Banking Group plc",
+      "sector": "Financial Services",
+      "industry": "Banks - Regional",
+      "country": "United Kingdom",
+      "market_cap": 48998473728,
+      "discovered_date": "2025-08-30T20:03:05.628050",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:05.628061"
+    },
+    "NWG.L": {
+      "name": "NatWest Group plc",
+      "sector": "Financial Services",
+      "industry": "Banks - Regional",
+      "country": "United Kingdom",
+      "market_cap": 43266355200,
+      "discovered_date": "2025-08-30T20:03:05.975106",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:05.975121"
+    },
+    "BARC.L": {
+      "name": "Barclays PLC",
+      "sector": "Financial Services",
+      "industry": "Banks - Diversified",
+      "country": "United Kingdom",
+      "market_cap": 51762450432,
+      "discovered_date": "2025-08-30T20:03:06.315155",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:06.315170"
+    },
+    "PRU.L": {
+      "name": "Prudential plc",
+      "sector": "Financial Services",
+      "industry": "Insurance - Life",
+      "country": "Hong Kong",
+      "market_cap": 25254281216,
+      "discovered_date": "2025-08-30T20:03:06.664493",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:06.664504"
+    },
+    "REL.L": {
+      "name": "RELX PLC",
+      "sector": "Industrials",
+      "industry": "Specialty Business Services",
+      "country": "United Kingdom",
+      "market_cap": 63862304768,
+      "discovered_date": "2025-08-30T20:03:07.103809",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:07.103826"
+    },
+    "BT-A.L": {
+      "name": "BT Group plc",
+      "sector": "Communication Services",
+      "industry": "Telecom Services",
+      "country": "United Kingdom",
+      "market_cap": 21155317760,
+      "discovered_date": "2025-08-30T20:03:07.440203",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:07.440215"
+    },
+    "AAL.L": {
+      "name": "Anglo American plc",
+      "sector": "Basic Materials",
+      "industry": "Other Industrial Metals & Mining",
+      "country": "United Kingdom",
+      "market_cap": 24344528896,
+      "discovered_date": "2025-08-30T20:03:07.784726",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:07.784738"
+    },
+    "AV.L": {
+      "name": "Aviva plc",
+      "sector": "Financial Services",
+      "industry": "Insurance - Diversified",
+      "country": "United Kingdom",
+      "market_cap": 19942283264,
+      "discovered_date": "2025-08-30T20:03:08.136414",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:08.136427"
+    },
+    "CRH.L": {
+      "name": "CRH plc",
+      "sector": "Basic Materials",
+      "industry": "Building Materials",
+      "country": "Ireland",
+      "market_cap": 56297955328,
+      "discovered_date": "2025-08-30T20:03:08.535804",
+      "indices": [
+        "ftse100"
+      ],
+      "last_updated": "2025-08-30T20:03:08.535816"
+    }
+  },
+  "last_updated": "2025-08-30T20:03:08.535998",
+  "total_companies": 20
+}
