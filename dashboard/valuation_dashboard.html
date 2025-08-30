@@ -164,15 +164,15 @@
             <table>
                 <thead>
                     <tr>
-                        <th onclick="sortTable('ticker')">Ticker</th>
-                        <th onclick="sortTable('current_price')">Price</th>
-                        <th onclick="sortTable('market_cap')">Market Cap</th>
-                        <th onclick="sortTable('composite_score')">Score</th>
-                        <th onclick="sortTable('dcf_value')">DCF</th>
-                        <th onclick="sortTable('pe_value')">P/E Val</th>
-                        <th onclick="sortTable('graham')">Graham</th>
-                        <th onclick="sortTable('peg_value')">PEG Val</th>
-                        <th onclick="sortTable('sector')">Sector</th>
+                        <th onclick="sortTable('ticker')" title="Stock ticker symbol">Ticker</th>
+                        <th onclick="sortTable('current_price')" title="Current market price per share">Price</th>
+                        <th onclick="sortTable('market_cap')" title="Total market capitalization">Market Cap</th>
+                        <th onclick="sortTable('composite_score')" title="Overall investment score (0-100) based on value, quality, and growth">Score</th>
+                        <th onclick="sortTable('dcf_value')" title="Discounted Cash Flow valuation - intrinsic value estimate">DCF</th>
+                        <th onclick="sortTable('pe_value')" title="P/E ratio based valuation using sector average">P/E Val</th>
+                        <th onclick="sortTable('graham')" title="Benjamin Graham's formula: √(22.5 × EPS × Book Value)">Graham</th>
+                        <th onclick="sortTable('peg_value')" title="PEG-adjusted valuation (Price/Earnings to Growth)">PEG Val</th>
+                        <th onclick="sortTable('sector')" title="Business sector classification">Sector</th>
                     </tr>
                 </thead>
                 <tbody id="stockTableBody">

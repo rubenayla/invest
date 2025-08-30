@@ -42,10 +42,9 @@ dashboard/backups/
 # Pytest cache
 .pytest_cache/
 
-# Temporary debug/analysis files
+# Temporary debug/analysis files (but not actual tests/)
 debug_*.py
 analyze_*.py
-test_*.py
 demo_*.py
 fix_*.py
 inspect_*.py
@@ -54,6 +53,10 @@ explore_*.py
 explain_*.py
 ensemble_selection_explained.py
 *.py.backup
+
+# Temporary test files (but not in tests/ directory)
+test_*.py
+!tests/test_*.py
 
 # Temporary cache directories
 .cache/
