@@ -13,7 +13,10 @@ A configuration-driven, objective approach to investment analysis that eliminate
 # Install dependencies
 poetry install
 
-# Launch interactive dashboard (recommended)
+# Launch interactive dashboard (recommended - multiple access options)
+poetry run python scripts/run_dashboard.py
+
+# Or start dashboard server directly
 poetry run python scripts/dashboard_server.py
 # Opens automatically at http://localhost:8080
 

@@ -40,23 +40,30 @@ poetry run systematic-invest --save-csv --save-json --output results/
 
 ### Interactive Dashboard
 
-View and update your investment analysis in a live web dashboard:
+Multiple ways to access your investment analysis dashboard:
 
 ```bash
-# Start the dashboard server (opens browser automatically)
-poetry run python scripts/dashboard_server.py
+# Easy launcher with multiple options
+poetry run python scripts/run_dashboard.py
 
-# Then visit http://localhost:8080
-# Click "Update Data" button to refresh valuations with latest market data
+# OR start server directly (opens browser automatically)
+poetry run python scripts/dashboard_server.py
 ```
+
+**Dashboard Access Options:**
+1. **📖 View Existing Dashboard** - Instant access to current analysis
+2. **🔄 Update & View Dashboard** - Fresh analysis then display (2-3 minutes)
+3. **🌐 Live Dashboard Server** - Interactive server on localhost:8080 
+4. **⚙️ Custom Config Dashboard** - Generate dashboard with any YAML configuration
 
 **Dashboard Features:**
-- 📊 **Live Valuation Comparison**: DCF, Enhanced DCF, and Simple Ratios side-by-side
-- 🔄 **One-Click Updates**: Refresh all data with button click (no command line needed)
-- 💡 **Tooltips**: Hover over column headers for metric explanations
-- 📈 **Real-Time Prices**: Current market prices with upside/downside calculations
+- 📊 **Multiple Valuation Models**: DCF, Enhanced DCF, Growth DCF, RIM, Multi-DCF, Ratios, Consensus
+- 🎯 **Interactive Sorting**: Click any column header to sort (server-side or client-side)
+- 🔄 **Live Updates**: Click "Update Data" to refresh with latest market data 
+- 🌐 **Universe Selection**: Choose from S&P 500, International, Japan, Growth, Tech, Watchlist
+- 💡 **Smart Data Loading**: Uses existing analysis + config files (no hardcoded tickers)
+- 📈 **Real-Time Prices**: Current market prices with margin of safety calculations
 - 🎯 **Professional UI**: Clean, responsive design with auto-refresh during updates
-```
 
 ### Full S&P 500 Analysis
 
@@ -115,8 +122,9 @@ configs/               # Analysis configurations
 └── sector_benchmarks.yaml
 
 scripts/
-├── systematic_analysis.py  # Main CLI
-└── dashboard_server.py     # Interactive web dashboard
+├── systematic_analysis.py     # Main CLI
+├── dashboard_server.py        # Interactive web dashboard server
+└── run_dashboard.py          # Dashboard launcher with multiple access options
 ```
 
 ## Output Formats
