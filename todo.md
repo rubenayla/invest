@@ -1,4 +1,4 @@
-can you think of ways to simplify the repo, the process to analyze stocks, or it's well organized? is something bothering you as an engineer?
+invest in warren style, human like instructions or can be programmed,
 
 why is acgl so cheap?
 nem P/tangible book value?

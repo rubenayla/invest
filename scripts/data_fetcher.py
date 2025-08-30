@@ -1,0 +1,392 @@
+#!/usr/bin/env python
+"""
+Asynchronous Data Fetcher Service
+
+This service fetches stock data independently from analysis.
+Data is cached locally for offline analysis.
+
+Usage:
+    poetry run python scripts/data_fetcher.py --universe sp500 --max-stocks 1000
+"""
+
+import asyncio
+import json
+import logging
+import argparse
+import time
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import List, Dict, Optional, Set
+import yfinance as yf
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+class StockDataCache:
+    """Manages local stock data cache"""
+    
+    def __init__(self, cache_dir: str = 'data/stock_cache'):
+        self.cache_dir = Path(cache_dir)
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        self.index_file = self.cache_dir / 'cache_index.json'
+        self.load_index()
+    
+    def load_index(self):
+        """Load cache index tracking what data we have"""
+        if self.index_file.exists():
+            with open(self.index_file, 'r') as f:
+                self.index = json.load(f)
+        else:
+            self.index = {
+                'stocks': {},
+                'last_updated': datetime.now().isoformat(),
+                'version': '1.0'
+            }
+    
+    def save_index(self):
+        """Save cache index"""
+        self.index['last_updated'] = datetime.now().isoformat()
+        with open(self.index_file, 'w') as f:
+            json.dump(self.index, f, indent=2)
+    
+    def get_update_order(self, tickers: List[str]) -> List[str]:
+        """Get tickers in update order: empty stocks first, then oldest to newest"""
+        empty_stocks = []
+        cached_stocks = []
+        
+        for ticker in tickers:
+            if ticker not in self.index['stocks']:
+                empty_stocks.append(ticker)
+            else:
+                cached_stocks.append(ticker)
+        
+        # Sort cached stocks by age (oldest first)
+        cached_stocks.sort(key=lambda t: self.index['stocks'][t]['last_updated'])
+        
+        return empty_stocks + cached_stocks
+    
+    def get_cached_data(self, ticker: str) -> Optional[Dict]:
+        """Get cached data for a ticker"""
+        cache_file = self.cache_dir / f'{ticker}.json'
+        if cache_file.exists():
+            with open(cache_file, 'r') as f:
+                return json.load(f)
+        return None
+    
+    def save_stock_data(self, ticker: str, data: Dict):
+        """Save stock data to cache"""
+        cache_file = self.cache_dir / f'{ticker}.json'
+        
+        # Add metadata
+        data['_cache_metadata'] = {
+            'ticker': ticker,
+            'cached_at': datetime.now().isoformat(),
+            'data_source': 'yfinance'
+        }
+        
+        # Save data
+        with open(cache_file, 'w') as f:
+            json.dump(data, f, indent=2)
+        
+        # Update index
+        self.index['stocks'][ticker] = {
+            'last_updated': datetime.now().isoformat(),
+            'file_size': cache_file.stat().st_size,
+            'has_financials': 'financials' in data,
+            'has_info': 'info' in data
+        }
+        self.save_index()
+    
+    def get_cached_tickers(self) -> Set[str]:
+        """Get all tickers we have cached data for"""
+        return set(self.index['stocks'].keys())
+
+
+class AsyncStockDataFetcher:
+    """Fetches stock data using thread pool (simplified)"""
+    
+    def __init__(self, max_workers: int = 10):
+        self.cache = StockDataCache()
+        self.max_workers = max_workers
+    
+    async def __aenter__(self):
+        return self
+    
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        pass
+    
+    def fetch_stock_data_sync(self, ticker: str) -> Dict:
+        """Fetch fresh data for a single stock"""
+        try:
+            logger.info(f"Fetching fresh data for {ticker}")
+            
+            # Fetch from yfinance
+            stock = yf.Ticker(ticker)
+            
+            # Get comprehensive data
+            data = {
+                'ticker': ticker,
+                'info': {},
+                'financials': {},
+                'price_data': {},
+                'fetch_timestamp': datetime.now().isoformat()
+            }
+            
+            # Basic info (most important)
+            try:
+                info = stock.info
+                data['info'] = {
+                    'currentPrice': info.get('currentPrice'),
+                    'marketCap': info.get('marketCap'),
+                    'sector': info.get('sector'),
+                    'industry': info.get('industry'),
+                    'longName': info.get('longName'),
+                    'shortName': info.get('shortName'),
+                    'symbol': info.get('symbol'),
+                    'currency': info.get('currency'),
+                    'exchange': info.get('exchange'),
+                    'country': info.get('country')
+                }
+            except Exception as e:
+                logger.warning(f"Could not fetch info for {ticker}: {e}")
+            
+            # Key financial metrics
+            try:
+                data['financials'] = {
+                    'trailingPE': info.get('trailingPE'),
+                    'forwardPE': info.get('forwardPE'),
+                    'priceToBook': info.get('priceToBook'),
+                    'returnOnEquity': info.get('returnOnEquity'),
+                    'debtToEquity': info.get('debtToEquity'),
+                    'currentRatio': info.get('currentRatio'),
+                    'revenueGrowth': info.get('revenueGrowth'),
+                    'earningsGrowth': info.get('earningsGrowth'),
+                    'operatingMargins': info.get('operatingMargins'),
+                    'profitMargins': info.get('profitMargins'),
+                    'totalRevenue': info.get('totalRevenue'),
+                    'totalCash': info.get('totalCash'),
+                    'totalDebt': info.get('totalDebt'),
+                    'sharesOutstanding': info.get('sharesOutstanding')
+                }
+            except Exception as e:
+                logger.warning(f"Could not fetch financials for {ticker}: {e}")
+            
+            # Recent price data (for charts/trends)
+            try:
+                hist = stock.history(period='1y')
+                if not hist.empty:
+                    data['price_data'] = {
+                        'current_price': float(hist['Close'].iloc[-1]),
+                        'price_52w_high': float(hist['High'].max()),
+                        'price_52w_low': float(hist['Low'].min()),
+                        'avg_volume': int(hist['Volume'].mean()),
+                        'price_trend_30d': float((hist['Close'].iloc[-1] / hist['Close'].iloc[-30] - 1) * 100) if len(hist) >= 30 else None
+                    }
+            except Exception as e:
+                logger.warning(f"Could not fetch price data for {ticker}: {e}")
+            
+            # Cache the data
+            self.cache.save_stock_data(ticker, data)
+            
+            return data
+            
+        except Exception as e:
+            logger.error(f"Failed to fetch data for {ticker}: {e}")
+            return {
+                'ticker': ticker,
+                'error': str(e),
+                'fetch_timestamp': datetime.now().isoformat()
+            }
+    
+    async def fetch_multiple_stocks(self, tickers: List[str], max_concurrent: int = 10) -> Dict[str, Dict]:
+        """Fetch data for multiple stocks concurrently"""
+        results = {}
+        
+        # Use ThreadPoolExecutor for yfinance calls (they're synchronous)
+        with ThreadPoolExecutor(max_workers=max_concurrent) as executor:
+            # Submit all tasks
+            future_to_ticker = {
+                executor.submit(self.fetch_stock_data_sync, ticker): ticker 
+                for ticker in tickers
+            }
+            
+            # Collect results as they complete
+            for i, future in enumerate(as_completed(future_to_ticker), 1):
+                ticker = future_to_ticker[future]
+                try:
+                    data = future.result(timeout=30)  # 30 second timeout per stock
+                    results[ticker] = data
+                    
+                    if i % 10 == 0 or i == len(tickers):
+                        logger.info(f"Completed {i}/{len(tickers)} stocks")
+                        
+                except Exception as e:
+                    logger.error(f"Failed to fetch {ticker}: {e}")
+                    results[ticker] = {
+                        'ticker': ticker,
+                        'error': str(e),
+                        'fetch_timestamp': datetime.now().isoformat()
+                    }
+        
+        return results
+
+
+def get_universe_tickers(universe: str, max_stocks: int = 1000) -> List[str]:
+    """Get ticker list for a universe (expanded, no limits)"""
+    
+    # Try to load real S&P 500 list from file or use comprehensive list
+    try:
+        import json
+        with open('sp500_tickers.json', 'r') as f:
+            sp500_expanded = json.load(f)
+    except:
+        # Comprehensive S&P 500 list
+        sp500_expanded = [
+        # Top 100 S&P 500 by market cap (approximate)
+        'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'TSLA', 'META', 'NVDA', 'BRK-B', 'UNH',
+        'JNJ', 'JPM', 'V', 'PG', 'HD', 'DIS', 'MA', 'PYPL', 'BAC', 'ADBE',
+        'CRM', 'NFLX', 'XOM', 'CVX', 'KO', 'PEP', 'TMO', 'ABBV', 'COST', 'AVGO',
+        'WMT', 'NKE', 'DHR', 'LIN', 'ABT', 'PFE', 'MRK', 'ORCL', 'ACN', 'VZ',
+        'CSCO', 'MDT', 'TXN', 'WFC', 'NEE', 'CMCSA', 'HON', 'IBM', 'QCOM', 'UPS',
+        # Next 50
+        'LOW', 'UNP', 'GS', 'MS', 'CAT', 'AXP', 'BA', 'MMM', 'GE', 'F',
+        'GM', 'DAL', 'AAL', 'CCL', 'NCLH', 'MGM', 'LVS', 'WYNN', 'MAR', 'HLT',
+        'SBUX', 'MCD', 'YUM', 'CMG', 'DPZ', 'QSR', 'WEN', 'DRI', 'EXR', 'AMT',
+        'CCI', 'EQIX', 'PSA', 'O', 'WELL', 'ARE', 'VTR', 'ESS', 'AVB', 'EQR',
+        'DLR', 'BXP', 'REG', 'HST', 'SLG', 'VNO', 'KIM', 'SPG', 'FRT', 'PLD',
+        # Next 100 (150-250)
+        'INTC', 'AMD', 'MU', 'AMAT', 'LRCX', 'KLAC', 'MCHP', 'ADI', 'TER', 'QRVO',
+        'SWKS', 'MXIM', 'ON', 'MPWR', 'CRUS', 'SLAB', 'DIOD', 'LITE', 'RMBS', 'POWI',
+        'BKS', 'GRMN', 'FFIV', 'JNPR', 'NTAP', 'AKAM', 'CTSH', 'GLW', 'HPE', 'WDC',
+        'STX', 'FLIR', 'ZBRA', 'KEYS', 'TYL', 'PAYC', 'COUP', 'RNG', 'FTNT', 'PANW',
+        'ZS', 'CRWD', 'OKTA', 'DDOG', 'NET', 'SNOW', 'MDB', 'TEAM', 'WDAY', 'VEEV',
+        'ZM', 'DOCU', 'WORK', 'TWLO', 'ESTC', 'BILL', 'SMAR', 'PLAN', 'GTLB', 'FIVN',
+        'TENB', 'NEWR', 'SUMO', 'S', 'AI', 'PLTR', 'RBLX', 'U', 'DASH', 'ABNB',
+        'COIN', 'HOOD', 'AFRM', 'SQ', 'PYPL', 'MELI', 'SHOP', 'SPOT', 'UBER', 'LYFT',
+        'TWTR', 'PINS', 'SNAP', 'MTCH', 'ROKU', 'NFLX', 'DIS', 'CMCSA', 'CHTR', 'T',
+        'VZ', 'TMUS', 'S', 'LUMN', 'WIN', 'SHEN', 'LBRDA', 'LBRDK', 'QVC', 'NWSA',
+        # Next 100 (250-350)  
+        'NRDS', 'DISCA', 'DISCK', 'FOXA', 'FOX', 'PARA', 'WBD', 'LYV', 'MSG', 'MSGS',
+        'NYCB', 'PNC', 'USB', 'TFC', 'COF', 'C', 'GS', 'MS', 'BLK', 'SCHW',
+        'SPGI', 'MCO', 'ICE', 'CME', 'NDAQ', 'CBOE', 'MSCI', 'FACTSET', 'TRU', 'VRSK',
+        'AON', 'MMC', 'AJG', 'BRO', 'WTW', 'HUB', 'RYAN', 'RGA', 'AFG', 'ALL',
+        'TRV', 'PGR', 'CB', 'AIG', 'MET', 'PRU', 'AFL', 'GL', 'CINF', 'L',
+        'FNF', 'OLD', 'RLI', 'Y', 'EEFT', 'FISV', 'FLT', 'BR', 'CPAY', 'TSS',
+        'MA', 'V', 'AXP', 'COF', 'DFS', 'SYF', 'ALLY', 'TREE', 'WRLD', 'CACC',
+        'LOAN', 'ENVA', 'CURO', 'FCFS', 'OMF', 'RMBL', 'OPRT', 'RCUS', 'BLFS', 'CUBI',
+        # Next 150 (350-500)
+        'JEF', 'SF', 'EWBC', 'COLB', 'WAL', 'PBCT', 'HBAN', 'RF', 'KEY', 'FITB',
+        'CFG', 'MTB', 'ZION', 'CMA', 'STI', 'BBT', 'HCBK', 'FULT', 'PB', 'ONB',
+        'ASB', 'BOH', 'UMBF', 'OZK', 'CVBF', 'BANF', 'WAFD', 'TCBI', 'HOPE', 'IBOC',
+        'VBTX', 'TOWN', 'MBWM', 'LKFN', 'TBBK', 'CCBG', 'PFBC', 'RBCAA', 'HAFC', 'WSFS',
+        'CAR', 'HSY', 'K', 'GIS', 'CPB', 'CAG', 'SJM', 'MKC', 'CLX', 'CHD',
+        'KMB', 'PG', 'CL', 'UL', 'KO', 'PEP', 'MNST', 'KDP', 'DPS', 'COKE',
+        'BF.B', 'STZ', 'TAP', 'SAM', 'BREW', 'DEO', 'BTI', 'PM', 'MO', 'UVV',
+        'TPG', 'VVV', 'LNDC', 'RMCF', 'JJSF', 'SENEA', 'SENEB', 'LW', 'RGR', 'SWBI',
+        'VSTO', 'OLN', 'AXTA', 'RPM', 'SHW', 'NUE', 'STLD', 'RS', 'CMC', 'CLF'
+    ]
+    
+    universe_configs = {
+        'sp500': sp500_expanded,
+        'international': [
+            # Major international stocks
+            'ASML.AS', '7203.T', 'TSM', 'UL', 'NVO', 'BABA', 'SAP', 'SHOP.TO', 
+            '005930.KS', 'TTE', 'SHEL', 'MC.PA', 'LVMH.PA', 'RY.TO', 'TD.TO'
+        ],
+        'japan': [
+            # Japanese stocks (Topix 30)
+            '7203.T', '6098.T', '4063.T', '4502.T', '9984.T', '9432.T', '8316.T',
+            '6758.T', '7267.T', '6861.T', '6954.T', '6920.T', '6752.T', '4543.T'
+        ],
+        'growth': [
+            # High growth stocks
+            'TSLA', 'SHOP', 'ROKU', 'ZM', 'SNOW', 'PLTR', 'RBLX', 'U', 'DDOG', 'CRWD'
+        ],
+        'tech': [
+            # Tech focused
+            'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'NVDA', 'ORCL', 'CRM', 'ADBE', 'INTC',
+            'AMD', 'QCOM', 'CSCO', 'IBM', 'NOW', 'INTU', 'TXN', 'MU', 'AMAT', 'LRCX'
+        ],
+        'all': []  # Will be populated with all universes combined
+    }
+    
+    if universe == 'all':
+        # Combine all universes (excluding 'all' itself)
+        base_tickers = []
+        for u, tickers in universe_configs.items():
+            if u != 'all':
+                base_tickers.extend(tickers)
+        # Remove duplicates while preserving order
+        base_tickers = list(dict.fromkeys(base_tickers))
+    elif universe in universe_configs:
+        base_tickers = universe_configs[universe]
+    else:
+        # Default mixed universe
+        base_tickers = universe_configs['sp500'][:50]
+    
+    return base_tickers[:max_stocks]
+
+
+async def main():
+    """Main data fetching routine"""
+    parser = argparse.ArgumentParser(description='Fetch stock data asynchronously')
+    parser.add_argument('--universe', default='sp500', help='Stock universe to fetch')
+    parser.add_argument('--max-stocks', type=int, default=500, help='Maximum stocks to fetch')
+    parser.add_argument('--max-concurrent', type=int, default=10, help='Max concurrent requests')
+    parser.add_argument('--force-refresh', action='store_true', help='Ignore cache and fetch fresh data')
+    
+    args = parser.parse_args()
+    
+    # Get ticker list
+    tickers = get_universe_tickers(args.universe, args.max_stocks)
+    logger.info(f"Planning to fetch data for {len(tickers)} stocks from {args.universe} universe")
+    
+    # Get update order: empty stocks first, then oldest to newest
+    cache = StockDataCache()
+    tickers = cache.get_update_order(tickers)
+    
+    logger.info(f"Will update {len(tickers)} stocks in optimal order (empty first, then oldest to newest)")
+    
+    # Fetch data
+    start_time = time.time()
+    
+    async with AsyncStockDataFetcher(max_workers=args.max_concurrent) as fetcher:
+        results = await fetcher.fetch_multiple_stocks(tickers, args.max_concurrent)
+    
+    # Report results
+    successful = sum(1 for r in results.values() if 'error' not in r)
+    failed = len(results) - successful
+    elapsed = time.time() - start_time
+    
+    logger.info(f"""
+Data fetching complete:
+  - Total stocks: {len(results)}
+  - Successful: {successful}
+  - Failed: {failed}
+  - Time elapsed: {elapsed:.1f} seconds
+  - Average: {elapsed/len(results):.2f} sec/stock
+  - Cache location: {fetcher.cache.cache_dir}
+    """)
+    
+    # Save summary report
+    summary = {
+        'universe': args.universe,
+        'total_requested': len(tickers),
+        'successful_fetches': successful,
+        'failed_fetches': failed,
+        'time_elapsed': elapsed,
+        'fetch_timestamp': datetime.now().isoformat(),
+        'failed_tickers': [ticker for ticker, data in results.items() if 'error' in data]
+    }
+    
+    summary_file = Path(f'data_fetch_summary_{args.universe}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json')
+    with open(summary_file, 'w') as f:
+        json.dump(summary, f, indent=2)
+    
+    logger.info(f"Summary saved to: {summary_file}")
+
+
+if __name__ == '__main__':
+    asyncio.run(main())

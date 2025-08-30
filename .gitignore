@@ -60,3 +60,19 @@ ensemble_selection_explained.py
 
 # Dashboard backup files
 dashboard/dashboard_data_backup.json
+
+# Dashboard reports and temporary files
+dashboard_*.txt
+dashboard_*_report.txt
+data_fetch_summary_*.json
+offline_analysis_results_*.json
+analysis_summary_*.json
+
+# Temporary script files
+scripts/regenerate_dashboard.py
+scripts/simple_dashboard_server.py
+start_dashboard_properly.py
+verify_dashboard.py
+
+# Stock cache data (too large for git)
+data/stock_cache/

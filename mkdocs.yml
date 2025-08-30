@@ -50,12 +50,14 @@ nav:
   - User Guide:
     - Overview: user-guide/overview.md
     - Running Analysis: user-guide/running-analysis.md
+    - Dashboard: user-guide/dashboard.md
     - Understanding Results: user-guide/understanding-results.md
     - Configuration Options: user-guide/configuration-options.md
     - Output Formats: user-guide/output-formats.md
     - Troubleshooting: user-guide/troubleshooting.md
   - Developer Guide:
     - Architecture: developer-guide/architecture.md
+    - Dashboard Scaling: dashboard-scaling-solution.md
     - Pipeline Components: developer-guide/pipeline-components.md
     - Adding New Screeners: developer-guide/adding-screeners.md
     - Data Providers: developer-guide/data-providers.md
