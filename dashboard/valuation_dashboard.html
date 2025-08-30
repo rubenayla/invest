@@ -254,7 +254,7 @@
                 const formatVal = (val) => val && val > 0 ? '$' + val.toFixed(2) : '--';
                 return `
                 <tr>
-                    <td><span class="ticker">${stock.ticker}</span></td>
+                    <td><span class="ticker" title="${stock.company_name || stock.ticker}">${stock.ticker}</span></td>
                     <td class="price">$${(stock.current_price || 0).toFixed(2)}</td>
                     <td class="price">${formatMarketCap(stock.market_cap || 0)}</td>
                     <td><span class="score ${getScoreClass(stock.composite_score)}">${(stock.composite_score || 0).toFixed(1)}</span></td>
