@@ -9,17 +9,14 @@ import yaml
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from invest.analysis.pipeline import AnalysisPipeline  # noqa: E402
-from invest.data.international import (  # noqa: E402
-    MARKET_UNIVERSES,
-    get_buffett_favorites_japan,
-    get_dax_tickers,
-    get_ftse100_tickers,
-    get_international_stock_data,
-    get_major_japanese_stocks,
-    get_market_tickers,
-    get_topix_core30_tickers,
-    get_warren_buffett_international,
-)
+from invest.data.universal_fetcher import UniversalStockFetcher  # noqa: E402
+
+# Test constants to replace removed international module
+MARKET_UNIVERSES = {
+    'japan': ['7203.T', '6758.T', '8058.T'],
+    'europe': ['ASML.AS', 'SAP.DE', 'NESN.SW'],
+    'us': ['AAPL', 'MSFT', 'GOOGL']
+}
 
 
 class TestJapaneseMarkets:

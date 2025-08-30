@@ -1,3 +1,10 @@
+can you think of ways to simplify the repo, the process to analyze stocks, or it's well organized? is something bothering you as an engineer?
+
+why is acgl so cheap?
+nem P/tangible book value?
+
+now compare your previous analysis to the one of the repo, and try to understand why your recommendations differ. What is different?
+
 database_migration_plan.md
 
 - Create parameter that includes the 5 year past earning growth as in the video, and use it in filter. It certainly matches with high PE companies, might wanna do it for small caps that combine that with low PE. Might want to do the analysis of the video taking the second derivative of the earnings too, see if there's correlation too

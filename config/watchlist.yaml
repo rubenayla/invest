@@ -1,0 +1,103 @@
+watchlist:
+  # Buffett holdings/style
+  buffett:
+    - ticker: ALLE
+      name: Allegion PLC
+      notes: Security/locks manufacturer
+    - ticker: DHI
+      name: D.R. Horton Inc
+      notes: Homebuilder
+    - ticker: LAMR
+      name: Lamar Advertising Co
+      notes: Billboard advertising
+    - ticker: NUE
+      name: Nucor Corp
+      notes: Steel producer
+  
+  # Value plays
+  value:
+    - ticker: EL
+      name: Estee Lauder Companies Inc
+      notes: Beauty/cosmetics
+    - ticker: NEM
+      name: Newmont
+      notes: Gold mining
+    - ticker: HIG
+      name: Hartford Financial
+      notes: Insurance, strong margins
+    - ticker: ACGL
+      name: Arch Capital Group
+      notes: Insurance, excellent underwriting
+  
+  # Tech/Growth
+  tech:
+    - ticker: QCOM
+      name: Qualcomm
+      notes: Chips, 5G leader
+    - ticker: ASML
+      name: ASML Holding
+      notes: Semiconductor equipment monopoly
+    - ticker: META
+      name: Meta Platforms
+      notes: Social media, AI investments
+    - ticker: ORCL
+      name: Oracle
+      notes: Enterprise software, cloud
+    - ticker: IBM
+      name: IBM
+      notes: Enterprise tech, AI
+    - ticker: CSCO
+      name: Cisco Systems
+      notes: Networking equipment
+    - ticker: SAP
+      name: SAP SE
+      notes: Enterprise software
+    - ticker: PLTR
+      name: Palantir Technologies
+      notes: Data analytics, government contracts
+  
+  # Fintech
+  fintech:
+    - ticker: PYPL
+      name: PayPal
+      notes: Digital payments
+  
+  # International
+  international:
+    - ticker: MITSY
+      name: Mitsubishi Heavy Industries
+      notes: Japanese conglomerate
+    - ticker: BIDU
+      name: Baidu
+      notes: Chinese search/AI
+  
+  # Speculative
+  speculative:
+    - ticker: NE
+      name: Noble Corporation
+      notes: Offshore drilling
+    - ticker: BBAI
+      name: BigBear.ai
+      notes: AI/defense contractor
+    - ticker: MSTR
+      name: MicroStrategy
+      notes: Bitcoin proxy
+
+# Analysis thresholds
+buy_criteria:
+  pe_ratio:
+    excellent: 15
+    good: 20
+    fair: 25
+  pb_ratio:
+    excellent: 1
+    good: 2
+    fair: 3
+  roe:
+    excellent: 0.20
+    good: 0.15
+    fair: 0.10
+  discount_from_high:
+    excellent: 30
+    good: 20
+    fair: 10

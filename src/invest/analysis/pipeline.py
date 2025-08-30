@@ -3,15 +3,9 @@ from typing import Any, Dict, List
 
 from ..config.schema import AnalysisConfig
 from ..config.constants import ANALYSIS_LIMITS
-from ..data.concurrent_fetcher import ConcurrentDataFetcher, fetch_multiple_stocks_basic
-from ..data.international import (
-    get_buffett_favorites_japan,
-    get_international_stock_data,
-    get_market_tickers,
-    get_warren_buffett_international,
-)
-from ..dcf import calculate_dcf
-from ..dcf_enhanced import calculate_enhanced_dcf
+# Removed old data fetching modules - now using universal_fetcher for all stocks
+from ..standard_dcf import calculate_dcf
+from ..dividend_aware_dcf import calculate_enhanced_dcf
 from ..screening.growth import screen_growth
 from ..screening.quality import screen_quality
 from ..screening.risk import apply_cyclical_adjustments, screen_risk
@@ -103,29 +97,41 @@ class AnalysisPipeline:
     def _get_universe(self) -> List[Dict]:
         """Build the stock universe based on configuration."""
         universe_config = self.config.universe
-
-        if universe_config.custom_tickers:
+        
+        # Check if we have direct tickers in config (new style)
+        if hasattr(self.config, 'tickers') and self.config.tickers:
+            tickers = self.config.tickers
+        elif universe_config.custom_tickers:
             tickers = universe_config.custom_tickers
         elif (
             hasattr(universe_config, "pre_screening_universe")
             and universe_config.pre_screening_universe == "sp500"
         ):
-            from ..data.yahoo import get_sp500_tickers
-
-            tickers = get_sp500_tickers()
+            # S&P 500 sample for analysis
+            tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "TSLA", "META", "BRK-B", 
+                      "UNH", "JNJ", "JPM", "V", "PG", "HD", "MA", "PFE", "AVGO", "CVX",
+                      "ABBV", "KO", "LLY", "BAC", "COST", "PEP", "TMO", "WMT", "DIS"]
         elif hasattr(universe_config, "market"):
-            # New international market support
+            # International market support with predefined lists
             market = universe_config.market
             if market == "japan_buffett":
-                tickers = get_buffett_favorites_japan()
+                # Japanese blue chip companies Buffett might like
+                tickers = ["7203.T", "6758.T", "8058.T", "8002.T", "4063.T", "9432.T"]
             elif market == "international_buffett":
-                tickers = get_warren_buffett_international()
+                # International value stocks 
+                tickers = ["ASML.AS", "NESN.SW", "SAP.DE", "MC.PA", "7203.T", "8002.T"]
             else:
-                tickers = get_market_tickers(market)
+                # Default international mix
+                tickers = ["ASML.AS", "SAP.DE", "NESN.SW", "7203.T", "0700.HK"]
         elif universe_config.region == "US":
-            from ..data.yahoo import get_sp500_sample
-
-            tickers = get_sp500_sample()
+            # Default to S&P 500 sample
+            tickers = [
+                'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'TSLA', 'META', 'BRK-B',
+                'UNH', 'JNJ', 'V', 'WMT', 'XOM', 'LLY', 'JPM', 'PG', 'MA', 'HD',
+                'CVX', 'ABBV', 'BAC', 'PFE', 'COST', 'AVGO', 'KO', 'PEP', 'TMO',
+                'MRK', 'CSCO', 'ACN', 'LIN', 'DHR', 'ABT', 'VZ', 'ADBE', 'CRM',
+                'NFLX', 'NKE', 'TXN', 'DIS', 'WFC', 'INTC', 'PM', 'AMD', 'BMY'
+            ]
         else:
             # For non-US, use a smaller sample for now
             tickers = ["ASML", "SAP", "NESN.SW"] if universe_config.region == "EU" else ["TSM"]
@@ -174,50 +180,34 @@ class AnalysisPipeline:
         # Get full stock data for filtered tickers
         logger.info(f"Fetching full stock data for {len(tickers)} tickers...")
 
-        # Determine if we're dealing with international markets
-        is_international = hasattr(universe_config, "market") and universe_config.market not in [
-            "usa_sp500",
-            None,
-        ]
-
+        # Check if we have mixed international tickers
+        has_international = any('.' in str(t) or ':' in str(t) for t in tickers)
+        
         stocks_data = []
         
-        if is_international:
-            # For international markets, fall back to sequential processing for now
-            # TODO: Implement concurrent international data fetching
-            logger.info("Using sequential fetching for international markets...")
-            for i, ticker in enumerate(tickers):
-                try:
-                    stock_data = get_international_stock_data(ticker)
-                    if stock_data:
-                        # Check filters and add filter status
-                        stock_data["passes_universe_filters"] = self._passes_universe_filters(
-                            stock_data, universe_config
-                        )
-                        stocks_data.append(stock_data)
-
-                    # Log progress every 20 tickers
-                    if (i + 1) % 20 == 0:
-                        passed_count = sum(1 for s in stocks_data if s["passes_universe_filters"])
-                        logger.info(
-                            f"Processed {i + 1}/{len(tickers)} tickers for full data... ({passed_count} passed filters)"
-                        )
-
-                except Exception as e:
-                    logger.warning(f"Failed to get data for {ticker}: {e}")
-                    continue
+        if has_international or universe_config.region == "ALL":
+            # Use universal fetcher for mixed/international portfolios
+            logger.info("Using universal fetcher for mixed international stocks...")
+            from ..data.universal_fetcher import UniversalStockFetcher
+            
+            fetcher = UniversalStockFetcher(convert_currency=False)
+            fetcher_results = fetcher.fetch_multiple(tickers, max_workers=10)
+            
+            for ticker in tickers:
+                stock_data = fetcher_results.get(ticker)
+                if stock_data:
+                    # Check filters and add filter status
+                    stock_data["passes_universe_filters"] = self._passes_universe_filters(
+                        stock_data, universe_config
+                    )
+                    stocks_data.append(stock_data)
         else:
-            # Use concurrent fetching for US markets
-            logger.info("Using concurrent fetching for US markets...")
+            # Use universal fetcher for all stocks (handles both domestic and international)
+            logger.info("Using universal fetcher for all stocks...")
+            from ..data.universal_fetcher import UniversalStockFetcher
             
-            def full_progress_callback(completed: int, total: int):
-                if completed % 20 == 0:
-                    logger.info(f"Processed {completed}/{total} tickers for full data...")
-            
-            fetcher_results = fetch_multiple_stocks_basic(
-                tickers,
-                progress_callback=full_progress_callback
-            )
+            fetcher = UniversalStockFetcher(convert_currency=False)
+            fetcher_results = fetcher.fetch_multiple(tickers, max_workers=10)
             
             for ticker in tickers:
                 stock_data = fetcher_results.get(ticker)

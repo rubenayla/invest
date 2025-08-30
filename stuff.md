@@ -583,3 +583,67 @@ Hipoteca 1.5-3% es prácticamente dinero gratis (inflación españa 6%)
   This explains why people recommend PLTR despite high P/E - the revenue growth is real, accelerating, and high-quality. The question is whether 48% growth can continue long enough to
   justify the $159 price.
 
+# 2025-08-30
+│ Here is Claude's plan:                                                                                                                                                               │
+│ ╭──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮ │
+│ │ Refined Simplification Plan - Preserve Advanced Analysis                                                                                                                         │ │
+│ │                                                                                                                                                                                  │ │
+│ │ Phase 1: Smart Consolidation (Keep the Good Stuff)                                                                                                                               │ │
+│ │                                                                                                                                                                                  │ │
+│ │ 1.1 DCF Models - Rename for Clarity (KEEP ALL)                                                                                                                                   │ │
+│ │                                                                                                                                                                                  │ │
+│ │ - dcf.py → standard_dcf.py (basic single-stage DCF)                                                                                                                              │ │
+│ │ - dcf_enhanced.py → dividend_aware_dcf.py (dividend policy analysis)                                                                                                             │ │
+│ │ - monte_carlo_dcf.py → probabilistic_dcf.py (risk/uncertainty analysis)                                                                                                          │ │
+│ │ - multi_stage_dcf.py → growth_phase_dcf.py (realistic growth phases)                                                                                                             │ │
+│ │ - Keep valuation/ versions as unified framework                                                                                                                                  │ │
+│ │                                                                                                                                                                                  │ │
+│ │ 1.2 Data Fetching - Yahoo Finance Only                                                                                                                                           │ │
+│ │                                                                                                                                                                                  │ │
+│ │ - Keep: universal_fetcher.py (works for all international stocks)                                                                                                                │ │
+│ │ - Remove: yahoo.py, concurrent_fetcher.py, international.py, providers/                                                                                                          │ │
+│ │ - Update: Pipeline to use universal_fetcher exclusively                                                                                                                          │ │
+│ │                                                                                                                                                                                  │ │
+│ │ 1.3 Remove Duplicate AI Tools                                                                                                                                                    │ │
+│ │                                                                                                                                                                                  │ │
+│ │ - Keep: claude_tools/ (most mature, 767 lines)                                                                                                                                   │ │
+│ │ - Remove: ai_tools/claude/ and ai_tools/gemini/ (duplicates)                                                                                                                     │ │
+│ │                                                                                                                                                                                  │ │
+│ │ Phase 2: MCP Server Integration 🚀                                                                                                                                               │ │
+│ │                                                                                                                                                                                  │ │
+│ │ 2.1 Create MCP Servers from Claude Tools                                                                                                                                         │ │
+│ │                                                                                                                                                                                  │ │
+│ │ - mcp_servers/investment_analysis.py - Stock analysis server                                                                                                                     │ │
+│ │ - mcp_servers/portfolio_tools.py - Portfolio management server                                                                                                                   │ │
+│ │ - mcp_servers/screening.py - Stock screening server                                                                                                                              │ │
+│ │                                                                                                                                                                                  │ │
+│ │ 2.2 Enable Claude Integration                                                                                                                                                    │ │
+│ │                                                                                                                                                                                  │ │
+│ │ - Direct access to DCF models in Claude conversations                                                                                                                            │ │
+│ │ - Real-time stock analysis during chats                                                                                                                                          │ │
+│ │ - Portfolio comparison tools                                                                                                                                                     │ │
+│ │                                                                                                                                                                                  │ │
+│ │ Phase 3: Streamline Without Losing Power                                                                                                                                         │ │
+│ │                                                                                                                                                                                  │ │
+│ │ 3.1 Config Simplification                                                                                                                                                        │ │
+│ │                                                                                                                                                                                  │ │
+│ │ - Keep: Complex configs for advanced users                                                                                                                                       │ │
+│ │ - Add: 3 simple templates (conservative.yaml, balanced.yaml, aggressive.yaml)                                                                                                    │ │
+│ │ - Default: Smart defaults that work for most cases                                                                                                                               │ │
+│ │                                                                                                                                                                                  │ │
+│ │ 3.2 Entry Points                                                                                                                                                                 │ │
+│ │                                                                                                                                                                                  │ │
+│ │ - Simple: python analyze.py AAPL,7203.T (command line)                                                                                                                           │ │
+│ │ - Advanced: Existing systematic_analysis.py (full power)                                                                                                                         │ │
+│ │ - MCP: Direct Claude integration                                                                                                                                                 │ │
+│ │                                                                                                                                                                                  │ │
+│ │ Expected Outcome:                                                                                                                                                                │ │
+│ │                                                                                                                                                                                  │ │
+│ │ - Advanced analysis preserved (all DCF models, complex screening)                                                                                                                │ │
+│ │ - Simplified for basic use (single command analysis)                                                                                                                             │ │
+│ │ - Revolutionary Claude integration (MCP servers)                                                                                                                                 │ │
+│ │ - ~30% fewer files (remove duplicates only)                                                                                                                                      │ │
+│ │ - Actually works (fix data issues, proper tests)                                                                                                                                 │ │
+│ │                                                                                                                                                                                  │ │
+│ │ This keeps your vision of "automatic screening + advanced analysis tools" while making it accessible. 
+

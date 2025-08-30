@@ -17,7 +17,7 @@ from src.invest.caching.cache_manager import get_cache_manager, reset_cache_mana
 from src.invest.caching.cache_decorators import get_cache_stats, clear_all_caches
 from src.invest.valuation.model_registry import run_valuation, run_all_suitable_models
 from src.invest.dashboard_components.valuation_engine import ValuationEngine
-from src.invest.data.yahoo import get_sp500_tickers, get_stock_data
+from src.invest.data.universal_fetcher import UniversalStockFetcher
 
 
 class PerformanceMetrics:

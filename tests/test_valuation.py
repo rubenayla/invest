@@ -6,7 +6,7 @@ import pytest
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from invest.dcf import calculate_dcf  # noqa: E402
+from invest.standard_dcf import calculate_dcf  # noqa: E402
 
 try:
     from invest.rim import RIMModel

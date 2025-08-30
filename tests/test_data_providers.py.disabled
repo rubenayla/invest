@@ -8,22 +8,15 @@ import pytest
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from invest.data.international import (  # noqa: E402
-    MARKET_UNIVERSES,
-    get_buffett_favorites_japan,
-    get_international_stock_data,
-    get_major_japanese_stocks,
-    get_market_tickers,
-    get_topix_core30_tickers,
-    get_warren_buffett_international,
-)
-from invest.data.yahoo import (  # noqa: E402
-    get_financials,
-    get_sp500_sample,
-    get_sp500_tickers,
-    get_stock_data,
-    get_universe_data,
-)
+from invest.data.universal_fetcher import UniversalStockFetcher  # noqa: E402
+
+# Test ticker lists to replace removed functions
+TEST_TICKERS = {
+    'sp500_sample': ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA'],
+    'japanese_stocks': ['7203.T', '6758.T', '8058.T'],
+    'buffett_japan': ['8002.T', '7203.T', '8058.T'],
+    'international': ['ASML.AS', 'SAP.DE', 'NESN.SW']
+}
 
 
 class TestYahooFinanceDataProvider:

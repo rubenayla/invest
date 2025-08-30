@@ -13,29 +13,52 @@
 - **8002** (Marubeni Corp.)
 
 ## Watchlist
+- ACGL (Arch Capital Group Ltd)
+    - PE9.5, P/B 1.5, 
+- NEM (Newmont)?
+    - pe 13.5, p/b 1.0
+    - defensive, 
+- HIG (Hartford)
+    - Huge profits, margins growing, suffered 2008 crisis but recovered and became supposedly more reliable
+- NE (Noble Corporation PLC)
+    - PE 15.2, P/B 1.0
+- Secure Energy
+    - Trash collection
+- CVX (Chevron)
+- NYSE: ALLE (Allegion PLC)
+    - #buffet
+- NYSE: DHI (D.R. Horton Inc)
+    - #buffet
+- NASDAQ: LAMR (Lamar Advertising Co)
+    - #buffet
+- NYSE: NUE (Nucor Corp)
+    - #buffet
+- BBAI
+- microstrategy
 - QCOM
 - ASML
 - META
 - ORCL
 - IBM
-- NEM (Newmont)?
-- HIG (Hartford)
-    - Huge profits, margins growing, suffered 2008 crisis but recovered and became supposedly more reliable
 - MITSY
-- acgl
 - BIDU
 - CSCO
 - ORCL
 - PYPL
 - SAP
-- PLTR
-    - Palantir
 
 ## Nope
 - CNC (Centene)
+- NYSE: EL (Estee Lauder Companies Inc)
+    - declining margins
   - Giant crash due to unexpected ACA risk adjustment payment (they have healthier patients for the same costs)
 - Cognizant (CTSH)
   - 
+- Big bear
+    - Spending money like crazy on salaries and bonuses, i can't understand the actual value proposition in depth
+- PLTR (Palantir)
+    - I don't understand the moat and value proposition well enough to justify the high valuation, though it may be good.
+
 
 # Detail notes
 

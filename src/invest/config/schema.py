@@ -8,7 +8,7 @@ class Region(str, Enum):
     US = "US"
     EU = "EU"
     JP = "JP"
-    ALL = "ALL"
+    ALL = "ALL"  # Mixed international - no restrictions
 
 
 class QualityThresholds(BaseModel):

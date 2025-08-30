@@ -1,21 +1,23 @@
 """
-dcf.py - Discounted Cash Flow valuation module
+Standard DCF - Single-Stage Discounted Cash Flow Valuation
 
-This module provides a function to estimate the fair value per share using a DCF model.
-It improves auto mode by computing a normalized free cash flow (FCF) from historical
-data to smooth out one-off events that might distort the TTM FCF. It also gracefully
-handles cases where market data is not available (e.g., dummy tickers) and uses manual
-override values in those cases.
+This is the classic DCF model using a single growth rate assumption. Best for:
+- Mature companies with stable cash flows
+- Simple valuations where growth uncertainty is low
+- Quick analysis when you need a baseline valuation
 
-Key Variables:
-    enterprise_value       : npv_fcf + tv_pv, the DCF-estimated total value of operating assets.
-    estimated_market_cap   : enterprise_value - debt + cash; our estimated market cap.
-    fair_value_per_share   : estimated_market_cap divided by shares outstanding.
+Key Features:
+- Normalizes FCF from historical data to smooth out one-time events
+- Single discount rate (WACC) throughout projection period
+- Terminal value with constant growth rate
+- Handles missing market data gracefully
 
-The discount rate used is assumed to be the WACC.
+Variables:
+    enterprise_value     : Present value of projected FCFs + terminal value
+    estimated_market_cap : Enterprise value - net debt 
+    fair_value_per_share : Market cap / shares outstanding
 
-Author: Your Name
-Date: YYYY-MM-DD
+Best Used For: Large caps, utilities, mature industrials
 """
 
 import yfinance as yf
