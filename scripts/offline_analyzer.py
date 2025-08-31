@@ -24,6 +24,8 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from scripts.data_fetcher import StockDataCache
+from src.invest.dashboard_components.valuation_engine import ValuationEngine
+from src.invest.valuation.model_registry import get_available_models
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -35,6 +37,8 @@ class OfflineValuationEngine:
     
     def __init__(self, cache_dir: str = 'data/stock_cache'):
         self.cache = StockDataCache(cache_dir)
+        self.valuation_engine = ValuationEngine()
+        self.available_models = get_available_models()
     
     def calculate_composite_score(self, stock_data: Dict) -> float:
         """Calculate composite investment score from cached data"""
@@ -179,7 +183,7 @@ class OfflineValuationEngine:
             }
     
     def analyze_stock(self, ticker: str, stock_data: Dict) -> Dict:
-        """Analyze a single stock with cached data"""
+        """Analyze a single stock with cached data using comprehensive valuation models"""
         try:
             info = stock_data.get('info', {})
             financials = stock_data.get('financials', {})
@@ -231,92 +235,71 @@ class OfflineValuationEngine:
                 'price_trend_30d': price_data.get('price_trend_30d')
             }
             
-            # Multiple Valuation Methods
+            # Run ALL Available Valuation Models
             current_price = analysis['current_price']
+            analysis['valuations'] = {'current_price': current_price}
             
-            # 1. DCF Valuation
-            dcf_result = self.calculate_dcf_estimate(stock_data)
+            logger.debug(f"Running {len(self.available_models)} valuation models for {ticker}")
             
-            # 2. P/E Based Valuation (comparing to industry average)
-            pe_valuation = None
-            if financials.get('trailingPE') and current_price:
-                trailing_pe = financials.get('trailingPE')
-                if trailing_pe and trailing_pe > 0:
-                    # Use sector-based average P/E (simplified)
-                    sector_avg_pe = {
-                        'Technology': 25,
-                        'Healthcare': 22,
-                        'Financial Services': 15,
-                        'Consumer Cyclical': 20,
-                        'Consumer Defensive': 18,
-                        'Energy': 12,
-                        'Utilities': 16,
-                        'Real Estate': 20,
-                        'Industrials': 18,
-                        'Basic Materials': 15,
-                        'Communication Services': 22
-                    }.get(info.get('sector'), 18)  # Default to 18 if sector unknown
+            # Run each valuation model using the comprehensive engine
+            for model_name in self.available_models:
+                try:
+                    logger.debug(f"Running {model_name} model for {ticker}")
+                    valuation_result = self.valuation_engine.run_valuation(ticker, model_name, timeout=30)
                     
-                    earnings_per_share = current_price / trailing_pe
-                    pe_valuation = earnings_per_share * sector_avg_pe
+                    if valuation_result:
+                        analysis['valuations'][model_name] = valuation_result
+                        logger.debug(f"✅ {model_name} completed for {ticker}")
+                    else:
+                        analysis['valuations'][model_name] = {
+                            'error': 'Model returned None',
+                            'fair_value': None,
+                            'confidence': 'low'
+                        }
+                        logger.debug(f"❌ {model_name} returned None for {ticker}")
+                        
+                except Exception as e:
+                    analysis['valuations'][model_name] = {
+                        'error': str(e),
+                        'fair_value': None,
+                        'confidence': 'low'
+                    }
+                    logger.debug(f"❌ {model_name} failed for {ticker}: {e}")
             
-            # 3. Graham Number (Benjamin Graham's value investing formula)
-            graham_number = None
-            if financials.get('trailingPE') and financials.get('priceToBook'):
-                pe = financials.get('trailingPE')
-                pb = financials.get('priceToBook')
-                if pe and pb and pe > 0 and pb > 0 and current_price:
-                    eps = current_price / pe
-                    book_value_per_share = current_price / pb
-                    if eps > 0 and book_value_per_share > 0:
-                        graham_number = (22.5 * eps * book_value_per_share) ** 0.5
+            # Calculate summary statistics from all models
+            successful_models = 0
+            total_expected_value = 0
+            model_count = 0
             
-            # 4. PEG-based Valuation
-            peg_valuation = None
-            if financials.get('trailingPE') and financials.get('earningsGrowth'):
-                pe = financials.get('trailingPE')
-                growth = financials.get('earningsGrowth', 0) * 100  # Convert to percentage
-                if pe and growth and growth > 0 and current_price:
-                    peg_ratio = pe / growth
-                    # Fair PEG is 1.0, so if PEG > 1, stock is overvalued
-                    if peg_ratio > 0:
-                        peg_valuation = current_price / peg_ratio
-            
-            # 5. Price-to-Sales Based Valuation
-            ps_valuation = None
-            if financials.get('totalRevenue') and financials.get('sharesOutstanding'):
-                revenue_per_share = financials.get('totalRevenue') / financials.get('sharesOutstanding')
-                if revenue_per_share > 0:
-                    # Use sector-based average P/S ratio
-                    sector_avg_ps = {
-                        'Technology': 4.5,
-                        'Healthcare': 3.0,
-                        'Financial Services': 2.5,
-                        'Consumer Cyclical': 1.5,
-                        'Consumer Defensive': 1.2,
-                        'Energy': 1.0,
-                        'Utilities': 1.5,
-                        'Real Estate': 3.0,
-                        'Industrials': 1.5,
-                        'Basic Materials': 1.2,
-                        'Communication Services': 3.5
-                    }.get(info.get('sector'), 2.0)
+            for model_name, result in analysis['valuations'].items():
+                if model_name == 'current_price':
+                    continue
                     
-                    ps_valuation = revenue_per_share * sector_avg_ps
+                if isinstance(result, dict) and result.get('fair_value') and not result.get('error'):
+                    successful_models += 1
+                    fair_value = result.get('fair_value', 0)
+                    if fair_value and fair_value > 0:
+                        total_expected_value += fair_value
+                        model_count += 1
             
-            analysis['valuations'] = {
-                'dcf': dcf_result,
-                'pe_based': pe_valuation,
-                'graham_number': graham_number,
-                'peg_based': peg_valuation,
-                'ps_based': ps_valuation,
+            # Add ensemble statistics
+            analysis['valuation_summary'] = {
+                'successful_models': successful_models,
+                'total_models': len(self.available_models),
+                'average_expected_value': total_expected_value / model_count if model_count > 0 else current_price,
                 'current_price': current_price
             }
+            
+            if model_count > 0:
+                analysis['valuation_summary']['expected_vs_market_ratio'] = (total_expected_value / model_count) / current_price if current_price > 0 else 1.0
+            else:
+                analysis['valuation_summary']['expected_vs_market_ratio'] = 1.0
             
             # Analysis timestamp
             analysis['analysis_timestamp'] = datetime.now().isoformat()
             analysis['data_source_timestamp'] = stock_data.get('_cache_metadata', {}).get('cached_at')
             
+            logger.info(f"✅ Analyzed {ticker}: {successful_models}/{len(self.available_models)} models successful")
             return analysis
             
         except Exception as e:
