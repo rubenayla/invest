@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "stock-analysis": {
+      "command": "poetry",
+      "args": ["run", "python", "stock_mcp.py"],
+      "cwd": "/home/rubenayla/repos/invest"
+    }
+  }
+}
