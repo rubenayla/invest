@@ -42,12 +42,12 @@ class DashboardHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
         """Serve dashboard HTML file with updated data."""
         if self.path == '/' or self.path == '':
-            # Update the existing HTML file with current data, then serve it
+            # Generate dashboard using the improved modular components
             try:
-                self.update_existing_dashboard_html()
+                self.generate_modular_dashboard()
                 self.path = '/valuation_dashboard.html'
             except Exception as e:
-                logger.error(f"Error updating dashboard HTML: {e}")
+                logger.error(f"Error generating modular dashboard: {e}")
                 self.path = '/valuation_dashboard.html'
         elif self.path == '/favicon.ico':
             # Return empty 204 response for favicon to avoid errors
@@ -184,6 +184,50 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             
         except Exception as e:
             self.send_error(500, f"Sorting failed: {e}")
+    
+    def generate_modular_dashboard(self):
+        """Generate dashboard using original aesthetics with added ratio functionality."""
+        try:
+            dashboard_html_path = get_dashboard_dir() / 'valuation_dashboard.html'
+            
+            # Load dashboard data
+            dashboard_data_path = get_dashboard_dir() / 'dashboard_data.json'
+            stocks_data = {}
+            total_stocks = 0
+            successful_analyses = 0
+            last_updated = "Never"
+            
+            if dashboard_data_path.exists():
+                with open(dashboard_data_path, 'r') as f:
+                    data = json.load(f)
+                    stocks_data = data.get('stocks', {})
+                    total_stocks = len(stocks_data)
+                    successful_analyses = len([s for s in stocks_data.values() if s.get('status') == 'completed'])
+                    last_updated = data.get('last_updated', 'Never')
+                    if last_updated != "Never":
+                        from datetime import datetime
+                        try:
+                            dt = datetime.fromisoformat(last_updated.replace('Z', '+00:00'))
+                            last_updated = dt.strftime('%I:%M %p')
+                        except:
+                            pass
+            
+            # Calculate average score
+            scores = [s.get('composite_score', 0) for s in stocks_data.values() if s.get('composite_score')]
+            avg_score = sum(scores) / len(scores) if scores else 0
+            
+            # Generate the beautiful HTML with ratio functionality
+            html_content = self.create_beautiful_dashboard_html(stocks_data, total_stocks, successful_analyses, avg_score, last_updated)
+            
+            with open(dashboard_html_path, 'w', encoding='utf-8') as f:
+                f.write(html_content)
+                
+            logger.info("Generated beautiful dashboard with ratio functionality")
+            
+        except Exception as e:
+            logger.error(f"Failed to generate beautiful dashboard: {e}")
+            # Fallback to the old method
+            self.create_basic_dashboard_html()
     
     def update_existing_dashboard_html(self):
         """Update the existing dashboard HTML file with current data."""
@@ -526,6 +570,424 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         
         with open(dashboard_html_path, 'w') as f:
             f.write(html_content)
+    
+    def create_beautiful_dashboard_html(self, stocks_data, total_stocks, successful_analyses, avg_score, last_updated):
+        """Create the beautiful dashboard HTML with ratio functionality."""
+        
+        # Generate stock table rows with ratio functionality
+        table_rows = []
+        for ticker, stock in stocks_data.items():
+            if not stock.get('current_price') or stock.get('current_price') == 0:
+                continue  # Skip stocks without price data
+                
+            current_price = stock.get('current_price', 0)
+            market_cap = stock.get('market_cap', 0)
+            composite_score = stock.get('composite_score', 0)
+            sector = stock.get('sector', 'Unknown')
+            
+            # Get all available valuations and format with ratios
+            valuations = stock.get('valuations', {})
+            
+            # Standard DCF
+            dcf_val = valuations.get('dcf', {})
+            dcf_fair = dcf_val.get('fair_value', 0) if dcf_val else 0
+            dcf_ratio = f"{dcf_fair/current_price:.2f}x" if current_price > 0 and dcf_fair > 0 else "--"
+            dcf_display = f"${dcf_fair:.2f}" if dcf_fair > 0 else "--"
+            
+            # Enhanced DCF  
+            dcf_enh_val = valuations.get('dcf_enhanced', {})
+            dcf_enh_fair = dcf_enh_val.get('fair_value', 0) if dcf_enh_val else 0
+            dcf_enh_ratio = f"{dcf_enh_fair/current_price:.2f}x" if current_price > 0 and dcf_enh_fair > 0 else "--"
+            dcf_enh_display = f"${dcf_enh_fair:.2f}" if dcf_enh_fair > 0 else "--"
+            
+            # Growth DCF
+            growth_dcf_val = valuations.get('growth_dcf', {})
+            growth_dcf_fair = growth_dcf_val.get('fair_value', 0) if growth_dcf_val else 0
+            growth_dcf_ratio = f"{growth_dcf_fair/current_price:.2f}x" if current_price > 0 and growth_dcf_fair > 0 else "--"
+            growth_dcf_display = f"${growth_dcf_fair:.2f}" if growth_dcf_fair > 0 else "--"
+            
+            # Multi-Stage DCF
+            multi_dcf_val = valuations.get('multi_stage_dcf', {})
+            multi_dcf_fair = multi_dcf_val.get('fair_value', 0) if multi_dcf_val else 0
+            multi_dcf_ratio = f"{multi_dcf_fair/current_price:.2f}x" if current_price > 0 and multi_dcf_fair > 0 else "--"
+            multi_dcf_display = f"${multi_dcf_fair:.2f}" if multi_dcf_fair > 0 else "--"
+            
+            # Simple Ratios (Market Multiples)
+            ratios_val = valuations.get('simple_ratios', {})
+            ratios_fair = ratios_val.get('fair_value', 0) if ratios_val else 0
+            ratios_ratio = f"{ratios_fair/current_price:.2f}x" if current_price > 0 and ratios_fair > 0 else "--"
+            ratios_display = f"${ratios_fair:.2f}" if ratios_fair > 0 else "--"
+            
+            # RIM (Residual Income Model)
+            rim_val = valuations.get('rim', {})
+            rim_fair = rim_val.get('fair_value', 0) if rim_val else 0
+            rim_ratio = f"{rim_fair/current_price:.2f}x" if current_price > 0 and rim_fair > 0 else "--"
+            rim_display = f"${rim_fair:.2f}" if rim_fair > 0 else "--"
+            
+            # Legacy fields for backward compatibility
+            pe_val = valuations.get('pe_based', 0)
+            pe_ratio = f"{pe_val/current_price:.2f}x" if current_price > 0 and pe_val and pe_val > 0 else "--"
+            pe_display = f"${pe_val:.2f}" if pe_val and pe_val > 0 else "--"
+            
+            graham_val = valuations.get('graham_number', 0)
+            graham_ratio = f"{graham_val/current_price:.2f}x" if current_price > 0 and graham_val and graham_val > 0 else "--"
+            graham_display = f"${graham_val:.2f}" if graham_val and graham_val > 0 else "--"
+            
+            # Format market cap
+            if market_cap >= 1e12:
+                market_cap_str = f"${market_cap/1e12:.1f}T"
+            elif market_cap >= 1e9:
+                market_cap_str = f"${market_cap/1e9:.1f}B"
+            elif market_cap >= 1e6:
+                market_cap_str = f"${market_cap/1e6:.1f}M"
+            else:
+                market_cap_str = "$--"
+            
+            # Score class
+            if composite_score >= 85:
+                score_class = "excellent"
+            elif composite_score >= 70:
+                score_class = "good"
+            elif composite_score >= 50:
+                score_class = "average"
+            else:
+                score_class = "poor"
+            
+            row = f"""
+            <tr>
+                <td><span class="ticker" title="Company: {stock.get('company_name', ticker)} | Ticker: {ticker} | Click ticker to research this company">{ticker}</span></td>
+                <td class="price" title="Current market price: ${current_price:.2f} per share">${current_price:.2f}</td>
+                <td class="price" title="Market Cap: {market_cap_str} | Total company value based on current stock price" data-value="{market_cap}">{market_cap_str}</td>
+                <td><span class="score {score_class}" title="Investment Score: {composite_score:.1f}/100 | Combines Value + Quality + Growth metrics. 85+=Excellent, 70+=Good, 50+=Average, <50=Poor">{composite_score:.1f}</span></td>
+                <td class="price" title="Standard DCF: Basic discounted cash flow model projecting future cash flows. Formula: FCF × (1+g)^n / (1+r)^n + Terminal Value. Higher ratios indicate undervaluation.">{dcf_display}<br><small>{dcf_ratio}</small></td>
+                <td class="price" title="Enhanced DCF: Improved DCF with normalized cash flows and better assumptions for volatile companies. Handles lumpy cash flows better than standard DCF.">{dcf_enh_display}<br><small>{dcf_enh_ratio}</small></td>
+                <td class="price" title="Growth DCF: DCF that separates maintenance from growth CapEx, properly valuing reinvestment. Best for asset-heavy growth companies like Amazon/Tesla.">{growth_dcf_display}<br><small>{growth_dcf_ratio}</small></td>
+                <td class="price" title="Multi-Stage DCF: DCF with multiple growth phases (high growth → mature). Formula uses different growth rates over time. Best for growth companies transitioning to maturity.">{multi_dcf_display}<br><small>{multi_dcf_ratio}</small></td>
+                <td class="price" title="Market Multiples: Quick valuation using P/E, P/B, EV/EBITDA ratios vs industry averages. Fast screening tool for relative value assessment.">{ratios_display}<br><small>{ratios_ratio}</small></td>
+                <td class="price" title="RIM (Residual Income): Values companies based on returns above cost of equity. Formula: Book Value + PV(ROE - Cost of Equity) × Book Value. Best for financial/mature companies.">{rim_display}<br><small>{rim_ratio}</small></td>
+                <td>{sector}</td>
+            </tr>"""
+            
+            table_rows.append(row)
+        
+        # Create the beautiful HTML
+        return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Valuation Dashboard</title>
+    <style>
+        * {{ box-sizing: border-box; }}
+        body {{ 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }}
+        .container {{ max-width: 1400px; margin: 0 auto; }}
+        .header {{
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }}
+        h1 {{ color: #1a1a2e; font-size: 2.5em; margin-bottom: 16px; }}
+        .stats {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }}
+        .stat-card {{
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+        }}
+        .stat-value {{ font-size: 2em; font-weight: bold; color: #667eea; }}
+        .stat-label {{ color: #666; margin-top: 4px; }}
+        .controls {{
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }}
+        .table-container {{
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }}
+        table {{ width: 100%; border-collapse: collapse; }}
+        th, td {{ padding: 10px 8px; text-align: left; border-bottom: 1px solid #eee; font-size: 14px; }}
+        th {{ 
+            background: #f8f9fa; font-weight: 600; cursor: pointer;
+            user-select: none; transition: background 0.2s;
+        }}
+        th:hover {{ background: #e9ecef; }}
+        .ticker {{ font-weight: 600; color: #1a1a2e; }}
+        .price {{ font-family: 'Courier New', monospace; }}
+        .score {{
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }}
+        .excellent {{ background: #d4edda; color: #155724; }}
+        .good {{ background: #fff3cd; color: #856404; }}
+        .average {{ background: #cce5ff; color: #004085; }}
+        .poor {{ background: #f8d7da; color: #721c24; }}
+        
+        /* Ratio styling */
+        .price small {{
+            display: block;
+            color: #6c757d;
+            font-size: 11px;
+            font-weight: 500;
+            margin-top: 2px;
+        }}
+        
+        button {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-weight: 600;
+        }}
+        button:hover {{ transform: translateY(-2px); }}
+        select {{
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            font-size: 1em;
+            cursor: pointer;
+        }}
+        #updateStatus {{
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #d4edda;
+            color: #155724;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 1000;
+        }}
+        #updateStatus.show {{ display: block; }}
+        .loading {{
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }}
+        
+        /* Sorting arrows */
+        .sort-asc::after {{
+            content: ' ↑';
+            color: #667eea;
+        }}
+        .sort-desc::after {{
+            content: ' ↓';
+            color: #667eea;
+        }}
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📈 Stock Valuation Dashboard</h1>
+            <div class="stats" id="stats">
+                <div class="stat-card">
+                    <div class="stat-value">{total_stocks}</div>
+                    <div class="stat-label">Total Stocks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{successful_analyses}</div>
+                    <div class="stat-label">Analyzed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{avg_score:.1f}</div>
+                    <div class="stat-label">Avg Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{last_updated}</div>
+                    <div class="stat-label">Last Update</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <select id="universeSelect">
+                <option value="sp500">S&P 500</option>
+                <option value="nasdaq100">NASDAQ 100</option>
+                <option value="dow30">Dow 30</option>
+                <option value="russell2000">Russell 2000</option>
+                <option value="ftse100">FTSE 100</option>
+                <option value="dax">DAX</option>
+                <option value="cac40">CAC 40</option>
+                <option value="nikkei225">Nikkei 225</option>
+                <option value="all">All Markets</option>
+            </select>
+            <button onclick="updateData()">🔄 Update Data</button>
+            <button onclick="loadData()">📊 Refresh View</button>
+        </div>
+        
+        <div class="table-container">
+            <table id="stockTable">
+                <thead>
+                    <tr>
+                        <th onclick="sortTable('ticker')" title="Stock Ticker: Company trading symbol on the exchange (e.g., AAPL for Apple Inc.)">Ticker</th>
+                        <th onclick="sortTable('current_price')" title="Current Price: Latest market price per share. This is what you'd pay to buy one share right now.">Price</th>
+                        <th onclick="sortTable('market_cap')" title="Market Capitalization: Total value of all company shares (Price × Shares Outstanding). Indicates company size: >$10B = Large Cap, $2-10B = Mid Cap, <$2B = Small Cap">Market Cap</th>
+                        <th onclick="sortTable('composite_score')" title="Composite Score: Overall investment attractiveness (0-100). Combines value (cheap price), quality (strong fundamentals), and growth (increasing earnings). Higher = better investment opportunity.">Score</th>
+                        <th onclick="sortTable('dcf_value')" title="Standard DCF: Basic discounted cash flow model projecting future cash flows. Click to sort by Expected Value ÷ Market Price ratio.">DCF</th>
+                        <th onclick="sortTable('dcf_enhanced')" title="Enhanced DCF: Improved DCF with normalized cash flows, better for volatile companies. Click to sort by ratio.">Enh DCF</th>
+                        <th onclick="sortTable('growth_dcf')" title="Growth DCF: Separates maintenance vs growth CapEx, best for reinvestment-heavy companies. Click to sort by ratio.">Growth DCF</th>
+                        <th onclick="sortTable('multi_dcf')" title="Multi-Stage DCF: Multiple growth phases (high growth → mature), best for transitioning companies. Click to sort by ratio.">Multi DCF</th>
+                        <th onclick="sortTable('ratios')" title="Market Multiples: P/E, P/B, EV/EBITDA vs industry averages. Quick screening tool. Click to sort by ratio.">Ratios</th>
+                        <th onclick="sortTable('rim')" title="RIM: Residual Income Model based on returns above cost of equity. Best for financial/mature companies. Click to sort by ratio.">RIM</th>
+                        <th onclick="sortTable('sector')" title="Business Sector: Industry classification (Technology, Healthcare, Finance, etc.). Companies in same sector often have similar characteristics.">Sector</th>
+                    </tr>
+                </thead>
+                <tbody id="stockTableBody">
+                    {''.join(table_rows) if table_rows else '<tr><td colspan="10" class="loading">No stock data available. Click "Update Data" to load stocks.</td></tr>'}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div id="updateStatus"></div>
+    
+    <script>
+        let currentData = {{}};
+        let sortColumn = 'composite_score';
+        let sortDirection = 'desc';
+        
+        // Enhanced sorting with ratio support
+        function sortTable(column) {{
+            const table = document.getElementById('stockTable');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            if (!rows.length) return;
+            
+            // Clear previous sort indicators
+            table.querySelectorAll('th').forEach(h => {{
+                h.classList.remove('sort-asc', 'sort-desc');
+            }});
+            
+            // Toggle direction
+            if (sortColumn === column) {{
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            }} else {{
+                sortColumn = column;
+                sortDirection = 'desc';
+            }}
+            
+            // Add sort indicator
+            const headerIndex = Array.from(table.querySelectorAll('th')).findIndex(h => 
+                h.getAttribute('onclick').includes(column));
+            if (headerIndex >= 0) {{
+                table.querySelectorAll('th')[headerIndex].classList.add(
+                    sortDirection === 'asc' ? 'sort-asc' : 'sort-desc');
+            }}
+            
+            // Sort rows with ratio support
+            rows.sort((rowA, rowB) => {{
+                const cellA = rowA.cells[headerIndex];
+                const cellB = rowB.cells[headerIndex];
+                
+                if (!cellA || !cellB) return 0;
+                
+                let valueA, valueB;
+                
+                // For valuation columns, sort by ratio if available
+                if (['dcf_value', 'dcf_enhanced', 'growth_dcf', 'multi_dcf', 'ratios', 'rim'].includes(column)) {{
+                    const ratioA = cellA.querySelector('small');
+                    const ratioB = cellB.querySelector('small');
+                    
+                    if (ratioA && ratioB) {{
+                        valueA = parseFloat(ratioA.textContent.replace(/[x]/g, '')) || 0;
+                        valueB = parseFloat(ratioB.textContent.replace(/[x]/g, '')) || 0;
+                    }} else {{
+                        valueA = parseFloat(cellA.textContent.replace(/[$,]/g, '')) || 0;
+                        valueB = parseFloat(cellB.textContent.replace(/[$,]/g, '')) || 0;
+                    }}
+                }} else if (column === 'market_cap') {{
+                    // Use raw numeric market cap values, not formatted strings
+                    valueA = parseFloat(cellA.getAttribute('data-value')) || 0;
+                    valueB = parseFloat(cellB.getAttribute('data-value')) || 0;
+                }} else {{
+                    // Standard sorting for other columns
+                    const textA = cellA.textContent.trim();
+                    const textB = cellB.textContent.trim();
+                    
+                    const numA = parseFloat(textA.replace(/[$,%]/g, ''));
+                    const numB = parseFloat(textB.replace(/[$,%]/g, ''));
+                    
+                    if (!isNaN(numA) && !isNaN(numB)) {{
+                        valueA = numA;
+                        valueB = numB;
+                    }} else {{
+                        return textA.localeCompare(textB) * (sortDirection === 'asc' ? 1 : -1);
+                    }}
+                }}
+                
+                return (valueB - valueA) * (sortDirection === 'asc' ? -1 : 1);
+            }});
+            
+            // Rebuild table
+            rows.forEach(row => tbody.appendChild(row));
+        }}
+        
+        // Other functions (updateData, loadData, etc.) remain the same...
+        async function loadData() {{
+            try {{
+                const response = await fetch('/data');
+                currentData = await response.json();
+                location.reload(); // Simple refresh to update display
+            }} catch (error) {{
+                console.error('Failed to load data:', error);
+            }}
+        }}
+        
+        function updateData() {{
+            const universe = document.getElementById('universeSelect').value;
+            const status = document.getElementById('updateStatus');
+            
+            status.innerHTML = '⏳ Starting update...';
+            status.className = 'show';
+            
+            fetch('/update', {{
+                method: 'POST',
+                headers: {{'Content-Type': 'application/json'}},
+                body: JSON.stringify({{universe: universe}})
+            }})
+            .then(response => response.json())
+            .then(data => {{
+                status.innerHTML = '✅ Update started for ' + data.estimated_stocks + ' stocks';
+                setTimeout(() => location.reload(), 30000);
+            }})
+            .catch(error => {{
+                status.innerHTML = '❌ Update failed: ' + error.message;
+            }});
+        }}
+        
+    </script>
+</body>
+</html>"""
     
     def serve_dashboard_data(self):
         """Serve current dashboard data as JSON."""

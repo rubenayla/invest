@@ -255,12 +255,12 @@ class HTMLGenerator:
         status_html = self._format_status_cell(new_status, new_message)
         
         # Format valuation columns
-        dcf_html = self._format_valuation_cell(valuations.get("dcf", {}))
-        enh_dcf_html = self._format_valuation_cell(valuations.get("dcf_enhanced", {}))
-        growth_dcf_html = self._format_valuation_cell(valuations.get("growth_dcf", {}))
-        ratios_html = self._format_valuation_cell(valuations.get("simple_ratios", {}))
-        rim_html = self._format_valuation_cell(valuations.get("rim", {}))
-        multi_dcf_html = self._format_valuation_cell(valuations.get("multi_stage_dcf", {}))
+        dcf_html = self._format_valuation_cell(valuations.get("dcf", {}), current_price)
+        enh_dcf_html = self._format_valuation_cell(valuations.get("dcf_enhanced", {}), current_price)
+        growth_dcf_html = self._format_valuation_cell(valuations.get("growth_dcf", {}), current_price)
+        ratios_html = self._format_valuation_cell(valuations.get("simple_ratios", {}), current_price)
+        rim_html = self._format_valuation_cell(valuations.get("rim", {}), current_price)
+        multi_dcf_html = self._format_valuation_cell(valuations.get("multi_stage_dcf", {}), current_price)
         
         # Calculate consensus
         consensus_html = self._format_consensus_cell(valuations, current_price)
@@ -307,8 +307,8 @@ class HTMLGenerator:
         
         return f'<span title="{message}">{icon} {display_name}</span>'
     
-    def _format_valuation_cell(self, valuation: Dict) -> str:
-        """Format a valuation cell with fair value and margin."""
+    def _format_valuation_cell(self, valuation: Dict, current_price: float = None) -> str:
+        """Format a valuation cell with fair value, margin, and ratio."""
         if valuation.get("failed", False):
             reason = valuation.get("failure_reason", "Model failed")
             short_reason = reason[:30] + "..." if len(reason) > 30 else reason
@@ -323,6 +323,12 @@ class HTMLGenerator:
         fair_value_str = self._safe_format(fair_value, prefix="$")
         margin_str = self._safe_percent(margin)
         
+        # Calculate ratio if current price is available
+        ratio_str = ""
+        if current_price and current_price > 0:
+            ratio = fair_value / current_price
+            ratio_str = f'<div class="ratio">{ratio:.2f}x</div>'
+        
         # Color code the margin
         margin_class = self._get_margin_class(margin)
         
@@ -330,6 +336,7 @@ class HTMLGenerator:
         <div class="valuation-cell">
             <div class="fair-value">{fair_value_str}</div>
             <div class="margin {margin_class}">{margin_str}</div>
+            {ratio_str}
         </div>'''
     
     def _format_consensus_cell(self, valuations: Dict, current_price: float) -> str:
@@ -346,15 +353,18 @@ class HTMLGenerator:
         
         avg_fair_value = sum(fair_values) / len(fair_values)
         avg_margin = (avg_fair_value - current_price) / current_price if current_price > 0 else 0
+        avg_ratio = avg_fair_value / current_price if current_price > 0 else 0
         
         avg_fair_value_str = self._safe_format(avg_fair_value, prefix="$")
         avg_margin_str = self._safe_percent(avg_margin)
+        avg_ratio_str = f"{avg_ratio:.2f}x" if avg_ratio > 0 else "-"
         margin_class = self._get_margin_class(avg_margin)
         
         return f'''
         <div class="consensus-cell">
             <div class="fair-value"><strong>{avg_fair_value_str}</strong></div>
             <div class="margin {margin_class}"><strong>{avg_margin_str}</strong></div>
+            <div class="ratio"><strong>{avg_ratio_str}</strong></div>
             <div class="model-count">({len(fair_values)} models)</div>
         </div>'''
     
@@ -643,6 +653,13 @@ class HTMLGenerator:
             font-weight: 500;
         }
         
+        .ratio {
+            font-size: 11px;
+            color: #6c757d;
+            font-weight: 500;
+            margin-top: 1px;
+        }
+        
         .margin-excellent {
             background: #d4edda;
             color: #155724;
@@ -765,17 +782,32 @@ class HTMLGenerator:
                 if (isEmptyA) return 1;              // A is empty, put it last
                 if (isEmptyB) return -1;             // B is empty, put it last
                 
-                // Extract percentage values from margin divs if they exist
+                // Extract ratio values from ratio divs if they exist
+                const ratioA = cellA.querySelector('.ratio');
+                const ratioB = cellB.querySelector('.ratio');
                 const marginA = cellA.querySelector('.margin');
                 const marginB = cellB.querySelector('.margin');
                 
                 let comparison = 0;
                 
-                if (marginA && marginB) {
-                    // Both have margin percentages - sort by percentage value
+                if (ratioA && ratioB) {
+                    // Both have ratio data - sort by expected value to market price ratio
+                    const ratioValueA = parseFloat(ratioA.textContent.replace(/[x]/g, ''));
+                    const ratioValueB = parseFloat(ratioB.textContent.replace(/[x]/g, ''));
+                    
+                    if (!isNaN(ratioValueA) && !isNaN(ratioValueB)) {
+                        comparison = ratioValueB - ratioValueA; // Higher ratios first (more undervalued)
+                    } else {
+                        // Fallback to margin percentage if ratio values are invalid
+                        const percentA = parseFloat(marginA?.textContent.replace(/[%+]/g, '') || '0');
+                        const percentB = parseFloat(marginB?.textContent.replace(/[%+]/g, '') || '0');
+                        comparison = percentB - percentA;
+                    }
+                } else if (marginA && marginB) {
+                    // Fallback to margin percentage sorting
                     const percentA = parseFloat(marginA.textContent.replace(/[%+]/g, ''));
                     const percentB = parseFloat(marginB.textContent.replace(/[%+]/g, ''));
-                    comparison = percentB - percentA; // Higher percentages first
+                    comparison = percentB - percentA;
                 } else if (marginA || marginB) {
                     // One has percentage, one doesn't - percentage goes first
                     comparison = marginA ? -1 : 1;
