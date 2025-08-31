@@ -255,6 +255,14 @@ class AsyncStockDataFetcher:
 
 def get_universe_tickers(universe: str, max_stocks: int = 1000) -> List[str]:
     """Get ticker list for a universe using dynamic index manager."""
+    import sys
+    from pathlib import Path
+    
+    # Add project root to path for imports
+    project_root = Path(__file__).parent.parent
+    if str(project_root) not in sys.path:
+        sys.path.insert(0, str(project_root))
+    
     from scripts.index_manager import IndexManager
     
     try:

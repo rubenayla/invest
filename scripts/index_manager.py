@@ -134,21 +134,57 @@ class IndexManager:
             response = requests.get(url, timeout=30)
             soup = BeautifulSoup(response.content, 'html.parser')
             
+            # Try multiple table selection strategies
             table = soup.find('table', {'class': 'wikitable'})
+            if not table:
+                # Try finding the first table with sortable class
+                table = soup.find('table', {'class': 'wikitable sortable'})
+            if not table:
+                # Try finding any table containing S&P 500 data
+                tables = soup.find_all('table')
+                for t in tables:
+                    if t.find('th') and 'Symbol' in t.get_text():
+                        table = t
+                        break
+            
+            if not table:
+                logger.warning("Could not fetch S&P 500 from Wikipedia, using fallback list")
+                return self._get_sp500_fallback_list()
+            
             tickers = []
             
             for row in table.find_all('tr')[1:]:  # Skip header
                 cells = row.find_all('td')
                 if len(cells) > 0:
                     ticker = cells[0].text.strip()
-                    tickers.append(ticker)
+                    if ticker and ticker != '':  # Only add valid tickers
+                        tickers.append(ticker)
+            
+            if len(tickers) < 400:  # S&P 500 should have ~500 companies
+                logger.warning(f"Only fetched {len(tickers)} tickers, using fallback list")
+                return self._get_sp500_fallback_list()
             
             logger.info(f"Fetched {len(tickers)} S&P 500 tickers from Wikipedia")
             return tickers
             
         except Exception as e:
             logger.error(f"Failed to fetch S&P 500 from Wikipedia: {e}")
-            return []
+            return self._get_sp500_fallback_list()
+    
+    def _get_sp500_fallback_list(self) -> List[str]:
+        """Fallback S&P 500 constituent list (top 100 by market cap)."""
+        return [
+            'AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'GOOG', 'TSLA', 'META', 'BRK.B', 'UNH',
+            'XOM', 'JNJ', 'JPM', 'V', 'PG', 'HD', 'CVX', 'MA', 'BAC', 'ABBV',
+            'PFE', 'AVGO', 'KO', 'LLY', 'PEP', 'TMO', 'COST', 'WMT', 'MRK', 'ABT',
+            'DIS', 'ACN', 'ADBE', 'CRM', 'NFLX', 'DHR', 'NKE', 'ORCL', 'VZ', 'CSCO',
+            'WFC', 'COP', 'TXN', 'MDT', 'NEE', 'RTX', 'QCOM', 'UPS', 'PM', 'LOW',
+            'BMY', 'AMGN', 'HON', 'SPGI', 'T', 'INTU', 'UNP', 'IBM', 'INTC', 'CAT',
+            'GS', 'AMD', 'BKNG', 'DE', 'AXP', 'NOW', 'ISRG', 'BLK', 'LMT', 'SYK',
+            'TJX', 'PLD', 'MU', 'GE', 'ADI', 'ADP', 'VRTX', 'MMC', 'SBUX', 'GILD',
+            'CVS', 'MO', 'CB', 'PYPL', 'MDLZ', 'C', 'SLB', 'TMUS', 'SO', 'ZTS',
+            'EOG', 'DUK', 'ICE', 'CMG', 'NSC', 'PNC', 'ITW', 'BSX', 'AON', 'REGN'
+        ]
     
     def _fetch_ftse100_tickers(self) -> List[str]:
         """Fetch FTSE 100 constituents."""
