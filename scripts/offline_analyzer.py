@@ -312,10 +312,8 @@ class OfflineValuationEngine:
                 'analysis_timestamp': datetime.now().isoformat()
             }
     
-    def analyze_multiple_stocks(self, tickers: List[str], max_stocks: Optional[int] = None) -> Dict[str, Dict]:
+    def analyze_multiple_stocks(self, tickers: List[str]) -> Dict[str, Dict]:
         """Analyze multiple stocks from cache"""
-        if max_stocks:
-            tickers = tickers[:max_stocks]
         
         results = {}
         cached_tickers = self.cache.get_cached_tickers()
@@ -419,7 +417,6 @@ async def main():
     """Main offline analysis routine"""
     parser = argparse.ArgumentParser(description='Run offline investment analysis on cached data')
     parser.add_argument('--universe', default='sp500', help='Stock universe to analyze')
-    parser.add_argument('--max-stocks', type=int, help='Maximum stocks to analyze')
     parser.add_argument('--update-dashboard', action='store_true', help='Update dashboard with results')
     parser.add_argument('--cache-dir', default='data/stock_cache', help='Cache directory location')
     
@@ -442,13 +439,11 @@ async def main():
     else:
         # Import the universe function from data_fetcher
         from scripts.data_fetcher import get_universe_tickers
-        universe_tickers = get_universe_tickers(args.universe, args.max_stocks or 1000)
+        universe_tickers = get_universe_tickers(args.universe)
         target_tickers = [t for t in universe_tickers if t in available_tickers]
         
         logger.info(f"Target universe: {len(universe_tickers)} stocks, {len(target_tickers)} available in cache")
     
-    if args.max_stocks:
-        target_tickers = target_tickers[:args.max_stocks]
     
     if not target_tickers:
         logger.error(f"No stocks available for analysis in {args.universe} universe")

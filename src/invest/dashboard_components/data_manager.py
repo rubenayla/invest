@@ -316,24 +316,10 @@ class DataManager:
             if self.backup_file.exists():
                 self.backup_file.rename(self.data_file)
     
-    def cleanup_old_data(self, max_stocks: int = 1000):
+    def cleanup_old_data(self):
         """Clean up old stock data to prevent file from growing too large."""
-        stocks = self.data["stocks"]
-        
-        if len(stocks) <= max_stocks:
-            return
-        
-        # Sort by last attempt timestamp and keep most recent
-        sorted_stocks = sorted(
-            stocks.items(),
-            key=lambda x: x[1].get("last_attempt", ""),
-            reverse=True
-        )
-        
-        # Keep only the most recent stocks
-        self.data["stocks"] = dict(sorted_stocks[:max_stocks])
-        
-        logger.info(f"Cleaned up old data, kept {len(self.data['stocks'])} most recent stocks")
+        # No cleanup - keep all data without limits
+        logger.info(f"Data cleanup disabled - keeping all {len(self.data['stocks'])} stocks")
     
     def get_data_summary(self) -> Dict:
         """Get summary statistics about the data."""

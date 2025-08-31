@@ -1,9 +1,8 @@
-Organize yourself with todos and check that we only have 1 dashbaord, that it works, that the documentation shows how to run the server for it correctly, that it doesn't have the add stocks button, that there are 60.5x style ratios shown, and that it can extract data AND calculate with all our valuation models when clicking "Update Data", but it doesn't crash on silly missing values from the server or from the valuataion models.
+The dcf and enhanced dcf are providing the same answers. it's suspicious.
 
-Add tests so these errors are caught automatically. We can't have the system return 0 stickers with no errors anywhere.
-commit the updates in clean commits. leave no untracked files.
-creating mcp for stocks analysis, and the previous just for the repo
-- take a look: https://www.ark-funds.com/funds/arkvx
+- I don't want, "max_stocks = 10000 (effectively unlimited)", i want to actually have no limits. And no useless code.
+
+If I click "Update Data" with "All Markets" enabled, i should get much more stocks than 500. I am only getting 500.
 
 to invest in warren style, human like instructions or can be programmed?
 
@@ -12,7 +11,7 @@ nem P/tangible book value?
 
 now compare your previous analysis to the one of the repo, and try to understand why your recommendations differ. What is different?
 
-database_migration_plan.md
+- take a look: https://www.ark-funds.com/funds/arkvx
 
 - Create parameter that includes the 5 year past earning growth as in the video, and use it in filter. It certainly matches with high PE companies, might wanna do it for small caps that combine that with low PE. Might want to do the analysis of the video taking the second derivative of the earnings too, see if there's correlation too
     - https://youtu.be/-xq7a-tptno?si=kl6EQT-Jfxu1xmyG

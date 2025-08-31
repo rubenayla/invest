@@ -62,9 +62,10 @@ class DashboardHandler(SimpleHTTPRequestHandler):
     
     def do_POST(self):
         """Handle update and sorting requests."""
-        if self.path == '/update':
+        path = self.path.split('?')[0]  # Remove query parameters for comparison
+        if path == '/update':
             self.handle_update()
-        elif self.path == '/sort':
+        elif path == '/sort':
             self.handle_sort()
         else:
             self.send_error(404)
@@ -72,7 +73,11 @@ class DashboardHandler(SimpleHTTPRequestHandler):
     def handle_update(self):
         """Handle dashboard update request with universe selection and progressive loading."""
         try:
-            # Parse request body to get universe selection
+            # Parse query parameters and request body to get universe selection
+            from urllib.parse import urlparse, parse_qs
+            parsed_url = urlparse(self.path)
+            query_params = parse_qs(parsed_url.query)
+            
             content_length = int(self.headers.get('Content-Length', 0))
             request_body = self.rfile.read(content_length).decode('utf-8')
             
@@ -81,10 +86,15 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             expand = False
             batch_size = 20
             
+            # Check query parameters first
+            if 'universe' in query_params:
+                universe = query_params['universe'][0]
+            
+            # Then check request body (POST data can override query params)
             if request_body:
                 try:
                     request_data = json.loads(request_body)
-                    universe = request_data.get('universe', 'existing')
+                    universe = request_data.get('universe', universe)
                     expand = request_data.get('expand', False)
                     batch_size = request_data.get('batch_size', 20)
                 except json.JSONDecodeError:
@@ -100,25 +110,24 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                         # Two-step approach: fetch data then analyze offline
                         logger.info(f"Starting two-step dashboard update for {universe} universe")
                         
-                        # Step 1: Fetch data asynchronously - no artificial limits
-                        max_stocks = 10000  # High enough to never be a constraint
-                        fetch_success = self.fetch_stock_data_async(universe, max_stocks)
+                        # Step 1: Fetch data asynchronously - no limits
+                        fetch_success = self.fetch_stock_data_async(universe)
                         
                         if fetch_success:
                             # Step 2: Run offline analysis on ALL cached data (not just the universe)
-                            self.run_offline_analysis('cached', max_stocks)
+                            self.run_offline_analysis('cached')
                             logger.info("Dashboard updated successfully via two-step approach")
                         else:
                             logger.error("Data fetching failed, trying to analyze existing cached data")
                             # Try to analyze whatever cached data we have
                             try:
-                                self.run_offline_analysis('cached', 2000)
+                                self.run_offline_analysis('cached')
                                 logger.info("Fallback: analyzed existing cached data")
                             except Exception as fallback_error:
                                 logger.error(f"Both new system and fallback failed: {fallback_error}")
                                 # Last resort: use old method with small dataset
                                 from scripts.data_fetcher import get_universe_tickers
-                                tickers = get_universe_tickers(universe, 1000)
+                                tickers = get_universe_tickers(universe)
                                 config_path = create_temp_config(tickers, universe)
                                 run_systematic_analysis_for_dashboard(config_path)
                 except Exception as e:
@@ -137,7 +146,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                 from scripts.data_fetcher import get_universe_tickers
                 stock_estimates = {}
                 for universe_key in ['all', 'sp500', 'international', 'japan', 'tech', 'growth']:
-                    stock_estimates[universe_key] = len(get_universe_tickers(universe_key, 10000))
+                    stock_estimates[universe_key] = len(get_universe_tickers(universe_key))
                 stock_estimates['existing'] = self.get_existing_stock_count()
                 estimated_stocks = stock_estimates.get(universe, 500)
             
@@ -249,12 +258,12 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         # Get actual universe counts dynamically
         from scripts.data_fetcher import get_universe_tickers
         universe_info = {
-            'all': ('🌍 All Markets', len(get_universe_tickers('all', 10000))),
-            'sp500': ('S&P 500', len(get_universe_tickers('sp500', 10000))),
-            'international': ('International', len(get_universe_tickers('international', 10000))),
-            'japan': ('Japan', len(get_universe_tickers('japan', 10000))),
-            'tech': ('Tech Focus', len(get_universe_tickers('tech', 10000))),
-            'growth': ('Growth', len(get_universe_tickers('growth', 10000)))
+            'all': ('🌍 All Markets', len(get_universe_tickers('all'))),
+            'sp500': ('S&P 500', len(get_universe_tickers('sp500'))),
+            'international': ('International', len(get_universe_tickers('international'))),
+            'japan': ('Japan', len(get_universe_tickers('japan'))),
+            'tech': ('Tech Focus', len(get_universe_tickers('tech'))),
+            'growth': ('Growth', len(get_universe_tickers('growth')))
         }
         
         # Build universe options dynamically
@@ -1104,7 +1113,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         # Save merged data
         save_dashboard_data(existing_data)
     
-    def fetch_stock_data_async(self, universe: str, max_stocks: int = 1000) -> bool:
+    def fetch_stock_data_async(self, universe: str) -> bool:
         """Step 1: Fetch stock data using the new async data fetcher"""
         try:
             import subprocess
@@ -1112,7 +1121,6 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             cmd = [
                 'poetry', 'run', 'python', 'scripts/data_fetcher.py',
                 '--universe', universe,
-                '--max-stocks', str(max_stocks),
                 '--max-concurrent', '15'  # Higher concurrency for dashboard
             ]
             
@@ -1133,7 +1141,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             logger.error(f"Data fetching error: {e}")
             return False
     
-    def run_offline_analysis(self, universe: str, max_stocks: int = 1000) -> bool:
+    def run_offline_analysis(self, universe: str) -> bool:
         """Step 2: Run offline analysis on cached data"""
         try:
             import subprocess
@@ -1141,7 +1149,6 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             cmd = [
                 'poetry', 'run', 'python', 'scripts/offline_analyzer.py',
                 '--universe', universe,
-                '--max-stocks', str(max_stocks),
                 '--update-dashboard'
             ]
             
@@ -1170,7 +1177,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             # Fetch more data
             if self.fetch_stock_data_async(universe, batch_size):
                 # Run analysis on the expanded dataset - analyze ALL cached stocks
-                self.run_offline_analysis('cached', 2000)  # Analyze all available cached stocks
+                self.run_offline_analysis('cached')  # Analyze all available cached stocks
                 logger.info(f"Successfully added ~{batch_size} stocks via progressive loading")
             else:
                 logger.error("Progressive loading failed at data fetch step")
@@ -1473,8 +1480,8 @@ def main():
         print("   Example: poetry run python scripts/systematic_analysis.py configs/simple_mixed.yaml")
         return
     
-    # Start server
-    port = 8080
+    # Start server (avoid ports 3000/8000 used by other projects)  
+    port = 3446
     server = HTTPServer(('localhost', port), DashboardHandler)
     
     print(f"🚀 Dashboard server starting on http://localhost:{port}")

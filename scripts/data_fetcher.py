@@ -253,7 +253,7 @@ class AsyncStockDataFetcher:
         return results
 
 
-def get_universe_tickers(universe: str, max_stocks: int = 1000) -> List[str]:
+def get_universe_tickers(universe: str) -> List[str]:
     """Get ticker list for a universe using dynamic index manager."""
     import sys
     from pathlib import Path
@@ -304,7 +304,7 @@ def get_universe_tickers(universe: str, max_stocks: int = 1000) -> List[str]:
         # Log the result
         logger.info(f"Universe '{universe}': {len(tickers)} tickers (from dynamic index manager)")
         
-        return tickers[:max_stocks]
+        return tickers
         
     except Exception as e:
         logger.error(f"Failed to get dynamic tickers for {universe}: {e}")
@@ -316,7 +316,7 @@ def get_universe_tickers(universe: str, max_stocks: int = 1000) -> List[str]:
                 with open('sp500_tickers.json', 'r') as f:
                     fallback_tickers = json.load(f)
                 logger.info(f"Fallback: loaded {len(fallback_tickers)} S&P 500 tickers from file")
-                return fallback_tickers[:max_stocks]
+                return fallback_tickers
             except:
                 pass
         
@@ -330,14 +330,13 @@ async def main():
     """Main data fetching routine"""
     parser = argparse.ArgumentParser(description='Fetch stock data asynchronously')
     parser.add_argument('--universe', default='sp500', help='Stock universe to fetch')
-    parser.add_argument('--max-stocks', type=int, default=500, help='Maximum stocks to fetch')
     parser.add_argument('--max-concurrent', type=int, default=10, help='Max concurrent requests')
     parser.add_argument('--force-refresh', action='store_true', help='Ignore cache and fetch fresh data')
     
     args = parser.parse_args()
     
     # Get ticker list
-    tickers = get_universe_tickers(args.universe, args.max_stocks)
+    tickers = get_universe_tickers(args.universe)
     logger.info(f"Planning to fetch data for {len(tickers)} stocks from {args.universe} universe")
     
     # Get update order: empty stocks first, then oldest to newest
@@ -363,7 +362,7 @@ Data fetching complete:
   - Successful: {successful}
   - Failed: {failed}
   - Time elapsed: {elapsed:.1f} seconds
-  - Average: {elapsed/len(results):.2f} sec/stock
+  - Average: {elapsed/len(results):.2f} sec/stock" if results else "  - Average: N/A (no results)"
   - Cache location: {fetcher.cache.cache_dir}
     """)
     

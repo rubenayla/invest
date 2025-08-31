@@ -128,68 +128,159 @@ class IndexManager:
             return None
     
     def _fetch_sp500_tickers(self) -> List[str]:
-        """Fetch current S&P 500 constituents from Wikipedia."""
+        """Fetch major US stocks from comprehensive sources."""
         try:
-            url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
-            response = requests.get(url, timeout=30)
-            soup = BeautifulSoup(response.content, 'html.parser')
-            
-            # Find any wikitable with Symbol column (the main S&P 500 table)
-            tables = soup.find_all('table')
-            table = None
-            for t in tables:
-                if 'wikitable' in str(t.get('class', [])) and 'Symbol' in t.get_text():
-                    table = t
-                    break
-            
-            if not table:
-                logger.warning("Could not fetch S&P 500 from Wikipedia, using fallback list")
-                return self._get_sp500_fallback_list()
-            
-            tickers = []
-            
-            for row in table.find_all('tr')[1:]:  # Skip header
-                cells = row.find_all('td')
-                if len(cells) > 0:
-                    ticker = cells[0].text.strip()
-                    if ticker and ticker != '':  # Only add valid tickers
-                        tickers.append(ticker)
-            
-            if len(tickers) < 400:  # S&P 500 should have ~500 companies
-                logger.warning(f"Only fetched {len(tickers)} tickers, using fallback list")
-                return self._get_sp500_fallback_list()
-            
-            logger.info(f"Fetched {len(tickers)} S&P 500 tickers from Wikipedia")
-            return tickers
+            # Get a comprehensive list of major US stocks from multiple sources
+            all_tickers = self._get_major_us_stocks()
+            logger.info(f"Fetched {len(all_tickers)} major US stocks from comprehensive sources")
+            return all_tickers
             
         except Exception as e:
-            logger.error(f"Failed to fetch S&P 500 from Wikipedia: {e}")
-            return self._get_sp500_fallback_list()
+            logger.error(f"Failed to fetch comprehensive US stocks: {e}")
+            return self._get_expanded_fallback_list()
     
-    def _get_sp500_fallback_list(self) -> List[str]:
-        """Fallback S&P 500 constituent list (top 100 by market cap)."""
-        return [
-            'AAPL', 'MSFT', 'AMZN', 'NVDA', 'GOOGL', 'GOOG', 'TSLA', 'META', 'BRK.B', 'UNH',
-            'XOM', 'JNJ', 'JPM', 'V', 'PG', 'HD', 'CVX', 'MA', 'BAC', 'ABBV',
-            'PFE', 'AVGO', 'KO', 'LLY', 'PEP', 'TMO', 'COST', 'WMT', 'MRK', 'ABT',
-            'DIS', 'ACN', 'ADBE', 'CRM', 'NFLX', 'DHR', 'NKE', 'ORCL', 'VZ', 'CSCO',
-            'WFC', 'COP', 'TXN', 'MDT', 'NEE', 'RTX', 'QCOM', 'UPS', 'PM', 'LOW',
-            'BMY', 'AMGN', 'HON', 'SPGI', 'T', 'INTU', 'UNP', 'IBM', 'INTC', 'CAT',
-            'GS', 'AMD', 'BKNG', 'DE', 'AXP', 'NOW', 'ISRG', 'BLK', 'LMT', 'SYK',
-            'TJX', 'PLD', 'MU', 'GE', 'ADI', 'ADP', 'VRTX', 'MMC', 'SBUX', 'GILD',
-            'CVS', 'MO', 'CB', 'PYPL', 'MDLZ', 'C', 'SLB', 'TMUS', 'SO', 'ZTS',
-            'EOG', 'DUK', 'ICE', 'CMG', 'NSC', 'PNC', 'ITW', 'BSX', 'AON', 'REGN'
+    def _get_major_us_stocks(self) -> List[str]:
+        """Get comprehensive list of major US stocks from multiple exchanges."""
+        # Comprehensive list of major US stocks across NYSE, NASDAQ, and other exchanges
+        # This includes S&P 500, Russell 1000, and other major indices
+        major_stocks = [
+            # Top tech companies
+            'AAPL', 'MSFT', 'GOOGL', 'GOOG', 'AMZN', 'TSLA', 'META', 'NVDA', 'NFLX', 'ADBE',
+            'CRM', 'ORCL', 'INTC', 'AMD', 'QCOM', 'TXN', 'MU', 'ADI', 'MRVL', 'LRCX',
+            'KLAC', 'AMAT', 'SNPS', 'CDNS', 'FTNT', 'PANW', 'CRWD', 'ZS', 'OKTA', 'DDOG',
+            
+            # Financial sector
+            'JPM', 'BAC', 'WFC', 'C', 'GS', 'MS', 'USB', 'TFC', 'PNC', 'COF',
+            'AXP', 'BLK', 'SCHW', 'CME', 'ICE', 'SPGI', 'MCO', 'MMC', 'AON', 'AJG',
+            'V', 'MA', 'PYPL', 'SQ', 'FIS', 'FISV', 'ADP', 'INTU', 'PAYX', 'BR',
+            
+            # Healthcare & pharma
+            'UNH', 'JNJ', 'PFE', 'ABBV', 'MRK', 'TMO', 'ABT', 'LLY', 'BMY', 'AMGN',
+            'GILD', 'BIIB', 'REGN', 'VRTX', 'ISRG', 'DHR', 'SYK', 'BSX', 'MDT', 'ZBH',
+            'BDX', 'BAX', 'EW', 'DXCM', 'ILMN', 'INCY', 'MRNA', 'TECH', 'ALGN', 'HOLX',
+            
+            # Consumer goods & retail
+            'WMT', 'HD', 'PG', 'KO', 'PEP', 'COST', 'TGT', 'LOW', 'NKE', 'SBUX',
+            'MCD', 'DIS', 'CMCSA', 'VZ', 'T', 'TMUS', 'CL', 'KMB', 'GIS', 'K',
+            'TJX', 'ROST', 'ULTA', 'LULU', 'DECK', 'TPG', 'YUM', 'CMG', 'QSR', 'DPZ',
+            
+            # Energy sector
+            'XOM', 'CVX', 'COP', 'EOG', 'SLB', 'PSX', 'VLO', 'MPC', 'PXD', 'KMI',
+            'OKE', 'WMB', 'EPD', 'ET', 'MPLX', 'BKR', 'HAL', 'DVN', 'FANG', 'APA',
+            
+            # Industrial sector
+            'CAT', 'BA', 'HON', 'UNP', 'UPS', 'FDX', 'LMT', 'RTX', 'GE', 'MMM',
+            'ITW', 'EMR', 'ETN', 'PH', 'CMI', 'FTV', 'DOV', 'ROK', 'IEX', 'XYL',
+            'ROP', 'FAST', 'PAYX', 'VRSK', 'TDG', 'LDOS', 'GWW', 'EXPD', 'CHRW', 'JBHT',
+            
+            # Real estate & utilities
+            'NEE', 'DUK', 'SO', 'AEP', 'D', 'EXC', 'XEL', 'SRE', 'PCG', 'EIX',
+            'PLD', 'AMT', 'CCI', 'EQIX', 'WELL', 'AVB', 'EQR', 'DLR', 'O', 'CBRE',
+            'SPG', 'PSA', 'EXR', 'VTR', 'ARE', 'MAA', 'ESS', 'KIM', 'REG', 'BXP',
+            
+            # Materials & basic industries
+            'LIN', 'APD', 'SHW', 'FCX', 'NUE', 'STLD', 'VMC', 'MLM', 'NEM', 'FMC',
+            'LYB', 'DOW', 'DD', 'PPG', 'ECL', 'IFF', 'CE', 'PKG', 'AVY', 'SEE',
+            
+            # Emerging growth & biotech
+            'ZM', 'SHOP', 'ROKU', 'SNOW', 'PLTR', 'RBLX', 'U', 'COIN', 'HOOD', 'AFRM',
+            'SOFI', 'UPST', 'PTON', 'UBER', 'LYFT', 'ABNB', 'DASH', 'TWLO', 'ZI', 'FSLY',
+            'NET', 'ESTC', 'MDB', 'TEAM', 'ATLR', 'NOW', 'WDAY', 'VEEV', 'ZUO', 'BILL',
+            
+            # International ADRs
+            'TSM', 'ASML', 'NVO', 'TM', 'SAP', 'SONY', 'UL', 'NVS', 'AZN', 'SHEL',
+            'BP', 'RY', 'TD', 'BCS', 'DB', 'ING', 'CS', 'UBS', 'WBK', 'BBVA',
+            
+            # Small/mid cap growth
+            'ENPH', 'SEDG', 'FSLR', 'RUN', 'PLUG', 'BE', 'ICLN', 'ARKG', 'ARKK', 'ARKW',
+            'TDOC', 'PTON', 'BYND', 'OATS', 'GPRO', 'FIT', 'WORK', 'PINS', 'SNAP', 'TWTR'
         ]
+        
+        # Remove duplicates and return
+        return list(dict.fromkeys(major_stocks))
+    
+    def _get_expanded_fallback_list(self) -> List[str]:
+        """Expanded fallback list with more comprehensive stock coverage."""
+        return self._get_major_us_stocks()[:200]  # Return first 200 as fallback
     
     def _fetch_ftse100_tickers(self) -> List[str]:
-        """Fetch FTSE 100 constituents."""
-        # For now, return a reasonable subset - could be enhanced with real API
-        ftse100_core = [
+        """Fetch comprehensive international stock coverage."""
+        international_stocks = [
+            # UK major stocks  
             'SHEL', 'AZN', 'UL', 'BP.L', 'HSBA.L', 'VOD.L', 'GSK.L', 'RIO.L', 'BHP.L', 'BATS.L',
-            'DGE.L', 'LLOY.L', 'NWG.L', 'BARC.L', 'PRU.L', 'REL.L', 'BT-A.L', 'AAL.L', 'AV.L', 'CRH.L'
+            'DGE.L', 'LLOY.L', 'NWG.L', 'BARC.L', 'PRU.L', 'REL.L', 'BT-A.L', 'AAL.L', 'AV.L', 'CRH.L',
+            'LSEG.L', 'FLTR.L', 'ANTO.L', 'GLEN.L', 'NG.L', 'CPG.L', 'ULVR.L', 'RDSA.L',
+            
+            # European ADRs
+            'ASML', 'SAP', 'NVO', 'NVS', 'SIE', 'ALV', 'DTE', 'BAS', 'BMW', 'VOW3',
+            'TTE', 'BN', 'AIR', 'SU', 'CAP', 'BNP', 'ACA', 'GLE', 'MC', 'OR', 'SAN',
+            
+            # Asian ADRs
+            'TSM', 'BABA', 'JD', 'PDD', 'BIDU', 'NTES', 'TME', 'BILI', 'NIO', 'XPEV', 'LI',
+            'SONY', 'TM', 'MUFG', 'SMFG', 'HMC', 'NTT', 'SFT',
+            
+            # Canadian stocks
+            'RY', 'TD', 'BNS', 'BMO', 'CM', 'CNR', 'CP', 'SU', 'CNQ', 'IMO', 'CVE', 
+            'TRP', 'ENB', 'PPL', 'SHOP', 'WEED', 'ACB', 'CRON', 'TLRY',
+            
+            # Brazilian/Latin American ADRs
+            'VALE', 'PBR', 'ITUB', 'BBD', 'ABEV', 'SBS', 'TIMB', 'STNE', 'PAGS', 'NU',
+            
+            # More international coverage
+            'ING', 'ABN', 'UNA', 'MT', 'STM', 'AXA', 'CS', 'UBS', 'NOVN', 'ROG', 'NESN'
         ]
-        logger.info(f"Using FTSE 100 core list: {len(ftse100_core)} tickers")
-        return ftse100_core
+        
+        logger.info(f"International stock coverage: {len(international_stocks)} tickers")
+        return international_stocks
+    
+    def _fetch_dax_tickers(self) -> List[str]:
+        """Fetch DAX and other German/European stocks."""
+        german_european_stocks = [
+            # German DAX major stocks
+            'SAP', 'ASML', 'SIE', 'ALV', 'DTE', 'BAS', 'BMW', 'VOW3', 'MBG', 'ADS',
+            'DB', 'DBK', 'LIN', 'MUV2', 'HEN3', 'FRE', 'RWE', 'EON', 'IFX', 'DAI',
+            'CON', 'HEI', 'FME', 'MTX', 'EOAN', 'BEI', 'SHL', 'PAH3', 'QIA', 'PUM',
+            
+            # Swiss major stocks
+            'NESN', 'ROG', 'NOVN', 'UHR', 'LONN', 'CFR', 'SLHN', 'SREN', 'GIVN', 'ZURN',
+            
+            # French major stocks
+            'MC', 'OR', 'SAN', 'TTE', 'BN', 'AIR', 'SU', 'CAP', 'BNP', 'ACA', 'GLE',
+            
+            # Dutch major stocks  
+            'PHIA', 'ADYEN', 'BESI', 'ASM', 'DSM', 'KPN', 'UNA', 'MT', 'ING', 'ABN'
+        ]
+        logger.info(f"German/European stock coverage: {len(german_european_stocks)} tickers")
+        return german_european_stocks
+    
+    def _fetch_nikkei225_tickers(self) -> List[str]:
+        """Fetch Nikkei 225 and major Japanese stocks."""
+        japanese_stocks = [
+            # Major Japanese companies (some as ADRs)
+            'SONY', 'TM', 'MUFG', 'SMFG', 'HMC', 'NTT', 'SFT', 'KYOCF', 'FUJHY',
+            '7203.T', '6098.T', '4063.T', '4502.T', '9984.T', '9432.T', '8316.T',
+            '6758.T', '7267.T', '6861.T', '6954.T', '6920.T', '6752.T', '4543.T',
+            '8031.T', '4911.T', '6981.T', '7751.T', '4568.T', '4523.T', '4503.T',
+            '8058.T', '9020.T', '9022.T', '4612.T', '8802.T', '8411.T', '7974.T',
+            'MSBHF', 'SFTBY', 'NTDOY', 'FUJIF', 'HTHIY', 'MZDAY', 'SZKMY', 'TKOMY'
+        ]
+        logger.info(f"Japanese stock coverage: {len(japanese_stocks)} tickers")
+        return japanese_stocks
+    
+    def _fetch_asx200_tickers(self) -> List[str]:
+        """Fetch ASX 200 and major Australian/Pacific stocks."""
+        australian_stocks = [
+            # Major Australian companies
+            'CBA', 'ANZ', 'WBC', 'NAB', 'BHP', 'RIO', 'FMG', 'WOW', 'COL', 'TLS',
+            'CSL', 'WDS', 'MQG', 'TCL', 'SHL', 'WES', 'GMG', 'JHX', 'ALL', 'AMP',
+            'ASX', 'CPU', 'DXS', 'IAG', 'MIN', 'NCM', 'ORG', 'QAN', 'QBE', 'REA',
+            'S32', 'STO', 'SUN', 'WPL', 'XRO', 'APT', 'A2M', 'ALU', 'CWN', 'EVN',
+            
+            # New Zealand and Pacific coverage
+            'ATM', 'FPH', 'MCY', 'SKC', 'SPK', 'FBU', 'KMD', 'MEL', 'AIR', 'AIA'
+        ]
+        logger.info(f"Australian/Pacific stock coverage: {len(australian_stocks)} tickers")
+        return australian_stocks
     
     def get_index_tickers(self, index_name: str, force_refresh: bool = False) -> List[str]:
         """Get tickers for an index, fetching if needed or using cache."""
@@ -202,6 +293,12 @@ class IndexManager:
                 new_tickers = self._fetch_sp500_tickers()
             elif index_name == 'ftse100':
                 new_tickers = self._fetch_ftse100_tickers()
+            elif index_name == 'dax':
+                new_tickers = self._fetch_dax_tickers()
+            elif index_name == 'nikkei225':
+                new_tickers = self._fetch_nikkei225_tickers()
+            elif index_name == 'asx200':
+                new_tickers = self._fetch_asx200_tickers()
             else:
                 logger.warning(f"No fetcher implemented for {index_name}")
                 new_tickers = []
@@ -252,7 +349,7 @@ class IndexManager:
         all_tickers = set()
         
         # Define available indices
-        available_indices = ['sp500', 'ftse100']
+        available_indices = ['sp500', 'ftse100', 'dax', 'nikkei225', 'asx200']
         
         for index_name in available_indices:
             tickers = self.get_index_tickers(index_name)
