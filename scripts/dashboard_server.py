@@ -379,7 +379,6 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                 </select>
             </div>
             <button class="btn" onclick="updateData()">🔄 Update Data</button>
-            <button class="btn secondary" onclick="expandUniverse()">📈 Add More Stocks</button>
             <div id="updateStatus"></div>
         </div>
         
@@ -532,25 +531,6 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             });
         }
         
-        function expandUniverse() {
-            const status = document.getElementById('updateStatus');
-            status.innerHTML = '📈 Adding more stocks...';
-            status.className = 'show';
-            
-            fetch('/update', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({universe: 'sp500', expand: true})
-            })
-            .then(response => response.json())
-            .then(data => {
-                status.innerHTML = `📈 Adding ${data.estimated_stocks} more stocks`;
-                pollForUpdates();
-            })
-            .catch(error => {
-                status.innerHTML = '❌ Expansion failed: ' + error.message;
-            });
-        }
         
         function pollForUpdates() {
             setTimeout(() => {
@@ -591,36 +571,42 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             # Standard DCF
             dcf_val = valuations.get('dcf', {})
             dcf_fair = dcf_val.get('fair_value', 0) if dcf_val else 0
+            dcf_fair = dcf_fair or 0  # Handle None values
             dcf_ratio = f"{dcf_fair/current_price:.2f}x" if current_price > 0 and dcf_fair > 0 else "--"
             dcf_display = f"${dcf_fair:.2f}" if dcf_fair > 0 else "--"
             
             # Enhanced DCF  
             dcf_enh_val = valuations.get('dcf_enhanced', {})
             dcf_enh_fair = dcf_enh_val.get('fair_value', 0) if dcf_enh_val else 0
+            dcf_enh_fair = dcf_enh_fair or 0  # Handle None values
             dcf_enh_ratio = f"{dcf_enh_fair/current_price:.2f}x" if current_price > 0 and dcf_enh_fair > 0 else "--"
             dcf_enh_display = f"${dcf_enh_fair:.2f}" if dcf_enh_fair > 0 else "--"
             
             # Growth DCF
             growth_dcf_val = valuations.get('growth_dcf', {})
             growth_dcf_fair = growth_dcf_val.get('fair_value', 0) if growth_dcf_val else 0
+            growth_dcf_fair = growth_dcf_fair or 0  # Handle None values
             growth_dcf_ratio = f"{growth_dcf_fair/current_price:.2f}x" if current_price > 0 and growth_dcf_fair > 0 else "--"
             growth_dcf_display = f"${growth_dcf_fair:.2f}" if growth_dcf_fair > 0 else "--"
             
             # Multi-Stage DCF
             multi_dcf_val = valuations.get('multi_stage_dcf', {})
             multi_dcf_fair = multi_dcf_val.get('fair_value', 0) if multi_dcf_val else 0
+            multi_dcf_fair = multi_dcf_fair or 0  # Handle None values
             multi_dcf_ratio = f"{multi_dcf_fair/current_price:.2f}x" if current_price > 0 and multi_dcf_fair > 0 else "--"
             multi_dcf_display = f"${multi_dcf_fair:.2f}" if multi_dcf_fair > 0 else "--"
             
             # Simple Ratios (Market Multiples)
             ratios_val = valuations.get('simple_ratios', {})
             ratios_fair = ratios_val.get('fair_value', 0) if ratios_val else 0
+            ratios_fair = ratios_fair or 0  # Handle None values
             ratios_ratio = f"{ratios_fair/current_price:.2f}x" if current_price > 0 and ratios_fair > 0 else "--"
             ratios_display = f"${ratios_fair:.2f}" if ratios_fair > 0 else "--"
             
             # RIM (Residual Income Model)
             rim_val = valuations.get('rim', {})
             rim_fair = rim_val.get('fair_value', 0) if rim_val else 0
+            rim_fair = rim_fair or 0  # Handle None values
             rim_ratio = f"{rim_fair/current_price:.2f}x" if current_price > 0 and rim_fair > 0 else "--"
             rim_display = f"${rim_fair:.2f}" if rim_fair > 0 else "--"
             
