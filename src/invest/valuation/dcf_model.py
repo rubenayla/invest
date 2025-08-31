@@ -265,9 +265,9 @@ class EnhancedDCFModel(DCFModel):
         if cashflow is None or cashflow.empty:
             return None
         
-        # Get multi-year operating cash flow and capex data
-        operating_cf_key = 'Total Cash From Operating Activities'
-        capex_key = 'Capital Expenditures'
+        # Get multi-year operating cash flow and capex data using correct field names
+        operating_cf_key = 'Operating Cash Flow'
+        capex_key = 'Capital Expenditure'
         
         if operating_cf_key not in cashflow.index or capex_key not in cashflow.index:
             return super()._get_free_cash_flow(data)
