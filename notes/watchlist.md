@@ -15,13 +15,13 @@
 ## Watchlist
 - ACGL (Arch Capital Group Ltd)
     - PE9.5, P/B 1.5, 
+- NE (Noble Corporation PLC)
+    - PE 15.2, P/TBV 0.99
 - NEM (Newmont)?
     - pe 13.5, p/b 1.0
     - defensive, 
 - HIG (Hartford)
     - Huge profits, margins growing, suffered 2008 crisis but recovered and became supposedly more reliable
-- NE (Noble Corporation PLC)
-    - PE 15.2, P/B 1.0
 - Secure Energy
     - Trash collection
 - CVX (Chevron)

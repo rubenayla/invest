@@ -647,3 +647,50 @@ Hipoteca 1.5-3% es prácticamente dinero gratis (inflación españa 6%)
 │ │                                                                                                                                                                                  │ │
 │ │ This keeps your vision of "automatic screening + advanced analysis tools" while making it accessible. 
 
+# 2025-08-31
+
+● Based on the analysis and current market conditions, here are the top 3 investment recommendations:
+
+🥇 MOH (Molina Healthcare) - Best Overall Value
+
+Why it's exceptional:
+- P/E: 8.9 (healthcare average ~25)
+- P/TBV: 2.12 (reasonable for service business)
+- ROE: 23.9% (excellent capital efficiency)
+- Trading at 50% discount from 52W high due to sector panic
+
+The Setup: Market overreacted to Centene's ACA issues, dragging down ALL Medicaid insurers. But MOH has:
+- Better balance sheet than CNC
+- More efficient operations (lower medical cost ratio)
+- Growing Medicaid enrollment from state expansions
+
+Risk/Reward: Exceptional - you're buying quality healthcare at distressed prices.
+
+---
+🥈 NE (Noble Corporation) - Deep Value Play
+
+Why it's compelling:
+- P/TBV: 0.99 (trading below tangible assets!)
+- P/E: 15.2 (reasonable for cyclical)
+- Offshore drilling recovery story
+
+The Setup: Oil companies need offshore drilling again as easy onshore plays depleted. Noble survived the downturn, has modern rigs, and dayrates are recovering.
+
+Catalyst: Growing offshore drilling demand + reduced rig supply = pricing power return
+
+Risk: Cyclical and energy-dependent, but asset value provides downside protection.
+
+---
+🥉 ACGL (Arch Capital) - Quality Compounder
+
+Why it works:
+- P/E: 9.5 (insurance typically trades 12-15x)
+- P/TBV: 1.54 (solid tangible assets)
+- ROE: 17.1% (consistently profitable)
+- Insurance hard market = rising premiums
+
+The Setup: Disciplined underwriter in a favorable pricing environment. They grow book value >15% annually while maintaining conservative risk profile.
+
+Quality Factor: Warren Buffett-style insurance model - float generates investment income while underwriting profits compound.
+
+Honorable Mention: HIG (Hartford) has similar metrics but ACGL has better long-term track record.

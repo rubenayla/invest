@@ -1,6 +1,11 @@
+Organize yourself with todos and check that we only have 1 dashbaord, that it works, that the documentation shows how to run the server for it correctly, that it doesn't have the add stocks button, that there are 60.5x style ratios shown, and that it can extract data AND calculate with all our valuation models when clicking "Update Data", but it doesn't crash on silly missing values from the server or from the valuataion models.
 
+Add tests so these errors are caught automatically. We can't have the system return 0 stickers with no errors anywhere.
+commit the updates in clean commits. leave no untracked files.
+creating mcp for stocks analysis, and the previous just for the repo
+- take a look: https://www.ark-funds.com/funds/arkvx
 
-invest in warren style, human like instructions or can be programmed,
+to invest in warren style, human like instructions or can be programmed?
 
 why is acgl so cheap?
 nem P/tangible book value?

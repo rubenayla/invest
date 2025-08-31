@@ -239,8 +239,1208 @@
         "ftse100"
       ],
       "last_updated": "2025-08-30T20:03:08.535816"
+    },
+    "AAPL": {
+      "name": "Apple Inc.",
+      "sector": "Technology",
+      "industry": "Consumer Electronics",
+      "country": "United States",
+      "market_cap": 3445050310656,
+      "discovered_date": "2025-08-31T17:32:08.263982",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:08.264004"
+    },
+    "MSFT": {
+      "name": "Microsoft Corporation",
+      "sector": "Technology",
+      "industry": "Software - Infrastructure",
+      "country": "United States",
+      "market_cap": 3766312763392,
+      "discovered_date": "2025-08-31T17:32:08.624662",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:08.624686"
+    },
+    "AMZN": {
+      "name": "Amazon.com, Inc.",
+      "sector": "Consumer Cyclical",
+      "industry": "Internet Retail",
+      "country": "United States",
+      "market_cap": 2442261954560,
+      "discovered_date": "2025-08-31T17:32:08.969954",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:08.969977"
+    },
+    "NVDA": {
+      "name": "NVIDIA Corporation",
+      "sector": "Technology",
+      "industry": "Semiconductors",
+      "country": "United States",
+      "market_cap": 4240760373248,
+      "discovered_date": "2025-08-31T17:32:09.401857",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:09.401878"
+    },
+    "GOOGL": {
+      "name": "Alphabet Inc.",
+      "sector": "Communication Services",
+      "industry": "Internet Content & Information",
+      "country": "United States",
+      "market_cap": 2578297651200,
+      "discovered_date": "2025-08-31T17:32:09.737589",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:09.737610"
+    },
+    "GOOG": {
+      "name": "Alphabet Inc.",
+      "sector": "Communication Services",
+      "industry": "Internet Content & Information",
+      "country": "United States",
+      "market_cap": 2578310758400,
+      "discovered_date": "2025-08-31T17:32:10.092705",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:10.092727"
+    },
+    "TSLA": {
+      "name": "Tesla, Inc.",
+      "sector": "Consumer Cyclical",
+      "industry": "Auto Manufacturers",
+      "country": "United States",
+      "market_cap": 1076880998400,
+      "discovered_date": "2025-08-31T17:32:10.442144",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:10.442166"
+    },
+    "META": {
+      "name": "Meta Platforms, Inc.",
+      "sector": "Communication Services",
+      "industry": "Internet Content & Information",
+      "country": "United States",
+      "market_cap": 1855717900288,
+      "discovered_date": "2025-08-31T17:32:10.823677",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:10.823699"
+    },
+    "BRK.B": {
+      "name": "BRK.B",
+      "sector": "Unknown",
+      "industry": "Unknown",
+      "country": "Unknown",
+      "market_cap": null,
+      "discovered_date": "2025-08-31T17:32:11.410125",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:11.410140"
+    },
+    "UNH": {
+      "name": "UnitedHealth Group Incorporated",
+      "sector": "Healthcare",
+      "industry": "Healthcare Plans",
+      "country": "United States",
+      "market_cap": 280641208320,
+      "discovered_date": "2025-08-31T17:32:11.838905",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:11.838926"
+    },
+    "XOM": {
+      "name": "Exxon Mobil Corporation",
+      "sector": "Energy",
+      "industry": "Oil & Gas Integrated",
+      "country": "United States",
+      "market_cap": 487246823424,
+      "discovered_date": "2025-08-31T17:32:12.254831",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:12.254851"
+    },
+    "JNJ": {
+      "name": "Johnson & Johnson",
+      "sector": "Healthcare",
+      "industry": "Drug Manufacturers - General",
+      "country": "United States",
+      "market_cap": 426685595648,
+      "discovered_date": "2025-08-31T17:32:12.607269",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:12.607288"
+    },
+    "JPM": {
+      "name": "JPMorgan Chase & Co.",
+      "sector": "Financial Services",
+      "industry": "Banks - Diversified",
+      "country": "United States",
+      "market_cap": 828829663232,
+      "discovered_date": "2025-08-31T17:32:13.075415",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:13.075438"
+    },
+    "V": {
+      "name": "Visa Inc.",
+      "sector": "Financial Services",
+      "industry": "Credit Services",
+      "country": "United States",
+      "market_cap": 682783866880,
+      "discovered_date": "2025-08-31T17:32:13.488139",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:13.488160"
+    },
+    "PG": {
+      "name": "The Procter & Gamble Company",
+      "sector": "Consumer Defensive",
+      "industry": "Household & Personal Products",
+      "country": "United States",
+      "market_cap": 367845769216,
+      "discovered_date": "2025-08-31T17:32:13.835722",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:13.835741"
+    },
+    "HD": {
+      "name": "The Home Depot, Inc.",
+      "sector": "Consumer Cyclical",
+      "industry": "Home Improvement Retail",
+      "country": "United States",
+      "market_cap": 404893564928,
+      "discovered_date": "2025-08-31T17:32:14.193515",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:14.193533"
+    },
+    "CVX": {
+      "name": "Chevron Corporation",
+      "sector": "Energy",
+      "industry": "Oil & Gas Integrated",
+      "country": "United States",
+      "market_cap": 323580100608,
+      "discovered_date": "2025-08-31T17:32:14.562502",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:14.562518"
+    },
+    "MA": {
+      "name": "Mastercard Incorporated",
+      "sector": "Financial Services",
+      "industry": "Credit Services",
+      "country": "United States",
+      "market_cap": 538149289984,
+      "discovered_date": "2025-08-31T17:32:14.940150",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:14.940172"
+    },
+    "BAC": {
+      "name": "Bank of America Corporation",
+      "sector": "Financial Services",
+      "industry": "Banks - Diversified",
+      "country": "United States",
+      "market_cap": 375828643840,
+      "discovered_date": "2025-08-31T17:32:15.360497",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:15.360519"
+    },
+    "ABBV": {
+      "name": "AbbVie Inc.",
+      "sector": "Healthcare",
+      "industry": "Drug Manufacturers - General",
+      "country": "United States",
+      "market_cap": 371684212736,
+      "discovered_date": "2025-08-31T17:32:15.729847",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:15.729871"
+    },
+    "PFE": {
+      "name": "Pfizer Inc.",
+      "sector": "Healthcare",
+      "industry": "Drug Manufacturers - General",
+      "country": "United States",
+      "market_cap": 140774227968,
+      "discovered_date": "2025-08-31T17:32:16.083585",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:16.083608"
+    },
+    "AVGO": {
+      "name": "Broadcom Inc.",
+      "sector": "Technology",
+      "industry": "Semiconductors",
+      "country": "United States",
+      "market_cap": 1398764994560,
+      "discovered_date": "2025-08-31T17:32:16.439673",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:16.439697"
+    },
+    "KO": {
+      "name": "The Coca-Cola Company",
+      "sector": "Consumer Defensive",
+      "industry": "Beverages - Non-Alcoholic",
+      "country": "United States",
+      "market_cap": 296910159872,
+      "discovered_date": "2025-08-31T17:32:16.792796",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:16.792817"
+    },
+    "LLY": {
+      "name": "Eli Lilly and Company",
+      "sector": "Healthcare",
+      "industry": "Drug Manufacturers - General",
+      "country": "United States",
+      "market_cap": 656726491136,
+      "discovered_date": "2025-08-31T17:32:17.158078",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:17.158098"
+    },
+    "PEP": {
+      "name": "PepsiCo, Inc.",
+      "sector": "Consumer Defensive",
+      "industry": "Beverages - Non-Alcoholic",
+      "country": "United States",
+      "market_cap": 203513741312,
+      "discovered_date": "2025-08-31T17:32:17.521287",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:17.521309"
+    },
+    "TMO": {
+      "name": "Thermo Fisher Scientific Inc.",
+      "sector": "Healthcare",
+      "industry": "Diagnostics & Research",
+      "country": "United States",
+      "market_cap": 186056982528,
+      "discovered_date": "2025-08-31T17:32:17.866754",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:17.866776"
+    },
+    "COST": {
+      "name": "Costco Wholesale Corporation",
+      "sector": "Consumer Defensive",
+      "industry": "Discount Stores",
+      "country": "United States",
+      "market_cap": 418340732928,
+      "discovered_date": "2025-08-31T17:32:18.218211",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:18.218235"
+    },
+    "WMT": {
+      "name": "Walmart Inc.",
+      "sector": "Consumer Defensive",
+      "industry": "Discount Stores",
+      "country": "United States",
+      "market_cap": 773941166080,
+      "discovered_date": "2025-08-31T17:32:18.584614",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:18.584636"
+    },
+    "MRK": {
+      "name": "Merck & Co., Inc.",
+      "sector": "Healthcare",
+      "industry": "Drug Manufacturers - General",
+      "country": "United States",
+      "market_cap": 210113265664,
+      "discovered_date": "2025-08-31T17:32:19.009925",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:19.009944"
+    },
+    "ABT": {
+      "name": "Abbott Laboratories",
+      "sector": "Healthcare",
+      "industry": "Medical Devices",
+      "country": "United States",
+      "market_cap": 230889439232,
+      "discovered_date": "2025-08-31T17:32:19.354084",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:19.354106"
+    },
+    "DIS": {
+      "name": "The Walt Disney Company",
+      "sector": "Communication Services",
+      "industry": "Entertainment",
+      "country": "United States",
+      "market_cap": 212838940672,
+      "discovered_date": "2025-08-31T17:32:19.707098",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:19.707113"
+    },
+    "ACN": {
+      "name": "Accenture plc",
+      "sector": "Technology",
+      "industry": "Information Technology Services",
+      "country": "Ireland",
+      "market_cap": 161923088384,
+      "discovered_date": "2025-08-31T17:32:20.060092",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:20.060114"
+    },
+    "ADBE": {
+      "name": "Adobe Inc.",
+      "sector": "Technology",
+      "industry": "Software - Application",
+      "country": "United States",
+      "market_cap": 151312138240,
+      "discovered_date": "2025-08-31T17:32:20.448332",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:20.448352"
+    },
+    "CRM": {
+      "name": "Salesforce, Inc.",
+      "sector": "Technology",
+      "industry": "Software - Application",
+      "country": "United States",
+      "market_cap": 244974993408,
+      "discovered_date": "2025-08-31T17:32:20.805865",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:20.805886"
+    },
+    "NFLX": {
+      "name": "Netflix, Inc.",
+      "sector": "Communication Services",
+      "industry": "Entertainment",
+      "country": "United States",
+      "market_cap": 513416855552,
+      "discovered_date": "2025-08-31T17:32:21.369544",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:21.369565"
+    },
+    "DHR": {
+      "name": "Danaher Corporation",
+      "sector": "Healthcare",
+      "industry": "Diagnostics & Research",
+      "country": "United States",
+      "market_cap": 147377815552,
+      "discovered_date": "2025-08-31T17:32:21.725130",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:21.725154"
+    },
+    "NKE": {
+      "name": "NIKE, Inc.",
+      "sector": "Consumer Cyclical",
+      "industry": "Footwear & Accessories",
+      "country": "United States",
+      "market_cap": 114267758592,
+      "discovered_date": "2025-08-31T17:32:22.068101",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:22.068122"
+    },
+    "ORCL": {
+      "name": "Oracle Corporation",
+      "sector": "Technology",
+      "industry": "Software - Infrastructure",
+      "country": "United States",
+      "market_cap": 635160756224,
+      "discovered_date": "2025-08-31T17:32:22.437096",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:22.437114"
+    },
+    "VZ": {
+      "name": "Verizon Communications Inc.",
+      "sector": "Communication Services",
+      "industry": "Telecom Services",
+      "country": "United States",
+      "market_cap": 186487832576,
+      "discovered_date": "2025-08-31T17:32:22.785906",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:22.785923"
+    },
+    "CSCO": {
+      "name": "Cisco Systems, Inc.",
+      "sector": "Technology",
+      "industry": "Communication Equipment",
+      "country": "United States",
+      "market_cap": 273596383232,
+      "discovered_date": "2025-08-31T17:32:23.138762",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:23.138783"
+    },
+    "WFC": {
+      "name": "Wells Fargo & Company",
+      "sector": "Financial Services",
+      "industry": "Banks - Diversified",
+      "country": "United States",
+      "market_cap": 263258718208,
+      "discovered_date": "2025-08-31T17:32:23.514858",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:23.514881"
+    },
+    "COP": {
+      "name": "ConocoPhillips",
+      "sector": "Energy",
+      "industry": "Oil & Gas E&P",
+      "country": "United States",
+      "market_cap": 123607597056,
+      "discovered_date": "2025-08-31T17:32:23.855617",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:23.855637"
+    },
+    "TXN": {
+      "name": "Texas Instruments Incorporated",
+      "sector": "Technology",
+      "industry": "Semiconductors",
+      "country": "United States",
+      "market_cap": 184082055168,
+      "discovered_date": "2025-08-31T17:32:24.276336",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:24.276355"
+    },
+    "MDT": {
+      "name": "Medtronic plc",
+      "sector": "Healthcare",
+      "industry": "Medical Devices",
+      "country": "Ireland",
+      "market_cap": 119046463488,
+      "discovered_date": "2025-08-31T17:32:24.625314",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:24.625336"
+    },
+    "NEE": {
+      "name": "NextEra Energy, Inc.",
+      "sector": "Utilities",
+      "industry": "Utilities - Regulated Electric",
+      "country": "United States",
+      "market_cap": 148371849216,
+      "discovered_date": "2025-08-31T17:32:24.983130",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:24.983151"
+    },
+    "RTX": {
+      "name": "RTX Corporation",
+      "sector": "Industrials",
+      "industry": "Aerospace & Defense",
+      "country": "United States",
+      "market_cap": 212292452352,
+      "discovered_date": "2025-08-31T17:32:25.337688",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:25.337708"
+    },
+    "QCOM": {
+      "name": "QUALCOMM Incorporated",
+      "sector": "Technology",
+      "industry": "Semiconductors",
+      "country": "United States",
+      "market_cap": 173427671040,
+      "discovered_date": "2025-08-31T17:32:25.685481",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:25.685502"
+    },
+    "UPS": {
+      "name": "United Parcel Service, Inc.",
+      "sector": "Industrials",
+      "industry": "Integrated Freight & Logistics",
+      "country": "United States",
+      "market_cap": 74111524864,
+      "discovered_date": "2025-08-31T17:32:26.052907",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:26.052930"
+    },
+    "PM": {
+      "name": "Philip Morris International Inc.",
+      "sector": "Consumer Defensive",
+      "industry": "Tobacco",
+      "country": "United States",
+      "market_cap": 260152885248,
+      "discovered_date": "2025-08-31T17:32:26.460519",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:26.460534"
+    },
+    "LOW": {
+      "name": "Lowe's Companies, Inc.",
+      "sector": "Consumer Cyclical",
+      "industry": "Home Improvement Retail",
+      "country": "United States",
+      "market_cap": 144726507520,
+      "discovered_date": "2025-08-31T17:32:26.807939",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:26.807956"
+    },
+    "BMY": {
+      "name": "Bristol-Myers Squibb Company",
+      "sector": "Healthcare",
+      "industry": "Drug Manufacturers - General",
+      "country": "United States",
+      "market_cap": 96032063488,
+      "discovered_date": "2025-08-31T17:32:27.340957",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:27.340974"
+    },
+    "AMGN": {
+      "name": "Amgen Inc.",
+      "sector": "Healthcare",
+      "industry": "Drug Manufacturers - General",
+      "country": "United States",
+      "market_cap": 154892124160,
+      "discovered_date": "2025-08-31T17:32:27.688096",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:27.688116"
+    },
+    "HON": {
+      "name": "Honeywell International Inc.",
+      "sector": "Industrials",
+      "industry": "Conglomerates",
+      "country": "United States",
+      "market_cap": 139359895552,
+      "discovered_date": "2025-08-31T17:32:28.036364",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:28.036391"
+    },
+    "SPGI": {
+      "name": "S&P Global Inc.",
+      "sector": "Financial Services",
+      "industry": "Financial Data & Stock Exchanges",
+      "country": "United States",
+      "market_cap": 167438729216,
+      "discovered_date": "2025-08-31T17:32:28.458822",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:28.458844"
+    },
+    "T": {
+      "name": "AT&T Inc.",
+      "sector": "Communication Services",
+      "industry": "Telecom Services",
+      "country": "United States",
+      "market_cap": 209434918912,
+      "discovered_date": "2025-08-31T17:32:28.913902",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:28.913927"
+    },
+    "INTU": {
+      "name": "Intuit Inc.",
+      "sector": "Technology",
+      "industry": "Software - Application",
+      "country": "United States",
+      "market_cap": 186057654272,
+      "discovered_date": "2025-08-31T17:32:29.426728",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:29.426744"
+    },
+    "UNP": {
+      "name": "Union Pacific Corporation",
+      "sector": "Industrials",
+      "industry": "Railroads",
+      "country": "United States",
+      "market_cap": 132585955328,
+      "discovered_date": "2025-08-31T17:32:29.807292",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:29.807314"
+    },
+    "IBM": {
+      "name": "International Business Machines Corporation",
+      "sector": "Technology",
+      "industry": "Information Technology Services",
+      "country": "United States",
+      "market_cap": 226815557632,
+      "discovered_date": "2025-08-31T17:32:30.252684",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:30.252711"
+    },
+    "INTC": {
+      "name": "Intel Corporation",
+      "sector": "Technology",
+      "industry": "Semiconductors",
+      "country": "United States",
+      "market_cap": 106579460096,
+      "discovered_date": "2025-08-31T17:32:30.795469",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:30.795492"
+    },
+    "CAT": {
+      "name": "Caterpillar Inc.",
+      "sector": "Industrials",
+      "industry": "Farm & Heavy Construction Machinery",
+      "country": "United States",
+      "market_cap": 196311449600,
+      "discovered_date": "2025-08-31T17:32:31.147181",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:31.147203"
+    },
+    "GS": {
+      "name": "The Goldman Sachs Group, Inc.",
+      "sector": "Financial Services",
+      "industry": "Capital Markets",
+      "country": "United States",
+      "market_cap": 225602813952,
+      "discovered_date": "2025-08-31T17:32:31.583714",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:31.584179"
+    },
+    "AMD": {
+      "name": "Advanced Micro Devices, Inc.",
+      "sector": "Technology",
+      "industry": "Semiconductors",
+      "country": "United States",
+      "market_cap": 263922483200,
+      "discovered_date": "2025-08-31T17:32:31.935968",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:31.935993"
+    },
+    "BKNG": {
+      "name": "Booking Holdings Inc.",
+      "sector": "Consumer Cyclical",
+      "industry": "Travel Services",
+      "country": "United States",
+      "market_cap": 181464645632,
+      "discovered_date": "2025-08-31T17:32:32.301371",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:32.301404"
+    },
+    "DE": {
+      "name": "Deere & Company",
+      "sector": "Industrials",
+      "industry": "Farm & Heavy Construction Machinery",
+      "country": "United States",
+      "market_cap": 129390272512,
+      "discovered_date": "2025-08-31T17:32:32.671105",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:32.671131"
+    },
+    "AXP": {
+      "name": "American Express Company",
+      "sector": "Financial Services",
+      "industry": "Credit Services",
+      "country": "United States",
+      "market_cap": 230531776512,
+      "discovered_date": "2025-08-31T17:32:33.115077",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:33.115113"
+    },
+    "NOW": {
+      "name": "ServiceNow, Inc.",
+      "sector": "Technology",
+      "industry": "Software - Application",
+      "country": "United States",
+      "market_cap": 190390386688,
+      "discovered_date": "2025-08-31T17:32:33.482065",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:33.482091"
+    },
+    "ISRG": {
+      "name": "Intuitive Surgical, Inc.",
+      "sector": "Healthcare",
+      "industry": "Medical Instruments & Supplies",
+      "country": "United States",
+      "market_cap": 169665380352,
+      "discovered_date": "2025-08-31T17:32:33.834206",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:33.834227"
+    },
+    "BLK": {
+      "name": "BlackRock, Inc.",
+      "sector": "Financial Services",
+      "industry": "Asset Management",
+      "country": "United States",
+      "market_cap": 174540996608,
+      "discovered_date": "2025-08-31T17:32:34.242780",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:34.242801"
+    },
+    "LMT": {
+      "name": "Lockheed Martin Corporation",
+      "sector": "Industrials",
+      "industry": "Aerospace & Defense",
+      "country": "United States",
+      "market_cap": 106373652480,
+      "discovered_date": "2025-08-31T17:32:34.622546",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:34.622571"
+    },
+    "SYK": {
+      "name": "Stryker Corporation",
+      "sector": "Healthcare",
+      "industry": "Medical Devices",
+      "country": "United States",
+      "market_cap": 149638791168,
+      "discovered_date": "2025-08-31T17:32:35.059784",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:35.059804"
+    },
+    "TJX": {
+      "name": "The TJX Companies, Inc.",
+      "sector": "Consumer Cyclical",
+      "industry": "Apparel Retail",
+      "country": "United States",
+      "market_cap": 152404836352,
+      "discovered_date": "2025-08-31T17:32:35.565251",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:35.565282"
+    },
+    "PLD": {
+      "name": "Prologis, Inc.",
+      "sector": "Real Estate",
+      "industry": "REIT - Industrial",
+      "country": "United States",
+      "market_cap": 105595002880,
+      "discovered_date": "2025-08-31T17:32:35.921568",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:35.921590"
+    },
+    "MU": {
+      "name": "Micron Technology, Inc.",
+      "sector": "Technology",
+      "industry": "Semiconductors",
+      "country": "United States",
+      "market_cap": 133187657728,
+      "discovered_date": "2025-08-31T17:32:36.356782",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:36.356804"
+    },
+    "GE": {
+      "name": "GE Aerospace",
+      "sector": "Industrials",
+      "industry": "Aerospace & Defense",
+      "country": "United States",
+      "market_cap": 291833085952,
+      "discovered_date": "2025-08-31T17:32:36.774274",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:36.774289"
+    },
+    "ADI": {
+      "name": "Analog Devices, Inc.",
+      "sector": "Technology",
+      "industry": "Semiconductors",
+      "country": "United States",
+      "market_cap": 123633213440,
+      "discovered_date": "2025-08-31T17:32:37.186667",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:37.186689"
+    },
+    "ADP": {
+      "name": "Automatic Data Processing, Inc.",
+      "sector": "Technology",
+      "industry": "Software - Application",
+      "country": "United States",
+      "market_cap": 123153317888,
+      "discovered_date": "2025-08-31T17:32:37.619521",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:37.619542"
+    },
+    "VRTX": {
+      "name": "Vertex Pharmaceuticals Incorporated",
+      "sector": "Healthcare",
+      "industry": "Biotechnology",
+      "country": "United States",
+      "market_cap": 100254007296,
+      "discovered_date": "2025-08-31T17:32:38.131753",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:38.131774"
+    },
+    "MMC": {
+      "name": "Marsh & McLennan Companies, Inc.",
+      "sector": "Financial Services",
+      "industry": "Insurance Brokers",
+      "country": "United States",
+      "market_cap": 101181136896,
+      "discovered_date": "2025-08-31T17:32:38.642576",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:38.642591"
+    },
+    "SBUX": {
+      "name": "Starbucks Corporation",
+      "sector": "Consumer Cyclical",
+      "industry": "Restaurants",
+      "country": "United States",
+      "market_cap": 100245577728,
+      "discovered_date": "2025-08-31T17:32:39.052739",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:39.052757"
+    },
+    "GILD": {
+      "name": "Gilead Sciences, Inc.",
+      "sector": "Healthcare",
+      "industry": "Drug Manufacturers - General",
+      "country": "United States",
+      "market_cap": 140174311424,
+      "discovered_date": "2025-08-31T17:32:39.584703",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:39.584725"
+    },
+    "CVS": {
+      "name": "CVS Health Corporation",
+      "sector": "Healthcare",
+      "industry": "Healthcare Plans",
+      "country": "United States",
+      "market_cap": 92778340352,
+      "discovered_date": "2025-08-31T17:32:40.035540",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:40.035561"
+    },
+    "MO": {
+      "name": "Altria Group, Inc.",
+      "sector": "Consumer Defensive",
+      "industry": "Tobacco",
+      "country": "United States",
+      "market_cap": 112905412608,
+      "discovered_date": "2025-08-31T17:32:40.427094",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:40.427120"
+    },
+    "CB": {
+      "name": "Chubb Limited",
+      "sector": "Financial Services",
+      "industry": "Insurance - Property & Casualty",
+      "country": "Switzerland",
+      "market_cap": 109667655680,
+      "discovered_date": "2025-08-31T17:32:40.896509",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:40.896530"
+    },
+    "PYPL": {
+      "name": "PayPal Holdings, Inc.",
+      "sector": "Financial Services",
+      "industry": "Credit Services",
+      "country": "United States",
+      "market_cap": 67057983488,
+      "discovered_date": "2025-08-31T17:32:41.306563",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:41.306584"
+    },
+    "MDLZ": {
+      "name": "Mondelez International, Inc.",
+      "sector": "Consumer Defensive",
+      "industry": "Confectioners",
+      "country": "United States",
+      "market_cap": 79500279808,
+      "discovered_date": "2025-08-31T17:32:41.658205",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:41.658226"
+    },
+    "C": {
+      "name": "Citigroup Inc.",
+      "sector": "Financial Services",
+      "industry": "Banks - Diversified",
+      "country": "United States",
+      "market_cap": 177775706112,
+      "discovered_date": "2025-08-31T17:32:42.143112",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:42.143132"
+    },
+    "SLB": {
+      "name": "Schlumberger Limited",
+      "sector": "Energy",
+      "industry": "Oil & Gas Equipment & Services",
+      "country": "United States",
+      "market_cap": 54953123840,
+      "discovered_date": "2025-08-31T17:32:42.639161",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:42.639181"
+    },
+    "TMUS": {
+      "name": "T-Mobile US, Inc.",
+      "sector": "Communication Services",
+      "industry": "Telecom Services",
+      "country": "United States",
+      "market_cap": 283594588160,
+      "discovered_date": "2025-08-31T17:32:43.048411",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:43.048432"
+    },
+    "SO": {
+      "name": "The Southern Company",
+      "sector": "Utilities",
+      "industry": "Utilities - Regulated Electric",
+      "country": "United States",
+      "market_cap": 101534621696,
+      "discovered_date": "2025-08-31T17:32:43.457036",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:43.457059"
+    },
+    "ZTS": {
+      "name": "Zoetis Inc.",
+      "sector": "Healthcare",
+      "industry": "Drug Manufacturers - Specialty & Generic",
+      "country": "United States",
+      "market_cap": 69313822720,
+      "discovered_date": "2025-08-31T17:32:43.813121",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:43.813145"
+    },
+    "EOG": {
+      "name": "EOG Resources, Inc.",
+      "sector": "Energy",
+      "industry": "Oil & Gas E&P",
+      "country": "United States",
+      "market_cap": 68150849536,
+      "discovered_date": "2025-08-31T17:32:44.278190",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:44.278210"
+    },
+    "DUK": {
+      "name": "Duke Energy Corporation",
+      "sector": "Utilities",
+      "industry": "Utilities - Regulated Electric",
+      "country": "United States",
+      "market_cap": 95251161088,
+      "discovered_date": "2025-08-31T17:32:44.685796",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:44.685818"
+    },
+    "ICE": {
+      "name": "Intercontinental Exchange, Inc.",
+      "sector": "Financial Services",
+      "industry": "Financial Data & Stock Exchanges",
+      "country": "United States",
+      "market_cap": 101089902592,
+      "discovered_date": "2025-08-31T17:32:45.154063",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:45.154085"
+    },
+    "CMG": {
+      "name": "Chipotle Mexican Grill, Inc.",
+      "sector": "Consumer Cyclical",
+      "industry": "Restaurants",
+      "country": "United States",
+      "market_cap": 56504680448,
+      "discovered_date": "2025-08-31T17:32:45.507149",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:45.507165"
+    },
+    "NSC": {
+      "name": "Norfolk Southern Corporation",
+      "sector": "Industrials",
+      "industry": "Railroads",
+      "country": "United States",
+      "market_cap": 62814633984,
+      "discovered_date": "2025-08-31T17:32:45.861471",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:45.861491"
+    },
+    "PNC": {
+      "name": "The PNC Financial Services Group, Inc.",
+      "sector": "Financial Services",
+      "industry": "Banks - Regional",
+      "country": "United States",
+      "market_cap": 81691328512,
+      "discovered_date": "2025-08-31T17:32:46.323693",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:46.323716"
+    },
+    "ITW": {
+      "name": "Illinois Tool Works Inc.",
+      "sector": "Industrials",
+      "industry": "Specialty Industrial Machinery",
+      "country": "United States",
+      "market_cap": 77145473024,
+      "discovered_date": "2025-08-31T17:32:46.685689",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:46.685711"
+    },
+    "BSX": {
+      "name": "Boston Scientific Corporation",
+      "sector": "Healthcare",
+      "industry": "Medical Devices",
+      "country": "United States",
+      "market_cap": 156324626432,
+      "discovered_date": "2025-08-31T17:32:47.037846",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:47.037869"
+    },
+    "AON": {
+      "name": "Aon plc",
+      "sector": "Financial Services",
+      "industry": "Insurance Brokers",
+      "country": "Ireland",
+      "market_cap": 79135113216,
+      "discovered_date": "2025-08-31T17:32:47.450595",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:47.450616"
+    },
+    "REGN": {
+      "name": "Regeneron Pharmaceuticals, Inc.",
+      "sector": "Healthcare",
+      "industry": "Biotechnology",
+      "country": "United States",
+      "market_cap": 61546651648,
+      "discovered_date": "2025-08-31T17:32:47.859580",
+      "indices": [
+        "sp500"
+      ],
+      "last_updated": "2025-08-31T17:32:47.859602"
     }
   },
-  "last_updated": "2025-08-30T20:03:08.535998",
-  "total_companies": 20
+  "last_updated": "2025-08-31T17:32:47.860268",
+  "total_companies": 120
 }
