@@ -100,8 +100,8 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                         # Two-step approach: fetch data then analyze offline
                         logger.info(f"Starting two-step dashboard update for {universe} universe")
                         
-                        # Step 1: Fetch data asynchronously
-                        max_stocks = 1000 if universe == 'sp500' else 500
+                        # Step 1: Fetch data asynchronously - no artificial limits
+                        max_stocks = 10000  # High enough to never be a constraint
                         fetch_success = self.fetch_stock_data_async(universe, max_stocks)
                         
                         if fetch_success:

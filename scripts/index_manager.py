@@ -134,18 +134,13 @@ class IndexManager:
             response = requests.get(url, timeout=30)
             soup = BeautifulSoup(response.content, 'html.parser')
             
-            # Try multiple table selection strategies
-            table = soup.find('table', {'class': 'wikitable'})
-            if not table:
-                # Try finding the first table with sortable class
-                table = soup.find('table', {'class': 'wikitable sortable'})
-            if not table:
-                # Try finding any table containing S&P 500 data
-                tables = soup.find_all('table')
-                for t in tables:
-                    if t.find('th') and 'Symbol' in t.get_text():
-                        table = t
-                        break
+            # Find any wikitable with Symbol column (the main S&P 500 table)
+            tables = soup.find_all('table')
+            table = None
+            for t in tables:
+                if 'wikitable' in str(t.get('class', [])) and 'Symbol' in t.get_text():
+                    table = t
+                    break
             
             if not table:
                 logger.warning("Could not fetch S&P 500 from Wikipedia, using fallback list")
