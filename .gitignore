@@ -79,3 +79,8 @@ verify_dashboard.py
 
 # Stock cache data (too large for git)
 data/stock_cache/
+
+# Generated index and dashboard data files
+data/indices/companies_registry.json
+data/indices/indices_cache.json
+dashboard/dashboard_data.json
