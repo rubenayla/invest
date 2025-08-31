@@ -1,4 +1,4 @@
-The dcf and enhanced dcf are providing the same answers. it's suspicious.
+
 
 - I don't want, "max_stocks = 10000 (effectively unlimited)", i want to actually have no limits. And no useless code.
 
@@ -69,30 +69,9 @@ Analyze APA and the other top stocks
     - Multiples
     - Dividend discount
 
-## Advanced Valuation Models to Implement
-- [x] **Residual Income Model (RIM)** ⭐⭐⭐ - Perfect for financial companies
-    - RIM = Book Value + PV(Abnormal Earnings)
-    - Abnormal Earnings = (ROE - Cost of Equity) × Book Value
-    - Great for banks, insurance companies where DCF struggles
-- [x] **Monte Carlo DCF** ⭐⭐ - Add confidence intervals
-    - Use probability distributions for growth rates, discount rates
-    - Output: "Fair Value: $45.67 (Range: $38.12 - $52.34, 68% confidence)"
-- [x] **Multi-Stage DCF** ⭐⭐⭐ - More realistic growth phases
-    - Phase 1: High growth (Years 1-5)
-    - Phase 2: Transition (Years 6-10)
-    - Phase 3: Terminal stable growth
-- [x] **Sector-Specific Models** ⭐⭐ - COMPLETED! ✅
-    - REITs: FFO (Funds From Operations) based ✅
-    - Banks: ROE/Book value, regulatory capital ratios ✅
-    - Tech: Revenue multiples, PEG growth metrics ✅  
-    - Utilities: Dividend discount, regulatory frameworks ✅
-- [x] **Ensemble/Blended Model** ⭐⭐⭐ - COMPLETED! ✅
-    - Intelligent weighted average of all suitable models ✅
-    - Automatically adjust weights based on sector, confidence, and data quality ✅
-    - Comprehensive consensus metrics and uncertainty quantification ✅
-- [ ] **Real Options Valuation** ⭐ - For high-growth tech companies
-    - Value growth opportunities as call options
-    - Especially good for companies with significant R&D or expansion potential
+---
+
+- Neural network that takes the stock price, fundamental ratios, growths, etc and returns a score. Run that over all known data for past companies, and train, maybe genetic algorithm, so it learns the best possible valuation technique.
 
 ## Copypaste to do one
 Price:
