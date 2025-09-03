@@ -155,6 +155,20 @@ class ModelDataRequirements:
         description="Specialized for utilities, focuses on regulated returns and dividends."
     )
     
+    NEURAL_NETWORK = FieldRequirement(
+        required=['currentPrice', 'marketCap', 'enterpriseValue', 'totalRevenue'],
+        required_one_of=['trailingEps', 'forwardEps'],
+        optional=[
+            'pegRatio', 'priceToBook', 'ebitda', 'profitMargins', 'operatingMargins',
+            'returnOnEquity', 'returnOnAssets', 'revenueGrowth', 'earningsGrowth',
+            'currentRatio', 'quickRatio', 'debtToEquity', 'freeCashflow',
+            'beta', 'dividendYield', 'payoutRatio', 'fiftyTwoWeekHigh', 'fiftyTwoWeekLow',
+            'fiftyDayAverage', 'twoHundredDayAverage', 'targetMeanPrice', 'numberOfAnalystOpinions',
+            'recommendationKey', 'sector', 'industry'
+        ],
+        description="Neural network model using 60+ engineered features for pattern-based valuation."
+    )
+    
     @classmethod
     def get_requirements(cls, model_name: str) -> FieldRequirement:
         """
@@ -186,6 +200,7 @@ class ModelDataRequirements:
             'bank_model': cls.BANK_MODEL,
             'reit_model': cls.REIT_MODEL,
             'utility_model': cls.UTILITY_MODEL,
+            'neural_network': cls.NEURAL_NETWORK,
         }
         
         if model_name not in model_map:

@@ -15,6 +15,7 @@ from .rim_model import RIMModel
 from .ratios_model import SimpleRatiosModel
 from .sector_models import REITModel, BankModel, TechModel, UtilityModel
 from .ensemble_model import EnsembleModel
+from .neural_network_model import NeuralNetworkValuationModel
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +41,7 @@ class ModelRegistry:
         'tech': TechModel,
         'utility': UtilityModel,
         'ensemble': EnsembleModel,
+        'neural_network': NeuralNetworkValuationModel,
     }
     
     # Model metadata for user interfaces and documentation
@@ -131,6 +133,14 @@ class ModelRegistry:
             'time_horizon': 'Varies by constituent models',
             'complexity': 'high',
             'data_requirements': ['Sufficient data for multiple models'],
+        },
+        'neural_network': {
+            'name': 'Neural Network Valuation',
+            'description': 'ML-based valuation using deep learning on 60+ engineered features from fundamental data',
+            'suitable_for': ['All companies with sufficient data', 'Pattern recognition in valuations', 'Multi-factor analysis'],
+            'time_horizon': 'Configurable (1 month to 5 years)',
+            'complexity': 'very high',
+            'data_requirements': ['Comprehensive fundamental data', 'Price history', 'Financial statements'],
         },
     }
     

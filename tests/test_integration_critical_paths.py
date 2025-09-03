@@ -35,7 +35,7 @@ class TestUnifiedValuationModels:
         registry = ModelRegistry()
         available_models = registry.get_available_models()
         
-        expected_models = ['bank', 'dcf', 'dcf_enhanced', 'ensemble', 'growth_dcf', 'multi_stage_dcf', 'reit', 'rim', 'simple_ratios', 'tech', 'utility']
+        expected_models = ['bank', 'dcf', 'dcf_enhanced', 'ensemble', 'growth_dcf', 'multi_stage_dcf', 'neural_network', 'reit', 'rim', 'simple_ratios', 'tech', 'utility']
         assert set(available_models) == set(expected_models)
         
         # Test model metadata is available
@@ -144,7 +144,7 @@ class TestDashboardComponentsIntegration:
         
         # Test engine initialization
         available_models = engine.get_available_models()
-        expected_models = ['bank', 'dcf', 'dcf_enhanced', 'ensemble', 'growth_dcf', 'multi_stage_dcf', 'reit', 'rim', 'simple_ratios', 'tech', 'utility']
+        expected_models = ['bank', 'dcf', 'dcf_enhanced', 'ensemble', 'growth_dcf', 'multi_stage_dcf', 'neural_network', 'reit', 'rim', 'simple_ratios', 'tech', 'utility']
         assert set(available_models) == set(expected_models)
         
         # Test statistics tracking
