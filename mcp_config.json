@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "stock-analysis": {
+    "investment-analysis": {
       "command": "poetry",
-      "args": ["run", "python", "mcp_server.py"],
+      "args": ["run", "python", "mcp_server_v2.py"],
       "env": {
         "PYTHONPATH": "."
       }

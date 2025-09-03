@@ -12,7 +12,14 @@ from ..screening.risk import apply_cyclical_adjustments, screen_risk
 from ..screening.value import screen_value
 from ..simple_ratios import calculate_simple_ratios_valuation
 
-# from ..rim import RIMModel  # Import when available
+# Import the modern valuation system
+try:
+    from ..valuation.model_registry import ModelRegistry
+    from ..valuation.multi_timeframe_models import MultiTimeframeNeuralNetworks
+    MODEL_REGISTRY_AVAILABLE = True
+except ImportError:
+    MODEL_REGISTRY_AVAILABLE = False
+    logging.warning("Modern valuation system not available - using legacy models only")
 
 # Set up logging
 logging.basicConfig(level=logging.WARNING)
@@ -25,6 +32,15 @@ class AnalysisPipeline:
     def __init__(self, config: AnalysisConfig):
         self.config = config
         self.results = {}
+        
+        # Initialize modern valuation system if available
+        if MODEL_REGISTRY_AVAILABLE:
+            self.model_registry = ModelRegistry()
+            self.neural_networks = MultiTimeframeNeuralNetworks()
+            logger.info("Modern valuation system initialized")
+        else:
+            self.model_registry = None
+            self.neural_networks = None
 
     def run_analysis(self) -> Dict[str, Any]:
         """Execute the complete analysis pipeline."""
@@ -384,29 +400,59 @@ class AnalysisPipeline:
             try:
                 valuations = {}
 
-                # Run DCF if configured
-                if "dcf" in self.config.valuation.models:
-                    dcf_result = self._run_dcf_valuation(stock_data)
-                    if dcf_result:
-                        valuations["dcf"] = dcf_result
+                # Use modern valuation system if available
+                if self.model_registry is not None:
+                    # Get the configured models, default to comprehensive analysis for dashboard
+                    models_to_run = self.config.valuation.models
+                    
+                    # For dashboard updates, always include neural networks
+                    if hasattr(self.config, 'is_dashboard_update') and self.config.is_dashboard_update:
+                        models_to_run = ['dcf', 'dcf_enhanced', 'simple_ratios', 
+                                       'neural_network_best', 'neural_network_consensus']
+                    
+                    # Run all requested models using the registry
+                    for model_name in models_to_run:
+                        try:
+                            model = self.model_registry.get_model(model_name)
+                            if model and model.is_suitable(ticker, stock_data):
+                                # Convert stock_data format for the model
+                                model_result = model._calculate_valuation(ticker, stock_data)
+                                if model_result:
+                                    valuations[model_name] = {
+                                        'fair_value': model_result.fair_value,
+                                        'current_price': model_result.current_price,
+                                        'margin_of_safety': model_result.margin_of_safety,
+                                        'confidence': getattr(model_result, 'confidence', 'medium')
+                                    }
+                        except Exception as e:
+                            logger.warning(f"Model {model_name} failed for {ticker}: {e}")
+                            continue
+                
+                else:
+                    # Fallback to legacy models
+                    # Run DCF if configured
+                    if "dcf" in self.config.valuation.models:
+                        dcf_result = self._run_dcf_valuation(stock_data)
+                        if dcf_result:
+                            valuations["dcf"] = dcf_result
 
-                # Run Enhanced DCF if configured
-                if "dcf_enhanced" in self.config.valuation.models:
-                    enhanced_dcf_result = self._run_enhanced_dcf_valuation(stock_data)
-                    if enhanced_dcf_result:
-                        valuations["dcf_enhanced"] = enhanced_dcf_result
+                    # Run Enhanced DCF if configured
+                    if "dcf_enhanced" in self.config.valuation.models:
+                        enhanced_dcf_result = self._run_enhanced_dcf_valuation(stock_data)
+                        if enhanced_dcf_result:
+                            valuations["dcf_enhanced"] = enhanced_dcf_result
 
-                # Run RIM if configured
-                if "rim" in self.config.valuation.models:
-                    rim_result = self._run_rim_valuation(stock_data)
-                    if rim_result:
-                        valuations["rim"] = rim_result
+                    # Run RIM if configured
+                    if "rim" in self.config.valuation.models:
+                        rim_result = self._run_rim_valuation(stock_data)
+                        if rim_result:
+                            valuations["rim"] = rim_result
 
-                # Run Simple Ratios if configured
-                if "simple_ratios" in self.config.valuation.models:
-                    ratios_result = self._run_simple_ratios_valuation(stock_data)
-                    if ratios_result:
-                        valuations["simple_ratios"] = ratios_result
+                    # Run Simple Ratios if configured
+                    if "simple_ratios" in self.config.valuation.models:
+                        ratios_result = self._run_simple_ratios_valuation(stock_data)
+                        if ratios_result:
+                            valuations["simple_ratios"] = ratios_result
 
                 result["valuations"] = valuations
 

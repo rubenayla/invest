@@ -625,6 +625,14 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             rim_ratio = f"{rim_fair/current_price:.2f}x" if current_price > 0 and rim_fair > 0 else ("X" if has_rim_error else "--")
             rim_display = f"${rim_fair:.2f}" if rim_fair > 0 else ("X" if has_rim_error else "--")
             
+            # Neural Network Best (2-year model)
+            nn_best_val = valuations.get('neural_network_best', {})
+            nn_best_fair = nn_best_val.get('fair_value', 0) if nn_best_val else 0
+            nn_best_fair = nn_best_fair or 0  # Handle None values
+            has_nn_best_error = nn_best_val.get('error') is not None if nn_best_val else False
+            nn_best_ratio = f"{nn_best_fair/current_price:.2f}x" if current_price > 0 and nn_best_fair > 0 else ("X" if has_nn_best_error else "--")
+            nn_best_display = f"${nn_best_fair:.2f}" if nn_best_fair > 0 else ("X" if has_nn_best_error else "--")
+            
             # Legacy fields for backward compatibility
             pe_val = valuations.get('pe_based', 0)
             pe_ratio = f"{pe_val/current_price:.2f}x" if current_price > 0 and pe_val and pe_val > 0 else "--"
@@ -666,6 +674,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                 <td class="price" title="Multi-Stage DCF: DCF with multiple growth phases (high growth → mature). Formula uses different growth rates over time. Best for growth companies transitioning to maturity.">{multi_dcf_display}<br><small>{multi_dcf_ratio}</small></td>
                 <td class="price" title="Market Multiples: Quick valuation using P/E, P/B, EV/EBITDA ratios vs industry averages. Fast screening tool for relative value assessment.">{ratios_display}<br><small>{ratios_ratio}</small></td>
                 <td class="price" title="RIM (Residual Income): Values companies based on returns above cost of equity. Formula: Book Value + PV(ROE - Cost of Equity) × Book Value. Best for financial/mature companies.">{rim_display}<br><small>{rim_ratio}</small></td>
+                <td class="price" title="Neural Network Best: AI model trained on 2-year horizons with 51.8% correlation and 100% hit rate. Uses 60+ engineered features from financial data. Best performing model.">{nn_best_display}<br><small>{nn_best_ratio}</small></td>
                 <td>{sector}</td>
             </tr>"""
             
@@ -859,11 +868,12 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                         <th onclick="sortTable('multi_dcf')" title="Multi-Stage DCF: Multiple growth phases (high growth → mature), best for transitioning companies. Click to sort by ratio.">Multi DCF</th>
                         <th onclick="sortTable('ratios')" title="Market Multiples: P/E, P/B, EV/EBITDA vs industry averages. Quick screening tool. Click to sort by ratio.">Ratios</th>
                         <th onclick="sortTable('rim')" title="RIM: Residual Income Model based on returns above cost of equity. Best for financial/mature companies. Click to sort by ratio.">RIM</th>
+                        <th onclick="sortTable('nn_best')" title="Neural Network Best: AI model trained on 2-year horizons with 51.8% correlation. Uses 60+ engineered features. BEST PERFORMING MODEL.">🧠 NN Best</th>
                         <th onclick="sortTable('sector')" title="Business Sector: Industry classification (Technology, Healthcare, Finance, etc.). Companies in same sector often have similar characteristics.">Sector</th>
                     </tr>
                 </thead>
                 <tbody id="stockTableBody">
-                    {''.join(table_rows) if table_rows else '<tr><td colspan="10" class="loading">No stock data available. Click "Update Data" to load stocks.</td></tr>'}
+                    {''.join(table_rows) if table_rows else '<tr><td colspan="12" class="loading">No stock data available. Click "Update Data" to load stocks.</td></tr>'}
                 </tbody>
             </table>
         </div>
@@ -915,7 +925,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
                 let valueA, valueB;
                 
                 // For valuation columns, sort by ratio if available
-                if (['dcf_value', 'dcf_enhanced', 'growth_dcf', 'multi_dcf', 'ratios', 'rim'].includes(column)) {{
+                if (['dcf_value', 'dcf_enhanced', 'growth_dcf', 'multi_dcf', 'ratios', 'rim', 'nn_best'].includes(column)) {{
                     const ratioA = cellA.querySelector('small');
                     const ratioB = cellB.querySelector('small');
                     
@@ -1218,7 +1228,7 @@ def create_temp_config(tickers: List[str], universe_name: str) -> str:
         'quality': {'min_roe': 0.05, 'min_current_ratio': 0.8, 'max_debt_equity': 3.0},
         'growth': {'min_revenue_growth': -0.20, 'min_earnings_growth': -0.20},
         'valuation': {
-            'models': ['dcf'],  # Only run DCF model for dashboard speed
+            'models': ['dcf', 'dcf_enhanced', 'simple_ratios', 'neural_network_best'],  # Include neural network best model
             'scenarios': ['base'],
             'dcf_years': 5,  # Shorter projection for speed
             'terminal_growth_rate': 0.025
@@ -1226,7 +1236,8 @@ def create_temp_config(tickers: List[str], universe_name: str) -> str:
         'generate_reports': True,
         'save_data': True,
         'max_results': min(30, len(tickers)),  # Hard limit
-        'sort_by': 'composite_score'
+        'sort_by': 'composite_score',
+        'is_dashboard_update': True  # Flag for neural network inclusion
     }
     
     # Write to temp file

@@ -45,7 +45,6 @@ class ModelRegistry:
         'neural_network': NeuralNetworkValuationModel,
         'neural_network_1year': lambda: NeuralNetworkValuationModel(time_horizon='1year'),
         'neural_network_best': get_best_timeframe_model,
-        'neural_network_consensus': lambda ticker: get_consensus_prediction(ticker),
     }
     
     # Model metadata for user interfaces and documentation
