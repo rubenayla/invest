@@ -89,3 +89,8 @@ dashboard/analysis_summary_*.json
 
 # Additional generated files
 watchlist_analysis.csv
+# Training logs and results
+comprehensive_training.log
+comprehensive_training_results_*.json
+best_comprehensive_nn_*.pt
+training_results_*.png
