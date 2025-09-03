@@ -4,7 +4,7 @@ from typing import Any, Dict, List
 from ..config.schema import AnalysisConfig
 from ..config.constants import ANALYSIS_LIMITS
 # Removed old data fetching modules - now using universal_fetcher for all stocks
-from ..data.universal_fetcher import UniversalFetcher
+from ..data.universal_fetcher import UniversalStockFetcher
 from ..standard_dcf import calculate_dcf
 from ..dividend_aware_dcf import calculate_enhanced_dcf
 from ..screening.growth import screen_growth
@@ -175,7 +175,7 @@ class AnalysisPipeline:
                 if completed % 25 == 0:
                     logger.info(f"Processed {completed}/{total} tickers for market cap...")
             
-            fetcher = UniversalFetcher()
+            fetcher = UniversalStockFetcher()
             fetcher_results = fetcher.fetch_multiple(tickers[:max_fetch])
             
             ticker_market_caps = []
