@@ -1,3 +1,5 @@
+Github Actions just failed. Fix it.
+
 - Neural network that takes the stock price, fundamental ratios, growths, etc and returns a score. Run that over all known data for past companies, and train, maybe genetic algorithm, so it learns the best possible valuation technique.
   - The problem is not knowing the time interval to consider. Maybe it's bad for next month, but great for next 5 years. 
 

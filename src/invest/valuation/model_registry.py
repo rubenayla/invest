@@ -16,6 +16,7 @@ from .ratios_model import SimpleRatiosModel
 from .sector_models import REITModel, BankModel, TechModel, UtilityModel
 from .ensemble_model import EnsembleModel
 from .neural_network_model import NeuralNetworkValuationModel
+from .multi_timeframe_models import get_best_timeframe_model, get_consensus_prediction
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +43,9 @@ class ModelRegistry:
         'utility': UtilityModel,
         'ensemble': EnsembleModel,
         'neural_network': NeuralNetworkValuationModel,
+        'neural_network_1year': lambda: NeuralNetworkValuationModel(time_horizon='1year'),
+        'neural_network_best': get_best_timeframe_model,
+        'neural_network_consensus': lambda ticker: get_consensus_prediction(ticker),
     }
     
     # Model metadata for user interfaces and documentation
@@ -139,6 +143,30 @@ class ModelRegistry:
             'description': 'ML-based valuation using deep learning on 60+ engineered features from fundamental data',
             'suitable_for': ['All companies with sufficient data', 'Pattern recognition in valuations', 'Multi-factor analysis'],
             'time_horizon': 'Configurable (1 month to 5 years)',
+            'complexity': 'very high',
+            'data_requirements': ['Comprehensive fundamental data', 'Price history', 'Financial statements'],
+        },
+        'neural_network_1year': {
+            'name': 'Neural Network (1-Year)',
+            'description': 'Neural network optimized for 1-year prediction horizon - good for annual fundamental changes',
+            'suitable_for': ['Value investing', 'Annual rebalancing', 'Fundamental analysis'],
+            'time_horizon': '1 year',
+            'complexity': 'very high',
+            'data_requirements': ['Comprehensive fundamental data', 'Price history', 'Financial statements'],
+        },
+        'neural_network_best': {
+            'name': 'Neural Network (Best)',
+            'description': 'Best performing neural network model (2-year horizon, 0.518 correlation)',
+            'suitable_for': ['Long-term value investing', 'Maximum prediction accuracy'],
+            'time_horizon': '2 years',
+            'complexity': 'very high',
+            'data_requirements': ['Comprehensive fundamental data', 'Price history', 'Financial statements'],
+        },
+        'neural_network_consensus': {
+            'name': 'Neural Network Consensus',
+            'description': 'Consensus prediction across all neural network timeframes weighted by correlation performance',
+            'suitable_for': ['Risk-averse investing', 'Consensus-based decisions', 'Multi-timeframe analysis'],
+            'time_horizon': 'Multi-timeframe consensus',
             'complexity': 'very high',
             'data_requirements': ['Comprehensive fundamental data', 'Price history', 'Financial statements'],
         },

@@ -1,0 +1,58 @@
+{
+  "1month": {
+    "months": 1,
+    "predictions": 4,
+    "mae": 0.011318159810034688,
+    "correlation": 0.050123261389541436,
+    "hit_rate": 0.75,
+    "val_mae": "1.9120564"
+  },
+  "3month": {
+    "months": 3,
+    "predictions": 4,
+    "mae": 0.09223344007042564,
+    "correlation": 0.2495368082102258,
+    "hit_rate": 0.5,
+    "val_mae": "5.972099"
+  },
+  "6month": {
+    "months": 6,
+    "predictions": 4,
+    "mae": 0.43754677462914,
+    "correlation": 0.15655079737566496,
+    "hit_rate": 0.0,
+    "val_mae": "14.57747"
+  },
+  "1year": {
+    "months": 12,
+    "predictions": 4,
+    "mae": 0.14479424304448835,
+    "correlation": 0.011105067745076925,
+    "hit_rate": 1.0,
+    "val_mae": "20.07586"
+  },
+  "18month": {
+    "months": 18,
+    "predictions": 4,
+    "mae": 0.5206739737311645,
+    "correlation": -0.060877826633619375,
+    "hit_rate": 0.75,
+    "val_mae": "28.641832"
+  },
+  "2year": {
+    "months": 24,
+    "predictions": 4,
+    "mae": 0.8725077506441214,
+    "correlation": 0.5180837074443777,
+    "hit_rate": 1.0,
+    "val_mae": "26.243021"
+  },
+  "3year": {
+    "months": 36,
+    "predictions": 4,
+    "mae": 3.6933877246996913,
+    "correlation": 0.32805082029296456,
+    "hit_rate": 1.0,
+    "val_mae": "22.001686"
+  }
+}
