@@ -1,4 +1,8 @@
-Github Actions just failed. Fix it.
+How is training going?
+
+Is the industry of the company included as input parameter for the neural network? that data is available from yfinance
+
+
 
 - Neural network that takes the stock price, fundamental ratios, growths, etc and returns a score. Run that over all known data for past companies, and train, maybe genetic algorithm, so it learns the best possible valuation technique.
   - The problem is not knowing the time interval to consider. Maybe it's bad for next month, but great for next 5 years. 

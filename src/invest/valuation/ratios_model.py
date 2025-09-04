@@ -74,12 +74,12 @@ class SimpleRatiosModel(ValuationModel):
         info = data.get('info', {})
         
         if not info:
-            raise InsufficientDataError(f'Missing company info for {ticker}')
+            raise InsufficientDataError(ticker, ['company_info'])
         
         # Check for current price
         current_price = self._safe_float(info.get('currentPrice'))
         if not current_price or current_price <= 0:
-            raise InsufficientDataError(f'Missing or invalid current price for {ticker}')
+            raise InsufficientDataError(ticker, ['current_price'])
         
         # Check that we have at least one useful metric
         eps = self._safe_float(info.get('trailingEps'))
@@ -87,7 +87,7 @@ class SimpleRatiosModel(ValuationModel):
         revenue_per_share = self._safe_float(info.get('revenuePerShare'))
         
         if not any([eps and eps > 0, book_value and book_value > 0, revenue_per_share and revenue_per_share > 0]):
-            raise InsufficientDataError(f'No valid financial metrics available for {ticker}')
+            raise InsufficientDataError(ticker, ['valid_financial_metrics'])
     
     def _calculate_valuation(self, ticker: str, data: Dict[str, Any]) -> ValuationResult:
         """Calculate valuation using multiple ratios and take average."""
@@ -149,7 +149,7 @@ class SimpleRatiosModel(ValuationModel):
             }
         
         if not valuations:
-            raise InsufficientDataError(f'Cannot calculate any ratio-based valuations for {ticker}')
+            raise InsufficientDataError(ticker, ['ratio_based_valuations'])
         
         # Calculate weighted average (equal weights for simplicity)
         fair_value_per_share = sum(valuations) / len(valuations)

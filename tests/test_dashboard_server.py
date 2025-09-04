@@ -73,6 +73,11 @@ class TestDashboardServer(unittest.TestCase):
             handler.send_header = Mock()
             handler.end_headers = Mock()
             handler.wfile = Mock()
+            # Add required HTTP server attributes
+            handler.path = '/update'
+            handler.client_address = ('127.0.0.1', 8000)
+            handler.log_error = Mock()
+            handler.send_error = Mock()
             # Add the two_step_update method
             handler.two_step_update = Mock(return_value={'status': 'started', 'estimated_stocks': 100})
             

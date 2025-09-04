@@ -71,12 +71,12 @@ class DCFModel(ValuationModel):
         
         for field in required_fields:
             if field not in data or data[field] is None:
-                raise InsufficientDataError(f'Missing {field} data for DCF valuation')
+                raise InsufficientDataError(ticker, [field])
         
         # Validate we can calculate free cash flow
         fcf = self._get_free_cash_flow(data)
         if fcf is None or fcf <= 0:
-            raise InsufficientDataError(f'Cannot calculate positive free cash flow for {ticker}')
+            raise InsufficientDataError(ticker, ['positive_free_cash_flow'])
     
     def _calculate_valuation(self, ticker: str, data: Dict[str, Any]) -> ValuationResult:
         """Perform DCF calculation."""
@@ -242,7 +242,7 @@ class DCFModel(ValuationModel):
             shares = self._safe_float(info.get('impliedSharesOutstanding'))
         
         if not shares or shares <= 0:
-            raise InsufficientDataError('Cannot determine shares outstanding')
+            raise InsufficientDataError('unknown_ticker', ['shares_outstanding'])
         
         return shares
     

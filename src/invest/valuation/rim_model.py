@@ -53,17 +53,17 @@ class RIMModel(ValuationModel):
         
         for field in required_fields:
             if field not in data or data[field] is None:
-                raise InsufficientDataError(f'Missing {field} data for RIM valuation')
+                raise InsufficientDataError(ticker, [field])
         
         # Validate book equity
         book_equity = self._get_book_equity(data)
         if book_equity is None or book_equity <= 0:
-            raise InsufficientDataError(f'Cannot calculate positive book equity for {ticker}')
+            raise InsufficientDataError(ticker, ['positive_book_equity'])
         
         # Validate ROE
         roe = self._calculate_roe(data)
         if roe is None or roe <= 0:
-            raise InsufficientDataError(f'Cannot calculate positive ROE for {ticker}')
+            raise InsufficientDataError(ticker, ['positive_roe'])
         
         # Check for extreme ROE that might indicate data issues
         if roe > 1.0:  # 100%+ ROE is suspicious
@@ -242,7 +242,7 @@ class RIMModel(ValuationModel):
             shares = self._safe_float(info.get('impliedSharesOutstanding'))
         
         if not shares or shares <= 0:
-            raise InsufficientDataError('Cannot determine shares outstanding')
+            raise InsufficientDataError('unknown_ticker', ['shares_outstanding'])
         
         return shares
     

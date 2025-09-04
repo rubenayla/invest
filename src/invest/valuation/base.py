@@ -262,7 +262,7 @@ class ValuationModel(ABC):
             }
             
         except Exception as e:
-            raise InsufficientDataError(f'Failed to fetch data for {ticker}: {str(e)}') from e
+            raise InsufficientDataError(ticker, ['data_fetch_failed']) from e
     
     def _safe_get(self, data: Dict, key: str, default: Any = None) -> Any:
         """Safely get value from data dictionary with fallback."""
