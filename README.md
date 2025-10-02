@@ -13,29 +13,29 @@ This framework is designed to be:
 
 ## Quick Start
 
-⚠️ **IMPORTANT: Always use `poetry run` for all commands** - This project requires Poetry dependency management.
+⚠️ **IMPORTANT: Always use `uv run` for all commands** - This project uses uv dependency management.
 
 ```bash
-# Install with Poetry
-poetry install
+# Install dependencies with uv
+uv sync
 
 # Run with default conservative value screen
-poetry run systematic-invest
+uv run systematic-invest
 
 # Use specific configuration
-poetry run systematic-invest configs/aggressive_growth.yaml
+uv run systematic-invest configs/aggressive_growth.yaml
 
 # International markets (Warren Buffett's Japanese favorites)
-poetry run python scripts/systematic_analysis.py configs/japan_buffett_favorites.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/japan_buffett_favorites.yaml --save-csv
 
-# Alternative: Direct script execution (also requires poetry run)
-poetry run python scripts/systematic_analysis.py configs/sp500_top100.yaml --save-csv
+# Alternative: Direct script execution (also requires uv run)
+uv run python scripts/systematic_analysis.py configs/sp500_top100.yaml --save-csv
 
 # List available configurations
-poetry run systematic-invest --list-configs
+uv run systematic-invest --list-configs
 
 # Save results in multiple formats
-poetry run systematic-invest --save-csv --save-json --output results/
+uv run systematic-invest --save-csv --save-json --output results/
 ```
 
 ### Interactive Dashboard
@@ -44,10 +44,10 @@ Multiple ways to access your investment analysis dashboard:
 
 ```bash
 # Easy launcher with multiple options
-poetry run python scripts/run_dashboard.py
+uv run python scripts/run_dashboard.py
 
 # OR start server directly (opens browser automatically)
-poetry run python scripts/dashboard_server.py
+uv run python scripts/dashboard_server.py
 ```
 
 **Dashboard Access Options:**
@@ -71,10 +71,10 @@ To analyze ALL S&P 500 stocks (takes 10-15 minutes):
 
 ```bash
 # Run full S&P 500 analysis with CSV output
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
 
 # Run quietly in background (no progress output)
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --quiet &
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --quiet &
 
 # Check progress (if running in background)
 tail -f sp500_full_screen_*_report.txt
@@ -145,17 +145,17 @@ Multiple output formats for different use cases:
 
 ## Usage Examples
 
-⚠️ **Remember: All commands must use `poetry run`**
+⚠️ **Remember: All commands must use `uv run`**
 
 ```bash
 # Run basic analysis
-poetry run python scripts/systematic_analysis.py
+uv run python scripts/systematic_analysis.py
 
 # Full S&P 500 analysis with CSV output
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
 
 # Custom configuration with multiple output formats
-poetry run python scripts/systematic_analysis.py configs/my_strategy.yaml --save-csv --save-json
+uv run python scripts/systematic_analysis.py configs/my_strategy.yaml --save-csv --save-json
 ```
 
 ## Extending the Framework
@@ -178,10 +178,10 @@ Run the documentation locally:
 
 ```bash
 # Install documentation dependencies
-poetry install --with docs
+uv sync --group docs
 
 # Start documentation server
-poetry run mkdocs serve
+uv run mkdocs serve
 ```
 
 Then visit http://localhost:8000
@@ -192,22 +192,22 @@ Deploy to GitHub Pages:
 
 ```bash
 # Deploy to GitHub Pages
-poetry run mkdocs gh-deploy
+uv run mkdocs gh-deploy
 ```
 
 ## Testing
 
-⚠️ **All test commands require `poetry run`**
+⚠️ **All test commands require `uv run`**
 
 ```bash
 # Run all tests
-poetry run pytest
+uv run pytest
 
 # Run with verbose output
-poetry run pytest -v
+uv run pytest -v
 
 # Run specific test file
-poetry run pytest tests/test_systematic_analysis.py
+uv run pytest tests/test_systematic_analysis.py
 ```
 
 ## Dependencies

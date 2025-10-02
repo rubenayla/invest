@@ -1,8 +1,8 @@
 # Claude Memory and Instructions
 
-## CRITICAL REMINDER: Always Use Poetry
+## CRITICAL REMINDER: Always Use uv
 
-⚠️ **IMPORTANT**: This project uses Poetry dependency management. ALL Python commands must be prefixed with `poetry run`.
+⚠️ **IMPORTANT**: This project uses uv dependency management. ALL Python commands must be prefixed with `uv run`.
 
 ```bash
 # Wrong:
@@ -10,8 +10,8 @@ python scripts/systematic_analysis.py
 pytest
 
 # Correct:
-poetry run python scripts/systematic_analysis.py
-poetry run pytest
+uv run python scripts/systematic_analysis.py
+uv run pytest
 ```
 
 ## CRITICAL LESSON: The ab0fe64 Disaster
@@ -47,16 +47,16 @@ If you find yourself doing ANY of these, STOP IMMEDIATELY:
 
 ### 🚨 CRITICAL: GitHub Actions Test Requirement
 **ALL TESTS MUST PASS BEFORE COMMITTING** - GitHub Actions will catch failures and send email alerts!
-- Run the FULL test suite: `poetry run pytest`
+- Run the FULL test suite: `uv run pytest`
 - If any tests fail, either:
   - Fix the code causing the failure
   - Update the test if the expected behavior has changed (and inform the user)
 - NEVER commit with failing tests - this breaks CI/CD and triggers email alerts
 
 ### Before Every Commit:
-1. **Run the linter**: `poetry run ruff check src tests --select=E9,F63,F7,F82`
+1. **Run the linter**: `uv run ruff check src tests --select=E9,F63,F7,F82`
 2. **Check for syntax errors**: Must pass with zero errors
-3. **Run FULL test suite**: `poetry run pytest` - ALL tests must pass (not just relevant ones)
+3. **Run FULL test suite**: `uv run pytest` - ALL tests must pass (not just relevant ones)
 4. **Verify changes are minimal**: `git diff --stat` should show reasonable line counts
 5. **Confirm test status**: If any tests need updating, inform the user BEFORE committing
 
@@ -121,7 +121,7 @@ From ab0fe64 disaster (6,000 lines, 24 files, massive failures) to 15/15 passing
 
 ### ✅ Code Style Requirements:
 - **Single quotes for strings**: `'hello'` not `"hello"`
-- **Poetry + pyproject.toml**: PEP 621-compliant dependency management
+- **uv + pyproject.toml**: PEP 621-compliant dependency management
 - **Ruff linter**: Use for code formatting and linting
 - **Numpydoc docstrings**: Standard format for function documentation
 - **Type hints**: Always include type annotations

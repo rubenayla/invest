@@ -16,7 +16,7 @@ This framework rigorously evaluates investment strategies by:
 
 ```bash
 # From project root
-poetry run python backtesting/run_backtest.py backtesting/configs/test_backtest.yaml
+uv run python backtesting/run_backtest.py backtesting/configs/test_backtest.yaml
 ```
 
 ### 2. View Results
@@ -177,7 +177,7 @@ Benchmark Comparison (SPY):
 Test if your screening criteria would have generated alpha historically:
 ```bash
 # Test your screening weights
-poetry run python backtesting/run_backtest.py configs/sp500_backtest.yaml
+uv run python backtesting/run_backtest.py configs/sp500_backtest.yaml
 ```
 
 ### 2. Parameter Optimization
@@ -274,7 +274,7 @@ main_config = load_analysis_config("configs/sp500_top100.yaml")
    - Solution: Use smaller date ranges or fewer stocks for testing
 
 4. **Missing Dependencies**: Import errors
-   - Solution: Ensure you're in Poetry environment: `poetry shell`
+   - Solution: Ensure dependencies are installed: `uv sync`
 
 ### Getting Help
 

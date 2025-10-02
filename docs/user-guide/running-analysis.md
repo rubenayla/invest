@@ -7,20 +7,20 @@ This guide covers how to execute stock analysis using the Systematic Investment 
 ### Command Structure
 
 ```bash
-poetry run python scripts/systematic_analysis.py [CONFIG_FILE] [OPTIONS]
+uv run python scripts/systematic_analysis.py [CONFIG_FILE] [OPTIONS]
 ```
 
 ### Quick Examples
 
 ```bash
 # Use default configuration
-poetry run python scripts/systematic_analysis.py
+uv run python scripts/systematic_analysis.py
 
 # Analyze specific configuration with CSV output
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
 
 # Run with all output formats
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --save-json --output results/
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --save-json --output results/
 ```
 
 ## Available Configurations
@@ -28,7 +28,7 @@ poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-
 List all available configurations:
 
 ```bash
-poetry run python scripts/systematic_analysis.py --list-configs
+uv run python scripts/systematic_analysis.py --list-configs
 ```
 
 ### Pre-built Configurations
@@ -71,7 +71,7 @@ For long-running analyses, use background execution:
 
 ```bash
 # Run in background
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --quiet &
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --quiet &
 
 # Monitor progress
 tail -f sp500_full_screen_*_report.txt
@@ -99,7 +99,7 @@ Examples:
 By default, files are saved in the current directory. Use `--output` to specify a different location:
 
 ```bash
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --output ~/investment_results/
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --output ~/investment_results/
 ```
 
 ## Performance Considerations
@@ -166,7 +166,7 @@ Solution: Use `--output` to specify a writable directory.
 Use `--verbose` for detailed progress information:
 
 ```bash
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --verbose
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --verbose
 ```
 
 Shows:
@@ -180,7 +180,7 @@ Shows:
 Use `--quiet` to minimize output:
 
 ```bash
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --quiet
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --quiet
 ```
 
 Only shows:
@@ -200,7 +200,7 @@ configs=("conservative_value" "aggressive_growth" "sp500_full")
 
 for config in "${configs[@]}"; do
     echo "Running analysis: $config"
-    poetry run python scripts/systematic_analysis.py "configs/${config}.yaml" --save-csv --quiet
+    uv run python scripts/systematic_analysis.py "configs/${config}.yaml" --save-csv --quiet
 done
 ```
 
@@ -211,7 +211,7 @@ For regular analysis updates, use cron jobs:
 ```bash
 # Add to crontab (crontab -e)
 # Run analysis every Sunday at 8 PM
-0 20 * * 0 cd /path/to/invest && poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --quiet
+0 20 * * 0 cd /path/to/invest && uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --quiet
 ```
 
 ## Next Steps

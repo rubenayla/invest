@@ -13,15 +13,15 @@ The Interactive Dashboard provides a scalable web interface for viewing and upda
 ```bash
 # Recommended: Two-step approach for maximum performance
 # Step 1: Fetch data (one-time setup, caches for 24 hours)
-poetry run python scripts/data_fetcher.py --universe sp500 --max-stocks 500
+uv run python scripts/data_fetcher.py --universe sp500 --max-stocks 500
 
 # Step 2: Analyze cached data and start dashboard (instant)
-poetry run python scripts/offline_analyzer.py --universe cached --update-dashboard
-poetry run python scripts/dashboard_server.py
+uv run python scripts/offline_analyzer.py --universe cached --update-dashboard
+uv run python scripts/dashboard_server.py
 # Dashboard opens automatically at http://localhost:8080
 
 # Alternative: All-in-one (dashboard will fetch + analyze automatically)
-poetry run python scripts/dashboard_server.py
+uv run python scripts/dashboard_server.py
 # Click "Update Data" button for 1000-stock analysis
 ```
 
@@ -187,18 +187,18 @@ ls -la data/stock_cache/
 cat data/stock_cache/cache_index.json | jq '.stocks | length'
 
 # Force refresh all data (ignores 24-hour cache)
-poetry run python scripts/data_fetcher.py --universe sp500 --force-refresh
+uv run python scripts/data_fetcher.py --universe sp500 --force-refresh
 
 # Analyze specific universe from cache
-poetry run python scripts/offline_analyzer.py --universe sp500 --max-stocks 500 --update-dashboard
+uv run python scripts/offline_analyzer.py --universe sp500 --max-stocks 500 --update-dashboard
 ```
 
 ### Progressive Stock Loading
 ```bash
 # Add more stocks incrementally (via dashboard UI "Add More Stocks" button)
 # Or manually:
-poetry run python scripts/data_fetcher.py --universe sp500 --max-stocks 200
-poetry run python scripts/offline_analyzer.py --universe cached --update-dashboard
+uv run python scripts/data_fetcher.py --universe sp500 --max-stocks 200
+uv run python scripts/offline_analyzer.py --universe cached --update-dashboard
 ```
 
 For detailed technical information about the scaling architecture, see: **Developer Guide > [Dashboard Scaling](../dashboard-scaling-solution.md)**

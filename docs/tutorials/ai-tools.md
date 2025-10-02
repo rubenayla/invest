@@ -102,11 +102,11 @@ Here's how an AI model would typically use this framework:
 
 ```bash
 # AI model executes systematic analysis
-poetry run python scripts/systematic_analysis.py configs/sp500_top100.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/sp500_top100.yaml --save-csv
 
 # AI automatically:
 # - Fetches S&P 500 stock data
-# - Applies quality, value, growth, risk filters  
+# - Applies quality, value, growth, risk filters
 # - Generates screening results with pass/fail indicators
 # - Identifies 20-40 companies that meet all criteria
 ```

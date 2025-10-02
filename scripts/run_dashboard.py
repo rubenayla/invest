@@ -8,7 +8,7 @@ This script gives you different ways to access the investment dashboard:
 2. Update with fresh data and view (takes time but fresh)
 3. Run live server with update capability
 
-Usage: poetry run python scripts/run_dashboard.py
+Usage: uv run python scripts/run_dashboard.py
 """
 
 import os
@@ -70,7 +70,7 @@ def main():
             if not config_path.exists():
                 config_path = repo_root / 'configs' / 'simple_mixed.yaml'
             
-            cmd = ['poetry', 'run', 'python', 'scripts/systematic_analysis.py', str(config_path)]
+            cmd = ['uv', 'run', 'python', 'scripts/systematic_analysis.py', str(config_path)]
             
             try:
                 result = subprocess.run(cmd, cwd=repo_root, check=True, capture_output=True, text=True)
@@ -85,7 +85,7 @@ def main():
                     
             except subprocess.CalledProcessError as e:
                 print(f"❌ Analysis failed: {e}")
-                print("   Try running manually: poetry run python scripts/systematic_analysis.py configs/simple_mixed.yaml")
+                print("   Try running manually: uv run python scripts/systematic_analysis.py configs/simple_mixed.yaml")
             return
             
         elif choice == '3':
@@ -93,7 +93,7 @@ def main():
             print("   This will open http://localhost:8080 in your browser")
             print("   Press Ctrl+C to stop the server")
             
-            cmd = ['poetry', 'run', 'python', 'scripts/dashboard_server.py']
+            cmd = ['uv', 'run', 'python', 'scripts/dashboard_server.py']
             
             try:
                 subprocess.run(cmd, cwd=repo_root)
@@ -130,7 +130,7 @@ def main():
             config_path = configs_dir / chosen_config
             
             print(f"🔄 Running analysis with {chosen_config}...")
-            cmd = ['poetry', 'run', 'python', 'scripts/systematic_analysis.py', str(config_path)]
+            cmd = ['uv', 'run', 'python', 'scripts/systematic_analysis.py', str(config_path)]
             
             try:
                 result = subprocess.run(cmd, cwd=repo_root, check=True)

@@ -51,7 +51,7 @@ In 2020-2022, Berkshire Hathaway made significant investments in Japanese tradin
 
 ```bash
 # Screen Japan's largest 30 companies
-poetry run python scripts/systematic_analysis.py configs/japan_topix30.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/japan_topix30.yaml --save-csv
 
 # Results: Japanese blue-chips with conservative criteria
 ```
@@ -60,7 +60,7 @@ poetry run python scripts/systematic_analysis.py configs/japan_topix30.yaml --sa
 
 ```bash
 # Focus on Berkshire's actual holdings and similar companies
-poetry run python scripts/systematic_analysis.py configs/japan_buffett_favorites.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/japan_buffett_favorites.yaml --save-csv
 
 # Results: Value opportunities in Japanese trading houses and quality companies
 ```
@@ -69,7 +69,7 @@ poetry run python scripts/systematic_analysis.py configs/japan_buffett_favorites
 
 ```bash
 # Diversified international value opportunities
-poetry run python scripts/systematic_analysis.py configs/international_value.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/international_value.yaml --save-csv
 
 # Results: Value stocks across Japan, Europe, and other markets
 ```
@@ -227,8 +227,8 @@ Compare opportunities across different markets:
 
 ```bash
 # Compare Japanese vs US opportunities
-poetry run python scripts/systematic_analysis.py configs/japan_topix30.yaml --save-csv
-poetry run python scripts/systematic_analysis.py configs/sp500_top100.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/japan_topix30.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/sp500_top100.yaml --save-csv
 
 # AI can then analyze both results and identify best global opportunities
 ```

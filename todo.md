@@ -1,3 +1,5 @@
+Constellation Software Inc. 
+
 How is training going?
 
 Is the industry of the company included as input parameter for the neural network? that data is available from yfinance

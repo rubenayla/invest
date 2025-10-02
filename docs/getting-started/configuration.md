@@ -216,7 +216,7 @@ custom_filters:
 ### 3. Test Configuration
 
 ```bash
-poetry run python scripts/systematic_analysis.py configs/my_strategy.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/my_strategy.yaml --save-csv
 ```
 
 ## Advanced Configuration

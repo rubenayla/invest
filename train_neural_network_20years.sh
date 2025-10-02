@@ -26,11 +26,11 @@ fi
 
 echo "🚀 Starting comprehensive neural network training..."
 echo "📊 Monitor progress in another terminal with:"
-echo "    poetry run python scripts/training_monitor.py"
+echo "    uv run python scripts/training_monitor.py"
 echo ""
 
 # Run training in background so user can monitor
-poetry run python scripts/comprehensive_neural_training.py
+uv run python scripts/comprehensive_neural_training.py
 
 echo ""
 echo "🎉 Training completed! Check the results:"
@@ -39,4 +39,4 @@ echo "  • Results: comprehensive_training_results_*.json"
 echo "  • Best model: best_comprehensive_nn_2year_*.pt"
 echo ""
 echo "📊 To visualize results:"
-echo "    poetry run python scripts/training_monitor.py --plot"
+echo "    uv run python scripts/training_monitor.py --plot"

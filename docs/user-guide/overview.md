@@ -131,7 +131,7 @@ Top candidates undergo detailed valuation:
 The **Interactive Dashboard** provides a live web interface for real-time investment analysis:
 
 ```bash
-poetry run python scripts/dashboard_server.py
+uv run python scripts/dashboard_server.py
 # Opens automatically at http://localhost:8080
 ```
 

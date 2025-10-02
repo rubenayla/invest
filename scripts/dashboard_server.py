@@ -3,8 +3,8 @@
 Investment Dashboard Server - The main way to use the dashboard.
 
 Usage:
-    poetry run python scripts/dashboard_server.py
-    
+    uv run python scripts/dashboard_server.py
+
 Then open: http://localhost:8080
 
 Features:
@@ -1129,7 +1129,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             import subprocess
             
             cmd = [
-                'poetry', 'run', 'python', 'scripts/data_fetcher.py',
+                'uv', 'run', 'python', 'scripts/data_fetcher.py',
                 '--universe', universe,
                 '--max-concurrent', '15'  # Higher concurrency for dashboard
             ]
@@ -1157,7 +1157,7 @@ class DashboardHandler(SimpleHTTPRequestHandler):
             import subprocess
             
             cmd = [
-                'poetry', 'run', 'python', 'scripts/offline_analyzer.py',
+                'uv', 'run', 'python', 'scripts/offline_analyzer.py',
                 '--universe', universe,
                 '--update-dashboard'
             ]
@@ -1256,7 +1256,7 @@ def run_systematic_analysis_for_dashboard(config_path: str):
         import subprocess
         
         cmd = [
-            'poetry', 'run', 'python', 'scripts/systematic_analysis.py', 
+            'uv', 'run', 'python', 'scripts/systematic_analysis.py', 
             config_path, '--quiet'
         ]
         
@@ -1488,7 +1488,7 @@ def main():
     dashboard_html = get_dashboard_dir() / 'valuation_dashboard.html'
     if not dashboard_html.exists():
         print("❌ Dashboard HTML not found. Please run systematic analysis first to generate dashboard data.")
-        print("   Example: poetry run python scripts/systematic_analysis.py configs/simple_mixed.yaml")
+        print("   Example: uv run python scripts/systematic_analysis.py configs/simple_mixed.yaml")
         return
     
     # Start server (avoid ports 3000/8000 used by other projects)  

@@ -41,7 +41,7 @@ With these MCP servers, you can use investment analysis tools directly in Claude
 pip install mcp
 
 # Ensure your investment repo is set up
-poetry install  # in your invest repo
+uv sync  # in your invest repo
 ```
 
 ### Claude Desktop Configuration

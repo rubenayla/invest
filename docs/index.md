@@ -4,24 +4,24 @@ A configuration-driven, objective approach to investment analysis that eliminate
 
 ![Framework Overview](https://img.shields.io/badge/Python-3.12%2B-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
-![Poetry](https://img.shields.io/badge/Dependency%20Management-Poetry-blue)
+![UV](https://img.shields.io/badge/Dependency%20Management-UV-blue)
 ![CI](https://img.shields.io/badge/CI-GitHub%20Actions-green)
 
 ## Quick Start
 
 ```bash
 # Install dependencies
-poetry install
+uv sync
 
 # Launch interactive dashboard (recommended - multiple access options)
-poetry run python scripts/run_dashboard.py
+uv run python scripts/run_dashboard.py
 
 # Or start dashboard server directly
-poetry run python scripts/dashboard_server.py
+uv run python scripts/dashboard_server.py
 # Opens automatically at http://localhost:8080
 
 # Or run command-line analysis
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
 
 # View results
 cat sp500_full_screen_*_results.csv
@@ -111,10 +111,10 @@ Perfect for empowering AI models to provide comprehensive investment research wi
 ### Step 1: AI Runs Systematic Screening
 ```bash
 # AI model executes systematic analysis on US markets
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
 
 # AI model analyzes international markets (Warren Buffett's Japanese favorites)
-poetry run python scripts/systematic_analysis.py configs/japan_buffett_favorites.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/japan_buffett_favorites.yaml --save-csv
 
 # AI automatically filters to 25-50 companies globally that pass all criteria
 ```

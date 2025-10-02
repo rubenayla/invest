@@ -30,43 +30,43 @@ This directory contains comprehensive tests for the Systematic Investment Analys
 
 ```bash
 # Run all tests
-poetry run pytest
+uv run pytest
 
 # Run with coverage report
-poetry run pytest --cov=src/invest --cov-report=html
+uv run pytest --cov=src/invest --cov-report=html
 
 # Run specific test file
-poetry run pytest tests/test_data_providers.py -v
+uv run pytest tests/test_data_providers.py -v
 
 # Run tests by category
-poetry run pytest -m "unit" -v
-poetry run pytest -m "international" -v
+uv run pytest -m "unit" -v
+uv run pytest -m "international" -v
 ```
 
 ### Comprehensive Test Script
 
 ```bash
 # Run complete test suite with detailed output
-poetry run python scripts/run_tests.py
+uv run python scripts/run_tests.py
 ```
 
 ### Test Categories by Marker
 
 ```bash
 # Unit tests only
-poetry run pytest -m "unit"
+uv run pytest -m "unit"
 
 # International market tests
-poetry run pytest -m "international"  
+uv run pytest -m "international"
 
-# Valuation model tests  
-poetry run pytest -m "valuation"
+# Valuation model tests
+uv run pytest -m "valuation"
 
 # Integration tests
-poetry run pytest -m "integration"
+uv run pytest -m "integration"
 
 # Skip slow tests
-poetry run pytest -m "not slow"
+uv run pytest -m "not slow"
 ```
 
 ## 📊 Test Coverage
@@ -81,7 +81,7 @@ Target coverage: **80%**
 
 ```bash
 # Generate coverage reports
-poetry run pytest --cov=src/invest \
+uv run pytest --cov=src/invest \
   --cov-report=html \
   --cov-report=term-missing \
   --cov-report=xml
@@ -274,13 +274,13 @@ def test_my_feature():
 ### Verbose Output
 ```bash
 # Detailed test output
-poetry run pytest -v -s
+uv run pytest -v -s
 
 # Show local variables on failure
-poetry run pytest --tb=long
+uv run pytest --tb=long
 
 # Debug specific test
-poetry run pytest tests/test_file.py::TestClass::test_method -v -s
+uv run pytest tests/test_file.py::TestClass::test_method -v -s
 ```
 
 ### Common Issues

@@ -3,33 +3,33 @@
 ## Prerequisites
 
 - **Python 3.8+** - The framework requires Python 3.8 or later
-- **Poetry** - For dependency management
+- **UV** - For dependency management
 - **Git** - For cloning the repository
 
-## Installing Poetry
+## Installing UV
 
-If you don't have Poetry installed:
+If you don't have UV installed:
 
 === "Linux/macOS/WSL"
 
     ```bash
-    curl -sSL https://install.python-poetry.org | python3 -
+    curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
 === "Windows PowerShell"
 
     ```powershell
-    (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | py -
+    powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
     ```
 
 === "Alternative (pip)"
 
     ```bash
-    pip install poetry
+    pip install uv
     ```
 
 !!! tip "Path Configuration"
-    After installing Poetry, you may need to add it to your PATH. Follow the instructions shown in the installation output.
+    After installing UV, you may need to add it to your PATH. Follow the instructions shown in the installation output.
 
 ## Clone and Setup
 
@@ -41,12 +41,12 @@ If you don't have Poetry installed:
 
 2. **Install dependencies**:
    ```bash
-   poetry install
+   uv sync
    ```
 
 3. **Verify installation**:
    ```bash
-   poetry run python scripts/systematic_analysis.py --help
+   uv run python scripts/systematic_analysis.py --help
    ```
 
 ## Optional: Documentation Development
@@ -55,10 +55,10 @@ If you want to work on documentation:
 
 ```bash
 # Install documentation dependencies
-poetry install --with docs
+uv sync --group docs
 
 # Start documentation server
-poetry run mkdocs serve
+uv run mkdocs serve
 ```
 
 ## Verification
@@ -67,7 +67,7 @@ Test that everything works:
 
 ```bash
 # Run a simple analysis
-poetry run python scripts/systematic_analysis.py configs/test_tech_giants.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/test_tech_giants.yaml --save-csv
 
 # Check if results were generated
 ls *.csv
@@ -79,8 +79,8 @@ If you see a CSV file generated, you're ready to go!
 
 ### Common Issues
 
-**Poetry not found**
-: Make sure Poetry is in your PATH. You may need to restart your terminal or add Poetry's bin directory to your PATH manually.
+**UV not found**
+: Make sure UV is in your PATH. You may need to restart your terminal or add UV's bin directory to your PATH manually.
 
 **Python version conflicts**
 : The framework requires Python 3.8+. Check your version with `python --version` or `python3 --version`.

@@ -6,7 +6,7 @@ This service fetches stock data independently from analysis.
 Data is cached locally for offline analysis.
 
 Usage:
-    poetry run python scripts/data_fetcher.py --universe sp500 --max-stocks 1000
+    uv run python scripts/data_fetcher.py --universe sp500 --max-stocks 1000
 """
 
 import asyncio

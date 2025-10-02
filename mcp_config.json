@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "investment-analysis": {
-      "command": "poetry",
+      "command": "uv",
       "args": ["run", "python", "mcp_server_v2.py"],
       "env": {
         "PYTHONPATH": "."

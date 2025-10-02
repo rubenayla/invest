@@ -9,7 +9,7 @@ This directory contains the source files for the Systematic Investment Analysis 
 Install documentation dependencies:
 
 ```bash
-poetry install --with docs
+uv sync --group docs
 ```
 
 ### Local Development
@@ -17,7 +17,7 @@ poetry install --with docs
 Start the documentation server:
 
 ```bash
-poetry run mkdocs serve
+uv run mkdocs serve
 ```
 
 Then open http://localhost:8000 in your browser. The site will automatically reload when you make changes.
@@ -27,7 +27,7 @@ Then open http://localhost:8000 in your browser. The site will automatically rel
 Build the static site:
 
 ```bash
-poetry run mkdocs build
+uv run mkdocs build
 ```
 
 The built site will be available in the `site/` directory.
@@ -41,7 +41,7 @@ Documentation is automatically deployed to GitHub Pages when changes are pushed 
 You can also deploy manually:
 
 ```bash
-poetry run mkdocs gh-deploy
+uv run mkdocs gh-deploy
 ```
 
 This will build the documentation and push it to the `gh-pages` branch.
@@ -90,13 +90,13 @@ docs/
 
 ### Code Examples
 
-Always include full, runnable examples with `poetry run`:
+Always include full, runnable examples with `uv run`:
 
 ```bash
 # ✅ Good
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
 
-# ❌ Bad  
+# ❌ Bad
 python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
 ```
 
@@ -109,7 +109,7 @@ Use admonitions to highlight important information:
     The full S&P 500 analysis takes 10-15 minutes.
 
 !!! warning "Important"
-    Always use `poetry run` for all commands.
+    Always use `uv run` for all commands.
 
 !!! note "Background"
     This explains the reasoning behind a design decision.

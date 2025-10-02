@@ -4,13 +4,13 @@ Common issues and solutions for the Systematic Investment Analysis Framework.
 
 ## Installation Issues
 
-### Poetry Not Found
+### UV Not Found
 
-**Problem**: `poetry: command not found`
+**Problem**: `uv: command not found`
 
 **Solutions**:
-1. **Install Poetry**: Follow the [official installation guide](https://python-poetry.org/docs/#installation)
-2. **Check PATH**: Ensure Poetry's bin directory is in your PATH
+1. **Install UV**: Follow the [official installation guide](https://docs.astral.sh/uv/getting-started/installation/)
+2. **Check PATH**: Ensure UV's bin directory is in your PATH
 3. **Restart terminal**: Close and reopen your terminal after installation
 
 ### Python Version Issues
@@ -20,16 +20,16 @@ Common issues and solutions for the Systematic Investment Analysis Framework.
 **Solutions**:
 1. **Check version**: `python --version` or `python3 --version`
 2. **Install Python 3.8+**: Use your system's package manager or [python.org](https://python.org)
-3. **Use specific version**: `poetry env use python3.8`
+3. **Use specific version**: `uv python pin python3.8`
 
 ### Dependency Installation Fails
 
-**Problem**: `poetry install` fails with dependency errors
+**Problem**: `uv sync` fails with dependency errors
 
 **Solutions**:
-1. **Update Poetry**: `poetry self update`
-2. **Clear cache**: `poetry cache clear --all .`
-3. **Fresh install**: Delete `poetry.lock` and run `poetry install`
+1. **Update UV**: `uv self update`
+2. **Clear cache**: `uv cache clean`
+3. **Fresh install**: Delete `uv.lock` and run `uv sync`
 
 ## Runtime Issues
 
@@ -143,9 +143,9 @@ Common issues and solutions for the Systematic Investment Analysis Framework.
 **Cause**: Package not properly installed
 
 **Solutions**:
-1. **Install package**: Run `poetry install`
-2. **Check virtual environment**: Ensure using Poetry environment
-3. **Use poetry run**: Always prefix commands with `poetry run`
+1. **Install package**: Run `uv sync`
+2. **Check virtual environment**: Ensure using UV environment
+3. **Use uv run**: Always prefix commands with `uv run`
 
 ## Getting Additional Help
 
@@ -169,7 +169,7 @@ Please provide the following information:
 1. **Environment details**:
    - Operating system and version
    - Python version (`python --version`)
-   - Poetry version (`poetry --version`)
+   - UV version (`uv --version`)
 
 2. **Error reproduction**:
    - Exact command that failed
@@ -187,7 +187,7 @@ For detailed debugging information:
 
 ```bash
 # Enable verbose logging
-poetry run python scripts/systematic_analysis.py configs/my_config.yaml --verbose
+uv run python scripts/systematic_analysis.py configs/my_config.yaml --verbose
 
 # Python debugging
 PYTHONPATH=src python -c "
@@ -222,10 +222,10 @@ print(f'Location: {invest.__file__}')
 
 ### Avoid Common Mistakes
 
-1. **Always use `poetry run`**: Don't run Python commands directly
+1. **Always use `uv run`**: Don't run Python commands directly
 2. **Start small**: Test with small stock lists before full analysis
 3. **Backup configurations**: Save working configurations before modifications
-4. **Regular updates**: Keep dependencies updated with `poetry update`
+4. **Regular updates**: Keep dependencies updated with `uv sync --upgrade`
 
 ### Optimize Performance
 

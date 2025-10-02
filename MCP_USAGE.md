@@ -8,12 +8,12 @@ The Enhanced Investment Analysis MCP Server provides AI assistants with direct a
 
 ### 1. Install Dependencies
 ```bash
-poetry install
+uv sync
 ```
 
 ### 2. Start the MCP Server
 ```bash
-poetry run python mcp_server_v2.py
+uv run python mcp_server_v2.py
 ```
 
 ### 3. Configure Claude Code MCP
@@ -22,7 +22,7 @@ Add to your Claude Code MCP configuration:
 {
   "mcpServers": {
     "investment-analysis": {
-      "command": "poetry",
+      "command": "uv",
       "args": ["run", "python", "mcp_server_v2.py"],
       "env": {
         "PYTHONPATH": "."
@@ -312,7 +312,7 @@ The MCP server automatically selects appropriate models based on:
 Set environment variable for detailed logging:
 ```bash
 export INVESTMENT_MCP_DEBUG=1
-poetry run python mcp_server_v2.py
+uv run python mcp_server_v2.py
 ```
 
 ## 📊 Model Performance

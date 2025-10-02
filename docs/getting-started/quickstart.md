@@ -5,14 +5,14 @@ Get up and running with the Systematic Investment Analysis Framework in 5 minute
 ## Basic Usage
 
 !!! warning "Important"
-    **Always use `poetry run` for all commands** - This project requires Poetry dependency management.
+    **Always use `uv run` for all commands** - This project requires UV dependency management.
 
 ### 1. Your First Analysis
 
 Run a simple analysis on major tech companies:
 
 ```bash
-poetry run python scripts/systematic_analysis.py configs/test_tech_giants.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/test_tech_giants.yaml --save-csv
 ```
 
 This will:
@@ -39,7 +39,7 @@ cat tech_giants_test_*_results.csv
 
 ```bash
 # Run full S&P 500 analysis
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --quiet &
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --quiet &
 
 # Monitor progress
 tail -f sp500_full_screen_*_report.txt
@@ -80,7 +80,7 @@ TSLA,Consumer Cyclical,1066.20,330.56,N,28.6,50.0,0.0,0.0,9.0
 List all available configurations:
 
 ```bash
-poetry run python scripts/systematic_analysis.py --list-configs
+uv run python scripts/systematic_analysis.py --list-configs
 ```
 
 Common configurations:
@@ -93,10 +93,10 @@ Common configurations:
 
 ```bash
 # Basic usage
-poetry run python scripts/systematic_analysis.py [config_file]
+uv run python scripts/systematic_analysis.py [config_file]
 
 # With options
-poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml \
+uv run python scripts/systematic_analysis.py configs/sp500_full.yaml \
   --save-csv \
   --save-json \
   --output results/ \
@@ -145,21 +145,21 @@ poetry run python scripts/systematic_analysis.py configs/sp500_full.yaml \
 
 ```bash
 # Look for undervalued quality companies
-poetry run python scripts/systematic_analysis.py configs/conservative_value.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/conservative_value.yaml --save-csv
 ```
 
 ### Growth Stock Screening
 
 ```bash
 # Focus on high-growth companies
-poetry run python scripts/systematic_analysis.py configs/aggressive_growth.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/aggressive_growth.yaml --save-csv
 ```
 
 ### Custom Analysis
 
 1. Copy an existing config: `cp configs/sp500_full.yaml configs/my_strategy.yaml`
 2. Edit the criteria in `configs/my_strategy.yaml`
-3. Run: `poetry run python scripts/systematic_analysis.py configs/my_strategy.yaml --save-csv`
+3. Run: `uv run python scripts/systematic_analysis.py configs/my_strategy.yaml --save-csv`
 
 ## 🤖 Using with AI Assistants
 

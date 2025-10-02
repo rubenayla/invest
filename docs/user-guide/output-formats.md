@@ -369,7 +369,7 @@ investment_analysis/
 mkdir -p results/$(date +%Y-%m)/sp500_analysis
 
 # Run analysis with organized output
-poetry run python scripts/systematic_analysis.py \
+uv run python scripts/systematic_analysis.py \
   configs/sp500_full.yaml \
   --save-csv --save-json \
   --output results/$(date +%Y-%m)/sp500_analysis/

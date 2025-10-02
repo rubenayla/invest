@@ -19,10 +19,10 @@ The original dashboard was limited to ~410 stocks due to:
 
 ```bash
 # Fetch 1000 S&P 500 stocks
-poetry run python scripts/data_fetcher.py --universe sp500 --max-stocks 1000
+uv run python scripts/data_fetcher.py --universe sp500 --max-stocks 1000
 
 # Fetch international stocks
-poetry run python scripts/data_fetcher.py --universe international --max-stocks 200
+uv run python scripts/data_fetcher.py --universe international --max-stocks 200
 ```
 
 ### Step 2: Offline Analysis Engine (`scripts/offline_analyzer.py`)  
@@ -33,10 +33,10 @@ poetry run python scripts/data_fetcher.py --universe international --max-stocks 
 
 ```bash
 # Analyze all cached stocks and update dashboard
-poetry run python scripts/offline_analyzer.py --universe cached --update-dashboard
+uv run python scripts/offline_analyzer.py --universe cached --update-dashboard
 
 # Analyze specific universe from cache
-poetry run python scripts/offline_analyzer.py --universe sp500 --max-stocks 500 --update-dashboard
+uv run python scripts/offline_analyzer.py --universe sp500 --max-stocks 500 --update-dashboard
 ```
 
 ## Performance Comparison
@@ -68,19 +68,19 @@ The dashboard server (`scripts/dashboard_server.py`) now uses the two-step appro
 ### Fetch Data First (Recommended)
 ```bash
 # Step 1: Fetch data for 500 S&P 500 stocks (runs once, caches for 24 hours)
-poetry run python scripts/data_fetcher.py --universe sp500 --max-stocks 500
+uv run python scripts/data_fetcher.py --universe sp500 --max-stocks 500
 
-# Step 2: Analyze cached data and update dashboard (runs instantly)  
-poetry run python scripts/offline_analyzer.py --universe cached --update-dashboard
+# Step 2: Analyze cached data and update dashboard (runs instantly)
+uv run python scripts/offline_analyzer.py --universe cached --update-dashboard
 
 # Step 3: Start dashboard server
-poetry run python scripts/dashboard_server.py
+uv run python scripts/dashboard_server.py
 ```
 
 ### All-in-One Dashboard Update
 ```bash
 # Start dashboard server (will fetch + analyze automatically)
-poetry run python scripts/dashboard_server.py
+uv run python scripts/dashboard_server.py
 # Click "Update Data" -> Now fetches 1000 stocks instead of 30!
 ```
 
@@ -110,7 +110,7 @@ ls -la data/stock_cache/
 cat data/stock_cache/cache_index.json | jq '.stocks | length'
 
 # Force refresh all data
-poetry run python scripts/data_fetcher.py --universe sp500 --force-refresh
+uv run python scripts/data_fetcher.py --universe sp500 --force-refresh
 ```
 
 ## Architecture Benefits
@@ -178,14 +178,14 @@ Replace file cache with database for:
 **"No cached data found"**
 ```bash
 # Solution: Run data fetcher first
-poetry run python scripts/data_fetcher.py --universe sp500 --max-stocks 100
+uv run python scripts/data_fetcher.py --universe sp500 --max-stocks 100
 ```
 
 **"Module not found"**  
 ```bash
-# Solution: Ensure Poetry environment is active
-poetry install
-poetry run python scripts/data_fetcher.py --help
+# Solution: Ensure UV environment is active
+uv sync
+uv run python scripts/data_fetcher.py --help
 ```
 
 **"Analysis timeout"**

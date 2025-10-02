@@ -17,22 +17,22 @@
 
 ```bash
 # Install dependencies
-poetry install
+uv sync
 
 # Start interactive dashboard (main interface)
-poetry run python scripts/dashboard_server.py
+uv run python scripts/dashboard_server.py
 
 # Run systematic analysis
-poetry run python scripts/systematic_analysis.py configs/sp500_top100.yaml --save-csv
+uv run python scripts/systematic_analysis.py configs/sp500_top100.yaml --save-csv
 
 # Test S&P 500 data fetching
-poetry run python -c "from src.invest.data.yahoo import get_sp500_tickers; print(f'Found {len(get_sp500_tickers())} tickers')"
+uv run python -c "from src.invest.data.yahoo import get_sp500_tickers; print(f'Found {len(get_sp500_tickers())} tickers')"
 
-# Run tests  
-poetry run pytest
+# Run tests
+uv run pytest
 
 # Linting (mandatory before commits)
-poetry run ruff check src tests --select=E9,F63,F7,F82
+uv run ruff check src tests --select=E9,F63,F7,F82
 ```
 
 ## Architecture
@@ -92,7 +92,7 @@ poetry run ruff check src tests --select=E9,F63,F7,F82
 - **Numpydoc docstrings** - Follow NumPy-style documentation format
 
 ### Project Standards
-- **Poetry + pyproject.toml** - PEP 621-compliant dependency management
+- **uv + pyproject.toml** - PEP 621-compliant dependency management
 - **Ruff linter** - Use Ruff for fast, modern Python linting
 - **Minimal configurations** - Keep .gitignore, configs simple and project-specific
 
