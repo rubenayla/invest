@@ -62,52 +62,52 @@ def main():
         test_categories = [
             {
                 'name': 'Linting with Ruff',
-                'cmd': ['poetry', 'run', 'ruff', 'check', 'src', 'tests'],
+                'cmd': ['uv', 'run', 'ruff', 'check', 'src', 'tests'],
                 'required': True
             },
             {
                 'name': 'Code Formatting Check',
-                'cmd': ['poetry', 'run', 'ruff', 'format', '--check', 'src', 'tests'],
+                'cmd': ['uv', 'run', 'ruff', 'format', '--check', 'src', 'tests'],
                 'required': True
             },
             {
                 'name': 'Data Provider Tests',
-                'cmd': ['poetry', 'run', 'pytest', 'tests/test_data_providers.py', '-v'],
+                'cmd': ['uv', 'run', 'pytest', 'tests/test_data_providers.py', '-v'],
                 'required': True
             },
             {
                 'name': 'Valuation Model Tests',
-                'cmd': ['poetry', 'run', 'pytest', 'tests/test_valuation.py', '-v'],
+                'cmd': ['uv', 'run', 'pytest', 'tests/test_valuation.py', '-v'],
                 'required': True
             },
             {
                 'name': 'International Market Tests',
-                'cmd': ['poetry', 'run', 'pytest', 'tests/test_international_markets.py', '-v'],
+                'cmd': ['uv', 'run', 'pytest', 'tests/test_international_markets.py', '-v'],
                 'required': True
             },
             {
                 'name': 'Systematic Analysis Tests',
-                'cmd': ['poetry', 'run', 'pytest', 'tests/test_systematic_analysis.py', '-v'],
+                'cmd': ['uv', 'run', 'pytest', 'tests/test_systematic_analysis.py', '-v'],
                 'required': True
             },
             {
                 'name': 'End-to-End Workflow Tests',
-                'cmd': ['poetry', 'run', 'pytest', 'tests/test_end_to_end.py', '-v'],
+                'cmd': ['uv', 'run', 'pytest', 'tests/test_end_to_end.py', '-v'],
                 'required': True
             },
             {
                 'name': 'Complete Test Suite with Coverage',
-                'cmd': ['poetry', 'run', 'pytest', '--cov=src/invest', '--cov-report=term-missing', '--cov-report=html', '-v'],
+                'cmd': ['uv', 'run', 'pytest', '--cov=src/invest', '--cov-report=term-missing', '--cov-report=html', '-v'],
                 'required': False
             },
             {
                 'name': 'Configuration Validation',
-                'cmd': ['poetry', 'run', 'python', '-c', 'import yaml; [yaml.safe_load(open(f)) for f in Path("configs").glob("*.yaml")]'],
+                'cmd': ['uv', 'run', 'python', '-c', 'import yaml; [yaml.safe_load(open(f)) for f in Path("configs").glob("*.yaml")]'],
                 'required': True
             },
             {
                 'name': 'Documentation Build Test',
-                'cmd': ['poetry', 'run', 'mkdocs', 'build', '--strict'],
+                'cmd': ['uv', 'run', 'mkdocs', 'build', '--strict'],
                 'required': False
             }
         ]

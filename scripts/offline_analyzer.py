@@ -6,7 +6,7 @@ Runs investment analysis on cached stock data without network calls.
 Fast, reliable, and can process large numbers of stocks.
 
 Usage:
-    poetry run python scripts/offline_analyzer.py --universe sp500 --update-dashboard
+    uv run python scripts/offline_analyzer.py --universe sp500 --update-dashboard
 """
 
 import asyncio

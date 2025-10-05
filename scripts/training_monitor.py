@@ -20,7 +20,7 @@ def monitor_training_logs(log_file: Path = Path('comprehensive_training.log')):
     
     if not log_file.exists():
         print(f'❌ Log file not found: {log_file}')
-        print('Start training first: poetry run python scripts/comprehensive_neural_training.py')
+        print('Start training first: uv run python neural_network/training/comprehensive_neural_training.py')
         return
     
     print('🔍 Monitoring Neural Network Training Progress')

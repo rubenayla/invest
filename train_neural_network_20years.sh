@@ -30,7 +30,7 @@ echo "    uv run python scripts/training_monitor.py"
 echo ""
 
 # Run training in background so user can monitor
-uv run python scripts/comprehensive_neural_training.py
+uv run python neural_network/training/comprehensive_neural_training.py
 
 echo ""
 echo "🎉 Training completed! Check the results:"

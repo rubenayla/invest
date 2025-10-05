@@ -1,0 +1,34 @@
+{
+  "total_epochs": 75,
+  "best_val_loss": 884.7054443359375,
+  "final_train_loss": 839.9003295898438,
+  "final_val_loss": 954.3748779296875,
+  "val_mae": "26.812645",
+  "test_correlation": 0.15807584859695578,
+  "training_history": [
+    {
+      "epoch": 25,
+      "train_loss": 849.1101684570312,
+      "val_loss": 884.7054443359375,
+      "val_mae": "25.78047",
+      "correlation": 0.12845013139069034
+    },
+    {
+      "epoch": 50,
+      "train_loss": 859.9981079101562,
+      "val_loss": 1059.757080078125,
+      "val_mae": "28.391954",
+      "correlation": 0.1110410155883315
+    },
+    {
+      "epoch": 75,
+      "train_loss": 839.9003295898438,
+      "val_loss": 954.3748779296875,
+      "val_mae": "26.812645",
+      "correlation": 0.10068884771831589
+    }
+  ],
+  "best_model_path": "best_comprehensive_nn_2year_25epochs.pt",
+  "epochs_without_improvement": 50,
+  "early_stopped": true
+}

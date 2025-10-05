@@ -79,7 +79,7 @@ ssh ruben@192.168.1.117 'powershell.exe -Command "wsl bash -c \"pwd\""'
 
 ```bash
 # From Mac: Start training remotely (survives SSH disconnect)
-ssh ruben@192.168.1.117 'wsl bash -c "cd ~/repos/invest && setsid bash ./scripts/start_gpu_training.sh > training.log 2>&1 < /dev/null &"'
+ssh ruben@192.168.1.117 'wsl bash -c "cd ~/repos/invest && setsid bash ./neural_network/training/start_gpu_training.sh > training.log 2>&1 < /dev/null &"'
 
 # Check if training is running
 ssh ruben@192.168.1.117 'wsl bash -c "ps aux | grep comprehensive_neural_training"'
@@ -100,7 +100,7 @@ ssh ruben@192.168.1.117 'wsl nvidia-smi'
 ```bash
 cd ~/repos/invest
 git pull
-./scripts/start_gpu_training.sh
+./neural_network/training/start_gpu_training.sh
 ```
 
 ### 3. Transfer Trained Models Back to Mac
@@ -334,7 +334,7 @@ export PATH=$HOME/.local/bin:$PATH
 cd ~/repos/invest
 
 # Run training
-uv run python scripts/comprehensive_neural_training.py
+uv run python neural_network/training/comprehensive_neural_training.py
 
 # Check GPU
 nvidia-smi

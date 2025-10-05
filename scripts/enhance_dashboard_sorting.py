@@ -5,7 +5,7 @@ Dashboard Sorting Enhancer
 This script adds server-side sorting capabilities to the existing dashboard HTML.
 It adds JavaScript that can optionally use the server API for more complex sorting.
 
-Usage: poetry run python scripts/enhance_dashboard_sorting.py
+Usage: uv run python scripts/enhance_dashboard_sorting.py
 """
 
 import os

@@ -211,7 +211,17 @@ class FeatureEngineer:
         # Sector encoding (simplified - could use one-hot encoding)
         features['sector_code'] = self._encode_sector(info.get('sector', 'Unknown'))
         features['industry_code'] = hash(info.get('industry', 'Unknown')) % 100
-        
+
+        # Macroeconomic features (if available in data)
+        macro = data.get('macro', {})
+        features['fed_funds_rate'] = macro.get('fed_funds_rate', 2.5)  # Default ~2.5%
+        features['treasury_10y'] = macro.get('treasury_10y', 3.0)  # Default ~3%
+        features['vix'] = macro.get('vix', 20.0)  # Default moderate volatility
+        features['sp500_pe'] = macro.get('sp500_pe', 20.0)  # Default market P/E
+        features['gdp_growth'] = macro.get('gdp_growth', 2.0)  # Default ~2% growth
+        features['inflation_rate'] = macro.get('inflation_rate', 2.5)  # Default ~2.5%
+        features['unemployment_rate'] = macro.get('unemployment_rate', 4.0)  # Default ~4%
+
         return features
     
     def _safe_ratio(self, numerator: Any, denominator: Any, 
@@ -530,14 +540,14 @@ class NeuralNetworkValuationModel(ValuationModel):
         feature_array = self.feature_engineer.transform(features)
         feature_tensor = torch.FloatTensor(feature_array).to(self.device)
         
-        # Get model prediction
+        # Get model prediction with uncertainty estimation
         self.model.eval()
         with torch.no_grad():
             # Get base prediction
             score = self.model(feature_tensor).cpu().numpy()[0, 0]
-            
-            # Simple uncertainty estimation without dropout issues
-            uncertainty = 5.0  # Default moderate uncertainty
+
+            # Calculate uncertainty based on multiple factors
+            uncertainty = self._estimate_uncertainty(features, score)
             confidence = self._score_to_confidence(uncertainty)
         
         # Convert score to fair value estimate
@@ -653,8 +663,68 @@ class NeuralNetworkValuationModel(ValuationModel):
             warnings=['Model not trained - using heuristic valuation']
         )
     
+    def _estimate_uncertainty(self, features: Dict[str, float], score: float) -> float:
+        '''
+        Estimate prediction uncertainty based on multiple factors.
+
+        Returns uncertainty score (0-20+), where:
+        - 0-5: High confidence
+        - 5-10: Medium confidence
+        - 10+: Low confidence
+        '''
+        uncertainty = 0.0
+
+        # Factor 1: Data completeness (0-5 points)
+        # Count how many optional fields are missing
+        optional_fields = [
+            'roe', 'roic', 'free_cash_flow_yield', 'peg_ratio',
+            'target_mean_ratio', 'analyst_count', 'debt_to_equity'
+        ]
+        missing_count = sum(1 for f in optional_fields if features.get(f, 0) == 0)
+        uncertainty += (missing_count / len(optional_fields)) * 5
+
+        # Factor 2: Extreme values (0-5 points)
+        # High uncertainty if key ratios are extreme
+        if features.get('pe_ratio', 0) > 100 or features.get('pe_ratio', 0) < 0:
+            uncertainty += 2
+        if features.get('debt_to_equity', 0) > 5:
+            uncertainty += 1.5
+        if features.get('profit_margin', 0) < -0.5:
+            uncertainty += 1.5
+
+        # Factor 3: Sector volatility (0-3 points)
+        # Some sectors are harder to predict
+        volatile_sectors = [1.0, 8.0, 4.0]  # Tech, Energy, Consumer Cyclical
+        if features.get('sector_code', 0) in volatile_sectors:
+            uncertainty += 2
+
+        # Factor 4: Market cap (0-2 points)
+        # Smaller caps are harder to predict
+        market_cap_log = features.get('market_cap_log', 20)
+        if market_cap_log < 18:  # Below ~$100M
+            uncertainty += 2
+        elif market_cap_log < 20:  # Below ~$500M
+            uncertainty += 1
+
+        # Factor 5: Model confidence in prediction (0-5 points)
+        # Extreme scores (very bullish/bearish) may be less reliable
+        if score > 80 or score < 20:
+            uncertainty += 3
+        elif score > 70 or score < 30:
+            uncertainty += 1.5
+
+        # Factor 6: Analyst coverage (0-2 points)
+        # Low analyst coverage increases uncertainty
+        if features.get('analyst_count', 0) < 5:
+            uncertainty += 2
+        elif features.get('analyst_count', 0) < 10:
+            uncertainty += 1
+
+        # Cap uncertainty at reasonable maximum
+        return min(uncertainty, 20.0)
+
     def _score_to_confidence(self, uncertainty: float) -> str:
-        """Convert uncertainty to confidence level."""
+        '''Convert uncertainty to confidence level.'''
         if uncertainty < 5:
             return 'high'
         elif uncertainty < 10:
