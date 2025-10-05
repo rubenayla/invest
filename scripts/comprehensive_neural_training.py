@@ -44,7 +44,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class TrainingConfig:
     """Configuration for comprehensive training."""
-    start_year: int = 2004
+    start_year: int = 2015  # Focus on recent data with better coverage
     end_year: int = 2024
     target_samples: int = 5000  # Much larger dataset
     validation_split: float = 0.2
@@ -100,45 +100,96 @@ class ComprehensiveNeuralTrainer:
         
         return large_caps + additional_stocks
         
-    def collect_historical_data(self) -> List[Tuple[str, Dict, float]]:
-        """Collect 20 years of historical training data."""
-        logger.info(f'Collecting historical data from {self.config.start_year} to {self.config.end_year}')
-        
-        training_samples = []
-        start_date = datetime(self.config.start_year, 1, 1)
-        end_date = datetime(self.config.end_year, 1, 1)
-        
-        # Generate random sampling dates across 20 years
-        sample_dates = []
-        total_days = (end_date - start_date).days
-        
-        for _ in range(self.config.target_samples):
-            random_days = random.randint(0, total_days - 730)  # Leave 2 years for forward returns
-            sample_date = start_date + timedelta(days=random_days)
-            sample_dates.append(sample_date)
-        
-        sample_dates.sort()
-        logger.info(f'Generated {len(sample_dates)} random sample dates')
-        
-        # Collect data for each sample date
-        for i, sample_date in enumerate(sample_dates):
-            if i % 100 == 0:
-                logger.info(f'Processing sample {i+1}/{len(sample_dates)} ({sample_date.strftime("%Y-%m-%d")})')
-                
-            # Random stock selection for this sample
-            ticker = random.choice(self.stock_universe)
-            
+    def _build_stock_availability_map(self) -> Dict[str, Tuple[datetime, datetime]]:
+        """Build a map of when each stock was trading."""
+        logger.info('Building stock availability map...')
+        availability_map = {}
+
+        for ticker in self.stock_universe:
             try:
-                # Get fundamental data at sample date (approximate with quarterly data)
+                stock = yf.Ticker(ticker)
+                # Get full history to find first and last trading dates
+                hist = stock.history(period='max')
+
+                if hist.empty:
+                    continue
+
+                # Extract dates (handle timezone-aware indices)
+                hist_index = hist.index.tz_localize(None) if hist.index.tz is not None else hist.index
+                first_date = hist_index[0].to_pydatetime()
+                last_date = hist_index[-1].to_pydatetime()
+
+                # Ensure we have at least 2 years of data for forward returns
+                if (last_date - first_date).days >= 730:
+                    availability_map[ticker] = (first_date, last_date)
+
+            except Exception as e:
+                logger.warning(f'Error checking availability for {ticker}: {e}')
+                continue
+
+        logger.info(f'Found {len(availability_map)} stocks with sufficient trading history')
+        return availability_map
+
+    def collect_historical_data(self) -> List[Tuple[str, Dict, float]]:
+        """Collect historical training data using smart stock sampling."""
+        logger.info(f'Collecting historical data from {self.config.start_year} to {self.config.end_year}')
+
+        training_samples = []
+        period_start = datetime(self.config.start_year, 1, 1)
+        period_end = datetime(self.config.end_year, 1, 1)
+
+        # Build stock availability map
+        availability_map = self._build_stock_availability_map()
+        if not availability_map:
+            logger.error('No stocks available for training')
+            return []
+
+        # Generate smart (stock, date) pairs
+        stock_date_pairs = []
+        for _ in range(self.config.target_samples * 2):  # Generate extra to account for filtering
+            # Randomly select a stock
+            ticker = random.choice(list(availability_map.keys()))
+            stock_start, stock_end = availability_map[ticker]
+
+            # Find the valid date range for this stock (intersection with our training period)
+            valid_start = max(period_start, stock_start)
+            valid_end = min(period_end, stock_end)
+
+            # Leave 2 years for forward returns
+            valid_end = valid_end - timedelta(days=730)
+
+            if valid_end <= valid_start:
+                continue
+
+            # Generate random date within valid range
+            total_days = (valid_end - valid_start).days
+            if total_days <= 0:
+                continue
+
+            random_days = random.randint(0, total_days)
+            sample_date = valid_start + timedelta(days=random_days)
+
+            stock_date_pairs.append((ticker, sample_date))
+
+        stock_date_pairs.sort(key=lambda x: x[1])  # Sort by date
+        logger.info(f'Generated {len(stock_date_pairs)} (stock, date) pairs from available trading periods')
+
+        # Collect data for each (stock, date) pair
+        for i, (ticker, sample_date) in enumerate(stock_date_pairs):
+            if i % 100 == 0:
+                logger.info(f'Processing sample {i+1}/{len(stock_date_pairs)} ({ticker} @ {sample_date.strftime("%Y-%m-%d")})')
+
+            try:
+                # Get fundamental data at sample date
                 stock_data = self._get_historical_stock_data(ticker, sample_date)
                 if not stock_data:
                     continue
-                
+
                 # Calculate 2-year forward return from sample date
                 forward_return = self._calculate_forward_return(ticker, sample_date, 24)
                 if forward_return is None:
                     continue
-                    
+
                 # Prepare data in format expected by neural network
                 model_data = {
                     'info': stock_data,
@@ -146,17 +197,17 @@ class ComprehensiveNeuralTrainer:
                     'balance_sheet': None,
                     'cashflow': None
                 }
-                
+
                 training_samples.append((ticker, model_data, forward_return))
-                
+
                 # Stop if we have enough samples
                 if len(training_samples) >= self.config.target_samples:
                     break
-                    
+
             except Exception as e:
                 logger.warning(f'Error collecting data for {ticker} at {sample_date}: {e}')
                 continue
-        
+
         logger.info(f'Collected {len(training_samples)} training samples')
         return training_samples
     
@@ -221,9 +272,10 @@ class ComprehensiveNeuralTrainer:
             if len(hist) < months * 15:  # Need reasonable amount of data
                 return None
             
-            # Find start and end prices
-            start_prices = hist[hist.index >= start_date]['Close']
-            end_prices = hist[hist.index >= end_date]['Close']
+            # Find start and end prices (handle timezone-aware indices)
+            hist_index = hist.index.tz_localize(None) if hist.index.tz is not None else hist.index
+            start_prices = hist[hist_index >= start_date]['Close']
+            end_prices = hist[hist_index >= end_date]['Close']
             
             if len(start_prices) == 0 or len(end_prices) == 0:
                 return None
@@ -246,9 +298,7 @@ class ComprehensiveNeuralTrainer:
         
         # Initialize model
         model = NeuralNetworkValuationModel(
-            time_horizon='comprehensive_2year',
-            hidden_dims=[512, 256, 128, 64],  # Larger architecture for more data
-            dropout_rate=0.3
+            time_horizon='comprehensive_2year'
         )
         
         # Split data
@@ -287,13 +337,14 @@ class ComprehensiveNeuralTrainer:
                 epochs_this_batch = min(self.config.initial_epochs, 
                                       self.config.max_total_epochs - total_epochs)
                 
+                # Combine train and val data for train_model to split internally
+                combined_data = train_data + val_data
+
                 # Use the existing train_model method for this batch
                 batch_results = model.train_model(
-                    train_data,
-                    validation_data=val_data,
-                    validation_split=0.0,  # We already split
-                    epochs=epochs_this_batch,
-                    batch_size=self.config.batch_size
+                    combined_data,
+                    validation_split=0.2,  # Let model handle validation split
+                    epochs=epochs_this_batch
                 )
                 
                 total_epochs += epochs_this_batch
