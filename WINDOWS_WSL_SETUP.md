@@ -75,36 +75,32 @@ ssh ruben@192.168.1.117 'powershell.exe -Command "wsl bash -c \"pwd\""'
 
 ### 2. Run Training on Windows GPU
 
-**❌ KNOWN LIMITATION: Remote execution via SSH doesn't work reliably**
-
-SSH to Windows → PowerShell → WSL has multiple issues:
-- Background processes (`nohup`, `&`) terminate when SSH disconnects
-- Complex quote escaping (PowerShell uses different rules than bash)
-- Session management tools (screen, tmux) can't persist across SSH disconnect
-
-**✅ SOLUTION: Use git push/pull workflow**
+**✅ WORKING SOLUTION: Use `setsid` for remote execution**
 
 ```bash
-# On Mac: Make code changes and push
-cd ~/repos/invest
-# ... make changes ...
-git add .
-git commit -m "Update training code"
-git push
+# From Mac: Start training remotely (survives SSH disconnect)
+ssh ruben@192.168.1.117 'wsl bash -c "cd ~/repos/invest && setsid bash ./scripts/start_gpu_training.sh > training.log 2>&1 < /dev/null &"'
 
-# On Windows: Pull and run (in Ubuntu app)
+# Check if training is running
+ssh ruben@192.168.1.117 'wsl bash -c "ps aux | grep comprehensive_neural_training"'
+
+# Monitor progress
+ssh ruben@192.168.1.117 'wsl cat ~/repos/invest/comprehensive_training.log'
+
+# Check GPU usage
+ssh ruben@192.168.1.117 'wsl nvidia-smi'
+```
+
+**Why `setsid` works:**
+- Creates a new session detached from the SSH terminal
+- Process survives when SSH connection closes
+- Simple one-command execution from Mac
+
+**Alternative: Direct execution on Windows (Ubuntu app)**
+```bash
 cd ~/repos/invest
 git pull
 ./scripts/start_gpu_training.sh
-
-# Or run directly:
-export PATH=$HOME/.local/bin:$PATH
-uv run python scripts/comprehensive_neural_training.py
-```
-
-**Monitor GPU usage:**
-```bash
-watch -n 1 nvidia-smi
 ```
 
 ### 3. Transfer Trained Models Back to Mac
