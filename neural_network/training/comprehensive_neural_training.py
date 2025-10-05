@@ -24,8 +24,8 @@ import logging
 import json
 import time
 
-# Add src to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Add src to path (go up to repo root)
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from src.invest.valuation.neural_network_model import NeuralNetworkValuationModel
 import yfinance as yf
@@ -44,9 +44,9 @@ logger = logging.getLogger(__name__)
 @dataclass
 class TrainingConfig:
     """Configuration for comprehensive training."""
-    start_year: int = 2015  # Focus on recent data with better coverage
+    start_year: int = 2004  # Use all available historical data
     end_year: int = 2024
-    target_samples: int = 5000  # Much larger dataset
+    target_samples: int = 500  # Start small to test cache, then increase
     validation_split: float = 0.2
     test_split: float = 0.1
     batch_size: int = 64
