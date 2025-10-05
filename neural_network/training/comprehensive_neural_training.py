@@ -191,20 +191,29 @@ class ComprehensiveNeuralTrainer:
                 # Check if cache config matches current config
                 cache_config = cache.get('config', {})
                 if (cache_config.get('start_year') == self.config.start_year and
-                    cache_config.get('end_year') == self.config.end_year and
-                    cache['sample_count'] >= self.config.target_samples):
-                    logger.info('✅ Using cached training data')
-                    # Convert back to list of tuples
-                    samples = [
+                    cache_config.get('end_year') == self.config.end_year):
+                    # Load existing samples
+                    existing_samples = [
                         (s['ticker'], s['data'], s['forward_return'])
-                        for s in cache['samples'][:self.config.target_samples]
+                        for s in cache['samples']
                     ]
-                    logger.info(f'Loaded {len(samples)} samples from cache')
-                    return samples
-                else:
-                    logger.info('⚠️  Cache config mismatch, collecting new data')
 
-        training_samples = []
+                    if len(existing_samples) >= self.config.target_samples:
+                        logger.info('✅ Using cached training data')
+                        logger.info(f'Loaded {self.config.target_samples} samples from cache')
+                        return existing_samples[:self.config.target_samples]
+                    else:
+                        # Incrementally add more samples
+                        logger.info(f'📈 Cache has {len(existing_samples)} samples, need {self.config.target_samples}')
+                        logger.info(f'Collecting {self.config.target_samples - len(existing_samples)} additional samples')
+                        training_samples = existing_samples
+                        # Continue below to collect more
+                else:
+                    logger.info('⚠️  Cache config mismatch (start_year/end_year), collecting new data')
+
+        # Only initialize empty list if we didn't load from cache
+        if 'training_samples' not in locals():
+            training_samples = []
         period_start = datetime(self.config.start_year, 1, 1)
         period_end = datetime(self.config.end_year, 1, 1)
 
