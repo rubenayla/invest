@@ -616,18 +616,8 @@ class ComprehensiveNeuralTrainer:
 
 async def main():
     """Main training function."""
-    config = TrainingConfig(
-        start_year=2004,
-        end_year=2024,
-        target_samples=5000,  # Large dataset
-        validation_split=0.2,
-        test_split=0.1,
-        batch_size=64,
-        initial_epochs=25,  # Train in batches
-        patience=50,        # More patience for large dataset
-        min_improvement=0.001,
-        max_total_epochs=300
-    )
+    # Use default config values from the dataclass
+    config = TrainingConfig()
     
     trainer = ComprehensiveNeuralTrainer(config)
     
