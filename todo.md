@@ -1,17 +1,18 @@
-Constellation Software Inc. 
+Does the neural network predictor look good? I just cloned the repo, so we may need to retrain it. I'd like to understand the cases where it's very different from other predictions and undertsand why. We need a reliable way to determine how good it is at predictions. Use a suite of data from various decades and sectors, and use separate test and training sets to analyze it well. Determine some factor of confidence in the prediction.
 
-How is training going?
+Let's commit our changes cleanly please.
+
+- Neural network that takes the stock price, fundamental ratios, growths, etc and returns a score. Run that over all known data for past companies, and train, maybe genetic algorithm, so it learns the best possible valuation technique.
+  - The problem is not knowing the time interval to consider. Maybe it's bad for next month, but great for next 5 years. 
 
 Is the industry of the company included as input parameter for the neural network? that data is available from yfinance
 
 
 
-- Neural network that takes the stock price, fundamental ratios, growths, etc and returns a score. Run that over all known data for past companies, and train, maybe genetic algorithm, so it learns the best possible valuation technique.
-  - The problem is not knowing the time interval to consider. Maybe it's bad for next month, but great for next 5 years. 
 
 to invest in warren style, human like instructions or can be programmed?
 
-why is acgl so cheap?
+
 nem P/tangible book value?
 
 now compare your previous analysis to the one of the repo, and try to understand why your recommendations differ. What is different?
@@ -25,17 +26,11 @@ now compare your previous analysis to the one of the repo, and try to understand
 
 check wallet design in stuff.md
 
-
-
 why most models say this is overpriced: 8031.T
 
 how much upside has bitcoin left? Should i sell bitcoin to invest in cheap stocks? let's look at the total money invested in bitcoin vs gold, stocks, and bonds.
 
 What symbol to put when a model failed to evaluate the stock (nonsense values, can't apply it), an x instead of -
-
-Analyze APA and the other top stocks
-
-- investigate levels.vc
 
 # Analyze stocks like Berkshire correctly
   Given the current system's capabilities, here are more feasible ways to improve the analysis for such businesses:
