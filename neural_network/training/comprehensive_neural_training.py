@@ -46,14 +46,14 @@ class TrainingConfig:
     """Configuration for comprehensive training."""
     start_year: int = 2004  # Use all available historical data
     end_year: int = 2024
-    target_samples: int = 500  # Start small to test cache, then increase
+    target_samples: int = 10000  # Larger dataset for complex models
     validation_split: float = 0.2
     test_split: float = 0.1
     batch_size: int = 64
     initial_epochs: int = 50
     patience: int = 10  # Early stopping patience
     min_improvement: float = 0.001  # Minimum improvement threshold
-    max_total_epochs: int = 200  # Maximum total training epochs
+    max_total_epochs: int = 300  # Maximum total training epochs
     cache_file: str = 'neural_network/training/training_data_cache.json'  # Cache location
     use_cache: bool = True  # Use cached data by default
 
