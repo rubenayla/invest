@@ -96,3 +96,4 @@ watchlist_analysis.csv
 comprehensive_training.log
 local_training.log
 training_run.log
+neural_network/training/training_data_cache.json

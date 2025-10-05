@@ -54,6 +54,8 @@ class TrainingConfig:
     patience: int = 10  # Early stopping patience
     min_improvement: float = 0.001  # Minimum improvement threshold
     max_total_epochs: int = 200  # Maximum total training epochs
+    cache_file: str = 'neural_network/training/training_data_cache.json'  # Cache location
+    use_cache: bool = True  # Use cached data by default
 
 @dataclass
 class TrainingProgress:
@@ -69,12 +71,13 @@ class TrainingProgress:
 
 class ComprehensiveNeuralTrainer:
     """Comprehensive neural network trainer with 20 years of data."""
-    
+
     def __init__(self, config: TrainingConfig):
         self.config = config
         self.progress_history: List[TrainingProgress] = []
         self.best_model_path: Optional[Path] = None
-        
+        self.cache_path = Path(config.cache_file)
+
         # Stock universe for training
         self.stock_universe = self._get_training_universe()
         logger.info(f'Training universe: {len(self.stock_universe)} stocks')
@@ -130,9 +133,76 @@ class ComprehensiveNeuralTrainer:
         logger.info(f'Found {len(availability_map)} stocks with sufficient trading history')
         return availability_map
 
+    def _load_cached_data(self) -> Optional[Dict[str, Any]]:
+        """Load cached training data if available."""
+        if not self.cache_path.exists():
+            return None
+
+        try:
+            with open(self.cache_path, 'r') as f:
+                cache = json.load(f)
+            logger.info(f'Loaded cache from {self.cache_path}')
+            logger.info(f'Cache contains {cache["sample_count"]} samples')
+            logger.info(f'Cache last updated: {cache["last_updated"]}')
+            return cache
+        except Exception as e:
+            logger.warning(f'Failed to load cache: {e}')
+            return None
+
+    def _save_cache(self, samples: List[Tuple[str, Dict, float]]):
+        """Save training samples to cache."""
+        try:
+            # Create cache directory if needed
+            self.cache_path.parent.mkdir(parents=True, exist_ok=True)
+
+            cache = {
+                'last_updated': datetime.now().isoformat(),
+                'sample_count': len(samples),
+                'config': {
+                    'start_year': self.config.start_year,
+                    'end_year': self.config.end_year,
+                    'target_samples': self.config.target_samples
+                },
+                'samples': [
+                    {
+                        'ticker': ticker,
+                        'data': data,
+                        'forward_return': forward_return
+                    }
+                    for ticker, data, forward_return in samples
+                ]
+            }
+
+            with open(self.cache_path, 'w') as f:
+                json.dump(cache, f, indent=2)
+
+            logger.info(f'Saved {len(samples)} samples to cache: {self.cache_path}')
+        except Exception as e:
+            logger.warning(f'Failed to save cache: {e}')
+
     def collect_historical_data(self) -> List[Tuple[str, Dict, float]]:
         """Collect historical training data using smart stock sampling."""
         logger.info(f'Collecting historical data from {self.config.start_year} to {self.config.end_year}')
+
+        # Try to load from cache first
+        if self.config.use_cache:
+            cache = self._load_cached_data()
+            if cache:
+                # Check if cache config matches current config
+                cache_config = cache.get('config', {})
+                if (cache_config.get('start_year') == self.config.start_year and
+                    cache_config.get('end_year') == self.config.end_year and
+                    cache['sample_count'] >= self.config.target_samples):
+                    logger.info('✅ Using cached training data')
+                    # Convert back to list of tuples
+                    samples = [
+                        (s['ticker'], s['data'], s['forward_return'])
+                        for s in cache['samples'][:self.config.target_samples]
+                    ]
+                    logger.info(f'Loaded {len(samples)} samples from cache')
+                    return samples
+                else:
+                    logger.info('⚠️  Cache config mismatch, collecting new data')
 
         training_samples = []
         period_start = datetime(self.config.start_year, 1, 1)
@@ -209,6 +279,11 @@ class ComprehensiveNeuralTrainer:
                 continue
 
         logger.info(f'Collected {len(training_samples)} training samples')
+
+        # Save to cache for future use
+        if self.config.use_cache and training_samples:
+            self._save_cache(training_samples)
+
         return training_samples
     
     def _get_historical_stock_data(self, ticker: str, date: datetime) -> Optional[Dict]:

@@ -29,6 +29,17 @@ neural_network/
 
 ## Training
 
+### Training Data Cache
+
+The training script automatically caches collected historical data to avoid re-downloading on subsequent runs:
+
+- **Cache location**: `neural_network/training/training_data_cache.json`
+- **Auto-saves**: After collecting training data
+- **Auto-loads**: On next run if config matches (start_year, end_year, target_samples)
+- **Disable**: Set `use_cache=False` in `TrainingConfig`
+
+This dramatically speeds up training iterations - **data collection can take hours**, but with cache it's instant!
+
 ### Local Training (Mac)
 ```bash
 cd ~/repos/invest
