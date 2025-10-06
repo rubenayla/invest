@@ -836,35 +836,50 @@ class NeuralNetworkValuationModel(ValuationModel):
         # Training setup
         optimizer = optim.Adam(self.model.parameters(), lr=0.001)
         criterion = nn.MSELoss()
-        
+
+        # Create DataLoader for mini-batch training
+        from torch.utils.data import TensorDataset, DataLoader
+
+        batch_size = 32  # Standard batch size for neural networks
+        train_dataset = TensorDataset(X_train, y_train)
+        train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+
         # Training loop
         train_losses = []
         val_losses = []
-        
+
         for epoch in range(epochs):
             # Training phase
             self.model.train()
-            optimizer.zero_grad()
-            
-            train_pred = self.model(X_train)
-            train_loss = criterion(train_pred, y_train)
-            
-            train_loss.backward()
-            optimizer.step()
-            
+            epoch_train_losses = []
+
+            # Mini-batch training
+            for batch_X, batch_y in train_loader:
+                optimizer.zero_grad()
+
+                batch_pred = self.model(batch_X)
+                batch_loss = criterion(batch_pred, batch_y)
+
+                batch_loss.backward()
+                optimizer.step()
+
+                epoch_train_losses.append(batch_loss.item())
+
+            # Calculate average training loss for the epoch
+            avg_train_loss = np.mean(epoch_train_losses)
+            train_losses.append(avg_train_loss)
+
             # Validation phase
             self.model.eval()
             with torch.no_grad():
                 val_pred = self.model(X_val)
                 val_loss = criterion(val_pred, y_val)
-            
-            train_losses.append(train_loss.item())
-            val_losses.append(val_loss.item())
-            
+                val_losses.append(val_loss.item())
+
             if (epoch + 1) % 10 == 0:
                 self.logger.info(
                     f'Epoch {epoch + 1}/{epochs} - '
-                    f'Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}'
+                    f'Train Loss: {avg_train_loss:.4f}, Val Loss: {val_loss.item():.4f}'
                 )
         
         # Calculate final metrics
