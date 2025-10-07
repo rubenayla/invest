@@ -97,3 +97,19 @@ comprehensive_training.log
 local_training.log
 training_run.log
 neural_network/training/training_data_cache.json
+
+# Neural network training artifacts
+*.pt
+*.pth
+*_training.log
+*_collection.log
+collection_*.log
+arch_*.log
+cache_*.log
+incremental_*.log
+data_collection_*.log
+comprehensive_training_results_*.json
+neural_network/training/*_backup.json
+neural_network/training/*_old.json
+neural_network/training/cache_generation.log
+neural_network/training/multi_horizon_training.log

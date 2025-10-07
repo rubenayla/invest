@@ -133,7 +133,7 @@ class FeatureEngineer:
             info.get('currentPrice'),
             info.get('forwardEps')
         )
-        features['peg_ratio'] = info.get('pegRatio', 0.0) or 0.0
+        # features['peg_ratio'] = info.get('pegRatio', 0.0) or 0.0  # REMOVED: 100% zeros in cache
         features['price_to_book'] = info.get('priceToBook', 0.0) or 0.0
         features['price_to_sales'] = self._safe_ratio(
             info.get('marketCap'),
@@ -153,15 +153,15 @@ class FeatureEngineer:
         features['operating_margin'] = info.get('operatingMargins', 0.0) or 0.0
         features['roe'] = info.get('returnOnEquity', 0.0) or 0.0
         features['roa'] = info.get('returnOnAssets', 0.0) or 0.0
-        features['roic'] = self._calculate_roic(info)
+        # features['roic'] = self._calculate_roic(info)  # REMOVED: 100% zeros in cache
         features['gross_margin'] = info.get('grossMargins', 0.0) or 0.0
         
         # Growth Metrics
         features['revenue_growth'] = info.get('revenueGrowth', 0.0) or 0.0
         features['earnings_growth'] = info.get('earningsGrowth', 0.0) or 0.0
-        features['revenue_growth_3y'] = self._safe_float(
-            info.get('revenueQuarterlyGrowth', 0.0)
-        )
+        # features['revenue_growth_3y'] = self._safe_float(
+        #     info.get('revenueQuarterlyGrowth', 0.0)
+        # )  # REMOVED: 100% zeros in cache
         
         # Financial Health
         features['current_ratio'] = info.get('currentRatio', 0.0) or 0.0
@@ -197,6 +197,21 @@ class FeatureEngineer:
             info.get('currentPrice'),
             info.get('twoHundredDayAverage')
         )
+
+        # Get macro data early for new features
+        macro = data.get('macro', {})
+
+        # NEW: Time-series momentum features
+        history = data.get('history', None)
+        if history is not None and (hasattr(history, 'empty') and not history.empty or len(history) > 0):
+            features.update(self._extract_time_series_features(history, info))
+
+        # NEW: Relative performance features
+        features.update(self._extract_relative_features(info, macro))
+
+        # NEW: Technical indicators
+        if history is not None and (hasattr(history, 'empty') and not history.empty or len(history) > 0):
+            features.update(self._extract_technical_indicators(history))
         
         # Analyst Sentiment (if available)
         features['analyst_count'] = info.get('numberOfAnalystOpinions', 0) or 0
@@ -212,15 +227,13 @@ class FeatureEngineer:
         features['sector_code'] = self._encode_sector(info.get('sector', 'Unknown'))
         features['industry_code'] = hash(info.get('industry', 'Unknown')) % 100
 
-        # Macroeconomic features (if available in data)
-        macro = data.get('macro', {})
-        features['fed_funds_rate'] = macro.get('fed_funds_rate', 2.5)  # Default ~2.5%
-        features['treasury_10y'] = macro.get('treasury_10y', 3.0)  # Default ~3%
-        features['vix'] = macro.get('vix', 20.0)  # Default moderate volatility
-        features['sp500_pe'] = macro.get('sp500_pe', 20.0)  # Default market P/E
-        features['gdp_growth'] = macro.get('gdp_growth', 2.0)  # Default ~2% growth
-        features['inflation_rate'] = macro.get('inflation_rate', 2.5)  # Default ~2.5%
-        features['unemployment_rate'] = macro.get('unemployment_rate', 4.0)  # Default ~4%
+        # Macroeconomic features from yfinance (real data)
+        if macro:
+            features['vix'] = macro.get('vix', 20.0) / 100.0  # Normalize VIX
+            features['treasury_10y'] = macro.get('treasury_10y', 3.0) / 10.0  # Normalize 10Y yield
+            features['dollar_index'] = (macro.get('dollar_index', 100.0) - 100.0) / 20.0  # Normalize DXY around 100
+            features['oil_price'] = macro.get('oil_price', 70.0) / 100.0  # Normalize oil price
+            features['gold_price'] = macro.get('gold_price', 1800.0) / 2000.0  # Normalize gold price
 
         return features
     
@@ -313,7 +326,168 @@ class FeatureEngineer:
             'Unknown': 0.0
         }
         return sectors.get(sector, 0.0)
-    
+
+    def _extract_time_series_features(self, history: Any, info: Dict[str, Any]) -> Dict[str, float]:
+        """Extract time-series momentum and volatility features."""
+        # Default values in case of any issues
+        default_features = {}
+        for period in ['1m', '3m', '6m', '1y']:
+            default_features[f'return_{period}'] = 0.0
+            default_features[f'volatility_{period}'] = 20.0
+        default_features['momentum_score'] = 0.0
+
+        # Convert dict to DataFrame if needed (for cached data)
+        if isinstance(history, dict):
+            try:
+                history = pd.DataFrame(history)
+            except Exception:
+                return default_features
+
+        # Guard clauses - return defaults early if data is invalid
+        if not hasattr(history, 'empty') or history.empty:
+            return default_features
+
+        close_prices = history['Close'] if 'Close' in history else history.get('close', [])
+        if len(close_prices) == 0:
+            return default_features
+
+        try:
+            # CRITICAL: Use the last price in history, NOT info['currentPrice']
+            # info['currentPrice'] is from when cache was created (2024),
+            # but history contains historical prices from various dates
+            current_price = close_prices.iloc[-1] if hasattr(close_prices, 'iloc') else close_prices[-1]
+
+            # Calculate returns for different periods
+            periods = {
+                '1m': 21,   # ~1 month
+                '3m': 63,   # ~3 months
+                '6m': 126,  # ~6 months
+                '1y': 252   # ~1 year
+            }
+
+            features = {}
+            for period_name, days in periods.items():
+                if len(close_prices) > days:
+                    old_price = close_prices.iloc[-days] if hasattr(close_prices, 'iloc') else close_prices[-days]
+                    features[f'return_{period_name}'] = (current_price / old_price - 1) * 100
+
+                    # Calculate volatility for this period
+                    period_prices = close_prices.iloc[-days:] if hasattr(close_prices, 'iloc') else close_prices[-days:]
+                    returns = period_prices.pct_change().dropna() if hasattr(period_prices, 'pct_change') else np.diff(period_prices) / period_prices[:-1]
+                    features[f'volatility_{period_name}'] = np.std(returns) * np.sqrt(252) * 100
+                else:
+                    features[f'return_{period_name}'] = 0.0
+                    features[f'volatility_{period_name}'] = 20.0  # Default volatility
+
+            # Momentum score (weighted average of returns)
+            weights = [0.4, 0.3, 0.2, 0.1]  # Recent returns weighted more
+            momentum_score = 0
+            for i, period in enumerate(['1m', '3m', '6m', '1y']):
+                if f'return_{period}' in features:
+                    momentum_score += weights[i] * features[f'return_{period}']
+            features['momentum_score'] = momentum_score
+
+            return features
+
+        except Exception:
+            return default_features
+
+    def _extract_relative_features(self, info: Dict[str, Any], macro: Dict[str, Any]) -> Dict[str, float]:
+        """Extract relative performance vs sector and market."""
+        features = {}
+
+        # REMOVED: All macro-dependent features since we have no real macro data
+        # Would need real sector/market data to make these meaningful
+
+        # Only keep features we can calculate from stock data alone
+        # Market cap size (log scale)
+        market_cap = info.get('marketCap', 1e9)
+        features['market_cap_log'] = np.log(market_cap)
+
+        # Volume relative to average
+        volume = info.get('volume', 1e6)
+        avg_volume = info.get('averageVolume', 1e6)
+        features['volume_vs_avg'] = self._safe_ratio(volume, avg_volume, 1.0)
+
+        return features
+
+    def _extract_technical_indicators(self, history: Any) -> Dict[str, float]:
+        """Extract technical indicators like RSI, MACD, Bollinger Bands."""
+        features = {}
+
+        try:
+            if hasattr(history, 'empty') and not history.empty:
+                close_prices = history['Close'] if 'Close' in history else history.get('close', [])
+
+                if len(close_prices) >= 14:
+                    # RSI (Relative Strength Index)
+                    delta = close_prices.diff() if hasattr(close_prices, 'diff') else np.diff(close_prices, prepend=close_prices[0])
+                    gains = delta.where(delta > 0, 0) if hasattr(delta, 'where') else np.where(delta > 0, delta, 0)
+                    losses = -delta.where(delta < 0, 0) if hasattr(delta, 'where') else -np.where(delta < 0, delta, 0)
+
+                    avg_gain = gains.rolling(14).mean() if hasattr(gains, 'rolling') else np.convolve(gains, np.ones(14)/14, mode='valid')[-1]
+                    avg_loss = losses.rolling(14).mean() if hasattr(losses, 'rolling') else np.convolve(losses, np.ones(14)/14, mode='valid')[-1]
+
+                    if hasattr(avg_gain, 'iloc'):
+                        avg_gain = avg_gain.iloc[-1]
+                        avg_loss = avg_loss.iloc[-1]
+
+                    rs = avg_gain / avg_loss if avg_loss != 0 else 100
+                    features['rsi'] = 100 - (100 / (1 + rs))
+
+                    # MACD
+                    if len(close_prices) >= 26:
+                        ema_12 = close_prices.ewm(span=12).mean() if hasattr(close_prices, 'ewm') else close_prices[-12:].mean()
+                        ema_26 = close_prices.ewm(span=26).mean() if hasattr(close_prices, 'ewm') else close_prices[-26:].mean()
+
+                        if hasattr(ema_12, 'iloc'):
+                            ema_12 = ema_12.iloc[-1]
+                            ema_26 = ema_26.iloc[-1]
+
+                        features['macd'] = ema_12 - ema_26
+                        features['macd_normalized'] = features['macd'] / close_prices.iloc[-1] if hasattr(close_prices, 'iloc') else features['macd'] / close_prices[-1]
+                    else:
+                        features['macd'] = 0.0
+                        features['macd_normalized'] = 0.0
+
+                    # Bollinger Bands position
+                    if len(close_prices) >= 20:
+                        sma_20 = close_prices.rolling(20).mean() if hasattr(close_prices, 'rolling') else np.mean(close_prices[-20:])
+                        std_20 = close_prices.rolling(20).std() if hasattr(close_prices, 'rolling') else np.std(close_prices[-20:])
+
+                        if hasattr(sma_20, 'iloc'):
+                            sma_20 = sma_20.iloc[-1]
+                            std_20 = std_20.iloc[-1]
+
+                        current = close_prices.iloc[-1] if hasattr(close_prices, 'iloc') else close_prices[-1]
+                        upper_band = sma_20 + 2 * std_20
+                        lower_band = sma_20 - 2 * std_20
+
+                        # Position within bands (-1 to 1)
+                        band_width = upper_band - lower_band
+                        features['bollinger_position'] = (current - lower_band) / band_width if band_width > 0 else 0.5
+                        features['bollinger_width'] = band_width / sma_20 if sma_20 > 0 else 0.2
+                    else:
+                        features['bollinger_position'] = 0.5
+                        features['bollinger_width'] = 0.2
+                else:
+                    # Default values if not enough data
+                    features['rsi'] = 50.0
+                    features['macd'] = 0.0
+                    features['macd_normalized'] = 0.0
+                    features['bollinger_position'] = 0.5
+                    features['bollinger_width'] = 0.2
+
+        except Exception:
+            # If technical extraction fails, use defaults
+            features['rsi'] = 50.0
+            features['macd'] = 0.0
+            features['macd_normalized'] = 0.0
+            features['bollinger_position'] = 0.5
+            features['bollinger_width'] = 0.2
+
+        return features
+
     def fit_transform(self, features_list: List[Dict[str, float]]) -> np.ndarray:
         """
         Fit the scaler and transform features.
