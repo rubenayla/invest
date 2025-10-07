@@ -116,6 +116,7 @@ neural_network/training/multi_horizon_training.log
 
 # Multi-horizon training artifacts
 neural_network/training/training_*.log
+neural_network/training/multi_horizon_training_*.log
 neural_network/training/training_data_cache_multi_horizon.json
 neural_network/training/cache_backup_*.json
 neural_network/training/backups/
