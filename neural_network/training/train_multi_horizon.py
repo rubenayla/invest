@@ -4,6 +4,7 @@ Train multi-horizon neural network model using cached stock data.
 """
 
 import json
+import sqlite3
 import sys
 import numpy as np
 import torch
@@ -11,6 +12,7 @@ from pathlib import Path
 from datetime import datetime
 import logging
 import yfinance as yf
+import pandas as pd
 from typing import Dict, List, Tuple
 
 # Add project root to path
@@ -31,34 +33,104 @@ logger = logging.getLogger(__name__)
 class MultiHorizonTrainer:
     """Train multi-horizon model with cached stock data."""
 
-    def __init__(self, cache_path: str = 'training_data_cache_multi_horizon.json'):
-        self.cache_path = Path(__file__).parent / cache_path
+    def __init__(self, db_path: str = 'stock_data.db'):
+        self.db_path = Path(__file__).parent / db_path
         self.feature_engineer = FeatureEngineer()
 
     def load_cached_data(self) -> List[Tuple]:
-        """Load training data from multi-horizon cache."""
-        logger.info(f'Loading cache from {self.cache_path}')
+        """Load training data from SQLite database."""
+        logger.info(f'Loading data from {self.db_path}')
 
-        with open(self.cache_path, 'r') as f:
-            cache = json.load(f)
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
 
-        logger.info(f'Loaded {cache["sample_count"]} samples from cache')
-        logger.info(f'Data period: {cache["config"]["start_year"]}-{cache["config"]["end_year"]}')
-        logger.info(f'Horizons: {cache["horizons"]}')
+        # Get summary stats
+        cursor.execute('SELECT COUNT(*) FROM snapshots')
+        snapshot_count = cursor.fetchone()[0]
 
+        cursor.execute('SELECT MIN(snapshot_date), MAX(snapshot_date) FROM snapshots')
+        start_date, end_date = cursor.fetchone()
+
+        logger.info(f'Loaded {snapshot_count} snapshots from database')
+        logger.info(f'Data period: {start_date} to {end_date}')
+        logger.info(f'Horizons: [\'1m\', \'3m\', \'6m\', \'1y\', \'2y\']')
+
+        # Load all snapshots with their forward returns
+        cursor.execute('''
+            SELECT
+                a.symbol,
+                s.snapshot_date,
+                s.current_price, s.volume, s.market_cap, s.shares_outstanding,
+                s.pe_ratio, s.pb_ratio, s.ps_ratio, s.peg_ratio,
+                s.price_to_book, s.price_to_sales, s.enterprise_to_revenue, s.enterprise_to_ebitda,
+                s.profit_margins, s.operating_margins, s.gross_margins, s.ebitda_margins,
+                s.return_on_assets, s.return_on_equity,
+                s.revenue_growth, s.earnings_growth, s.earnings_quarterly_growth, s.revenue_per_share,
+                s.total_cash, s.total_debt, s.debt_to_equity, s.current_ratio, s.quick_ratio,
+                s.operating_cashflow, s.free_cashflow,
+                s.trailing_eps, s.forward_eps, s.book_value,
+                s.dividend_rate, s.dividend_yield, s.payout_ratio,
+                s.price_change_pct, s.volatility, s.beta,
+                s.fifty_day_average, s.two_hundred_day_average,
+                s.fifty_two_week_high, s.fifty_two_week_low,
+                s.vix, s.treasury_10y, s.dollar_index, s.oil_price, s.gold_price,
+                s.id
+            FROM snapshots s
+            JOIN assets a ON s.asset_id = a.id
+            ORDER BY s.snapshot_date
+        ''')
+
+        snapshots = cursor.fetchall()
+
+        # Build samples list
         samples = []
-        for sample in cache['samples']:
-            samples.append((
-                sample['ticker'],
-                sample['data'],
-                sample['forward_returns']  # Dict with real multi-horizon returns
-            ))
+        for row in snapshots:
+            ticker = row[0]
+            snapshot_id = row[-1]  # Last column is snapshot ID
 
+            # Get forward returns for this snapshot
+            cursor.execute('''
+                SELECT horizon, return_pct
+                FROM forward_returns
+                WHERE snapshot_id = ?
+            ''', (snapshot_id,))
+
+            forward_returns = {horizon: return_pct for horizon, return_pct in cursor.fetchall()}
+
+            # Build data dict (dummy structure for compatibility with FeatureEngineer)
+            # The actual features are already extracted in the database
+            data = {
+                'info': {},
+                'history': pd.DataFrame(),  # Empty, features already extracted
+                'macro': {}
+            }
+
+            # Store features directly as dict for easier access
+            feature_dict = {
+                'current_price': row[2], 'volume': row[3], 'market_cap': row[4], 'shares_outstanding': row[5],
+                'pe_ratio': row[6], 'pb_ratio': row[7], 'ps_ratio': row[8], 'peg_ratio': row[9],
+                'price_to_book': row[10], 'price_to_sales': row[11], 'enterprise_to_revenue': row[12],
+                'enterprise_to_ebitda': row[13], 'profit_margins': row[14], 'operating_margins': row[15],
+                'gross_margins': row[16], 'ebitda_margins': row[17], 'return_on_assets': row[18],
+                'return_on_equity': row[19], 'revenue_growth': row[20], 'earnings_growth': row[21],
+                'earnings_quarterly_growth': row[22], 'revenue_per_share': row[23], 'total_cash': row[24],
+                'total_debt': row[25], 'debt_to_equity': row[26], 'current_ratio': row[27], 'quick_ratio': row[28],
+                'operating_cashflow': row[29], 'free_cashflow': row[30], 'trailing_eps': row[31],
+                'forward_eps': row[32], 'book_value': row[33], 'dividend_rate': row[34], 'dividend_yield': row[35],
+                'payout_ratio': row[36], 'price_change_pct': row[37], 'volatility': row[38], 'beta': row[39],
+                'fifty_day_average': row[40], 'two_hundred_day_average': row[41], 'fifty_two_week_high': row[42],
+                'fifty_two_week_low': row[43], 'vix': row[44], 'treasury_10y': row[45], 'dollar_index': row[46],
+                'oil_price': row[47], 'gold_price': row[48]
+            }
+
+            samples.append((ticker, feature_dict, forward_returns))
+
+        conn.close()
         return samples
 
     def prepare_multi_horizon_targets(self, samples: List[Tuple]) -> Tuple:
         """
-        Prepare features and REAL multi-horizon targets from cache.
+        Prepare features and REAL multi-horizon targets from database.
         """
         logger.info('Preparing features and multi-horizon targets...')
 
@@ -66,20 +138,20 @@ class MultiHorizonTrainer:
         y_dict = {'1m': [], '3m': [], '6m': [], '1y': [], '2y': []}
         valid_samples = []
 
-        for i, (ticker, data, forward_returns) in enumerate(samples):
+        for i, (ticker, feature_dict, forward_returns) in enumerate(samples):
             if i % 500 == 0:
                 logger.info(f'Processing sample {i}/{len(samples)}')
 
             try:
-                # Extract features
-                features = self.feature_engineer.extract_features(data)
+                # Features are already extracted in the database
+                # Just need to convert dict to the format expected by FeatureEngineer
 
-                # Use REAL forward returns from cache (already in percentage)
+                # Use REAL forward returns from database (already in percentage)
                 for horizon in ['1m', '3m', '6m', '1y', '2y']:
                     y_dict[horizon].append(forward_returns[horizon] * 100)  # Convert to percentage
 
-                X_list.append(features)
-                valid_samples.append((ticker, data, forward_returns))
+                X_list.append(feature_dict)
+                valid_samples.append((ticker, feature_dict, forward_returns))
 
             except Exception as e:
                 logger.warning(f'Error processing sample {i}: {e}')

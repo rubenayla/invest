@@ -3,10 +3,11 @@
 Create training cache with REAL multi-horizon forward returns.
 
 This script downloads historical stock data and calculates actual forward returns
-for multiple time horizons (1m, 3m, 6m, 1y, 2y), not estimated values.
+for multiple time horizons (1m, 3m, 6m, 1y, 2y), and stores them in SQLite database.
 """
 
 import json
+import sqlite3
 import sys
 import yfinance as yf
 from pathlib import Path
@@ -34,8 +35,8 @@ logger = logging.getLogger(__name__)
 class MultiHorizonCacheGenerator:
     """Generate training cache with real multi-horizon forward returns."""
 
-    def __init__(self, cache_path: str = 'training_data_cache_multi_horizon.json'):
-        self.cache_path = Path(__file__).parent / cache_path
+    def __init__(self, db_path: str = 'stock_data.db'):
+        self.db_path = Path(__file__).parent / db_path
         self.feature_engineer = FeatureEngineer()
 
         # Time horizons in trading days (approximate)
@@ -268,17 +269,141 @@ class MultiHorizonCacheGenerator:
                 logger.warning(f'{ticker}: {e}')
                 return []
 
+    def save_to_database(self, ticker: str, data: Dict, forward_returns: Dict[str, float],
+                        conn: sqlite3.Connection) -> bool:
+        """Save a single sample to the database."""
+        cursor = conn.cursor()
+
+        try:
+            # Insert or get asset
+            info = data['info']
+            cursor.execute('SELECT id FROM assets WHERE symbol = ?', (ticker,))
+            result = cursor.fetchone()
+
+            if result:
+                asset_id = result[0]
+            else:
+                cursor.execute('''
+                    INSERT INTO assets (symbol, asset_type, name, sector, industry)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', (
+                    ticker, 'stock',
+                    info.get('longName') or info.get('shortName'),
+                    info.get('sector'),
+                    info.get('industry')
+                ))
+                asset_id = cursor.lastrowid
+
+            # Extract features
+            features = self.feature_engineer.extract_features(data)
+
+            # Get snapshot date
+            history = data['history']
+            snapshot_date = history.index[-1].strftime('%Y-%m-%d')
+
+            # Insert snapshot
+            cursor.execute('''
+                INSERT INTO snapshots (
+                    asset_id, snapshot_date,
+                    current_price, volume, market_cap, shares_outstanding,
+                    pe_ratio, pb_ratio, ps_ratio, peg_ratio,
+                    price_to_book, price_to_sales, enterprise_to_revenue, enterprise_to_ebitda,
+                    profit_margins, operating_margins, gross_margins, ebitda_margins,
+                    return_on_assets, return_on_equity,
+                    revenue_growth, earnings_growth, earnings_quarterly_growth, revenue_per_share,
+                    total_cash, total_debt, debt_to_equity, current_ratio, quick_ratio,
+                    operating_cashflow, free_cashflow,
+                    trailing_eps, forward_eps, book_value,
+                    dividend_rate, dividend_yield, payout_ratio,
+                    price_change_pct, volatility, beta,
+                    fifty_day_average, two_hundred_day_average,
+                    fifty_two_week_high, fifty_two_week_low,
+                    vix, treasury_10y, dollar_index, oil_price, gold_price
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ''', (
+                asset_id, snapshot_date,
+                features.get('current_price'), features.get('volume'),
+                features.get('market_cap'), features.get('shares_outstanding'),
+                features.get('pe_ratio'), features.get('pb_ratio'),
+                features.get('ps_ratio'), features.get('peg_ratio'),
+                features.get('price_to_book'), features.get('price_to_sales'),
+                features.get('enterprise_to_revenue'), features.get('enterprise_to_ebitda'),
+                features.get('profit_margins'), features.get('operating_margins'),
+                features.get('gross_margins'), features.get('ebitda_margins'),
+                features.get('return_on_assets'), features.get('return_on_equity'),
+                features.get('revenue_growth'), features.get('earnings_growth'),
+                features.get('earnings_quarterly_growth'), features.get('revenue_per_share'),
+                features.get('total_cash'), features.get('total_debt'),
+                features.get('debt_to_equity'), features.get('current_ratio'),
+                features.get('quick_ratio'), features.get('operating_cashflow'),
+                features.get('free_cashflow'), features.get('trailing_eps'),
+                features.get('forward_eps'), features.get('book_value'),
+                features.get('dividend_rate'), features.get('dividend_yield'),
+                features.get('payout_ratio'), features.get('price_change_pct'),
+                features.get('volatility'), features.get('beta'),
+                features.get('fifty_day_average'), features.get('two_hundred_day_average'),
+                features.get('fifty_two_week_high'), features.get('fifty_two_week_low'),
+                features.get('vix'), features.get('treasury_10y'),
+                features.get('dollar_index'), features.get('oil_price'),
+                features.get('gold_price')
+            ))
+            snapshot_id = cursor.lastrowid
+
+            # Insert price history
+            for idx, date in enumerate(history.index):
+                cursor.execute('''
+                    INSERT INTO price_history
+                    (snapshot_id, date, open, high, low, close, volume, dividends, stock_splits)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ''', (
+                    snapshot_id, date.strftime('%Y-%m-%d'),
+                    float(history['Open'].iloc[idx]) if 'Open' in history else None,
+                    float(history['High'].iloc[idx]) if 'High' in history else None,
+                    float(history['Low'].iloc[idx]) if 'Low' in history else None,
+                    float(history['Close'].iloc[idx]),
+                    float(history['Volume'].iloc[idx]) if 'Volume' in history else None,
+                    float(history['Dividends'].iloc[idx]) if 'Dividends' in history else None,
+                    float(history['Stock Splits'].iloc[idx]) if 'Stock Splits' in history else None
+                ))
+
+            # Insert company info as JSON
+            cursor.execute('''
+                INSERT INTO company_info (asset_id, snapshot_id, info_json)
+                VALUES (?, ?, ?)
+            ''', (asset_id, snapshot_id, json.dumps({
+                k: v for k, v in info.items()
+                if isinstance(v, (int, float, str, bool, type(None)))
+            })))
+
+            # Insert forward returns
+            for horizon, return_pct in forward_returns.items():
+                cursor.execute('''
+                    INSERT INTO forward_returns (snapshot_id, horizon, return_pct)
+                    VALUES (?, ?, ?)
+                ''', (snapshot_id, horizon, return_pct))
+
+            return True
+
+        except Exception as e:
+            logger.error(f'Error saving {ticker}: {e}')
+            return False
+
     def generate_cache(self,
                       target_samples: int = 10000,
                       start_year: int = 2004,
                       end_year: int = 2024):
-        """Generate training cache with real multi-horizon returns."""
+        """Generate training data and write to SQLite database."""
         logger.info('='*60)
-        logger.info('Generating Multi-Horizon Training Cache')
+        logger.info('Generating Multi-Horizon Training Data')
         logger.info('='*60)
         logger.info(f'Target samples: {target_samples}')
         logger.info(f'Data period: {start_year}-{end_year}')
         logger.info(f'Horizons: {list(self.horizons.keys())}')
+        logger.info(f'Database: {self.db_path}')
+
+        # Connect to database
+        conn = sqlite3.connect(self.db_path)
+        conn.execute('PRAGMA foreign_keys = ON')
 
         # Get S&P 500 tickers
         tickers = self.get_sp500_tickers()
@@ -286,90 +411,47 @@ class MultiHorizonCacheGenerator:
             logger.error('Failed to get tickers')
             return
 
-        all_samples = []
-        failed_tickers = []
+        stats = {
+            'samples_saved': 0,
+            'failed_tickers': []
+        }
 
         for i, ticker in enumerate(tickers):
-            if len(all_samples) >= target_samples:
+            if stats['samples_saved'] >= target_samples:
                 logger.info(f'Reached target of {target_samples} samples')
                 break
 
             if (i + 1) % 10 == 0:
-                logger.info(f'Progress: {i+1}/{len(tickers)} tickers, {len(all_samples)} samples')
+                logger.info(f'Progress: {i+1}/{len(tickers)} tickers, {stats["samples_saved"]} samples')
 
             samples = self.fetch_stock_data(ticker, start_year, end_year)
 
             if samples:
-                all_samples.extend(samples)
+                for ticker, data, forward_returns in samples:
+                    if self.save_to_database(ticker, data, forward_returns, conn):
+                        stats['samples_saved'] += 1
+                conn.commit()  # Commit after each ticker
             else:
-                failed_tickers.append(ticker)
+                stats['failed_tickers'].append(ticker)
 
-            # Adaptive rate limiting - start slow, speed up if no errors
+            # Adaptive rate limiting
             if i < 10:
-                time.sleep(1.0)  # First 10 tickers: 1 second delay
+                time.sleep(1.0)
             elif i < 20:
-                time.sleep(0.5)  # Next 10 tickers: 0.5 second delay
-            elif failed_tickers and len(failed_tickers) > len(all_samples) * 0.1:
-                # If failure rate > 10%, slow down
+                time.sleep(0.5)
+            elif stats['failed_tickers'] and len(stats['failed_tickers']) > stats['samples_saved'] * 0.1:
                 time.sleep(1.0)
             else:
-                time.sleep(0.2)  # Normal rate: 0.2 second delay
+                time.sleep(0.2)
 
-        logger.info(f'\nTotal samples collected: {len(all_samples)}')
-        logger.info(f'Failed tickers: {len(failed_tickers)}')
+        conn.close()
 
-        # Convert to cache format
-        logger.info('\nPreparing cache data...')
-        cache_samples = []
+        logger.info(f'\nTotal samples saved: {stats["samples_saved"]}')
+        logger.info(f'Failed tickers: {len(stats["failed_tickers"])}')
 
-        for ticker, data, forward_returns in all_samples:
-            cache_samples.append({
-                'ticker': ticker,
-                'data': {
-                    'info': {k: v for k, v in data['info'].items()
-                            if isinstance(v, (int, float, str, bool, type(None)))},
-                    'history': {
-                        'Close': data['history']['Close'].tolist(),
-                        'Volume': data['history']['Volume'].tolist(),
-                        'High': data['history']['High'].tolist(),
-                        'Low': data['history']['Low'].tolist(),
-                        'index': [str(d) for d in data['history'].index]
-                    },
-                    'macro': data['macro']
-                },
-                'forward_returns': forward_returns  # Real multi-horizon returns!
-            })
-
-        # Create cache
-        cache = {
-            'version': '2.0_multi_horizon',
-            'created': datetime.now().isoformat(),
-            'sample_count': len(cache_samples),
-            'horizons': list(self.horizons.keys()),
-            'config': {
-                'start_year': start_year,
-                'end_year': end_year,
-                'feature_count': len(self.feature_engineer.feature_names)
-            },
-            'samples': cache_samples
-        }
-
-        # Save cache
-        logger.info(f'\nSaving cache to {self.cache_path}...')
-        with open(self.cache_path, 'w') as f:
-            json.dump(cache, f)
-
-        cache_size_mb = self.cache_path.stat().st_size / (1024 * 1024)
-        logger.info(f'Cache saved: {cache_size_mb:.1f} MB')
-        logger.info(f'\n✅ Multi-horizon cache generation complete!')
-
-        # Show sample statistics
-        logger.info('\nSample forward return statistics (mean ± std):')
-        for horizon in self.horizons.keys():
-            returns = [s['forward_returns'][horizon] * 100 for s in cache_samples]
-            mean_ret = np.mean(returns)
-            std_ret = np.std(returns)
-            logger.info(f'  {horizon}: {mean_ret:+6.2f}% ± {std_ret:5.2f}%')
+        db_size_mb = self.db_path.stat().st_size / (1024 * 1024)
+        logger.info(f'Database size: {db_size_mb:.1f} MB')
+        logger.info(f'\n✅ Multi-horizon data generation complete!')
 
 
 if __name__ == '__main__':
