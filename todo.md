@@ -1,3 +1,6 @@
+Update the documentation with the new multi output neuron models and the cache.
+
+
 Does the neural network predictor look good? I just cloned the repo, so we may need to retrain it. I'd like to understand the cases where it's very different from other predictions and undertsand why. We need a reliable way to determine how good it is at predictions. Use a suite of data from various decades and sectors, and use separate test and training sets to analyze it well. Determine some factor of confidence in the prediction.
 
 Let's commit our changes cleanly please.

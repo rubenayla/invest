@@ -76,7 +76,16 @@ class ComprehensiveNeuralTrainer:
         self.config = config
         self.progress_history: List[TrainingProgress] = []
         self.best_model_path: Optional[Path] = None
-        self.cache_path = Path(config.cache_file)
+        # Find repo root for cache path
+        current = Path.cwd()
+        while current != current.parent:
+            if (current / '.git').exists():
+                repo_root = current
+                break
+            current = current.parent
+        else:
+            repo_root = Path.cwd()
+        self.cache_path = repo_root / config.cache_file
 
         # Stock universe for training
         self.stock_universe = self._get_training_universe()
@@ -135,19 +144,34 @@ class ComprehensiveNeuralTrainer:
 
     def _load_cached_data(self) -> Optional[Dict[str, Any]]:
         """Load cached training data if available."""
-        if not self.cache_path.exists():
-            return None
+        # Find the repository root (where .git directory is)
+        current = Path.cwd()
+        while current != current.parent:
+            if (current / '.git').exists():
+                repo_root = current
+                break
+            current = current.parent
+        else:
+            repo_root = Path.cwd()  # Fallback to current directory
 
-        try:
-            with open(self.cache_path, 'r') as f:
-                cache = json.load(f)
-            logger.info(f'Loaded cache from {self.cache_path}')
-            logger.info(f'Cache contains {cache["sample_count"]} samples')
-            logger.info(f'Cache last updated: {cache["last_updated"]}')
-            return cache
-        except Exception as e:
-            logger.warning(f'Failed to load cache: {e}')
-            return None
+        # Try cache path relative to repo root
+        cache_path = repo_root / self.config.cache_file
+
+        if cache_path.exists():
+            try:
+                with open(cache_path, 'r') as f:
+                    cache = json.load(f)
+                logger.info(f'Loaded cache from {cache_path}')
+                logger.info(f'Cache contains {cache["sample_count"]} samples')
+                logger.info(f'Cache last updated: {cache["last_updated"]}')
+                # Update cache path for future saves
+                self.cache_path = cache_path
+                return cache
+            except Exception as e:
+                logger.warning(f'Failed to load cache from {cache_path}: {e}')
+
+        logger.info(f'No cache found at {cache_path}')
+        return None
 
     def _save_cache(self, samples: List[Tuple[str, Dict, float]]):
         """Save training samples to cache."""
@@ -199,17 +223,17 @@ class ComprehensiveNeuralTrainer:
                     ]
 
                     if len(existing_samples) >= self.config.target_samples:
-                        logger.info('✅ Using cached training data')
+                        logger.info('Using cached training data')
                         logger.info(f'Loaded {self.config.target_samples} samples from cache')
                         return existing_samples[:self.config.target_samples]
                     else:
                         # Incrementally add more samples
-                        logger.info(f'📈 Cache has {len(existing_samples)} samples, need {self.config.target_samples}')
+                        logger.info(f'Cache has {len(existing_samples)} samples, need {self.config.target_samples}')
                         logger.info(f'Collecting {self.config.target_samples - len(existing_samples)} additional samples')
                         training_samples = existing_samples
                         # Continue below to collect more
                 else:
-                    logger.info('⚠️  Cache config mismatch (start_year/end_year), collecting new data')
+                    logger.info('Cache config mismatch (start_year/end_year), collecting new data')
 
         # Only initialize empty list if we didn't load from cache
         if 'training_samples' not in locals():
@@ -300,43 +324,94 @@ class ComprehensiveNeuralTrainer:
         try:
             # For historical data, we'll approximate using the closest available data
             stock = yf.Ticker(ticker)
-            
-            # Get historical price data
+
+            # Get MORE historical price data for technical indicators (need 1+ year)
+            start_date = date - timedelta(days=400)  # Get ~1.5 years for technical indicators
             end_date = date + timedelta(days=30)
-            hist = stock.history(start=date - timedelta(days=10), end=end_date)
-            
-            if hist.empty:
+            hist = stock.history(start=start_date, end=end_date)
+
+            if hist.empty or len(hist) < 20:  # Need minimum data for indicators
                 return None
-            
+
             # Get the closest price data
             price = hist['Close'].iloc[-1] if not hist.empty else None
             if not price or price <= 0:
                 return None
-                
+
             # Use current info as approximation (limitation of free data)
             # In production, you'd want historical fundamental data
             info = stock.info
             if not info or not info.get('marketCap'):
                 return None
-            
-            # Adjust some fields to be more historically representative
-            adjusted_info = {
+
+            # Copy all info fields (for comprehensive features)
+            adjusted_info = info.copy()
+
+            # Override price-related fields with historical values
+            adjusted_info.update({
                 'currentPrice': float(price),
                 'marketCap': info.get('marketCap', 0),
                 'enterpriseValue': info.get('enterpriseValue', 0),
                 'totalRevenue': info.get('totalRevenue', 0),
-                'trailingPE': info.get('trailingPE', 15),  # Default reasonable values
+                'trailingEps': info.get('trailingEps', price/15),  # Approximate if missing
+                'forwardEps': info.get('forwardEps', price/14),
+                'trailingPE': info.get('trailingPE', 15),
                 'forwardPE': info.get('forwardPE', 15),
                 'priceToBook': info.get('priceToBook', 2),
                 'debtToEquity': info.get('debtToEquity', 50),
                 'returnOnEquity': info.get('returnOnEquity', 0.15),
+                'returnOnAssets': info.get('returnOnAssets', 0.08),
                 'grossMargins': info.get('grossMargins', 0.3),
                 'operatingMargins': info.get('operatingMargins', 0.15),
+                'profitMargins': info.get('profitMargins', 0.10),
                 'sector': info.get('sector', 'Technology'),
-                'industry': info.get('industry', 'Unknown')
+                'industry': info.get('industry', 'Unknown'),
+                'beta': info.get('beta', 1.0),
+                'dividendYield': info.get('dividendYield', 0.0),
+                'payoutRatio': info.get('payoutRatio', 0.0),
+                'currentRatio': info.get('currentRatio', 1.5),
+                'quickRatio': info.get('quickRatio', 1.0),
+                'totalCash': info.get('totalCash', 0),
+                'totalDebt': info.get('totalDebt', 0),
+                'freeCashflow': info.get('freeCashflow', 0),
+                'operatingCashflow': info.get('operatingCashflow', 0),
+                'revenueGrowth': info.get('revenueGrowth', 0.1),
+                'earningsGrowth': info.get('earningsGrowth', 0.1),
+                'pegRatio': info.get('pegRatio', 1.5),
+                'ebitda': info.get('ebitda', 0),
+                'ebit': info.get('ebit', 0),
+                'numberOfAnalystOpinions': info.get('numberOfAnalystOpinions', 0),
+                'targetMeanPrice': info.get('targetMeanPrice', price * 1.1),
+                'recommendationKey': info.get('recommendationKey', 'hold'),
+                'fiftyTwoWeekHigh': info.get('fiftyTwoWeekHigh', price * 1.2),
+                'fiftyTwoWeekLow': info.get('fiftyTwoWeekLow', price * 0.8),
+                'fiftyDayAverage': info.get('fiftyDayAverage', price),
+                'twoHundredDayAverage': info.get('twoHundredDayAverage', price),
+                'averageVolume': info.get('averageVolume', 1000000),
+                'volume': info.get('volume', 1000000),
+                'sharesOutstanding': info.get('sharesOutstanding', 1000000000),
+            })
+
+            # Create data dict with both info and history for new features
+            data = {
+                'info': adjusted_info,
+                'history': hist,  # Include full history for technical indicators
+                'macro': {  # Add placeholder macro data
+                    'fed_funds_rate': 2.5,
+                    'treasury_10y': 3.0,
+                    'vix': 20.0,
+                    'sp500_pe': 20.0,
+                    'gdp_growth': 2.0,
+                    'inflation_rate': 2.5,
+                    'unemployment_rate': 4.0,
+                    'sector_pe': 20.0,  # Would need sector-specific data
+                    'sector_avg_market_cap': 1e10,
+                    'relative_perf_1y': 0.0,
+                    'sector_relative_perf_1y': 0.0,
+                }
             }
-            
-            return adjusted_info
+
+            return data
             
         except Exception as e:
             logger.warning(f'Error getting historical data for {ticker}: {e}')
@@ -465,24 +540,24 @@ class ComprehensiveNeuralTrainer:
                     model.save_model(best_model_path)
                     self.best_model_path = best_model_path
                     
-                    logger.info(f'✅ Improvement found at epoch {total_epochs}!')
+                    logger.info(f'[OK] Improvement found at epoch {total_epochs}!')
                     logger.info(f'   Val Loss: {current_val_loss:.4f} (↓{improvement:.4f})')
                     logger.info(f'   Correlation: {correlation:.3f}')
                     logger.info(f'   Model saved: {best_model_path}')
                 else:
                     epochs_without_improvement += epochs_this_batch
-                    logger.info(f'⚠️  No significant improvement at epoch {total_epochs}')
+                    logger.info(f'[WARNING]  No significant improvement at epoch {total_epochs}')
                     logger.info(f'   Val Loss: {current_val_loss:.4f} (best: {best_val_loss:.4f})')
                     logger.info(f'   Epochs without improvement: {epochs_without_improvement}')
                 
                 # Early stopping check
                 if epochs_without_improvement >= self.config.patience:
-                    logger.info(f'🛑 Early stopping triggered after {epochs_without_improvement} epochs without improvement')
+                    logger.info(f'[STOP] Early stopping triggered after {epochs_without_improvement} epochs without improvement')
                     progress.should_stop = True
                     break
                 
                 # Progress report
-                logger.info(f'📊 Progress Report - Epoch {total_epochs}/{self.config.max_total_epochs}')
+                logger.info(f'[INFO] Progress Report - Epoch {total_epochs}/{self.config.max_total_epochs}')
                 logger.info(f'   Train Loss: {current_train_loss:.4f}')
                 logger.info(f'   Val Loss: {current_val_loss:.4f}') 
                 logger.info(f'   Val MAE: {val_mae:.4f}')
@@ -505,7 +580,7 @@ class ComprehensiveNeuralTrainer:
                 # Load best model for final evaluation
                 best_model = NeuralNetworkValuationModel(model_path=self.best_model_path)
                 test_correlation = self._calculate_correlation(best_model, test_data)
-                logger.info(f'🎯 Final test correlation: {test_correlation:.3f}')
+                logger.info(f'[RESULT] Final test correlation: {test_correlation:.3f}')
             except Exception as e:
                 logger.warning(f'Error calculating test correlation: {e}')
         
@@ -537,7 +612,7 @@ class ComprehensiveNeuralTrainer:
         with open(results_path, 'w') as f:
             json.dump(training_results, f, indent=2, default=str)
         
-        logger.info(f'📁 Training results saved: {results_path}')
+        logger.info(f'[FILE] Training results saved: {results_path}')
         
         return training_results
     
@@ -568,7 +643,7 @@ class ComprehensiveNeuralTrainer:
     
     def run_comprehensive_training(self) -> Dict[str, Any]:
         """Run the complete comprehensive training pipeline."""
-        logger.info('🚀 Starting Comprehensive Neural Network Training')
+        logger.info('[START] Starting Comprehensive Neural Network Training')
         logger.info('=' * 60)
         logger.info(f'Target: {self.config.target_samples} samples from {self.config.start_year}-{self.config.end_year}')
         logger.info(f'Universe: {len(self.stock_universe)} stocks')
@@ -578,19 +653,19 @@ class ComprehensiveNeuralTrainer:
         
         try:
             # Step 1: Collect historical data
-            logger.info('\n📊 Step 1: Collecting Historical Data')
+            logger.info('\n[INFO] Step 1: Collecting Historical Data')
             training_data = self.collect_historical_data()
             
             if len(training_data) < 100:
                 raise ValueError(f'Insufficient training data: {len(training_data)} samples')
             
             # Step 2: Train with progress monitoring
-            logger.info('\n🧠 Step 2: Training Neural Network')
+            logger.info('\n[TRAIN] Step 2: Training Neural Network')
             results = self.train_with_progress_monitoring(training_data)
             
             # Step 3: Final summary
             training_time = time.time() - start_time
-            logger.info('\n🎉 Training Complete!')
+            logger.info('\n[COMPLETE] Training Complete!')
             logger.info('=' * 60)
             logger.info(f'Training time: {training_time/3600:.1f} hours')
             logger.info(f'Total epochs: {results["total_epochs"]}')
@@ -624,7 +699,7 @@ async def main():
     try:
         results = trainer.run_comprehensive_training()
         
-        print('\n🎯 COMPREHENSIVE TRAINING SUMMARY')
+        print('\n[RESULT] COMPREHENSIVE TRAINING SUMMARY')
         print('=' * 50)
         print(f'Final Results:')
         print(f'  • Training Time: {results.get("training_time", 0)/3600:.1f} hours')
@@ -634,16 +709,16 @@ async def main():
         print(f'  • Early Stopped: {results["early_stopped"]}')
         
         if results["test_correlation"] > 0.4:
-            print('🔥 Excellent correlation achieved!')
+            print('[EXCELLENT] Excellent correlation achieved!')
         elif results["test_correlation"] > 0.2:
-            print('📈 Good correlation achieved!')
+            print('[PROGRESS] Good correlation achieved!')
         else:
-            print('⚠️ Correlation could be improved with more data/tuning')
-            
+            print('[WARNING] Correlation could be improved with more data/tuning')
+
     except KeyboardInterrupt:
-        print('\n🛑 Training interrupted by user')
+        print('\n[STOP] Training interrupted by user')
     except Exception as e:
-        print(f'\n❌ Training failed: {e}')
+        print(f'\n[ERROR] Training failed: {e}')
         raise
 
 

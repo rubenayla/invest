@@ -237,7 +237,7 @@ class DataCollector:
             # Validate cache config
             cache_config = cache.get('config', {})
             if not self._is_cache_compatible(cache_config):
-                logger.info('⚠️  Cache config mismatch, collecting new data')
+                logger.info('[WARNING]  Cache config mismatch, collecting new data')
                 return None
 
             # Convert cache to training format
@@ -248,12 +248,12 @@ class DataCollector:
 
             # Check if we need more samples
             if len(samples) >= self.config.target_samples:
-                logger.info('✅ Using cached training data')
+                logger.info('[OK] Using cached training data')
                 logger.info(f'Loaded {self.config.target_samples} samples from cache')
                 return samples[:self.config.target_samples]
 
             # Need incremental collection
-            logger.info(f'📈 Cache has {len(samples)} samples, need {self.config.target_samples}')
+            logger.info(f'[PROGRESS] Cache has {len(samples)} samples, need {self.config.target_samples}')
             logger.info(f'Collecting {self.config.target_samples - len(samples)} additional samples')
 
             # Collect additional samples
@@ -749,7 +749,7 @@ class NeuralTrainer:
                 # Early stopping check
                 if epochs_without_improvement >= self.config.patience:
                     logger.info(
-                        f'🛑 Early stopping triggered after {epochs_without_improvement} '
+                        f'[STOP] Early stopping triggered after {epochs_without_improvement} '
                         f'epochs without improvement'
                     )
                     results['early_stopped'] = True
@@ -869,7 +869,7 @@ class NeuralTrainer:
         try:
             best_model = NeuralNetworkValuationModel(model_path=self.best_model_path)
             test_correlation = self._calculate_correlation(best_model, test_data)
-            logger.info(f'🎯 Final test correlation: {test_correlation:.3f}')
+            logger.info(f'[RESULT] Final test correlation: {test_correlation:.3f}')
             return test_correlation
         except Exception as e:
             logger.warning(f'Error calculating test correlation: {e}')
@@ -888,7 +888,7 @@ class NeuralTrainer:
         with open(results_path, 'w') as f:
             json.dump(results, f, indent=2, default=str)
 
-        logger.info(f'📁 Training results saved: {results_path}')
+        logger.info(f'[FILE] Training results saved: {results_path}')
 
     def _log_improvement(
         self,
@@ -898,7 +898,7 @@ class NeuralTrainer:
         batch_results: Dict
     ) -> None:
         """Log improvement in validation loss."""
-        logger.info(f'✅ Improvement found at epoch {epoch}!')
+        logger.info(f'[OK] Improvement found at epoch {epoch}!')
         logger.info(f'   Val Loss: {val_loss:.4f} (↓{improvement:.4f})')
         logger.info(f'   Correlation: {batch_results["correlation"]:.3f}')
         logger.info(f'   Model saved: {self.best_model_path}')
@@ -911,7 +911,7 @@ class NeuralTrainer:
         epochs_without_improvement: int
     ) -> None:
         """Log lack of improvement."""
-        logger.info(f'⚠️  No significant improvement at epoch {epoch}')
+        logger.info(f'[WARNING]  No significant improvement at epoch {epoch}')
         logger.info(f'   Val Loss: {val_loss:.4f} (best: {best_val_loss:.4f})')
         logger.info(f'   Epochs without improvement: {epochs_without_improvement}')
 
@@ -922,7 +922,7 @@ class NeuralTrainer:
         best_val_loss: float
     ) -> None:
         """Log training progress."""
-        logger.info(f'📊 Progress Report - Epoch {epoch}/{self.config.max_total_epochs}')
+        logger.info(f'[INFO] Progress Report - Epoch {epoch}/{self.config.max_total_epochs}')
         logger.info(f'   Train Loss: {batch_results["train_loss"]:.4f}')
         logger.info(f'   Val Loss: {batch_results["val_loss"]:.4f}')
         logger.info(f'   Val MAE: {batch_results["val_mae"]:.4f}')
@@ -958,14 +958,14 @@ class ComprehensiveTrainingOrchestrator:
 
         try:
             # Collect data
-            logger.info('\n📊 Step 1: Collecting Historical Data')
+            logger.info('\n[INFO] Step 1: Collecting Historical Data')
             training_data = self.data_collector.collect_training_data()
 
             if len(training_data) < 100:
                 raise ValueError(f'Insufficient training data: {len(training_data)} samples')
 
             # Train model
-            logger.info('\n🧠 Step 2: Training Neural Network')
+            logger.info('\n[TRAIN] Step 2: Training Neural Network')
             results = self.trainer.train(training_data)
 
             # Finalize
@@ -983,7 +983,7 @@ class ComprehensiveTrainingOrchestrator:
 
     def _log_header(self) -> None:
         """Log training header information."""
-        logger.info('🚀 Starting Comprehensive Neural Network Training')
+        logger.info('[START] Starting Comprehensive Neural Network Training')
         logger.info('=' * 60)
         logger.info(f'Target: {self.config.target_samples} samples from {self.config.start_year}-{self.config.end_year}')
         logger.info(f'Universe: {len(TRAINING_UNIVERSE)} stocks')
@@ -995,7 +995,7 @@ class ComprehensiveTrainingOrchestrator:
         Args:
             results: Training results
         """
-        logger.info('\n🎉 Training Complete!')
+        logger.info('\n[COMPLETE] Training Complete!')
         logger.info('=' * 60)
         logger.info(f'Training time: {results["training_time"]/3600:.1f} hours')
         logger.info(f'Total epochs: {results["total_epochs"]}')
@@ -1025,7 +1025,7 @@ async def main():
         results = orchestrator.run()
 
         # Print summary
-        print('\n🎯 COMPREHENSIVE TRAINING SUMMARY')
+        print('\n[RESULT] COMPREHENSIVE TRAINING SUMMARY')
         print('=' * 50)
         print('Final Results:')
         print(f'  • Training Time: {results.get("training_time", 0)/3600:.1f} hours')
@@ -1037,16 +1037,16 @@ async def main():
         # Correlation assessment
         test_corr = results.get("test_correlation", 0)
         if test_corr > 0.4:
-            print('🔥 Excellent correlation achieved!')
+            print('[EXCELLENT] Excellent correlation achieved!')
         elif test_corr > 0.2:
-            print('📈 Good correlation achieved!')
+            print('[PROGRESS] Good correlation achieved!')
         else:
-            print('⚠️  Correlation could be improved with more data/tuning')
+            print('[WARNING]  Correlation could be improved with more data/tuning')
 
     except KeyboardInterrupt:
-        print('\n🛑 Training interrupted by user')
+        print('\n[STOP] Training interrupted by user')
     except Exception as e:
-        print(f'\n❌ Training failed: {e}')
+        print(f'\n[ERROR] Training failed: {e}')
         raise
 
 
