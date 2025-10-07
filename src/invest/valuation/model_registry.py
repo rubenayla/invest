@@ -17,6 +17,7 @@ from .sector_models import REITModel, BankModel, TechModel, UtilityModel
 from .ensemble_model import EnsembleModel
 from .neural_network_model import NeuralNetworkValuationModel
 from .multi_timeframe_models import get_best_timeframe_model, get_consensus_prediction
+from .multi_horizon_nn import MultiHorizonValuationModel
 
 logger = logging.getLogger(__name__)
 
@@ -45,6 +46,7 @@ class ModelRegistry:
         'neural_network': NeuralNetworkValuationModel,
         'neural_network_1year': lambda: NeuralNetworkValuationModel(time_horizon='1year'),
         'neural_network_best': get_best_timeframe_model,
+        'multi_horizon_nn': MultiHorizonValuationModel,
     }
     
     # Model metadata for user interfaces and documentation
@@ -168,6 +170,14 @@ class ModelRegistry:
             'time_horizon': 'Multi-timeframe consensus',
             'complexity': 'very high',
             'data_requirements': ['Comprehensive fundamental data', 'Price history', 'Financial statements'],
+        },
+        'multi_horizon_nn': {
+            'name': 'Multi-Horizon Neural Network',
+            'description': 'Advanced neural network predicting returns across 5 horizons (1m, 3m, 6m, 1y, 2y) with confidence scores',
+            'suitable_for': ['All investment time horizons', 'Risk-adjusted strategies', 'Portfolio optimization'],
+            'time_horizon': 'Multi-horizon (1 month to 2 years)',
+            'complexity': 'very high',
+            'data_requirements': ['Comprehensive fundamental data', 'Price history', 'Macroeconomic indicators'],
         },
     }
     
