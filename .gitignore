@@ -130,3 +130,13 @@ old_artifacts/
 neural_network/models/
 neural_network/invest_training_package/
 neural_network/*.tar.gz
+
+# SQLite databases and backups
+*.db
+*.db.backup
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Generated dashboards
+dashboard/multi_horizon_predictions.html
