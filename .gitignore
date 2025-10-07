@@ -113,3 +113,11 @@ neural_network/training/*_backup.json
 neural_network/training/*_old.json
 neural_network/training/cache_generation.log
 neural_network/training/multi_horizon_training.log
+
+# Multi-horizon training artifacts
+neural_network/training/training_*.log
+neural_network/training/training_data_cache_multi_horizon.json
+neural_network/training/cache_backup_*.json
+neural_network/training/backups/
+neural_network/training/verify_cache_features.py
+src/invest/valuation/multi_horizon_nn.py
