@@ -79,7 +79,7 @@ class TestFeatureEngineer:
         # Check that key features are present
         assert 'pe_ratio' in features
         assert 'forward_pe' in features
-        assert 'peg_ratio' in features
+        # peg_ratio removed - 100% zeros in cache
         assert 'price_to_book' in features
         assert 'roe' in features
         assert 'profit_margin' in features
@@ -90,7 +90,7 @@ class TestFeatureEngineer:
         # Check calculations
         assert features['pe_ratio'] == pytest.approx(30.0)  # 150 / 5
         assert features['forward_pe'] == pytest.approx(25.0)  # 150 / 6
-        assert features['peg_ratio'] == 1.5
+        # peg_ratio removed - 100% zeros in cache
         assert features['beta'] == 1.2
     
     def test_extract_features_with_missing_data(self, feature_engineer):
