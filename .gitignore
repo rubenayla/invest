@@ -122,3 +122,11 @@ neural_network/training/cache_backup_*.json
 neural_network/training/backups/
 neural_network/training/verify_cache_features.py
 src/invest/valuation/multi_horizon_nn.py
+
+# Old artifacts directory
+old_artifacts/
+
+# Neural network models directory (trained models)
+neural_network/models/
+neural_network/invest_training_package/
+neural_network/*.tar.gz
