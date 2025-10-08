@@ -123,7 +123,7 @@ class FeatureEngineer:
         """
         features = {}
         # Merge info and financials sections (data_fetcher splits them)
-        info = {**data.get('info', {}), **data.get('financials', {})}
+        info = {**data.get('info', {}), **(data.get('financials') or {})}
         
         # Valuation Ratios
         features['pe_ratio'] = self._safe_ratio(
