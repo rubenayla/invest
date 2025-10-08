@@ -110,19 +110,20 @@ class FeatureEngineer:
     def extract_features(self, data: Dict[str, Any]) -> Dict[str, float]:
         """
         Extract engineered features from raw financial data.
-        
+
         Parameters
         ----------
         data : Dict[str, Any]
             Raw financial data from yfinance
-            
+
         Returns
         -------
         Dict[str, float]
             Dictionary of engineered features
         """
         features = {}
-        info = data.get('info', {})
+        # Merge info and financials sections (data_fetcher splits them)
+        info = {**data.get('info', {}), **data.get('financials', {})}
         
         # Valuation Ratios
         features['pe_ratio'] = self._safe_ratio(

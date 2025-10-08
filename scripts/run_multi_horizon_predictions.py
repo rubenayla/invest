@@ -19,7 +19,30 @@ from invest.valuation.db_utils import get_db_connection, save_nn_prediction
 
 
 def load_stock_cache(ticker: str, stock_cache_dir: Path) -> dict:
-    """Load stock data from cache file."""
+    """Load stock data from SQLite database (or fallback to JSON cache)."""
+    # Try SQLite first
+    try:
+        import sys
+        sys.path.insert(0, str(project_root / 'src'))
+        from invest.data.stock_data_reader import StockDataReader
+
+        reader = StockDataReader()
+        stock_data = reader.get_stock_data(ticker)
+
+        if stock_data:
+            # Transform to format expected by FeatureEngineer
+            return {
+                'info': stock_data.get('info', {}),
+                'financials': stock_data.get('financials', {}),
+                'history': stock_data.get('price_data', {}),
+                'cashflow': stock_data.get('cashflow', []),
+                'balance_sheet': stock_data.get('balance_sheet', []),
+                'income': stock_data.get('income', []),
+            }
+    except Exception as e:
+        pass  # Silently fall back to JSON
+
+    # Fallback to JSON cache
     cache_file = stock_cache_dir / f'{ticker}.json'
     if not cache_file.exists():
         return None
@@ -27,12 +50,10 @@ def load_stock_cache(ticker: str, stock_cache_dir: Path) -> dict:
     with open(cache_file) as f:
         cache_data = json.load(f)
 
-    # Transform to format expected by FeatureEngineer
-    # Cache has: {ticker, info, price_data, ...}
-    # FeatureEngineer expects: {info, history}
     stock_data = {
         'info': cache_data.get('info', {}),
-        'history': cache_data.get('price_data', {})  # price_data has the history format
+        'financials': cache_data.get('financials', {}),
+        'history': cache_data.get('price_data', {}),
     }
 
     return stock_data

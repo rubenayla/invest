@@ -14,6 +14,7 @@ import json
 import logging
 import argparse
 import time
+import sqlite3
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import List, Dict, Optional, Set
@@ -29,9 +30,16 @@ logger = logging.getLogger(__name__)
 class StockDataCache:
     """Manages local stock data cache"""
     
-    def __init__(self, cache_dir: str = 'data/stock_cache'):
+    def __init__(self, cache_dir: str = 'data/stock_cache', db_path: Optional[str] = None):
         self.cache_dir = Path(cache_dir)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
+
+        # Database path
+        if db_path is None:
+            project_root = Path(__file__).parent.parent
+            db_path = project_root / 'neural_network' / 'training' / 'stock_data.db'
+        self.db_path = Path(db_path)
+
         self.index_file = self.cache_dir / 'cache_index.json'
         self.load_index()
     
@@ -65,20 +73,27 @@ class StockDataCache:
             raise e
     
     def get_update_order(self, tickers: List[str]) -> List[str]:
-        """Get tickers in update order: empty stocks first, then oldest to newest"""
+        """Get tickers in update order: broken/empty first, then oldest to newest"""
         empty_stocks = []
+        broken_stocks = []
         cached_stocks = []
-        
+
         for ticker in tickers:
             if ticker not in self.index['stocks']:
                 empty_stocks.append(ticker)
             else:
-                cached_stocks.append(ticker)
-        
+                # Check if file is corrupted/empty (< 500 bytes)
+                cache_file = self.cache_dir / f'{ticker}.json'
+                if cache_file.exists() and cache_file.stat().st_size < 500:
+                    broken_stocks.append(ticker)
+                else:
+                    cached_stocks.append(ticker)
+
         # Sort cached stocks by age (oldest first)
         cached_stocks.sort(key=lambda t: self.index['stocks'][t]['last_updated'])
-        
-        return empty_stocks + cached_stocks
+
+        # Priority: 1) Empty (not in index), 2) Broken (< 500 bytes), 3) Oldest to newest
+        return empty_stocks + broken_stocks + cached_stocks
     
     def get_cached_data(self, ticker: str) -> Optional[Dict]:
         """Get cached data for a ticker"""
@@ -88,19 +103,72 @@ class StockDataCache:
                 return json.load(f)
         return None
     
+    def save_to_sqlite(self, ticker: str, data: Dict):
+        """Save stock data to SQLite database"""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+
+            info = data.get('info', {})
+            financials = data.get('financials', {})
+            price_data = data.get('price_data', {})
+
+            cursor.execute('''
+                INSERT OR REPLACE INTO current_stock_data (
+                    ticker,
+                    current_price, market_cap, sector, industry, long_name, short_name,
+                    currency, exchange, country,
+                    trailing_pe, forward_pe, price_to_book, return_on_equity, debt_to_equity,
+                    current_ratio, revenue_growth, earnings_growth, operating_margins, profit_margins,
+                    total_revenue, total_cash, total_debt, shares_outstanding,
+                    trailing_eps, book_value, revenue_per_share, price_to_sales_ttm,
+                    price_52w_high, price_52w_low, avg_volume, price_trend_30d,
+                    cashflow_json, balance_sheet_json, income_json,
+                    fetch_timestamp, last_updated
+                ) VALUES (
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?, ?, ?, ?
+                )
+            ''', (
+                ticker,
+                info.get('currentPrice'), info.get('marketCap'), info.get('sector'),
+                info.get('industry'), info.get('longName'), info.get('shortName'),
+                info.get('currency'), info.get('exchange'), info.get('country'),
+                financials.get('trailingPE'), financials.get('forwardPE'), financials.get('priceToBook'),
+                financials.get('returnOnEquity'), financials.get('debtToEquity'), financials.get('currentRatio'),
+                financials.get('revenueGrowth'), financials.get('earningsGrowth'), financials.get('operatingMargins'),
+                financials.get('profitMargins'), financials.get('totalRevenue'), financials.get('totalCash'),
+                financials.get('totalDebt'), financials.get('sharesOutstanding'), financials.get('trailingEps'),
+                financials.get('bookValue'), financials.get('revenuePerShare'), financials.get('priceToSalesTrailing12Months'),
+                price_data.get('price_52w_high'), price_data.get('price_52w_low'),
+                price_data.get('avg_volume'), price_data.get('price_trend_30d'),
+                json.dumps(data.get('cashflow', [])),
+                json.dumps(data.get('balance_sheet', [])),
+                json.dumps(data.get('income', [])),
+                data.get('fetch_timestamp', datetime.now().isoformat()),
+                datetime.now().isoformat()
+            ))
+
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            logger.warning(f'{ticker}: Failed to save to SQLite: {e}')
+
     def save_stock_data(self, ticker: str, data: Dict):
-        """Save stock data to cache atomically"""
+        """Save stock data to both JSON cache and SQLite database"""
         cache_file = self.cache_dir / f'{ticker}.json'
         temp_file = cache_file.with_suffix('.tmp')
-        
+
         # Add metadata
         data['_cache_metadata'] = {
             'ticker': ticker,
             'cached_at': datetime.now().isoformat(),
             'data_source': 'yfinance'
         }
-        
-        # Save data atomically
+
+        # Save to JSON atomically (backup)
         try:
             with open(temp_file, 'w') as f:
                 json.dump(data, f, indent=2)
@@ -109,7 +177,10 @@ class StockDataCache:
             if temp_file.exists():
                 temp_file.unlink()
             raise e
-        
+
+        # Save to SQLite (primary)
+        self.save_to_sqlite(ticker, data)
+
         # Update index
         self.index['stocks'][ticker] = {
             'last_updated': datetime.now().isoformat(),

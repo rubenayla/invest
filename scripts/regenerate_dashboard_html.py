@@ -13,6 +13,7 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root / 'src'))
 
 from invest.dashboard_components.html_generator import HTMLGenerator
+from invest.data.stock_data_reader import StockDataReader
 
 
 def main():
@@ -33,6 +34,20 @@ def main():
         data = json.load(f)
 
     stocks_data = data.get('stocks', {})
+
+    # Enrich with company names from SQLite
+    print('\n📊 Enriching with company names from SQLite...')
+    reader = StockDataReader()
+    enriched_count = 0
+    for ticker in stocks_data:
+        try:
+            stock_info = reader.get_stock_data(ticker)
+            if stock_info and stock_info.get('info'):
+                stocks_data[ticker]['company_name'] = stock_info['info'].get('longName') or stock_info['info'].get('shortName') or ticker
+                enriched_count += 1
+        except Exception as e:
+            stocks_data[ticker]['company_name'] = ticker  # Fallback to ticker
+    print(f'   Enriched {enriched_count}/{len(stocks_data)} stocks with company names')
     print(f'   Found {len(stocks_data)} stocks')
 
     # Count stocks with multi_horizon_nn predictions

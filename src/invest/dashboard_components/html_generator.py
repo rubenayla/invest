@@ -218,6 +218,7 @@ class HTMLGenerator:
         valuations = stock_data.get("valuations", {})
         status = stock_data.get("status", "pending")
         status_message = stock_data.get("status_message", "Unknown")
+        company_name = stock_data.get("company_name", ticker)
         
         # Create meaningful status based on what actually worked
         working_models = []
@@ -272,7 +273,7 @@ class HTMLGenerator:
 
         return f'''
         <tr class="stock-row {status}">
-            <td><strong>{ticker}</strong></td>
+            <td><strong title="{company_name}">{ticker}</strong></td>
             <td>{self._safe_format(current_price, prefix="$")}</td>
             <td>{status_html}</td>
             <td>{dcf_html}</td>
