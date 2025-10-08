@@ -1,24 +1,114 @@
+Do you treat the static features differently than the temporal ones? How?
 
-I just noticed we have two dashboards. The html
-  file:///Users/rubenayla/repos/invest/dashboard/valuation_dashboard.html and the one that runs a
-  server http://localhost:3446/. Which one should we use and why? We can't have this duplicated.
-
-show in dashboard predictions of neural net for all stocks < clean db with required raw data and ratios for the training of neural nets, and working code so the nets can run predictions and save them in the db too
-
-
-Update the documentation with the new multi output neuron models and the cache.
-
-
-Does the neural network predictor look good? I just cloned the repo, so we may need to retrain it. I'd like to understand the cases where it's very different from other predictions and undertsand why. We need a reliable way to determine how good it is at predictions. Use a suite of data from various decades and sectors, and use separate test and training sets to analyze it well. Determine some factor of confidence in the prediction.
-
-Let's commit our changes cleanly please.
-
-- Neural network that takes the stock price, fundamental ratios, growths, etc and returns a score. Run that over all known data for past companies, and train, maybe genetic algorithm, so it learns the best possible valuation technique.
-  - The problem is not knowing the time interval to consider. Maybe it's bad for next month, but great for next 5 years. 
+Does the neural network predictor look good? I just cloned the repo, so we may need to retrain it. I'd like to understand the cases where it's very different from other predictions and undertsand why. We need a reliable way to determine how good it is at predictions. Use a suite of data from various decades and sectors, and use separate test and training sets to analyze it well. Determine some factor of confidence in the prediction. Oh and make it visible in the dashboard.
 
 Is the industry of the company included as input parameter for the neural network? that data is available from yfinance
 
+# TCN model
+1. What the TCN “sees” by default
 
+A TCN expects time-series data as input:
+
+shape = (batch, time_steps, features)
+
+
+For example:
+
+(512 samples, 8 quarters, 60 features)
+
+
+Here, every feature (e.g. revenue, EPS, debt/equity…) must vary over time.
+That means the TCN directly captures temporal relationships like:
+
+“Earnings have grown 3 quarters in a row while debt is stable.”
+
+But many fundamentals don’t change or don’t exist as a sequence — e.g.:
+
+Sector (categorical)
+
+Market cap, country, etc.
+
+Latest static ratios (P/E, ROE, etc.)
+
+Those are non-temporal features.
+
+2. The correct architecture to combine both
+
+You can absorb static fundamentals and time-series data into the same model by using two parallel branches that merge later:
+
+             ┌──────────────┐
+             │  Static data │  (sector, ratios, country…)
+             └──────┬───────┘
+                    │ Dense layers
+                    ▼
+                  (vector)
+                    │
+Input → TCN → Flatten│
+(time-series)        │
+                    ▼
+           Concatenate → Dense → Output
+
+
+That’s a hybrid model:
+
+TCN branch → learns trends and temporal patterns in fundamentals over time.
+
+Dense branch → learns relations among static descriptors.
+
+The fusion layer → learns how the static context modifies temporal behavior.
+
+3. Implementation outline (PyTorch)
+class StockHybridTCN(nn.Module):
+    def __init__(self, n_temporal_features, n_static_features):
+        super().__init__()
+        # Temporal branch
+        self.tcn = nn.Sequential(
+            TCNBlock(n_temporal_features, 128, 3, 1),
+            TCNBlock(128, 128, 3, 2),
+            nn.AdaptiveAvgPool1d(1),
+            nn.Flatten()
+        )
+        # Static branch
+        self.static_net = nn.Sequential(
+            nn.Linear(n_static_features, 128),
+            nn.ReLU(),
+            nn.BatchNorm1d(128),
+            nn.Dropout(0.2)
+        )
+        # Fusion + output
+        self.head = nn.Sequential(
+            nn.Linear(256, 64),
+            nn.ReLU(),
+            nn.Linear(64, 1)
+        )
+
+    def forward(self, temporal, static):
+        t = self.tcn(temporal.transpose(1, 2))
+        s = self.static_net(static)
+        x = torch.cat([t, s], dim=1)
+        return self.head(x)
+
+4. Why this works
+
+The TCN branch extracts time-dependent signals (growth, acceleration, consistency).
+
+The static branch provides context (sector, valuation multiples, size).
+
+The combined vector gives a full representation of the company’s state.
+
+5. Practical guidance
+
+Normalize each feature within its type (temporal vs static).
+
+Encode sector or country via embeddings, not one-hots, to keep it compact.
+
+You can still apply MC Dropout in the head for predictive confidence.
+
+So yes — a TCN can absolutely absorb fundamental information, as long as you split temporal vs static features and merge them properly.
+
+Would you like me to show the specific feature grouping (which fundamentals go to the time-series branch and which stay static) based on your dataset?
+
+---
 
 
 to invest in warren style, human like instructions or can be programmed?

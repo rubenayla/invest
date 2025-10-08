@@ -37,7 +37,7 @@ class StockDataCache:
         # Database path
         if db_path is None:
             project_root = Path(__file__).parent.parent
-            db_path = project_root / 'neural_network' / 'training' / 'stock_data.db'
+            db_path = project_root / 'data' / 'stock_data.db'
         self.db_path = Path(db_path)
 
         self.index_file = self.cache_dir / 'cache_index.json'

@@ -18,7 +18,7 @@ class StockDataReader:
         if db_path is None:
             # Default to project database
             project_root = Path(__file__).parent.parent.parent.parent
-            db_path = project_root / 'neural_network' / 'training' / 'stock_data.db'
+            db_path = project_root / 'data' / 'stock_data.db'
         self.db_path = Path(db_path)
 
     def get_stock_data(self, ticker: str) -> Optional[Dict[str, Any]]:

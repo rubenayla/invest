@@ -84,7 +84,7 @@ class StockSnapshotDataset(Dataset):
 class SingleHorizonTrainer:
     """Trainer for single-horizon model."""
 
-    def __init__(self, db_path: str = 'neural_network/training/stock_data.db'):
+    def __init__(self, db_path: str = 'data/stock_data.db'):
         self.db_path = Path(db_path)
         self.model = None
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

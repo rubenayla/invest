@@ -12,7 +12,7 @@ from datetime import datetime
 from typing import Optional, Dict, Any
 
 # Default database path
-DEFAULT_DB_PATH = Path(__file__).parent.parent.parent.parent / 'neural_network' / 'training' / 'stock_data.db'
+DEFAULT_DB_PATH = Path(__file__).parent.parent.parent.parent / 'data' / 'stock_data.db'
 
 
 def get_db_connection(db_path: Path = None) -> sqlite3.Connection:

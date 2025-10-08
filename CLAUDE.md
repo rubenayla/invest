@@ -186,7 +186,7 @@ From ab0fe64 disaster (6,000 lines, 24 files, massive failures) to 15/15 passing
 ## DATABASE ARCHITECTURE - Critical Information
 
 ### 📍 **Primary Database Location**
-**Path**: `neural_network/training/stock_data.db` (1.2GB SQLite database)
+**Path**: `data/stock_data.db` (1.2GB SQLite database)
 
 ### 📊 **What's in the Database**
 
