@@ -4,6 +4,20 @@
 
 ⚠️ **IMPORTANT**: This project uses uv dependency management. ALL Python commands must be prefixed with `uv run`.
 
+## 🚫 NEVER Read User's Personal Files
+
+⚠️ **CRITICAL**: `todo.md` is the USER'S personal notes file - NOT Claude's task list!
+
+**NEVER**:
+- Read `todo.md` unless user explicitly asks
+- Treat `todo.md` as tasks for Claude
+- Assume `todo.md` contains instructions
+
+**ALWAYS**:
+- Use the TodoWrite tool for tracking Claude's work (displayed in UI)
+- Ask user for clarification if unsure what to work on
+- Read `notes/` and `docs/` directories - they contain useful project information
+
 ```bash
 # Wrong:
 python scripts/systematic_analysis.py
