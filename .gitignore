@@ -121,6 +121,8 @@ neural_network/training/cache_backup_*.json
 neural_network/training/backups/
 neural_network/training/verify_cache_features.py
 src/invest/valuation/multi_horizon_nn.py
+tests/test_multi_horizon_demo.py
+scripts/demo_multi_horizon_predictions.py
 
 # Old artifacts directory
 old_artifacts/
