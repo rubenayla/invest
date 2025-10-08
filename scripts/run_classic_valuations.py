@@ -22,6 +22,7 @@ sys.path.insert(0, str(project_root / 'src'))
 from invest.valuation.model_registry import ModelRegistry
 from invest.valuation.db_utils import get_db_connection, save_classic_prediction
 from invest.valuation.base import ModelNotSuitableError
+from invest.data.stock_data_reader import StockDataReader
 
 # Models to run (excluding sector-specific and ensemble models for now)
 # Format: (registry_name, db_name)
@@ -35,25 +36,22 @@ MODELS_TO_RUN = [
 ]
 
 
-def load_stock_cache(ticker: str, stock_cache_dir: Path) -> Optional[dict]:
+def load_stock_data(ticker: str, reader: StockDataReader) -> Optional[dict]:
     """
-    Load stock data from cache file and convert to model-compatible format.
+    Load stock data from SQLite database and convert to model-compatible format.
 
     Converts JSON-stored financial statements back to pandas DataFrames
     that valuation models expect.
     """
-    cache_file = stock_cache_dir / f'{ticker}.json'
-    if not cache_file.exists():
+    cache_data = reader.get_stock_data(ticker)
+    if not cache_data:
         return None
-
-    with open(cache_file) as f:
-        cache_data = json.load(f)
 
     # Convert JSON financial statements back to DataFrames
     # Models expect: {info: dict, cashflow: DataFrame, balance_sheet: DataFrame, income: DataFrame}
-    # Merge financials into info so models can access sharesOutstanding, etc.
+    # StockDataReader already merges financials into info, so just use it directly
     stock_data = {
-        'info': {**cache_data.get('info', {}), **cache_data.get('financials', {})}
+        'info': cache_data.get('info', {})
     }
 
     # Convert cashflow from list of records to DataFrame
@@ -174,12 +172,13 @@ def main():
     stocks = data.get('stocks', {})
     print(f'   Found {len(stocks)} stocks')
 
-    # Stock cache directory
-    stock_cache_dir = project_root / 'data' / 'stock_cache'
-    print(f'\n📦 Stock cache directory: {stock_cache_dir}')
+    # Initialize stock data reader
+    print(f'\n📦 Initializing stock data reader (SQLite database)...')
+    reader = StockDataReader()
+    print(f'   Reader initialized')
 
     # Connect to database
-    print(f'\n💾 Connecting to database...')
+    print(f'\n💾 Connecting to valuation database...')
     db_conn = get_db_connection()
     print(f'   Database connected')
 
@@ -191,8 +190,8 @@ def main():
     print(f'   Models: {", ".join(db_name for _, db_name in MODELS_TO_RUN)}')
 
     for i, (ticker, stock) in enumerate(stocks.items()):
-        # Load stock data from cache
-        stock_data = load_stock_cache(ticker, stock_cache_dir)
+        # Load stock data from SQLite
+        stock_data = load_stock_data(ticker, reader)
 
         if not stock_data:
             for _, db_name in MODELS_TO_RUN:
