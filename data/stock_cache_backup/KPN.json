@@ -1,0 +1,42 @@
+{
+  "ticker": "KPN",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": "Kepuni Holdings Inc",
+    "shortName": "45416",
+    "symbol": "KPN",
+    "currency": null,
+    "exchange": "YHD",
+    "country": null
+  },
+  "financials": {
+    "trailingPE": null,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {},
+  "fetch_timestamp": "2025-10-08T15:18:52.450228",
+  "_cache_metadata": {
+    "ticker": "KPN",
+    "cached_at": "2025-10-08T15:18:53.994854",
+    "data_source": "yfinance"
+  }
+}

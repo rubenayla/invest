@@ -1,0 +1,48 @@
+{
+  "ticker": "ARKG",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": "ARK Genomic Revolution ETF",
+    "shortName": "ARK Genomic Revolution ETF",
+    "symbol": "ARKG",
+    "currency": "USD",
+    "exchange": "BTS",
+    "country": null
+  },
+  "financials": {
+    "trailingPE": null,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {
+    "current_price": 32.07500076293945,
+    "price_52w_high": 32.38999938964844,
+    "price_52w_low": 17.5049991607666,
+    "avg_volume": 2804296,
+    "price_trend_30d": 29.75324293642503
+  },
+  "fetch_timestamp": "2025-10-08T21:57:18.678914",
+  "_cache_metadata": {
+    "ticker": "ARKG",
+    "cached_at": "2025-10-08T21:57:20.020323",
+    "data_source": "yfinance"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "ticker": "SQ",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": null,
+    "shortName": null,
+    "symbol": "SQ",
+    "currency": null,
+    "exchange": null,
+    "country": null
+  },
+  "financials": {
+    "trailingPE": null,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {},
+  "fetch_timestamp": "2025-10-08T21:56:51.817072",
+  "_cache_metadata": {
+    "ticker": "SQ",
+    "cached_at": "2025-10-08T21:56:53.932018",
+    "data_source": "yfinance"
+  }
+}

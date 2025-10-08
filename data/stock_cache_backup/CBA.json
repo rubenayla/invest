@@ -1,0 +1,48 @@
+{
+  "ticker": "CBA",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": "ClearBridge American Energy MLP Fund Inc.",
+    "shortName": "37443",
+    "symbol": "CBA",
+    "currency": null,
+    "exchange": "YHD",
+    "country": null
+  },
+  "financials": {
+    "trailingPE": null,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {
+    "current_price": 0.02500000037252903,
+    "price_52w_high": 0.07999999821186066,
+    "price_52w_low": 0.014999999664723873,
+    "avg_volume": 21394,
+    "price_trend_30d": 25.000004656612983
+  },
+  "fetch_timestamp": "2025-10-08T15:19:32.883657",
+  "_cache_metadata": {
+    "ticker": "CBA",
+    "cached_at": "2025-10-08T15:19:34.839401",
+    "data_source": "yfinance"
+  }
+}

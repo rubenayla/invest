@@ -1,0 +1,48 @@
+{
+  "ticker": "ARKK",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": "ARK Innovation ETF",
+    "shortName": "ARK Innovation ETF",
+    "symbol": "ARKK",
+    "currency": "USD",
+    "exchange": "BTS",
+    "country": null
+  },
+  "financials": {
+    "trailingPE": 43.396297,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {
+    "current_price": 92.52549743652344,
+    "price_52w_high": 92.6500015258789,
+    "price_52w_low": 38.569000244140625,
+    "avg_volume": 10643300,
+    "price_trend_30d": 22.51787811092061
+  },
+  "fetch_timestamp": "2025-10-08T21:57:18.875305",
+  "_cache_metadata": {
+    "ticker": "ARKK",
+    "cached_at": "2025-10-08T21:57:20.162296",
+    "data_source": "yfinance"
+  }
+}

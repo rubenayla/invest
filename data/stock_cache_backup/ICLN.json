@@ -1,0 +1,48 @@
+{
+  "ticker": "ICLN",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": "iShares Global Clean Energy ETF",
+    "shortName": "iShares Global Clean Energy ETF",
+    "symbol": "ICLN",
+    "currency": "USD",
+    "exchange": "NGM",
+    "country": null
+  },
+  "financials": {
+    "trailingPE": 19.646551,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {
+    "current_price": 15.984999656677246,
+    "price_52w_high": 16.219999313354492,
+    "price_52w_low": 10.349895181728748,
+    "avg_volume": 2990505,
+    "price_trend_30d": 11.471405066843655
+  },
+  "fetch_timestamp": "2025-10-08T21:57:18.641198",
+  "_cache_metadata": {
+    "ticker": "ICLN",
+    "cached_at": "2025-10-08T21:57:20.013673",
+    "data_source": "yfinance"
+  }
+}

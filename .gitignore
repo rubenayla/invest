@@ -76,7 +76,6 @@ analysis_summary_*.json
 
 # Temporary script files
 scripts/regenerate_dashboard.py
-scripts/simple_dashboard_server.py
 start_dashboard_properly.py
 verify_dashboard.py
 

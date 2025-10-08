@@ -1,0 +1,42 @@
+{
+  "ticker": "PAH3",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": null,
+    "shortName": null,
+    "symbol": null,
+    "currency": null,
+    "exchange": null,
+    "country": null
+  },
+  "financials": {
+    "trailingPE": null,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {},
+  "fetch_timestamp": "2025-10-08T15:18:27.303714",
+  "_cache_metadata": {
+    "ticker": "PAH3",
+    "cached_at": "2025-10-08T15:18:30.616875",
+    "data_source": "yfinance"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "ticker": "ARKW",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": "ARK Next Generation Internet ETF",
+    "shortName": "ARK Next Generation Internet ET",
+    "symbol": "ARKW",
+    "currency": "USD",
+    "exchange": "BTS",
+    "country": null
+  },
+  "financials": {
+    "trailingPE": 38.782917,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {
+    "current_price": 182.1020050048828,
+    "price_52w_high": 182.59500122070312,
+    "price_52w_low": 78.62000274658203,
+    "avg_volume": 251368,
+    "price_trend_30d": 15.811497483571134
+  },
+  "fetch_timestamp": "2025-10-08T21:57:19.291855",
+  "_cache_metadata": {
+    "ticker": "ARKW",
+    "cached_at": "2025-10-08T21:57:20.971750",
+    "data_source": "yfinance"
+  }
+}

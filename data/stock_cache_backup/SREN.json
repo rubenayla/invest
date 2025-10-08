@@ -1,0 +1,42 @@
+{
+  "ticker": "SREN",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": null,
+    "shortName": null,
+    "symbol": "SREN",
+    "currency": null,
+    "exchange": "YHD",
+    "country": null
+  },
+  "financials": {
+    "trailingPE": null,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {},
+  "fetch_timestamp": "2025-10-08T15:18:36.790877",
+  "_cache_metadata": {
+    "ticker": "SREN",
+    "cached_at": "2025-10-08T15:18:38.682364",
+    "data_source": "yfinance"
+  }
+}

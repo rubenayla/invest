@@ -1,0 +1,48 @@
+{
+  "ticker": "MBG",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": "SPDR Bloomberg Barclays Mortgage Backed Bond ETF",
+    "shortName": "SPDR Bloomberg Barclays Mortgag",
+    "symbol": "MBG",
+    "currency": "USD",
+    "exchange": "PCX",
+    "country": null
+  },
+  "financials": {
+    "trailingPE": null,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {
+    "current_price": 22.40999984741211,
+    "price_52w_high": 22.560414402715168,
+    "price_52w_low": 20.61750630365461,
+    "avg_volume": 1004616,
+    "price_trend_30d": 1.6229336005153527
+  },
+  "fetch_timestamp": "2025-10-08T15:18:15.262940",
+  "_cache_metadata": {
+    "ticker": "MBG",
+    "cached_at": "2025-10-08T15:18:17.179265",
+    "data_source": "yfinance"
+  }
+}

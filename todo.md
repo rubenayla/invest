@@ -1,8 +1,8 @@
+If the model has 4 different horizons, why does the dashboard only show 1 value per company? I'd use 4 columns
+
 I just noticed we have two dashboards. The html
   file:///Users/rubenayla/repos/invest/dashboard/valuation_dashboard.html and the one that runs a
   server http://localhost:3446/. Which one should we use and why? We can't have this duplicated.
-
-About your suggestion to re-fetch the failed stocks: this is going to drive me crazy. I've told you like 4 times to make sure that the code retries by itself. It should wait a variable amount, and end up downloading everything by itself. The only failed stocks at the end can be ones that have been retried 6 times and still failed.
 
 show in dashboard predictions of neural net for all stocks < clean db with required raw data and ratios for the training of neural nets, and working code so the nets can run predictions and save them in the db too
 

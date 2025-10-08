@@ -1,0 +1,42 @@
+{
+  "ticker": "ALU",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": null,
+    "shortName": null,
+    "symbol": "ALU",
+    "currency": null,
+    "exchange": "YHD",
+    "country": null
+  },
+  "financials": {
+    "trailingPE": null,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {},
+  "fetch_timestamp": "2025-10-08T15:19:58.702653",
+  "_cache_metadata": {
+    "ticker": "ALU",
+    "cached_at": "2025-10-08T15:20:00.655276",
+    "data_source": "yfinance"
+  }
+}

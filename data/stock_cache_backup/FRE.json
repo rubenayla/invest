@@ -1,0 +1,42 @@
+{
+  "ticker": "FRE",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": null,
+    "shortName": "3143749",
+    "symbol": "FRE",
+    "currency": null,
+    "exchange": "YHD",
+    "country": null
+  },
+  "financials": {
+    "trailingPE": null,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {},
+  "fetch_timestamp": "2025-10-08T15:18:18.882908",
+  "_cache_metadata": {
+    "ticker": "FRE",
+    "cached_at": "2025-10-08T15:18:20.380139",
+    "data_source": "yfinance"
+  }
+}

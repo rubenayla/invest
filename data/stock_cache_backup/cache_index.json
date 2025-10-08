@@ -1,0 +1,3921 @@
+{
+  "stocks": {
+    "CRM": {
+      "last_updated": "2025-10-08T21:56:48.852351",
+      "file_size": 42806,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "GOOG": {
+      "last_updated": "2025-10-08T21:56:48.885453",
+      "file_size": 46451,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NVDA": {
+      "last_updated": "2025-10-08T21:56:48.687988",
+      "file_size": 47952,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NFLX": {
+      "last_updated": "2025-10-08T21:56:48.682067",
+      "file_size": 39821,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MSFT": {
+      "last_updated": "2025-10-08T21:56:48.909849",
+      "file_size": 47968,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "META": {
+      "last_updated": "2025-10-08T21:56:48.804285",
+      "file_size": 47096,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AMD": {
+      "last_updated": "2025-10-08T21:56:48.717467",
+      "file_size": 49497,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TSLA": {
+      "last_updated": "2025-10-08T21:57:21.909391",
+      "file_size": 49774,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "GOOGL": {
+      "last_updated": "2025-10-08T21:56:48.888374",
+      "file_size": 46442,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "QCOM": {
+      "last_updated": "2025-10-08T21:56:48.738175",
+      "file_size": 41541,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AMZN": {
+      "last_updated": "2025-10-08T21:56:48.829748",
+      "file_size": 41627,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AAPL": {
+      "last_updated": "2025-10-08T21:56:48.919432",
+      "file_size": 37685,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ADBE": {
+      "last_updated": "2025-10-08T21:56:48.882845",
+      "file_size": 47346,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "INTC": {
+      "last_updated": "2025-10-08T21:56:48.800881",
+      "file_size": 51211,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ORCL": {
+      "last_updated": "2025-10-08T21:56:48.979681",
+      "file_size": 47823,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FTNT": {
+      "last_updated": "2025-10-08T21:56:50.352991",
+      "file_size": 45960,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "LRCX": {
+      "last_updated": "2025-10-08T21:56:50.248468",
+      "file_size": 44883,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CRWD": {
+      "last_updated": "2025-10-08T21:56:50.201950",
+      "file_size": 45463,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CDNS": {
+      "last_updated": "2025-10-08T21:56:50.079856",
+      "file_size": 46529,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SNPS": {
+      "last_updated": "2025-10-08T21:56:50.157360",
+      "file_size": 48354,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PANW": {
+      "last_updated": "2025-10-08T21:56:50.461050",
+      "file_size": 45982,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ZS": {
+      "last_updated": "2025-10-08T21:56:50.250450",
+      "file_size": 45530,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MU": {
+      "last_updated": "2025-10-08T21:56:48.773284",
+      "file_size": 40829,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MRVL": {
+      "last_updated": "2025-10-08T21:56:50.289440",
+      "file_size": 48091,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TXN": {
+      "last_updated": "2025-10-08T21:56:50.132583",
+      "file_size": 47719,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AMAT": {
+      "last_updated": "2025-10-08T21:56:50.495617",
+      "file_size": 49492,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "KLAC": {
+      "last_updated": "2025-10-08T21:56:50.108673",
+      "file_size": 51209,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DDOG": {
+      "last_updated": "2025-10-08T21:56:50.317400",
+      "file_size": 41770,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ADI": {
+      "last_updated": "2025-10-08T21:56:49.998423",
+      "file_size": 51002,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "OKTA": {
+      "last_updated": "2025-10-08T21:56:50.175161",
+      "file_size": 44969,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "GS": {
+      "last_updated": "2025-10-08T21:56:56.919708",
+      "file_size": 38070,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MS": {
+      "last_updated": "2025-10-08T21:56:51.633865",
+      "file_size": 38115,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "JPM": {
+      "last_updated": "2025-10-08T21:56:55.802479",
+      "file_size": 36609,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TFC": {
+      "last_updated": "2025-10-08T21:56:51.815159",
+      "file_size": 41250,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BAC": {
+      "last_updated": "2025-10-08T21:56:51.363719",
+      "file_size": 35211,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "WFC": {
+      "last_updated": "2025-10-08T21:56:51.501991",
+      "file_size": 40455,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "USB": {
+      "last_updated": "2025-10-08T21:56:51.548483",
+      "file_size": 33846,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BLK": {
+      "last_updated": "2025-10-08T21:56:51.937238",
+      "file_size": 44047,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SCHW": {
+      "last_updated": "2025-10-08T21:56:52.080396",
+      "file_size": 41145,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "C": {
+      "last_updated": "2025-10-08T21:56:51.414994",
+      "file_size": 40485,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AXP": {
+      "last_updated": "2025-10-08T21:56:51.596029",
+      "file_size": 39312,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CME": {
+      "last_updated": "2025-10-08T21:56:51.750104",
+      "file_size": 45551,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PNC": {
+      "last_updated": "2025-10-08T21:56:51.781122",
+      "file_size": 37502,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ICE": {
+      "last_updated": "2025-10-08T21:56:52.006515",
+      "file_size": 46980,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "COF": {
+      "last_updated": "2025-10-08T21:56:51.935213",
+      "file_size": 39803,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MCO": {
+      "last_updated": "2025-10-08T21:56:52.721082",
+      "file_size": 52918,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AJG": {
+      "last_updated": "2025-10-08T21:56:58.394886",
+      "file_size": 46424,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MA": {
+      "last_updated": "2025-10-08T21:56:53.325391",
+      "file_size": 44483,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "V": {
+      "last_updated": "2025-10-08T21:56:53.012223",
+      "file_size": 39495,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AON": {
+      "last_updated": "2025-10-08T21:56:53.064148",
+      "file_size": 51380,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MMC": {
+      "last_updated": "2025-10-08T21:56:53.043276",
+      "file_size": 47631,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SPGI": {
+      "last_updated": "2025-10-08T21:56:52.781204",
+      "file_size": 48804,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PYPL": {
+      "last_updated": "2025-10-08T21:56:53.086247",
+      "file_size": 45709,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FIS": {
+      "last_updated": "2025-10-08T21:56:53.643846",
+      "file_size": 52351,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ADP": {
+      "last_updated": "2025-10-08T21:56:53.387720",
+      "file_size": 44420,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BR": {
+      "last_updated": "2025-10-08T21:56:54.211785",
+      "file_size": 40361,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "INTU": {
+      "last_updated": "2025-10-08T21:56:53.816471",
+      "file_size": 51436,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PAYX": {
+      "last_updated": "2025-10-08T21:56:54.202083",
+      "file_size": 42971,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FISV": {
+      "last_updated": "2025-10-08T21:56:53.855947",
+      "file_size": 967,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "UNH": {
+      "last_updated": "2025-10-08T21:56:54.449761",
+      "file_size": 43408,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SQ": {
+      "last_updated": "2025-10-08T21:56:53.933255",
+      "file_size": 961,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "PFE": {
+      "last_updated": "2025-10-08T21:56:54.448642",
+      "file_size": 56363,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TMO": {
+      "last_updated": "2025-10-08T21:56:54.874023",
+      "file_size": 42071,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ABBV": {
+      "last_updated": "2025-10-08T21:56:54.566521",
+      "file_size": 44991,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AMGN": {
+      "last_updated": "2025-10-08T21:56:55.211498",
+      "file_size": 45350,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ABT": {
+      "last_updated": "2025-10-08T21:56:55.046519",
+      "file_size": 48787,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "GILD": {
+      "last_updated": "2025-10-08T21:56:55.762104",
+      "file_size": 45369,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "LLY": {
+      "last_updated": "2025-10-08T21:56:55.214487",
+      "file_size": 51759,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "JNJ": {
+      "last_updated": "2025-10-08T21:56:59.797175",
+      "file_size": 47930,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BMY": {
+      "last_updated": "2025-10-08T21:56:55.498741",
+      "file_size": 55281,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "REGN": {
+      "last_updated": "2025-10-08T21:56:55.766020",
+      "file_size": 46074,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "VRTX": {
+      "last_updated": "2025-10-08T21:56:55.759469",
+      "file_size": 43412,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BIIB": {
+      "last_updated": "2025-10-08T21:56:55.600796",
+      "file_size": 51704,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MRK": {
+      "last_updated": "2025-10-08T21:56:54.922011",
+      "file_size": 47117,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ISRG": {
+      "last_updated": "2025-10-08T21:56:55.984104",
+      "file_size": 40770,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BSX": {
+      "last_updated": "2025-10-08T21:56:56.336490",
+      "file_size": 55541,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "EW": {
+      "last_updated": "2025-10-08T21:56:56.903225",
+      "file_size": 44643,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BDX": {
+      "last_updated": "2025-10-08T21:56:56.556585",
+      "file_size": 41783,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DXCM": {
+      "last_updated": "2025-10-08T21:56:57.091800",
+      "file_size": 46790,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SYK": {
+      "last_updated": "2025-10-08T21:56:57.320873",
+      "file_size": 43472,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DHR": {
+      "last_updated": "2025-10-08T21:56:56.390854",
+      "file_size": 51407,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MRNA": {
+      "last_updated": "2025-10-08T21:56:57.631649",
+      "file_size": 49687,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TECH": {
+      "last_updated": "2025-10-08T21:56:57.755822",
+      "file_size": 49975,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MDT": {
+      "last_updated": "2025-10-08T21:56:56.646095",
+      "file_size": 46759,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "INCY": {
+      "last_updated": "2025-10-08T21:56:57.218204",
+      "file_size": 40726,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ZBH": {
+      "last_updated": "2025-10-08T21:56:56.524887",
+      "file_size": 47993,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ILMN": {
+      "last_updated": "2025-10-08T21:56:57.011493",
+      "file_size": 49007,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ALGN": {
+      "last_updated": "2025-10-08T21:56:58.071866",
+      "file_size": 45646,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BAX": {
+      "last_updated": "2025-10-08T21:56:56.828365",
+      "file_size": 55534,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "HOLX": {
+      "last_updated": "2025-10-08T21:56:58.413058",
+      "file_size": 46657,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "HD": {
+      "last_updated": "2025-10-08T21:56:58.023168",
+      "file_size": 45332,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "COST": {
+      "last_updated": "2025-10-08T21:56:58.339879",
+      "file_size": 35208,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NKE": {
+      "last_updated": "2025-10-08T21:56:58.686517",
+      "file_size": 44557,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TGT": {
+      "last_updated": "2025-10-08T21:56:58.726110",
+      "file_size": 44957,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "KO": {
+      "last_updated": "2025-10-08T21:56:58.561338",
+      "file_size": 51771,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "WMT": {
+      "last_updated": "2025-10-08T21:56:57.983958",
+      "file_size": 45813,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SBUX": {
+      "last_updated": "2025-10-08T21:56:59.147309",
+      "file_size": 45236,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MCD": {
+      "last_updated": "2025-10-08T21:56:59.031548",
+      "file_size": 44603,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PG": {
+      "last_updated": "2025-10-08T21:56:58.305923",
+      "file_size": 45988,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "LOW": {
+      "last_updated": "2025-10-08T21:56:58.846942",
+      "file_size": 46205,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CMCSA": {
+      "last_updated": "2025-10-08T21:56:59.316063",
+      "file_size": 48096,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PEP": {
+      "last_updated": "2025-10-08T21:56:58.470037",
+      "file_size": 47749,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "T": {
+      "last_updated": "2025-10-08T21:56:59.794132",
+      "file_size": 55579,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DIS": {
+      "last_updated": "2025-10-08T21:56:59.369295",
+      "file_size": 44007,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "VZ": {
+      "last_updated": "2025-10-08T21:56:59.770820",
+      "file_size": 48038,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TMUS": {
+      "last_updated": "2025-10-08T21:56:59.649194",
+      "file_size": 48308,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "LULU": {
+      "last_updated": "2025-10-08T21:57:00.249501",
+      "file_size": 43550,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DECK": {
+      "last_updated": "2025-10-08T21:57:00.421476",
+      "file_size": 41356,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ULTA": {
+      "last_updated": "2025-10-08T21:57:00.139666",
+      "file_size": 43307,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ROST": {
+      "last_updated": "2025-10-08T21:57:01.048690",
+      "file_size": 37558,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CL": {
+      "last_updated": "2025-10-08T21:56:59.669555",
+      "file_size": 49119,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TJX": {
+      "last_updated": "2025-10-08T21:57:00.151913",
+      "file_size": 44563,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CMG": {
+      "last_updated": "2025-10-08T21:57:00.925995",
+      "file_size": 42756,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "K": {
+      "last_updated": "2025-10-08T21:57:00.041789",
+      "file_size": 47795,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "GIS": {
+      "last_updated": "2025-10-08T21:56:59.879626",
+      "file_size": 48785,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "KMB": {
+      "last_updated": "2025-10-08T21:56:59.751653",
+      "file_size": 43786,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "YUM": {
+      "last_updated": "2025-10-08T21:57:00.965496",
+      "file_size": 45847,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TPG": {
+      "last_updated": "2025-10-08T21:57:00.618233",
+      "file_size": 29085,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "QSR": {
+      "last_updated": "2025-10-08T21:57:01.012322",
+      "file_size": 49474,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DPZ": {
+      "last_updated": "2025-10-08T21:57:01.324335",
+      "file_size": 43196,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "XOM": {
+      "last_updated": "2025-10-08T21:57:01.209947",
+      "file_size": 42353,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "EOG": {
+      "last_updated": "2025-10-08T21:57:01.446647",
+      "file_size": 42912,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "COP": {
+      "last_updated": "2025-10-08T21:57:01.429688",
+      "file_size": 47988,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "VLO": {
+      "last_updated": "2025-10-08T21:57:01.609893",
+      "file_size": 51501,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MPC": {
+      "last_updated": "2025-10-08T21:57:01.785198",
+      "file_size": 50313,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PSX": {
+      "last_updated": "2025-10-08T21:57:01.792527",
+      "file_size": 44709,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CVX": {
+      "last_updated": "2025-10-08T21:57:01.288173",
+      "file_size": 45200,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SLB": {
+      "last_updated": "2025-10-08T21:57:01.840045",
+      "file_size": 50329,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "KMI": {
+      "last_updated": "2025-10-08T21:57:02.319731",
+      "file_size": 49861,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "WMB": {
+      "last_updated": "2025-10-08T21:57:02.693174",
+      "file_size": 48449,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "EPD": {
+      "last_updated": "2025-10-08T21:57:02.580057",
+      "file_size": 48981,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ET": {
+      "last_updated": "2025-10-08T21:57:02.695546",
+      "file_size": 50514,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "OKE": {
+      "last_updated": "2025-10-08T21:57:02.387395",
+      "file_size": 45873,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PXD": {
+      "last_updated": "2025-10-08T21:57:02.446736",
+      "file_size": 964,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "MPLX": {
+      "last_updated": "2025-10-08T21:57:02.824155",
+      "file_size": 47016,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BKR": {
+      "last_updated": "2025-10-08T21:57:02.750189",
+      "file_size": 45790,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "HAL": {
+      "last_updated": "2025-10-08T21:57:02.975937",
+      "file_size": 46165,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FANG": {
+      "last_updated": "2025-10-08T21:57:02.919651",
+      "file_size": 47968,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DVN": {
+      "last_updated": "2025-10-08T21:57:03.091182",
+      "file_size": 46804,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BA": {
+      "last_updated": "2025-10-08T21:57:08.858090",
+      "file_size": 49180,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "HON": {
+      "last_updated": "2025-10-08T21:57:03.352617",
+      "file_size": 53908,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CAT": {
+      "last_updated": "2025-10-08T21:57:03.320703",
+      "file_size": 45903,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "UNP": {
+      "last_updated": "2025-10-08T21:57:03.980272",
+      "file_size": 42470,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "UPS": {
+      "last_updated": "2025-10-08T21:57:03.780788",
+      "file_size": 44699,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "APA": {
+      "last_updated": "2025-10-08T21:57:03.166243",
+      "file_size": 47229,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "LMT": {
+      "last_updated": "2025-10-08T21:57:03.932428",
+      "file_size": 41728,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "RTX": {
+      "last_updated": "2025-10-08T21:57:04.293911",
+      "file_size": 49521,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "GE": {
+      "last_updated": "2025-10-08T21:57:04.160768",
+      "file_size": 58020,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FDX": {
+      "last_updated": "2025-10-08T21:57:03.907168",
+      "file_size": 44727,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ITW": {
+      "last_updated": "2025-10-08T21:57:04.219433",
+      "file_size": 50412,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MMM": {
+      "last_updated": "2025-10-08T21:57:04.315626",
+      "file_size": 52677,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "EMR": {
+      "last_updated": "2025-10-08T21:57:04.358837",
+      "file_size": 42140,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ETN": {
+      "last_updated": "2025-10-08T21:57:04.572354",
+      "file_size": 42965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FTV": {
+      "last_updated": "2025-10-08T21:57:04.699120",
+      "file_size": 50319,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "VRSK": {
+      "last_updated": "2025-10-08T21:57:05.668698",
+      "file_size": 50666,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CMI": {
+      "last_updated": "2025-10-08T21:57:04.566988",
+      "file_size": 55259,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PH": {
+      "last_updated": "2025-10-08T21:57:10.023341",
+      "file_size": 51189,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "XYL": {
+      "last_updated": "2025-10-08T21:57:05.439954",
+      "file_size": 48791,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ROP": {
+      "last_updated": "2025-10-08T21:57:05.452121",
+      "file_size": 49886,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "IEX": {
+      "last_updated": "2025-10-08T21:57:05.246530",
+      "file_size": 48047,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FAST": {
+      "last_updated": "2025-10-08T21:57:05.542101",
+      "file_size": 41943,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ROK": {
+      "last_updated": "2025-10-08T21:57:06.288645",
+      "file_size": 42162,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DOV": {
+      "last_updated": "2025-10-08T21:57:04.895376",
+      "file_size": 50230,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TDG": {
+      "last_updated": "2025-10-08T21:57:05.835012",
+      "file_size": 44579,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "LDOS": {
+      "last_updated": "2025-10-08T21:57:05.727786",
+      "file_size": 47941,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "GWW": {
+      "last_updated": "2025-10-08T21:57:05.797851",
+      "file_size": 42683,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "EXPD": {
+      "last_updated": "2025-10-08T21:57:06.001072",
+      "file_size": 41253,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CHRW": {
+      "last_updated": "2025-10-08T21:57:05.974659",
+      "file_size": 44322,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "JBHT": {
+      "last_updated": "2025-10-08T21:57:06.108045",
+      "file_size": 39153,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DUK": {
+      "last_updated": "2025-10-08T21:57:06.771965",
+      "file_size": 49623,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NEE": {
+      "last_updated": "2025-10-08T21:57:06.379402",
+      "file_size": 47573,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SO": {
+      "last_updated": "2025-10-08T21:57:06.997862",
+      "file_size": 51312,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "EXC": {
+      "last_updated": "2025-10-08T21:57:07.074278",
+      "file_size": 47768,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AEP": {
+      "last_updated": "2025-10-08T21:57:06.913210",
+      "file_size": 51383,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "XEL": {
+      "last_updated": "2025-10-08T21:57:07.243895",
+      "file_size": 43296,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SRE": {
+      "last_updated": "2025-10-08T21:57:07.240894",
+      "file_size": 54433,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "D": {
+      "last_updated": "2025-10-08T21:57:06.967702",
+      "file_size": 51873,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PCG": {
+      "last_updated": "2025-10-08T21:57:07.313185",
+      "file_size": 45723,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "EIX": {
+      "last_updated": "2025-10-08T21:57:07.406513",
+      "file_size": 48164,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PLD": {
+      "last_updated": "2025-10-08T21:57:07.678002",
+      "file_size": 46819,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CCI": {
+      "last_updated": "2025-10-08T21:57:07.595942",
+      "file_size": 47567,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AMT": {
+      "last_updated": "2025-10-08T21:57:07.371588",
+      "file_size": 52802,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "EQIX": {
+      "last_updated": "2025-10-08T21:57:07.739998",
+      "file_size": 48811,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AVB": {
+      "last_updated": "2025-10-08T21:57:08.355434",
+      "file_size": 40538,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "WELL": {
+      "last_updated": "2025-10-08T21:57:08.567533",
+      "file_size": 45492,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DLR": {
+      "last_updated": "2025-10-08T21:57:08.378764",
+      "file_size": 50292,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CBRE": {
+      "last_updated": "2025-10-08T21:57:08.594854",
+      "file_size": 50647,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "EQR": {
+      "last_updated": "2025-10-08T21:57:08.543403",
+      "file_size": 48712,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PSA": {
+      "last_updated": "2025-10-08T21:57:08.773915",
+      "file_size": 41127,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "O": {
+      "last_updated": "2025-10-08T21:57:13.972142",
+      "file_size": 47959,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SPG": {
+      "last_updated": "2025-10-08T21:57:14.418323",
+      "file_size": 43174,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "EXR": {
+      "last_updated": "2025-10-08T21:57:08.799067",
+      "file_size": 44927,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "VTR": {
+      "last_updated": "2025-10-08T21:57:08.855827",
+      "file_size": 45903,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ARE": {
+      "last_updated": "2025-10-08T21:57:08.946501",
+      "file_size": 46933,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "KIM": {
+      "last_updated": "2025-10-08T21:57:09.672441",
+      "file_size": 44569,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ESS": {
+      "last_updated": "2025-10-08T21:57:09.112295",
+      "file_size": 45632,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MAA": {
+      "last_updated": "2025-10-08T21:57:09.096176",
+      "file_size": 40712,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "REG": {
+      "last_updated": "2025-10-08T21:57:09.903000",
+      "file_size": 46129,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "APD": {
+      "last_updated": "2025-10-08T21:57:10.050504",
+      "file_size": 46087,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "LIN": {
+      "last_updated": "2025-10-08T21:57:10.358295",
+      "file_size": 56126,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SHW": {
+      "last_updated": "2025-10-08T21:57:10.295387",
+      "file_size": 52290,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "STLD": {
+      "last_updated": "2025-10-08T21:57:10.383683",
+      "file_size": 44363,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NUE": {
+      "last_updated": "2025-10-08T21:57:10.247103",
+      "file_size": 45520,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BXP": {
+      "last_updated": "2025-10-08T21:57:09.927397",
+      "file_size": 48254,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MLM": {
+      "last_updated": "2025-10-08T21:57:10.370505",
+      "file_size": 46093,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FCX": {
+      "last_updated": "2025-10-08T21:57:10.083269",
+      "file_size": 48620,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DOW": {
+      "last_updated": "2025-10-08T21:57:11.371024",
+      "file_size": 54324,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "VMC": {
+      "last_updated": "2025-10-08T21:57:10.336916",
+      "file_size": 46584,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "LYB": {
+      "last_updated": "2025-10-08T21:57:11.172532",
+      "file_size": 52066,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FMC": {
+      "last_updated": "2025-10-08T21:57:11.018222",
+      "file_size": 55082,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NEM": {
+      "last_updated": "2025-10-08T21:57:10.675124",
+      "file_size": 54232,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ECL": {
+      "last_updated": "2025-10-08T21:57:11.505362",
+      "file_size": 51142,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PPG": {
+      "last_updated": "2025-10-08T21:57:11.410030",
+      "file_size": 55735,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "IFF": {
+      "last_updated": "2025-10-08T21:57:11.760663",
+      "file_size": 52017,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DD": {
+      "last_updated": "2025-10-08T21:57:11.374502",
+      "file_size": 54059,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CE": {
+      "last_updated": "2025-10-08T21:57:11.742366",
+      "file_size": 54210,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PKG": {
+      "last_updated": "2025-10-08T21:57:11.672152",
+      "file_size": 45524,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ROKU": {
+      "last_updated": "2025-10-08T21:57:11.952821",
+      "file_size": 41675,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SHOP": {
+      "last_updated": "2025-10-08T21:57:11.715502",
+      "file_size": 48466,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ZM": {
+      "last_updated": "2025-10-08T21:57:17.115235",
+      "file_size": 46309,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SEE": {
+      "last_updated": "2025-10-08T21:57:12.893922",
+      "file_size": 50619,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AVY": {
+      "last_updated": "2025-10-08T21:57:11.902272",
+      "file_size": 46585,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "RBLX": {
+      "last_updated": "2025-10-08T21:57:12.583853",
+      "file_size": 44030,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "U": {
+      "last_updated": "2025-10-08T21:57:12.797276",
+      "file_size": 43565,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PLTR": {
+      "last_updated": "2025-10-08T21:57:12.632920",
+      "file_size": 44578,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SNOW": {
+      "last_updated": "2025-10-08T21:57:12.635177",
+      "file_size": 44658,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "COIN": {
+      "last_updated": "2025-10-08T21:57:12.811112",
+      "file_size": 49577,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "HOOD": {
+      "last_updated": "2025-10-08T21:57:18.535267",
+      "file_size": 47730,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PTON": {
+      "last_updated": "2025-10-08T21:57:13.027955",
+      "file_size": 49315,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AFRM": {
+      "last_updated": "2025-10-08T21:57:19.452295",
+      "file_size": 45806,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SOFI": {
+      "last_updated": "2025-10-08T21:57:13.049380",
+      "file_size": 41196,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "UPST": {
+      "last_updated": "2025-10-08T21:57:12.968548",
+      "file_size": 37031,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "UBER": {
+      "last_updated": "2025-10-08T21:57:13.354077",
+      "file_size": 54150,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "LYFT": {
+      "last_updated": "2025-10-08T21:57:13.305994",
+      "file_size": 45938,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TWLO": {
+      "last_updated": "2025-10-08T21:57:20.398162",
+      "file_size": 44095,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NET": {
+      "last_updated": "2025-10-08T21:57:14.591560",
+      "file_size": 44512,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ESTC": {
+      "last_updated": "2025-10-08T21:57:19.774458",
+      "file_size": 42931,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ABNB": {
+      "last_updated": "2025-10-08T21:57:14.027038",
+      "file_size": 45864,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MDB": {
+      "last_updated": "2025-10-08T21:57:14.713882",
+      "file_size": 42219,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DASH": {
+      "last_updated": "2025-10-08T21:57:14.102380",
+      "file_size": 47783,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FSLY": {
+      "last_updated": "2025-10-08T21:57:14.375642",
+      "file_size": 47092,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TEAM": {
+      "last_updated": "2025-10-08T21:57:14.710602",
+      "file_size": 53959,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "WDAY": {
+      "last_updated": "2025-10-08T21:57:15.543297",
+      "file_size": 44223,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NOW": {
+      "last_updated": "2025-10-08T21:57:14.951754",
+      "file_size": 45361,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ZI": {
+      "last_updated": "2025-10-08T21:57:14.914202",
+      "file_size": 961,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "VEEV": {
+      "last_updated": "2025-10-08T21:57:15.562222",
+      "file_size": 42019,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ASML": {
+      "last_updated": "2025-10-08T21:57:16.540750",
+      "file_size": 48605,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BILL": {
+      "last_updated": "2025-10-08T21:57:15.866371",
+      "file_size": 47909,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TSM": {
+      "last_updated": "2025-10-08T21:57:16.073240",
+      "file_size": 58229,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NVO": {
+      "last_updated": "2025-10-08T21:57:16.405824",
+      "file_size": 50674,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ZUO": {
+      "last_updated": "2025-10-08T21:57:16.595198",
+      "file_size": 964,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ATLR": {
+      "last_updated": "2025-10-08T21:57:16.408492",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "SONY": {
+      "last_updated": "2025-10-08T21:57:17.051303",
+      "file_size": 56846,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "UL": {
+      "last_updated": "2025-10-08T21:57:16.954004",
+      "file_size": 50016,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AZN": {
+      "last_updated": "2025-10-08T21:57:17.733065",
+      "file_size": 46864,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SAP": {
+      "last_updated": "2025-10-08T21:57:16.770387",
+      "file_size": 49750,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NVS": {
+      "last_updated": "2025-10-08T21:57:17.329352",
+      "file_size": 52873,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TM": {
+      "last_updated": "2025-10-08T21:57:16.773836",
+      "file_size": 46315,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "RY": {
+      "last_updated": "2025-10-08T21:57:18.358340",
+      "file_size": 45971,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BCS": {
+      "last_updated": "2025-10-08T21:57:18.638108",
+      "file_size": 35121,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SHEL": {
+      "last_updated": "2025-10-08T21:57:17.782293",
+      "file_size": 49224,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BP": {
+      "last_updated": "2025-10-08T21:57:18.027398",
+      "file_size": 44284,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TD": {
+      "last_updated": "2025-10-08T21:57:23.678625",
+      "file_size": 44185,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DB": {
+      "last_updated": "2025-10-08T21:57:18.301183",
+      "file_size": 35546,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ENPH": {
+      "last_updated": "2025-10-08T21:57:19.424517",
+      "file_size": 47359,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SEDG": {
+      "last_updated": "2025-10-08T21:57:24.876654",
+      "file_size": 57110,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "UBS": {
+      "last_updated": "2025-10-08T21:57:18.676246",
+      "file_size": 44506,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ING": {
+      "last_updated": "2025-10-08T21:57:18.872806",
+      "file_size": 39803,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FSLR": {
+      "last_updated": "2025-10-08T21:57:19.709698",
+      "file_size": 49382,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CS": {
+      "last_updated": "2025-10-08T21:57:19.336573",
+      "file_size": 961,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "BBVA": {
+      "last_updated": "2025-10-08T21:57:19.565693",
+      "file_size": 43096,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PLUG": {
+      "last_updated": "2025-10-08T21:57:21.012550",
+      "file_size": 51923,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "RUN": {
+      "last_updated": "2025-10-08T21:57:19.731382",
+      "file_size": 47193,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "WBK": {
+      "last_updated": "2025-10-08T21:57:19.289959",
+      "file_size": 964,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "BE": {
+      "last_updated": "2025-10-08T21:57:19.879646",
+      "file_size": 49804,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ARKG": {
+      "last_updated": "2025-10-08T21:57:20.022898",
+      "file_size": 1208,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ARKW": {
+      "last_updated": "2025-10-08T21:57:21.009000",
+      "file_size": 1226,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ICLN": {
+      "last_updated": "2025-10-08T21:57:20.016291",
+      "file_size": 1228,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ARKK": {
+      "last_updated": "2025-10-08T21:57:20.166836",
+      "file_size": 1199,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "OATS": {
+      "last_updated": "2025-10-08T21:57:21.508475",
+      "file_size": 972,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "TDOC": {
+      "last_updated": "2025-10-08T21:57:20.702928",
+      "file_size": 49228,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BYND": {
+      "last_updated": "2025-10-08T21:57:26.304632",
+      "file_size": 42901,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "GPRO": {
+      "last_updated": "2025-10-08T21:57:21.545975",
+      "file_size": 43150,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SNAP": {
+      "last_updated": "2025-10-08T21:57:21.799912",
+      "file_size": 41169,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PINS": {
+      "last_updated": "2025-10-08T21:57:21.726037",
+      "file_size": 40633,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "WORK": {
+      "last_updated": "2025-10-08T21:57:22.238692",
+      "file_size": 967,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "FIT": {
+      "last_updated": "2025-10-08T21:57:27.482547",
+      "file_size": 964,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "TWTR": {
+      "last_updated": "2025-10-08T21:57:22.304124",
+      "file_size": 967,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "DBK": {
+      "last_updated": "2025-10-08T15:18:18.874129",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "SIE": {
+      "last_updated": "2025-10-08T15:18:12.795650",
+      "file_size": 969,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "BMW": {
+      "last_updated": "2025-10-08T15:18:15.594104",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "MBG": {
+      "last_updated": "2025-10-08T15:18:17.180628",
+      "file_size": 1235,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "BAS": {
+      "last_updated": "2025-10-08T15:18:15.255764",
+      "file_size": 964,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ADS": {
+      "last_updated": "2025-10-08T15:18:18.173017",
+      "file_size": 964,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ALV": {
+      "last_updated": "2025-10-08T15:18:13.544905",
+      "file_size": 47603,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DTE": {
+      "last_updated": "2025-10-08T15:18:14.407337",
+      "file_size": 51139,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "VOW3": {
+      "last_updated": "2025-10-08T15:18:17.372242",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "MUV2": {
+      "last_updated": "2025-10-08T15:18:20.083397",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "FRE": {
+      "last_updated": "2025-10-08T15:18:20.381719",
+      "file_size": 970,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "EON": {
+      "last_updated": "2025-10-08T15:18:22.035869",
+      "file_size": 969,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "IFX": {
+      "last_updated": "2025-10-08T15:18:22.795204",
+      "file_size": 969,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "RWE": {
+      "last_updated": "2025-10-08T15:18:22.473782",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "CON": {
+      "last_updated": "2025-10-08T15:18:24.650979",
+      "file_size": 34500,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "HEN3": {
+      "last_updated": "2025-10-08T15:18:21.203977",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "HEI": {
+      "last_updated": "2025-10-08T15:18:24.584479",
+      "file_size": 42773,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DAI": {
+      "last_updated": "2025-10-08T15:18:23.729070",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "FME": {
+      "last_updated": "2025-10-08T15:18:25.331441",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "MTX": {
+      "last_updated": "2025-10-08T15:18:26.769039",
+      "file_size": 43139,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SHL": {
+      "last_updated": "2025-10-08T15:18:28.576757",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "BEI": {
+      "last_updated": "2025-10-08T15:18:27.293104",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "QIA": {
+      "last_updated": "2025-10-08T15:18:29.326205",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "PUM": {
+      "last_updated": "2025-10-08T15:18:30.679629",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "EOAN": {
+      "last_updated": "2025-10-08T15:18:27.516021",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "UHR": {
+      "last_updated": "2025-10-08T15:18:34.396176",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "PAH3": {
+      "last_updated": "2025-10-08T15:18:30.618778",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ROG": {
+      "last_updated": "2025-10-08T15:18:32.908412",
+      "file_size": 49668,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NOVN": {
+      "last_updated": "2025-10-08T15:18:33.714956",
+      "file_size": 967,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "NESN": {
+      "last_updated": "2025-10-08T15:18:39.125945",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "CFR": {
+      "last_updated": "2025-10-08T15:18:36.359262",
+      "file_size": 37151,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "LONN": {
+      "last_updated": "2025-10-08T15:18:36.780104",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "GIVN": {
+      "last_updated": "2025-10-08T15:18:40.095254",
+      "file_size": 972,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "SLHN": {
+      "last_updated": "2025-10-08T15:18:38.057113",
+      "file_size": 968,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "SREN": {
+      "last_updated": "2025-10-08T15:18:38.683755",
+      "file_size": 968,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "OR": {
+      "last_updated": "2025-10-08T15:18:42.082079",
+      "file_size": 54615,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MC": {
+      "last_updated": "2025-10-08T15:18:41.414824",
+      "file_size": 39221,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SAN": {
+      "last_updated": "2025-10-08T15:18:43.129924",
+      "file_size": 43896,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TTE": {
+      "last_updated": "2025-10-08T15:18:43.222401",
+      "file_size": 51128,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "ZURN": {
+      "last_updated": "2025-10-08T15:18:41.447439",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "BN": {
+      "last_updated": "2025-10-08T15:18:44.120436",
+      "file_size": 50335,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AIR": {
+      "last_updated": "2025-10-08T15:18:45.009839",
+      "file_size": 46675,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SU": {
+      "last_updated": "2025-10-08T15:18:50.545023",
+      "file_size": 45747,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BNP": {
+      "last_updated": "2025-10-08T15:18:46.816606",
+      "file_size": 968,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "CAP": {
+      "last_updated": "2025-10-08T15:18:46.646714",
+      "file_size": 964,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ACA": {
+      "last_updated": "2025-10-08T15:18:49.555292",
+      "file_size": 43170,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "GLE": {
+      "last_updated": "2025-10-08T15:18:48.621784",
+      "file_size": 30553,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "BESI": {
+      "last_updated": "2025-10-08T15:18:52.356604",
+      "file_size": 970,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ASM": {
+      "last_updated": "2025-10-08T15:18:53.536794",
+      "file_size": 43502,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "PHIA": {
+      "last_updated": "2025-10-08T15:18:51.525235",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "UNA": {
+      "last_updated": "2025-10-08T15:18:55.317990",
+      "file_size": 969,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ADYEN": {
+      "last_updated": "2025-10-08T15:18:52.439897",
+      "file_size": 967,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "DSM": {
+      "last_updated": "2025-10-08T15:18:54.264006",
+      "file_size": 24456,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "KPN": {
+      "last_updated": "2025-10-08T15:18:53.997103",
+      "file_size": 985,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ABN": {
+      "last_updated": "2025-10-08T15:18:55.916760",
+      "file_size": 969,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "MT": {
+      "last_updated": "2025-10-08T15:18:55.989851",
+      "file_size": 57751,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MUFG": {
+      "last_updated": "2025-10-08T15:18:57.282030",
+      "file_size": 51146,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SMFG": {
+      "last_updated": "2025-10-08T15:18:57.900927",
+      "file_size": 49953,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "HMC": {
+      "last_updated": "2025-10-08T15:18:58.034251",
+      "file_size": 49148,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NTT": {
+      "last_updated": "2025-10-08T15:18:59.245442",
+      "file_size": 969,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "KYOCF": {
+      "last_updated": "2025-10-08T15:19:00.195892",
+      "file_size": 41171,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FUJHY": {
+      "last_updated": "2025-10-08T15:19:01.081203",
+      "file_size": 37244,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SFT": {
+      "last_updated": "2025-10-08T15:19:00.809693",
+      "file_size": 964,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "7203.T": {
+      "last_updated": "2025-10-08T15:19:02.660216",
+      "file_size": 46330,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "4063.T": {
+      "last_updated": "2025-10-08T15:19:03.675495",
+      "file_size": 40794,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "6098.T": {
+      "last_updated": "2025-10-08T15:19:03.211822",
+      "file_size": 36703,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "9984.T": {
+      "last_updated": "2025-10-08T15:19:05.542609",
+      "file_size": 40074,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "4502.T": {
+      "last_updated": "2025-10-08T15:19:05.385551",
+      "file_size": 49968,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "9432.T": {
+      "last_updated": "2025-10-08T15:19:06.027349",
+      "file_size": 40652,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "8316.T": {
+      "last_updated": "2025-10-08T15:19:07.839755",
+      "file_size": 49952,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "6758.T": {
+      "last_updated": "2025-10-08T15:19:08.264508",
+      "file_size": 56841,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "6861.T": {
+      "last_updated": "2025-10-08T15:19:10.029605",
+      "file_size": 30181,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "7267.T": {
+      "last_updated": "2025-10-08T15:19:08.592982",
+      "file_size": 49145,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "6954.T": {
+      "last_updated": "2025-10-08T15:19:10.868568",
+      "file_size": 32014,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "6920.T": {
+      "last_updated": "2025-10-08T15:19:16.350674",
+      "file_size": 35120,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "6752.T": {
+      "last_updated": "2025-10-08T15:19:12.439357",
+      "file_size": 39596,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "8031.T": {
+      "last_updated": "2025-10-08T15:19:14.976125",
+      "file_size": 36871,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "4543.T": {
+      "last_updated": "2025-10-08T15:19:13.581080",
+      "file_size": 39335,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "4911.T": {
+      "last_updated": "2025-10-08T15:19:15.942774",
+      "file_size": 46947,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "6981.T": {
+      "last_updated": "2025-10-08T15:19:17.861541",
+      "file_size": 46127,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "4568.T": {
+      "last_updated": "2025-10-08T15:19:18.693234",
+      "file_size": 36502,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "4523.T": {
+      "last_updated": "2025-10-08T15:19:20.001432",
+      "file_size": 33510,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "7751.T": {
+      "last_updated": "2025-10-08T15:19:18.268953",
+      "file_size": 48369,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "4503.T": {
+      "last_updated": "2025-10-08T15:19:20.525723",
+      "file_size": 36616,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "8058.T": {
+      "last_updated": "2025-10-08T15:19:21.253446",
+      "file_size": 40300,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "9020.T": {
+      "last_updated": "2025-10-08T15:19:22.606630",
+      "file_size": 40565,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "9022.T": {
+      "last_updated": "2025-10-08T15:19:23.023638",
+      "file_size": 41013,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "4612.T": {
+      "last_updated": "2025-10-08T15:19:23.799843",
+      "file_size": 40681,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "8802.T": {
+      "last_updated": "2025-10-08T15:19:25.396575",
+      "file_size": 41860,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SFTBY": {
+      "last_updated": "2025-10-08T15:19:28.001256",
+      "file_size": 40077,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MSBHF": {
+      "last_updated": "2025-10-08T15:19:27.283832",
+      "file_size": 40309,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "7974.T": {
+      "last_updated": "2025-10-08T15:19:26.254516",
+      "file_size": 34566,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "8411.T": {
+      "last_updated": "2025-10-08T15:19:41.579251",
+      "file_size": 49058,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NTDOY": {
+      "last_updated": "2025-10-08T15:19:29.065225",
+      "file_size": 34591,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FUJIF": {
+      "last_updated": "2025-10-08T15:19:29.881413",
+      "file_size": 40041,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "HTHIY": {
+      "last_updated": "2025-10-08T15:19:30.980307",
+      "file_size": 38597,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MZDAY": {
+      "last_updated": "2025-10-08T15:19:31.694680",
+      "file_size": 40846,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "SZKMY": {
+      "last_updated": "2025-10-08T15:19:32.879797",
+      "file_size": 44120,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CBA": {
+      "last_updated": "2025-10-08T15:19:34.841010",
+      "file_size": 1205,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ANZ": {
+      "last_updated": "2025-10-08T15:19:35.476760",
+      "file_size": 968,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "NAB": {
+      "last_updated": "2025-10-08T15:19:37.483962",
+      "file_size": 968,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "TKOMY": {
+      "last_updated": "2025-10-08T15:19:33.760017",
+      "file_size": 36328,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "RIO": {
+      "last_updated": "2025-10-08T15:19:39.703751",
+      "file_size": 44525,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "WBC": {
+      "last_updated": "2025-10-08T15:19:37.766775",
+      "file_size": 964,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "BHP": {
+      "last_updated": "2025-10-08T15:19:39.361185",
+      "file_size": 53673,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FMG": {
+      "last_updated": "2025-10-08T15:19:41.014465",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "COL": {
+      "last_updated": "2025-10-08T15:19:42.952669",
+      "file_size": 989,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "WOW": {
+      "last_updated": "2025-10-08T15:19:41.510881",
+      "file_size": 41867,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "TLS": {
+      "last_updated": "2025-10-08T15:19:43.399899",
+      "file_size": 44780,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MQG": {
+      "last_updated": "2025-10-08T15:19:45.526827",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "WDS": {
+      "last_updated": "2025-10-08T15:19:45.145392",
+      "file_size": 54899,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CSL": {
+      "last_updated": "2025-10-08T15:19:43.662684",
+      "file_size": 49047,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "WES": {
+      "last_updated": "2025-10-08T15:19:46.951908",
+      "file_size": 44946,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "GMG": {
+      "last_updated": "2025-10-08T15:19:47.246372",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "TCL": {
+      "last_updated": "2025-10-08T15:19:46.358595",
+      "file_size": 964,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ALL": {
+      "last_updated": "2025-10-08T15:19:48.844236",
+      "file_size": 39955,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "AMP": {
+      "last_updated": "2025-10-08T15:19:49.518641",
+      "file_size": 34648,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "JHX": {
+      "last_updated": "2025-10-08T15:19:48.147808",
+      "file_size": 51014,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "DXS": {
+      "last_updated": "2025-10-08T15:19:51.283861",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "CPU": {
+      "last_updated": "2025-10-08T15:19:50.371618",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ASX": {
+      "last_updated": "2025-10-08T15:19:50.067144",
+      "file_size": 56751,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "IAG": {
+      "last_updated": "2025-10-08T15:19:51.996247",
+      "file_size": 53964,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MIN": {
+      "last_updated": "2025-10-08T15:19:52.194106",
+      "file_size": 10614,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "NCM": {
+      "last_updated": "2025-10-08T15:19:53.004136",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "QAN": {
+      "last_updated": "2025-10-08T15:19:53.858184",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ORG": {
+      "last_updated": "2025-10-08T15:19:53.814021",
+      "file_size": 994,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "QBE": {
+      "last_updated": "2025-10-08T15:19:54.640835",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "REA": {
+      "last_updated": "2025-10-08T15:19:56.211177",
+      "file_size": 1015,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "STO": {
+      "last_updated": "2025-10-08T15:19:56.931824",
+      "file_size": 969,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "WPL": {
+      "last_updated": "2025-10-08T15:19:58.696246",
+      "file_size": 968,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "XRO": {
+      "last_updated": "2025-10-08T15:19:58.654092",
+      "file_size": 993,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "SUN": {
+      "last_updated": "2025-10-08T15:19:57.991226",
+      "file_size": 50479,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "S32": {
+      "last_updated": "2025-10-08T15:19:56.969032",
+      "file_size": 963,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "APT": {
+      "last_updated": "2025-10-08T15:19:59.857560",
+      "file_size": 38584,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "CWN": {
+      "last_updated": "2025-10-08T15:20:02.036581",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ALU": {
+      "last_updated": "2025-10-08T15:20:00.656330",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "EVN": {
+      "last_updated": "2025-10-08T15:20:02.488344",
+      "file_size": 18766,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "A2M": {
+      "last_updated": "2025-10-08T15:20:01.651123",
+      "file_size": 963,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "FPH": {
+      "last_updated": "2025-10-08T15:20:06.338629",
+      "file_size": 40393,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "MCY": {
+      "last_updated": "2025-10-08T15:20:07.369032",
+      "file_size": 28530,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": true,
+      "has_balance_sheet": true,
+      "has_income": true
+    },
+    "FBU": {
+      "last_updated": "2025-10-08T15:20:10.875671",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "ATM": {
+      "last_updated": "2025-10-08T15:20:08.436461",
+      "file_size": 963,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "KMD": {
+      "last_updated": "2025-10-08T15:20:12.633668",
+      "file_size": 965,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "MEL": {
+      "last_updated": "2025-10-08T15:20:13.497494",
+      "file_size": 970,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "SPK": {
+      "last_updated": "2025-10-08T15:20:11.651702",
+      "file_size": 964,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "SKC": {
+      "last_updated": "2025-10-08T15:20:11.674120",
+      "file_size": 963,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    },
+    "AIA": {
+      "last_updated": "2025-10-08T15:20:13.579170",
+      "file_size": 1196,
+      "has_financials": true,
+      "has_info": true,
+      "has_cashflow": false,
+      "has_balance_sheet": false,
+      "has_income": false
+    }
+  },
+  "last_updated": "2025-10-08T21:57:27.482598",
+  "version": "1.0"
+}

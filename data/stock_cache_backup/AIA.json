@@ -1,0 +1,48 @@
+{
+  "ticker": "AIA",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": "iShares Asia 50 ETF",
+    "shortName": "iShares Asia 50 ETF",
+    "symbol": "AIA",
+    "currency": "USD",
+    "exchange": "NGM",
+    "country": null
+  },
+  "financials": {
+    "trailingPE": 15.866862,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {
+    "current_price": 97.06999969482422,
+    "price_52w_high": 98.7699966430664,
+    "price_52w_low": 59.290007653810484,
+    "avg_volume": 70602,
+    "price_trend_30d": 13.293650033939585
+  },
+  "fetch_timestamp": "2025-10-08T15:20:11.681278",
+  "_cache_metadata": {
+    "ticker": "AIA",
+    "cached_at": "2025-10-08T15:20:13.577729",
+    "data_source": "yfinance"
+  }
+}

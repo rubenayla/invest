@@ -1,0 +1,42 @@
+{
+  "ticker": "REA",
+  "info": {
+    "currentPrice": null,
+    "marketCap": null,
+    "sector": null,
+    "industry": null,
+    "longName": "Rydex 2x S&P Select Sector Energy",
+    "shortName": "realestate.com.au Ltd",
+    "symbol": "REA",
+    "currency": null,
+    "exchange": "YHD",
+    "country": null
+  },
+  "financials": {
+    "trailingPE": null,
+    "forwardPE": null,
+    "priceToBook": null,
+    "returnOnEquity": null,
+    "debtToEquity": null,
+    "currentRatio": null,
+    "revenueGrowth": null,
+    "earningsGrowth": null,
+    "operatingMargins": null,
+    "profitMargins": null,
+    "totalRevenue": null,
+    "totalCash": null,
+    "totalDebt": null,
+    "sharesOutstanding": null,
+    "trailingEps": null,
+    "bookValue": null,
+    "revenuePerShare": null,
+    "priceToSalesTrailing12Months": null
+  },
+  "price_data": {},
+  "fetch_timestamp": "2025-10-08T15:19:53.825083",
+  "_cache_metadata": {
+    "ticker": "REA",
+    "cached_at": "2025-10-08T15:19:56.204927",
+    "data_source": "yfinance"
+  }
+}
