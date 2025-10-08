@@ -39,10 +39,11 @@ Define your investment criteria in YAML files. No code changes needed to adjust 
 
 ### 📊 **Comprehensive Analysis**
 - **Quality Assessment**: ROIC, ROE, debt levels, liquidity ratios
-- **Value Analysis**: P/E, P/B, EV/EBITDA ratios vs. thresholds  
+- **Value Analysis**: P/E, P/B, EV/EBITDA ratios vs. thresholds
 - **Growth Evaluation**: Revenue/earnings growth, sustainability
 - **Risk Assessment**: Financial, market, and business risk factors
-- **Valuation Models**: DCF and RIM models with multiple scenarios
+- **Valuation Models**: DCF, RIM, Simple Ratios, and other traditional models
+- **Multi-Horizon Neural Network**: ML predictions across 5 timeframes (1m, 3m, 6m, 1y, 2y)
 
 ### 🏢 **Sector Context**
 Automatically adjusts expectations based on sector characteristics:
@@ -134,8 +135,15 @@ AI combines quantitative screening results with qualitative insights to provide 
 
 ## Learn More
 
+### Core Documentation
 - **[User Guide](user-guide/overview.md)** - Comprehensive usage documentation
 - **[Developer Guide](developer-guide/architecture.md)** - Extend and customize the framework
 - **[API Reference](api-reference/pipeline.md)** - Detailed technical documentation
 - **[Tutorials](tutorials/basic-screening.md)** - Step-by-step examples
 - **[AI Tools Integration](tutorials/ai-tools.md)** - Using conversational AI for deeper analysis
+
+### Advanced Features
+- **[Multi-Horizon Neural Network](multi_horizon_neural_network.md)** - 5-timeframe ML predictions
+- **[SQLite Integration](sqlite_integration_complete.md)** - Database architecture and cache system
+- **[Neural Network Evaluation](neural_network_evaluation_guide.md)** - Model performance analysis
+- **[Portable Training Guide](portable_training_guide.md)** - Train models on your machine
