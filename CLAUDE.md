@@ -236,7 +236,14 @@ The `StockDataReader` returns data in a specific format for compatibility with v
 }
 ```
 
-**Why duplicate fields?** Traditional models (DCF, RIM, Simple Ratios) look in `info` section. Neural network models look in `financials`. We put critical fields in BOTH sections for maximum compatibility.
+**Why duplicate fields?**
+- The `info` vs `financials` split is **artificial** - created by `data_fetcher.py` to organize data from yfinance's single `stock.info` dictionary
+- yfinance provides ONE dictionary with all fields mixed together
+- `data_fetcher.py` splits it into: `info` (company identity) and `financials` (performance metrics)
+- Traditional models (DCF, RIM, Simple Ratios) look in `info` section
+- Neural network models look in `financials` section
+- We duplicate critical fields in BOTH sections so all models can find them
+- **This split is arbitrary and historical** - could be unified but would require updating all models
 
 ### 📁 **Legacy/Backup Data**
 
