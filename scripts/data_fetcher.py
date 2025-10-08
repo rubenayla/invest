@@ -140,133 +140,150 @@ class AsyncStockDataFetcher:
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         pass
     
-    def fetch_stock_data_sync(self, ticker: str) -> Dict:
-        """Fetch fresh data for a single stock"""
-        try:
-            logger.info(f"Fetching fresh data for {ticker}")
-            
-            # Fetch from yfinance
-            stock = yf.Ticker(ticker)
-            
-            # Get comprehensive data
-            data = {
-                'ticker': ticker,
-                'info': {},
-                'financials': {},
-                'price_data': {},
-                'fetch_timestamp': datetime.now().isoformat()
-            }
-            
-            # Basic info (most important)
+    def fetch_stock_data_sync(self, ticker: str, max_retries: int = 6) -> Dict:
+        """Fetch fresh data for a single stock with retry logic"""
+        last_error = None
+
+        for attempt in range(max_retries):
             try:
-                info = stock.info
-                data['info'] = {
-                    'currentPrice': info.get('currentPrice'),
-                    'marketCap': info.get('marketCap'),
-                    'sector': info.get('sector'),
-                    'industry': info.get('industry'),
-                    'longName': info.get('longName'),
-                    'shortName': info.get('shortName'),
-                    'symbol': info.get('symbol'),
-                    'currency': info.get('currency'),
-                    'exchange': info.get('exchange'),
-                    'country': info.get('country')
+                if attempt > 0:
+                    # Exponential backoff: 5s, 10s, 20s, 40s, 80s, 160s
+                    wait_time = 5 * (2 ** (attempt - 1))
+                    logger.info(f"{ticker}: Retry {attempt}/{max_retries} after {wait_time}s wait")
+                    time.sleep(wait_time)
+
+                logger.info(f"Fetching fresh data for {ticker} (attempt {attempt + 1}/{max_retries})")
+
+                # Fetch from yfinance
+                stock = yf.Ticker(ticker)
+
+                # Get comprehensive data
+                data = {
+                    'ticker': ticker,
+                    'info': {},
+                    'financials': {},
+                    'price_data': {},
+                    'fetch_timestamp': datetime.now().isoformat()
                 }
-            except Exception as e:
-                logger.warning(f"Could not fetch info for {ticker}: {e}")
-            
-            # Key financial metrics
-            try:
-                data['financials'] = {
-                    'trailingPE': info.get('trailingPE'),
-                    'forwardPE': info.get('forwardPE'),
-                    'priceToBook': info.get('priceToBook'),
-                    'returnOnEquity': info.get('returnOnEquity'),
-                    'debtToEquity': info.get('debtToEquity'),
-                    'currentRatio': info.get('currentRatio'),
-                    'revenueGrowth': info.get('revenueGrowth'),
-                    'earningsGrowth': info.get('earningsGrowth'),
-                    'operatingMargins': info.get('operatingMargins'),
-                    'profitMargins': info.get('profitMargins'),
-                    'totalRevenue': info.get('totalRevenue'),
-                    'totalCash': info.get('totalCash'),
-                    'totalDebt': info.get('totalDebt'),
-                    'sharesOutstanding': info.get('sharesOutstanding'),
-                    # Per-share metrics needed by Simple Ratios model
-                    'trailingEps': info.get('trailingEps'),
-                    'bookValue': info.get('bookValue'),
-                    'revenuePerShare': info.get('revenuePerShare'),
-                    'priceToSalesTrailing12Months': info.get('priceToSalesTrailing12Months'),
-                }
-            except Exception as e:
-                logger.warning(f"Could not fetch financials for {ticker}: {e}")
-            
-            # Recent price data (for charts/trends)
-            try:
-                hist = stock.history(period='1y')
-                if not hist.empty:
-                    data['price_data'] = {
-                        'current_price': float(hist['Close'].iloc[-1]),
-                        'price_52w_high': float(hist['High'].max()),
-                        'price_52w_low': float(hist['Low'].min()),
-                        'avg_volume': int(hist['Volume'].mean()),
-                        'price_trend_30d': float((hist['Close'].iloc[-1] / hist['Close'].iloc[-30] - 1) * 100) if len(hist) >= 30 else None
+
+                # Basic info (most important)
+                try:
+                    info = stock.info
+                    data['info'] = {
+                        'currentPrice': info.get('currentPrice'),
+                        'marketCap': info.get('marketCap'),
+                        'sector': info.get('sector'),
+                        'industry': info.get('industry'),
+                        'longName': info.get('longName'),
+                        'shortName': info.get('shortName'),
+                        'symbol': info.get('symbol'),
+                        'currency': info.get('currency'),
+                        'exchange': info.get('exchange'),
+                        'country': info.get('country')
                     }
+                except Exception as e:
+                    logger.warning(f"Could not fetch info for {ticker}: {e}")
+
+                # Key financial metrics
+                try:
+                    data['financials'] = {
+                        'trailingPE': info.get('trailingPE'),
+                        'forwardPE': info.get('forwardPE'),
+                        'priceToBook': info.get('priceToBook'),
+                        'returnOnEquity': info.get('returnOnEquity'),
+                        'debtToEquity': info.get('debtToEquity'),
+                        'currentRatio': info.get('currentRatio'),
+                        'revenueGrowth': info.get('revenueGrowth'),
+                        'earningsGrowth': info.get('earningsGrowth'),
+                        'operatingMargins': info.get('operatingMargins'),
+                        'profitMargins': info.get('profitMargins'),
+                        'totalRevenue': info.get('totalRevenue'),
+                        'totalCash': info.get('totalCash'),
+                        'totalDebt': info.get('totalDebt'),
+                        'sharesOutstanding': info.get('sharesOutstanding'),
+                        # Per-share metrics needed by Simple Ratios model
+                        'trailingEps': info.get('trailingEps'),
+                        'bookValue': info.get('bookValue'),
+                        'revenuePerShare': info.get('revenuePerShare'),
+                        'priceToSalesTrailing12Months': info.get('priceToSalesTrailing12Months'),
+                    }
+                except Exception as e:
+                    logger.warning(f"Could not fetch financials for {ticker}: {e}")
+
+                # Recent price data (for charts/trends)
+                try:
+                    hist = stock.history(period='1y')
+                    if not hist.empty:
+                        data['price_data'] = {
+                            'current_price': float(hist['Close'].iloc[-1]),
+                            'price_52w_high': float(hist['High'].max()),
+                            'price_52w_low': float(hist['Low'].min()),
+                            'avg_volume': int(hist['Volume'].mean()),
+                            'price_trend_30d': float((hist['Close'].iloc[-1] / hist['Close'].iloc[-30] - 1) * 100) if len(hist) >= 30 else None
+                        }
+                except Exception as e:
+                    logger.warning(f"Could not fetch price data for {ticker}: {e}")
+
+                # Raw financial statements (for DCF/RIM valuation models)
+                try:
+                    import pandas as pd
+
+                    # Cash flow statement
+                    cashflow = stock.cashflow
+                    if cashflow is not None and not cashflow.empty:
+                        # Reset index and convert timestamps to strings
+                        df = cashflow.reset_index()
+                        df.columns = df.columns.astype(str)  # Convert column names to strings
+                        # Convert timestamp values to strings
+                        for col in df.columns:
+                            if pd.api.types.is_datetime64_any_dtype(df[col]):
+                                df[col] = df[col].astype(str)
+                        data['cashflow'] = df.to_dict(orient='records')
+
+                    # Balance sheet
+                    balance_sheet = stock.balance_sheet
+                    if balance_sheet is not None and not balance_sheet.empty:
+                        df = balance_sheet.reset_index()
+                        df.columns = df.columns.astype(str)
+                        for col in df.columns:
+                            if pd.api.types.is_datetime64_any_dtype(df[col]):
+                                df[col] = df[col].astype(str)
+                        data['balance_sheet'] = df.to_dict(orient='records')
+
+                    # Income statement
+                    income_stmt = stock.income_stmt
+                    if income_stmt is not None and not income_stmt.empty:
+                        df = income_stmt.reset_index()
+                        df.columns = df.columns.astype(str)
+                        for col in df.columns:
+                            if pd.api.types.is_datetime64_any_dtype(df[col]):
+                                df[col] = df[col].astype(str)
+                        data['income'] = df.to_dict(orient='records')
+
+                    logger.info(f"Fetched financial statements for {ticker}")
+                except Exception as e:
+                    logger.warning(f"Could not fetch financial statements for {ticker}: {e}")
+
+                # Cache the data
+                self.cache.save_stock_data(ticker, data)
+
+                # Success - return data
+                return data
+
             except Exception as e:
-                logger.warning(f"Could not fetch price data for {ticker}: {e}")
+                last_error = e
+                logger.warning(f"{ticker}: Attempt {attempt + 1}/{max_retries} failed: {e}")
+                if attempt == max_retries - 1:
+                    # Final attempt failed
+                    logger.error(f"{ticker}: All {max_retries} attempts failed. Last error: {e}")
+                # Loop continues to next retry
 
-            # Raw financial statements (for DCF/RIM valuation models)
-            try:
-                import pandas as pd
-
-                # Cash flow statement
-                cashflow = stock.cashflow
-                if cashflow is not None and not cashflow.empty:
-                    # Reset index and convert timestamps to strings
-                    df = cashflow.reset_index()
-                    df.columns = df.columns.astype(str)  # Convert column names to strings
-                    # Convert timestamp values to strings
-                    for col in df.columns:
-                        if pd.api.types.is_datetime64_any_dtype(df[col]):
-                            df[col] = df[col].astype(str)
-                    data['cashflow'] = df.to_dict(orient='records')
-
-                # Balance sheet
-                balance_sheet = stock.balance_sheet
-                if balance_sheet is not None and not balance_sheet.empty:
-                    df = balance_sheet.reset_index()
-                    df.columns = df.columns.astype(str)
-                    for col in df.columns:
-                        if pd.api.types.is_datetime64_any_dtype(df[col]):
-                            df[col] = df[col].astype(str)
-                    data['balance_sheet'] = df.to_dict(orient='records')
-
-                # Income statement
-                income_stmt = stock.income_stmt
-                if income_stmt is not None and not income_stmt.empty:
-                    df = income_stmt.reset_index()
-                    df.columns = df.columns.astype(str)
-                    for col in df.columns:
-                        if pd.api.types.is_datetime64_any_dtype(df[col]):
-                            df[col] = df[col].astype(str)
-                    data['income'] = df.to_dict(orient='records')
-
-                logger.info(f"Fetched financial statements for {ticker}")
-            except Exception as e:
-                logger.warning(f"Could not fetch financial statements for {ticker}: {e}")
-
-            # Cache the data
-            self.cache.save_stock_data(ticker, data)
-            
-            return data
-            
-        except Exception as e:
-            logger.error(f"Failed to fetch data for {ticker}: {e}")
-            return {
-                'ticker': ticker,
-                'error': str(e),
-                'fetch_timestamp': datetime.now().isoformat()
-            }
+        # All retries exhausted
+        return {
+            'ticker': ticker,
+            'error': f'Failed after {max_retries} attempts: {str(last_error)}',
+            'fetch_timestamp': datetime.now().isoformat()
+        }
     
     async def fetch_multiple_stocks(self, tickers: List[str], max_concurrent: int = 10) -> Dict[str, Dict]:
         """Fetch data for multiple stocks concurrently"""

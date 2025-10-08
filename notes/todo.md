@@ -1,3 +1,8 @@
+About your suggestion to re-fetch the failed stocks: this is going to drive me crazy. I've told you like 4 times to make sure that the code retries by itself. It should wait a variable amount, and end up downloading everything by itself. The only failed stocks at the end can be ones that have been retried 6 times and still failed.
+
+show in dashboard predictions of neural net for all stocks < clean db with required raw data and ratios for the training of neural nets, and working code so the nets can run predictions and save them in the db too
+
+
 Update the documentation with the new multi output neuron models and the cache.
 
 

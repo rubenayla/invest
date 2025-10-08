@@ -175,8 +175,8 @@ class FeatureEngineer:
         
         # Market Metrics
         features['beta'] = info.get('beta', 1.0) or 1.0
-        features['market_cap_log'] = np.log(max(info.get('marketCap', 1e6), 1))
-        features['avg_volume_log'] = np.log(max(info.get('averageVolume', 1e3), 1))
+        features['market_cap_log'] = np.log(max(info.get('marketCap') or 1e6, 1))
+        features['avg_volume_log'] = np.log(max(info.get('averageVolume') or 1e3, 1))
         features['dividend_yield'] = info.get('dividendYield', 0.0) or 0.0
         features['payout_ratio'] = info.get('payoutRatio', 0.0) or 0.0
         

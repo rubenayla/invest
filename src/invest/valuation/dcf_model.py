@@ -49,18 +49,18 @@ class DCFModel(ValuationModel):
         self.projection_years = VALUATION_DEFAULTS.DCF_PROJECTION_YEARS
     
     def is_suitable(self, ticker: str, data: Dict[str, Any]) -> bool:
-        """DCF is suitable for most companies with positive free cash flow."""
+        """DCF is suitable for companies with available cash flow data."""
         try:
             # Check if we have basic financial data
             cashflow = data.get('cashflow')
             if cashflow is None or cashflow.empty:
                 return False
-            
-            # Check for free cash flow data
+
+            # Check for free cash flow data (can be negative)
             fcf = self._get_free_cash_flow(data)
-            if fcf is None or fcf <= 0:
+            if fcf is None:
                 return False
-            
+
             return True
         except:
             return False
@@ -68,15 +68,15 @@ class DCFModel(ValuationModel):
     def _validate_inputs(self, ticker: str, data: Dict[str, Any]) -> None:
         """Validate required DCF inputs."""
         required_fields = ['cashflow', 'balance_sheet', 'info']
-        
+
         for field in required_fields:
             if field not in data or data[field] is None:
                 raise InsufficientDataError(ticker, [field])
-        
-        # Validate we can calculate free cash flow
+
+        # Validate we can calculate free cash flow (can be negative)
         fcf = self._get_free_cash_flow(data)
-        if fcf is None or fcf <= 0:
-            raise InsufficientDataError(ticker, ['positive_free_cash_flow'])
+        if fcf is None:
+            raise InsufficientDataError(ticker, ['free_cash_flow'])
     
     def _calculate_valuation(self, ticker: str, data: Dict[str, Any]) -> ValuationResult:
         """Perform DCF calculation."""

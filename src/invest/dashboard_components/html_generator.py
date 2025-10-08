@@ -102,7 +102,7 @@ class HTMLGenerator:
             <ul>
                 <li><strong>Fair Value:</strong> Estimated intrinsic value per share from each model</li>
                 <li><strong>Margin of Safety:</strong> How much upside/downside vs current price</li>
-                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases)</li>
+                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases), Multi-Horizon NN (Neural Network with 5 time horizons)</li>
                 <li><strong>Consensus:</strong> Average of all successful models</li>
             </ul>
             <p class="disclaimer">⚠️ This is for educational purposes. Not investment advice. Do your own research.</p>
@@ -202,6 +202,7 @@ class HTMLGenerator:
                         <th title="Simple Ratios - P/E, P/B, and other multiple-based valuations">Ratios</th>
                         <th title="Residual Income Model - Values excess returns above cost of equity based on book value">RIM</th>
                         <th title="Multi-Stage DCF - Models different growth phases over time">Multi-DCF</th>
+                        <th title="Multi-Horizon Neural Network - Machine learning predictions across 5 time horizons (1m, 3m, 6m, 1y, 2y)">Multi-Horizon NN</th>
                         <th title="Consensus valuation - Average of all successful model results">Consensus</th>
                     </tr>
                 </thead>
@@ -233,6 +234,9 @@ class HTMLGenerator:
         }
         
         for model_key, result in valuations.items():
+            # Skip non-dict values like current_price
+            if not isinstance(result, dict):
+                continue
             model_name = model_names.get(model_key, model_key.upper())
             if result and result.get("fair_value"):
                 working_models.append(model_name)
@@ -261,10 +265,11 @@ class HTMLGenerator:
         ratios_html = self._format_valuation_cell(valuations.get("simple_ratios", {}), current_price)
         rim_html = self._format_valuation_cell(valuations.get("rim", {}), current_price)
         multi_dcf_html = self._format_valuation_cell(valuations.get("multi_stage_dcf", {}), current_price)
-        
+        multi_horizon_nn_html = self._format_valuation_cell(valuations.get("multi_horizon_nn", {}), current_price)
+
         # Calculate consensus
         consensus_html = self._format_consensus_cell(valuations, current_price)
-        
+
         return f'''
         <tr class="stock-row {status}">
             <td><strong>{ticker}</strong></td>
@@ -276,6 +281,7 @@ class HTMLGenerator:
             <td>{ratios_html}</td>
             <td>{rim_html}</td>
             <td>{multi_dcf_html}</td>
+            <td>{multi_horizon_nn_html}</td>
             <td>{consensus_html}</td>
         </tr>'''
     
@@ -343,6 +349,9 @@ class HTMLGenerator:
         """Format the consensus cell with average valuation."""
         fair_values = []
         for val in valuations.values():
+            # Skip non-dict values like current_price
+            if not isinstance(val, dict):
+                continue
             if not val.get("failed", False):
                 fv = val.get("fair_value")
                 if fv and isinstance(fv, (int, float)) and fv > 0:
@@ -387,7 +396,10 @@ class HTMLGenerator:
             # Best margin of safety for secondary sort
             valuations = stock_data.get("valuations", {})
             margins = []
-            for val in valuations.values():
+            for key, val in valuations.items():
+                # Skip non-dict values like current_price
+                if not isinstance(val, dict):
+                    continue
                 if not val.get("failed", False):
                     margin = val.get("margin_of_safety")
                     if margin is not None:
