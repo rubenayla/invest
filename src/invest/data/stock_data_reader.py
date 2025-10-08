@@ -51,6 +51,27 @@ class StockDataReader:
         if not row:
             return None
 
+        # Parse JSON data
+        cashflow_data = json.loads(row['cashflow_json']) if row['cashflow_json'] else []
+        balance_sheet_data = json.loads(row['balance_sheet_json']) if row['balance_sheet_json'] else []
+        income_data = json.loads(row['income_json']) if row['income_json'] else []
+
+        # Extract most recent cash flow values for valuation models
+        free_cashflow = None
+        operating_cashflow = None
+        if cashflow_data and isinstance(cashflow_data, list):
+            for item in cashflow_data:
+                if isinstance(item, dict) and 'index' in item:
+                    # Get most recent year (first column after 'index')
+                    dates = [k for k in item.keys() if k != 'index']
+                    if dates:
+                        recent_date = dates[0]  # Most recent is first
+                        value = item.get(recent_date)
+                        if item['index'] == 'Free Cash Flow' and value and not (isinstance(value, float) and value != value):  # Check for NaN
+                            free_cashflow = value
+                        elif item['index'] == 'Operating Cash Flow' and value and not (isinstance(value, float) and value != value):
+                            operating_cashflow = value
+
         # Convert to dictionary matching JSON cache format
         data = {
             'ticker': row['ticker'],
@@ -64,6 +85,14 @@ class StockDataReader:
                 'currency': row['currency'],
                 'exchange': row['exchange'],
                 'country': row['country'],
+                # Critical fields for valuation models (also in financials for compatibility)
+                'sharesOutstanding': row['shares_outstanding'],
+                'totalCash': row['total_cash'],
+                'totalDebt': row['total_debt'],
+                'trailingEps': row['trailing_eps'],
+                'bookValue': row['book_value'],
+                'freeCashflow': free_cashflow,
+                'operatingCashflow': operating_cashflow,
             },
             'financials': {
                 'trailingPE': row['trailing_pe'],
@@ -92,9 +121,9 @@ class StockDataReader:
                 'avg_volume': row['avg_volume'],
                 'price_trend_30d': row['price_trend_30d'],
             },
-            'cashflow': json.loads(row['cashflow_json']) if row['cashflow_json'] else [],
-            'balance_sheet': json.loads(row['balance_sheet_json']) if row['balance_sheet_json'] else [],
-            'income': json.loads(row['income_json']) if row['income_json'] else [],
+            'cashflow': cashflow_data,
+            'balance_sheet': balance_sheet_data,
+            'income': income_data,
             'fetch_timestamp': row['fetch_timestamp'],
         }
 

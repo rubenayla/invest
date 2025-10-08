@@ -1,4 +1,3 @@
-If the model has 4 different horizons, why does the dashboard only show 1 value per company? I'd use 4 columns
 
 I just noticed we have two dashboards. The html
   file:///Users/rubenayla/repos/invest/dashboard/valuation_dashboard.html and the one that runs a
