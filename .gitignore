@@ -143,3 +143,4 @@ dashboard/multi_horizon_predictions.html
 
 # Logs directory (all log files)
 logs/
+data/stock_cache/*.json
