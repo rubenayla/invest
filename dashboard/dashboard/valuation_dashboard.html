@@ -1,0 +1,4481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Valuation Dashboard</title>
+    <style>
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            margin: 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            min-height: 100vh;
+        }
+        
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dashboard-header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        
+        .last-updated {
+            color: #95a5a6;
+            font-size: 0.9em;
+        }
+        
+        .progress-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .universe-selector select, .universe-selector input {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        
+        #updateButton {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+        
+        #updateButton:hover {
+            transform: translateY(-2px);
+        }
+        
+        .analysis-summary {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .summary-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .stock-analysis {
+            margin-bottom: 30px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stock-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        .stock-table th {
+            background: #34495e;
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .stock-table th:hover {
+            background: #2c3e50;
+        }
+        
+        .stock-table th.sorted,
+        .stock-table th.sort-asc,
+        .stock-table th.sort-desc {
+            background: #2c3e50;
+        }
+        
+        .stock-table th.sort-asc::after {
+            content: ' ↑';
+            color: #bdc3c7;
+        }
+        
+        .stock-table th.sort-desc::after {
+            content: ' ↓';
+            color: #bdc3c7;
+        }
+        
+        .stock-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        .stock-row:hover {
+            background: #f8f9fa;
+        }
+        
+        .stock-row.completed {
+            background: rgba(46, 204, 113, 0.1);
+        }
+        
+        .stock-row.analyzing {
+            background: rgba(52, 152, 219, 0.1);
+        }
+        
+        .valuation-cell {
+            text-align: center;
+        }
+        
+        .fair-value {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        
+        .margin {
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        .ratio {
+            font-size: 11px;
+            color: #6c757d;
+            font-weight: 500;
+            margin-top: 1px;
+        }
+        
+        .margin-excellent {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .margin-good {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .margin-neutral {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        
+        .margin-poor {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .consensus-cell {
+            text-align: center;
+            border-left: 3px solid #3498db;
+            padding-left: 8px;
+        }
+        
+        .model-count {
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-top: 2px;
+        }
+        
+        .dashboard-footer {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dashboard-footer ul {
+            margin: 10px 0 10px 20px;
+        }
+        
+        .disclaimer {
+            margin-top: 15px;
+            padding: 10px;
+            background: #fff3cd;
+            border-radius: 5px;
+            color: #856404;
+            font-size: 14px;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 10px; }
+            .controls { flex-direction: column; gap: 15px; }
+            .summary-grid { grid-template-columns: repeat(2, 1fr); }
+            .stock-table { font-size: 12px; }
+            .stock-table th, .stock-table td { padding: 6px 4px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="dashboard-header">
+            <h1>🔍 Investment Valuation Dashboard</h1>
+            <p class="subtitle">Multi-model stock analysis with real-time updates</p>
+            <div class="last-updated">Last Updated: <span id="lastUpdated">2025-10-07T22:21:59.331050</span></div>
+        </header>
+        
+        
+            <div class="progress-section" style="display: none;" id="progressSection">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-text">Ready to update</div>
+            </div>
+        
+        <div class="controls">
+            <div class="universe-selector">
+                <label for="universe">Select Universe:</label>
+                <select id="universe">
+                    <option value="all_universes">All Universes Combined</option>
+                    <option value="nyse">NYSE - All Listed Companies</option>
+                    <option value="sp500">S&P 500</option>
+                    <option value="russell2000">Russell 2000 Sample</option>
+                    <option value="global_mix">Global Mix (US+International)</option>
+                    <option value="small_cap_focus">Small Cap Focus</option>
+                    <option value="japan_major">Japan Major Stocks</option>
+                    <option value="uk_ftse">UK FTSE 100</option>
+                    <option value="custom">Custom Tickers</option>
+                </select>
+                <input type="text" id="customTickers" placeholder="AAPL,MSFT,GOOGL..." style="display:none;">
+            </div>
+            <button id="updateButton" onclick="updateDashboard()">🔄 Update Data</button>
+        </div>
+        
+        
+        <div class="analysis-summary">
+            <h2>📊 Analysis Summary</h2>
+            <div class="summary-grid">
+                <div class='summary-item'><strong>288</strong><br>Total Stocks</div><div class='summary-item'><strong>0</strong><br>Analyzed</div><div class='summary-item'><strong>288</strong><br>Current Price</div><div class='summary-item'><strong>288</strong><br>Dcf</div><div class='summary-item'><strong>288</strong><br>Dcf Enhanced</div><div class='summary-item'><strong>288</strong><br>Multi Stage Dcf</div><div class='summary-item'><strong>288</strong><br>Growth Dcf</div><div class='summary-item'><strong>288</strong><br>Rim</div><div class='summary-item'><strong>288</strong><br>Simple Ratios</div><div class='summary-item'><strong>288</strong><br>Reit</div><div class='summary-item'><strong>288</strong><br>Bank</div><div class='summary-item'><strong>288</strong><br>Tech</div><div class='summary-item'><strong>288</strong><br>Utility</div><div class='summary-item'><strong>288</strong><br>Ensemble</div><div class='summary-item'><strong>288</strong><br>Neural Network</div><div class='summary-item'><strong>288</strong><br>Neural Network 1Year</div><div class='summary-item'><strong>288</strong><br>Neural Network Best</div><div class='summary-item'><strong>288</strong><br>Multi Horizon Nn</div>
+            </div>
+        </div>
+        
+        <div class="stock-analysis">
+            <h2>📈 Stock Analysis Results</h2>
+            
+        <div class="table-container">
+            <table class="stock-table results-table" id="stockTable">
+                <thead>
+                    <tr>
+                        <th title="Stock ticker symbol">Stock</th>
+                        <th title="Current market price per share">Price</th>
+                        <th title="Analysis completion status">Status</th>
+                        <th title="Discounted Cash Flow - Values future cash flows discounted to present value">DCF</th>
+                        <th title="Enhanced DCF with Dividend Policy - Accounts for dividend vs reinvestment strategies">Enh. DCF</th>
+                        <th title="Growth-Adjusted DCF - Separates maintenance CapEx from growth CapEx, solving traditional DCF bias against reinvestment">Growth DCF</th>
+                        <th title="Simple Ratios - P/E, P/B, and other multiple-based valuations">Ratios</th>
+                        <th title="Residual Income Model - Values excess returns above cost of equity based on book value">RIM</th>
+                        <th title="Multi-Stage DCF - Models different growth phases over time">Multi-DCF</th>
+                        <th title="Multi-Horizon Neural Network - Machine learning predictions across 5 time horizons (1m, 3m, 6m, 1y, 2y)">Multi-Horizon NN</th>
+                        <th title="Consensus valuation - Average of all successful model results">Consensus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+        <tr class="stock-row completed">
+            <td><strong>KIM</strong></td>
+            <td>$21.37</td>
+            <td><span title="✅ Working: DCF, Enh.DCF, Multi...">✅ Complete</span></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$54.50</div>
+            <div class="margin margin-excellent">+155.1%</div>
+            <div class="ratio">2.55x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$54.50</div>
+            <div class="margin margin-excellent">+155.1%</div>
+            <div class="ratio">2.55x</div>
+        </div></td>
+            <td>-</td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$16.74</div>
+            <div class="margin margin-poor">-21.7%</div>
+            <div class="ratio">0.78x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$3.35</div>
+            <div class="margin margin-poor">-84.3%</div>
+            <div class="ratio">0.16x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$33.76</div>
+            <div class="margin margin-excellent">+58.0%</div>
+            <div class="ratio">1.58x</div>
+        </div></td>
+            <td>-</td>
+            <td>
+        <div class="consensus-cell">
+            <div class="fair-value"><strong>$27.26</strong></div>
+            <div class="margin margin-good"><strong>+27.5%</strong></div>
+            <div class="ratio"><strong>1.28x</strong></div>
+            <div class="model-count">(9 models)</div>
+        </div></td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BAX</strong></td>
+            <td>$22.90</td>
+            <td><span title="✅ Working: Enh.DCF, Ratios, UTILITY...">✅ Complete</span></td>
+            <td>-</td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$9.49</div>
+            <div class="margin margin-poor">-58.5%</div>
+            <div class="ratio">0.41x</div>
+        </div></td>
+            <td>-</td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$26.28</div>
+            <div class="margin margin-neutral">+14.8%</div>
+            <div class="ratio">1.15x</div>
+        </div></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>
+        <div class="consensus-cell">
+            <div class="fair-value"><strong>$22.04</strong></div>
+            <div class="margin margin-neutral"><strong>-3.8%</strong></div>
+            <div class="ratio"><strong>0.96x</strong></div>
+            <div class="model-count">(6 models)</div>
+        </div></td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>V</strong></td>
+            <td>$352.42</td>
+            <td><span title="✅ Working: DCF, Enh.DCF, Multi...">✅ Complete</span></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$283.91</div>
+            <div class="margin margin-poor">-19.4%</div>
+            <div class="ratio">0.81x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$284.88</div>
+            <div class="margin margin-poor">-19.2%</div>
+            <div class="ratio">0.81x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$288.12</div>
+            <div class="margin margin-poor">-18.2%</div>
+            <div class="ratio">0.82x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$88.71</div>
+            <div class="margin margin-poor">-74.8%</div>
+            <div class="ratio">0.25x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$935.06</div>
+            <div class="margin margin-excellent">+165.3%</div>
+            <div class="ratio">2.65x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$233.48</div>
+            <div class="margin margin-poor">-33.8%</div>
+            <div class="ratio">0.66x</div>
+        </div></td>
+            <td>-</td>
+            <td>
+        <div class="consensus-cell">
+            <div class="fair-value"><strong>$298.59</strong></div>
+            <div class="margin margin-poor"><strong>-15.3%</strong></div>
+            <div class="ratio"><strong>0.85x</strong></div>
+            <div class="model-count">(10 models)</div>
+        </div></td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>LLY</strong></td>
+            <td>$843.63</td>
+            <td><span title="✅ Working: DCF, Enh.DCF, Multi...">✅ Complete</span></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$20.59</div>
+            <div class="margin margin-poor">-97.6%</div>
+            <div class="ratio">0.02x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$47.75</div>
+            <div class="margin margin-poor">-94.3%</div>
+            <div class="ratio">0.06x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$812.31</div>
+            <div class="margin margin-neutral">-3.7%</div>
+            <div class="ratio">0.96x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$153.82</div>
+            <div class="margin margin-poor">-81.8%</div>
+            <div class="ratio">0.18x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$5887.27</div>
+            <div class="margin margin-excellent">+597.8%</div>
+            <div class="ratio">6.98x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$0.78</div>
+            <div class="margin margin-poor">-99.9%</div>
+            <div class="ratio">0.00x</div>
+        </div></td>
+            <td>-</td>
+            <td>
+        <div class="consensus-cell">
+            <div class="fair-value"><strong>$892.38</strong></div>
+            <div class="margin margin-neutral"><strong>+5.8%</strong></div>
+            <div class="ratio"><strong>1.06x</strong></div>
+            <div class="model-count">(10 models)</div>
+        </div></td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>NOW</strong></td>
+            <td>$904.24</td>
+            <td><span title="✅ Working: DCF, Enh.DCF, Multi...">✅ Complete</span></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$1056.14</div>
+            <div class="margin margin-good">+16.8%</div>
+            <div class="ratio">1.17x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$860.48</div>
+            <div class="margin margin-neutral">-4.8%</div>
+            <div class="ratio">0.95x</div>
+        </div></td>
+            <td>-</td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$240.15</div>
+            <div class="margin margin-poor">-73.4%</div>
+            <div class="ratio">0.27x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$82.24</div>
+            <div class="margin margin-poor">-90.9%</div>
+            <div class="ratio">0.09x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$700.92</div>
+            <div class="margin margin-poor">-22.5%</div>
+            <div class="ratio">0.78x</div>
+        </div></td>
+            <td>-</td>
+            <td>
+        <div class="consensus-cell">
+            <div class="fair-value"><strong>$678.45</strong></div>
+            <div class="margin margin-poor"><strong>-25.0%</strong></div>
+            <div class="ratio"><strong>0.75x</strong></div>
+            <div class="model-count">(9 models)</div>
+        </div></td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>XYL</strong></td>
+            <td>$148.13</td>
+            <td><span title="✅ Working: DCF, Enh.DCF, Multi...">✅ Complete</span></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$105.52</div>
+            <div class="margin margin-poor">-28.8%</div>
+            <div class="ratio">0.71x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$69.44</div>
+            <div class="margin margin-poor">-53.1%</div>
+            <div class="ratio">0.47x</div>
+        </div></td>
+            <td>-</td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$64.30</div>
+            <div class="margin margin-poor">-56.6%</div>
+            <div class="ratio">0.43x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$26.24</div>
+            <div class="margin margin-poor">-82.3%</div>
+            <div class="ratio">0.18x</div>
+        </div></td>
+            <td>
+        <div class="valuation-cell">
+            <div class="fair-value">$81.79</div>
+            <div class="margin margin-poor">-44.8%</div>
+            <div class="ratio">0.55x</div>
+        </div></td>
+            <td>-</td>
+            <td>
+        <div class="consensus-cell">
+            <div class="fair-value"><strong>$83.39</strong></div>
+            <div class="margin margin-poor"><strong>-43.7%</strong></div>
+            <div class="ratio"><strong>0.56x</strong></div>
+            <div class="model-count">(8 models)</div>
+        </div></td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AAPL</strong></td>
+            <td>$256.48</td>
+            <td><span title="❌ All models failed or unsuitable for AAPL">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MSFT</strong></td>
+            <td>$523.98</td>
+            <td><span title="❌ All models failed or unsuitable for MSFT">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>GOOGL</strong></td>
+            <td>$245.76</td>
+            <td><span title="❌ All models failed or unsuitable for GOOGL">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>GOOG</strong></td>
+            <td>$247.13</td>
+            <td><span title="❌ All models failed or unsuitable for GOOG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AMZN</strong></td>
+            <td>$221.78</td>
+            <td><span title="❌ All models failed or unsuitable for AMZN">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TSLA</strong></td>
+            <td>$433.09</td>
+            <td><span title="❌ All models failed or unsuitable for TSLA">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>META</strong></td>
+            <td>$713.08</td>
+            <td><span title="❌ All models failed or unsuitable for META">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>NVDA</strong></td>
+            <td>$185.04</td>
+            <td><span title="❌ All models failed or unsuitable for NVDA">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>NFLX</strong></td>
+            <td>$1191.06</td>
+            <td><span title="❌ All models failed or unsuitable for NFLX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ADBE</strong></td>
+            <td>$348.31</td>
+            <td><span title="❌ All models failed or unsuitable for ADBE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CRM</strong></td>
+            <td>$239.74</td>
+            <td><span title="❌ All models failed or unsuitable for CRM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ORCL</strong></td>
+            <td>$284.24</td>
+            <td><span title="❌ All models failed or unsuitable for ORCL">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>INTC</strong></td>
+            <td>$37.17</td>
+            <td><span title="❌ All models failed or unsuitable for INTC">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AMD</strong></td>
+            <td>$211.51</td>
+            <td><span title="❌ All models failed or unsuitable for AMD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>QCOM</strong></td>
+            <td>$165.46</td>
+            <td><span title="❌ All models failed or unsuitable for QCOM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TXN</strong></td>
+            <td>$177.05</td>
+            <td><span title="❌ All models failed or unsuitable for TXN">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MU</strong></td>
+            <td>$185.69</td>
+            <td><span title="❌ All models failed or unsuitable for MU">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ADI</strong></td>
+            <td>$233.75</td>
+            <td><span title="❌ All models failed or unsuitable for ADI">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MRVL</strong></td>
+            <td>$86.97</td>
+            <td><span title="❌ All models failed or unsuitable for MRVL">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>LRCX</strong></td>
+            <td>$140.35</td>
+            <td><span title="❌ All models failed or unsuitable for LRCX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>KLAC</strong></td>
+            <td>$1084.74</td>
+            <td><span title="❌ All models failed or unsuitable for KLAC">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AMAT</strong></td>
+            <td>$211.56</td>
+            <td><span title="❌ All models failed or unsuitable for AMAT">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SNPS</strong></td>
+            <td>$477.83</td>
+            <td><span title="❌ All models failed or unsuitable for SNPS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CDNS</strong></td>
+            <td>$345.48</td>
+            <td><span title="❌ All models failed or unsuitable for CDNS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>FTNT</strong></td>
+            <td>$84.92</td>
+            <td><span title="❌ All models failed or unsuitable for FTNT">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PANW</strong></td>
+            <td>$211.04</td>
+            <td><span title="❌ All models failed or unsuitable for PANW">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CRWD</strong></td>
+            <td>$484.62</td>
+            <td><span title="❌ All models failed or unsuitable for CRWD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ZS</strong></td>
+            <td>$292.75</td>
+            <td><span title="❌ All models failed or unsuitable for ZS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>OKTA</strong></td>
+            <td>$90.89</td>
+            <td><span title="❌ All models failed or unsuitable for OKTA">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DDOG</strong></td>
+            <td>$154.52</td>
+            <td><span title="❌ All models failed or unsuitable for DDOG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>JPM</strong></td>
+            <td>$307.69</td>
+            <td><span title="❌ All models failed or unsuitable for JPM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BAC</strong></td>
+            <td>$50.29</td>
+            <td><span title="❌ All models failed or unsuitable for BAC">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>WFC</strong></td>
+            <td>$81.14</td>
+            <td><span title="❌ All models failed or unsuitable for WFC">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>C</strong></td>
+            <td>$97.80</td>
+            <td><span title="❌ All models failed or unsuitable for C">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>GS</strong></td>
+            <td>$789.65</td>
+            <td><span title="❌ All models failed or unsuitable for GS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MS</strong></td>
+            <td>$155.97</td>
+            <td><span title="❌ All models failed or unsuitable for MS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>USB</strong></td>
+            <td>$47.50</td>
+            <td><span title="❌ All models failed or unsuitable for USB">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TFC</strong></td>
+            <td>$45.20</td>
+            <td><span title="❌ All models failed or unsuitable for TFC">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PNC</strong></td>
+            <td>$193.81</td>
+            <td><span title="❌ All models failed or unsuitable for PNC">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>COF</strong></td>
+            <td>$213.69</td>
+            <td><span title="❌ All models failed or unsuitable for COF">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AXP</strong></td>
+            <td>$327.97</td>
+            <td><span title="❌ All models failed or unsuitable for AXP">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BLK</strong></td>
+            <td>$1166.23</td>
+            <td><span title="❌ All models failed or unsuitable for BLK">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SCHW</strong></td>
+            <td>$94.01</td>
+            <td><span title="❌ All models failed or unsuitable for SCHW">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CME</strong></td>
+            <td>$263.60</td>
+            <td><span title="❌ All models failed or unsuitable for CME">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ICE</strong></td>
+            <td>$161.98</td>
+            <td><span title="❌ All models failed or unsuitable for ICE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SPGI</strong></td>
+            <td>$481.22</td>
+            <td><span title="❌ All models failed or unsuitable for SPGI">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MCO</strong></td>
+            <td>$488.43</td>
+            <td><span title="❌ All models failed or unsuitable for MCO">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MMC</strong></td>
+            <td>$203.84</td>
+            <td><span title="❌ All models failed or unsuitable for MMC">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AON</strong></td>
+            <td>$366.93</td>
+            <td><span title="❌ All models failed or unsuitable for AON">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AJG</strong></td>
+            <td>$309.81</td>
+            <td><span title="❌ All models failed or unsuitable for AJG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MA</strong></td>
+            <td>$579.84</td>
+            <td><span title="❌ All models failed or unsuitable for MA">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PYPL</strong></td>
+            <td>$74.61</td>
+            <td><span title="❌ All models failed or unsuitable for PYPL">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SQ</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for SQ">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>FIS</strong></td>
+            <td>$68.51</td>
+            <td><span title="❌ All models failed or unsuitable for FIS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>FISV</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for FISV">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ADP</strong></td>
+            <td>$292.94</td>
+            <td><span title="❌ All models failed or unsuitable for ADP">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>INTU</strong></td>
+            <td>$657.99</td>
+            <td><span title="❌ All models failed or unsuitable for INTU">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PAYX</strong></td>
+            <td>$127.02</td>
+            <td><span title="❌ All models failed or unsuitable for PAYX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BR</strong></td>
+            <td>$236.90</td>
+            <td><span title="❌ All models failed or unsuitable for BR">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>UNH</strong></td>
+            <td>$363.66</td>
+            <td><span title="❌ All models failed or unsuitable for UNH">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>JNJ</strong></td>
+            <td>$188.89</td>
+            <td><span title="❌ All models failed or unsuitable for JNJ">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PFE</strong></td>
+            <td>$26.27</td>
+            <td><span title="❌ All models failed or unsuitable for PFE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ABBV</strong></td>
+            <td>$232.83</td>
+            <td><span title="❌ All models failed or unsuitable for ABBV">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MRK</strong></td>
+            <td>$87.61</td>
+            <td><span title="❌ All models failed or unsuitable for MRK">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TMO</strong></td>
+            <td>$539.17</td>
+            <td><span title="❌ All models failed or unsuitable for TMO">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ABT</strong></td>
+            <td>$133.02</td>
+            <td><span title="❌ All models failed or unsuitable for ABT">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BMY</strong></td>
+            <td>$44.66</td>
+            <td><span title="❌ All models failed or unsuitable for BMY">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AMGN</strong></td>
+            <td>$295.54</td>
+            <td><span title="❌ All models failed or unsuitable for AMGN">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>GILD</strong></td>
+            <td>$116.78</td>
+            <td><span title="❌ All models failed or unsuitable for GILD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BIIB</strong></td>
+            <td>$152.21</td>
+            <td><span title="❌ All models failed or unsuitable for BIIB">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>REGN</strong></td>
+            <td>$583.24</td>
+            <td><span title="❌ All models failed or unsuitable for REGN">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>VRTX</strong></td>
+            <td>$410.28</td>
+            <td><span title="❌ All models failed or unsuitable for VRTX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ISRG</strong></td>
+            <td>$440.94</td>
+            <td><span title="❌ All models failed or unsuitable for ISRG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DHR</strong></td>
+            <td>$208.77</td>
+            <td><span title="❌ All models failed or unsuitable for DHR">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SYK</strong></td>
+            <td>$369.24</td>
+            <td><span title="❌ All models failed or unsuitable for SYK">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BSX</strong></td>
+            <td>$95.90</td>
+            <td><span title="❌ All models failed or unsuitable for BSX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MDT</strong></td>
+            <td>$98.33</td>
+            <td><span title="❌ All models failed or unsuitable for MDT">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ZBH</strong></td>
+            <td>$99.06</td>
+            <td><span title="❌ All models failed or unsuitable for ZBH">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BDX</strong></td>
+            <td>$192.53</td>
+            <td><span title="❌ All models failed or unsuitable for BDX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>EW</strong></td>
+            <td>$76.72</td>
+            <td><span title="❌ All models failed or unsuitable for EW">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DXCM</strong></td>
+            <td>$66.03</td>
+            <td><span title="❌ All models failed or unsuitable for DXCM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ILMN</strong></td>
+            <td>$96.68</td>
+            <td><span title="❌ All models failed or unsuitable for ILMN">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>INCY</strong></td>
+            <td>$87.17</td>
+            <td><span title="❌ All models failed or unsuitable for INCY">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MRNA</strong></td>
+            <td>$27.34</td>
+            <td><span title="❌ All models failed or unsuitable for MRNA">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TECH</strong></td>
+            <td>$59.19</td>
+            <td><span title="❌ All models failed or unsuitable for TECH">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ALGN</strong></td>
+            <td>$130.47</td>
+            <td><span title="❌ All models failed or unsuitable for ALGN">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>HOLX</strong></td>
+            <td>$67.73</td>
+            <td><span title="❌ All models failed or unsuitable for HOLX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>WMT</strong></td>
+            <td>$103.24</td>
+            <td><span title="❌ All models failed or unsuitable for WMT">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>HD</strong></td>
+            <td>$386.81</td>
+            <td><span title="❌ All models failed or unsuitable for HD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PG</strong></td>
+            <td>$152.54</td>
+            <td><span title="❌ All models failed or unsuitable for PG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>KO</strong></td>
+            <td>$66.79</td>
+            <td><span title="❌ All models failed or unsuitable for KO">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PEP</strong></td>
+            <td>$140.79</td>
+            <td><span title="❌ All models failed or unsuitable for PEP">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>COST</strong></td>
+            <td>$914.80</td>
+            <td><span title="❌ All models failed or unsuitable for COST">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TGT</strong></td>
+            <td>$89.29</td>
+            <td><span title="❌ All models failed or unsuitable for TGT">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>LOW</strong></td>
+            <td>$239.89</td>
+            <td><span title="❌ All models failed or unsuitable for LOW">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>NKE</strong></td>
+            <td>$68.91</td>
+            <td><span title="❌ All models failed or unsuitable for NKE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SBUX</strong></td>
+            <td>$81.29</td>
+            <td><span title="❌ All models failed or unsuitable for SBUX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MCD</strong></td>
+            <td>$296.32</td>
+            <td><span title="❌ All models failed or unsuitable for MCD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DIS</strong></td>
+            <td>$112.54</td>
+            <td><span title="❌ All models failed or unsuitable for DIS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CMCSA</strong></td>
+            <td>$30.60</td>
+            <td><span title="❌ All models failed or unsuitable for CMCSA">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>VZ</strong></td>
+            <td>$41.40</td>
+            <td><span title="❌ All models failed or unsuitable for VZ">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>T</strong></td>
+            <td>$26.16</td>
+            <td><span title="❌ All models failed or unsuitable for T">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TMUS</strong></td>
+            <td>$227.68</td>
+            <td><span title="❌ All models failed or unsuitable for TMUS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CL</strong></td>
+            <td>$79.11</td>
+            <td><span title="❌ All models failed or unsuitable for CL">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>KMB</strong></td>
+            <td>$122.33</td>
+            <td><span title="❌ All models failed or unsuitable for KMB">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>GIS</strong></td>
+            <td>$50.93</td>
+            <td><span title="❌ All models failed or unsuitable for GIS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>K</strong></td>
+            <td>$82.90</td>
+            <td><span title="❌ All models failed or unsuitable for K">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TJX</strong></td>
+            <td>$142.66</td>
+            <td><span title="❌ All models failed or unsuitable for TJX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ROST</strong></td>
+            <td>$150.34</td>
+            <td><span title="❌ All models failed or unsuitable for ROST">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ULTA</strong></td>
+            <td>$556.77</td>
+            <td><span title="❌ All models failed or unsuitable for ULTA">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>LULU</strong></td>
+            <td>$173.17</td>
+            <td><span title="❌ All models failed or unsuitable for LULU">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DECK</strong></td>
+            <td>$97.98</td>
+            <td><span title="❌ All models failed or unsuitable for DECK">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TPG</strong></td>
+            <td>$57.08</td>
+            <td><span title="❌ All models failed or unsuitable for TPG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>YUM</strong></td>
+            <td>$146.72</td>
+            <td><span title="❌ All models failed or unsuitable for YUM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CMG</strong></td>
+            <td>$40.95</td>
+            <td><span title="❌ All models failed or unsuitable for CMG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>QSR</strong></td>
+            <td>$67.26</td>
+            <td><span title="❌ All models failed or unsuitable for QSR">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DPZ</strong></td>
+            <td>$411.43</td>
+            <td><span title="❌ All models failed or unsuitable for DPZ">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>XOM</strong></td>
+            <td>$114.26</td>
+            <td><span title="❌ All models failed or unsuitable for XOM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CVX</strong></td>
+            <td>$154.90</td>
+            <td><span title="❌ All models failed or unsuitable for CVX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>COP</strong></td>
+            <td>$95.23</td>
+            <td><span title="❌ All models failed or unsuitable for COP">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>EOG</strong></td>
+            <td>$110.45</td>
+            <td><span title="❌ All models failed or unsuitable for EOG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SLB</strong></td>
+            <td>$34.41</td>
+            <td><span title="❌ All models failed or unsuitable for SLB">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PSX</strong></td>
+            <td>$132.37</td>
+            <td><span title="❌ All models failed or unsuitable for PSX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>VLO</strong></td>
+            <td>$163.17</td>
+            <td><span title="❌ All models failed or unsuitable for VLO">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MPC</strong></td>
+            <td>$191.54</td>
+            <td><span title="❌ All models failed or unsuitable for MPC">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PXD</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for PXD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>KMI</strong></td>
+            <td>$28.01</td>
+            <td><span title="❌ All models failed or unsuitable for KMI">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>OKE</strong></td>
+            <td>$72.45</td>
+            <td><span title="❌ All models failed or unsuitable for OKE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>WMB</strong></td>
+            <td>$63.97</td>
+            <td><span title="❌ All models failed or unsuitable for WMB">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>EPD</strong></td>
+            <td>$31.71</td>
+            <td><span title="❌ All models failed or unsuitable for EPD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ET</strong></td>
+            <td>$16.67</td>
+            <td><span title="❌ All models failed or unsuitable for ET">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MPLX</strong></td>
+            <td>$49.10</td>
+            <td><span title="❌ All models failed or unsuitable for MPLX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BKR</strong></td>
+            <td>$48.58</td>
+            <td><span title="❌ All models failed or unsuitable for BKR">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>HAL</strong></td>
+            <td>$24.28</td>
+            <td><span title="❌ All models failed or unsuitable for HAL">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DVN</strong></td>
+            <td>$34.99</td>
+            <td><span title="❌ All models failed or unsuitable for DVN">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>FANG</strong></td>
+            <td>$148.91</td>
+            <td><span title="❌ All models failed or unsuitable for FANG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>APA</strong></td>
+            <td>$25.08</td>
+            <td><span title="❌ All models failed or unsuitable for APA">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CAT</strong></td>
+            <td>$486.71</td>
+            <td><span title="❌ All models failed or unsuitable for CAT">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BA</strong></td>
+            <td>$221.82</td>
+            <td><span title="❌ All models failed or unsuitable for BA">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>HON</strong></td>
+            <td>$208.98</td>
+            <td><span title="❌ All models failed or unsuitable for HON">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>UNP</strong></td>
+            <td>$231.86</td>
+            <td><span title="❌ All models failed or unsuitable for UNP">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>UPS</strong></td>
+            <td>$85.98</td>
+            <td><span title="❌ All models failed or unsuitable for UPS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>FDX</strong></td>
+            <td>$242.33</td>
+            <td><span title="❌ All models failed or unsuitable for FDX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>LMT</strong></td>
+            <td>$511.07</td>
+            <td><span title="❌ All models failed or unsuitable for LMT">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>RTX</strong></td>
+            <td>$169.27</td>
+            <td><span title="❌ All models failed or unsuitable for RTX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>GE</strong></td>
+            <td>$301.74</td>
+            <td><span title="❌ All models failed or unsuitable for GE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MMM</strong></td>
+            <td>$155.33</td>
+            <td><span title="❌ All models failed or unsuitable for MMM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ITW</strong></td>
+            <td>$255.75</td>
+            <td><span title="❌ All models failed or unsuitable for ITW">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>EMR</strong></td>
+            <td>$131.49</td>
+            <td><span title="❌ All models failed or unsuitable for EMR">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ETN</strong></td>
+            <td>$370.94</td>
+            <td><span title="❌ All models failed or unsuitable for ETN">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PH</strong></td>
+            <td>$750.68</td>
+            <td><span title="❌ All models failed or unsuitable for PH">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CMI</strong></td>
+            <td>$434.17</td>
+            <td><span title="❌ All models failed or unsuitable for CMI">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>FTV</strong></td>
+            <td>$49.61</td>
+            <td><span title="❌ All models failed or unsuitable for FTV">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DOV</strong></td>
+            <td>$164.59</td>
+            <td><span title="❌ All models failed or unsuitable for DOV">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ROK</strong></td>
+            <td>$344.22</td>
+            <td><span title="❌ All models failed or unsuitable for ROK">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>IEX</strong></td>
+            <td>$165.80</td>
+            <td><span title="❌ All models failed or unsuitable for IEX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ROP</strong></td>
+            <td>$510.57</td>
+            <td><span title="❌ All models failed or unsuitable for ROP">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>FAST</strong></td>
+            <td>$47.45</td>
+            <td><span title="❌ All models failed or unsuitable for FAST">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>VRSK</strong></td>
+            <td>$246.09</td>
+            <td><span title="❌ All models failed or unsuitable for VRSK">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TDG</strong></td>
+            <td>$1284.38</td>
+            <td><span title="❌ All models failed or unsuitable for TDG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>LDOS</strong></td>
+            <td>$197.00</td>
+            <td><span title="❌ All models failed or unsuitable for LDOS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>GWW</strong></td>
+            <td>$958.82</td>
+            <td><span title="❌ All models failed or unsuitable for GWW">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>EXPD</strong></td>
+            <td>$122.28</td>
+            <td><span title="❌ All models failed or unsuitable for EXPD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CHRW</strong></td>
+            <td>$133.79</td>
+            <td><span title="❌ All models failed or unsuitable for CHRW">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>JBHT</strong></td>
+            <td>$140.00</td>
+            <td><span title="❌ All models failed or unsuitable for JBHT">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>NEE</strong></td>
+            <td>$83.21</td>
+            <td><span title="❌ All models failed or unsuitable for NEE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DUK</strong></td>
+            <td>$125.56</td>
+            <td><span title="❌ All models failed or unsuitable for DUK">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SO</strong></td>
+            <td>$96.42</td>
+            <td><span title="❌ All models failed or unsuitable for SO">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AEP</strong></td>
+            <td>$118.16</td>
+            <td><span title="❌ All models failed or unsuitable for AEP">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>D</strong></td>
+            <td>$60.87</td>
+            <td><span title="❌ All models failed or unsuitable for D">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>EXC</strong></td>
+            <td>$46.79</td>
+            <td><span title="❌ All models failed or unsuitable for EXC">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>XEL</strong></td>
+            <td>$81.85</td>
+            <td><span title="❌ All models failed or unsuitable for XEL">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SRE</strong></td>
+            <td>$94.01</td>
+            <td><span title="❌ All models failed or unsuitable for SRE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PCG</strong></td>
+            <td>$16.20</td>
+            <td><span title="❌ All models failed or unsuitable for PCG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>EIX</strong></td>
+            <td>$53.69</td>
+            <td><span title="❌ All models failed or unsuitable for EIX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PLD</strong></td>
+            <td>$115.97</td>
+            <td><span title="❌ All models failed or unsuitable for PLD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AMT</strong></td>
+            <td>$186.97</td>
+            <td><span title="❌ All models failed or unsuitable for AMT">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CCI</strong></td>
+            <td>$95.14</td>
+            <td><span title="❌ All models failed or unsuitable for CCI">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>EQIX</strong></td>
+            <td>$787.08</td>
+            <td><span title="❌ All models failed or unsuitable for EQIX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>WELL</strong></td>
+            <td>$173.00</td>
+            <td><span title="❌ All models failed or unsuitable for WELL">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AVB</strong></td>
+            <td>$187.52</td>
+            <td><span title="❌ All models failed or unsuitable for AVB">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>EQR</strong></td>
+            <td>$62.47</td>
+            <td><span title="❌ All models failed or unsuitable for EQR">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DLR</strong></td>
+            <td>$175.14</td>
+            <td><span title="❌ All models failed or unsuitable for DLR">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>O</strong></td>
+            <td>$59.63</td>
+            <td><span title="❌ All models failed or unsuitable for O">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CBRE</strong></td>
+            <td>$152.69</td>
+            <td><span title="❌ All models failed or unsuitable for CBRE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SPG</strong></td>
+            <td>$178.92</td>
+            <td><span title="❌ All models failed or unsuitable for SPG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PSA</strong></td>
+            <td>$293.53</td>
+            <td><span title="❌ All models failed or unsuitable for PSA">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>EXR</strong></td>
+            <td>$142.87</td>
+            <td><span title="❌ All models failed or unsuitable for EXR">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>VTR</strong></td>
+            <td>$68.85</td>
+            <td><span title="❌ All models failed or unsuitable for VTR">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ARE</strong></td>
+            <td>$78.09</td>
+            <td><span title="❌ All models failed or unsuitable for ARE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MAA</strong></td>
+            <td>$136.22</td>
+            <td><span title="❌ All models failed or unsuitable for MAA">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ESS</strong></td>
+            <td>$262.08</td>
+            <td><span title="❌ All models failed or unsuitable for ESS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>REG</strong></td>
+            <td>$71.48</td>
+            <td><span title="❌ All models failed or unsuitable for REG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BXP</strong></td>
+            <td>$73.77</td>
+            <td><span title="❌ All models failed or unsuitable for BXP">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>LIN</strong></td>
+            <td>$470.37</td>
+            <td><span title="❌ All models failed or unsuitable for LIN">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>APD</strong></td>
+            <td>$270.89</td>
+            <td><span title="❌ All models failed or unsuitable for APD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SHW</strong></td>
+            <td>$337.00</td>
+            <td><span title="❌ All models failed or unsuitable for SHW">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>FCX</strong></td>
+            <td>$40.69</td>
+            <td><span title="❌ All models failed or unsuitable for FCX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>NUE</strong></td>
+            <td>$135.80</td>
+            <td><span title="❌ All models failed or unsuitable for NUE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>STLD</strong></td>
+            <td>$142.73</td>
+            <td><span title="❌ All models failed or unsuitable for STLD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>VMC</strong></td>
+            <td>$300.90</td>
+            <td><span title="❌ All models failed or unsuitable for VMC">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MLM</strong></td>
+            <td>$629.61</td>
+            <td><span title="❌ All models failed or unsuitable for MLM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>NEM</strong></td>
+            <td>$86.95</td>
+            <td><span title="❌ All models failed or unsuitable for NEM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>FMC</strong></td>
+            <td>$31.12</td>
+            <td><span title="❌ All models failed or unsuitable for FMC">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>LYB</strong></td>
+            <td>$49.13</td>
+            <td><span title="❌ All models failed or unsuitable for LYB">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DOW</strong></td>
+            <td>$22.50</td>
+            <td><span title="❌ All models failed or unsuitable for DOW">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DD</strong></td>
+            <td>$78.88</td>
+            <td><span title="❌ All models failed or unsuitable for DD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PPG</strong></td>
+            <td>$101.70</td>
+            <td><span title="❌ All models failed or unsuitable for PPG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ECL</strong></td>
+            <td>$278.99</td>
+            <td><span title="❌ All models failed or unsuitable for ECL">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>IFF</strong></td>
+            <td>$61.02</td>
+            <td><span title="❌ All models failed or unsuitable for IFF">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CE</strong></td>
+            <td>$42.61</td>
+            <td><span title="❌ All models failed or unsuitable for CE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PKG</strong></td>
+            <td>$210.55</td>
+            <td><span title="❌ All models failed or unsuitable for PKG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AVY</strong></td>
+            <td>$161.37</td>
+            <td><span title="❌ All models failed or unsuitable for AVY">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SEE</strong></td>
+            <td>$35.38</td>
+            <td><span title="❌ All models failed or unsuitable for SEE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ZM</strong></td>
+            <td>$79.49</td>
+            <td><span title="❌ All models failed or unsuitable for ZM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SHOP</strong></td>
+            <td>$161.28</td>
+            <td><span title="❌ All models failed or unsuitable for SHOP">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ROKU</strong></td>
+            <td>$101.83</td>
+            <td><span title="❌ All models failed or unsuitable for ROKU">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SNOW</strong></td>
+            <td>$234.81</td>
+            <td><span title="❌ All models failed or unsuitable for SNOW">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PLTR</strong></td>
+            <td>$182.17</td>
+            <td><span title="❌ All models failed or unsuitable for PLTR">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>RBLX</strong></td>
+            <td>$124.99</td>
+            <td><span title="❌ All models failed or unsuitable for RBLX">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>U</strong></td>
+            <td>$36.40</td>
+            <td><span title="❌ All models failed or unsuitable for U">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>COIN</strong></td>
+            <td>$375.78</td>
+            <td><span title="❌ All models failed or unsuitable for COIN">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>HOOD</strong></td>
+            <td>$145.00</td>
+            <td><span title="❌ All models failed or unsuitable for HOOD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AFRM</strong></td>
+            <td>$76.65</td>
+            <td><span title="❌ All models failed or unsuitable for AFRM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SOFI</strong></td>
+            <td>$28.14</td>
+            <td><span title="❌ All models failed or unsuitable for SOFI">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>UPST</strong></td>
+            <td>$51.81</td>
+            <td><span title="❌ All models failed or unsuitable for UPST">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PTON</strong></td>
+            <td>$7.31</td>
+            <td><span title="❌ All models failed or unsuitable for PTON">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>UBER</strong></td>
+            <td>$97.80</td>
+            <td><span title="❌ All models failed or unsuitable for UBER">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>LYFT</strong></td>
+            <td>$21.18</td>
+            <td><span title="❌ All models failed or unsuitable for LYFT">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ABNB</strong></td>
+            <td>$119.85</td>
+            <td><span title="❌ All models failed or unsuitable for ABNB">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DASH</strong></td>
+            <td>$276.78</td>
+            <td><span title="❌ All models failed or unsuitable for DASH">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TWLO</strong></td>
+            <td>$107.55</td>
+            <td><span title="❌ All models failed or unsuitable for TWLO">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ZI</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for ZI">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>FSLY</strong></td>
+            <td>$8.23</td>
+            <td><span title="❌ All models failed or unsuitable for FSLY">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>NET</strong></td>
+            <td>$217.39</td>
+            <td><span title="❌ All models failed or unsuitable for NET">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ESTC</strong></td>
+            <td>$80.40</td>
+            <td><span title="❌ All models failed or unsuitable for ESTC">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>MDB</strong></td>
+            <td>$318.46</td>
+            <td><span title="❌ All models failed or unsuitable for MDB">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TEAM</strong></td>
+            <td>$150.12</td>
+            <td><span title="❌ All models failed or unsuitable for TEAM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ATLR</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for ATLR">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>WDAY</strong></td>
+            <td>$233.17</td>
+            <td><span title="❌ All models failed or unsuitable for WDAY">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>VEEV</strong></td>
+            <td>$306.22</td>
+            <td><span title="❌ All models failed or unsuitable for VEEV">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ZUO</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for ZUO">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BILL</strong></td>
+            <td>$52.77</td>
+            <td><span title="❌ All models failed or unsuitable for BILL">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TSM</strong></td>
+            <td>$294.03</td>
+            <td><span title="❌ All models failed or unsuitable for TSM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ASML</strong></td>
+            <td>$1002.30</td>
+            <td><span title="❌ All models failed or unsuitable for ASML">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>NVO</strong></td>
+            <td>$59.02</td>
+            <td><span title="❌ All models failed or unsuitable for NVO">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TM</strong></td>
+            <td>$199.89</td>
+            <td><span title="❌ All models failed or unsuitable for TM">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SAP</strong></td>
+            <td>$273.82</td>
+            <td><span title="❌ All models failed or unsuitable for SAP">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SONY</strong></td>
+            <td>$29.74</td>
+            <td><span title="❌ All models failed or unsuitable for SONY">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>UL</strong></td>
+            <td>$58.61</td>
+            <td><span title="❌ All models failed or unsuitable for UL">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>NVS</strong></td>
+            <td>$131.55</td>
+            <td><span title="❌ All models failed or unsuitable for NVS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>AZN</strong></td>
+            <td>$85.87</td>
+            <td><span title="❌ All models failed or unsuitable for AZN">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SHEL</strong></td>
+            <td>$74.91</td>
+            <td><span title="❌ All models failed or unsuitable for SHEL">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BP</strong></td>
+            <td>$34.97</td>
+            <td><span title="❌ All models failed or unsuitable for BP">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>RY</strong></td>
+            <td>$145.87</td>
+            <td><span title="❌ All models failed or unsuitable for RY">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TD</strong></td>
+            <td>$80.91</td>
+            <td><span title="❌ All models failed or unsuitable for TD">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BCS</strong></td>
+            <td>$20.44</td>
+            <td><span title="❌ All models failed or unsuitable for BCS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>DB</strong></td>
+            <td>$34.78</td>
+            <td><span title="❌ All models failed or unsuitable for DB">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ING</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for ING">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>CS</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for CS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>UBS</strong></td>
+            <td>$40.91</td>
+            <td><span title="❌ All models failed or unsuitable for UBS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>WBK</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for WBK">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BBVA</strong></td>
+            <td>$18.59</td>
+            <td><span title="❌ All models failed or unsuitable for BBVA">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ENPH</strong></td>
+            <td>$36.27</td>
+            <td><span title="❌ All models failed or unsuitable for ENPH">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SEDG</strong></td>
+            <td>$35.55</td>
+            <td><span title="❌ All models failed or unsuitable for SEDG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>FSLR</strong></td>
+            <td>$227.89</td>
+            <td><span title="❌ All models failed or unsuitable for FSLR">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>RUN</strong></td>
+            <td>$19.46</td>
+            <td><span title="❌ All models failed or unsuitable for RUN">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PLUG</strong></td>
+            <td>$3.87</td>
+            <td><span title="❌ All models failed or unsuitable for PLUG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BE</strong></td>
+            <td>$86.06</td>
+            <td><span title="❌ All models failed or unsuitable for BE">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ICLN</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for ICLN">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ARKG</strong></td>
+            <td>$30.00</td>
+            <td><span title="❌ All models failed or unsuitable for ARKG">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ARKK</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for ARKK">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>ARKW</strong></td>
+            <td>$177.44</td>
+            <td><span title="❌ All models failed or unsuitable for ARKW">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TDOC</strong></td>
+            <td>$8.37</td>
+            <td><span title="❌ All models failed or unsuitable for TDOC">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>BYND</strong></td>
+            <td>$2.18</td>
+            <td><span title="❌ All models failed or unsuitable for BYND">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>OATS</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for OATS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>GPRO</strong></td>
+            <td>$2.20</td>
+            <td><span title="❌ All models failed or unsuitable for GPRO">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>FIT</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for FIT">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>WORK</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for WORK">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>PINS</strong></td>
+            <td>$31.39</td>
+            <td><span title="❌ All models failed or unsuitable for PINS">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>SNAP</strong></td>
+            <td>$8.13</td>
+            <td><span title="❌ All models failed or unsuitable for SNAP">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+        <tr class="stock-row completed">
+            <td><strong>TWTR</strong></td>
+            <td>$0.00</td>
+            <td><span title="❌ All models failed or unsuitable for TWTR">❌ Failed</span></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+        </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+        
+        <footer class="dashboard-footer">
+            <p>💡 <strong>How to read this dashboard:</strong></p>
+            <ul>
+                <li><strong>Fair Value:</strong> Estimated intrinsic value per share from each model</li>
+                <li><strong>Margin of Safety:</strong> How much upside/downside vs current price</li>
+                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases), Multi-Horizon NN (Neural Network with 5 time horizons)</li>
+                <li><strong>Consensus:</strong> Average of all successful models</li>
+            </ul>
+            <p class="disclaimer">⚠️ This is for educational purposes. Not investment advice. Do your own research.</p>
+        </footer>
+    </div>
+    
+    <script>
+        
+        let isUpdating = false;
+        
+        // Simple, reliable table sorting
+        document.addEventListener('DOMContentLoaded', function() {
+            const table = document.getElementById('stockTable');
+            if (!table) return;
+            
+            // Add click handlers to all headers
+            const headers = table.querySelectorAll('th');
+            headers.forEach((header, columnIndex) => {
+                header.style.cursor = 'pointer';
+                header.style.userSelect = 'none';
+                header.addEventListener('click', () => sortTableByColumn(columnIndex));
+            });
+        });
+        
+        function sortTableByColumn(columnIndex) {
+            const table = document.getElementById('stockTable');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            // Determine sort direction
+            const header = table.querySelectorAll('th')[columnIndex];
+            const isAscending = !header.classList.contains('sort-asc');
+            
+            // Clear all sort classes
+            table.querySelectorAll('th').forEach(h => {
+                h.classList.remove('sort-asc', 'sort-desc');
+            });
+            
+            // Add sort class to current header
+            header.classList.add(isAscending ? 'sort-asc' : 'sort-desc');
+            
+            // Sort rows
+            rows.sort((rowA, rowB) => {
+                const cellA = rowA.cells[columnIndex];
+                const cellB = rowB.cells[columnIndex];
+                
+                if (!cellA || !cellB) return 0;
+                
+                let textA = cellA.textContent.trim();
+                let textB = cellB.textContent.trim();
+                
+                // Check for empty/placeholder values - always put these last
+                const isEmptyA = textA === '-' || textA === 'N/A' || textA === '';
+                const isEmptyB = textB === '-' || textB === 'N/A' || textB === '';
+                
+                if (isEmptyA && isEmptyB) return 0;  // Both empty, equal
+                if (isEmptyA) return 1;              // A is empty, put it last
+                if (isEmptyB) return -1;             // B is empty, put it last
+                
+                // Extract ratio values from ratio divs if they exist
+                const ratioA = cellA.querySelector('.ratio');
+                const ratioB = cellB.querySelector('.ratio');
+                const marginA = cellA.querySelector('.margin');
+                const marginB = cellB.querySelector('.margin');
+                
+                let comparison = 0;
+                
+                if (ratioA && ratioB) {
+                    // Both have ratio data - sort by expected value to market price ratio
+                    const ratioValueA = parseFloat(ratioA.textContent.replace(/[x]/g, ''));
+                    const ratioValueB = parseFloat(ratioB.textContent.replace(/[x]/g, ''));
+                    
+                    if (!isNaN(ratioValueA) && !isNaN(ratioValueB)) {
+                        comparison = ratioValueB - ratioValueA; // Higher ratios first (more undervalued)
+                    } else {
+                        // Fallback to margin percentage if ratio values are invalid
+                        const percentA = parseFloat(marginA?.textContent.replace(/[%+]/g, '') || '0');
+                        const percentB = parseFloat(marginB?.textContent.replace(/[%+]/g, '') || '0');
+                        comparison = percentB - percentA;
+                    }
+                } else if (marginA && marginB) {
+                    // Fallback to margin percentage sorting
+                    const percentA = parseFloat(marginA.textContent.replace(/[%+]/g, ''));
+                    const percentB = parseFloat(marginB.textContent.replace(/[%+]/g, ''));
+                    comparison = percentB - percentA;
+                } else if (marginA || marginB) {
+                    // One has percentage, one doesn't - percentage goes first
+                    comparison = marginA ? -1 : 1;
+                } else {
+                    // No percentages, sort by dollar values or text
+                    const numA = parseFloat(textA.replace(/[$,%]/g, ''));
+                    const numB = parseFloat(textB.replace(/[$,%]/g, ''));
+                    
+                    if (!isNaN(numA) && !isNaN(numB)) {
+                        comparison = numB - numA; // Higher values first
+                    } else {
+                        comparison = textA.localeCompare(textB);
+                    }
+                }
+                
+                return isAscending ? comparison : -comparison;
+            });
+            
+            // Rebuild table
+            rows.forEach(row => tbody.appendChild(row));
+        }
+        
+        function updateDashboard() {
+            if (isUpdating) return;
+            
+            const universe = document.getElementById('universe').value;
+            const customTickers = document.getElementById('customTickers').value;
+            const button = document.getElementById('updateButton');
+            const progressSection = document.getElementById('progressSection');
+            
+            // Show progress section and disable button
+            if (progressSection) progressSection.style.display = 'block';
+            if (button) {
+                button.disabled = true;
+                button.textContent = '🔄 Updating...';
+            }
+            isUpdating = true;
+            
+            const requestData = { universe: universe };
+            if (universe === 'custom' && customTickers) {
+                requestData.tickers = customTickers.split(',').map(t => t.trim().toUpperCase());
+            }
+            
+            fetch('/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Update started:', data);
+                startProgressPolling();
+            })
+            .catch(error => {
+                console.error('Update failed:', error);
+                resetUpdateButton();
+            });
+        }
+        
+        function startProgressPolling() {
+            const pollInterval = setInterval(() => {
+                location.reload();
+            }, 3000);
+            
+            setTimeout(() => {
+                clearInterval(pollInterval);
+                resetUpdateButton();
+            }, 600000);
+        }
+        
+        function resetUpdateButton() {
+            const button = document.getElementById('updateButton');
+            button.disabled = false;
+            button.textContent = '🔄 Update Data';
+            isUpdating = false;
+        }
+        
+        // Universe selector handling
+        document.getElementById('universe').addEventListener('change', function() {
+            const customInput = document.getElementById('customTickers');
+            if (this.value === 'custom') {
+                customInput.style.display = 'inline-block';
+                customInput.required = true;
+            } else {
+                customInput.style.display = 'none';
+                customInput.required = false;
+            }
+        });
+        
+        
+        // Auto-refresh when update is in progress
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressSection = document.getElementById('progressSection');
+            if (progressSection && progressSection.style.display !== 'none') {
+                // If progress is visible, start polling
+                setTimeout(startProgressPolling, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
