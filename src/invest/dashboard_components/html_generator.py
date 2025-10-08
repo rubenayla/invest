@@ -202,7 +202,11 @@ class HTMLGenerator:
                         <th title="Simple Ratios - P/E, P/B, and other multiple-based valuations">Ratios</th>
                         <th title="Residual Income Model - Values excess returns above cost of equity based on book value">RIM</th>
                         <th title="Multi-Stage DCF - Models different growth phases over time">Multi-DCF</th>
-                        <th title="Multi-Horizon Neural Network - Machine learning predictions across 5 time horizons (1m, 3m, 6m, 1y, 2y)">Multi-Horizon NN</th>
+                        <th title="Neural Network 1-month prediction">NN 1m</th>
+                        <th title="Neural Network 3-month prediction">NN 3m</th>
+                        <th title="Neural Network 6-month prediction">NN 6m</th>
+                        <th title="Neural Network 1-year prediction">NN 1y</th>
+                        <th title="Neural Network 2-year prediction">NN 2y</th>
                         <th title="Consensus valuation - Average of all successful model results">Consensus</th>
                     </tr>
                 </thead>
@@ -266,7 +270,11 @@ class HTMLGenerator:
         ratios_html = self._format_valuation_cell(valuations.get("simple_ratios", {}), current_price)
         rim_html = self._format_valuation_cell(valuations.get("rim", {}), current_price)
         multi_dcf_html = self._format_valuation_cell(valuations.get("multi_stage_dcf", {}), current_price)
-        multi_horizon_nn_html = self._format_valuation_cell(valuations.get("multi_horizon_nn", {}), current_price)
+
+        # Format multi-horizon NN predictions (5 separate columns)
+        nn_1m_html, nn_3m_html, nn_6m_html, nn_1y_html, nn_2y_html = self._format_multi_horizon_cells(
+            valuations.get("multi_horizon_nn", {}), current_price
+        )
 
         # Calculate consensus
         consensus_html = self._format_consensus_cell(valuations, current_price)
@@ -282,7 +290,11 @@ class HTMLGenerator:
             <td>{ratios_html}</td>
             <td>{rim_html}</td>
             <td>{multi_dcf_html}</td>
-            <td>{multi_horizon_nn_html}</td>
+            <td>{nn_1m_html}</td>
+            <td>{nn_3m_html}</td>
+            <td>{nn_6m_html}</td>
+            <td>{nn_1y_html}</td>
+            <td>{nn_2y_html}</td>
             <td>{consensus_html}</td>
         </tr>'''
     
@@ -345,7 +357,59 @@ class HTMLGenerator:
             <div class="margin {margin_class}">{margin_str}</div>
             {ratio_str}
         </div>'''
-    
+
+    def _format_multi_horizon_cells(self, nn_valuation: Dict, current_price: float) -> Tuple[str, str, str, str, str]:
+        """Format multi-horizon NN predictions into 5 separate cells (1m, 3m, 6m, 1y, 2y)."""
+        if not nn_valuation or not nn_valuation.get('suitable'):
+            empty = '-'
+            return empty, empty, empty, empty, empty
+
+        details = nn_valuation.get('details', {})
+        predictions = details.get('predictions', {})
+        fair_values = details.get('fair_values', {})
+        confidence_scores = details.get('confidence_scores', {})
+
+        horizons = [
+            ('1m', '1-month'),
+            ('3m', '3-month'),
+            ('6m', '6-month'),
+            ('1y', '1-year'),
+            ('2y', '2-year')
+        ]
+
+        cells = []
+        for horizon_key, horizon_label in horizons:
+            prediction = predictions.get(horizon_key)
+            fair_value = fair_values.get(horizon_key)
+            confidence = confidence_scores.get(horizon_key, 0)
+
+            if prediction is None or fair_value is None:
+                cells.append('-')
+                continue
+
+            # Calculate margin of safety
+            margin = (fair_value - current_price) / current_price if current_price > 0 else 0
+
+            # Format values
+            pred_str = f'{prediction:.2f}%'
+            fv_str = self._safe_format(fair_value, prefix='$')
+            margin_str = self._safe_percent(margin)
+            conf_str = f'{confidence * 100:.1f}%'
+
+            # Color code the margin
+            margin_class = self._get_margin_class(margin)
+
+            # Create tooltip with all details
+            tooltip = f'{horizon_label}: Return {pred_str}, FV {fv_str}, Margin {margin_str}, Confidence {conf_str}'
+
+            cells.append(f'''
+            <div class="nn-cell" title="{tooltip}">
+                <div class="prediction">{pred_str}</div>
+                <div class="margin {margin_class}">{margin_str}</div>
+            </div>''')
+
+        return tuple(cells)
+
     def _format_consensus_cell(self, valuations: Dict, current_price: float) -> str:
         """Format the consensus cell with average valuation."""
         fair_values = []
