@@ -115,7 +115,10 @@ class StockDataCache:
             'last_updated': datetime.now().isoformat(),
             'file_size': cache_file.stat().st_size,
             'has_financials': 'financials' in data,
-            'has_info': 'info' in data
+            'has_info': 'info' in data,
+            'has_cashflow': 'cashflow' in data,
+            'has_balance_sheet': 'balance_sheet' in data,
+            'has_income': 'income' in data
         }
         self.save_index()
     
@@ -188,7 +191,12 @@ class AsyncStockDataFetcher:
                     'totalRevenue': info.get('totalRevenue'),
                     'totalCash': info.get('totalCash'),
                     'totalDebt': info.get('totalDebt'),
-                    'sharesOutstanding': info.get('sharesOutstanding')
+                    'sharesOutstanding': info.get('sharesOutstanding'),
+                    # Per-share metrics needed by Simple Ratios model
+                    'trailingEps': info.get('trailingEps'),
+                    'bookValue': info.get('bookValue'),
+                    'revenuePerShare': info.get('revenuePerShare'),
+                    'priceToSalesTrailing12Months': info.get('priceToSalesTrailing12Months'),
                 }
             except Exception as e:
                 logger.warning(f"Could not fetch financials for {ticker}: {e}")
@@ -206,7 +214,47 @@ class AsyncStockDataFetcher:
                     }
             except Exception as e:
                 logger.warning(f"Could not fetch price data for {ticker}: {e}")
-            
+
+            # Raw financial statements (for DCF/RIM valuation models)
+            try:
+                import pandas as pd
+
+                # Cash flow statement
+                cashflow = stock.cashflow
+                if cashflow is not None and not cashflow.empty:
+                    # Reset index and convert timestamps to strings
+                    df = cashflow.reset_index()
+                    df.columns = df.columns.astype(str)  # Convert column names to strings
+                    # Convert timestamp values to strings
+                    for col in df.columns:
+                        if pd.api.types.is_datetime64_any_dtype(df[col]):
+                            df[col] = df[col].astype(str)
+                    data['cashflow'] = df.to_dict(orient='records')
+
+                # Balance sheet
+                balance_sheet = stock.balance_sheet
+                if balance_sheet is not None and not balance_sheet.empty:
+                    df = balance_sheet.reset_index()
+                    df.columns = df.columns.astype(str)
+                    for col in df.columns:
+                        if pd.api.types.is_datetime64_any_dtype(df[col]):
+                            df[col] = df[col].astype(str)
+                    data['balance_sheet'] = df.to_dict(orient='records')
+
+                # Income statement
+                income_stmt = stock.income_stmt
+                if income_stmt is not None and not income_stmt.empty:
+                    df = income_stmt.reset_index()
+                    df.columns = df.columns.astype(str)
+                    for col in df.columns:
+                        if pd.api.types.is_datetime64_any_dtype(df[col]):
+                            df[col] = df[col].astype(str)
+                    data['income'] = df.to_dict(orient='records')
+
+                logger.info(f"Fetched financial statements for {ticker}")
+            except Exception as e:
+                logger.warning(f"Could not fetch financial statements for {ticker}: {e}")
+
             # Cache the data
             self.cache.save_stock_data(ticker, data)
             
