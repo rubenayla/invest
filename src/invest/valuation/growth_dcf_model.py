@@ -286,18 +286,18 @@ class GrowthAdjustedDCFModel(DCFModel):
     
     def _get_revenue(self, data: Dict[str, Any]) -> Optional[float]:
         """Get total revenue."""
-        financials = data.get('financials')
-        if financials is None or financials.empty:
+        income = data.get('income')
+        if income is None or income.empty:
             return None
-        
+
         revenue_fields = ['Total Revenue', 'Revenue']
-        
+
         for field in revenue_fields:
-            if field in financials.index:
-                revenue = self._get_most_recent_value(financials.loc[field])
+            if field in income.index:
+                revenue = self._get_most_recent_value(income.loc[field])
                 if revenue and revenue > 0:
                     return revenue
-        
+
         return None
     
     def _get_sector(self, data: Dict[str, Any]) -> str:
@@ -309,18 +309,18 @@ class GrowthAdjustedDCFModel(DCFModel):
     def _estimate_historical_minimum_capex(self, data: Dict[str, Any]) -> Optional[float]:
         """Estimate maintenance CapEx using historical minimum approach."""
         cashflow = data.get('cashflow')
-        financials = data.get('financials')
-        
-        if cashflow is None or cashflow.empty or financials is None or financials.empty:
+        income = data.get('income')
+
+        if cashflow is None or cashflow.empty or income is None or income.empty:
             return None
-        
+
         try:
             # Get historical CapEx and revenue
-            if 'Capital Expenditures' not in cashflow.index or 'Total Revenue' not in financials.index:
+            if 'Capital Expenditures' not in cashflow.index or 'Total Revenue' not in income.index:
                 return None
-            
+
             capex_series = cashflow.loc['Capital Expenditures'].dropna()
-            revenue_series = financials.loc['Total Revenue'].dropna()
+            revenue_series = income.loc['Total Revenue'].dropna()
             
             if len(capex_series) < 3 or len(revenue_series) < 3:
                 return None
@@ -376,16 +376,16 @@ class GrowthAdjustedDCFModel(DCFModel):
         """
         try:
             # Get operating income (EBIT)
-            financials = data.get('financials')
-            if financials is None or financials.empty:
+            income = data.get('income')
+            if income is None or income.empty:
                 return None
-            
+
             operating_income = None
             income_fields = ['Operating Income', 'EBIT', 'Operating Revenue']
-            
+
             for field in income_fields:
-                if field in financials.index:
-                    operating_income = self._get_most_recent_value(financials.loc[field])
+                if field in income.index:
+                    operating_income = self._get_most_recent_value(income.loc[field])
                     if operating_income:
                         break
             

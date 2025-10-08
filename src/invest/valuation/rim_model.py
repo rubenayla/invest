@@ -25,11 +25,11 @@ class RIMModel(ValuationModel):
         try:
             # Check for required financial data
             balance_sheet = data.get('balance_sheet')
-            financials = data.get('financials')
-            
+            income = data.get('income')
+
             if balance_sheet is None or balance_sheet.empty:
                 return False
-            if financials is None or financials.empty:
+            if income is None or income.empty:
                 return False
             
             # Check for positive book equity
@@ -49,8 +49,8 @@ class RIMModel(ValuationModel):
     
     def _validate_inputs(self, ticker: str, data: Dict[str, Any]) -> None:
         """Validate required RIM inputs."""
-        required_fields = ['balance_sheet', 'financials', 'info']
-        
+        required_fields = ['balance_sheet', 'income', 'info']
+
         for field in required_fields:
             if field not in data or data[field] is None:
                 raise InsufficientDataError(ticker, [field])
@@ -174,24 +174,24 @@ class RIMModel(ValuationModel):
         return None
     
     def _get_net_income(self, data: Dict[str, Any]) -> Optional[float]:
-        """Get net income from financials."""
-        financials = data.get('financials')
-        if financials is None or financials.empty:
+        """Get net income from income statement."""
+        income = data.get('income')
+        if income is None or income.empty:
             return None
-        
+
         # Try different field names
         income_fields = [
             'Net Income',
             'Net Income Common Stockholders',
             'Net Income Continuous Operations'
         ]
-        
+
         for field in income_fields:
-            if field in financials.index:
-                income = self._get_most_recent_value(financials.loc[field])
-                if income is not None:
-                    return income
-        
+            if field in income.index:
+                net_income = self._get_most_recent_value(income.loc[field])
+                if net_income is not None:
+                    return net_income
+
         return None
     
     def _calculate_roe(self, data: Dict[str, Any]) -> Optional[float]:
