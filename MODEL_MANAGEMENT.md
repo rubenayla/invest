@@ -1,21 +1,23 @@
-# Model Management Quick Reference
+# Neural Network Model Management
 
-## Model Files
+Quick reference for working with the production LSTM/Transformer model.
 
-All neural network models are saved as `.pt` files (PyTorch format):
+## Current Production Model
 
-```
-*.pt files contain:
-├── Model weights (neural network parameters)
-├── Feature scaler (normalization parameters)
-├── Feature names (for consistency)
-└── Metadata (time horizon, etc.)
-```
+**File:** `neural_network/training/best_model.pt` (11MB)
 
-**Current models:**
-- `trained_nn_2year_comprehensive.pt` - Trained on 2004-2024 data (4,620 samples)
-- Size: ~225KB each
-- Portable across platforms (Mac, Linux, Windows)
+**Performance:**
+- MAE: 23.05%
+- Correlation: 0.4421
+- Hit Rate: 78.64%
+- Training: 2,567 samples (2006-2020)
+- Test: 199 samples (2022)
+
+**Model format:** PyTorch `.pt` file containing:
+- Model state dict (LSTM/Transformer weights)
+- Architecture: 11 temporal features, 22 static features
+- Target: 1-year forward returns
+- Portable across Mac, Linux, Windows
 
 ---
 
@@ -25,22 +27,22 @@ All neural network models are saved as `.pt` files (PyTorch format):
 
 ```python
 from pathlib import Path
-from src.invest.valuation.neural_network_model import NeuralNetworkValuationModel
+import torch
+from invest.valuation.lstm_transformer_model import LSTMTransformerNetwork
 
 # Load model
-model = NeuralNetworkValuationModel(
-    time_horizon='2year',
-    model_path=Path('trained_nn_2year_comprehensive.pt')
-)
+model_path = Path('neural_network/training/best_model.pt')
+checkpoint = torch.load(model_path, map_location='cpu')
 
-# Use for prediction
-import yfinance as yf
-stock = yf.Ticker('AAPL')
-data = {'info': stock.info}
+model = LSTMTransformerNetwork(
+    temporal_features=11,
+    static_features=22
+).to('cpu')
 
-result = model.calculate_fair_value('AAPL', data)
-print(f'Fair value: ${result.fair_value:.2f}')
-print(f'Confidence: {result.confidence}')
+model.load_state_dict(checkpoint)
+model.eval()
+
+# Make predictions (see SINGLE_HORIZON_NN.md for full usage)
 ```
 
 ### Model Registry Integration
@@ -62,90 +64,82 @@ model = registry.get_model('neural_network')
 
 ---
 
-## Training on Other Machines
+## Training Workflow
 
-### 1. Package for Transfer
+All training is done locally on Mac - no need for GPU or cloud instances.
 
-```bash
-./scripts/package_for_training.sh
-# Creates: invest_training_package.tar.gz (~2MB)
-```
-
-### 2. Transfer to Training Machine
+### 1. Validate Data Quality
 
 ```bash
-# Via SCP
-scp invest_training_package.tar.gz user@gpu-server:~/
-
-# Via cloud storage
-aws s3 cp invest_training_package.tar.gz s3://my-bucket/
+cd neural_network/training
+uv run python validate_data_quality.py
 ```
 
-### 3. On Training Machine
+Expected output:
+```
+✅ All critical checks passed!
+   No issues found.
+```
+
+### 2. (Optional) Refresh Data
 
 ```bash
-# Extract
-tar -xzf invest_training_package.tar.gz
-cd invest_training_package
-
-# Setup
-curl -LsSf https://astral.sh/uv/install.sh | sh
-uv sync --all-groups
-
-# Train
-uv run python neural_network/training/comprehensive_neural_training.py
-
-# Package models
-tar -czf trained_models.tar.gz *.pt *.log
+cd neural_network/training
+uv run python create_multi_horizon_cache.py
 ```
 
-### 4. Transfer Back to Mac
+This fetches fresh fundamental data from yfinance and populates:
+- `data/stock_data.db` (1.4GB SQLite)
+- 3,534+ snapshots from 100+ stocks (2006-present)
+- Forward returns for all horizons
+
+**Duration:** ~30 minutes for full refresh
+
+### 3. Train Model
 
 ```bash
-# Download models
-scp user@gpu-server:~/invest_training_package/trained_models.tar.gz .
-
-# Extract
-tar -xzf trained_models.tar.gz
-
-# Verify
-ls -lh *.pt
+cd neural_network/training
+uv run python train_single_horizon.py --epochs 100 --batch-size 32 --learning-rate 0.001
 ```
+
+Output:
+- `best_model.pt` - Saved automatically when validation loss improves
+- Early stopping typically at epoch 10-15
+
+**Training time:** ~10 seconds on M1 Mac
+
+### 4. Evaluate
+
+```bash
+cd neural_network/training
+uv run python evaluate_model.py
+```
+
+Generates:
+- `evaluation_results/evaluation_report.txt` - Performance summary
+- `evaluation_results/detailed_results.csv` - Per-stock predictions
 
 ---
 
 ## Model Comparison
 
-### Compare Old vs New
+### Compare Phases
 
-```python
-from pathlib import Path
-from src.invest.valuation.neural_network_model import NeuralNetworkValuationModel
+**Phase 1 vs Phase 2 Performance:**
 
-# Load both models
-old_model = NeuralNetworkValuationModel(
-    model_path=Path('trained_nn_2year.pt')  # Old model
-)
-new_model = NeuralNetworkValuationModel(
-    model_path=Path('trained_nn_2year_comprehensive.pt')  # New model
-)
+| Metric | Phase 1 (Incomplete Data) | Phase 2 (Production) | Improvement |
+|--------|--------------------------|----------------------|-------------|
+| MAE | 24.90% | 23.05% | 1.85% better |
+| Correlation | 0.0056 | 0.4421 | **78x better** |
+| Hit Rate | 59.07% | 78.64% | +19.57% |
+| Samples | ~700 | 2,567 training | 3.7x more data |
 
-# Compare predictions
-import yfinance as yf
-tickers = ['AAPL', 'MSFT', 'GOOGL']
+**What changed:**
+- Fixed 0% → 92-100% feature coverage
+- Proper chronological split (no data leakage)
+- Fresh data through 2023
 
-for ticker in tickers:
-    stock = yf.Ticker(ticker)
-    data = {'info': stock.info}
-
-    old_result = old_model.calculate_fair_value(ticker, data)
-    new_result = new_model.calculate_fair_value(ticker, data)
-
-    print(f'{ticker}:')
-    print(f'  Old: ${old_result.fair_value:.2f} ({old_result.confidence})')
-    print(f'  New: ${new_result.fair_value:.2f} ({new_result.confidence})')
-    print(f'  Diff: {abs(new_result.fair_value - old_result.fair_value):.2f}')
-```
+See `stuff.md` for the full development journey.
 
 ---
 

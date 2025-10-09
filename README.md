@@ -38,32 +38,25 @@ uv run systematic-invest --list-configs
 uv run systematic-invest --save-csv --save-json --output results/
 ```
 
-### Interactive Dashboard
+### Static HTML Dashboard
 
-Multiple ways to access your investment analysis dashboard:
+View your investment analysis in a clean, fast static HTML dashboard:
 
 ```bash
-# Easy launcher with multiple options
-uv run python scripts/run_dashboard.py
+# Generate/update the dashboard
+uv run python scripts/regenerate_dashboard_html.py
 
-# OR start server directly (opens browser automatically)
-uv run python scripts/dashboard_server.py
+# Then open in browser
+open dashboard/valuation_dashboard.html
 ```
 
-**Dashboard Access Options:**
-1. **📖 View Existing Dashboard** - Instant access to current analysis
-2. **🔄 Update & View Dashboard** - Fresh analysis then display (2-3 minutes)
-3. **🌐 Live Dashboard Server** - Interactive server on localhost:8080 
-4. **⚙️ Custom Config Dashboard** - Generate dashboard with any YAML configuration
-
 **Dashboard Features:**
-- 📊 **Multiple Valuation Models**: DCF, Enhanced DCF, Growth DCF, RIM, Multi-DCF, Ratios, Consensus
-- 🎯 **Interactive Sorting**: Click any column header to sort (server-side or client-side)
-- 🔄 **Live Updates**: Click "Update Data" to refresh with latest market data 
-- 🌐 **Universe Selection**: Choose from S&P 500, International, Japan, Growth, Tech, Watchlist
-- 💡 **Smart Data Loading**: Uses existing analysis + config files (no hardcoded tickers)
+- 📊 **Multiple Valuation Models**: DCF, Enhanced DCF, Growth DCF, RIM, Simple Ratios, Neural Network predictions
+- 🎯 **Interactive Sorting**: Click any column header to sort stocks
 - 📈 **Real-Time Prices**: Current market prices with margin of safety calculations
-- 🎯 **Professional UI**: Clean, responsive design with auto-refresh during updates
+- 🌐 **Multiple Universes**: S&P 500, Tech, Growth, International stocks
+- 🎯 **Professional UI**: Clean, responsive design - no server needed!
+- ⚡ **Fast Loading**: Static HTML loads instantly
 
 ### Full S&P 500 Analysis
 
@@ -137,11 +130,23 @@ Multiple output formats for different use cases:
 ## Key Features
 
 - **Systematic & Objective** - Eliminates human bias through consistent methodology
-- **Interactive Dashboard** - Live web interface with one-click updates and real-time valuations
+- **AI-Powered Predictions** - LSTM/Transformer neural network with 78.64% hit rate and 44.2% correlation
+- **Static HTML Dashboard** - Fast, clean interface with real-time valuations - no server needed
 - **Configurable** - Customize all screening criteria via YAML files
 - **Comprehensive** - Analyzes quality, value, growth, and risk dimensions
 - **Scalable** - Handle individual stocks or entire market indices
 - **Professional Output** - Multiple export formats with detailed reporting
+
+### Neural Network Model
+
+The framework includes a production-ready LSTM/Transformer hybrid model for stock predictions:
+
+- **Performance**: 78.64% directional accuracy, 44.2% correlation, 23.05% MAE
+- **Training Data**: 3,534 snapshots (2006-2023), 92-100% feature coverage
+- **Architecture**: Single-horizon (1-year) predictions with Monte Carlo Dropout for confidence
+- **Database**: 1.4GB SQLite with complete fundamental data
+
+For details, see `SINGLE_HORIZON_NN.md` (neural network documentation) and `stuff.md` (development journey).
 
 ## Usage Examples
 

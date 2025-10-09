@@ -53,8 +53,7 @@ analyze_stock(ticker="AAPL", models=["dcf", "neural_network_best"], use_cache=Tr
 - `growth_dcf` - Separates maintenance vs growth CapEx
 - `simple_ratios` - Market multiples (P/E, P/B, etc.)
 - `rim` - Residual Income Model
-- `neural_network_best` - Best AI model (2-year, 51.8% correlation)
-- `neural_network_consensus` - Weighted average of all AI models
+- `single_horizon_nn` - LSTM/Transformer (1-year, 44.2% correlation, 78.64% hit rate)
 - `ensemble` - Combines multiple traditional models
 
 **Example Response:**
@@ -69,47 +68,47 @@ Company Overview:
 • 52W Range: $164.08 - $250.34
 
 Valuation Results: (3 models)
-Model               Fair Value   Upside     Recommendation 
+Model               Fair Value   Upside     Recommendation
 -----------------------------------------------------------------
-AI Best (2Y)        $300.22     +25.9%     Strong Buy 🔥
+LSTM/Transformer    $290.15     +21.7%     Strong Buy 🔥
 Enhanced DCF        $275.50     +15.5%     Buy 📈
 Standard DCF        $265.80     +11.4%     Buy 📈
 
 Consensus Analysis:
-• Average Fair Value: $280.51
-• Consensus Margin: +17.6%
+• Average Fair Value: $277.15
+• Consensus Margin: +16.2%
 • Overall Recommendation: Strong Buy 🔥
 ```
 
-### 2. `neural_predict`  
-**AI-powered stock predictions with confidence metrics**
+### 2. `neural_predict`
+**AI-powered stock predictions with LSTM/Transformer model**
 
 ```
-neural_predict(ticker="TSLA", timeframe="2year", include_all_timeframes=False)
+neural_predict(ticker="TSLA")
 ```
 
 **Parameters:**
 - `ticker`: Stock symbol
-- `timeframe`: Time horizon ("1month", "3month", "6month", "1year", "18month", "2year", "3year")
-- `include_all_timeframes`: Show all neural network models (default: False)
 
 **Example Response:**
 ```
 🧠 Neural Network Prediction for TSLA
 
-Model: 2year (24 months)
-Description: 2-year prediction horizon - longer-term value realization
-Best for: Long-term value investing, BEST CORRELATION (0.518)
+Model: Single-Horizon LSTM/Transformer
+Horizon: 1 year
+Best for: Medium-term value investing
 
 Performance Metrics:
-• Correlation: 0.518
-• Hit Rate: 100%
-• Validation MAE: 26.2
+• Correlation: 0.442
+• Hit Rate: 78.64%
+• MAE: 23.05%
+• 95% CI Coverage: 80.34%
 
 Prediction:
 • Current Price: $334.09
-• Fair Value: $386.91
+• Fair Value (1Y): $386.91
 • Margin of Safety: +15.8%
+• Confidence: High (complete fundamental data)
 
 📈 Buy - Moderate upside
 ```
@@ -128,16 +127,16 @@ Current Price: $505.35
 
 Model               Fair Value   Upside/Downside   Confidence
 -----------------------------------------------------------------
-AI Best (2Y)        $648.08     +28.2% 🔥         High      
-Growth DCF          $610.50     +20.8% 📈         Medium    
-Enhanced DCF        $575.20     +13.8% 📈         Medium    
-Standard DCF        $520.10     +2.9% ➡️          Medium    
-Market Ratios       $495.30     -2.0% ➡️          Low       
+LSTM/Transformer    $612.40     +21.2% 🔥         High
+Growth DCF          $610.50     +20.8% 📈         Medium
+Enhanced DCF        $575.20     +13.8% 📈         Medium
+Standard DCF        $520.10     +2.9% ➡️          Medium
+Market Ratios       $495.30     -2.0% ➡️          Low
 
 Summary:
-• Average Fair Value: $569.84
-• Range: $495.30 - $648.08
-• Consensus vs Current: +12.7%
+• Average Fair Value: $562.70
+• Range: $495.30 - $612.40
+• Consensus vs Current: +11.3%
 ```
 
 ### 4. `screen_stocks`
@@ -209,18 +208,20 @@ Diversification Score: 45/100
 **Learn about available valuation models**
 
 ```
-get_model_info(model_name="neural_network_best")
+get_model_info(model_name="single_horizon_nn")
 ```
 
 **Example Response:**
 ```
-📋 Neural Network Best
+📋 Single-Horizon LSTM/Transformer
 
-Description: AI model trained on 2-year horizons with 51.8% correlation and 100% hit rate
-Suitable for: Long-term value investing, structural business analysis
-Time horizon: 24 months
+Description: AI model with 44.2% correlation and 78.64% directional accuracy
+Suitable for: Medium-term value investing, pattern recognition across sectors
+Time horizon: 1 year
 Complexity: High
-Data requirements: 60+ engineered features from financial statements, market data
+Data requirements: Historical sequences of fundamentals (11 temporal + 22 static features)
+Performance: 78x better correlation than naive models
+Architecture: LSTM + Transformer attention with Monte Carlo Dropout
 ```
 
 ## 💡 Usage Examples
@@ -317,14 +318,18 @@ uv run python mcp_server_v2.py
 
 ## 📊 Model Performance
 
-### Neural Network Models
-- **2-Year Model**: 51.8% correlation, 100% hit rate (BEST)
-- **3-Month Model**: 25.0% correlation, 50% hit rate  
-- **1-Year Model**: 1.1% correlation, 100% hit rate
+### Neural Network Model
+- **Single-Horizon LSTM/Transformer**: 44.2% correlation, 78.64% hit rate
+  - Horizon: 1 year
+  - Architecture: LSTM + Transformer attention
+  - Uncertainty: Monte Carlo Dropout (100 passes)
+  - Best sectors: Real Estate (86.9% corr), Consumer Defensive (67.5% corr), Tech (45.9% corr)
 
 ### Traditional Models
-- **DCF Models**: Best for cash flow positive companies
-- **RIM Model**: Excellent for financial companies
-- **Market Ratios**: Fast screening and cross-validation
+- **DCF Models**: Best for cash flow positive companies (~65-70% hit rate)
+- **RIM Model**: Excellent for financial companies (~65% hit rate)
+- **Market Ratios**: Fast screening and cross-validation (~60% hit rate)
+
+**Neural network advantage:** Outperforms traditional models with pattern recognition, non-linear relationships, and uncertainty quantification.
 
 This MCP server transforms your investment analysis system into a conversational AI tool, enabling sophisticated analysis through natural language interactions.

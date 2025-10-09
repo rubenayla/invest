@@ -35,7 +35,7 @@ logger = logging.getLogger(__name__)
 class MultiHorizonCacheGenerator:
     """Generate training cache with real multi-horizon forward returns."""
 
-    def __init__(self, db_path: str = 'stock_data.db'):
+    def __init__(self, db_path: str = '../../data/stock_data.db'):
         self.db_path = Path(__file__).parent / db_path
         self.feature_engineer = FeatureEngineer()
 
@@ -294,18 +294,31 @@ class MultiHorizonCacheGenerator:
                 ))
                 asset_id = cursor.lastrowid
 
-            # Extract features
+            # Extract features for ML (still needed for feature engineering consistency)
             features = self.feature_engineer.extract_features(data)
 
             # Get snapshot date
             history = data['history']
             snapshot_date = history.index[-1].strftime('%Y-%m-%d')
 
-            # Insert snapshot
+            # Extract RAW values from info dict for database storage (not processed features!)
+            macro = data.get('macro', {})
+
+            # Helper to safely get numeric values with warnings
+            missing_fields = []
+            def safe_get(d, key, default=None, critical=False):
+                val = d.get(key, default)
+                if val is None:
+                    if critical:
+                        missing_fields.append(key)
+                    return default
+                return val
+
+            # Insert snapshot (current_price removed - not in schema)
             cursor.execute('''
                 INSERT INTO snapshots (
                     asset_id, snapshot_date,
-                    current_price, volume, market_cap, shares_outstanding,
+                    volume, market_cap, shares_outstanding,
                     pe_ratio, pb_ratio, ps_ratio, peg_ratio,
                     price_to_book, price_to_sales, enterprise_to_revenue, enterprise_to_ebitda,
                     profit_margins, operating_margins, gross_margins, ebitda_margins,
@@ -319,35 +332,39 @@ class MultiHorizonCacheGenerator:
                     fifty_day_average, two_hundred_day_average,
                     fifty_two_week_high, fifty_two_week_low,
                     vix, treasury_10y, dollar_index, oil_price, gold_price
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ''', (
                 asset_id, snapshot_date,
-                features.get('current_price'), features.get('volume'),
-                features.get('market_cap'), features.get('shares_outstanding'),
-                features.get('pe_ratio'), features.get('pb_ratio'),
-                features.get('ps_ratio'), features.get('peg_ratio'),
-                features.get('price_to_book'), features.get('price_to_sales'),
-                features.get('enterprise_to_revenue'), features.get('enterprise_to_ebitda'),
-                features.get('profit_margins'), features.get('operating_margins'),
-                features.get('gross_margins'), features.get('ebitda_margins'),
-                features.get('return_on_assets'), features.get('return_on_equity'),
-                features.get('revenue_growth'), features.get('earnings_growth'),
-                features.get('earnings_quarterly_growth'), features.get('revenue_per_share'),
-                features.get('total_cash'), features.get('total_debt'),
-                features.get('debt_to_equity'), features.get('current_ratio'),
-                features.get('quick_ratio'), features.get('operating_cashflow'),
-                features.get('free_cashflow'), features.get('trailing_eps'),
-                features.get('forward_eps'), features.get('book_value'),
-                features.get('dividend_rate'), features.get('dividend_yield'),
-                features.get('payout_ratio'), features.get('price_change_pct'),
-                features.get('volatility'), features.get('beta'),
-                features.get('fifty_day_average'), features.get('two_hundred_day_average'),
-                features.get('fifty_two_week_high'), features.get('fifty_two_week_low'),
-                features.get('vix'), features.get('treasury_10y'),
-                features.get('dollar_index'), features.get('oil_price'),
-                features.get('gold_price')
+                safe_get(info, 'volume'),
+                safe_get(info, 'marketCap', critical=True), safe_get(info, 'sharesOutstanding'),
+                safe_get(info, 'trailingPE'), safe_get(info, 'priceToBook', critical=True),
+                safe_get(info, 'priceToSalesTrailing12Months'), safe_get(info, 'pegRatio'),
+                safe_get(info, 'priceToBook'), safe_get(info, 'priceToSalesTrailing12Months'),
+                safe_get(info, 'enterpriseToRevenue'), safe_get(info, 'enterpriseToEbitda'),
+                safe_get(info, 'profitMargins', critical=True), safe_get(info, 'operatingMargins', critical=True),
+                safe_get(info, 'grossMargins'), safe_get(info, 'ebitdaMargins'),
+                safe_get(info, 'returnOnAssets'), safe_get(info, 'returnOnEquity', critical=True),
+                safe_get(info, 'revenueGrowth'), safe_get(info, 'earningsGrowth'),
+                safe_get(info, 'earningsQuarterlyGrowth'), safe_get(info, 'revenuePerShare'),
+                safe_get(info, 'totalCash'), safe_get(info, 'totalDebt'),
+                safe_get(info, 'debtToEquity'), safe_get(info, 'currentRatio'),
+                safe_get(info, 'quickRatio'), safe_get(info, 'operatingCashflow'),
+                safe_get(info, 'freeCashflow', critical=True), safe_get(info, 'trailingEps'),
+                safe_get(info, 'forwardEps'), safe_get(info, 'bookValue'),
+                safe_get(info, 'dividendRate'), safe_get(info, 'dividendYield'),
+                safe_get(info, 'payoutRatio'), features.get('return_1m', 0.0),
+                features.get('volatility_1y', 0.2), safe_get(info, 'beta', 1.0),
+                safe_get(info, 'fiftyDayAverage'), safe_get(info, 'twoHundredDayAverage'),
+                safe_get(info, 'fiftyTwoWeekHigh'), safe_get(info, 'fiftyTwoWeekLow'),
+                macro.get('vix'), macro.get('treasury_10y'),
+                macro.get('dollar_index'), macro.get('oil_price'),
+                macro.get('gold_price')
             ))
             snapshot_id = cursor.lastrowid
+
+            # Warn about missing critical fields
+            if missing_fields:
+                logger.warning(f'{ticker} ({snapshot_date}): Missing critical fields: {", ".join(missing_fields)}')
 
             # Insert price history
             for idx, date in enumerate(history.index):
@@ -456,4 +473,6 @@ class MultiHorizonCacheGenerator:
 
 if __name__ == '__main__':
     generator = MultiHorizonCacheGenerator()
-    generator.generate_cache(target_samples=10000, start_year=2004, end_year=2024)
+    # Use current year to fetch most recent data
+    current_year = datetime.now().year
+    generator.generate_cache(target_samples=10000, start_year=2004, end_year=current_year)

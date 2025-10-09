@@ -84,8 +84,8 @@ class StockSnapshotDataset(Dataset):
 class SingleHorizonTrainer:
     """Trainer for single-horizon model."""
 
-    def __init__(self, db_path: str = 'data/stock_data.db'):
-        self.db_path = Path(db_path)
+    def __init__(self, db_path: str = '../../data/stock_data.db'):
+        self.db_path = Path(__file__).parent / db_path
         self.model = None
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -179,7 +179,8 @@ class SingleHorizonTrainer:
                 if not result or result[0] is None:
                     continue
 
-                forward_return = float(result[0]) / 100.0  # Convert % to decimal
+                # Database already stores as decimal (2.05 = 205% gain)
+                forward_return = float(result[0])
 
                 # Extract temporal features (sequence of snapshots)
                 temporal_features = self._extract_temporal_from_sequence(sequence)
@@ -315,54 +316,48 @@ class SingleHorizonTrainer:
     def _stratified_split(
         self,
         samples: List[dict],
-        train_ratio: float = 0.7,
-        val_ratio: float = 0.15
+        train_end_year: int = 2020,
+        val_year: int = 2021,
+        test_year: int = 2022
     ) -> Tuple[List, List, List]:
         """
-        Split data by decade and sector for proper evaluation.
+        Split data chronologically to prevent data leakage.
 
         Parameters
         ----------
         samples : List[dict]
             All samples with metadata
-        train_ratio : float
-            Proportion for training
-        val_ratio : float
-            Proportion for validation
+        train_end_year : int
+            Last year to include in training (default: 2020)
+        val_year : int
+            Year to use for validation (default: 2021)
+        test_year : int
+            Year to use for testing (default: 2022)
 
         Returns
         -------
         Tuple[List, List, List]
             (train, val, test) samples as list of (temporal, static, target) tuples
         """
-        # Extract decade from date
+        train_samples = []
+        val_samples = []
+        test_samples = []
+
         for sample in samples:
             year = int(sample['date'][:4])
-            decade = (year // 10) * 10
-            sample['decade'] = decade
 
-        # Create stratification key
-        for sample in samples:
-            sample['strata'] = f"{sample['decade']}_{sample['sector']}"
+            if year <= train_end_year:
+                train_samples.append(sample)
+            elif year == val_year:
+                val_samples.append(sample)
+            elif year == test_year:
+                test_samples.append(sample)
+            # Samples after test_year are ignored (no forward returns yet)
 
-        # Simple random split (could be improved with proper stratification)
-        indices = np.arange(len(samples))
-        train_idx, temp_idx = train_test_split(
-            indices,
-            train_size=train_ratio,
-            random_state=42
-        )
-        val_idx, test_idx = train_test_split(
-            temp_idx,
-            train_size=val_ratio / (1 - train_ratio),
-            random_state=42
-        )
+        def to_tuples(sample_list):
+            return [(s['temporal'], s['static'], s['target']) for s in sample_list]
 
-        def to_tuples(idx_list):
-            return [(samples[i]['temporal'], samples[i]['static'], samples[i]['target'])
-                    for i in idx_list]
-
-        return to_tuples(train_idx), to_tuples(val_idx), to_tuples(test_idx)
+        return to_tuples(train_samples), to_tuples(val_samples), to_tuples(test_samples)
 
     def train(
         self,
