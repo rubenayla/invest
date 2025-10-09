@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 """
-Run classic valuation models (DCF, RIM, etc.) on all stocks in dashboard_data.json.
+Run classic valuation models (DCF, RIM, etc.) on all stocks in database.
 
 This script:
-- Loads stock data from cache
+- Gets stock list from current_stock_data table (database is ONLY source)
+- Loads stock data from SQLite database
 - Runs classic valuation models (DCF, Enhanced DCF, RIM, Simple Ratios, etc.)
-- Saves predictions to database
-- Updates dashboard_data.json with valuation results
+- Saves predictions to valuation_results table
 """
 
 import json
+import sqlite3
 import sys
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -20,7 +21,6 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root / 'src'))
 
 from invest.valuation.model_registry import ModelRegistry
-from invest.valuation.db_utils import get_db_connection, save_classic_prediction
 from invest.valuation.base import ModelNotSuitableError
 from invest.data.stock_data_reader import StockDataReader
 
@@ -34,6 +34,49 @@ MODELS_TO_RUN = [
     ('growth_dcf', 'growth_dcf'),
     ('multi_stage_dcf', 'multi_stage_dcf'),
 ]
+
+
+def save_to_database(conn: sqlite3.Connection, ticker: str, model_name: str, result: dict):
+    """Save valuation result to valuation_results table."""
+
+    cursor = conn.cursor()
+
+    if result.get('suitable'):
+        # Successful valuation
+        details_json = json.dumps(result.get('details', {}))
+
+        cursor.execute('''
+            INSERT INTO valuation_results (
+                ticker, model_name, fair_value, current_price,
+                margin_of_safety, upside_pct, suitable,
+                confidence, details_json
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            ticker,
+            model_name,
+            result['fair_value'],
+            result['current_price'],
+            result['margin_of_safety'],
+            result['upside'],
+            True,
+            result.get('confidence', 'medium'),
+            details_json
+        ))
+    else:
+        # Failed valuation
+        cursor.execute('''
+            INSERT INTO valuation_results (
+                ticker, model_name, suitable, error_message, failure_reason
+            ) VALUES (?, ?, ?, ?, ?)
+        ''', (
+            ticker,
+            model_name,
+            False,
+            result.get('error', 'Unknown error'),
+            result.get('reason', 'Unknown reason')
+        ))
+
+    conn.commit()
 
 
 def load_stock_data(ticker: str, reader: StockDataReader) -> Optional[dict]:
@@ -157,118 +200,79 @@ def run_valuation(registry_name: str, ticker: str, stock_data: dict) -> Optional
 
 
 def main():
-    """Run classic valuations on all stocks in the dashboard."""
+    """Run classic valuations on all stocks in database."""
 
-    print('🚀 Running Classic Valuation Models on dashboard stocks')
+    print('🚀 Running Classic Valuation Models')
     print('=' * 60)
-
-    # Load dashboard data
-    dashboard_data_path = project_root / 'dashboard' / 'dashboard_data.json'
-    print(f'\n📂 Loading dashboard data: {dashboard_data_path}')
-
-    with open(dashboard_data_path) as f:
-        data = json.load(f)
-
-    stocks = data.get('stocks', {})
-    print(f'   Found {len(stocks)} stocks')
+    print(f'Models: {", ".join(db_name for _, db_name in MODELS_TO_RUN)}')
+    print('=' * 60)
 
     # Initialize stock data reader
     print(f'\n📦 Initializing stock data reader (SQLite database)...')
     reader = StockDataReader()
-    print(f'   Reader initialized')
+    db_path = project_root / 'data' / 'stock_data.db'
 
-    # Connect to database
-    print(f'\n💾 Connecting to valuation database...')
-    db_conn = get_db_connection()
-    print(f'   Database connected')
+    # Get list of tickers from database
+    print(f'\n📂 Loading tickers from database...')
+    conn = sqlite3.connect(db_path)
+    query = 'SELECT DISTINCT ticker FROM current_stock_data WHERE current_price IS NOT NULL'
+    tickers = [row[0] for row in conn.execute(query).fetchall()]
+    print(f'   Found {len(tickers)} tickers with price data')
 
     # Statistics
     stats = {db_name: {'success': 0, 'unsuitable': 0, 'error': 0, 'cache_miss': 0} for _, db_name in MODELS_TO_RUN}
 
     # Run valuations on each stock
     print(f'\n🔄 Running valuations...')
-    print(f'   Models: {", ".join(db_name for _, db_name in MODELS_TO_RUN)}')
 
-    for i, (ticker, stock) in enumerate(stocks.items()):
+    for i, ticker in enumerate(tickers):
         # Load stock data from SQLite
         stock_data = load_stock_data(ticker, reader)
 
         if not stock_data:
+            # Save "no data" failure for all models
             for _, db_name in MODELS_TO_RUN:
                 stats[db_name]['cache_miss'] += 1
-                if 'valuations' not in stock:
-                    stock['valuations'] = {}
-                stock['valuations'][db_name] = {
-                    'error': 'Stock cache file not found',
-                    'suitable': False
+                error_result = {
+                    'suitable': False,
+                    'error': 'Stock data not found in database',
+                    'reason': 'Missing stock data'
                 }
+                save_to_database(conn, ticker, db_name, error_result)
             continue
-
-        # Initialize valuations dict if needed
-        if 'valuations' not in stock:
-            stock['valuations'] = {}
 
         # Run each model
         for registry_name, db_name in MODELS_TO_RUN:
             try:
                 result = run_valuation(registry_name, ticker, stock_data)
 
-                # Store in dashboard data (using DB name for consistency)
-                stock['valuations'][db_name] = result
+                # Save to database
+                save_to_database(conn, ticker, db_name, result)
 
-                # Save to database if suitable
                 if result.get('suitable', False):
-                    save_classic_prediction(
-                        db_conn,
-                        db_name,
-                        ticker,
-                        result['fair_value'],
-                        result['current_price'],
-                        result.get('margin_of_safety'),
-                        result.get('upside'),
-                        suitable=True,
-                        details=result.get('details')
-                    )
                     stats[db_name]['success'] += 1
                 else:
-                    # Save failure to database
-                    save_classic_prediction(
-                        db_conn,
-                        db_name,
-                        ticker,
-                        0.0,  # fair_value not applicable
-                        stock_data.get('info', {}).get('currentPrice', 0.0),
-                        None,
-                        None,
-                        suitable=False,
-                        failure_reason=result.get('reason', result.get('error', 'Unknown'))
-                    )
-
                     if 'error' in result:
                         stats[db_name]['error'] += 1
                     else:
                         stats[db_name]['unsuitable'] += 1
 
             except Exception as e:
-                print(f'   [{i+1}/{len(stocks)}] {ticker} - {db_name}: Unexpected error - {str(e)}')
-                stock['valuations'][db_name] = {
+                print(f'   [{i+1}/{len(tickers)}] {ticker} - {db_name}: Unexpected error - {str(e)}')
+                error_result = {
+                    'suitable': False,
                     'error': str(e),
-                    'suitable': False
+                    'reason': f'Unexpected error: {type(e).__name__}'
                 }
+                save_to_database(conn, ticker, db_name, error_result)
                 stats[db_name]['error'] += 1
 
         # Progress update
         if (i + 1) % 50 == 0:
-            print(f'   [{i+1}/{len(stocks)}] Processed {ticker}...')
+            print(f'   [{i+1}/{len(tickers)}] Processed {ticker}...')
 
     # Close database connection
-    db_conn.close()
-    print(f'   Database connection closed')
-
-    # Save updated data
-    print(f'\n💾 Saving updated dashboard data...')
-    with open(dashboard_data_path, 'w') as f:
-        json.dump(data, f, indent=2)
+    conn.close()
 
     # Summary
     print(f'\n✅ Classic valuations complete!')
@@ -286,7 +290,9 @@ def main():
               f'Total: {total:3}')
 
     print()
-    print(f'Total stocks processed: {len(stocks)}')
+    print(f'Total stocks processed: {len(tickers)}')
+    print(f'💾 Saved to database: data/stock_data.db (valuation_results table)')
+    print('💡 Run regenerate_dashboard_html.py to update the dashboard HTML')
 
     return 0
 
