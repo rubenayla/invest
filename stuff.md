@@ -166,3 +166,7 @@ Model is now ready for production use with:
 - Detailed results: `neural_network/training/evaluation_results/detailed_results.csv`
 
 ---
+
+Testing notes with github app
+
+
