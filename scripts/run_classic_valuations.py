@@ -26,9 +26,10 @@ from invest.data.stock_data_reader import StockDataReader
 
 # Models to run (excluding sector-specific and ensemble models for now)
 # Format: (registry_name, db_name)
+# NOTE: db_name must match what html_generator.py expects!
 MODELS_TO_RUN = [
     ('dcf', 'dcf'),
-    ('dcf_enhanced', 'enhanced_dcf'),
+    ('dcf_enhanced', 'dcf_enhanced'),  # HTML expects 'dcf_enhanced'
     ('rim', 'rim'),
     ('simple_ratios', 'simple_ratios'),
     ('growth_dcf', 'growth_dcf'),
