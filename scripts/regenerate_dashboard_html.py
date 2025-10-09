@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 """
-Regenerate dashboard HTML from existing dashboard_data.json.
-Does NOT re-run valuations - just generates HTML from stored data.
+Regenerate dashboard HTML from database.
+
+Reads ALL data from SQLite database (single source of truth):
+- Stock info from current_stock_data table
+- Valuation results from valuation_results table
 """
 
 import json
+import sqlite3
 import sys
 from pathlib import Path
 
@@ -13,55 +17,131 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root / 'src'))
 
 from invest.dashboard_components.html_generator import HTMLGenerator
-from invest.data.stock_data_reader import StockDataReader
+
+
+def load_stocks_from_database() -> dict:
+    """
+    Load all stock data and valuations from database.
+
+    Returns
+    -------
+    dict
+        Stock data in format expected by HTMLGenerator:
+        {
+            'AAPL': {
+                'ticker': 'AAPL',
+                'company_name': 'Apple Inc.',
+                'valuations': {
+                    'single_horizon_nn': {...},
+                    'dcf': {...},
+                    ...
+                }
+            },
+            ...
+        }
+    """
+    db_path = project_root / 'data' / 'stock_data.db'
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row  # Access columns by name
+
+    # Get all stocks with current price
+    stocks_query = '''
+        SELECT ticker, current_price, long_name, short_name, sector
+        FROM current_stock_data
+        WHERE current_price IS NOT NULL
+    '''
+    stocks = {}
+
+    for row in conn.execute(stocks_query).fetchall():
+        ticker = row['ticker']
+        stocks[ticker] = {
+            'ticker': ticker,
+            'company_name': row['long_name'] or row['short_name'] or ticker,
+            'sector': row['sector'],
+            'valuations': {}
+        }
+
+    print(f'Loaded {len(stocks)} stocks from current_stock_data')
+
+    # Get all valuation results
+    valuations_query = '''
+        SELECT ticker, model_name, suitable, fair_value, current_price,
+               margin_of_safety, upside_pct, confidence, error_message,
+               failure_reason, details_json
+        FROM valuation_results
+    '''
+
+    valuation_count = 0
+    for row in conn.execute(valuations_query).fetchall():
+        ticker = row['ticker']
+
+        # Skip if ticker not in stocks (shouldn't happen, but defensive)
+        if ticker not in stocks:
+            continue
+
+        model_name = row['model_name']
+
+        if row['suitable']:
+            # Successful valuation
+            valuation = {
+                'suitable': True,
+                'fair_value': row['fair_value'],
+                'current_price': row['current_price'],
+                'margin_of_safety': row['margin_of_safety'],
+                'upside': row['upside_pct'],
+                'confidence': row['confidence']
+            }
+
+            # Parse details JSON if present
+            if row['details_json']:
+                try:
+                    valuation['details'] = json.loads(row['details_json'])
+                except json.JSONDecodeError:
+                    valuation['details'] = {}
+
+            stocks[ticker]['valuations'][model_name] = valuation
+            valuation_count += 1
+        else:
+            # Failed valuation
+            stocks[ticker]['valuations'][model_name] = {
+                'suitable': False,
+                'error': row['error_message'],
+                'reason': row['failure_reason']
+            }
+
+    conn.close()
+
+    print(f'Loaded {valuation_count} successful valuations')
+
+    return stocks
 
 
 def main():
-    """Regenerate dashboard HTML from existing data."""
+    """Regenerate dashboard HTML from database."""
 
-    print('🔄 Regenerating dashboard HTML from existing data...')
+    print('🔄 Regenerating dashboard HTML from database...')
     print('=' * 60)
 
-    # Load existing dashboard data
-    dashboard_data_path = project_root / 'dashboard' / 'dashboard_data.json'
-    print(f'\n📂 Loading: {dashboard_data_path}')
+    # Load all data from database (ONLY source)
+    print('\n📂 Loading data from SQLite database...')
+    stocks_data = load_stocks_from_database()
 
-    if not dashboard_data_path.exists():
-        print(f'❌ Error: {dashboard_data_path} not found!')
-        return 1
+    # Count predictions by model
+    model_counts = {}
+    for stock in stocks_data.values():
+        for model_name, valuation in stock.get('valuations', {}).items():
+            if valuation.get('suitable'):
+                model_counts[model_name] = model_counts.get(model_name, 0) + 1
 
-    with open(dashboard_data_path) as f:
-        data = json.load(f)
-
-    stocks_data = data.get('stocks', {})
-
-    # Enrich with company names from SQLite
-    print('\n📊 Enriching with company names from SQLite...')
-    reader = StockDataReader()
-    enriched_count = 0
-    for ticker in stocks_data:
-        try:
-            stock_info = reader.get_stock_data(ticker)
-            if stock_info and stock_info.get('info'):
-                stocks_data[ticker]['company_name'] = stock_info['info'].get('longName') or stock_info['info'].get('shortName') or ticker
-                enriched_count += 1
-        except Exception as e:
-            stocks_data[ticker]['company_name'] = ticker  # Fallback to ticker
-    print(f'   Enriched {enriched_count}/{len(stocks_data)} stocks with company names')
-    print(f'   Found {len(stocks_data)} stocks')
-
-    # Count stocks with multi_horizon_nn predictions
-    with_predictions = sum(
-        1 for stock in stocks_data.values()
-        if stock.get('valuations', {}).get('multi_horizon_nn', {}).get('suitable')
-    )
-    print(f'   Multi-horizon predictions: {with_predictions}')
+    print('\nValuation counts by model:')
+    for model_name, count in sorted(model_counts.items()):
+        print(f'  {model_name:20s}: {count:3d} successful')
 
     # Generate HTML
     print('\n🎨 Generating HTML...')
     generator = HTMLGenerator()
 
-    # Create minimal progress_data structure for the HTML generator
+    # Create progress_data structure for the HTML generator
     progress_data = {
         'total_analyzed': len(stocks_data),
         'successful': len(stocks_data),
@@ -77,7 +157,7 @@ def main():
 
     print(f'\n✅ Dashboard HTML saved: {output_path}')
     print(f'   Total stocks: {len(stocks_data)}')
-    print(f'   With multi-horizon predictions: {with_predictions}')
+    print(f'   Total valuations: {sum(model_counts.values())}')
     print('\n💡 Open in browser: file://{}'.format(output_path.absolute()))
 
     return 0
