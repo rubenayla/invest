@@ -268,7 +268,7 @@ class HTMLGenerator:
         multi_dcf_html = self._format_valuation_cell(valuations.get("multi_stage_dcf", {}), current_price)
 
         # Format single-horizon NN prediction (1-year only)
-        nn_html = self._format_valuation_cell(valuations.get("single_horizon_nn", {}), current_price)
+        nn_html = self._format_nn_cell(valuations.get("single_horizon_nn", {}), current_price)
 
         # Calculate consensus
         consensus_html = self._format_consensus_cell(valuations, current_price)
@@ -346,6 +346,59 @@ class HTMLGenerator:
             <div class="fair-value">{fair_value_str}</div>
             <div class="margin {margin_class}">{margin_str}</div>
             {ratio_str}
+        </div>'''
+
+    def _format_nn_cell(self, valuation: Dict, current_price: float = None) -> str:
+        """Format neural network valuation cell with confidence indicator."""
+        if not valuation or not valuation.get('suitable'):
+            reason = valuation.get('error', 'No prediction') if valuation else 'No data'
+            short_reason = reason[:30] + '...' if len(reason) > 30 else reason
+            return f'<span title="{reason}">-</span>'
+
+        fair_value = valuation.get('fair_value')
+        margin = valuation.get('margin_of_safety')
+        confidence = valuation.get('confidence', 'unknown')
+
+        if fair_value is None or fair_value == 0:
+            return '-'
+
+        # Get details for tooltip
+        details = valuation.get('details', {})
+        conf_std = details.get('confidence_std', 0)
+        conf_lower = details.get('confidence_lower_95', 0)
+        conf_upper = details.get('confidence_upper_95', 0)
+
+        fair_value_str = self._safe_format(fair_value, prefix='$')
+        margin_str = self._safe_percent(margin)
+
+        # Confidence badge
+        conf_colors = {
+            'high': 'background: #d4edda; color: #155724',
+            'medium': 'background: #fff3cd; color: #856404',
+            'low': 'background: #f8d7da; color: #721c24',
+            'unknown': 'background: #e2e3e5; color: #383d41'
+        }
+        conf_style = conf_colors.get(confidence, conf_colors['unknown'])
+        conf_label = confidence.upper()
+
+        # Tooltip with detailed confidence info
+        tooltip = f'Confidence: {confidence.upper()} | Std: {conf_std:.1%} | 95% CI: [{conf_lower:.1f}%, {conf_upper:.1f}%]'
+
+        # Calculate ratio if current price is available
+        ratio_str = ''
+        if current_price and current_price > 0:
+            ratio = fair_value / current_price
+            ratio_str = f'<div class="ratio">{ratio:.2f}x</div>'
+
+        # Color code the margin
+        margin_class = self._get_margin_class(margin)
+
+        return f'''
+        <div class="valuation-cell" title="{tooltip}">
+            <div class="fair-value">{fair_value_str}</div>
+            <div class="margin {margin_class}">{margin_str}</div>
+            {ratio_str}
+            <div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">{conf_label}</div>
         </div>'''
 
     def _format_multi_horizon_cells(self, nn_valuation: Dict, current_price: float) -> Tuple[str, str, str, str, str]:
