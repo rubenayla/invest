@@ -202,11 +202,7 @@ class HTMLGenerator:
                         <th title="Simple Ratios - P/E, P/B, and other multiple-based valuations">Ratios</th>
                         <th title="Residual Income Model - Values excess returns above cost of equity based on book value">RIM</th>
                         <th title="Multi-Stage DCF - Models different growth phases over time">Multi-DCF</th>
-                        <th title="Neural Network 1-month prediction">NN 1m</th>
-                        <th title="Neural Network 3-month prediction">NN 3m</th>
-                        <th title="Neural Network 6-month prediction">NN 6m</th>
-                        <th title="Neural Network 1-year prediction">NN 1y</th>
-                        <th title="Neural Network 2-year prediction">NN 2y</th>
+                        <th title="Neural Network 1-year prediction (LSTM/Transformer with MC Dropout confidence)">NN 1y</th>
                         <th title="Consensus valuation - Average of all successful model results">Consensus</th>
                     </tr>
                 </thead>
@@ -271,10 +267,8 @@ class HTMLGenerator:
         rim_html = self._format_valuation_cell(valuations.get("rim", {}), current_price)
         multi_dcf_html = self._format_valuation_cell(valuations.get("multi_stage_dcf", {}), current_price)
 
-        # Format multi-horizon NN predictions (5 separate columns)
-        nn_1m_html, nn_3m_html, nn_6m_html, nn_1y_html, nn_2y_html = self._format_multi_horizon_cells(
-            valuations.get("multi_horizon_nn", {}), current_price
-        )
+        # Format single-horizon NN prediction (1-year only)
+        nn_html = self._format_valuation_cell(valuations.get("single_horizon_nn", {}), current_price)
 
         # Calculate consensus
         consensus_html = self._format_consensus_cell(valuations, current_price)
@@ -290,11 +284,7 @@ class HTMLGenerator:
             <td>{ratios_html}</td>
             <td>{rim_html}</td>
             <td>{multi_dcf_html}</td>
-            <td>{nn_1m_html}</td>
-            <td>{nn_3m_html}</td>
-            <td>{nn_6m_html}</td>
-            <td>{nn_1y_html}</td>
-            <td>{nn_2y_html}</td>
+            <td>{nn_html}</td>
             <td>{consensus_html}</td>
         </tr>'''
     
