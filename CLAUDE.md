@@ -185,13 +185,23 @@ From ab0fe64 disaster (6,000 lines, 24 files, massive failures) to 15/15 passing
 
 ## DATABASE ARCHITECTURE - Critical Information
 
+### 🚨 **SINGLE SOURCE OF TRUTH**
+**The SQLite database is the ONLY source for stock data. ALWAYS read from database.**
+
+- ✅ **ALWAYS query database first**: `data/stock_data.db` (1.4GB SQLite)
+- ❌ **NEVER use dashboard_data.json as source**: It stores valuation RESULTS only, NOT stock data
+- ❌ **NEVER use old JSON cache files**: Obsolete backups - database is canonical
+- 💡 **When you need stock data**: Query SQLite. No fallbacks. No alternatives. No exceptions.
+
 ### 📍 **Primary Database Location**
-**Path**: `data/stock_data.db` (1.2GB SQLite database)
+**Path**: `data/stock_data.db` (1.4GB SQLite database)
+
+**For neural network training**: `neural_network/training/stock_data.db` (symlink or copy)
 
 ### 📊 **What's in the Database**
 
 #### `current_stock_data` Table
-This is the **single source of truth** for all stock data. Contains:
+The **single source of truth** for all current stock data. Contains:
 
 **Basic Info**: ticker, current_price, market_cap, sector, industry, long_name, short_name, currency, exchange, country
 
