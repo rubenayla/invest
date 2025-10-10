@@ -18,6 +18,9 @@ dependencies = [
     "torch>=2.0.0",
     "matplotlib>=3.10.6",
     "lxml>=6.0.2",
+    "lightgbm>=4.0.0",
+    "catboost>=1.2.0",
+    "scipy>=1.11.0",
 ]
 
 [dependency-groups]
