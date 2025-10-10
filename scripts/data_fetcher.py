@@ -28,7 +28,7 @@ import sys
 from pathlib import Path as PathLib
 if str(PathLib(__file__).parent) not in sys.path:
     sys.path.insert(0, str(PathLib(__file__).parent))
-from currency_converter import convert_financials_to_usd
+from currency_converter import convert_financials_to_usd, convert_financial_statements_to_usd
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -244,23 +244,23 @@ class AsyncStockDataFetcher:
                     'fetch_timestamp': datetime.now().isoformat()
                 }
 
+                # Fetch stock info (required for everything else)
+                info = stock.info
+
                 # Basic info (most important)
-                try:
-                    info = stock.info
-                    data['info'] = {
-                        'currentPrice': info.get('currentPrice'),
-                        'marketCap': info.get('marketCap'),
-                        'sector': info.get('sector'),
-                        'industry': info.get('industry'),
-                        'longName': info.get('longName'),
-                        'shortName': info.get('shortName'),
-                        'symbol': info.get('symbol'),
-                        'currency': info.get('currency'),
-                        'exchange': info.get('exchange'),
-                        'country': info.get('country')
-                    }
-                except Exception as e:
-                    logger.warning(f"Could not fetch info for {ticker}: {e}")
+                data['info'] = {
+                    'currentPrice': info.get('currentPrice'),
+                    'marketCap': info.get('marketCap'),
+                    'sector': info.get('sector'),
+                    'industry': info.get('industry'),
+                    'longName': info.get('longName'),
+                    'shortName': info.get('shortName'),
+                    'symbol': info.get('symbol'),
+                    'currency': info.get('currency'),
+                    'financialCurrency': info.get('financialCurrency'),  # Added: explicit financial reporting currency
+                    'exchange': info.get('exchange'),
+                    'country': info.get('country')
+                }
 
                 # Key financial metrics
                 try:
@@ -345,6 +345,13 @@ class AsyncStockDataFetcher:
                     logger.info(f"Fetched financial statements for {ticker}")
                 except Exception as e:
                     logger.warning(f"Could not fetch financial statements for {ticker}: {e}")
+
+                # Convert financial statements if currency conversion was applied
+                if data['financials'].get('_currency_converted'):
+                    financial_currency = data['financials'].get('_original_currency')
+                    exchange_rate = data['financials'].get('_exchange_rate_used')
+                    if financial_currency and exchange_rate:
+                        data = convert_financial_statements_to_usd(data, financial_currency, exchange_rate)
 
                 # Cache the data
                 self.cache.save_stock_data(ticker, data)

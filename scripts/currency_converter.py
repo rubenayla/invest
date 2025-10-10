@@ -67,65 +67,28 @@ def detect_currency_mismatch(info: Dict, financials: Dict) -> tuple[bool, Option
     """
     Detect if trading currency differs from financial currency.
 
-    For ADRs (American Depositary Receipts), the stock trades in USD but
-    the company reports financials in their home currency (JPY, EUR, etc.).
+    yfinance provides explicit 'financialCurrency' field that tells us
+    what currency the company reports financials in.
 
     Parameters
     ----------
     info : Dict
-        Stock info dict with currency and country
+        Stock info dict with currency and financialCurrency
     financials : Dict
-        Financial metrics dict with revenue, book value, etc.
+        Financial metrics dict (unused but kept for compatibility)
 
     Returns
     -------
     tuple[bool, Optional[str]]
         (has_mismatch, financial_currency) where financial_currency is
-        the detected currency of the financials (if different from trading currency)
+        the currency of the financials (if different from USD)
     """
-    trading_currency = info.get('currency', 'USD')
-    country = info.get('country', '')
+    # yfinance explicitly tells us the financial reporting currency
+    financial_currency = info.get('financialCurrency', 'USD')
 
-    # Quick check: if trading USD but company is not from US/Canada, likely an ADR
-    if trading_currency == 'USD' and country not in ('United States', 'Canada', '', None):
-        # Check for abnormally high values that suggest foreign currency
-        revenue = financials.get('totalRevenue')
-        book_value = financials.get('bookValue')
-
-        # Map country to likely currency
-        country_currency_map = {
-            'Japan': 'JPY',
-            'Taiwan': 'TWD',
-            'South Korea': 'KRW',
-            'China': 'CNY',
-            'Hong Kong': 'HKD',
-            'Singapore': 'SGD',
-            'India': 'INR',
-            'United Kingdom': 'GBP',
-            'Germany': 'EUR',
-            'France': 'EUR',
-            'Spain': 'EUR',
-            'Italy': 'EUR',
-            'Netherlands': 'EUR',
-            'Switzerland': 'CHF',
-            'Denmark': 'DKK',
-            'Norway': 'NOK',
-            'Sweden': 'SEK',
-            'Australia': 'AUD',
-            'New Zealand': 'NZD',
-            'Brazil': 'BRL',
-            'Mexico': 'MXN',
-            'South Africa': 'ZAR',
-        }
-
-        likely_currency = country_currency_map.get(country)
-
-        if likely_currency:
-            # Check if values are suspiciously high (suggesting foreign currency)
-            if revenue and revenue > 200_000_000_000:  # > $200B
-                return True, likely_currency
-            if book_value and book_value > 100:  # > $100/share
-                return True, likely_currency
+    # If financials are not in USD, they need conversion
+    if financial_currency and financial_currency != 'USD':
+        return True, financial_currency
 
     return False, None
 
@@ -184,3 +147,62 @@ def convert_financials_to_usd(info: Dict, financials: Dict) -> Dict:
     logger.info(f'{ticker}: Converted {converted_count} fields from {financial_currency} to USD')
 
     return financials
+
+
+def convert_financial_statements_to_usd(
+    data: Dict,
+    financial_currency: str,
+    exchange_rate: float
+) -> Dict:
+    """
+    Convert financial statement values (cashflow, balance_sheet, income) to USD.
+
+    Financial statements are stored as lists of dicts:
+    [
+        {'index': 'Free Cash Flow', '2023-12-31': 1000000000, '2022-12-31': 950000000},
+        {'index': 'Operating Cash Flow', '2023-12-31': 1200000000, ...}
+    ]
+
+    Parameters
+    ----------
+    data : Dict
+        Full stock data dict with 'cashflow', 'balance_sheet', 'income' keys
+    financial_currency : str
+        Currency code for the financial data (JPY, TWD, etc.)
+    exchange_rate : float
+        Exchange rate to USD
+
+    Returns
+    -------
+    Dict
+        Data dict with all financial statement values converted to USD
+    """
+    if not financial_currency or financial_currency == 'USD':
+        return data
+
+    ticker = data.get('ticker', 'UNKNOWN')
+    converted_count = 0
+
+    for statement_name in ['cashflow', 'balance_sheet', 'income']:
+        statement = data.get(statement_name)
+        if not statement or not isinstance(statement, list):
+            continue
+
+        for row in statement:
+            if not isinstance(row, dict):
+                continue
+
+            # Convert all date columns (skip 'index' column)
+            for key, value in row.items():
+                if key == 'index':
+                    continue
+
+                # Convert numeric values (skip NaN, None, 0)
+                if isinstance(value, (int, float)) and value and value == value:  # value == value checks for NaN
+                    row[key] = value * exchange_rate
+                    converted_count += 1
+
+    if converted_count > 0:
+        logger.info(f'{ticker}: Converted {converted_count} values in financial statements from {financial_currency} to USD')
+
+    return data
