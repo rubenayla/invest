@@ -281,12 +281,12 @@ class ValuationModel(ABC):
         """Get the most recent non-null value from a pandas series."""
         if series is None or series.empty:
             return default
-        
+
         # Try to get the first valid value (most recent)
         valid_values = series.dropna()
         if valid_values.empty:
             return default
-        
+
         return valid_values.iloc[0]
     
     def get_required_fields(self) -> FieldRequirement:

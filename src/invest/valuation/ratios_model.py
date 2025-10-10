@@ -51,21 +51,21 @@ class SimpleRatiosModel(ValuationModel):
         """Ratios model is suitable for most companies with basic financial metrics."""
         try:
             info = data.get('info', {})
-            
+
             # Need at least basic price and financial data
             current_price = self._safe_float(info.get('currentPrice'))
             if not current_price or current_price <= 0:
                 return False
-            
+
             # Need at least one valuation metric
             metrics_available = [
                 self._safe_float(info.get('trailingEps')),
                 self._safe_float(info.get('bookValue')),
                 self._safe_float(info.get('priceToSalesTrailing12Months')),
             ]
-            
+
             return any(metric and metric > 0 for metric in metrics_available)
-            
+
         except:
             return False
     

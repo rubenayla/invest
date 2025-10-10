@@ -23,6 +23,13 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import tempfile
 import os
 
+# Import currency converter (dynamically since it's in scripts/)
+import sys
+from pathlib import Path as PathLib
+if str(PathLib(__file__).parent) not in sys.path:
+    sys.path.insert(0, str(PathLib(__file__).parent))
+from currency_converter import convert_financials_to_usd
+
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -278,6 +285,10 @@ class AsyncStockDataFetcher:
                         'revenuePerShare': info.get('revenuePerShare'),
                         'priceToSalesTrailing12Months': info.get('priceToSalesTrailing12Months'),
                     }
+
+                    # Convert foreign currency financials to USD
+                    data['financials'] = convert_financials_to_usd(data['info'], data['financials'])
+
                 except Exception as e:
                     logger.warning(f"Could not fetch financials for {ticker}: {e}")
 

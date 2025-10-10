@@ -87,10 +87,12 @@ class StockDataReader:
                 'country': row['country'],
                 # Critical fields for valuation models (also in financials for compatibility)
                 'sharesOutstanding': row['shares_outstanding'],
+                'totalRevenue': row['total_revenue'],
                 'totalCash': row['total_cash'],
                 'totalDebt': row['total_debt'],
                 'trailingEps': row['trailing_eps'],
                 'bookValue': row['book_value'],
+                'revenuePerShare': row['revenue_per_share'],
                 'freeCashflow': free_cashflow,
                 'operatingCashflow': operating_cashflow,
             },

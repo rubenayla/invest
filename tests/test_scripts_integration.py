@@ -190,18 +190,18 @@ class TestDashboardGeneration:
 
     def test_dashboard_can_be_regenerated(self):
         """
-        Test that regenerate_dashboard_html.py exists and can be imported.
+        Test that dashboard.py exists and can be imported.
 
         This is a smoke test that the dashboard generation pipeline is available.
         """
-        script_path = project_root / 'scripts' / 'regenerate_dashboard_html.py'
+        script_path = project_root / 'scripts' / 'dashboard.py'
 
         # Verify the script exists
-        assert script_path.exists(), 'Dashboard regeneration script should exist'
+        assert script_path.exists(), 'Dashboard generation script should exist'
 
         # Verify it can be imported without errors
         import importlib.util
-        spec = importlib.util.spec_from_file_location('regenerate_dashboard_html', script_path)
+        spec = importlib.util.spec_from_file_location('dashboard', script_path)
         script = importlib.util.module_from_spec(spec)
 
         # If we can create the spec, the script is valid Python

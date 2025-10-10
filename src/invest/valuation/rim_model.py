@@ -31,19 +31,19 @@ class RIMModel(ValuationModel):
                 return False
             if income is None or income.empty:
                 return False
-            
+
             # Check for positive book equity
             book_equity = self._get_book_equity(data)
             if book_equity is None or book_equity <= 0:
                 return False
-            
+
             # Check for reasonable ROE
             roe = self._calculate_roe(data)
             if roe is None or roe <= 0 or roe > 1.0:  # ROE > 100% is unrealistic
                 return False
-            
+
             return True
-            
+
         except:
             return False
     
