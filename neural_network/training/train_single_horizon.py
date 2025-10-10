@@ -10,9 +10,10 @@ This script:
 
 Database Structure:
 ------------------
-- snapshots: Point-in-time fundamental data (PE, margins, growth, etc.)
+- snapshots: Point-in-time fundamental data (PE, margins, growth, etc.) + macro indicators
   - NOTE: current_price field is always NULL (not used, we have price_history)
-  - Contains 3,367 snapshots from 103 stocks (2004-2025)
+  - Contains 17,840 snapshots from 150+ stocks (2008-2025)
+  - 2,790+ snapshots with populated fundamental ratios from SEC EDGAR data
 
 - price_history: Daily OHLCV data linked to each snapshot
   - 8.5M records with actual historical prices
@@ -84,10 +85,11 @@ class StockSnapshotDataset(Dataset):
 class SingleHorizonTrainer:
     """Trainer for single-horizon model."""
 
-    def __init__(self, db_path: str = '../../data/stock_data.db'):
+    def __init__(self, db_path: str = '../../data/stock_data.db', target_horizon: str = '1y'):
         self.db_path = Path(__file__).parent / db_path
         self.model = None
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.target_horizon = target_horizon
 
     def load_training_data(
         self,
@@ -114,17 +116,21 @@ class SingleHorizonTrainer:
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
 
-        # Load snapshots with forward returns
-        # NOTE: snapshots.current_price is always NULL (old bug, not populated)
-        # We don't need it - price data comes from price_history table
+        # Load snapshots with macro indicators AND fundamental features
+        # Use ALL available real data: price history + macro + fundamentals
         cursor.execute('''
             SELECT
                 a.symbol,
                 a.sector,
                 s.snapshot_date,
-                s.market_cap,
+                s.vix,
+                s.treasury_10y,
+                s.dollar_index,
+                s.oil_price,
+                s.gold_price,
                 s.pe_ratio,
                 s.pb_ratio,
+                s.ps_ratio,
                 s.profit_margins,
                 s.operating_margins,
                 s.return_on_equity,
@@ -132,12 +138,15 @@ class SingleHorizonTrainer:
                 s.earnings_growth,
                 s.debt_to_equity,
                 s.current_ratio,
+                s.trailing_eps,
+                s.book_value,
                 s.free_cashflow,
-                s.beta,
+                s.operating_cashflow,
+                s.market_cap,
                 s.id
             FROM snapshots s
             JOIN assets a ON s.asset_id = a.id
-            WHERE s.pe_ratio IS NOT NULL  -- Filter: require some fundamental data
+            WHERE s.vix IS NOT NULL  -- Filter: require macro data
             ORDER BY a.symbol, s.snapshot_date
         ''')
 
@@ -182,10 +191,22 @@ class SingleHorizonTrainer:
                 # Database already stores as decimal (2.05 = 205% gain)
                 forward_return = float(result[0])
 
-                # Extract temporal features (sequence of snapshots)
-                temporal_features = self._extract_temporal_from_sequence(sequence)
+                # Get price history for this snapshot to extract temporal features
+                cursor.execute('''
+                    SELECT date, close, volume
+                    FROM price_history
+                    WHERE snapshot_id = ?
+                    ORDER BY date
+                ''', (snapshot_id,))
+                price_history = cursor.fetchall()
 
-                # Extract static features (most recent snapshot)
+                if len(price_history) < 60:  # Need at least 60 days of price history
+                    continue
+
+                # Extract temporal features (from price history + sequence of macro indicators)
+                temporal_features = self._extract_temporal_from_sequence(sequence, price_history)
+
+                # Extract static features (most recent snapshot with macro indicators)
                 static_features = self._extract_static_from_snapshot(sequence[-1], sector)
 
                 if temporal_features is not None and static_features is not None:
@@ -210,39 +231,81 @@ class SingleHorizonTrainer:
         conn.close()
         return train_samples, val_samples, test_samples
 
-    def _extract_temporal_from_sequence(self, sequence: List) -> np.ndarray:
+    def _extract_temporal_from_sequence(self, sequence: List, price_history: List) -> np.ndarray:
         """
-        Extract temporal features from sequence of snapshots.
+        Extract temporal features from price history, macro indicators, and fundamentals.
+
+        Uses ONLY real historical data:
+        - Price momentum and volatility (from price_history)
+        - Macro indicators (VIX, rates, commodities) from snapshots
+        - Fundamental ratios (PE, PB, margins, ROE, debt, cash flows) from snapshots
 
         Parameters
         ----------
         sequence : List
-            List of snapshot rows (each row is a tuple from SQL)
+            List of snapshot rows with macro indicators and fundamental data
+        price_history : List
+            Price history tuples (date, close, volume)
 
         Returns
         -------
         np.ndarray
-            Shape: (num_snapshots, num_temporal_features)
+            Shape: (num_snapshots, 17) - 4 price + 5 macro + 8 fundamental features
         """
-        temporal_features = []
+        # Calculate price-based features from last 60 days
+        recent_prices = [p[1] for p in price_history[-60:]]  # Last 60 closes
+        recent_volumes = [p[2] for p in price_history[-60:]]  # Last 60 volumes
 
+        if len(recent_prices) < 60:
+            return None
+
+        # Price momentum features (calculated from real price data)
+        returns_1m = (recent_prices[-1] - recent_prices[-21]) / recent_prices[-21] if len(recent_prices) >= 21 else 0.0
+        returns_3m = (recent_prices[-1] - recent_prices[0]) / recent_prices[0]
+        volatility = np.std(np.diff(recent_prices) / recent_prices[:-1])
+
+        # Volume trend
+        vol_avg = np.mean(recent_volumes)
+        vol_recent = np.mean(recent_volumes[-5:])
+        volume_trend = (vol_recent - vol_avg) / vol_avg if vol_avg > 0 else 0.0
+
+        # Temporal sequence from macro indicators + fundamental features (each snapshot in sequence)
+        temporal_features = []
         for snapshot in sequence:
-            # Extract temporal features from each snapshot
-            # New indices (after removing current_price):
-            # market_cap(3), pe(4), pb(5), margins(6,7),
-            # roe(8), growth(9,10), debt(11), current_ratio(12), fcf(13)
+            # Indices: symbol(0), sector(1), date(2), vix(3), treasury(4), dollar(5), oil(6), gold(7),
+            # pe_ratio(8), pb_ratio(9), ps_ratio(10), profit_margins(11), operating_margins(12),
+            # return_on_equity(13), revenue_growth(14), earnings_growth(15), debt_to_equity(16),
+            # current_ratio(17), trailing_eps(18), book_value(19), free_cashflow(20),
+            # operating_cashflow(21), market_cap(22), id(23)
+
+            # Calculate cash flow yields for temporal features
+            market_cap = snapshot[22] if snapshot[22] is not None and snapshot[22] > 0 else 1e9
+            fcf = snapshot[20] if snapshot[20] is not None else 0.0
+            ocf = snapshot[21] if snapshot[21] is not None else 0.0
+            fcf_yield = fcf / market_cap
+            ocf_yield = ocf / market_cap
+
             features = [
-                np.log10(snapshot[3] + 1) if snapshot[3] is not None else 0.0,  # market_cap (log)
-                snapshot[4] if snapshot[4] is not None else 0.0,  # pe_ratio
-                snapshot[5] if snapshot[5] is not None else 0.0,  # pb_ratio
-                snapshot[6] if snapshot[6] is not None else 0.0,  # profit_margins
-                snapshot[7] if snapshot[7] is not None else 0.0,  # operating_margins
-                snapshot[8] if snapshot[8] is not None else 0.0,  # return_on_equity
-                snapshot[9] if snapshot[9] is not None else 0.0,  # revenue_growth
-                snapshot[10] if snapshot[10] is not None else 0.0,  # earnings_growth
-                snapshot[11] if snapshot[11] is not None else 0.0,  # debt_to_equity
-                snapshot[12] if snapshot[12] is not None else 0.0,  # current_ratio
-                np.log10(abs(snapshot[13]) + 1) if snapshot[13] is not None else 0.0,  # fcf (log)
+                # Price-based features (4)
+                returns_1m,
+                returns_3m,
+                volatility,
+                volume_trend,
+                # Macro indicators (5)
+                snapshot[3] if snapshot[3] is not None else 20.0,  # VIX
+                snapshot[4] if snapshot[4] is not None else 3.0,  # Treasury 10Y
+                snapshot[5] if snapshot[5] is not None else 100.0,  # Dollar Index
+                snapshot[6] if snapshot[6] is not None else 70.0,  # Oil price
+                snapshot[7] if snapshot[7] is not None else 1800.0,  # Gold price
+                # Fundamental features (8) - showing evolution over time
+                min(max(snapshot[8] if snapshot[8] is not None else 20.0, -50.0), 100.0),  # PE ratio
+                min(max(snapshot[9] if snapshot[9] is not None else 3.0, 0.0), 20.0),  # PB ratio
+                snapshot[11] if snapshot[11] is not None else 0.10,  # Profit margins
+                snapshot[12] if snapshot[12] is not None else 0.15,  # Operating margins
+                snapshot[13] if snapshot[13] is not None else 0.10,  # ROE
+                min(max(snapshot[16] if snapshot[16] is not None else 0.5, 0.0), 5.0),  # Debt-to-equity
+                fcf_yield,  # Free cash flow yield
+                ocf_yield,  # Operating cash flow yield
             ]
             temporal_features.append(features)
 
@@ -252,10 +315,15 @@ class SingleHorizonTrainer:
         """
         Extract static features from most recent snapshot.
 
+        Uses ALL available real data:
+        - Macro indicators (VIX, Treasury, Dollar Index, Oil, Gold)
+        - Fundamental ratios (PE, PB, PS, ROE, margins, etc.)
+        - Sector (categorical)
+
         Parameters
         ----------
         snapshot : tuple
-            Most recent snapshot row
+            Most recent snapshot row - see load_training_data() for full field list
         sector : str
             Company sector
 
@@ -266,43 +334,65 @@ class SingleHorizonTrainer:
         """
         features = []
 
-        # New indices (after removing current_price):
-        # market_cap(3), pe(4), pb(5), margins(6,7),
-        # roe(8), growth(9,10), debt(11), current_ratio(12), fcf(13), beta(14)
+        # Indices: symbol(0), sector(1), date(2), vix(3), treasury(4), dollar(5), oil(6), gold(7),
+        # pe_ratio(8), pb_ratio(9), ps_ratio(10), profit_margins(11), operating_margins(12),
+        # return_on_equity(13), revenue_growth(14), earnings_growth(15), debt_to_equity(16),
+        # current_ratio(17), trailing_eps(18), book_value(19), free_cashflow(20),
+        # operating_cashflow(21), market_cap(22), id(23)
 
-        # Valuation ratios
+        # Macro indicators (5 features)
         features.extend([
-            snapshot[4] if snapshot[4] is not None else 0.0,  # pe_ratio
-            snapshot[5] if snapshot[5] is not None else 0.0,  # pb_ratio
+            snapshot[3] if snapshot[3] is not None else 20.0,  # VIX
+            snapshot[4] if snapshot[4] is not None else 3.0,  # Treasury 10Y
+            snapshot[5] if snapshot[5] is not None else 100.0,  # Dollar Index
+            snapshot[6] if snapshot[6] is not None else 70.0,  # Oil price
+            snapshot[7] if snapshot[7] is not None else 1800.0,  # Gold price
         ])
 
-        # Profitability
-        features.extend([
-            snapshot[6] if snapshot[6] is not None else 0.0,  # profit_margins
-            snapshot[7] if snapshot[7] is not None else 0.0,  # operating_margins
-            snapshot[8] if snapshot[8] is not None else 0.0,  # return_on_equity
-        ])
+        # Fundamental features (14 features)
+        # Valuation ratios (capped to reasonable ranges to handle outliers)
+        pe_ratio = snapshot[8] if snapshot[8] is not None else 20.0
+        features.append(min(max(pe_ratio, -50.0), 100.0))  # PE ratio (clipped)
 
-        # Growth
-        features.extend([
-            snapshot[9] if snapshot[9] is not None else 0.0,  # revenue_growth
-            snapshot[10] if snapshot[10] is not None else 0.0,  # earnings_growth
-        ])
+        pb_ratio = snapshot[9] if snapshot[9] is not None else 3.0
+        features.append(min(max(pb_ratio, 0.0), 20.0))  # PB ratio (clipped)
+
+        ps_ratio = snapshot[10] if snapshot[10] is not None else 2.0
+        features.append(min(max(ps_ratio, 0.0), 20.0))  # PS ratio (clipped)
+
+        # Profitability metrics (as decimals, e.g. 0.15 = 15%)
+        features.append(snapshot[11] if snapshot[11] is not None else 0.10)  # Profit margins
+        features.append(snapshot[12] if snapshot[12] is not None else 0.15)  # Operating margins
+        features.append(snapshot[13] if snapshot[13] is not None else 0.10)  # ROE
+
+        # Growth metrics (as decimals, e.g. 0.10 = 10% growth)
+        revenue_growth = snapshot[14] if snapshot[14] is not None else 0.05
+        features.append(min(max(revenue_growth, -0.5), 2.0))  # Revenue growth (clipped)
+
+        earnings_growth = snapshot[15] if snapshot[15] is not None else 0.05
+        features.append(min(max(earnings_growth, -1.0), 3.0))  # Earnings growth (clipped)
 
         # Financial health
-        features.extend([
-            snapshot[11] if snapshot[11] is not None else 0.0,  # debt_to_equity
-            snapshot[12] if snapshot[12] is not None else 0.0,  # current_ratio
-        ])
+        debt_to_equity = snapshot[16] if snapshot[16] is not None else 0.5
+        features.append(min(max(debt_to_equity, 0.0), 5.0))  # Debt-to-equity (clipped)
 
-        # Beta
-        features.append(snapshot[14] if snapshot[14] is not None else 1.0)
+        features.append(snapshot[17] if snapshot[17] is not None else 1.5)  # Current ratio
 
-        # Market cap (log)
-        market_cap_log = np.log10(snapshot[3] + 1) if snapshot[3] is not None else 0.0
-        features.append(market_cap_log)
+        # Per-share metrics (normalized by price from price_history)
+        # Note: For now using raw values, could normalize later if needed
+        features.append(snapshot[18] if snapshot[18] is not None else 0.0)  # Trailing EPS
+        features.append(snapshot[19] if snapshot[19] is not None else 0.0)  # Book value
 
-        # Sector one-hot encoding (11 sectors)
+        # Cash flow metrics (normalized by market cap)
+        market_cap = snapshot[22] if snapshot[22] is not None and snapshot[22] > 0 else 1e9
+
+        free_cashflow = snapshot[20] if snapshot[20] is not None else 0.0
+        features.append(free_cashflow / market_cap)  # FCF yield
+
+        operating_cashflow = snapshot[21] if snapshot[21] is not None else 0.0
+        features.append(operating_cashflow / market_cap)  # OCF yield
+
+        # Sector one-hot encoding (11 features)
         sectors = [
             'Technology', 'Healthcare', 'Financial Services', 'Consumer Cyclical',
             'Industrials', 'Communication Services', 'Consumer Defensive',
@@ -386,10 +476,13 @@ class SingleHorizonTrainer:
         logger.info('Initializing model...')
 
         # Determine feature dimensions from first sample
-        temporal_dim = train_samples[0][0].shape[1]  # Should be 11
-        static_dim = train_samples[0][1].shape[0]    # Should be 22 (2 + 3 + 2 + 2 + 1 + 1 + 11 sectors)
+        # Temporal: 17 features (4 price + 5 macro + 8 fundamental over time)
+        # Static: 30 features (5 macro + 14 fundamental + 11 sector one-hot)
+        temporal_dim = train_samples[0][0].shape[1]
+        static_dim = train_samples[0][1].shape[0]
 
         logger.info(f'Feature dimensions: temporal={temporal_dim}, static={static_dim}')
+        logger.info(f'Expected: temporal=17 (4 price + 5 macro + 8 fundamental), static=30 (5 macro + 14 fundamental + 11 sectors)')
 
         self.model = LSTMTransformerNetwork(
             temporal_features=temporal_dim,
@@ -400,8 +493,8 @@ class SingleHorizonTrainer:
         train_dataset = StockSnapshotDataset(train_samples)
         val_dataset = StockSnapshotDataset(val_samples)
 
-        train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-        val_loader = DataLoader(val_dataset, batch_size=batch_size)
+        train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, drop_last=True)
+        val_loader = DataLoader(val_dataset, batch_size=batch_size, drop_last=True)
 
         # Loss and optimizer
         criterion = nn.HuberLoss()  # Robust to outliers
@@ -454,16 +547,17 @@ class SingleHorizonTrainer:
             if val_loss < best_val_loss:
                 best_val_loss = val_loss
                 patience_counter = 0
-                # Save best model
-                self.save_model('best_model.pt')
+                # Save best model with horizon-specific name
+                self.save_model()
             else:
                 patience_counter += 1
                 if patience_counter >= patience:
                     logger.info(f'Early stopping at epoch {epoch+1}')
                     break
 
-    def save_model(self, filename: str):
-        """Save model weights."""
+    def save_model(self):
+        """Save model weights with horizon-specific filename."""
+        filename = f'best_model_{self.target_horizon}.pt'
         save_path = Path(__file__).parent / filename
         torch.save(self.model.state_dict(), save_path)
         logger.info(f'Model saved to {save_path}')
@@ -474,12 +568,16 @@ def main():
     parser.add_argument('--epochs', type=int, default=100, help='Number of epochs')
     parser.add_argument('--batch-size', type=int, default=32, help='Batch size')
     parser.add_argument('--learning-rate', type=float, default=0.001, help='Learning rate')
+    parser.add_argument('--target-horizon', type=str, default='1y',
+                        help='Target prediction horizon (1m, 3m, 6m, 1y, 2y, 3y)')
     args = parser.parse_args()
 
-    trainer = SingleHorizonTrainer()
+    trainer = SingleHorizonTrainer(target_horizon=args.target_horizon)
 
     # Load data
-    train_samples, val_samples, test_samples = trainer.load_training_data()
+    train_samples, val_samples, test_samples = trainer.load_training_data(
+        target_horizon=args.target_horizon
+    )
 
     # Train
     trainer.train(
@@ -490,7 +588,7 @@ def main():
         learning_rate=args.learning_rate
     )
 
-    logger.info('Training complete!')
+    logger.info(f'Training complete for {args.target_horizon} horizon!')
 
 
 if __name__ == '__main__':

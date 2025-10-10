@@ -203,6 +203,7 @@ class HTMLGenerator:
                         <th title="Residual Income Model - Values excess returns above cost of equity based on book value">RIM</th>
                         <th title="Multi-Stage DCF - Models different growth phases over time">Multi-DCF</th>
                         <th title="Neural Network 1-year prediction (LSTM/Transformer with MC Dropout confidence)">NN 1y</th>
+                        <th title="Neural Network 3-year prediction (LSTM/Transformer with MC Dropout confidence)">NN 3y</th>
                         <th title="Consensus valuation - Average of all successful model results">Consensus</th>
                     </tr>
                 </thead>
@@ -270,6 +271,9 @@ class HTMLGenerator:
         # Format single-horizon NN prediction (1-year only)
         nn_html = self._format_nn_cell(valuations.get("single_horizon_nn", {}), current_price)
 
+        # Format 3-year NN prediction
+        nn_3y_html = self._format_nn_cell(valuations.get('nn_3y', {}), current_price)
+
         # Calculate consensus
         consensus_html = self._format_consensus_cell(valuations, current_price)
 
@@ -285,6 +289,7 @@ class HTMLGenerator:
             <td>{rim_html}</td>
             <td>{multi_dcf_html}</td>
             <td>{nn_html}</td>
+            <td>{nn_3y_html}</td>
             <td>{consensus_html}</td>
         </tr>'''
     
@@ -371,18 +376,19 @@ class HTMLGenerator:
         fair_value_str = self._safe_format(fair_value, prefix='$')
         margin_str = self._safe_percent(margin)
 
-        # Confidence badge
-        conf_colors = {
-            'high': 'background: #d4edda; color: #155724',
-            'medium': 'background: #fff3cd; color: #856404',
-            'low': 'background: #f8d7da; color: #721c24',
-            'unknown': 'background: #e2e3e5; color: #383d41'
-        }
-        conf_style = conf_colors.get(confidence, conf_colors['unknown'])
-        conf_label = confidence.upper()
+        # Confidence badge - show std as percentage instead of categorical label
+        # Color based on std thresholds: <5% = green, <15% = yellow, >=15% = red
+        if conf_std < 0.05:
+            conf_style = 'background: #d4edda; color: #155724'  # Green
+        elif conf_std < 0.15:
+            conf_style = 'background: #fff3cd; color: #856404'  # Yellow
+        else:
+            conf_style = 'background: #f8d7da; color: #721c24'  # Red
+
+        conf_label = f'σ={conf_std:.1%}'  # Show actual std percentage
 
         # Tooltip with detailed confidence info
-        tooltip = f'Confidence: {confidence.upper()} | Std: {conf_std:.1%} | 95% CI: [{conf_lower:.1f}%, {conf_upper:.1f}%]'
+        tooltip = f'Uncertainty (Std): {conf_std:.1%} | 95% CI: [{conf_lower:.1f}%, {conf_upper:.1f}%]'
 
         # Calculate ratio if current price is available
         ratio_str = ''

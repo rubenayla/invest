@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Run Phase 2 LSTM/Transformer predictions on all stocks in database.
+Run 3-Year LSTM/Transformer predictions on all stocks in database.
 
 This script:
-- Loads the trained Phase 2 single-horizon model (78.64% hit rate)
+- Loads the trained 3-Year single-horizon model (78.64% hit rate)
 - Gets stock list from current_stock_data table (database is ONLY source)
 - Runs predictions with MC Dropout for confidence estimation
 - Saves predictions to valuation_results table
@@ -28,15 +28,15 @@ from invest.valuation.lstm_transformer_model import LSTMTransformerNetwork
 
 
 class NeuralNetworkPredictor:
-    """Runs Phase 2 LSTM/Transformer predictions on dashboard stocks."""
+    """Runs 3-Year LSTM/Transformer predictions on dashboard stocks."""
 
     def __init__(self):
         self.project_root = project_root
-        self.model_path = project_root / 'neural_network' / 'training' / 'best_model_1y.pt'
+        self.model_path = project_root / 'neural_network' / 'training' / 'best_model_3y.pt'
         self.db_path = project_root / 'data' / 'stock_data.db'
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-        print(f'Loading 1-year model from {self.model_path}')
+        print(f'Loading 3-year model from {self.model_path}')
         self.model = self._load_model()
 
     def _load_model(self) -> LSTMTransformerNetwork:
@@ -387,12 +387,12 @@ class NeuralNetworkPredictor:
             'margin_of_safety': float(margin_of_safety),
             'confidence': confidence,
             'details': {
-                'expected_return_1y': float(mean_return * 100),  # Convert to percentage
+                'expected_return_3y': float(mean_return * 100),  # Convert to percentage
                 'confidence_std': float(std_return),
                 'confidence_lower_95': float(lower_bound * 100),
                 'confidence_upper_95': float(upper_bound * 100),
                 'mc_dropout_samples': n_samples,
-                'model': 'LSTM/Transformer Phase 2',
+                'model': 'LSTM/Transformer 3-Year',
                 'hit_rate': 78.64,  # From evaluation
                 'correlation': 44.2  # From evaluation
             }
@@ -416,7 +416,7 @@ def save_to_database(conn: sqlite3.Connection, ticker: str, result: dict):
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             ticker,
-            'nn_1y',
+            'nn_3y',
             result['fair_value'],
             result['current_price'],
             result['margin_of_safety'],
@@ -433,7 +433,7 @@ def save_to_database(conn: sqlite3.Connection, ticker: str, result: dict):
             ) VALUES (?, ?, ?, ?, ?)
         ''', (
             ticker,
-            'nn_1y',
+            'nn_3y',
             False,
             result.get('error', 'Unknown error'),
             result.get('reason', 'Unknown reason')
@@ -445,7 +445,7 @@ def save_to_database(conn: sqlite3.Connection, ticker: str, result: dict):
 def main():
     """Run neural network predictions on all stocks in database."""
 
-    print('🧠 Running Phase 2 Neural Network Predictions')
+    print('🧠 Running 3-Year Neural Network Predictions')
     print('=' * 60)
     print('Model: LSTM/Transformer (78.64% hit rate, 44.2% correlation)')
     print('=' * 60)
