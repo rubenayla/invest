@@ -31,6 +31,19 @@ from scipy import stats
 from scipy.stats import linregress
 from sklearn.metrics import ndcg_score
 
+# Import feature configuration
+from gbm_feature_config import (
+    BASE_FEATURES,
+    FUNDAMENTAL_FEATURES,
+    MARKET_FEATURES,
+    PRICE_FEATURES,
+    CASHFLOW_FEATURES,
+    CATEGORICAL_FEATURES,
+    LAG_PERIODS,
+    ROLLING_WINDOWS,
+    get_snapshot_query_columns
+)
+
 # Suppress warnings
 warnings.filterwarnings('ignore')
 
@@ -534,6 +547,10 @@ class GBMStockRanker:
 
         logger.info(f'Loaded {len(df)} snapshots for {df["ticker"].nunique()} stocks')
 
+        # Convert all numeric columns to float (SQLite sometimes returns as object)
+        for col in FUNDAMENTAL_FEATURES + MARKET_FEATURES + CASHFLOW_FEATURES:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+
         # Load forward returns
         returns_query = '''
             SELECT
@@ -611,17 +628,20 @@ class GBMStockRanker:
             snapshot_prices = snapshot_prices[snapshot_prices['date'] <= snapshot_date].sort_values('date')
 
             if len(snapshot_prices) >= 21:
-                # Get last 60 days (or less if not available)
-                recent_prices = snapshot_prices.tail(60)
+                # Get last 252 trading days (~1 year) or available data
+                recent_prices = snapshot_prices.tail(252)
                 closes = recent_prices['close'].values
                 volumes = recent_prices['volume'].values
 
-                # Calculate returns
+                # Calculate returns for multiple periods
                 returns_1m = (closes[-1] - closes[-21]) / closes[-21] if len(closes) >= 21 else 0.0
-                returns_3m = (closes[-1] - closes[0]) / closes[0] if len(closes) >= 2 else 0.0
+                returns_3m = (closes[-1] - closes[-63]) / closes[-63] if len(closes) >= 63 else 0.0
+                returns_6m = (closes[-1] - closes[-126]) / closes[-126] if len(closes) >= 126 else 0.0
+                returns_1y = (closes[-1] - closes[0]) / closes[0] if len(closes) >= 252 else 0.0
 
-                # Calculate volatility (std of daily returns)
-                daily_returns = np.diff(closes) / closes[:-1]
+                # Calculate volatility (std of daily returns over last 60 days)
+                recent_closes = closes[-60:] if len(closes) >= 60 else closes
+                daily_returns = np.diff(recent_closes) / recent_closes[:-1]
                 volatility = np.std(daily_returns) if len(daily_returns) > 0 else 0.0
 
                 # Calculate volume trend
@@ -633,12 +653,16 @@ class GBMStockRanker:
                 # Not enough price history
                 returns_1m = 0.0
                 returns_3m = 0.0
+                returns_6m = 0.0
+                returns_1y = 0.0
                 volatility = 0.0
                 volume_trend = 0.0
 
             return pd.Series({
                 'returns_1m': returns_1m,
                 'returns_3m': returns_3m,
+                'returns_6m': returns_6m,
+                'returns_1y': returns_1y,
                 'volatility': volatility,
                 'volume_trend': volume_trend
             })
@@ -648,12 +672,10 @@ class GBMStockRanker:
         df = pd.concat([df, price_features], axis=1)
 
         # Fill missing values
-        df['returns_1m'] = df['returns_1m'].fillna(0.0)
-        df['returns_3m'] = df['returns_3m'].fillna(0.0)
-        df['volatility'] = df['volatility'].fillna(0.0)
-        df['volume_trend'] = df['volume_trend'].fillna(0.0)
+        for feat in PRICE_FEATURES:
+            df[feat] = df[feat].fillna(0.0)
 
-        logger.info('Added price features: returns_1m, returns_3m, volatility, volume_trend')
+        logger.info(f'Added price features: {", ".join(PRICE_FEATURES)}')
 
         return df
 
@@ -676,47 +698,31 @@ class GBMStockRanker:
         # Sort by ticker and date
         df = df.sort_values(['ticker', 'snapshot_date']).reset_index(drop=True)
 
-        # Fundamental features to engineer
-        fund_features = [
-            'profit_margins', 'operating_margins', 'gross_margins',
-            'return_on_equity', 'return_on_assets',
-            'revenue_growth', 'earnings_growth',
-            'debt_to_equity', 'current_ratio', 'quick_ratio',
-            'pe_ratio', 'pb_ratio', 'ps_ratio',
-            'enterprise_to_ebitda', 'enterprise_to_revenue',
-            'dividend_yield', 'payout_ratio'
-        ]
+        # Create computed features
+        logger.info('Creating computed features...')
 
-        # Price-based features to engineer
-        price_features = [
-            'returns_1m', 'returns_3m', 'volatility', 'volume_trend'
-        ]
+        # Log market cap (more stable for tree models)
+        df['log_market_cap'] = np.log(df['market_cap'] + 1e9)
 
-        # All features to engineer
-        all_features = fund_features + price_features
-
-        # 1. Create lag features (1Q, 2Q, 4Q, 8Q)
-        df = create_lag_features(df, all_features, lags=[1, 2, 4, 8])
-        logger.info('Created lag features')
-
-        # 2. Create change features (QoQ, YoY)
-        df = create_change_features(df, all_features)
-        logger.info('Created change features')
-
-        # 3. Create rolling features (4Q, 8Q, 12Q windows)
-        df = create_rolling_features(df, all_features, windows=[4, 8, 12])
-        logger.info('Created rolling features')
-
-        # 4. Create valuation ratios and yields
-        # FCF yield
+        # Yield features
         df['fcf_yield'] = df['free_cashflow'] / (df['market_cap'] + 1e9)
         df['ocf_yield'] = df['operating_cashflow'] / (df['market_cap'] + 1e9)
+        df['earnings_yield'] = df['trailing_eps'] / (df['market_cap'] / df['book_value'] + 1e-9)  # Approx E/P
 
-        # Shareholder yield (dividend yield approximation)
-        df['shareholder_yield'] = df['dividend_yield']
+        # 1. Create lag features
+        df = create_lag_features(df, BASE_FEATURES, lags=LAG_PERIODS)
+        logger.info(f'Created lag features for {len(BASE_FEATURES)} features')
 
-        # 5. Add missingness flags
-        for feat in all_features:
+        # 2. Create change features (QoQ, YoY)
+        df = create_change_features(df, BASE_FEATURES)
+        logger.info('Created change features')
+
+        # 3. Create rolling features
+        df = create_rolling_features(df, BASE_FEATURES, windows=ROLLING_WINDOWS)
+        logger.info('Created rolling features')
+
+        # 4. Add missingness flags
+        for feat in BASE_FEATURES:
             df[f'{feat}_missing'] = df[feat].isna().astype(int)
 
         logger.info(f'Total columns after engineering: {len(df.columns)}')
@@ -745,18 +751,28 @@ class GBMStockRanker:
         # Drop rows without forward returns
         df = df.dropna(subset=['forward_return'])
 
-        # Identify feature columns
-        exclude_cols = [
-            'ticker', 'snapshot_date', 'snapshot_id', 'forward_return',
-            'sector'  # Will be handled separately as categorical
-        ]
+        # Exclude metadata, categorical, and base cashflow features
+        # Note: We don't engineer features FOR cashflow features, we only use them to compute yields
+        exclude_cols = (
+            ['ticker', 'snapshot_date', 'snapshot_id', 'forward_return'] +
+            CATEGORICAL_FEATURES +
+            CASHFLOW_FEATURES  # Only base features, no engineered versions exist
+        )
 
         numeric_features = [
             col for col in df.columns
             if col not in exclude_cols and df[col].dtype in [np.float64, np.int64]
         ]
 
-        categorical_features = ['sector']
+        # Debug: Check which columns are non-numeric
+        non_numeric = [
+            col for col in df.columns
+            if col not in exclude_cols and df[col].dtype not in [np.float64, np.int64]
+        ]
+        if non_numeric:
+            logger.info(f'Non-numeric columns (first 20): {non_numeric[:20]}')
+
+        categorical_features = CATEGORICAL_FEATURES
 
         # Winsorize numeric features (cross-sectional, per date)
         logger.info('Winsorizing features (1st-99th percentile)')
