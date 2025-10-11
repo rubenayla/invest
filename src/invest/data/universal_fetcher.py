@@ -16,6 +16,8 @@ from typing import Dict, List, Optional, Tuple, Union
 import yfinance as yf
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import logging
+from numbers import Number
+import math
 
 logger = logging.getLogger(__name__)
 
@@ -83,7 +85,7 @@ TICKER_ALIASES = {
 class UniversalStockFetcher:
     """Fetches stock data from any exchange worldwide."""
     
-    def __init__(self, convert_currency: bool = False, target_currency: str = 'USD'):
+    def __init__(self, convert_currency: bool = True, target_currency: str = 'USD'):
         """
         Initialize the universal fetcher.
         
@@ -238,7 +240,23 @@ class UniversalStockFetcher:
     
     def _convert_prices(self, data: Dict) -> Dict:
         """Convert price fields to target currency."""
-        source_currency = data['currency']
+        source_currency = data.get('currency')
+        data['original_currency'] = source_currency
+        
+        if not source_currency:
+            data['currency'] = self.target_currency
+            data['exchange_rate'] = 1.0
+            data['converted_to'] = self.target_currency
+            return data
+        
+        if source_currency == self.target_currency:
+            data['exchange_rate'] = 1.0
+            data['converted_to'] = self.target_currency
+            data['currency'] = self.target_currency
+            if 'financialCurrency' in data:
+                data.setdefault('financialCurrency_original', data['financialCurrency'])
+                data['financialCurrency'] = self.target_currency
+            return data
         
         # Get exchange rate
         if source_currency not in self._exchange_rates:
@@ -252,27 +270,65 @@ class UniversalStockFetcher:
                 self._exchange_rates[source_currency] = 1.0
         
         rate = self._exchange_rates[source_currency]
+
+        def _convert_field(field_name: str) -> None:
+            """Convert a numeric field in-place while preserving the original value."""
+            value = data.get(field_name)
+            if value is None or isinstance(value, bool) or not isinstance(value, Number):
+                return
+            original_key = f'{field_name}_original'
+            if original_key not in data:
+                data[original_key] = value
+            try:
+                numeric_value = float(value)
+            except (TypeError, ValueError):
+                return
+            if math.isnan(numeric_value) or math.isinf(numeric_value):
+                return
+            converted_value = numeric_value * rate
+            data[field_name] = converted_value
+            data[f'{field_name}_{self.target_currency.lower()}'] = converted_value
         
         # Convert price fields
         price_fields = [
-            'current_price', 'target_mean_price', 'target_high_price', 'target_low_price',
-            'fifty_two_week_high', 'fifty_two_week_low', 'fifty_day_average', 
-            'two_hundred_day_average', 'book_value', 'trailing_eps', 'forward_eps'
+            'current_price', 'currentPrice', 'regularMarketPrice',
+            'target_mean_price', 'targetMeanPrice',
+            'target_high_price', 'targetHighPrice',
+            'target_low_price', 'targetLowPrice',
+            'fifty_two_week_high', 'fiftyTwoWeekHigh',
+            'fifty_two_week_low', 'fiftyTwoWeekLow',
+            'fifty_day_average', 'fiftyDayAverage',
+            'two_hundred_day_average', 'twoHundredDayAverage',
+            'book_value', 'bookValue',
+            'trailing_eps', 'trailingEps',
+            'forward_eps', 'forwardEps',
+            'previousClose', 'open', 'dayHigh', 'dayLow'
         ]
         
         for field in price_fields:
-            if field in data and data[field]:
-                data[f'{field}_{self.target_currency.lower()}'] = data[field] * rate
+            _convert_field(field)
         
         # Convert value fields
         value_fields = [
-            'market_cap', 'enterprise_value', 'revenue', 'ebitda', 'net_income',
-            'free_cash_flow', 'total_cash', 'total_debt', 'total_assets', 'total_liabilities'
+            'market_cap', 'marketCap',
+            'enterprise_value', 'enterpriseValue',
+            'revenue', 'totalRevenue',
+            'ebitda',
+            'net_income', 'netIncomeToCommon',
+            'free_cash_flow', 'freeCashflow',
+            'total_cash', 'totalCash',
+            'total_debt', 'totalDebt',
+            'total_assets', 'totalAssets',
+            'total_liabilities', 'totalLiab'
         ]
         
         for field in value_fields:
-            if field in data and data[field]:
-                data[f'{field}_{self.target_currency.lower()}'] = data[field] * rate
+            _convert_field(field)
+
+        data['currency'] = self.target_currency
+        if 'financialCurrency' in data:
+            data.setdefault('financialCurrency_original', data['financialCurrency'])
+            data['financialCurrency'] = self.target_currency
         
         data['exchange_rate'] = rate
         data['converted_to'] = self.target_currency

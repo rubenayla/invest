@@ -175,7 +175,7 @@ class AnalysisPipeline:
                 if completed % 25 == 0:
                     logger.info(f"Processed {completed}/{total} tickers for market cap...")
             
-            fetcher = UniversalStockFetcher()
+            fetcher = UniversalStockFetcher(convert_currency=True)
             fetcher_results = fetcher.fetch_multiple(tickers[:max_fetch])
             
             ticker_market_caps = []
@@ -205,7 +205,7 @@ class AnalysisPipeline:
             logger.info("Using universal fetcher for mixed international stocks...")
             from ..data.universal_fetcher import UniversalStockFetcher
             
-            fetcher = UniversalStockFetcher(convert_currency=False)
+            fetcher = UniversalStockFetcher(convert_currency=True)
             fetcher_results = fetcher.fetch_multiple(tickers, max_workers=10)
             
             for ticker in tickers:
@@ -221,7 +221,7 @@ class AnalysisPipeline:
             logger.info("Using universal fetcher for all stocks...")
             from ..data.universal_fetcher import UniversalStockFetcher
             
-            fetcher = UniversalStockFetcher(convert_currency=False)
+            fetcher = UniversalStockFetcher(convert_currency=True)
             fetcher_results = fetcher.fetch_multiple(tickers, max_workers=10)
             
             for ticker in tickers:

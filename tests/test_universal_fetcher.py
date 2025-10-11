@@ -102,6 +102,47 @@ class TestUniversalStockFetcher:
         assert 'MSFT' in results
         assert mock_ticker.call_count == 2
     
+    @patch('invest.data.universal_fetcher.yf.Ticker')
+    def test_currency_conversion_updates_primary_fields(self, mock_ticker):
+        """Ensure non-USD data is converted and original values are preserved."""
+        fetcher = UniversalStockFetcher(convert_currency=True)
+        
+        stock_info = {
+            'symbol': 'SONY',
+            'longName': 'Sony Group Corporation',
+            'currentPrice': 1500.0,
+            'marketCap': 100000000000,
+            'currency': 'JPY'
+        }
+        rate_info = {'regularMarketPrice': 0.007}
+        
+        stock_instance = Mock()
+        stock_instance.info = stock_info
+        rate_instance = Mock()
+        rate_instance.info = rate_info
+        
+        def side_effect(ticker):
+            if ticker == 'SONY':
+                return stock_instance
+            if ticker == 'JPYUSD=X':
+                return rate_instance
+            raise AssertionError(f"Unexpected ticker requested: {ticker}")
+        
+        mock_ticker.side_effect = side_effect
+        
+        result = fetcher.fetch_stock('SONY')
+        
+        assert result is not None
+        assert result['currency'] == 'USD'
+        assert result['original_currency'] == 'JPY'
+        assert result['exchange_rate'] == pytest.approx(0.007)
+        assert result['currentPrice'] == pytest.approx(10.5)
+        assert result['current_price'] == pytest.approx(10.5)
+        assert result['marketCap'] == pytest.approx(700000000)
+        assert result['market_cap'] == pytest.approx(700000000)
+        assert result['currentPrice_original'] == 1500.0
+        assert result['marketCap_original'] == 100000000000
+    
     def test_international_ticker_support(self):
         """Test that international ticker formats are supported."""
         international_tickers = [
@@ -151,6 +192,9 @@ class TestDataIntegration:
     
     def test_currency_conversion_flag(self):
         """Test currency conversion functionality."""
+        fetcher_default = UniversalStockFetcher()
+        assert fetcher_default.convert_currency is True
+        
         # Test with currency conversion enabled
         fetcher_with_currency = UniversalStockFetcher(convert_currency=True)
         assert fetcher_with_currency.convert_currency is True

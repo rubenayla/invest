@@ -152,3 +152,6 @@ data/stock_cache/*.json
 neural_network/training/gbm_model_*.txt
 # UV local cache for CI/CD
 .uv/
+
+# SEC EDGAR downloaded data (large files)
+data/sec_edgar/raw/

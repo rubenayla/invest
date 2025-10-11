@@ -45,7 +45,8 @@ class MultiHorizonCacheGenerator:
             '3m': 63,    # ~3 months
             '6m': 126,   # ~6 months
             '1y': 252,   # ~1 year
-            '2y': 504    # ~2 years
+            '2y': 504,   # ~2 years
+            '3y': 756    # ~3 years
         }
 
     def get_sp500_tickers(self) -> List[str]:
@@ -218,9 +219,9 @@ class MultiHorizonCacheGenerator:
             samples = []
 
             # Create samples from different dates
-            # We need at least 2 years of history + 2 years forward
+            # We need at least 2 years of history + 3 years forward
             min_history_needed = 504  # 2 years
-            max_forward_needed = 504  # 2 years
+            max_forward_needed = 756  # 3 years
 
             # Sample every 6 months to get diverse data points
             sample_interval = 126  # ~6 months
@@ -294,77 +295,29 @@ class MultiHorizonCacheGenerator:
                 ))
                 asset_id = cursor.lastrowid
 
-            # Extract features for ML (still needed for feature engineering consistency)
-            features = self.feature_engineer.extract_features(data)
-
             # Get snapshot date
             history = data['history']
             snapshot_date = history.index[-1].strftime('%Y-%m-%d')
 
-            # Extract RAW values from info dict for database storage (not processed features!)
+            # Extract ONLY real macro data (fetched for this specific historical date)
             macro = data.get('macro', {})
 
-            # Helper to safely get numeric values with warnings
-            missing_fields = []
-            def safe_get(d, key, default=None, critical=False):
-                val = d.get(key, default)
-                if val is None:
-                    if critical:
-                        missing_fields.append(key)
-                    return default
-                return val
-
-            # Insert snapshot (current_price removed - not in schema)
+            # Insert snapshot with ONLY real data:
+            # - Metadata (asset_id, snapshot_date)
+            # - Real macro indicators (VIX, Treasury, Dollar Index, Oil, Gold)
+            # - NO fundamentals from info dict (those are CURRENT values, not historical)
             cursor.execute('''
                 INSERT INTO snapshots (
                     asset_id, snapshot_date,
-                    volume, market_cap, shares_outstanding,
-                    pe_ratio, pb_ratio, ps_ratio, peg_ratio,
-                    price_to_book, price_to_sales, enterprise_to_revenue, enterprise_to_ebitda,
-                    profit_margins, operating_margins, gross_margins, ebitda_margins,
-                    return_on_assets, return_on_equity,
-                    revenue_growth, earnings_growth, earnings_quarterly_growth, revenue_per_share,
-                    total_cash, total_debt, debt_to_equity, current_ratio, quick_ratio,
-                    operating_cashflow, free_cashflow,
-                    trailing_eps, forward_eps, book_value,
-                    dividend_rate, dividend_yield, payout_ratio,
-                    price_change_pct, volatility, beta,
-                    fifty_day_average, two_hundred_day_average,
-                    fifty_two_week_high, fifty_two_week_low,
                     vix, treasury_10y, dollar_index, oil_price, gold_price
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
             ''', (
                 asset_id, snapshot_date,
-                safe_get(info, 'volume'),
-                safe_get(info, 'marketCap', critical=True), safe_get(info, 'sharesOutstanding'),
-                safe_get(info, 'trailingPE'), safe_get(info, 'priceToBook', critical=True),
-                safe_get(info, 'priceToSalesTrailing12Months'), safe_get(info, 'pegRatio'),
-                safe_get(info, 'priceToBook'), safe_get(info, 'priceToSalesTrailing12Months'),
-                safe_get(info, 'enterpriseToRevenue'), safe_get(info, 'enterpriseToEbitda'),
-                safe_get(info, 'profitMargins', critical=True), safe_get(info, 'operatingMargins', critical=True),
-                safe_get(info, 'grossMargins'), safe_get(info, 'ebitdaMargins'),
-                safe_get(info, 'returnOnAssets'), safe_get(info, 'returnOnEquity', critical=True),
-                safe_get(info, 'revenueGrowth'), safe_get(info, 'earningsGrowth'),
-                safe_get(info, 'earningsQuarterlyGrowth'), safe_get(info, 'revenuePerShare'),
-                safe_get(info, 'totalCash'), safe_get(info, 'totalDebt'),
-                safe_get(info, 'debtToEquity'), safe_get(info, 'currentRatio'),
-                safe_get(info, 'quickRatio'), safe_get(info, 'operatingCashflow'),
-                safe_get(info, 'freeCashflow', critical=True), safe_get(info, 'trailingEps'),
-                safe_get(info, 'forwardEps'), safe_get(info, 'bookValue'),
-                safe_get(info, 'dividendRate'), safe_get(info, 'dividendYield'),
-                safe_get(info, 'payoutRatio'), features.get('return_1m', 0.0),
-                features.get('volatility_1y', 0.2), safe_get(info, 'beta', 1.0),
-                safe_get(info, 'fiftyDayAverage'), safe_get(info, 'twoHundredDayAverage'),
-                safe_get(info, 'fiftyTwoWeekHigh'), safe_get(info, 'fiftyTwoWeekLow'),
                 macro.get('vix'), macro.get('treasury_10y'),
                 macro.get('dollar_index'), macro.get('oil_price'),
                 macro.get('gold_price')
             ))
             snapshot_id = cursor.lastrowid
-
-            # Warn about missing critical fields
-            if missing_fields:
-                logger.warning(f'{ticker} ({snapshot_date}): Missing critical fields: {", ".join(missing_fields)}')
 
             # Insert price history
             for idx, date in enumerate(history.index):

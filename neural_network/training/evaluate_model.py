@@ -53,10 +53,12 @@ class ModelEvaluator:
 
     def _load_model(self) -> LSTMTransformerNetwork:
         """Load trained model from checkpoint."""
-        # Model architecture must match training
+        # Model architecture must match training (updated to use only real data)
+        # Temporal: 9 features (4 price-based + 5 macro)
+        # Static: 16 features (5 macro + 11 sectors)
         model = LSTMTransformerNetwork(
-            temporal_features=11,
-            static_features=22,
+            temporal_features=9,
+            static_features=16,
             lstm_hidden=256,
             transformer_heads=8,
             dropout_rate=0.3
@@ -68,7 +70,7 @@ class ModelEvaluator:
         model.to(self.device)
         model.eval()
 
-        print(f'Model loaded successfully')
+        print(f'Model loaded successfully (9 temporal, 16 static features)')
         return model
 
     def load_test_data(self, test_start: str = '2021-01-01') -> pd.DataFrame:
@@ -89,32 +91,25 @@ class ModelEvaluator:
 
         conn = sqlite3.connect(self.db_path)
 
-        # Load snapshots with forward returns
+        # Load snapshots with macro indicators only (no fake fundamentals)
         query = '''
             SELECT
                 s.id,
                 a.symbol,
                 a.sector,
                 s.snapshot_date,
-                s.market_cap,
-                s.pe_ratio,
-                s.pb_ratio,
-                s.profit_margins,
-                s.operating_margins,
-                s.return_on_equity,
-                s.revenue_growth,
-                s.earnings_growth,
-                s.debt_to_equity,
-                s.current_ratio,
-                s.free_cashflow,
-                s.beta,
+                s.vix,
+                s.treasury_10y,
+                s.dollar_index,
+                s.oil_price,
+                s.gold_price,
                 fr.return_pct
             FROM snapshots s
             JOIN assets a ON s.asset_id = a.id
             LEFT JOIN forward_returns fr ON s.id = fr.snapshot_id
             WHERE s.snapshot_date >= ?
                 AND fr.horizon = ?
-                AND s.pe_ratio IS NOT NULL
+                AND s.vix IS NOT NULL
                 AND fr.return_pct IS NOT NULL
             ORDER BY a.symbol, s.snapshot_date
         '''
@@ -151,6 +146,10 @@ class ModelEvaluator:
         targets = []
         metadata = []
 
+        # Connect to database to fetch price history
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+
         # Group by stock
         for symbol in df.symbol.unique():
             stock_df = df[df.symbol == symbol].sort_values('snapshot_date')
@@ -165,10 +164,22 @@ class ModelEvaluator:
                 sequence = stock_df.iloc[i:i + min_sequence_length]
                 latest = sequence.iloc[-1]
 
-                # Extract temporal features (sequence of snapshots)
-                temporal = self._extract_temporal(sequence)
+                # Get price history for latest snapshot
+                cursor.execute('''
+                    SELECT date, close, volume
+                    FROM price_history
+                    WHERE snapshot_id = ?
+                    ORDER BY date
+                ''', (int(latest.id),))
+                price_history = cursor.fetchall()
 
-                # Extract static features (most recent snapshot)
+                if len(price_history) < 60:
+                    continue
+
+                # Extract temporal features (price history + macro)
+                temporal = self._extract_temporal(sequence, price_history)
+
+                # Extract static features (macro indicators + sector)
                 static = self._extract_static(latest, sector)
 
                 # Target (forward return - database stores as decimal, where 0.314 = 31.4%)
@@ -184,66 +195,67 @@ class ModelEvaluator:
                         'year': int(latest.snapshot_date[:4])
                     })
 
+        conn.close()
         print(f'Prepared {len(samples)} samples with sequences')
         return samples, targets, metadata
 
-    def _extract_temporal(self, sequence: pd.DataFrame) -> np.ndarray:
-        """Extract temporal features from sequence of snapshots."""
-        temporal_features = []
+    def _extract_temporal(self, sequence: pd.DataFrame, price_history: List) -> np.ndarray:
+        """
+        Extract temporal features from price history and macro indicators.
 
+        Uses ONLY real data (matches train_single_horizon.py).
+        """
+        # Calculate price-based features from last 60 days
+        recent_prices = [p[1] for p in price_history[-60:]]
+        recent_volumes = [p[2] for p in price_history[-60:]]
+
+        if len(recent_prices) < 60:
+            return None
+
+        # Price momentum
+        returns_1m = (recent_prices[-1] - recent_prices[-21]) / recent_prices[-21] if len(recent_prices) >= 21 else 0.0
+        returns_3m = (recent_prices[-1] - recent_prices[0]) / recent_prices[0]
+        volatility = np.std(np.diff(recent_prices) / recent_prices[:-1])
+
+        # Volume trend
+        vol_avg = np.mean(recent_volumes)
+        vol_recent = np.mean(recent_volumes[-5:])
+        volume_trend = (vol_recent - vol_avg) / vol_avg if vol_avg > 0 else 0.0
+
+        # Temporal sequence from macro indicators
+        temporal_features = []
         for _, snapshot in sequence.iterrows():
             features = [
-                np.log10(snapshot.market_cap + 1) if pd.notna(snapshot.market_cap) else 0.0,
-                snapshot.pe_ratio if pd.notna(snapshot.pe_ratio) else 0.0,
-                snapshot.pb_ratio if pd.notna(snapshot.pb_ratio) else 0.0,
-                snapshot.profit_margins if pd.notna(snapshot.profit_margins) else 0.0,
-                snapshot.operating_margins if pd.notna(snapshot.operating_margins) else 0.0,
-                snapshot.return_on_equity if pd.notna(snapshot.return_on_equity) else 0.0,
-                snapshot.revenue_growth if pd.notna(snapshot.revenue_growth) else 0.0,
-                snapshot.earnings_growth if pd.notna(snapshot.earnings_growth) else 0.0,
-                snapshot.debt_to_equity if pd.notna(snapshot.debt_to_equity) else 0.0,
-                snapshot.current_ratio if pd.notna(snapshot.current_ratio) else 0.0,
-                np.log10(abs(snapshot.free_cashflow) + 1) if pd.notna(snapshot.free_cashflow) else 0.0,
+                returns_1m,
+                returns_3m,
+                volatility,
+                volume_trend,
+                snapshot.vix if pd.notna(snapshot.vix) else 20.0,
+                snapshot.treasury_10y if pd.notna(snapshot.treasury_10y) else 3.0,
+                snapshot.dollar_index if pd.notna(snapshot.dollar_index) else 100.0,
+                snapshot.oil_price if pd.notna(snapshot.oil_price) else 70.0,
+                snapshot.gold_price if pd.notna(snapshot.gold_price) else 1800.0,
             ]
             temporal_features.append(features)
 
         return np.array(temporal_features)
 
     def _extract_static(self, snapshot: pd.Series, sector: str) -> np.ndarray:
-        """Extract static features from most recent snapshot."""
+        """
+        Extract static features from macro indicators and sector.
+
+        Uses ONLY real data (matches train_single_horizon.py).
+        """
         features = []
 
-        # Valuation ratios
+        # Macro indicators
         features.extend([
-            snapshot.pe_ratio if pd.notna(snapshot.pe_ratio) else 0.0,
-            snapshot.pb_ratio if pd.notna(snapshot.pb_ratio) else 0.0,
+            snapshot.vix if pd.notna(snapshot.vix) else 20.0,
+            snapshot.treasury_10y if pd.notna(snapshot.treasury_10y) else 3.0,
+            snapshot.dollar_index if pd.notna(snapshot.dollar_index) else 100.0,
+            snapshot.oil_price if pd.notna(snapshot.oil_price) else 70.0,
+            snapshot.gold_price if pd.notna(snapshot.gold_price) else 1800.0,
         ])
-
-        # Profitability
-        features.extend([
-            snapshot.profit_margins if pd.notna(snapshot.profit_margins) else 0.0,
-            snapshot.operating_margins if pd.notna(snapshot.operating_margins) else 0.0,
-            snapshot.return_on_equity if pd.notna(snapshot.return_on_equity) else 0.0,
-        ])
-
-        # Growth
-        features.extend([
-            snapshot.revenue_growth if pd.notna(snapshot.revenue_growth) else 0.0,
-            snapshot.earnings_growth if pd.notna(snapshot.earnings_growth) else 0.0,
-        ])
-
-        # Financial health
-        features.extend([
-            snapshot.debt_to_equity if pd.notna(snapshot.debt_to_equity) else 0.0,
-            snapshot.current_ratio if pd.notna(snapshot.current_ratio) else 0.0,
-        ])
-
-        # Beta
-        features.append(snapshot.beta if pd.notna(snapshot.beta) else 1.0)
-
-        # Market cap (log)
-        market_cap_log = np.log10(snapshot.market_cap + 1) if pd.notna(snapshot.market_cap) else 0.0
-        features.append(market_cap_log)
 
         # Sector one-hot encoding
         sectors = [
