@@ -1,3 +1,7 @@
+dashboard export as excel, csv, spreadsheet, something like that
+
+I see lots of stocks with no NN predictions, could we make a high-compatibility version of the 
+
 
 Does the neural network predictor look good? I just cloned the repo, so we may need to retrain it. I'd like to understand the cases where it's very different from other predictions and undertsand why. We need a reliable way to determine how good it is at predictions. Use a suite of data from various decades and sectors, and use separate test and training sets to analyze it well. Determine some factor of confidence in the prediction. Oh and make it visible in the dashboard.
 

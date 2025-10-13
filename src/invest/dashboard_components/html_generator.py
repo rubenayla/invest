@@ -202,6 +202,7 @@ class HTMLGenerator:
                         <th title="Simple Ratios - P/E, P/B, and other multiple-based valuations">Ratios</th>
                         <th title="Residual Income Model - Values excess returns above cost of equity based on book value">RIM</th>
                         <th title="Multi-Stage DCF - Models different growth phases over time">Multi-DCF</th>
+                        <th title="Gradient Boosted Machine 1-year ranking model (LightGBM with 464 features, Rank IC 0.53)">GBM 1y</th>
                         <th title="Neural Network 1-year prediction (LSTM/Transformer with MC Dropout confidence)">NN 1y</th>
                         <th title="Neural Network 3-year prediction (LSTM/Transformer with MC Dropout confidence)">NN 3y</th>
                         <th title="Consensus valuation - Average of all successful model results">Consensus</th>
@@ -227,11 +228,14 @@ class HTMLGenerator:
         
         model_names = {
             "dcf": "DCF",
-            "dcf_enhanced": "Enh.DCF", 
+            "dcf_enhanced": "Enh.DCF",
             "growth_dcf": "Growth",
             "simple_ratios": "Ratios",
             "rim": "RIM",
             "multi_stage_dcf": "Multi",
+            "gbm_1y": "GBM",
+            "single_horizon_nn": "NN1y",
+            "nn_3y": "NN3y",
             "ensemble": "Consensus"
         }
         

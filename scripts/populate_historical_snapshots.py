@@ -42,6 +42,10 @@ class HistoricalSnapshotFetcher:
         self.last_request_time = time.time()
         self.requests_per_minute = 30  # Conservative limit
 
+        # VIX cache (date -> VIX value)
+        self.vix_cache = {}
+        self._fetch_vix_history()
+
     def get_stocks_without_snapshots(self) -> List[tuple]:
         """Get list of stocks that don't have historical snapshots."""
         query = '''
@@ -84,6 +88,45 @@ class HistoricalSnapshotFetcher:
                 logger.info(f'Rate limiting: waiting {wait_time:.1f}s...')
                 time.sleep(wait_time)
             self.last_request_time = time.time()
+
+    def _fetch_vix_history(self):
+        """Fetch VIX historical data and cache it."""
+        try:
+            logger.info('Fetching VIX historical data...')
+            vix = yf.Ticker('^VIX')
+
+            # Fetch VIX history from 2000 to today
+            hist = vix.history(start='2000-01-01', end=datetime.now().strftime('%Y-%m-%d'))
+
+            if hist.empty:
+                logger.warning('No VIX data retrieved, will use default value')
+                return
+
+            # Cache VIX close price by date
+            for date, row in hist.iterrows():
+                date_str = date.strftime('%Y-%m-%d')
+                self.vix_cache[date_str] = float(row['Close'])
+
+            logger.info(f'Cached VIX data for {len(self.vix_cache)} dates')
+
+        except Exception as e:
+            logger.warning(f'Error fetching VIX history: {e}. Will use default value.')
+
+    def get_vix_for_date(self, date_str: str) -> Optional[float]:
+        """Get VIX value for a specific date, or None if not available."""
+        # Direct match
+        if date_str in self.vix_cache:
+            return self.vix_cache[date_str]
+
+        # Try to find closest previous trading day (within 7 days)
+        target_date = datetime.strptime(date_str, '%Y-%m-%d')
+        for days_back in range(1, 8):
+            check_date = (target_date - timedelta(days=days_back)).strftime('%Y-%m-%d')
+            if check_date in self.vix_cache:
+                return self.vix_cache[check_date]
+
+        # Default fallback
+        return 20.0  # Historical median
 
     def fetch_historical_snapshots(
         self,
@@ -195,7 +238,8 @@ class HistoricalSnapshotFetcher:
             snapshot = {
                 'ticker': ticker,
                 'snapshot_date': date_str,
-                'sector': sector
+                'sector': sector,
+                'vix': self.get_vix_for_date(date_str)
             }
 
             # From financials
@@ -254,8 +298,8 @@ class HistoricalSnapshotFetcher:
                         asset_id, snapshot_date, market_cap, pe_ratio, pb_ratio,
                         profit_margins, operating_margins, return_on_equity,
                         revenue_growth, earnings_growth, debt_to_equity,
-                        current_ratio, free_cashflow, beta
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        current_ratio, free_cashflow, beta, vix
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ''', (
                     asset_id,
                     snapshot['snapshot_date'],
@@ -270,7 +314,8 @@ class HistoricalSnapshotFetcher:
                     snapshot.get('debt_to_equity'),
                     snapshot.get('current_ratio'),
                     snapshot.get('free_cashflow'),
-                    snapshot.get('beta', 1.0)
+                    snapshot.get('beta', 1.0),
+                    snapshot.get('vix')
                 ))
             except sqlite3.IntegrityError:
                 # Snapshot already exists
