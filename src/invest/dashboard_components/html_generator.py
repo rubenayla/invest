@@ -102,7 +102,7 @@ class HTMLGenerator:
             <ul>
                 <li><strong>Fair Value:</strong> Estimated intrinsic value per share from each model</li>
                 <li><strong>Margin of Safety:</strong> How much upside/downside vs current price</li>
-                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases), Multi-Horizon NN (Neural Network with 5 time horizons)</li>
+                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases), GBM (Gradient Boosted Machine ranking models - 4 variants), NN (Neural Network predictions)</li>
                 <li><strong>Consensus:</strong> Average of all successful models</li>
             </ul>
             <p class="disclaimer">⚠️ This is for educational purposes. Not investment advice. Do your own research.</p>
@@ -202,7 +202,10 @@ class HTMLGenerator:
                         <th title="Simple Ratios - P/E, P/B, and other multiple-based valuations">Ratios</th>
                         <th title="Residual Income Model - Values excess returns above cost of equity based on book value">RIM</th>
                         <th title="Multi-Stage DCF - Models different growth phases over time">Multi-DCF</th>
-                        <th title="Gradient Boosted Machine 1-year ranking model (LightGBM with 464 features, Rank IC 0.53)">GBM 1y</th>
+                        <th title="Gradient Boosted Machine 1-year ranking (LightGBM with 464 features, Rank IC 0.61)">GBM 1y</th>
+                        <th title="Gradient Boosted Machine 3-year ranking (LightGBM with 464 features, Rank IC 0.59)">GBM 3y</th>
+                        <th title="Gradient Boosted Machine Lite 1-year ranking (LightGBM with 247 features, Rank IC 0.59)">GBM Lite 1y</th>
+                        <th title="Gradient Boosted Machine Lite 3-year ranking (LightGBM with 247 features, Rank IC 0.61)">GBM Lite 3y</th>
                         <th title="Neural Network 1-year prediction (LSTM/Transformer with MC Dropout confidence)">NN 1y</th>
                         <th title="Neural Network 3-year prediction (LSTM/Transformer with MC Dropout confidence)">NN 3y</th>
                         <th title="Consensus valuation - Average of all successful model results">Consensus</th>
@@ -233,7 +236,10 @@ class HTMLGenerator:
             "simple_ratios": "Ratios",
             "rim": "RIM",
             "multi_stage_dcf": "Multi",
-            "gbm_1y": "GBM",
+            "gbm_1y": "GBM1y",
+            "gbm_3y": "GBM3y",
+            "gbm_lite_1y": "GBM-Lite1y",
+            "gbm_lite_3y": "GBM-Lite3y",
             "single_horizon_nn": "NN1y",
             "nn_3y": "NN3y",
             "ensemble": "Consensus"
@@ -272,6 +278,12 @@ class HTMLGenerator:
         rim_html = self._format_valuation_cell(valuations.get("rim", {}), current_price)
         multi_dcf_html = self._format_valuation_cell(valuations.get("multi_stage_dcf", {}), current_price)
 
+        # Format GBM predictions (4 models)
+        gbm_1y_html = self._format_valuation_cell(valuations.get("gbm_1y", {}), current_price)
+        gbm_3y_html = self._format_valuation_cell(valuations.get("gbm_3y", {}), current_price)
+        gbm_lite_1y_html = self._format_valuation_cell(valuations.get("gbm_lite_1y", {}), current_price)
+        gbm_lite_3y_html = self._format_valuation_cell(valuations.get("gbm_lite_3y", {}), current_price)
+
         # Format single-horizon NN prediction (1-year only)
         nn_html = self._format_nn_cell(valuations.get("single_horizon_nn", {}), current_price)
 
@@ -292,6 +304,10 @@ class HTMLGenerator:
             <td>{ratios_html}</td>
             <td>{rim_html}</td>
             <td>{multi_dcf_html}</td>
+            <td>{gbm_1y_html}</td>
+            <td>{gbm_3y_html}</td>
+            <td>{gbm_lite_1y_html}</td>
+            <td>{gbm_lite_3y_html}</td>
             <td>{nn_html}</td>
             <td>{nn_3y_html}</td>
             <td>{consensus_html}</td>

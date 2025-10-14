@@ -1,17 +1,13 @@
 #!/usr/bin/env python3
 """
-Train gradient-boosted tree models (LightGBM/CatBoost) for stock selection.
+Train GBM Lite model for stocks with limited historical data (4-6 quarters).
 
-This implements a leak-safe fundamental-based ranking system with:
-- Tradability timestamp alignment (no look-ahead bias)
-- Purged + embargoed + grouped cross-validation
-- Rich feature engineering (lags, changes, rolling stats)
-- Cross-sectional ranking objective (LambdaRank)
-- Multiple evaluation metrics (Rank IC, decile spreads, NDCG)
+This is a lightweight version that requires fewer quarters:
+- Lag periods: [1, 2] instead of [1, 2, 4, 8]
+- Rolling windows: [4] instead of [4, 8, 12]
+- Result: ~200 features instead of 464
 
-Targets:
-    Model A: 12-month forward total return
-    Model B: 36-month forward total return
+Use this for stocks that don't qualify for the full GBM model.
 """
 
 import argparse
@@ -31,8 +27,8 @@ from scipy import stats
 from scipy.stats import linregress
 from sklearn.metrics import ndcg_score
 
-# Import feature configuration
-from gbm_feature_config import (
+# Import LITE feature configuration
+from gbm_lite_feature_config import (
     BASE_FEATURES,
     FUNDAMENTAL_FEATURES,
     MARKET_FEATURES,
@@ -41,7 +37,8 @@ from gbm_feature_config import (
     CATEGORICAL_FEATURES,
     LAG_PERIODS,
     ROLLING_WINDOWS,
-    get_snapshot_query_columns
+    get_snapshot_query_columns,
+    get_min_quarters_required
 )
 
 # Suppress warnings
@@ -79,20 +76,18 @@ def compute_tradability_date(
         Tradability date (as-of date)
     """
     if filing_date is not None and pd.notna(filing_date):
-        # Filing date + 2 trading days (approximation: +3 calendar days to be safe)
         return filing_date + timedelta(days=3)
     else:
-        # Report period end + 60 calendar days
         return report_period_end + timedelta(days=60)
 
 
 def create_lag_features(
     df: pd.DataFrame,
     features: List[str],
-    lags: List[int] = [1, 2, 4, 8]
+    lags: List[int] = [1, 2]  # LITE: Only 1Q, 2Q
 ) -> pd.DataFrame:
     """
-    Create lagged features (1Q, 2Q, 4Q, 8Q back).
+    Create lagged features (1Q, 2Q back only).
 
     Parameters
     ----------
@@ -101,7 +96,7 @@ def create_lag_features(
     features : List[str]
         Features to lag
     lags : List[int]
-        Number of quarters to lag
+        Number of quarters to lag (default: [1, 2])
 
     Returns
     -------
@@ -149,21 +144,20 @@ def create_change_features(
         # QoQ: (F_t - F_{t-1}) / (|F_{t-1}| + 1e-9)
         lag1_col = f'{feat}_lag1q'
         if lag1_col in df.columns:
-            # Convert to numeric first to handle None values
             lag1_vals = pd.to_numeric(df[lag1_col], errors='coerce')
             feat_vals = pd.to_numeric(df[feat], errors='coerce')
             numerator = feat_vals - lag1_vals
             denominator = lag1_vals.abs().fillna(0) + 1e-9
             df[f'{feat}_qoq'] = numerator / denominator
 
-        # YoY: (F_t - F_{t-4}) / (|F_{t-4}| + 1e-9)
-        lag4_col = f'{feat}_lag4q'
-        if lag4_col in df.columns:
-            # Convert to numeric first to handle None values
-            lag4_vals = pd.to_numeric(df[lag4_col], errors='coerce')
+        # YoY: Use lag2q as proxy since we don't have lag4q
+        # (This is approximate, but better than nothing)
+        lag2_col = f'{feat}_lag2q'
+        if lag2_col in df.columns:
+            lag2_vals = pd.to_numeric(df[lag2_col], errors='coerce')
             feat_vals = pd.to_numeric(df[feat], errors='coerce')
-            numerator = feat_vals - lag4_vals
-            denominator = lag4_vals.abs().fillna(0) + 1e-9
+            numerator = feat_vals - lag2_vals
+            denominator = lag2_vals.abs().fillna(0) + 1e-9
             df[f'{feat}_yoy'] = numerator / denominator
 
     return df
@@ -172,10 +166,10 @@ def create_change_features(
 def create_rolling_features(
     df: pd.DataFrame,
     features: List[str],
-    windows: List[int] = [4, 8, 12]
+    windows: List[int] = [4]  # LITE: Only 4Q window
 ) -> pd.DataFrame:
     """
-    Create rolling statistics (mean, std, slope) over N quarters.
+    Create rolling statistics (mean, std, slope) over 4 quarters only.
 
     Parameters
     ----------
@@ -184,7 +178,7 @@ def create_rolling_features(
     features : List[str]
         Features to compute rolling stats for
     windows : List[int]
-        Window sizes in quarters
+        Window sizes in quarters (default: [4])
 
     Returns
     -------
@@ -198,16 +192,16 @@ def create_rolling_features(
             continue
 
         for window in windows:
-            # Rolling mean
+            # Rolling mean (min_periods=2 to allow for sparse data)
             mean_col = f'{feat}_mean{window}q'
             df[mean_col] = df.groupby('ticker')[feat].transform(
-                lambda x: x.rolling(window, min_periods=max(1, window//2)).mean()
+                lambda x: x.rolling(window, min_periods=2).mean()
             )
 
             # Rolling std
             std_col = f'{feat}_std{window}q'
             df[std_col] = df.groupby('ticker')[feat].transform(
-                lambda x: x.rolling(window, min_periods=max(1, window//2)).std()
+                lambda x: x.rolling(window, min_periods=2).std()
             )
 
             # Rolling slope (OLS trend)
@@ -224,7 +218,7 @@ def create_rolling_features(
                     return np.nan
 
             df[slope_col] = df.groupby('ticker')[feat].transform(
-                lambda x: x.rolling(window, min_periods=max(2, window//2)).apply(rolling_slope, raw=False)
+                lambda x: x.rolling(window, min_periods=2).apply(rolling_slope, raw=False)
             )
 
     return df
@@ -348,29 +342,21 @@ def purged_group_time_series_split(
     splits = []
 
     for i in range(n_splits):
-        # Train end date
         train_end_idx = fold_size * (i + 1)
         train_end_date = dates[train_end_idx]
 
-        # Embargo end date
         embargo_end_date = train_end_date + pd.Timedelta(days=embargo_days)
-
-        # Val start date (after embargo)
         val_start_date = embargo_end_date
 
-        # Val end date
         val_end_idx = min(train_end_idx + fold_size, n_dates - 1)
         val_end_date = dates[val_end_idx]
 
-        # Purge start (before val_start)
         purge_start_date = val_start_date - pd.Timedelta(days=purge_days)
 
-        # Train indices (before purge start)
         train_idx = df[
             (df['snapshot_date'] < purge_start_date)
         ].index.values
 
-        # Val indices (between val_start and val_end, avoiding purge zone)
         val_idx = df[
             (df['snapshot_date'] >= val_start_date) &
             (df['snapshot_date'] <= val_end_date)
@@ -378,7 +364,6 @@ def purged_group_time_series_split(
 
         if len(train_idx) > 0 and len(val_idx) > 0:
             splits.append((train_idx, val_idx))
-            # Convert numpy datetime64 to pandas Timestamp for .date() method
             purge_start_pd = pd.Timestamp(purge_start_date)
             val_start_pd = pd.Timestamp(val_start_date)
             val_end_pd = pd.Timestamp(val_end_date)
@@ -462,8 +447,8 @@ def compute_decile_spreads(
     }
 
 
-class GBMStockRanker:
-    """Gradient-boosted tree stock ranker with leak-safe training."""
+class GBMLiteStockRanker:
+    """Lightweight GBM stock ranker for stocks with limited history (4-6 quarters)."""
 
     def __init__(
         self,
@@ -472,7 +457,7 @@ class GBMStockRanker:
         model_type: str = 'lightgbm'
     ):
         """
-        Initialize GBM stock ranker.
+        Initialize GBM Lite stock ranker.
 
         Parameters
         ----------
@@ -488,8 +473,10 @@ class GBMStockRanker:
         self.model_type = model_type
         self.model = None
         self.feature_names = []
+        self.min_quarters = get_min_quarters_required()
 
-        logger.info(f'Initialized {model_type} ranker for {target_horizon} horizon')
+        logger.info(f'Initialized {model_type} LITE ranker for {target_horizon} horizon')
+        logger.info(f'Minimum quarters required: {self.min_quarters}')
 
     def load_data(self) -> pd.DataFrame:
         """
@@ -547,7 +534,7 @@ class GBMStockRanker:
 
         logger.info(f'Loaded {len(df)} snapshots for {df["ticker"].nunique()} stocks')
 
-        # Convert all numeric columns to float (SQLite sometimes returns as object)
+        # Convert all numeric columns to float
         for col in FUNDAMENTAL_FEATURES + MARKET_FEATURES + CASHFLOW_FEATURES:
             df[col] = pd.to_numeric(df[col], errors='coerce')
 
@@ -630,23 +617,19 @@ class GBMStockRanker:
             snapshot_prices = snapshot_prices[snapshot_prices['date'] <= snapshot_date].sort_values('date')
 
             if len(snapshot_prices) >= 21:
-                # Get last 252 trading days (~1 year) or available data
                 recent_prices = snapshot_prices.tail(252)
                 closes = recent_prices['close'].values
                 volumes = recent_prices['volume'].values
 
-                # Calculate returns for multiple periods
                 returns_1m = (closes[-1] - closes[-21]) / closes[-21] if len(closes) >= 21 else np.nan
                 returns_3m = (closes[-1] - closes[-63]) / closes[-63] if len(closes) >= 63 else np.nan
                 returns_6m = (closes[-1] - closes[-126]) / closes[-126] if len(closes) >= 126 else np.nan
                 returns_1y = (closes[-1] - closes[0]) / closes[0] if len(closes) >= 252 else np.nan
 
-                # Calculate volatility (std of daily returns over last 60 days)
                 recent_closes = closes[-60:] if len(closes) >= 60 else closes
                 daily_returns = np.diff(recent_closes) / recent_closes[:-1]
                 volatility = np.std(daily_returns) if len(daily_returns) > 0 else np.nan
 
-                # Calculate volume trend
                 vol_avg = np.mean(volumes)
                 vol_recent = np.mean(volumes[-5:]) if len(volumes) >= 5 else vol_avg
                 volume_trend = (vol_recent - vol_avg) / (vol_avg + 1e-9) if vol_avg > 0 else np.nan
@@ -681,7 +664,7 @@ class GBMStockRanker:
 
     def engineer_features(self, df: pd.DataFrame) -> pd.DataFrame:
         """
-        Create all features following the specification.
+        Create all features using LITE configuration.
 
         Parameters
         ----------
@@ -693,7 +676,7 @@ class GBMStockRanker:
         pd.DataFrame
             DataFrame with engineered features
         """
-        logger.info('Engineering features...')
+        logger.info('Engineering features (LITE configuration)...')
 
         # Sort by ticker and date
         df = df.sort_values(['ticker', 'snapshot_date']).reset_index(drop=True)
@@ -701,25 +684,24 @@ class GBMStockRanker:
         # Create computed features
         logger.info('Creating computed features...')
 
-        # Log market cap (more stable for tree models)
         df['log_market_cap'] = np.log(df['market_cap'] + 1e9)
 
         # Yield features
         df['fcf_yield'] = df['free_cashflow'] / (df['market_cap'] + 1e9)
         df['ocf_yield'] = df['operating_cashflow'] / (df['market_cap'] + 1e9)
-        df['earnings_yield'] = df['trailing_eps'] / (df['market_cap'] / df['book_value'] + 1e-9)  # Approx E/P
+        df['earnings_yield'] = df['trailing_eps'] / (df['market_cap'] / df['book_value'] + 1e-9)
 
-        # 1. Create lag features
+        # 1. Create lag features (LITE: only 1Q, 2Q)
         df = create_lag_features(df, BASE_FEATURES, lags=LAG_PERIODS)
-        logger.info(f'Created lag features for {len(BASE_FEATURES)} features')
+        logger.info(f'Created lag features for {len(BASE_FEATURES)} features (lags: {LAG_PERIODS})')
 
         # 2. Create change features (QoQ, YoY)
         df = create_change_features(df, BASE_FEATURES)
         logger.info('Created change features')
 
-        # 3. Create rolling features
+        # 3. Create rolling features (LITE: only 4Q window)
         df = create_rolling_features(df, BASE_FEATURES, windows=ROLLING_WINDOWS)
-        logger.info('Created rolling features')
+        logger.info(f'Created rolling features (windows: {ROLLING_WINDOWS})')
 
         # 4. Add missingness flags
         for feat in BASE_FEATURES:
@@ -751,12 +733,11 @@ class GBMStockRanker:
         # Drop rows without forward returns
         df = df.dropna(subset=['forward_return'])
 
-        # Exclude metadata, categorical, and base cashflow features
-        # Note: We don't engineer features FOR cashflow features, we only use them to compute yields
+        # Exclude metadata and categorical features
         exclude_cols = (
             ['ticker', 'snapshot_date', 'snapshot_id', 'forward_return'] +
             CATEGORICAL_FEATURES +
-            CASHFLOW_FEATURES  # Only base features, no engineered versions exist
+            CASHFLOW_FEATURES
         )
 
         numeric_features = [
@@ -764,21 +745,13 @@ class GBMStockRanker:
             if col not in exclude_cols and df[col].dtype in [np.float64, np.int64]
         ]
 
-        # Debug: Check which columns are non-numeric
-        non_numeric = [
-            col for col in df.columns
-            if col not in exclude_cols and df[col].dtype not in [np.float64, np.int64]
-        ]
-        if non_numeric:
-            logger.info(f'Non-numeric columns (first 20): {non_numeric[:20]}')
-
         categorical_features = CATEGORICAL_FEATURES
 
-        # Winsorize numeric features (cross-sectional, per date)
+        # Winsorize numeric features
         logger.info('Winsorizing features (1st-99th percentile)')
         df = winsorize_by_date(df, numeric_features, lower_pct=0.01, upper_pct=0.99)
 
-        # Standardize numeric features (z-score per date)
+        # Standardize numeric features
         logger.info('Standardizing features (z-score per date)')
         df = standardize_by_date(df, numeric_features)
 
@@ -797,7 +770,7 @@ class GBMStockRanker:
         params: Dict | None = None
     ):
         """
-        Train LightGBM model with purged CV.
+        Train LightGBM Lite model with purged CV.
 
         Parameters
         ----------
@@ -810,7 +783,7 @@ class GBMStockRanker:
         params : Dict | None
             Model hyperparameters
         """
-        logger.info(f'Training {self.model_type} model...')
+        logger.info(f'Training {self.model_type} LITE model...')
 
         # Prepare feature matrix
         feature_cols = numeric_features + categorical_features
@@ -821,7 +794,7 @@ class GBMStockRanker:
         for cat_col in categorical_features:
             X[cat_col] = X[cat_col].astype('category')
 
-        # Default params
+        # Default params (same as full GBM)
         if params is None:
             params = {
                 'objective': 'regression',
@@ -850,7 +823,7 @@ class GBMStockRanker:
             embargo_days=21
         )
 
-        # Train-val split (use last fold as final validation)
+        # Train-val split
         train_idx, val_idx = cv_splits[-1]
 
         X_train, X_val = X.iloc[train_idx], X.iloc[val_idx]
@@ -925,8 +898,7 @@ class GBMStockRanker:
         })
         spreads = compute_decile_spreads(eval_df)
 
-        # NDCG (treating as ranking problem)
-        # Convert to gains (exponential of returns for ranking)
+        # NDCG
         y_true_gains = np.exp(y_true).reshape(1, -1)
         y_pred_ranks = y_pred.reshape(1, -1)
 
@@ -952,7 +924,7 @@ class GBMStockRanker:
     def save_model(self, path: str | None = None):
         """Save trained model."""
         if path is None:
-            path = f'gbm_model_{self.target_horizon}.txt'
+            path = f'gbm_lite_model_{self.target_horizon}.txt'
 
         save_path = Path(__file__).parent / path
         self.model.save_model(str(save_path))
@@ -960,7 +932,7 @@ class GBMStockRanker:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Train GBM stock ranker')
+    parser = argparse.ArgumentParser(description='Train GBM Lite stock ranker')
     parser.add_argument('--target-horizon', type=str, default='1y',
                         help='Target prediction horizon (1y or 3y)')
     parser.add_argument('--model-type', type=str, default='lightgbm',
@@ -968,7 +940,7 @@ def main():
     args = parser.parse_args()
 
     # Initialize trainer
-    trainer = GBMStockRanker(
+    trainer = GBMLiteStockRanker(
         target_horizon=args.target_horizon,
         model_type=args.model_type
     )
@@ -991,7 +963,7 @@ def main():
     # Save model
     trainer.save_model()
 
-    logger.info(f'Training complete for {args.target_horizon} horizon!')
+    logger.info(f'Training complete for {args.target_horizon} horizon (LITE)!')
     logger.info(f'Final metrics: {json.dumps(metrics, indent=2)}')
 
 

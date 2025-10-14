@@ -165,6 +165,28 @@ class StockDataCache:
 
     def save_stock_data(self, ticker: str, data: Dict):
         """Save stock data to both JSON cache and SQLite database"""
+        # VALIDATION: Check if data is valid before saving
+        if 'error' in data:
+            logger.error(f'{ticker}: Skipping save - data fetch failed: {data.get("error")}')
+            return
+
+        # Check for minimum required fields
+        info = data.get('info', {})
+        if not info or not info.get('currentPrice'):
+            logger.error(f'{ticker}: Skipping save - missing currentPrice in info dict')
+            return
+
+        # Check if we have at least some data (not all None/empty)
+        has_sector = info.get('sector') is not None
+        has_market_cap = info.get('marketCap') is not None
+        has_minimal_data = has_sector or has_market_cap
+
+        if not has_minimal_data:
+            logger.error(f'{ticker}: Skipping save - insufficient data (no sector, no market cap)')
+            return
+
+        logger.info(f'{ticker}: Data validation passed - saving to cache and database')
+
         cache_file = self.cache_dir / f'{ticker}.json'
         temp_file = cache_file.with_suffix('.tmp')
 

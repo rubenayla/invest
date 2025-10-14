@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate GBM 1-year stock predictions and save to valuation_results.
+Generate GBM 3-year stock predictions and save to valuation_results.
 
 Loads trained GBM model, makes predictions on latest data using same
 feature engineering as training, and assigns decile-based confidence.
@@ -281,8 +281,8 @@ def save_to_database(df: pd.DataFrame, predictions: np.ndarray, confidences: lis
     cursor = conn.cursor()
 
     # Delete existing GBM predictions
-    cursor.execute("DELETE FROM valuation_results WHERE model_name = 'gbm_1y'")
-    logger.info(f'Deleted {cursor.rowcount} existing gbm_1y predictions')
+    cursor.execute("DELETE FROM valuation_results WHERE model_name = 'gbm_3y'")
+    logger.info(f'Deleted {cursor.rowcount} existing gbm_3y predictions')
 
     # Initialize StockDataReader for current price lookup
     reader = StockDataReader(db_path)
@@ -307,7 +307,7 @@ def save_to_database(df: pd.DataFrame, predictions: np.ndarray, confidences: lis
             skipped += 1
             continue
 
-        # GBM predicts 1-year return (e.g., 0.25 = 25% expected return)
+        # GBM predicts 3-year return (e.g., 0.75 = 75% expected return over 3 years)
         predicted_return = predictions[i]
 
         # Calculate "fair value" as current price * (1 + predicted_return)
@@ -325,7 +325,7 @@ def save_to_database(df: pd.DataFrame, predictions: np.ndarray, confidences: lis
 
         # Details JSON
         details = {
-            'predicted_return_1y': float(predicted_return),
+            'predicted_return_3y': float(predicted_return),
             'ranking_percentile': float(percentile)
         }
 
@@ -336,7 +336,7 @@ def save_to_database(df: pd.DataFrame, predictions: np.ndarray, confidences: lis
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             ticker,
-            'gbm_1y',
+            'gbm_3y',
             float(fair_value),
             float(current_price),
             float(margin_of_safety),
@@ -359,7 +359,7 @@ def main():
     """Generate and save GBM predictions."""
     # Paths
     project_root = Path(__file__).parent.parent
-    model_path = project_root / 'neural_network/training/gbm_model_1y.txt'
+    model_path = project_root / 'neural_network/training/gbm_model_3y.txt'
     db_path = project_root / 'data/stock_data.db'
 
     # Load model
