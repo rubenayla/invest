@@ -486,4 +486,29 @@ CREATE INDEX idx_price_snapshot_date ON price_history(snapshot_id, date);
 
 ---
 
+## 2025-10-15: Opportunistic Model Ideas
+
+### Model 1: The Conservative Floor Model (Future Work)
+**Target**: Establish a "worst-case" floor using fundamentals-based bounds
+- Use book value, tangible assets, and liquidation value as floor
+- Train on bear market periods (2008, 2020, 2022) to learn crash behavior
+- Output: "This stock is unlikely to fall below $X even in severe downturn"
+- Combine with upside models for risk-adjusted decisions
+
+### Model 2: The Momentum Surge Model (Future Work)
+**Target**: Capture explosive growth phases (meme stocks, AI hype, sector rotations)
+- Train on periods where stocks went 5x+ in under 2 years
+- Features: social sentiment, volume spikes, sector momentum, short interest
+- Learn patterns that precede parabolic moves
+- Output: "X% chance of 300%+ gain if momentum triggers"
+
+### Model 3: The Realistic Exit Model (Currently Building)
+**Target**: Simulate how real traders take profits - partial exits at key levels
+- Strategy: 25% exit at +20%, 50% exit at +50%, 25% ride to peak
+- Window: 1-2 years (avoid immediate spikes, capture sustained moves)
+- Reflects actual trading behavior vs theoretical buy-and-hold
+- More actionable for position sizing and risk management
+- **Status**: Approved by user, implementation in progress
+
+---
 

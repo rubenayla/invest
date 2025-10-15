@@ -1,3 +1,13 @@
+check terminal, chatgpt suggestions etc.
+
+
+I basically want to take the max price of the period from next year to next 2 years, and train with that, instead of the price just after one year. Maybe this should be the opportunistic model. To this model, somehow make it conservative so we actually check that it is super super unlikely to get stocks in the lower % of returns, even if some % of super high gains. (Think about probability distribution and how to rate it?)
+
+i want gbm for 1y 3y both in normal and lite version
+show them all in the dashboard
+
+the gbm seems to predict gains on all stocks. why is that?
+
 dashboard export as excel, csv, spreadsheet, something like that
 
 I see lots of stocks with no NN predictions, could we make a high-compatibility version of the 
