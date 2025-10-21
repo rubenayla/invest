@@ -67,6 +67,9 @@ class HTMLGenerator:
             <h1>🔍 Investment Valuation Dashboard</h1>
             <p class="subtitle">Multi-model stock analysis with real-time updates</p>
             <div class="last-updated">Last Updated: <span id="lastUpdated">{last_updated}</span></div>
+            <div style="margin-top: 15px;">
+                <a href="model_specs.html" style="color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 6px; font-weight: 500; transition: background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">📊 View Model Specifications</a>
+            </div>
         </header>
         
         {progress_html}
@@ -102,7 +105,7 @@ class HTMLGenerator:
             <ul>
                 <li><strong>Fair Value:</strong> Estimated intrinsic value per share from each model</li>
                 <li><strong>Margin of Safety:</strong> How much upside/downside vs current price</li>
-                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases), GBM (Gradient Boosted Machine ranking models - 4 variants), NN (Neural Network predictions)</li>
+                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases), GBM (Gradient Boosted Machine ranking models - 6 variants: Full 1y/3y, Lite 1y/3y, Opportunistic 1y/3y), NN (Neural Network predictions)</li>
                 <li><strong>Consensus:</strong> Average of all successful models</li>
             </ul>
             <p class="disclaimer">⚠️ This is for educational purposes. Not investment advice. Do your own research.</p>
@@ -206,6 +209,8 @@ class HTMLGenerator:
                         <th title="Gradient Boosted Machine 3-year ranking (LightGBM with 464 features, Rank IC 0.59)">GBM 3y</th>
                         <th title="Gradient Boosted Machine Lite 1-year ranking (LightGBM with 247 features, Rank IC 0.59)">GBM Lite 1y</th>
                         <th title="Gradient Boosted Machine Lite 3-year ranking (LightGBM with 247 features, Rank IC 0.61)">GBM Lite 3y</th>
+                        <th title="Opportunistic GBM 1-year - Peak return prediction within 2 years (Rank IC 0.61)">GBM Opp 1y</th>
+                        <th title="Opportunistic GBM 3-year - Peak return prediction within 3 years (Rank IC 0.64)">GBM Opp 3y</th>
                         <th title="Neural Network 1-year prediction (LSTM/Transformer with MC Dropout confidence)">NN 1y</th>
                         <th title="Neural Network 3-year prediction (LSTM/Transformer with MC Dropout confidence)">NN 3y</th>
                         <th title="Consensus valuation - Average of all successful model results">Consensus</th>
@@ -240,6 +245,8 @@ class HTMLGenerator:
             "gbm_3y": "GBM3y",
             "gbm_lite_1y": "GBM-Lite1y",
             "gbm_lite_3y": "GBM-Lite3y",
+            "gbm_opportunistic_1y": "GBM-Opp1y",
+            "gbm_opportunistic_3y": "GBM-Opp3y",
             "single_horizon_nn": "NN1y",
             "nn_3y": "NN3y",
             "ensemble": "Consensus"
@@ -278,11 +285,13 @@ class HTMLGenerator:
         rim_html = self._format_valuation_cell(valuations.get("rim", {}), current_price)
         multi_dcf_html = self._format_valuation_cell(valuations.get("multi_stage_dcf", {}), current_price)
 
-        # Format GBM predictions (4 models)
+        # Format GBM predictions (6 models)
         gbm_1y_html = self._format_valuation_cell(valuations.get("gbm_1y", {}), current_price)
         gbm_3y_html = self._format_valuation_cell(valuations.get("gbm_3y", {}), current_price)
         gbm_lite_1y_html = self._format_valuation_cell(valuations.get("gbm_lite_1y", {}), current_price)
         gbm_lite_3y_html = self._format_valuation_cell(valuations.get("gbm_lite_3y", {}), current_price)
+        gbm_opp_1y_html = self._format_valuation_cell(valuations.get("gbm_opportunistic_1y", {}), current_price)
+        gbm_opp_3y_html = self._format_valuation_cell(valuations.get("gbm_opportunistic_3y", {}), current_price)
 
         # Format single-horizon NN prediction (1-year only)
         nn_html = self._format_nn_cell(valuations.get("single_horizon_nn", {}), current_price)
@@ -308,6 +317,8 @@ class HTMLGenerator:
             <td>{gbm_3y_html}</td>
             <td>{gbm_lite_1y_html}</td>
             <td>{gbm_lite_3y_html}</td>
+            <td>{gbm_opp_1y_html}</td>
+            <td>{gbm_opp_3y_html}</td>
             <td>{nn_html}</td>
             <td>{nn_3y_html}</td>
             <td>{consensus_html}</td>
@@ -347,12 +358,14 @@ class HTMLGenerator:
             reason = valuation.get("failure_reason", "Model failed")
             short_reason = reason[:30] + "..." if len(reason) > 30 else reason
             return f'<span title="{reason}">❌</span>'
-        
+
         fair_value = valuation.get("fair_value")
         margin = valuation.get("margin_of_safety")
-        
+
         if fair_value is None or fair_value == 0:
-            return "-"
+            # Show error message in tooltip if available
+            error_msg = valuation.get("error_message") or valuation.get("error", "No valuation available")
+            return f'<span title="{error_msg}">-</span>'
         
         fair_value_str = self._safe_format(fair_value, prefix="$")
         margin_str = self._safe_percent(margin)
