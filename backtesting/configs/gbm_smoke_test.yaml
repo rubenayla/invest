@@ -3,9 +3,9 @@
 
 name: gbm_smoke_test
 
-# Short test period
-start_date: '2023-01-01'
-end_date: '2024-12-31'
+# Short test period (using dates with complete price data)
+start_date: '2021-01-01'
+end_date: '2022-07-12'
 
 # Initial capital
 initial_capital: 100000
