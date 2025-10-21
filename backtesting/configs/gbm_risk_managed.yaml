@@ -5,9 +5,9 @@
 
 name: gbm_risk_managed
 
-# Backtest period
+# Backtest period (using 2022-07-12 end date due to price data availability)
 start_date: '2010-01-01'
-end_date: '2024-12-31'
+end_date: '2022-07-12'
 
 # Initial capital
 initial_capital: 100000

@@ -4,9 +4,10 @@
 
 name: gbm_top_decile_1y
 
-# Backtest period: 2010-2024 (14 years, multiple market cycles)
+# Backtest period: 2010-2022 (12.5 years, multiple market cycles)
+# Using 2022-07-12 end date due to price data availability
 start_date: '2010-01-01'
-end_date: '2024-12-31'
+end_date: '2022-07-12'
 
 # Initial capital
 initial_capital: 100000
