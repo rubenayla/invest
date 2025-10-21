@@ -217,10 +217,8 @@ class GBMRankingStrategy:
         for col in FUNDAMENTAL_FEATURES + MARKET_FEATURES + CASHFLOW_FEATURES:
             df[col] = pd.to_numeric(df[col], errors='coerce')
 
-        # Add price features (simplified - could load from price_history table)
-        # For now, fill with zeros - TODO: load actual price data
-        for feat in PRICE_FEATURES:
-            df[feat] = 0.0
+        # Load price features from price_history table
+        df = self._add_price_features(df, conn, filing_lag_date)
 
         conn.close()
 
@@ -384,3 +382,89 @@ class GBMRankingStrategy:
 
         else:
             raise ValueError(f'Unknown weighting method: {self.weighting}')
+
+    def _add_price_features(self, df: pd.DataFrame, conn, as_of_date: pd.Timestamp) -> pd.DataFrame:
+        """
+        Add price-based features by loading from price_history table.
+
+        Features added:
+        - returns_1m, returns_3m, returns_6m, returns_1y
+        - volatility (annualized standard deviation of daily returns)
+        - volume_trend (ratio of recent to historical average volume)
+        """
+        # Initialize all price features to 0
+        for feat in PRICE_FEATURES:
+            df[feat] = 0.0
+
+        # Get unique tickers from df
+        tickers = df['ticker'].unique()
+
+        # For each ticker, calculate price features as of as_of_date
+        for ticker in tickers:
+            try:
+                # Query price history up to as_of_date
+                # Need at least 1 year of data for all features
+                start_date = as_of_date - pd.Timedelta(days=365)
+
+                price_query = '''
+                    SELECT date, close, volume
+                    FROM price_history
+                    WHERE ticker = ?
+                    AND date >= ?
+                    AND date <= ?
+                    ORDER BY date
+                '''
+
+                prices = pd.read_sql(
+                    price_query,
+                    conn,
+                    params=(ticker, start_date.strftime('%Y-%m-%d'), as_of_date.strftime('%Y-%m-%d')),
+                    parse_dates=['date'],
+                    index_col='date'
+                )
+
+                if len(prices) < 20:  # Need at least 20 days of data
+                    continue
+
+                # Calculate returns
+                current_price = prices['close'].iloc[-1]
+
+                # 1-month return (21 trading days)
+                if len(prices) >= 21:
+                    price_1m_ago = prices['close'].iloc[-21]
+                    df.loc[df['ticker'] == ticker, 'returns_1m'] = (current_price / price_1m_ago - 1) * 100
+
+                # 3-month return (63 trading days)
+                if len(prices) >= 63:
+                    price_3m_ago = prices['close'].iloc[-63]
+                    df.loc[df['ticker'] == ticker, 'returns_3m'] = (current_price / price_3m_ago - 1) * 100
+
+                # 6-month return (126 trading days)
+                if len(prices) >= 126:
+                    price_6m_ago = prices['close'].iloc[-126]
+                    df.loc[df['ticker'] == ticker, 'returns_6m'] = (current_price / price_6m_ago - 1) * 100
+
+                # 1-year return (252 trading days)
+                if len(prices) >= 252:
+                    price_1y_ago = prices['close'].iloc[-252]
+                    df.loc[df['ticker'] == ticker, 'returns_1y'] = (current_price / price_1y_ago - 1) * 100
+
+                # Volatility (annualized)
+                daily_returns = prices['close'].pct_change().dropna()
+                if len(daily_returns) > 0:
+                    volatility = daily_returns.std() * np.sqrt(252) * 100  # Annualized percentage
+                    df.loc[df['ticker'] == ticker, 'volatility'] = volatility
+
+                # Volume trend (recent 20 days vs previous 100 days)
+                if len(prices) >= 120:
+                    recent_volume = prices['volume'].iloc[-20:].mean()
+                    historical_volume = prices['volume'].iloc[-120:-20].mean()
+                    if historical_volume > 0:
+                        volume_trend = recent_volume / historical_volume
+                        df.loc[df['ticker'] == ticker, 'volume_trend'] = volume_trend
+
+            except Exception as e:
+                logger.debug(f'Could not calculate price features for {ticker}: {e}')
+                continue
+
+        return df
