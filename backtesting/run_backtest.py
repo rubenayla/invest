@@ -18,6 +18,7 @@ from backtesting.strategies.screening import ScreeningStrategy
 from backtesting.strategies.pipeline_strategy import PipelineStrategy
 from backtesting.strategies.market_cap import MarketCapStrategy
 from backtesting.strategies.etf_portfolio import ETFPortfolioStrategy
+from backtesting.strategies.gbm_ranking import GBMRankingStrategy
 
 # Setup logging
 logging.basicConfig(
@@ -71,7 +72,10 @@ def main():
     strategy_config = config.get('strategy', {})
     strategy_type = config.get('strategy_type', 'screening')
     
-    if strategy_type == 'pipeline':
+    if strategy_type == 'gbm_ranking':
+        strategy = GBMRankingStrategy(strategy_config)
+        logger.info(f"Using GBM ranking strategy: {strategy_config.get('model_path')}")
+    elif strategy_type == 'pipeline':
         strategy = PipelineStrategy(strategy_config)
         logger.info("Using real analysis pipeline strategy")
     elif strategy_type == 'market_cap':
