@@ -93,7 +93,21 @@ class Backtester:
                 current_portfolio=self.portfolio.get_holdings(),
                 date=date
             )
-            
+
+            # If strategy selected stocks not in universe, fetch their prices
+            selected_tickers = list(signals.keys())
+            missing_tickers = [t for t in selected_tickers if t not in market_data['current_prices']]
+
+            if missing_tickers:
+                logger.info(f"Fetching prices for {len(missing_tickers)} stocks selected by strategy: {missing_tickers[:5]}...")
+                additional_data = self.data_provider.get_data_as_of(
+                    date=date,
+                    tickers=missing_tickers,
+                    lookback_days=30  # Just need current prices
+                )
+                # Add missing prices to market_data
+                market_data['current_prices'].update(additional_data['current_prices'])
+
             # Execute trades
             trades = self.portfolio.rebalance(
                 target_weights=signals,

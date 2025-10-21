@@ -5,8 +5,10 @@ Historical data provider for backtesting with no look-ahead bias.
 import pandas as pd
 import numpy as np
 import yfinance as yf
+import sqlite3
 from typing import Dict, List, Optional, Any, Union
 from datetime import datetime, timedelta
+from pathlib import Path
 import logging
 from functools import lru_cache
 
@@ -17,13 +19,21 @@ class HistoricalDataProvider:
     """
     Provides historical data for backtesting.
     Ensures no look-ahead bias by only using data available at each point in time.
+    Uses database for price history instead of fetching from yfinance.
     """
-    
-    def __init__(self, cache_dir: Optional[str] = None) -> None:
-        """Initialize data provider with optional cache directory."""
+
+    def __init__(self, cache_dir: Optional[str] = None, db_path: Optional[str] = None) -> None:
+        """Initialize data provider with optional cache directory and database path."""
         self.cache_dir = cache_dir
         self._price_cache: Dict[str, pd.DataFrame] = {}
         self._fundamental_cache: Dict[str, Dict[str, Any]] = {}
+
+        # Database path for price history
+        if db_path is None:
+            db_path = Path(__file__).parent.parent.parent / 'data' / 'stock_data.db'
+        self.db_path = str(db_path)
+
+        logger.info(f'Initialized HistoricalDataProvider with database: {self.db_path}')
         
     def get_data_as_of(self, date: pd.Timestamp, tickers: List[str], 
                         lookback_days: int = 365) -> Dict[str, Any]:
@@ -107,25 +117,40 @@ class HistoricalDataProvider:
         
         return prices
     
-    def get_price_history(self, ticker: str, start_date: pd.Timestamp, 
+    def get_price_history(self, ticker: str, start_date: pd.Timestamp,
                           end_date: pd.Timestamp) -> pd.DataFrame:
-        """Get price history for a single ticker."""
+        """Get price history for a single ticker from database."""
         cache_key = f"{ticker}_{start_date}_{end_date}"
-        
+
         if cache_key not in self._price_cache:
             try:
-                data = yf.download(
-                    ticker, 
-                    start=start_date, 
-                    end=end_date, 
-                    progress=False,
-                    auto_adjust=True
+                conn = sqlite3.connect(self.db_path)
+                query = '''
+                SELECT date, open, high, low, close, volume
+                FROM price_history
+                WHERE ticker = ?
+                AND date >= ?
+                AND date <= ?
+                ORDER BY date
+                '''
+                df = pd.read_sql(
+                    query,
+                    conn,
+                    params=(ticker, start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d')),
+                    parse_dates=['date'],
+                    index_col='date'
                 )
-                self._price_cache[cache_key] = data
+                conn.close()
+
+                # Rename columns to match yfinance format
+                if not df.empty:
+                    df.columns = ['Open', 'High', 'Low', 'Close', 'Volume']
+
+                self._price_cache[cache_key] = df
             except Exception as e:
-                logger.error(f"Error fetching {ticker}: {e}")
+                logger.error(f"Error fetching {ticker} from database: {e}")
                 self._price_cache[cache_key] = pd.DataFrame()
-        
+
         return self._price_cache[cache_key]
     
     def _get_price_history_range(self, tickers: List[str], 
