@@ -4,6 +4,259 @@ A log of significant progress, achievements, and learnings.
 
 ---
 
+## 2025-10-20: Critical Database Blindspot - Silent Data Loss in ML Predictions
+
+### 🚨 Discovery: The Missing 20%
+
+While investigating data flow consistency, discovered that **ML model predictions are silently discarded** for stocks without current price data.
+
+### 📊 The Problem
+
+**Database stock counts:**
+```
+assets table:          451 stocks (master registry)
+snapshots table:       358 stocks (ML training data)
+current_stock_data:    302 stocks (current prices + fundamentals)
+valuation_results:     304 stocks (stocks with valuations)
+```
+
+**The gap:**
+- ML models train on 358 stocks from `snapshots`
+- Predictions run on 357 stocks (latest snapshot per ticker)
+- Only 286 predictions saved to database (**71 stocks lost, 20% data loss**)
+
+### 🔍 Root Cause Analysis
+
+#### Code Location: `scripts/run_gbm_opportunistic_1y_predictions.py:294-308`
+
+```python
+for i, (idx, row) in enumerate(df.iterrows()):
+    ticker = row['ticker']
+
+    # Get current price from current_stock_data table
+    stock_data = reader.get_stock_data(ticker)
+    if not stock_data or 'info' not in stock_data:
+        logger.warning(f'Skipping {ticker}: no data in current_stock_data')
+        skipped += 1
+        continue  # ← PREDICTIONS DISAPPEAR HERE - NO DATABASE RECORD
+```
+
+**What happens:**
+1. GBM model makes predictions for 357 stocks (all with snapshots)
+2. Script tries to save to `valuation_results` table
+3. Checks if ticker exists in `current_stock_data` (needed for current price)
+4. **71 stocks missing from `current_stock_data`** → skipped silently
+5. No database record created (not even as "unsuitable" with error message)
+6. Dashboard never sees these stocks
+
+### 📋 Missing Stocks Include Major Companies
+
+**Sample of 71 missing stocks:**
+- **AAPL** (Apple)
+- **GOOGL** (Alphabet)
+- **TSLA** (Tesla)
+- **AVGO** (Broadcom)
+- **ASML** (ASML Holding)
+- **BKNG** (Booking.com)
+- ABNB, ACN, AFRM, AZN, BP, BRK-B, CSCO, and 58 more...
+
+These stocks:
+- Have historical quarterly data in `snapshots` table
+- Were used to train ML models
+- Got predictions calculated
+- **Had those predictions discarded** without any trace
+
+### 🔄 Data Flow Visualization
+
+```
+Training Phase:
+├─ snapshots table: 358 stocks loaded ✓
+├─ Feature engineering: 357 stocks (latest snapshot) ✓
+├─ Model training: 357 stocks used ✓
+└─ Model saved: gbm_opportunistic_model_1y.txt ✓
+
+Prediction Phase:
+├─ Load model ✓
+├─ Load snapshots: 357 stocks ✓
+├─ Feature engineering: 357 stocks ✓
+├─ Make predictions: 357 stocks ✓
+├─ Save to database:
+│   ├─ Check current_stock_data: 286 found ✓
+│   └─ Missing current_stock_data: 71 skipped ✗ ← SILENT DATA LOSS
+└─ Dashboard display: 286 stocks only
+
+User sees: 286 stocks
+User doesn't see: 71 stocks with predictions (20% invisible)
+```
+
+### 🆚 Comparison with Traditional Models
+
+**Traditional DCF/RIM models:**
+- Run on 302 stocks (all in `current_stock_data`)
+- Store unsuitable valuations with error messages
+- Dashboard shows "-" with tooltip explaining why
+- User knows the stock was evaluated
+
+**ML GBM models:**
+- Train on 358, predict on 357, save only 286
+- Silently skip 71 stocks (no database record)
+- Dashboard shows nothing (stock doesn't appear)
+- **User has no idea these stocks exist**
+
+### 💡 Why This Matters
+
+#### 1. Misleading Completeness
+User sees dashboard with 286 stocks and assumes that's everything. Actually missing 20% of predictions.
+
+#### 2. No Visibility into Missing Data
+Traditional models show "-" with error tooltip. ML models: complete silence.
+
+#### 3. Major Companies Missing
+AAPL, GOOGL, TSLA are missing. These aren't obscure penny stocks.
+
+#### 4. Training Data Mismatch
+Models trained on 358 stocks but predictions only saved for 286. What happened to the other 72?
+
+### 🔧 Discovered via Systematic Blindspot Analysis
+
+**Framework applied:**
+1. "Are there other scripts that query valuation_results with similar filters?"
+2. "Could skipped stocks be leaving no database trace?"
+3. "Is there a gap between training universe and prediction coverage?"
+
+**Verification process:**
+```bash
+# Check GBM prediction count
+sqlite3 stock_data.db "SELECT COUNT(*) FROM valuation_results
+  WHERE model_name = 'gbm_opportunistic_1y';"
+# Result: 286
+
+# Check if AAPL has GBM predictions
+sqlite3 stock_data.db "SELECT * FROM valuation_results
+  WHERE ticker = 'AAPL' AND model_name = 'gbm_opportunistic_1y';"
+# Result: 0 rows (confirmed missing)
+
+# Check if AAPL exists in snapshots
+sqlite3 stock_data.db "SELECT COUNT(*) FROM snapshots s
+  JOIN assets a ON s.asset_id = a.id WHERE a.symbol = 'AAPL';"
+# Result: >0 (AAPL has training data!)
+
+# Find the gap
+sqlite3 stock_data.db "SELECT COUNT(*) FROM assets
+  WHERE symbol NOT IN (SELECT ticker FROM current_stock_data);"
+# Result: 149 stocks missing current data
+```
+
+### 📝 The Three-Table Problem
+
+#### Table Purposes:
+1. **`assets`** (451 stocks): Master registry - everything ever tracked
+2. **`snapshots`** (358 stocks): Historical quarterly data for ML training
+3. **`current_stock_data`** (302 stocks): Current prices from yfinance
+
+#### The Mismatch:
+- `snapshots` > `current_stock_data` (56 stock gap)
+- ML models use `snapshots` for training
+- Prediction scripts require `current_stock_data` for saving
+- **56 stocks trained but can't be saved** ← core problem
+
+### 🎯 Solution Options
+
+#### Option 1: Store Unsuitable Predictions (Recommended)
+Mirror what traditional models do:
+```python
+# Instead of skipping, save with suitable=0
+cursor.execute('''
+    INSERT INTO valuation_results
+    (ticker, model_name, suitable, error_message)
+    VALUES (?, ?, 0, 'No current price data available')
+''', (ticker, 'gbm_opportunistic_1y'))
+```
+
+**Pros:**
+- User sees "-" in dashboard with tooltip
+- Consistent with traditional model behavior
+- No data loss - all predictions accounted for
+
+#### Option 2: Sync Current Stock Data
+Run `data_fetcher.py` on the 149 missing tickers to populate `current_stock_data`
+
+**Pros:**
+- Fills the gap completely
+- AAPL, GOOGL, TSLA get their predictions saved
+
+**Cons:**
+- Some may fail (foreign stocks, ETFs, delisted companies)
+- Ongoing maintenance (need to keep syncing)
+
+#### Option 3: Accept the Gap
+Consider `current_stock_data` as the "curated universe" and only track those 302 stocks.
+
+**Pros:**
+- Simple, no code changes
+
+**Cons:**
+- Wastes training data on 56 stocks we never use
+- Major companies like AAPL missing is unacceptable
+
+### 🔑 Key Lessons
+
+#### 1. Silent Failures Are Worse Than Loud Ones
+Traditional models fail loudly (error message in database). ML models fail silently (skip + log warning). User never knows.
+
+#### 2. Always Verify Data Flow End-to-End
+Just because predictions are calculated doesn't mean they reach the user. Check every step.
+
+#### 3. Database Table Alignment Matters
+Three tables with overlapping but non-identical stock lists → guaranteed confusion. Need single source of truth.
+
+#### 4. Logs Are Not Enough
+Log says "Skipped 71 stocks (no current price)" but user doesn't read logs. Database is source of truth.
+
+#### 5. Blindspot Frameworks Work
+Systematic questioning ("where could data disappear?") found this issue that manual review missed.
+
+### 📊 Impact Assessment
+
+**Before discovery:**
+- User sees 286 GBM predictions
+- Thinks coverage is complete
+- Missing 20% of predictions
+- No idea major stocks like AAPL are absent
+
+**After discovery:**
+- Understand the 3-table architecture
+- Know why 71 predictions are lost
+- Have 3 solution options
+- Can make informed decision
+
+### 🚀 Next Steps
+
+**Immediate:**
+1. Decide on solution approach (Option 1 recommended)
+2. Implement unsuitable prediction storage
+3. Regenerate all ML predictions
+4. Verify dashboard shows all stocks (with "-" for missing ones)
+
+**Longer term:**
+1. Audit all prediction scripts (NN, GBM variants) for same issue
+2. Consider database schema refactoring (single stock universe)
+3. Add validation: "training stocks = prediction stocks = dashboard stocks"
+
+### 📁 Files Analyzed
+
+- `scripts/run_gbm_opportunistic_1y_predictions.py` (prediction script)
+- `scripts/run_gbm_opportunistic_3y_predictions.py` (same issue)
+- `scripts/dashboard.py` (loads from valuation_results)
+- `src/invest/dashboard_components/html_generator.py` (renders dashboard)
+- Database schema: `assets`, `snapshots`, `current_stock_data`, `valuation_results`
+
+### ⚠️ Remember
+
+This is a **data integrity issue**, not a performance issue. Silent data loss breaks user trust. Fix by making failures visible (Option 1) or eliminating failures (Option 2).
+
+---
+
 ## 2025-10-09: Neural Network Training Journey - From 0% to 78% Hit Rate
 
 ### 🎯 Mission
@@ -502,13 +755,111 @@ CREATE INDEX idx_price_snapshot_date ON price_history(snapshot_id, date);
 - Learn patterns that precede parabolic moves
 - Output: "X% chance of 300%+ gain if momentum triggers"
 
-### Model 3: The Realistic Exit Model (Currently Building)
+### Model 3: The Realistic Exit Model (FAILED - ABANDONED)
 **Target**: Simulate how real traders take profits - partial exits at key levels
 - Strategy: 25% exit at +20%, 50% exit at +50%, 25% ride to peak
-- Window: 1-2 years (avoid immediate spikes, capture sustained moves)
-- Reflects actual trading behavior vs theoretical buy-and-hold
-- More actionable for position sizing and risk management
-- **Status**: Approved by user, implementation in progress
+- Window: 1-2 years from snapshot (skip first year to avoid immediate spikes)
+- **Status**: FAILED - 0/17,840 training samples had valid returns
+
+**Why It Failed:**
+1. **No training data**: Window starts 1 year in the future
+   - Recent snapshots (2023-2025) don't have 1-2 years of future price data yet
+   - Result: 0 valid training samples (can't train a model!)
+
+2. **Overcomplicated strategy**: The 25%/50%/25% weighted exit logic added complexity without clear benefit
+   - We're just trying to identify stocks with high upside potential
+   - Weighted exits don't help with that goal
+
+3. **Window design flaw**: Skipping the first year throws away valuable data
+   - If a stock doubles in 6 months, that's exactly what we want to find
+   - The 1-year delay removed these opportunities from training
+
+**Lesson Learned**: Keep it simple. Complex realistic trading simulations sound good but fail when:
+- They remove too much training data (0 samples = useless model)
+- The complexity doesn't align with the actual goal (finding high-upside stocks)
+- The implementation assumptions don't match the data availability
+
+**DO NOT attempt this approach again** without first verifying you have sufficient training samples.
+
+### Model 3 (Revised): The Peak Return Model (FAILED - ARCHITECTURAL BLOCKER)
+**Target**: Find stocks with maximum upside potential in a reasonable timeframe
+- Strategy: Simple - predict maximum return within 0-2 year window
+- Target = `max(price_in_window) / baseline_price - 1`
+- Window: 0-2 years (immediate to 2 years out)
+- **Status**: ABANDONED - Database architecture makes this impossible
+
+**Why This ALSO Failed:**
+
+The database design itself is the blocker. After 6+ hours of work, discovered fundamental architectural limitation:
+
+#### The Database Architecture Problem
+
+**snapshots table**: Contains ~50+ columns of fundamental data (P/E, ROE, margins, growth, cash flow, etc.)
+
+**price_history table**: Contains daily price data (OHLCV) BUT:
+- Linked to `snapshot_id` (not directly to ticker)
+- UNIQUE constraint: `(snapshot_id, date)`
+- Each snapshot only has prices **UP TO that snapshot's date**
+- **NO "future" prices available** relative to the snapshot
+
+**Example**:
+```sql
+Snapshot 2023-06-30:
+  - Fundamentals: Q2 2023 data
+  - Price history: ALL prices from inception TO 2023-06-30
+  - Future prices (2024-2025): NOT AVAILABLE ❌
+```
+
+#### Why Peak Returns Can't Be Calculated On-The-Fly
+
+1. **Snapshot 2023-06-30** has `price_history` ending on 2023-06-30
+2. To calculate peak return in 0-2 year window, need prices through 2025-06-30
+3. But those prices don't exist in this snapshot's `price_history`
+4. Result: **0/17,840 snapshots had valid peak returns**
+
+#### The Working Solution: Pre-Calculated Returns
+
+The existing working GBM models use the **`forward_returns` table**:
+- Pre-calculated simple returns for fixed horizons: 1m, 3m, 6m, 1y, 2y, 3y
+- Calculated ONCE in the past by looking ahead in time
+- 78,222 return records for 13,626 snapshots
+- Formula: `(price_at_t+horizon - price_at_t) / price_at_t`
+
+#### What You'd Need for Peak Returns
+
+**Option 1**: Pre-calculate peak returns (like `forward_returns`)
+- Create `peak_returns` table with pre-calculated peaks for each snapshot
+- Requires batch job to compute peaks using all available historical prices
+- Must re-run periodically as new data becomes available
+
+**Option 2**: Restructure price data (major refactoring)
+- Create universal `ticker_prices` table (not tied to snapshots)
+- Break the current point-in-time snapshot philosophy
+- Would enable on-the-fly forward calculations but loses backtesting integrity
+
+**Option 3**: Abandon peak returns
+- Use existing `forward_returns` table with simple fixed-horizon returns
+- Much simpler, works with current architecture
+- Already proven with working GBM models (0.59 Rank IC)
+
+#### Time Investment
+- ~6 hours spent on realistic exit strategy (failed)
+- ~2 hours spent simplifying to peak returns (also failed)
+- **Total**: 8 hours discovering this architectural limitation
+
+#### Lesson Learned
+
+**Before building models that calculate forward returns:**
+1. Verify the database can provide future price data
+2. Check if `price_history` is snapshot-specific or universal
+3. Consider using pre-calculated returns (`forward_returns` table)
+4. Don't assume you can look ahead in time-series databases designed for backtesting
+
+**Database philosophy matters:**
+- Current design: "What did we know at this point in time?" (point-in-time snapshots)
+- Peak returns need: "What will happen in the future?" (forward-looking)
+- These are fundamentally incompatible without pre-calculation
+
+**DO NOT attempt peak return models** without first creating a `peak_returns` table or restructuring the price data architecture.
 
 ---
-
