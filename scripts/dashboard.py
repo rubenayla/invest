@@ -72,13 +72,12 @@ def load_stocks_from_database() -> dict:
 
     print(f'Loaded {len(stocks)} stocks from current_stock_data')
 
-    # Get all valuation results (exclude zero/NULL prices to prevent stale data)
+    # Get all valuation results (including unsuitable ones with error messages)
     valuations_query = '''
         SELECT ticker, model_name, suitable, fair_value, current_price,
                margin_of_safety, upside_pct, confidence, error_message,
                failure_reason, details_json
         FROM valuation_results
-        WHERE current_price IS NOT NULL AND current_price > 0
     '''
 
     valuation_count = 0
