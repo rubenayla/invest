@@ -495,51 +495,84 @@ class GBMStockRanker:
 
         logger.info(f'Initialized {model_type} ranker for {target_horizon} horizon')
 
+    def calculate_peak_return(
+        self,
+        snapshot_date: pd.Timestamp,
+        baseline_price: float,
+        future_prices: pd.Series,
+        window_end_days: int = 730
+    ) -> float:
+        """
+        Calculate peak return within the time window.
+
+        Simple approach: Find maximum price in 0-N year window and calculate return.
+
+        Parameters
+        ----------
+        snapshot_date : pd.Timestamp
+            The snapshot date (for calculating window boundaries)
+        baseline_price : float
+            Price at snapshot date
+        future_prices : pd.Series
+            Future prices indexed by date
+        window_end_days : int
+            End of window (730 for 2y, 1095 for 3y)
+
+        Returns
+        -------
+        float
+            Maximum return in window, or np.nan if insufficient data
+        """
+        if len(future_prices) == 0 or baseline_price <= 0:
+            return np.nan
+
+        # Calculate window end date (start immediately from snapshot)
+        window_end_date = snapshot_date + pd.Timedelta(days=window_end_days)
+
+        # Filter to window (from snapshot to window_end)
+        window_prices = future_prices[
+            (future_prices.index > snapshot_date) &
+            (future_prices.index <= window_end_date)
+        ]
+
+        if len(window_prices) == 0:
+            return np.nan
+
+        # Find peak price and calculate return
+        peak_price = window_prices.max()
+        peak_return = (peak_price / baseline_price) - 1
+
+        return peak_return
+
     def load_data(self) -> pd.DataFrame:
         """
-        Load fundamental snapshots and forward returns from database.
+        Load fundamental snapshots and calculate peak returns on-the-fly.
 
         Returns
         -------
         pd.DataFrame
-            DataFrame with fundamental features and forward returns
+            DataFrame with fundamental features and peak returns
         """
         logger.info(f'Loading data from {self.db_path}')
 
         conn = sqlite3.connect(self.db_path)
 
+        # Build SQL columns with proper table prefixes
+        fundamental_cols = [f's.{col}' for col in FUNDAMENTAL_FEATURES]
+        market_cols = [f's.{col}' for col in MARKET_FEATURES]
+        cashflow_cols = [f's.{col}' for col in CASHFLOW_FEATURES]
+
+        all_cols = (
+            ['a.symbol as ticker', 'a.sector', 's.snapshot_date', 's.id as snapshot_id'] +
+            fundamental_cols +
+            market_cols +
+            cashflow_cols
+        )
+
         # Load snapshots with fundamental data
-        query = '''
+        query = f'''
             SELECT
-                a.symbol as ticker,
-                a.sector,
-                s.snapshot_date,
-                s.market_cap,
-                s.pe_ratio,
-                s.pb_ratio,
-                s.ps_ratio,
-                s.profit_margins,
-                s.operating_margins,
-                s.gross_margins,
-                s.return_on_equity,
-                s.return_on_assets,
-                s.revenue_growth,
-                s.earnings_growth,
-                s.debt_to_equity,
-                s.current_ratio,
-                s.quick_ratio,
-                s.operating_cashflow,
-                s.free_cashflow,
-                s.trailing_eps,
-                s.book_value,
-                s.dividend_yield,
-                s.payout_ratio,
-                s.enterprise_to_ebitda,
-                s.enterprise_to_revenue,
-                s.beta,
-                s.vix,
-                s.treasury_10y,
-                s.id as snapshot_id
+                {', '.join(all_cols)}
             FROM snapshots s
             JOIN assets a ON s.asset_id = a.id
             WHERE s.vix IS NOT NULL
@@ -551,29 +584,85 @@ class GBMStockRanker:
 
         logger.info(f'Loaded {len(df)} snapshots for {df["ticker"].nunique()} stocks')
 
-        # Convert all numeric columns to float (SQLite sometimes returns as object)
+        # Convert all numeric columns to float
         for col in FUNDAMENTAL_FEATURES + MARKET_FEATURES + CASHFLOW_FEATURES:
-            df[col] = pd.to_numeric(df[col], errors='coerce')
+            if col in df.columns:
+                df[col] = pd.to_numeric(df[col], errors='coerce')
 
-        # Load forward returns
-        returns_query = '''
+        # Load ALL price history for peak return calculation
+        logger.info('Loading price history for peak return calculation...')
+        price_query = '''
             SELECT
-                snapshot_id,
-                return_pct
-            FROM forward_returns
-            WHERE horizon = ?
+                ticker,
+                date,
+                close
+            FROM price_history
+            ORDER BY ticker, date
         '''
+        price_df = pd.read_sql(price_query, conn)
+        price_df['date'] = pd.to_datetime(price_df['date'])
 
-        returns_df = pd.read_sql(returns_query, conn, params=(self.target_horizon,))
+        # Group by ticker for efficient lookup
+        price_groups = price_df.groupby('ticker')
 
-        # Merge forward returns
-        df = df.merge(returns_df, on='snapshot_id', how='left')
-        df = df.rename(columns={'return_pct': 'forward_return'})
+        # Set window based on target horizon (0 to N years)
+        if self.target_horizon == '1y':
+            window_end = 730    # 2 years max
+        else:  # 3y
+            window_end = 1095   # 3 years max
 
-        logger.info(f'Merged forward returns: {df["forward_return"].notna().sum()} samples with targets')
+        # Calculate peak returns
+        logger.info(f'Calculating peak returns (window: 0-{window_end} days)...')
+        peak_returns = []
 
-        # Load price history for price-based features
-        logger.info('Loading price history for momentum features...')
+        for idx, row in df.iterrows():
+            if idx % 1000 == 0:
+                logger.info(f'  Processing snapshot {idx+1}/{len(df)}...')
+
+            ticker = row['ticker']
+            snapshot_date = row['snapshot_date']
+
+            if ticker not in price_groups.groups:
+                peak_returns.append(np.nan)
+                continue
+
+            # Get all prices for this ticker
+            ticker_prices = price_groups.get_group(ticker)
+            ticker_prices = ticker_prices.set_index('date')['close']
+
+            # Get baseline price (at snapshot date)
+            baseline_prices = ticker_prices[ticker_prices.index <= snapshot_date]
+            if len(baseline_prices) == 0:
+                peak_returns.append(np.nan)
+                continue
+
+            baseline_price = baseline_prices.iloc[-1]
+
+            # Get future prices
+            future_prices = ticker_prices[ticker_prices.index > snapshot_date]
+
+            # Calculate peak return
+            peak_return = self.calculate_peak_return(
+                snapshot_date,
+                baseline_price,
+                future_prices,
+                window_end
+            )
+
+            peak_returns.append(peak_return)
+
+        df['forward_return'] = peak_returns
+
+        # Filter out samples without valid returns (recent snapshots)
+        initial_count = len(df)
+        df = df[df['forward_return'].notna()]
+        final_count = len(df)
+
+        logger.info(f'Calculated peak returns: {final_count}/{initial_count} samples with valid returns')
+        logger.info(f'Return statistics: mean={df["forward_return"].mean():.2%}, median={df["forward_return"].median():.2%}')
+
+        # Load price history for momentum features
+        logger.info('Adding price-based momentum features...')
         df = self._add_price_features(df, conn)
 
         conn.close()
@@ -599,28 +688,28 @@ class GBMStockRanker:
         # Load all price history at once
         price_query = '''
             SELECT
-                snapshot_id,
+                ticker,
                 date,
                 close,
                 volume
             FROM price_history
-            ORDER BY snapshot_id, date
+            ORDER BY ticker, date
         '''
         price_df = pd.read_sql(price_query, conn)
         price_df['date'] = pd.to_datetime(price_df['date'])
 
         logger.info(f'Loaded {len(price_df)} price history records')
 
-        # Group price history by snapshot_id for fast lookup
-        price_groups = price_df.groupby('snapshot_id')
+        # Group price history by ticker for fast lookup
+        price_groups = price_df.groupby('ticker')
 
         # Calculate price features efficiently
         def calc_price_features(row):
-            snapshot_id = row['snapshot_id']
+            ticker = row['ticker']
             snapshot_date = row['snapshot_date']
 
-            # Get price history for this snapshot
-            if snapshot_id not in price_groups.groups:
+            # Get price history for this ticker
+            if ticker not in price_groups.groups:
                 return pd.Series({
                     'returns_1m': np.nan,
                     'returns_3m': np.nan,
@@ -630,12 +719,12 @@ class GBMStockRanker:
                     'volume_trend': np.nan
                 })
 
-            snapshot_prices = price_groups.get_group(snapshot_id)
-            snapshot_prices = snapshot_prices[snapshot_prices['date'] <= snapshot_date].sort_values('date')
+            ticker_prices = price_groups.get_group(ticker)
+            ticker_prices = ticker_prices[ticker_prices['date'] <= snapshot_date].sort_values('date')
 
-            if len(snapshot_prices) >= 21:
+            if len(ticker_prices) >= 21:
                 # Get last 252 trading days (~1 year) or available data
-                recent_prices = snapshot_prices.tail(252)
+                recent_prices = ticker_prices.tail(252)
                 closes = recent_prices['close'].values
                 volumes = recent_prices['volume'].values
 
@@ -956,7 +1045,7 @@ class GBMStockRanker:
     def save_model(self, path: str | None = None):
         """Save trained model."""
         if path is None:
-            path = f'gbm_model_{self.target_horizon}.txt'
+            path = f'gbm_opportunistic_model_{self.target_horizon}.txt'
 
         save_path = Path(__file__).parent / path
         self.model.save_model(str(save_path))

@@ -582,12 +582,12 @@ class GBMLiteStockRanker:
         # Load all price history at once
         price_query = '''
             SELECT
-                snapshot_id,
+                ticker,
                 date,
                 close,
                 volume
             FROM price_history
-            ORDER BY snapshot_id, date
+            ORDER BY ticker, date
         '''
         price_df = pd.read_sql(price_query, conn)
         price_df['date'] = pd.to_datetime(price_df['date'])
@@ -595,15 +595,15 @@ class GBMLiteStockRanker:
         logger.info(f'Loaded {len(price_df)} price history records')
 
         # Group price history by snapshot_id for fast lookup
-        price_groups = price_df.groupby('snapshot_id')
+        price_groups = price_df.groupby('ticker')
 
         # Calculate price features efficiently
         def calc_price_features(row):
-            snapshot_id = row['snapshot_id']
+            ticker = row['ticker']
             snapshot_date = row['snapshot_date']
 
             # Get price history for this snapshot
-            if snapshot_id not in price_groups.groups:
+            if ticker not in price_groups.groups:
                 return pd.Series({
                     'returns_1m': np.nan,
                     'returns_3m': np.nan,
@@ -613,11 +613,11 @@ class GBMLiteStockRanker:
                     'volume_trend': np.nan
                 })
 
-            snapshot_prices = price_groups.get_group(snapshot_id)
-            snapshot_prices = snapshot_prices[snapshot_prices['date'] <= snapshot_date].sort_values('date')
+            ticker_prices = price_groups.get_group(ticker)
+            ticker_prices = ticker_prices[ticker_prices['date'] <= snapshot_date].sort_values('date')
 
-            if len(snapshot_prices) >= 21:
-                recent_prices = snapshot_prices.tail(252)
+            if len(ticker_prices) >= 21:
+                recent_prices = ticker_prices.tail(252)
                 closes = recent_prices['close'].values
                 volumes = recent_prices['volume'].values
 
