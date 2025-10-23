@@ -1,3 +1,14 @@
+The data fetcher is still running in the background (at ~78% completion).
+  It will continue fetching the remaining ~113 companies. Once complete,
+  you'll have the full S&P 500 in your database for analysis!
+
+---
+MOH
+
+
+
+why VIS stock is not in the dashboard?
+
 check terminal, chatgpt suggestions etc.
 
 

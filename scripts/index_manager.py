@@ -128,15 +128,47 @@ class IndexManager:
             return None
     
     def _fetch_sp500_tickers(self) -> List[str]:
-        """Fetch major US stocks from comprehensive sources."""
+        """Fetch actual S&P 500 tickers from reliable sources."""
         try:
-            # Get a comprehensive list of major US stocks from multiple sources
-            all_tickers = self._get_major_us_stocks()
-            logger.info(f"Fetched {len(all_tickers)} major US stocks from comprehensive sources")
-            return all_tickers
-            
-        except Exception as e:
-            logger.error(f"Failed to fetch comprehensive US stocks: {e}")
+            # Method 1: Try datahub.io (most reliable)
+            import pandas as pd
+            url = 'https://datahub.io/core/s-and-p-500-companies/r/constituents.csv'
+            df = pd.read_csv(url)
+            tickers = df['Symbol'].tolist()
+            logger.info(f"✅ Fetched {len(tickers)} S&P 500 tickers from datahub.io")
+            return tickers
+
+        except Exception as e1:
+            logger.warning(f"Datahub.io failed: {e1}, trying SlickCharts...")
+
+            # Method 2: Try SlickCharts as backup
+            try:
+                import requests
+                from bs4 import BeautifulSoup
+
+                url = 'https://www.slickcharts.com/sp500'
+                headers = {'User-Agent': 'Mozilla/5.0'}
+                response = requests.get(url, headers=headers, timeout=10)
+
+                if response.status_code == 200:
+                    soup = BeautifulSoup(response.content, 'html.parser')
+                    table = soup.find('table', class_='table')
+                    if table:
+                        tickers = []
+                        for row in table.find_all('tr')[1:]:  # Skip header
+                            cols = row.find_all('td')
+                            if len(cols) >= 3:
+                                ticker = cols[2].text.strip()
+                                if ticker:
+                                    tickers.append(ticker)
+                        logger.info(f"✅ Fetched {len(tickers)} S&P 500 tickers from SlickCharts")
+                        return tickers
+
+            except Exception as e2:
+                logger.error(f"SlickCharts failed: {e2}")
+
+            # Final fallback
+            logger.warning("All S&P 500 sources failed, using expanded fallback list")
             return self._get_expanded_fallback_list()
     
     def _get_major_us_stocks(self) -> List[str]:

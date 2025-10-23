@@ -75,6 +75,8 @@ dashboard_*_report.txt
 data_fetch_summary_*.json
 offline_analysis_results_*.json
 analysis_summary_*.json
+empty_tickers.txt
+train_*.log
 
 # Temporary script files
 scripts/regenerate_dashboard.py
