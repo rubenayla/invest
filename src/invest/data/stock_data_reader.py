@@ -167,3 +167,141 @@ class StockDataReader:
 
         conn.close()
         return count
+
+    def get_fundamental_history(self, ticker: str, metric: str) -> Optional[Dict[str, float]]:
+        """
+        Extract historical values for a fundamental metric from JSON data.
+
+        Reads directly from database JSON fields (income_json, cashflow_json, balance_sheet_json)
+        to provide multi-year historical trends. This prevents errors from relying on single
+        point-in-time growth rates.
+
+        Parameters
+        ----------
+        ticker : str
+            Stock ticker symbol
+        metric : str
+            Metric name to extract. Common metrics:
+            - Income Statement: 'Net Income', 'Total Revenue', 'Operating Income'
+            - Cash Flow: 'Free Cash Flow', 'Operating Cash Flow'
+            - Balance Sheet: 'Total Assets', 'Total Debt', 'Cash And Cash Equivalents'
+
+        Returns
+        -------
+        Optional[Dict[str, float]]
+            Dictionary mapping year (YYYY) to value, sorted newest to oldest.
+            Returns None if ticker not found or metric doesn't exist.
+
+        Examples
+        --------
+        >>> reader = StockDataReader()
+        >>> revenue = reader.get_fundamental_history('CAG', 'Total Revenue')
+        >>> print(revenue)
+        {'2025': 12000000000, '2024': 11500000000, '2023': 11800000000, ...}
+        """
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            SELECT income_json, cashflow_json, balance_sheet_json
+            FROM current_stock_data
+            WHERE ticker = ?
+        ''', (ticker,))
+
+        row = cursor.fetchone()
+        conn.close()
+
+        if not row:
+            return None
+
+        # Parse all JSON sources
+        income_json, cashflow_json, balance_sheet_json = row
+        data_sources = [
+            json.loads(income_json) if income_json else [],
+            json.loads(cashflow_json) if cashflow_json else [],
+            json.loads(balance_sheet_json) if balance_sheet_json else [],
+        ]
+
+        # Search for metric across all sources
+        for data_list in data_sources:
+            if not isinstance(data_list, list):
+                continue
+
+            for item in data_list:
+                if not isinstance(item, dict) or 'index' not in item:
+                    continue
+
+                # Check if this row matches our metric (case-insensitive partial match)
+                item_name = item['index'].lower()
+                metric_lower = metric.lower()
+
+                if metric_lower in item_name or item_name in metric_lower:
+                    # Extract year:value pairs
+                    history = {}
+                    for key, value in item.items():
+                        if key == 'index':
+                            continue
+
+                        # Extract year from date string (e.g., '2025-05-31 00:00:00' -> '2025')
+                        year = key[:4] if len(key) >= 4 else key
+
+                        # Skip NaN values
+                        if value is not None and not (isinstance(value, float) and value != value):
+                            history[year] = value
+
+                    # Return sorted by year (newest first)
+                    if history:
+                        return dict(sorted(history.items(), reverse=True))
+
+        return None
+
+    def get_earnings_trend(self, ticker: str) -> Optional[Dict[str, float]]:
+        """
+        Get historical net income trend for a stock.
+
+        Convenience method that extracts net income history from database.
+        Use this to avoid mistakes from relying on single-year growth rates.
+
+        Parameters
+        ----------
+        ticker : str
+            Stock ticker symbol
+
+        Returns
+        -------
+        Optional[Dict[str, float]]
+            Dictionary mapping year to net income, or None if not found
+        """
+        return self.get_fundamental_history(ticker, 'Net Income')
+
+    def get_revenue_trend(self, ticker: str) -> Optional[Dict[str, float]]:
+        """
+        Get historical revenue trend for a stock.
+
+        Parameters
+        ----------
+        ticker : str
+            Stock ticker symbol
+
+        Returns
+        -------
+        Optional[Dict[str, float]]
+            Dictionary mapping year to revenue, or None if not found
+        """
+        return self.get_fundamental_history(ticker, 'Total Revenue')
+
+    def get_cashflow_trend(self, ticker: str) -> Optional[Dict[str, float]]:
+        """
+        Get historical free cash flow trend for a stock.
+
+        Parameters
+        ----------
+        ticker : str
+            Stock ticker symbol
+
+        Returns
+        -------
+        Optional[Dict[str, float]]
+            Dictionary mapping year to free cash flow, or None if not found
+        """
+        return self.get_fundamental_history(ticker, 'Free Cash Flow')

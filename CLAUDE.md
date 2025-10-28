@@ -4,19 +4,29 @@
 
 ⚠️ **IMPORTANT**: This project uses uv dependency management. ALL Python commands must be prefixed with `uv run`.
 
-## 🚫 NEVER Read User's Personal Files
+## 🚫 NEVER Touch User's Personal Files
 
-⚠️ **CRITICAL**: `todo.md` is the USER'S personal notes file - NOT Claude's task list!
+⚠️ **CRITICAL**: `todo.md`, `notes/watchlist.md`, and similar files are the USER'S personal notes - NOT Claude's!
 
 **NEVER**:
 - Read `todo.md` unless user explicitly asks
 - Treat `todo.md` as tasks for Claude
 - Assume `todo.md` contains instructions
+- ❌ **NEVER use `git checkout <file>`** - this DESTROYS uncommitted changes permanently
+- ❌ **NEVER try to "clean up" or "revert" user's personal files**
+
+**LESSON LEARNED: The watchlist.md Data Loss Incident**
+- Ran `git checkout notes/watchlist.md` thinking it would "unstage" the file
+- Actually DESTROYED all uncommitted user changes permanently
+- User's watchlist data was lost and could not be recovered
+- **What I should have done**: Just left the file alone, or used `git reset notes/watchlist.md` (safe, keeps changes)
+- **Core lesson**: `git checkout <file>` destroys data. Never use it.
 
 **ALWAYS**:
 - Use the TodoWrite tool for tracking Claude's work (displayed in UI)
 - Ask user for clarification if unsure what to work on
 - Read `notes/` and `docs/` directories - they contain useful project information
+- **If you see personal files staged**: Either ignore them or ask user what to do - NEVER checkout/revert
 
 ```bash
 # Wrong:

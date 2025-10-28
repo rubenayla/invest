@@ -1,18 +1,18 @@
-# Summary (Main updates, then in detail below)
-## Wallet
-- **MOH** (Molina Healthcare)
+- MOH (Molina Healthcare)
   - Giant crash like CNC, but they have a better balance sheet and are more efficient.
   - Their Medical Cost Ratio went from 88% to 90%, but it was already expected. The sudden fall seems quite irrational, since it affected CNC not MOH. "wait, if Centene got hit, maybe all Medicaid/ACA insurers are riskier than we thought".
-- **TSLA**
-- **SQM**
+- ACGL (Arch Capital Group Ltd)
+- SYF (Synchrony Financial)
+- CAG (Conagra Brands Inc)
+- PFE (Pfizer Inc)
+- RIO (Rio Tinto Group)
+- SQM (Sociedad Quimica y Minera de Chile)
     - Low costs of lithium production, so one of the few that can survive long-term while benefiting from high lithium prices if they grow
-- **BRK.B**
-- **STLD**
-    - todo analyze again
-- **CVX**
-- **8002** (Marubeni Corp.)
+- BRK.B
+- CVX
+- 8002 (Marubeni Corp.)
+- TSLA
 
-## Watchlist
 - ACGL (Arch Capital Group Ltd)
     - PE9.5, P/B 1.5, 
 - NE (Noble Corporation PLC)
@@ -47,7 +47,11 @@
 - PYPL
 - SAP
 
-## Nope
+# Backlog
+- STLD
+    - todo analyze again
+
+# Nope
 - CNC (Centene)
 - NYSE: EL (Estee Lauder Companies Inc)
     - declining margins
