@@ -1,6 +1,6 @@
 """
-Historical snapshot data provider for GBM backtesting.
-Provides point-in-time fundamental data from the snapshots table.
+Historical fundamental data provider for GBM backtesting.
+Provides point-in-time fundamental data from the fundamental_history table.
 """
 
 import pandas as pd
@@ -14,20 +14,20 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class SnapshotDataProvider:
+class FundamentalHistoryProvider:
     """
-    Provides historical fundamental snapshots for GBM backtesting.
+    Provides historical fundamental data for GBM backtesting.
     Ensures no look-ahead bias by using only data available at each point in time.
     """
 
     def __init__(self, db_path: Optional[str] = None):
-        """Initialize snapshot provider with database path."""
+        """Initialize fundamental history provider with database path."""
         if db_path is None:
             # Default to main database
             db_path = Path(__file__).parent.parent.parent / 'data' / 'stock_data.db'
 
         self.db_path = str(db_path)
-        logger.info(f'Initialized SnapshotDataProvider with database: {self.db_path}')
+        logger.info(f'Initialized FundamentalHistoryProvider with database: {self.db_path}')
 
     def get_snapshots_as_of(self, date: pd.Timestamp,
                            min_snapshots: int = 12) -> pd.DataFrame:

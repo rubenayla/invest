@@ -185,18 +185,95 @@ From ab0fe64 disaster (6,000 lines, 24 files, massive failures) to 15/15 passing
 
 ## DATABASE ARCHITECTURE - Critical Information
 
-### 🚨 **SINGLE SOURCE OF TRUTH**
-**The SQLite database is the ONLY source for stock data. ALWAYS read from database.**
+### 🚨 **DUAL DATA SYSTEMS - BOTH ACTIVELY USED**
+**The database has TWO complementary data systems serving different purposes:**
 
-- ✅ **ALWAYS query database first**: `data/stock_data.db` (1.4GB SQLite)
-- ❌ **NEVER use dashboard_data.json as source**: It stores valuation RESULTS only, NOT stock data
-- ❌ **NEVER use old JSON cache files**: Obsolete backups - database is canonical
-- 💡 **When you need stock data**: Query SQLite. No fallbacks. No alternatives. No exceptions.
+#### **System 1: Historical Time-Series (assets/fundamental_history/price_history tables)**
+- **Purpose**: Multi-period analysis with price + fundamental history
+- **Tables**:
+  - `assets` (451 stocks registered)
+  - `fundamental_history` (17,840 rows - fundamentals per date per stock)
+  - `price_history` (753,940 rows - daily prices)
+- **Structure**: Multiple rows per stock (time-series data)
+- **Date Range**: 2006-01-03 to 2025-08-31 (fundamental_history)
+- **Coverage**: 358 stocks with complete historical data
+- **Used By**: GBM models (require lag/rolling features), neural networks, backtesting
+- **Last GBM Run**: Oct 23, 2025 (312 stocks)
+- **Update Script**: `scripts/populate_fundamental_history.py` or SEC Edgar scripts
+
+#### **System 2: Current Point-in-Time (current_stock_data table)**
+- **Purpose**: Current fundamentals for traditional valuation models
+- **Table**: `current_stock_data` (598 rows - one per stock)
+- **Structure**: Single row per stock (current snapshot)
+- **Last Updated**: Oct 23, 2025
+- **Coverage**: 598 stocks (S&P 500 + international)
+- **Used By**: DCF models, RIM, simple ratios, value screening, dashboard
+- **Last DCF Run**: Oct 23, 2025 (598 stocks)
+- **Update Script**: `scripts/data_fetcher.py`
+
+#### **Key Differences:**
+| Feature | Snapshots | Current Stock Data |
+|---------|-----------|-------------------|
+| Rows per stock | Many (time-series) | One (point-in-time) |
+| Stock count | 358 stocks | 598 stocks |
+| Update frequency | ⚠️ Needs update | ✅ Recently updated |
+| Used for | GBM/ML models | DCF/traditional models |
+| Data structure | Historical trends | Latest fundamentals |
+
+#### **Stock Coverage Overlap:**
+- **321 stocks** in BOTH systems → All models work
+- **277 stocks** ONLY in `current_stock_data` → DCF/RIM work, GBM does NOT
+- **37 stocks** ONLY in `assets` → GBM works, DCF may not
 
 ### 📍 **Primary Database Location**
 **Path**: `data/stock_data.db` (1.4GB SQLite database)
 
-**For neural network training**: `neural_network/training/stock_data.db` (symlink or copy)
+### ⚠️ **Why GBM Models Don't Work on All Stocks**
+**GBM models need historical time-series from `fundamental_history` table (358 stocks available).**
+**DCF models need current fundamentals from `current_stock_data` table (598 stocks available).**
+
+**Common issue**: Many value stocks (ACGL, SYF, MOH, VALE, EMN, TAP, PHM, BG) are only in `current_stock_data`, so:
+- ✅ DCF/RIM valuations available
+- ❌ GBM predictions NOT available (no historical fundamental data)
+
+**Solution**: Run `scripts/populate_fundamental_history.py` or update via SEC Edgar to add missing stocks to fundamental_history table.
+
+### 🏥 **Database Health Monitoring**
+
+**Script**: `scripts/check_database_health.py`
+
+**Run regularly** to monitor database quality and catch issues early:
+
+```bash
+uv run python scripts/check_database_health.py
+```
+
+**What it checks:**
+1. **Table Coverage** - Stock counts across all tables
+2. **Data Freshness** - How old the data is (warns if >7 days, alerts if >30 days)
+3. **Coverage Gaps** - Stocks missing from assets/snapshots (can't use GBM)
+4. **Model Coverage** - Which valuation models work for which stocks
+
+**Exit codes:**
+- `0` = Healthy (all checks pass)
+- `1` = Issues found (missing data, stale data)
+- `2` = Error during check
+
+**Recommended workflow:**
+- Run health check **before** running valuations
+- Run health check **after** fetching new data
+- Run health check **weekly** to catch data staleness
+
+**Example output:**
+```
+❌ ISSUES FOUND:
+  1. 41 stocks in current_stock_data but not in assets - GBM models unavailable
+
+⚠️  WARNINGS:
+  1. Fundamental history is 58 days old - run populate_fundamental_history.py
+```
+
+**Automation**: Add to GitHub Actions or cron job to get automatic alerts.
 
 ### 📊 **What's in the Database**
 

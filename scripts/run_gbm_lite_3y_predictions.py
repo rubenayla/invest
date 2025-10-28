@@ -173,12 +173,14 @@ def add_price_features(df: pd.DataFrame, conn) -> pd.DataFrame:
     """Add price-based features (same as full GBM)."""
     price_query = '''
         SELECT
-            snapshot_id,
-            date,
-            close,
-            volume
-        FROM price_history
-        ORDER BY snapshot_id, date
+            s.id as snapshot_id,
+            ph.date,
+            ph.close,
+            ph.volume
+        FROM snapshots s
+        JOIN assets a ON s.asset_id = a.id
+        JOIN price_history ph ON a.symbol = ph.ticker
+        ORDER BY s.id, ph.date
     '''
     price_df = pd.read_sql(price_query, conn)
     price_df['date'] = pd.to_datetime(price_df['date'])

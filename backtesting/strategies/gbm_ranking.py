@@ -36,7 +36,7 @@ from train_gbm_stock_ranker import (
     standardize_by_date
 )
 
-from backtesting.data.snapshot_provider import SnapshotDataProvider
+from backtesting.data.fundamental_history_provider import FundamentalHistoryProvider
 
 logger = logging.getLogger(__name__)
 
@@ -96,7 +96,7 @@ class GBMRankingStrategy:
         self.weighting = self.config.get('weighting', 'equal_weight')
 
         # Initialize data provider
-        self.snapshot_provider = SnapshotDataProvider()
+        self.fundamental_provider = FundamentalHistoryProvider()
 
         logger.info(f'Initialized GBMRankingStrategy: {self.selection_method}, '
                    f'{self.weighting}, min_snapshots={self.min_snapshots}')
