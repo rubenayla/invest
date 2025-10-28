@@ -1,17 +1,13 @@
-## Top Value Picks (October 2025)
+# Watchlist
 - [ACGL](watchlist/ACGL.md) (Arch Capital Group Ltd) - PE 9.0, Revenue +90%, Earnings +100%
 - [SYF](watchlist/SYF.md) (Synchrony Financial) - PE 8.0, Revenue +58%, $1B/year buybacks
 - [CAG](watchlist/CAG.md) (Conagra Brands Inc) - PE 10.4, 7.3% dividend, recovering earnings
-
-## High-Quality Growth (Strong Fundamentals)
 - [META](watchlist/META.md) (Meta Platforms) - Revenue +40%, Earnings +58%, FCF $54B
-- [8058.T](watchlist/8058.md) (Mitsubishi Corp.) - PE 15.2, P/B 1.54, passes value screen
-- NVDA (Nvidia) - Revenue +385%, Earnings +647% (AI boom, expensive valuation)
-- MSFT (Microsoft) - Revenue +42%, Earnings +40%, consistent FCF
+- [8058.T](watchlist/8058.md) (Mitsubishi Corp.) - PE 15.2, P/B 1.54
+- NVDA (Nvidia) - Revenue +385%, Earnings +647% (AI boom)
+- MSFT (Microsoft) - Revenue +42%, Earnings +40%
 - GOOGL (Google) - Revenue +36%, Earnings +32%, FCF $73B
-- NFLX (Netflix) - Revenue +31%, Earnings +70%, FCF positive
-
-## Other Watchlist
+- NFLX (Netflix) - Revenue +31%, Earnings +70%
 - MOH (Molina Healthcare) - Giant crash like CNC, but better balance sheet
 - PFE (Pfizer Inc) - Defensive, COVID revenue normalized
 - [SQM](watchlist/SQM.md) (Sociedad Quimica y Minera) - Low-cost lithium producer
