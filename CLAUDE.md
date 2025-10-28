@@ -4,6 +4,22 @@
 
 ⚠️ **IMPORTANT**: This project uses uv dependency management. ALL Python commands must be prefixed with `uv run`.
 
+## 📊 DATA CONVENTIONS
+
+### Ratios are Ratios, Not Percentages
+**Convention**: Store all ratios as ratios (0.93), NOT percentages (93)
+
+**Why:**
+- More programmer-friendly (can multiply directly: `debt * 0.93`)
+- Cleaner in calculations
+- Avoids confusion between 0.93 and 93%
+
+**Important:** yfinance returns `debtToEquity` as percentage (92.867), so we calculate it ourselves:
+```python
+debt_to_equity = total_debt / (book_value * shares_outstanding)
+```
+**Location:** `scripts/data_fetcher.py` lines 289-299
+
 ## 🚫 NEVER Touch User's Personal Files
 
 ⚠️ **CRITICAL**: `todo.md`, `notes/watchlist.md`, and similar files are the USER'S personal notes - NOT Claude's!

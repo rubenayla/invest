@@ -286,12 +286,24 @@ class AsyncStockDataFetcher:
 
                 # Key financial metrics
                 try:
+                    # Calculate debt-to-equity ourselves - yfinance returns it as percentage (92.867)
+                    # but we store ratios as ratios (0.929), not percentages
+                    debt_to_equity = None
+                    total_debt = info.get('totalDebt')
+                    book_value = info.get('bookValue')
+                    shares_outstanding = info.get('sharesOutstanding')
+
+                    if total_debt and book_value and shares_outstanding and book_value > 0:
+                        total_equity = book_value * shares_outstanding
+                        if total_equity > 0:
+                            debt_to_equity = total_debt / total_equity
+
                     data['financials'] = {
                         'trailingPE': info.get('trailingPE'),
                         'forwardPE': info.get('forwardPE'),
                         'priceToBook': info.get('priceToBook'),
                         'returnOnEquity': info.get('returnOnEquity'),
-                        'debtToEquity': info.get('debtToEquity'),
+                        'debtToEquity': debt_to_equity,  # Use calculated ratio, not yfinance's percentage
                         'currentRatio': info.get('currentRatio'),
                         'revenueGrowth': info.get('revenueGrowth'),
                         'earningsGrowth': info.get('earningsGrowth'),
