@@ -40,11 +40,7 @@
 - DIS (Disney) - Media/parks
 - LOGI (Logitech) - Peripherals
 - SWKS (Skyworks) - Semiconductors
-- MSFT (Microsoft) - Tech giant
-- GOOGL (Google) - Tech giant
 - MMM (3M) - Industrials, lawsuit risk
-- NVDA (Nvidia) - AI chips
-- NFLX (Netflix) - Streaming
 - SONY (Sony) - Electronics/entertainment
 - JD (JD.com) - Chinese e-commerce, low margins
 
