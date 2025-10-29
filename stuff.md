@@ -863,3 +863,102 @@ The existing working GBM models use the **`forward_returns` table**:
 **DO NOT attempt peak return models** without first creating a `peak_returns` table or restructuring the price data architecture.
 
 ---
+
+## 2025-10-28: Portfolio Allocation Decision - TSLA → ACGL/SYF
+
+### 🎯 Transaction Summary
+**Sold:** $2,300 TSLA (5 shares @ ~$460)
+**Buying:** $2,100 ACGL + $1,400 SYF (Total: $3,500)
+
+### 📊 Investment Thesis
+
+**TSLA (Sold):**
+- Trading at $429.61, PE ratio 317x
+- Valuation models showed 91-96% overvaluation:
+  - DCF fair value: $16.24 (-96% overvalued)
+  - RIM fair value: $18.34 (-96% overvalued)
+  - Simple Ratios: $40.42 (-91% overvalued)
+- **Decision:** Criminally overvalued despite FSD hype
+
+**ACGL (Arch Capital - Insurance):**
+- Current: $84.72, PE 7.9x, ROE 17.1%, D/E 0.14 (very low debt)
+- Conservative fair value: $146.50 (+73% upside)
+- Best-in-class specialty insurance underwriter
+- Expected return: +52.0% (probability-weighted)
+- Risk (StdDev): 27.5% (low volatility)
+- Sharpe ratio: 1.89 (excellent risk-adjusted return)
+
+**SYF (Synchrony Financial - Credit Cards):**
+- Current: $74.72, PE 8.2x, ROE 21.6%, D/E 0.91
+- Conservative fair value: $136.63 (+83% upside)
+- Store-branded credit cards (Amazon, Target, PayPal, etc.)
+- Expected return: +54.5% (probability-weighted)
+- Risk (StdDev): 59.8% (high volatility - credit cyclical)
+- Sharpe ratio: 0.91 (lower risk-adjusted, but higher absolute return)
+
+### 🎲 Expected Value Analysis
+
+**Scenario Modeling:**
+- Bull case (40% prob): ACGL +80%, SYF +120%
+- Base case (35% prob): ACGL +50%, SYF +40%
+- Bear/recession (25% prob): ACGL +10%, SYF -30%
+
+**Portfolio Allocation Analysis ($3,500 total):**
+
+| Allocation | ACGL/SYF | Return | Profit | Risk | Sharpe | Notes |
+|------------|----------|--------|--------|------|--------|-------|
+| 40/60 SYF heavy | $1,400/$2,100 | +53.5% | $1,872 | 40.6% | 1.32 | Max profit, high volatility |
+| 50/50 Balanced | $1,750/$1,750 | +53.2% | $1,864 | 36.5% | 1.46 | Good middle ground |
+| **60/40 ACGL** | **$2,100/$1,400** | **+53.0%** | **$1,855** | **32.9%** | **1.61** | ✅ **Optimal risk/reward** |
+| 70/30 ACGL | $2,450/$1,050 | +52.8% | $1,846 | 30.0% | 1.76 | Lower volatility |
+
+**Why 60/40:**
+- SYF has slightly higher expected return (+54.5% vs +52.0%)
+- BUT SYF has 2x the volatility (59.8% vs 27.5%)
+- 60/40 allocation maximizes return while keeping risk manageable
+- $1,400 in SYF is meaningful - if it doubles, you actually feel it ($2,800 gain)
+- $2,100 in ACGL provides stability anchor
+
+### 🎓 Key Learnings
+
+**1. Data Quality Discovery:**
+- Found yfinance returns debt-to-equity as percentage (92.867) not ratio (0.929)
+- Fixed 526 database records + data_fetcher.py to calculate D/E ourselves
+- Convention: Store ratios as ratios (0.93), not percentages (93)
+
+**2. Sector Analysis - Consumer Defensive Weakness:**
+- Consumer defensive has lowest growth: +1.5% avg (vs Tech +14.2%)
+- 39.5% of consumer defensive stocks declining (highest rate)
+- Causes: Post-COVID normalization, inflation squeeze, private label competition, GLP-1 drugs
+- Rejected CAG (Conagra): PE 10x but declining revenue -5.8%, Z-score 1.59 (distress)
+- **Lesson:** Low PE ≠ value if business is structurally declining
+
+**3. Expected Value Thinking:**
+- Raw upside matters less than probability-weighted expected value
+- SYF has higher absolute upside but much higher risk
+- Sharpe ratio reveals risk-adjusted truth: ACGL 1.89 vs SYF 0.91
+- Portfolio allocation: Balance expected return against volatility tolerance
+
+**4. Business Quality Over Sector Matching:**
+- Initially considered CAG for consumer exposure, then MOH (healthcare)
+- Realized business quality > sector diversification for value investing
+- MOH (healthcare): ROE 19.7%, growth +11.6% vs CAG: ROE 9.6%, growth -5.8%
+- Final choice: ACGL/SYF both financials but different risk profiles
+
+### 💰 Expected Outcome (1-2 Year Horizon)
+
+**Base case:** $3,500 → $5,355 (+$1,855 profit, +53% return)
+
+**Bull case (economy stays strong):**
+- ACGL reaches $152 (+79%): $2,100 → $3,765
+- SYF reaches $164 (+120%): $1,400 → $3,080
+- **Total: $6,845** (+$3,345 profit, +96% return)
+
+**Bear case (recession):**
+- ACGL at $93 (+10%): $2,100 → $2,310
+- SYF at $52 (-30%): $1,400 → $980
+- **Total: $3,290** (-$210 loss, -6% return)
+
+**Risk tolerance:** Willing to accept -6% downside (25% probability) for +53% expected return.
+
+---
