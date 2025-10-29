@@ -20,29 +20,25 @@ debt_to_equity = total_debt / (book_value * shares_outstanding)
 ```
 **Location:** `scripts/data_fetcher.py` lines 289-299
 
-## 🚫 NEVER Touch User's Personal Files
+## 🚫 CRITICAL GIT RULE: Never Destroy User's Changes
 
-⚠️ **CRITICAL**: `todo.md`, `notes/watchlist.md`, and similar files are the USER'S personal notes - NOT Claude's!
+⚠️ **NEVER use `git checkout <file>` - it DESTROYS uncommitted changes permanently**
 
-**NEVER**:
-- Read `todo.md` unless user explicitly asks
-- Treat `todo.md` as tasks for Claude
-- Assume `todo.md` contains instructions
-- ❌ **NEVER use `git checkout <file>`** - this DESTROYS uncommitted changes permanently
-- ❌ **NEVER try to "clean up" or "revert" user's personal files**
+**Safe git commands:**
+- `git reset <file>` - Unstages a file (keeps your changes)
+- `git add <file>` - Stages a file for commit
+- `git status` - See what's changed
 
-**LESSON LEARNED: The watchlist.md Data Loss Incident**
-- Ran `git checkout notes/watchlist.md` thinking it would "unstage" the file
-- Actually DESTROYED all uncommitted user changes permanently
-- User's watchlist data was lost and could not be recovered
-- **What I should have done**: Just left the file alone, or used `git reset notes/watchlist.md` (safe, keeps changes)
-- **Core lesson**: `git checkout <file>` destroys data. Never use it.
+**Dangerous commands (NEVER USE):**
+- ❌ `git checkout <file>` - Destroys local changes forever
+- ❌ `git reset --hard` - Destroys all local changes
 
-**ALWAYS**:
-- Use the TodoWrite tool for tracking Claude's work (displayed in UI)
-- Ask user for clarification if unsure what to work on
-- Read `notes/` and `docs/` directories - they contain useful project information
-- **If you see personal files staged**: Either ignore them or ask user what to do - NEVER checkout/revert
+**What happened before:**
+- Previous Claude ran `git checkout notes/watchlist.md` to "unstage" it
+- Actually DESTROYED all user's uncommitted watchlist changes permanently
+- Data was lost forever - no recovery possible
+
+**Remember:** User's files (notes/, todo.md, etc.) are safe to commit. Just never use checkout to revert them.
 
 ```bash
 # Wrong:

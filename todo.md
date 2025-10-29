@@ -1,16 +1,7 @@
-The data fetcher is still running in the background (at ~78% completion).
-  It will continue fetching the remaining ~113 companies. Once complete,
-  you'll have the full S&P 500 in your database for analysis!
-
----
-MOH
-
-
 
 why VIS stock is not in the dashboard?
 
 check terminal, chatgpt suggestions etc.
-
 
 I basically want to take the max price of the period from next year to next 2 years, and train with that, instead of the price just after one year. Maybe this should be the opportunistic model. To this model, somehow make it conservative so we actually check that it is super super unlikely to get stocks in the lower % of returns, even if some % of super high gains. (Think about probability distribution and how to rate it?)
 
@@ -142,7 +133,7 @@ nem P/tangible book value?
 
 now compare your previous analysis to the one of the repo, and try to understand why your recommendations differ. What is different?
 
-- take a look: https://www.ark-funds.com/funds/arkvx
+
 
 - Create parameter that includes the 5 year past earning growth as in the video, and use it in filter. It certainly matches with high PE companies, might wanna do it for small caps that combine that with low PE. Might want to do the analysis of the video taking the second derivative of the earnings too, see if there's correlation too
     - https://youtu.be/-xq7a-tptno?si=kl6EQT-Jfxu1xmyG

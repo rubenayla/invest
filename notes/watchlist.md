@@ -1,6 +1,7 @@
 # Watchlist
 - [ACGL](watchlist/ACGL.md) (Arch Capital Group Ltd) - PE 9.0, Revenue +90%, Earnings +100%
 - [SYF](watchlist/SYF.md) (Synchrony Financial) - PE 8.0, Revenue +58%, $1B/year buybacks
+    - High risk compared with ACGL, but lots of upside if economy holds
 - [CAG](watchlist/CAG.md) (Conagra Brands Inc) - PE 10.4, 7.3% dividend, recovering earnings
 - [META](watchlist/META.md) (Meta Platforms) - Revenue +40%, Earnings +58%, FCF $54B
 - [8058.T](watchlist/8058.md) (Mitsubishi Corp.) - PE 15.2, P/B 1.54
