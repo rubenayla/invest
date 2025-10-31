@@ -126,21 +126,20 @@ Top candidates undergo detailed valuation:
 - Focuses on economic profits
 - Alternative valuation perspective
 
-## Interactive Dashboard
+## Static Dashboard
 
-The **Interactive Dashboard** provides a live web interface for real-time investment analysis:
+Generate a shareable HTML dashboard after your analysis run:
 
 ```bash
-uv run python scripts/dashboard_server.py
-# Opens automatically at http://localhost:8080
+uv run python scripts/dashboard.py
+open dashboard/valuation_dashboard.html
 ```
 
 **Key Features:**
-- **Live Valuations**: Compare DCF, Enhanced DCF, and Simple Ratios side-by-side
-- **One-Click Updates**: Refresh all data with button click
-- **Real-Time Prices**: Current market data with upside/downside calculations
-- **Interactive Tooltips**: Hover explanations for all metrics
-- **Professional Interface**: Clean, responsive design with visual feedback
+- **Side-by-Side Valuations**: DCF variants, RIM, neural networks, and consensus models.
+- **Interactive Sorting**: Sort any column directly in the browser.
+- **Current Pricing**: Includes upside/downside calculations using the latest data in the database.
+- **Fast & Portable**: Static file loads instantly and can be viewed offline.
 
 See [Dashboard Guide](dashboard.md) for detailed usage instructions.
 

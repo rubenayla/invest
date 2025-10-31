@@ -44,7 +44,7 @@ View your investment analysis in a clean, fast static HTML dashboard:
 
 ```bash
 # Generate/update the dashboard
-uv run python scripts/regenerate_dashboard_html.py
+uv run python scripts/dashboard.py
 
 # Then open in browser
 open dashboard/valuation_dashboard.html
@@ -116,8 +116,7 @@ configs/               # Analysis configurations
 
 scripts/
 ├── systematic_analysis.py     # Main CLI
-├── dashboard_server.py        # Interactive web dashboard server
-└── run_dashboard.py          # Dashboard launcher with multiple access options
+└── dashboard.py               # Static HTML dashboard generator
 ```
 
 ## Output Formats

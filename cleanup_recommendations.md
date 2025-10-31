@@ -3,7 +3,7 @@
 Generated: 2025-10-09
 
 ## ✅ Completed
-- ✓ Deleted PROJECT.md (outdated, referenced deleted dashboard_server.py)
+- ✓ Deleted PROJECT.md (outdated server-based dashboard instructions)
 
 ---
 
@@ -12,16 +12,10 @@ Generated: 2025-10-09
 ### High Priority - Outdated Documentation
 
 #### 1. `README.md`
-**Issues:**
-- References `scripts/dashboard_server.py` (DELETED)
-- References `scripts/run_dashboard.py` (doesn't exist)
-- Mentions "Interactive Dashboard" with server features
+**Status:** ✅ Static dashboard instructions now point to `scripts/dashboard.py` and `dashboard/valuation_dashboard.html`.
 
-**Recommended updates:**
-- Remove dashboard_server.py references
-- Update dashboard section to reference static HTML: `dashboard/valuation_dashboard.html`
-- Update quick start to use `scripts/regenerate_dashboard_html.py` for dashboard generation
-- Add info about neural network model (single-horizon LSTM/Transformer with 78.64% hit rate)
+**Recommended follow-ups:**
+- Keep neural network performance metrics current (single-horizon LSTM/Transformer with 78.64% hit rate).
 
 #### 2. `MULTI_HORIZON_NN.md`
 **Issues:**
@@ -213,7 +207,7 @@ rm analysis_summary_*.json  # These are superseded by dashboard_data.json
 
 2. **`generate_multi_horizon_dashboard.py`**
    - References old multi-horizon model
-   - Superseded by `regenerate_dashboard_html.py`?
+   - Superseded by `scripts/dashboard.py`?
    - **Action:** Review and possibly delete
 
 3. **`run_multi_horizon_predictions.py`**
@@ -239,7 +233,7 @@ rm analysis_summary_*.json  # These are superseded by dashboard_data.json
 
 ### Immediate (High Priority)
 
-1. **Update README.md** - Remove dashboard_server.py references, add current NN info
+1. **Keep README.md current** - Ensure static dashboard guidance and neural network metrics stay up to date
 2. **Rewrite MULTI_HORIZON_NN.md** - Document current single-horizon LSTM/Transformer model
 3. **Update MODEL_MANAGEMENT.md** - Reference best_model.pt and current training workflow
 4. **Update MCP_USAGE.md** - Fix neural network performance metrics
@@ -282,7 +276,7 @@ rm analysis_summary_*.json  # These are superseded by dashboard_data.json
 **Active Dashboard:**
 - File: `dashboard/valuation_dashboard.html`
 - Static HTML (no server needed)
-- Generation: `scripts/regenerate_dashboard_html.py`
+- Generation: `scripts/dashboard.py`
 - Data: `dashboard/dashboard_data.json`
 
 ---

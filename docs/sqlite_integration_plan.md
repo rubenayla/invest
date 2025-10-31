@@ -115,7 +115,7 @@ Already has multi-horizon support.
 ### Phase 3: Update readers
 1. `run_multi_horizon_predictions.py` - read from SQLite
 2. `run_classic_valuations.py` - read from SQLite
-3. `regenerate_dashboard_html.py` - read from SQLite
+3. `dashboard.py` - read from SQLite
 
 ### Phase 4: Testing
 1. Run full workflow with SQLite

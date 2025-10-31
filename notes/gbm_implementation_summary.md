@@ -183,7 +183,7 @@ DYLD_LIBRARY_PATH=/opt/homebrew/opt/libomp/lib:$DYLD_LIBRARY_PATH uv run python 
 ## Next Steps
 
 1. **Run Predictions**: Execute all 4 prediction scripts to populate database
-2. **Regenerate Dashboard**: Run `scripts/regenerate_dashboard_html.py`
+2. **Regenerate Dashboard**: Run `scripts/dashboard.py`
 3. **Monitor Performance**: Track Rank IC and Decile Spread over time
 4. **Ensemble Opportunity**: Consider combining Full + Lite predictions for maximum coverage
 

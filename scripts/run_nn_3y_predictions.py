@@ -527,7 +527,7 @@ def main():
     print(f'   Total:             {len(tickers):3}')
     print()
     print(f'💾 Saved to database: data/stock_data.db (valuation_results table)')
-    print('💡 Run regenerate_dashboard_html.py to update the dashboard HTML')
+    print('💡 Run dashboard.py to update the dashboard HTML')
 
     return 0
 

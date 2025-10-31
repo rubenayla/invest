@@ -13,12 +13,11 @@ A configuration-driven, objective approach to investment analysis that eliminate
 # Install dependencies
 uv sync
 
-# Launch interactive dashboard (recommended - multiple access options)
-uv run python scripts/run_dashboard.py
+# Generate static dashboard HTML
+uv run python scripts/dashboard.py
 
-# Or start dashboard server directly
-uv run python scripts/dashboard_server.py
-# Opens automatically at http://localhost:8080
+# Open the dashboard (macOS example)
+open dashboard/valuation_dashboard.html
 
 # Or run command-line analysis
 uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv

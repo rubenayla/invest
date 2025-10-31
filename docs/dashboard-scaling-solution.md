@@ -49,19 +49,15 @@ uv run python scripts/offline_analyzer.py --universe sp500 --max-stocks 500 --up
 | **Network Usage** | High during analysis | Zero during analysis | Offline capability |
 | **Concurrency** | Sequential | 10-15 parallel | Concurrent |
 
-## Updated Dashboard Server
+## Dashboard Generation Flow
 
-The dashboard server (`scripts/dashboard_server.py`) now uses the two-step approach:
+The modern dashboard pipeline keeps the two-step data architecture but renders a static HTML file at the end:
 
-1. **Data Fetch Phase**: Runs `data_fetcher.py` in background
-2. **Analysis Phase**: Runs `offline_analyzer.py` with cached data  
-3. **Dashboard Update**: Updates UI with new results
+1. **Data Fetch Phase**: Run `scripts/data_fetcher.py` as needed to populate the cache.
+2. **Analysis Phase**: Execute `scripts/offline_analyzer.py --update-dashboard` (or your preferred analysis jobs) to refresh the SQLite results tables.
+3. **HTML Generation**: Run `uv run python scripts/dashboard.py` to write `dashboard/valuation_dashboard.html`.
 
-### New Features
-- **Higher Stock Limits**: 1000 for SP500, 500 for other universes
-- **Progressive Loading**: Add more stocks without replacing existing ones
-- **Reliability**: Fallback to old method if new approach fails
-- **Real-time Updates**: Dashboard updates as analysis completes
+The resulting file contains all valuations and can be opened directly in any browser—no server process required.
 
 ## Usage Examples
 
@@ -73,22 +69,18 @@ uv run python scripts/data_fetcher.py --universe sp500 --max-stocks 500
 # Step 2: Analyze cached data and update dashboard (runs instantly)
 uv run python scripts/offline_analyzer.py --universe cached --update-dashboard
 
-# Step 3: Start dashboard server
-uv run python scripts/dashboard_server.py
+# Step 3: Regenerate static HTML and open it
+uv run python scripts/dashboard.py
+open dashboard/valuation_dashboard.html
 ```
 
 ### All-in-One Dashboard Update
 ```bash
-# Start dashboard server (will fetch + analyze automatically)
-uv run python scripts/dashboard_server.py
-# Click "Update Data" -> Now fetches 1000 stocks instead of 30!
-```
-
-### Progressive Stock Loading  
-```bash
-# Add more stocks to existing dashboard (incremental)
-# Use the "Add More Stocks" button in dashboard UI
-# Or via API: POST /update with {"universe": "sp500", "expand": true}
+# Fetch, analyze, and regenerate HTML in sequence
+uv run python scripts/data_fetcher.py --universe sp500 --max-stocks 1000
+uv run python scripts/offline_analyzer.py --universe cached --update-dashboard
+uv run python scripts/dashboard.py
+open dashboard/valuation_dashboard.html
 ```
 
 ## Cache Management
