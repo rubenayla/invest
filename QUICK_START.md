@@ -110,6 +110,45 @@ uv run python scripts/run_all_predictions.py --models gbm
 
 ---
 
+## Testing
+
+### Run Tests
+
+```bash
+# Run all tests
+uv run pytest
+
+# Run only fast tests (skip model tests)
+uv run pytest -m "not requires_models"
+
+# Run only model tests (requires trained models)
+uv run pytest -m "requires_models"
+
+# Run specific test file
+uv run pytest tests/test_gbm_models.py
+
+# Verbose output
+uv run pytest -v
+```
+
+### Test Markers
+
+Tests are marked with these categories:
+
+- **`requires_models`** - Needs trained models (GBM, NN). Auto-skipped if models missing.
+- **`requires_data`** - Needs full database with historical data. Auto-skipped if missing.
+- **`slow`** - Long-running tests (>5 seconds)
+- **`integration`** - Integration tests
+- **`unit`** - Fast unit tests
+
+**Auto-skip behavior**: Tests marked with `requires_models` or `requires_data` will automatically be skipped if the resources don't exist. You'll see a helpful message:
+
+```
+SKIPPED [1] tests/test_gbm_models.py:15: Trained models not found. Train models first with scripts in neural_network/training/
+```
+
+---
+
 ## Help
 
 ```bash
@@ -117,6 +156,6 @@ uv run python scripts/run_all_predictions.py --models gbm
 uv run python scripts/run_gbm_predictions.py --help
 uv run python scripts/run_all_predictions.py --help
 
-# Test commands
-uv run pytest
+# List all test markers
+uv run pytest --markers
 ```

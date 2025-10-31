@@ -13,6 +13,63 @@ import yaml
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 
+def pytest_collection_modifyitems(config, items):
+    """
+    Automatically skip tests that require missing resources.
+
+    This hook checks if required models/data exist and marks tests
+    for skipping if resources are missing.
+    """
+    project_root = Path(__file__).parent.parent
+
+    # Check for trained models
+    gbm_models_exist = any([
+        (project_root / 'neural_network/training/gbm_model_1y.txt').exists(),
+        (project_root / 'neural_network/training/gbm_model_3y.txt').exists(),
+        (project_root / 'neural_network/training/gbm_lite_model_1y.txt').exists(),
+        (project_root / 'neural_network/training/gbm_opportunistic_model_1y.txt').exists(),
+    ])
+
+    nn_models_exist = (project_root / 'neural_network/training/best_model.pt').exists()
+    models_exist = gbm_models_exist or nn_models_exist
+
+    # Check for database with historical data
+    db_path = project_root / 'data/stock_data.db'
+    db_exists = db_path.exists()
+
+    if db_exists:
+        import sqlite3
+        try:
+            conn = sqlite3.connect(str(db_path))
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM fundamental_history")
+            history_count = cursor.fetchone()[0]
+            conn.close()
+            has_historical_data = history_count > 1000  # At least 1000 records
+        except Exception:
+            has_historical_data = False
+    else:
+        has_historical_data = False
+
+    # Build skip reasons
+    skip_models = pytest.mark.skip(
+        reason="Trained models not found. Train models first with scripts in neural_network/training/"
+    )
+    skip_data = pytest.mark.skip(
+        reason="Historical data not found. Run: uv run python scripts/populate_fundamental_history.py"
+    )
+
+    # Apply skip markers
+    for item in items:
+        if "requires_models" in item.keywords:
+            if not models_exist:
+                item.add_marker(skip_models)
+
+        if "requires_data" in item.keywords:
+            if not has_historical_data:
+                item.add_marker(skip_data)
+
+
 @pytest.fixture
 def mock_stock_data():
     """Comprehensive mock stock data for testing."""

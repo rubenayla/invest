@@ -79,6 +79,8 @@ markers = [
     "performance: marks tests as performance tests",
     "cache: marks tests that involve caching",
     "dashboard: marks tests for dashboard functionality",
+    "requires_models: marks tests that require trained models (GBM, NN) (skip with '-m \"not requires_models\"')",
+    "requires_data: marks tests that require full database with historical data (skip with '-m \"not requires_data\"')",
 ]
 filterwarnings = [
     "ignore::UserWarning",
