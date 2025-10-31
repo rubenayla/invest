@@ -158,3 +158,5 @@ neural_network/training/gbm_model_*.txt
 
 # SEC EDGAR downloaded data (large files)
 data/sec_edgar/raw/
+tmp.md
+todo.md
