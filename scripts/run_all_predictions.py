@@ -4,13 +4,12 @@ Run all prediction models at once and generate dashboard.
 
 This script orchestrates the complete prediction pipeline:
 1. GBM models (6 variants)
-2. Neural network models (2 variants)
-3. Classic valuation models
-4. Dashboard generation
+2. Classic valuation models
+3. Dashboard generation
 
 Usage:
     uv run python scripts/run_all_predictions.py
-    uv run python scripts/run_all_predictions.py --models gbm,nn
+    uv run python scripts/run_all_predictions.py --models gbm
     uv run python scripts/run_all_predictions.py --skip-dashboard
 """
 
@@ -127,28 +126,6 @@ def run_gbm_models() -> dict:
     return results
 
 
-def run_neural_network_models() -> dict:
-    """Run neural network models."""
-    print_header('🧠 Running Neural Network Models')
-
-    models = [
-        ('scripts/run_nn_predictions.py', 'Neural Network 1y'),
-        ('scripts/run_nn_3y_predictions.py', 'Neural Network 3y'),
-    ]
-
-    results = {}
-    total_time = 0
-
-    for script, description in models:
-        cmd = ['uv', 'run', 'python', script]
-        success, elapsed = run_command(cmd, description)
-        results[script] = success
-        total_time += elapsed
-
-    print_info(f'Total NN time: {total_time:.1f}s')
-    return results
-
-
 def run_classic_models() -> dict:
     """Run classic valuation models."""
     print_header('💰 Running Classic Valuation Models')
@@ -204,15 +181,15 @@ def main():
         epilog="""
 Examples:
   %(prog)s                           # Run everything
-  %(prog)s --models gbm,nn           # Run only GBM and NN models
+  %(prog)s --models gbm              # Run only GBM models
   %(prog)s --skip-dashboard          # Skip dashboard generation
   %(prog)s --models classic          # Run only classic valuations
         """
     )
     parser.add_argument(
         '--models',
-        help='Comma-separated list of model types (gbm,nn,classic)',
-        default='gbm,nn,classic'
+        help='Comma-separated list of model types (gbm,classic)',
+        default='gbm,classic'
     )
     parser.add_argument(
         '--skip-dashboard',
@@ -232,9 +209,6 @@ Examples:
     # Run models
     if 'gbm' in model_types:
         all_results.update(run_gbm_models())
-
-    if 'nn' in model_types:
-        all_results.update(run_neural_network_models())
 
     if 'classic' in model_types:
         all_results.update(run_classic_models())

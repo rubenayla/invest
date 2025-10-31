@@ -67,8 +67,8 @@ class HTMLGenerator:
             <h1>🔍 Investment Valuation Dashboard</h1>
             <p class="subtitle">Multi-model stock analysis with real-time updates</p>
             <div class="last-updated">Last Updated: <span id="lastUpdated">{last_updated}</span></div>
-            <div style="margin-top: 15px;">
-                <a href="model_specs.html" style="color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 6px; font-weight: 500; transition: background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">📊 View Model Specifications</a>
+            <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;">
+                <button onclick="exportToCSV()" style="color: white; background: rgba(40,167,69,0.8); border: none; padding: 8px 16px; border-radius: 6px; font-weight: 500; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='rgba(40,167,69,1)'" onmouseout="this.style.background='rgba(40,167,69,0.8)'">📥 Export to CSV</button>
             </div>
         </header>
         
@@ -105,7 +105,7 @@ class HTMLGenerator:
             <ul>
                 <li><strong>Fair Value:</strong> Estimated intrinsic value per share from each model</li>
                 <li><strong>Margin of Safety:</strong> How much upside/downside vs current price</li>
-                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases), GBM (Gradient Boosted Machine ranking models - 6 variants: Full 1y/3y, Lite 1y/3y, Opportunistic 1y/3y), NN (Neural Network predictions)</li>
+                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases), GBM (Gradient Boosted Machine ranking models - 6 variants: Full 1y/3y, Lite 1y/3y, Opportunistic 1y/3y)</li>
                 <li><strong>Consensus:</strong> Average of all successful models</li>
             </ul>
             <p class="disclaimer">⚠️ This is for educational purposes. Not investment advice. Do your own research.</p>
@@ -211,8 +211,6 @@ class HTMLGenerator:
                         <th title="Gradient Boosted Machine Lite 3-year ranking (LightGBM with 247 features, Rank IC 0.61)">GBM Lite 3y</th>
                         <th title="Opportunistic GBM 1-year - Peak return prediction within 2 years (Rank IC 0.61)">GBM Opp 1y</th>
                         <th title="Opportunistic GBM 3-year - Peak return prediction within 3 years (Rank IC 0.64)">GBM Opp 3y</th>
-                        <th title="Neural Network 1-year prediction (LSTM/Transformer with MC Dropout confidence)">NN 1y</th>
-                        <th title="Neural Network 3-year prediction (LSTM/Transformer with MC Dropout confidence)">NN 3y</th>
                         <th title="Consensus valuation - Average of all successful model results">Consensus</th>
                     </tr>
                 </thead>
@@ -247,8 +245,6 @@ class HTMLGenerator:
             "gbm_lite_3y": "GBM-Lite3y",
             "gbm_opportunistic_1y": "GBM-Opp1y",
             "gbm_opportunistic_3y": "GBM-Opp3y",
-            "single_horizon_nn": "NN1y",
-            "nn_3y": "NN3y",
             "ensemble": "Consensus"
         }
         
@@ -293,12 +289,6 @@ class HTMLGenerator:
         gbm_opp_1y_html = self._format_valuation_cell(valuations.get("gbm_opportunistic_1y", {}), current_price)
         gbm_opp_3y_html = self._format_valuation_cell(valuations.get("gbm_opportunistic_3y", {}), current_price)
 
-        # Format single-horizon NN prediction (1-year only)
-        nn_html = self._format_nn_cell(valuations.get("single_horizon_nn", {}), current_price)
-
-        # Format 3-year NN prediction
-        nn_3y_html = self._format_nn_cell(valuations.get('nn_3y', {}), current_price)
-
         # Calculate consensus
         consensus_html = self._format_consensus_cell(valuations, current_price)
 
@@ -319,8 +309,6 @@ class HTMLGenerator:
             <td>{gbm_lite_3y_html}</td>
             <td>{gbm_opp_1y_html}</td>
             <td>{gbm_opp_3y_html}</td>
-            <td>{nn_html}</td>
-            <td>{nn_3y_html}</td>
             <td>{consensus_html}</td>
         </tr>'''
     
@@ -1055,6 +1043,63 @@ class HTMLGenerator:
                 customInput.required = false;
             }
         });
+
+        // Export to CSV function
+        function exportToCSV() {
+            const table = document.getElementById('stockTable');
+            if (!table) {
+                alert('No table found to export');
+                return;
+            }
+
+            const rows = [];
+
+            // Get headers
+            const headers = [];
+            table.querySelectorAll('thead th').forEach(th => {
+                headers.push(th.textContent.trim().replace(/[↑↓]/g, ''));
+            });
+            rows.push(headers);
+
+            // Get all visible rows (respects filtering)
+            table.querySelectorAll('tbody tr').forEach(tr => {
+                if (tr.style.display !== 'none') {
+                    const row = [];
+                    tr.querySelectorAll('td').forEach(td => {
+                        // Clean up cell content
+                        let text = td.textContent.trim();
+                        // Remove extra whitespace
+                        text = text.replace(/\\s+/g, ' ');
+                        // Escape quotes and wrap in quotes if contains comma
+                        if (text.includes(',') || text.includes('"') || text.includes('\\n')) {
+                            text = '"' + text.replace(/"/g, '""') + '"';
+                        }
+                        row.push(text);
+                    });
+                    rows.push(row);
+                }
+            });
+
+            // Create CSV content
+            const csvContent = rows.map(row => row.join(',')).join('\\n');
+
+            // Create blob and download
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+
+            // Generate filename with current date
+            const date = new Date().toISOString().split('T')[0];
+            link.setAttribute('href', url);
+            link.setAttribute('download', `dashboard_export_${date}.csv`);
+            link.style.visibility = 'hidden';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            console.log(`Exported ${rows.length - 1} rows to CSV`);
+        }
         
         
         // Auto-refresh when update is in progress
