@@ -1,12 +1,14 @@
 """
-GBM Lite Feature Configuration - Reduced requirements for stocks with limited history.
+GBM Lite Feature Configuration - Maximum compatibility with limited history.
 
-This is a lightweight version of GBM that requires only 4-6 quarters of data:
-- Reduced lag periods: [1, 2] instead of [1, 2, 4, 8]
-- Reduced rolling windows: [4] instead of [4, 8, 12]
-- Same base features for consistency
+This is an ultra-lightweight version optimized for maximum stock coverage:
+- NO lag periods (removes need for historical quarters)
+- NO rolling windows (removes need for time series)
+- NO YoY changes (removes need for year-ago data)
+- Only QoQ changes (requires just 2 quarters)
+- Focus on current snapshot features
 
-Use this for stocks that don't have 8-12 quarters of historical data.
+This should work for ANY stock with at least 2 quarters of data.
 """
 
 # Same fundamental features as full GBM
@@ -72,13 +74,13 @@ CASHFLOW_FEATURES = [
 # All base features to engineer
 BASE_FEATURES = FUNDAMENTAL_FEATURES + MARKET_FEATURES + PRICE_FEATURES
 
-# LITE CONFIGURATION: Reduced requirements
-LAG_PERIODS = [1, 2]  # Only 2 quarters back (reduced from [1, 2, 4, 8])
-ROLLING_WINDOWS = [4]  # Only 4-quarter windows (reduced from [4, 8, 12])
-ROLLING_STATS = ['mean', 'std', 'slope']
+# ULTRA-LITE CONFIGURATION: Maximum compatibility
+LAG_PERIODS = []  # No lags - use only current values
+ROLLING_WINDOWS = []  # No rolling stats - avoid time series requirements
+ROLLING_STATS = []  # No stats needed
 
 # Minimum quarters needed for this configuration
-MIN_QUARTERS_REQUIRED = 4  # Need at least 4 quarters for 4Q rolling windows
+MIN_QUARTERS_REQUIRED = 2  # Only need current + 1 prior for QoQ changes
 
 # Categorical features
 CATEGORICAL_FEATURES = ['sector']
@@ -95,7 +97,7 @@ def get_all_feature_names():
     """
     features = []
 
-    # Base features
+    # Base features (current snapshot only)
     features.extend(BASE_FEATURES)
 
     # Computed yields (created from cashflow features)
@@ -106,18 +108,13 @@ def get_all_feature_names():
 
     # Engineered features for each base feature
     for feat in BASE_FEATURES:
-        # Lags (only 1Q, 2Q)
-        for lag in LAG_PERIODS:
-            features.append(f'{feat}_lag{lag}q')
+        # Lags: NONE (removed for compatibility)
 
-        # Changes (QoQ, YoY)
+        # Changes: Only QoQ (requires 2 quarters total)
         features.append(f'{feat}_qoq')
-        features.append(f'{feat}_yoy')
+        # NO YoY - would require 5 quarters
 
-        # Rolling statistics (only 4Q windows)
-        for window in ROLLING_WINDOWS:
-            for stat in ROLLING_STATS:
-                features.append(f'{feat}_{stat}{window}q')
+        # Rolling statistics: NONE (removed for compatibility)
 
         # Missingness flag
         features.append(f'{feat}_missing')
@@ -154,8 +151,8 @@ def get_min_quarters_required():
     int
         Minimum number of quarters required
     """
-    # Need enough for:
+    # Ultra-minimal requirements:
     # - Current quarter (1)
-    # - Lag 2Q (2)
-    # - 4Q rolling window with min_periods=2 (practically 4)
+    # - Previous quarter for QoQ change (1)
+    # Total: 2 quarters
     return MIN_QUARTERS_REQUIRED

@@ -523,7 +523,7 @@ class GBMLiteStockRanker:
                 s.vix,
                 s.treasury_10y,
                 s.id as snapshot_id
-            FROM snapshots s
+            FROM fundamental_history s
             JOIN assets a ON s.asset_id = a.id
             WHERE s.vix IS NOT NULL
             ORDER BY a.symbol, s.snapshot_date
