@@ -55,6 +55,9 @@ nav:
     - Configuration Options: user-guide/configuration-options.md
     - Output Formats: user-guide/output-formats.md
     - Troubleshooting: user-guide/troubleshooting.md
+  - Valuation Models:
+    - Overview: models/index.md
+    - GBM Lite: models/gbm-lite.md
   - Developer Guide:
     - Architecture: developer-guide/architecture.md
     - Dashboard Scaling: dashboard-scaling-solution.md

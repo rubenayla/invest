@@ -68,6 +68,7 @@ class HTMLGenerator:
             <p class="subtitle">Multi-model stock analysis with real-time updates</p>
             <div class="last-updated">Last Updated: <span id="lastUpdated">{last_updated}</span></div>
             <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;">
+                <a href="https://rubenayla.github.io/invest/models/" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: none; background: rgba(33,150,243,0.8); padding: 8px 16px; border-radius: 6px; font-weight: 500; transition: background 0.3s;" onmouseover="this.style.background='rgba(33,150,243,1)'" onmouseout="this.style.background='rgba(33,150,243,0.8)'">📚 Model Documentation</a>
                 <button onclick="exportToCSV()" style="color: white; background: rgba(40,167,69,0.8); border: none; padding: 8px 16px; border-radius: 6px; font-weight: 500; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='rgba(40,167,69,1)'" onmouseout="this.style.background='rgba(40,167,69,0.8)'">📥 Export to CSV</button>
             </div>
         </header>
