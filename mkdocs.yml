@@ -57,7 +57,18 @@ nav:
     - Troubleshooting: user-guide/troubleshooting.md
   - Valuation Models:
     - Overview: models/index.md
-    - GBM Lite: models/gbm-lite.md
+    - Machine Learning:
+      - GBM Full: models/gbm-full.md
+      - GBM Lite: models/gbm-lite.md
+      - GBM Opportunistic: models/gbm-opportunistic.md
+    - DCF Variants:
+      - Standard DCF: models/dcf.md
+      - Multi-Stage DCF: models/multi-stage-dcf.md
+      - Growth DCF: models/growth-dcf.md
+      - Enhanced DCF: models/dcf-enhanced.md
+    - Other Models:
+      - Residual Income (RIM): models/rim.md
+      - Simple Ratios: models/simple-ratios.md
   - Developer Guide:
     - Architecture: developer-guide/architecture.md
     - Dashboard Scaling: dashboard-scaling-solution.md
