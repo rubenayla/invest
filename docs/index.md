@@ -42,7 +42,7 @@ Define your investment criteria in YAML files. No code changes needed to adjust 
 - **Growth Evaluation**: Revenue/earnings growth, sustainability
 - **Risk Assessment**: Financial, market, and business risk factors
 - **Valuation Models**: DCF, RIM, Simple Ratios, and other traditional models
-- **Multi-Horizon Neural Network**: ML predictions across 5 timeframes (1m, 3m, 6m, 1y, 2y)
+- **Machine Learning Models**: GBM-based stock ranking across multiple horizons (1y, 3y)
 
 ### 🏢 **Sector Context**
 Automatically adjusts expectations based on sector characteristics:
@@ -142,7 +142,6 @@ AI combines quantitative screening results with qualitative insights to provide 
 - **[AI Tools Integration](tutorials/ai-tools.md)** - Using conversational AI for deeper analysis
 
 ### Advanced Features
-- **[Multi-Horizon Neural Network](multi_horizon_neural_network.md)** - 5-timeframe ML predictions
+- **[Valuation Models](models/index.md)** - Comprehensive model documentation
 - **[SQLite Integration](sqlite_integration_complete.md)** - Database architecture and cache system
-- **[Neural Network Evaluation](neural_network_evaluation_guide.md)** - Model performance analysis
-- **[Portable Training Guide](portable_training_guide.md)** - Train models on your machine
+- **[Dashboard Scaling](dashboard-scaling-solution.md)** - Performance optimization for large datasets

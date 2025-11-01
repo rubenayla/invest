@@ -28,11 +28,12 @@ Repeat steps 2–4 whenever you update valuations. The HTML generator is idempot
 
 ## Dashboard Features
 
-- 📊 **Multiple Valuation Models** – DCF variations, Residual Income, neural networks, and consensus outputs.
+- 📊 **Multiple Valuation Models** – DCF variations, Residual Income, GBM machine learning models, and consensus outputs.
 - 🎯 **Interactive Sorting** – Click any column header to sort within the browser.
 - 📈 **Current Pricing** – Displays the latest prices alongside intrinsic value estimates and margin of safety calculations.
 - 🌐 **Universe Support** – Works with every universe you analyze; the HTML reflects whatever is stored in the database.
 - ⚡ **Fast Loading** – Static assets only; no runtime dependencies.
+- 📚 **Model Documentation** – Direct link to comprehensive model documentation for understanding how each model works.
 
 ## Layout Overview
 
