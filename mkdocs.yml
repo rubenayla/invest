@@ -80,7 +80,6 @@ nav:
 
 plugins:
   - search
-  - autorefs
 
 markdown_extensions:
   - abbr
