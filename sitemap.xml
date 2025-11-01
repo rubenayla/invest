@@ -2,110 +2,174 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://rubenayla.github.io/invest/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/contributing/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/dashboard-scaling-solution/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/database_migration_plan/</loc>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/lstm_transformer_model/</loc>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/multi_horizon_neural_network/</loc>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/neural_network_evaluation_guide/</loc>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/neural_network_model/</loc>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/portable_training_guide/</loc>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/sqlite_integration_complete/</loc>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/sqlite_integration_plan/</loc>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/stuff/</loc>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/api-reference/configuration/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/api-reference/data/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/api-reference/pipeline/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/api-reference/screening/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/archive/BACKTEST_STATUS/</loc>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/archive/CHANGELOG_2025-10-31/</loc>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/archive/MODEL_MANAGEMENT/</loc>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/archive/TEST_RESULTS/</loc>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/archive/analysis_omc_deep_dive/</loc>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/developer-guide/adding-screeners/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/developer-guide/architecture/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/developer-guide/data-providers/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/developer-guide/extending/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/developer-guide/pipeline-components/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/getting-started/configuration/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/getting-started/installation/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/getting-started/quickstart/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/models/</loc>
+         <lastmod>2025-11-01</lastmod>
+    </url>
+    <url>
+         <loc>https://rubenayla.github.io/invest/models/gbm-lite/</loc>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/tutorials/ai-tools/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/tutorials/basic-screening/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/tutorials/custom-configurations/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/tutorials/international-markets/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/tutorials/sp500-analysis/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/user-guide/configuration-options/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/user-guide/dashboard/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/user-guide/output-formats/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/user-guide/overview/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/user-guide/running-analysis/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/user-guide/troubleshooting/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
     <url>
          <loc>https://rubenayla.github.io/invest/user-guide/understanding-results/</loc>
-         <lastmod>2025-08-30</lastmod>
+         <lastmod>2025-11-01</lastmod>
     </url>
 </urlset>

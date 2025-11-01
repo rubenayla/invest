@@ -1,0 +1,2394 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A configuration-driven, objective approach to investment analysis">
+      
+      
+        <meta name="author" content="Investment Analysis Framework">
+      
+      
+        <link rel="canonical" href="https://rubenayla.github.io/invest/archive/analysis_omc_deep_dive/">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
+    
+    
+      
+        <title>Deep Dive Analysis: Omnicom (OMC) - Systematic Investment Analysis Framework</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#deep-dive-analysis-omnicom-omc" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Systematic Investment Analysis Framework" class="md-header__button md-logo" aria-label="Systematic Investment Analysis Framework" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Systematic Investment Analysis Framework
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Deep Dive Analysis: Omnicom (OMC)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/rubenayla/invest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rubenayla/invest
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../getting-started/installation/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../user-guide/overview/" class="md-tabs__link">
+          
+  
+  
+  User Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../models/" class="md-tabs__link">
+          
+  
+  
+  Valuation Models
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../developer-guide/architecture/" class="md-tabs__link">
+          
+  
+  
+  Developer Guide
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../api-reference/pipeline/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tutorials/basic-screening/" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../contributing/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Contributing
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Systematic Investment Analysis Framework" class="md-nav__button md-logo" aria-label="Systematic Investment Analysis Framework" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Systematic Investment Analysis Framework
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/rubenayla/invest" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    rubenayla/invest
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/running-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Running Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/dashboard/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dashboard
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/understanding-results/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Understanding Results
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/configuration-options/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration Options
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/output-formats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Output Formats
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../user-guide/troubleshooting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Valuation Models
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Valuation Models
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../models/gbm-lite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    GBM Lite
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Developer Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Developer Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer-guide/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dashboard-scaling-solution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Dashboard Scaling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer-guide/pipeline-components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pipeline Components
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer-guide/adding-screeners/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Adding New Screeners
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer-guide/data-providers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Providers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer-guide/extending/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Extending the Framework
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Analysis Pipeline
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/screening/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Screening Modules
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Providers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api-reference/configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/basic-screening/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Basic Stock Screening
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/custom-configurations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Custom Configurations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/sp500-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    S&P 500 Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/international-markets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    International Markets
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/ai-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI Tools Integration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Executive Summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-business-model-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. BUSINESS MODEL ANALYSIS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. BUSINESS MODEL ANALYSIS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-omnicom-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      What Omnicom Does
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#revenue-streams" class="md-nav__link">
+    <span class="md-ellipsis">
+      Revenue Streams
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#business-model-strengths" class="md-nav__link">
+    <span class="md-ellipsis">
+      Business Model Strengths
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#business-model-weaknesses" class="md-nav__link">
+    <span class="md-ellipsis">
+      Business Model Weaknesses
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-industry-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. INDUSTRY ANALYSIS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. INDUSTRY ANALYSIS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#advertising-industry-health-2024-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advertising Industry Health (2024-2025)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#competitive-position" class="md-nav__link">
+    <span class="md-ellipsis">
+      Competitive Position
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-financial-performance-trajectory" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. FINANCIAL PERFORMANCE TRAJECTORY
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. FINANCIAL PERFORMANCE TRAJECTORY">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#recent-performance-2024-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recent Performance (2024-2025)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#margin-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Margin Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#balance-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Balance Sheet
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-risk-assessment" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. RISK ASSESSMENT
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. RISK ASSESSMENT">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#major-threats-probability-x-impact" class="md-nav__link">
+    <span class="md-ellipsis">
+      Major Threats (Probability x Impact)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structural-decline-risk-key-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      Structural Decline Risk (Key Question)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-valuation-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. VALUATION ANALYSIS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. VALUATION ANALYSIS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#model-results-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      Model Results Summary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valuation-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Valuation Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#roe-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      ROE Analysis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-strategic-outlook" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. STRATEGIC OUTLOOK
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. STRATEGIC OUTLOOK">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ipg-merger-completing-h2-2025" class="md-nav__link">
+    <span class="md-ellipsis">
+      IPG Merger (Completing H2 2025)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#managements-ai-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Management's AI Strategy
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-comparative-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. COMPARATIVE ANALYSIS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. COMPARATIVE ANALYSIS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#omc-vs-other-non-financial-value-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      OMC vs Other Non-Financial Value Options
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-investment-thesis" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. INVESTMENT THESIS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. INVESTMENT THESIS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bull-case-40-probability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bull Case (40% probability)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#base-case-40-probability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Base Case (40% probability)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bear-case-20-probability" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bear Case (20% probability)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-decision-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. DECISION FRAMEWORK
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. DECISION FRAMEWORK">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#omc-fits-value-strategy-if" class="md-nav__link">
+    <span class="md-ellipsis">
+      OMC Fits Value Strategy IF:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#red-flags-to-monitor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Red Flags to Monitor:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparison-to-acglsyf-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison to ACGL/SYF Strategy:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-final-recommendation" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. FINAL RECOMMENDATION
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. FINAL RECOMMENDATION">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#should-you-buy-omc" class="md-nav__link">
+    <span class="md-ellipsis">
+      Should You Buy OMC?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#suggested-position-sizing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Suggested Position Sizing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#my-lean-option-a-balanced" class="md-nav__link">
+    <span class="md-ellipsis">
+      My Lean: Option A (Balanced)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-monitoring-plan" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. MONITORING PLAN
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. MONITORING PLAN">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics-to-watch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Metrics to Watch:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sell-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sell Signals:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#re-evaluation-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Re-evaluation Triggers:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#appendix-questions-to-research-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      APPENDIX: Questions to Research Further
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/rubenayla/invest/edit/main/docs/archive/analysis_omc_deep_dive.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/rubenayla/invest/raw/main/docs/archive/analysis_omc_deep_dive.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="deep-dive-analysis-omnicom-omc">Deep Dive Analysis: Omnicom (OMC)<a class="headerlink" href="#deep-dive-analysis-omnicom-omc" title="Permanent link">&para;</a></h1>
+<p><strong>Date:</strong> 2025-10-29
+<strong>Analyst Note:</strong> Requested by user after initial impulsive CMCSA recommendation. This is a systematic, disciplined analysis.</p>
+<hr />
+<h2 id="executive-summary">Executive Summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
+<p><strong>Current Price:</strong> $76.92
+<strong>Valuation:</strong> PE 11.3, Forward PE 8.9, P/B 3.22
+<strong>Quality:</strong> ROE 27.0%, Profit Margin 8.3%
+<strong>Thesis:</strong> Traditional advertising agency holding company trading at discount due to digital disruption fears, but showing resilience through pivot to data/programmatic and strong client retention.</p>
+<hr />
+<h2 id="1-business-model-analysis">1. BUSINESS MODEL ANALYSIS<a class="headerlink" href="#1-business-model-analysis" title="Permanent link">&para;</a></h2>
+<h3 id="what-omnicom-does">What Omnicom Does<a class="headerlink" href="#what-omnicom-does" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Largest advertising agency holding company globally</strong> ($15.7B revenue in 2024)</li>
+<li>Portfolio of agencies: BBDO, DDB, TBWA, OMD, PHD, etc.</li>
+<li>Services: Creative, media buying, PR, digital marketing, data/analytics</li>
+<li>Geographic diversification: ~55% US, 45% international</li>
+<li>Client base: 5,000+ brands across all industries</li>
+</ul>
+<h3 id="revenue-streams">Revenue Streams<a class="headerlink" href="#revenue-streams" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Media buying commissions</strong> (~40% of revenue): Negotiating/buying ad space for clients</li>
+<li><strong>Creative services</strong> (~35% of revenue): Campaign development, brand strategy</li>
+<li><strong>Digital/data services</strong> (~25% of revenue): Programmatic ads, analytics, CRM</li>
+</ol>
+<h3 id="business-model-strengths">Business Model Strengths<a class="headerlink" href="#business-model-strengths" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Recurring revenue:</strong> Long-term client relationships (74% retention rate vs 32% industry avg)</li>
+<li><strong>Network effects:</strong> Scale provides negotiating leverage with media platforms</li>
+<li><strong>Sticky clients:</strong> High switching costs (integrated into client marketing operations)</li>
+</ul>
+<h3 id="business-model-weaknesses">Business Model Weaknesses<a class="headerlink" href="#business-model-weaknesses" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Commoditization risk:</strong> Clients can bring some services in-house</li>
+<li><strong>Margin pressure:</strong> Digital margins lower than traditional creative</li>
+<li><strong>People-dependent:</strong> Talent retention critical (high compensation costs)</li>
+</ul>
+<hr />
+<h2 id="2-industry-analysis">2. INDUSTRY ANALYSIS<a class="headerlink" href="#2-industry-analysis" title="Permanent link">&para;</a></h2>
+<h3 id="advertising-industry-health-2024-2025">Advertising Industry Health (2024-2025)<a class="headerlink" href="#advertising-industry-health-2024-2025" title="Permanent link">&para;</a></h3>
+<p><strong>Overall market:</strong>
+- 2024: $1.08 trillion global ad spend (+7.3% YoY)
+- 2025 forecast: $1.1 trillion (+6.0% growth, revised down from 7.7%)
+- Industry crossing $1 trillion threshold = mature but still growing</p>
+<p><strong>Digital vs Traditional:</strong>
+- Digital: 72.9% of total spend, growing +12.4% annually
+- TV/print/radio: Declining -5% to -10% annually
+- Shift accelerating but NOT collapsing (gradual 10-year transition)</p>
+<p><strong>Key Trends:</strong>
+1. <strong>Retail media:</strong> $177B in 2025 (Amazon, Walmart ads) - growing 20%+
+2. <strong>Creator economy:</strong> $185B in 2025, doubling by 2030
+3. <strong>AI disruption:</strong> Early stages, more automation threat than revenue threat
+4. <strong>Consolidation:</strong> "Big Three" (Google/Meta/Amazon) = 51% of global ad revenue</p>
+<h3 id="competitive-position">Competitive Position<a class="headerlink" href="#competitive-position" title="Permanent link">&para;</a></h3>
+<p><strong>Major agency holding companies:</strong>
+1. <strong>Omnicom (OMC):</strong> $15.7B revenue, +5.2% organic growth (2024)
+2. <strong>WPP:</strong> £14.7B revenue, +2.3% like-for-like growth (2024)
+3. <strong>Publicis:</strong> €7.15B revenue (H1 2025), +5.4% organic growth
+4. <strong>Interpublic (IPG):</strong> Being acquired by Omnicom for $13B (H2 2025)</p>
+<p><strong>Omnicom's competitive advantages:</strong>
+- Highest client retention (74% vs industry 32%)
+- Largest new business wins (<span class="arithmatex">\(7.7B in client billings won in 2024)
+- Post-IPG merger: Will be world's largest ad company (~\)</span>25B combined revenue)</p>
+<hr />
+<h2 id="3-financial-performance-trajectory">3. FINANCIAL PERFORMANCE TRAJECTORY<a class="headerlink" href="#3-financial-performance-trajectory" title="Permanent link">&para;</a></h2>
+<h3 id="recent-performance-2024-2025">Recent Performance (2024-2025)<a class="headerlink" href="#recent-performance-2024-2025" title="Permanent link">&para;</a></h3>
+<p><strong>2024 Full Year:</strong>
+- Revenue: $15.7B (+5.2% organic growth)
+- Operating margin: ~15.6%
+- Net income: Strong, but specific figures need verification</p>
+<p><strong>2025 YTD (Q1-Q2):</strong>
+- Q1 2025: +3.4% organic growth
+- Q2 2025: $4.02B revenue (+4.2% YoY), +3.0% organic growth
+- Trend: Growth moderating but still positive</p>
+<p><strong>Historical context:</strong>
+- 2020 (COVID): -6.2% revenue decline
+- 2021-2023: Recovery +8% to +10% annual growth
+- 2024-2025: Normalizing to +3% to +5% sustainable growth</p>
+<h3 id="margin-analysis">Margin Analysis<a class="headerlink" href="#margin-analysis" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Operating margin: 15.6% (strong for services business)</li>
+<li>Profit margin: 8.3% (lower due to high people costs)</li>
+<li>Trend: Margins stable despite digital shift (digital has lower margins but volume compensates)</li>
+</ul>
+<h3 id="balance-sheet">Balance Sheet<a class="headerlink" href="#balance-sheet" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Debt/Equity: 1.5 (manageable for services company)</li>
+<li>Cash flow: Strong recurring cash from retainer contracts</li>
+<li>Dividend: Not analyzed yet (need to check payout ratio)</li>
+</ul>
+<hr />
+<h2 id="4-risk-assessment">4. RISK ASSESSMENT<a class="headerlink" href="#4-risk-assessment" title="Permanent link">&para;</a></h2>
+<h3 id="major-threats-probability-x-impact">Major Threats (Probability x Impact)<a class="headerlink" href="#major-threats-probability-x-impact" title="Permanent link">&para;</a></h3>
+<p><strong>1. AI Automation (Medium probability, High impact)</strong>
+- <strong>Threat:</strong> AI tools (ChatGPT, Midjourney, etc.) automate creative work
+- <strong>Timeline:</strong> 3-5 years for significant disruption
+- <strong>Mitigation:</strong> Omnicom investing heavily in AI tools, positioning as "AI-enabled agency"
+- <strong>Assessment:</strong> Real risk but gradual transition (like digital 15 years ago)</p>
+<p><strong>2. Client In-Housing (Medium probability, Medium impact)</strong>
+- <strong>Threat:</strong> Brands bringing marketing in-house to cut costs
+- <strong>Evidence:</strong> P&amp;G, Unilever reduced agency spending 10-15% last decade
+- <strong>Mitigation:</strong> Omnicom pivoting to data/analytics (harder to replicate)
+- <strong>Assessment:</strong> Ongoing but slow erosion, not sudden collapse</p>
+<p><strong>3. Recession Cyclicality (Low-Medium probability, High impact)</strong>
+- <strong>Threat:</strong> Ad spending first to get cut in recession
+- <strong>Historical:</strong> 2008 crash = -15% revenue, 2020 COVID = -6% revenue
+- <strong>Mitigation:</strong> Diversified client base (no single client &gt;3% revenue)
+- <strong>Assessment:</strong> Cyclical risk is real but stock already prices in PE 11</p>
+<p><strong>4. Google/Meta/Amazon Taking Share (High probability, Medium impact)</strong>
+- <strong>Threat:</strong> Tech giants offering self-service ad tools
+- <strong>Reality:</strong> Already happening (51% market share)
+- <strong>Omnicom response:</strong> Agencies now "resellers" of Google/Meta ads + add strategic layer
+- <strong>Assessment:</strong> Market has adjusted, agencies evolved their role</p>
+<p><strong>5. IPG Merger Integration Risk (Medium probability, Medium impact)</strong>
+- <strong>Threat:</strong> $13B acquisition fails to integrate, lose key talent/clients
+- <strong>Opportunity:</strong> Cost synergies + scale benefits
+- <strong>Timeline:</strong> Closes H2 2025, 1-2 year integration
+- <strong>Assessment:</strong> Execution risk but upside if successful</p>
+<h3 id="structural-decline-risk-key-question">Structural Decline Risk (Key Question)<a class="headerlink" href="#structural-decline-risk-key-question" title="Permanent link">&para;</a></h3>
+<p><strong>Is this CMCSA 2.0 (structural death spiral)?</strong></p>
+<p><strong>CMCSA comparison:</strong>
+- Cable: Losing 425k customers in 6 months = -1.7% quarterly decline
+- Technology disruption: 5G/Starlink direct substitutes
+- Market share: Below 50% and falling fast
+- Verdict: <strong>Structural decline confirmed</strong></p>
+<p><strong>OMC comparison:</strong>
+- Revenue: +5.2% growth in 2024, +3-4% in 2025 = NOT shrinking
+- Technology disruption: AI augments agencies, doesn't replace (yet)
+- Market share: Winning new business at record pace ($7.7B in 2024)
+- Verdict: <strong>Cyclical/competitive pressure, NOT structural decline</strong></p>
+<hr />
+<h2 id="5-valuation-analysis">5. VALUATION ANALYSIS<a class="headerlink" href="#5-valuation-analysis" title="Permanent link">&para;</a></h2>
+<h3 id="model-results-summary">Model Results Summary<a class="headerlink" href="#model-results-summary" title="Permanent link">&para;</a></h3>
+<p><strong>From database query:</strong>
+- DCF: $105.56 (+29.7% upside)
+- DCF Enhanced: $80.88 (-0.7% fair value)
+- Multi-stage DCF: $97.31 (+19.5% upside)
+- RIM: $251.66 (+209% upside) ← Likely overstated
+- Simple Ratios: $97.69 (+20.0% upside)</p>
+<p><strong>Consensus view:</strong>
+- Traditional DCF models: $95-105 fair value (+23-37% upside)
+- Conservative case: $80-85 fair value (flat to +10%)
+- RIM outlier: Ignore (unrealistic)</p>
+<h3 id="valuation-metrics">Valuation Metrics<a class="headerlink" href="#valuation-metrics" title="Permanent link">&para;</a></h3>
+<p><strong>Current:</strong> PE 11.3, Forward PE 8.9, P/B 3.22
+<strong>Historical:</strong> Need to check 5-10 year average PE for context
+<strong>Peers:</strong>
+- WPP: PE ~9 (struggling more)
+- Publicis: PE ~14 (growing faster)
+- OMC at PE 11: Fair to slightly undervalued</p>
+<h3 id="roe-analysis">ROE Analysis<a class="headerlink" href="#roe-analysis" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>ROE 27.0%</strong> = exceptional for services business</li>
+<li><strong>P/B 3.22</strong> = higher than CMCSA (1.12) but justified by ROE</li>
+<li><strong>ROE/P/B = 8.4%</strong> implied return (vs CMCSA's 22.3%)</li>
+</ul>
+<p><strong>Interpretation:</strong>
+- OMC's high P/B reflects asset-light business model (people, not infrastructure)
+- 27% ROE shows strong return on capital deployed
+- But paying 3.2x book value means less downside protection than CMCSA</p>
+<hr />
+<h2 id="6-strategic-outlook">6. STRATEGIC OUTLOOK<a class="headerlink" href="#6-strategic-outlook" title="Permanent link">&para;</a></h2>
+<h3 id="ipg-merger-completing-h2-2025">IPG Merger (Completing H2 2025)<a class="headerlink" href="#ipg-merger-completing-h2-2025" title="Permanent link">&para;</a></h3>
+<p><strong>Deal terms:</strong>
+- <span class="arithmatex">\(13B acquisition of Interpublic Group
+- Creates world's largest ad company (~\)</span>25B revenue)
+- Expected synergies: $750M annually (cost savings)</p>
+<p><strong>Strategic rationale:</strong>
+- Scale for AI investments (expensive to develop proprietary tools)
+- First-party data access (Acxiom from IPG portfolio)
+- Enhanced negotiating power with Google/Meta/Amazon</p>
+<p><strong>Risks:</strong>
+- Integration challenges (combining 100k+ employees)
+- Client conflicts (duplicate accounts may cause attrition)
+- Cost: $13B is 83% of OMC's current market cap (big bet)</p>
+<h3 id="managements-ai-strategy">Management's AI Strategy<a class="headerlink" href="#managements-ai-strategy" title="Permanent link">&para;</a></h3>
+<p><strong>Stated approach:</strong>
+- "Creativity and talent matter more than ever with GenAI"
+- Positioning agencies as strategic layer on top of AI tools
+- Investing in proprietary AI for media buying optimization</p>
+<p><strong>Reality check:</strong>
+- This is what every agency says (standard playbook)
+- Success depends on execution (need evidence in 1-2 years)
+- If AI truly commoditizes creative, no amount of "strategy" saves them</p>
+<hr />
+<h2 id="7-comparative-analysis">7. COMPARATIVE ANALYSIS<a class="headerlink" href="#7-comparative-analysis" title="Permanent link">&para;</a></h2>
+<h3 id="omc-vs-other-non-financial-value-options">OMC vs Other Non-Financial Value Options<a class="headerlink" href="#omc-vs-other-non-financial-value-options" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>OMC</th>
+<th>T (AT&amp;T)</th>
+<th>VZ (Verizon)</th>
+<th>PHM (Pulte)</th>
+<th>MOH (Molina)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PE Ratio</strong></td>
+<td>11.3</td>
+<td>8.4</td>
+<td>9.1</td>
+<td>9.3</td>
+<td>10.0</td>
+</tr>
+<tr>
+<td><strong>Forward PE</strong></td>
+<td>8.9</td>
+<td>11.5</td>
+<td>8.3</td>
+<td>8.9</td>
+<td>6.3</td>
+</tr>
+<tr>
+<td><strong>ROE</strong></td>
+<td>27.0%</td>
+<td>19.1%</td>
+<td>18.5%</td>
+<td>21.6%</td>
+<td>19.7%</td>
+</tr>
+<tr>
+<td><strong>Profit Margin</strong></td>
+<td>8.3%</td>
+<td>17.9%</td>
+<td>13.3%</td>
+<td>14.9%</td>
+<td>2.1%</td>
+</tr>
+<tr>
+<td><strong>Revenue Growth</strong></td>
+<td>+4.0%</td>
+<td>+1.6%</td>
+<td>+5.2%</td>
+<td>-1.6%</td>
+<td>+11.6%</td>
+</tr>
+<tr>
+<td><strong>% from 52w High</strong></td>
+<td>-25.5%</td>
+<td>-12.8%</td>
+<td>-12.8%</td>
+<td>-14.9%</td>
+<td>-54.8%</td>
+</tr>
+<tr>
+<td><strong>Dividend Yield</strong></td>
+<td>TBD</td>
+<td>~5-6%</td>
+<td>~6-7%</td>
+<td>~2%</td>
+<td>0%</td>
+</tr>
+<tr>
+<td><strong>Structural Risk</strong></td>
+<td>Medium</td>
+<td>Low</td>
+<td>Low</td>
+<td>Low</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key observations:</strong>
+- OMC has highest ROE (27%) but also highest structural risk
+- T/VZ lower growth but utility-like stability + high dividends
+- PHM homebuilder = cyclical but essential (housing shortage)
+- MOH healthcare = defensive + forward PE 6.3 is exceptional value</p>
+<hr />
+<h2 id="8-investment-thesis">8. INVESTMENT THESIS<a class="headerlink" href="#8-investment-thesis" title="Permanent link">&para;</a></h2>
+<h3 id="bull-case-40-probability">Bull Case (40% probability)<a class="headerlink" href="#bull-case-40-probability" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario:</strong> IPG merger succeeds, AI becomes enabler not disruptor, industry growth continues 3-5%</p>
+<p><strong>Catalysts:</strong>
+- IPG merger closes successfully (H2 2025)
+- $750M synergies realized (2026-2027)
+- AI tools improve margins (automation of low-value tasks)
+- Stock re-rates from PE 11 → PE 13-14 (historical average)</p>
+<p><strong>Returns:</strong>
+- Fair value: $100-110 (+30-43% upside)
+- Dividends: ~2% yield (if they pay one)
+- Total: +35-50% over 2-3 years</p>
+<h3 id="base-case-40-probability">Base Case (40% probability)<a class="headerlink" href="#base-case-40-probability" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario:</strong> Industry grows slowly, margins stable, AI neutral impact, IPG integration meh</p>
+<p><strong>Outcome:</strong>
+- Revenue growth: +3-4% annually
+- Stock grows with earnings: +8-12% annually
+- Multiple stays flat (PE 11)
+- Total: +10-15% per year (market-like returns)</p>
+<h3 id="bear-case-20-probability">Bear Case (20% probability)<a class="headerlink" href="#bear-case-20-probability" title="Permanent link">&para;</a></h3>
+<p><strong>Scenario:</strong> AI disruption faster than expected, IPG integration fails, recession hits ad spending</p>
+<p><strong>Catalysts:</strong>
+- Major clients in-house 30-40% of work by 2027
+- AI tools like ChatGPT Enterprise replace creative teams
+- 2026 recession cuts ad budgets 10-15%
+- IPG merger destroys value (client losses, talent exodus)</p>
+<p><strong>Downside:</strong>
+- Fair value: $60-65 (-15-20% loss)
+- Book value floor: $23.91/share P/B 1.0 = $23.91 (-69% loss) ← worst case liquidation</p>
+<hr />
+<h2 id="9-decision-framework">9. DECISION FRAMEWORK<a class="headerlink" href="#9-decision-framework" title="Permanent link">&para;</a></h2>
+<h3 id="omc-fits-value-strategy-if">OMC Fits Value Strategy IF:<a class="headerlink" href="#omc-fits-value-strategy-if" title="Permanent link">&para;</a></h3>
+<ul>
+<li>✅ PE &lt;12 (it's 11.3)</li>
+<li>✅ ROE &gt;15% (it's 27%)</li>
+<li>✅ Profit margin &gt;5% (it's 8.3%)</li>
+<li>✅ Down from highs (it's -25.5%)</li>
+<li>❓ Structural moat (advertising is defensible but eroding)</li>
+<li>❓ Not a value trap (jury is out on AI disruption timeline)</li>
+</ul>
+<h3 id="red-flags-to-monitor">Red Flags to Monitor:<a class="headerlink" href="#red-flags-to-monitor" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Revenue growth turns negative</strong> (organic growth &lt;0%)</li>
+<li><strong>Client retention falls below 65%</strong> (currently 74%)</li>
+<li><strong>Operating margins compress below 13%</strong> (currently 15.6%)</li>
+<li><strong>IPG merger fails</strong> (closes H2 2025, watch for client losses)</li>
+<li><strong>Major client in-housing announcements</strong> (P&amp;G/Unilever cutting budgets)</li>
+</ol>
+<h3 id="comparison-to-acglsyf-strategy">Comparison to ACGL/SYF Strategy:<a class="headerlink" href="#comparison-to-acglsyf-strategy" title="Permanent link">&para;</a></h3>
+<p><strong>ACGL:</strong> Insurance cat losses = temporary, pricing cycle = cyclical, business model intact
+<strong>SYF:</strong> Credit cycle = cyclical, delinquencies = manageable, lending is essential
+<strong>OMC:</strong> Industry growth positive, but long-term AI threat unclear</p>
+<p><strong>Risk spectrum:</strong>
+- Lowest risk: MOH (healthcare essential), BRK.B (Buffett insurance)
+- Medium risk: ACGL (cyclical insurance), PHM (cyclical housing), T/VZ (telecom utility)
+- Higher risk: OMC (secular disruption uncertain), SYF (credit cycle late)
+- Highest risk: CMCSA (structural decline confirmed)</p>
+<hr />
+<h2 id="10-final-recommendation">10. FINAL RECOMMENDATION<a class="headerlink" href="#10-final-recommendation" title="Permanent link">&para;</a></h2>
+<h3 id="should-you-buy-omc">Should You Buy OMC?<a class="headerlink" href="#should-you-buy-omc" title="Permanent link">&para;</a></h3>
+<p><strong>Cautious YES, but small position (not core holding)</strong></p>
+<p><strong>Rationale:</strong>
+1. <strong>Not a value trap like CMCSA:</strong> Revenue growing, not shrinking
+2. <strong>Reasonable valuation:</strong> PE 11.3, fair value $95-105 (+23-37% upside)
+3. <strong>Strong business quality:</strong> ROE 27%, client retention 74%
+4. <strong>Industry not collapsing:</strong> Ad spend growing 6%, just shifting to digital
+5. <strong>IPG merger optionality:</strong> If successful, could drive 20-30% upside</p>
+<p><strong>BUT position as speculative, not core:</strong>
+- AI disruption timeline uncertain (3-5 year risk window)
+- P/B 3.22 offers less downside protection than ACGL (1.35) or CMCSA (1.12)
+- Execution risk on $13B IPG merger</p>
+<h3 id="suggested-position-sizing">Suggested Position Sizing<a class="headerlink" href="#suggested-position-sizing" title="Permanent link">&para;</a></h3>
+<p><strong>If you have $3,000-4,000 to deploy outside financials:</strong></p>
+<p><strong>Option A: Balanced Risk</strong>
+- $1,500 MOH @ $162.84 (core value, healthcare defensive)
+- $1,000 OMC @ $76.92 (speculative value, advertising recovery)
+- $500-1,000 cash (wait for opportunities)</p>
+<p><strong>Option B: Conservative</strong>
+- $2,000 MOH @ $162.84 (double down on best holding)
+- $1,000 T or VZ (telecom utility, 5-6% dividend yield)
+- Skip OMC (avoid secular disruption risk entirely)</p>
+<p><strong>Option C: Higher Conviction OMC</strong>
+- $1,500-2,000 OMC @ $76.92 (if you believe AI is enabler not disruptor)
+- $1,000 MOH @ $162.84 (diversification)</p>
+<h3 id="my-lean-option-a-balanced">My Lean: Option A (Balanced)<a class="headerlink" href="#my-lean-option-a-balanced" title="Permanent link">&para;</a></h3>
+<p><strong>Why:</strong>
+- MOH is your best holding (forward PE 6.3, ROE 19.7%, healthcare essential)
+- OMC at $1,000 position = speculative bet with 30-40% upside if thesis works
+- Keeps powder dry for SYF @ $68 or other opportunities</p>
+<p><strong>Pass on:</strong>
+- CMCSA (structural decline confirmed)
+- CVX/Energy (commodity risk, low conviction)
+- Loading up on OMC &gt;$1,500 (AI risk not worth concentration)</p>
+<hr />
+<h2 id="11-monitoring-plan">11. MONITORING PLAN<a class="headerlink" href="#11-monitoring-plan" title="Permanent link">&para;</a></h2>
+<p><strong>If you buy OMC, track these quarterly:</strong></p>
+<h3 id="key-metrics-to-watch">Key Metrics to Watch:<a class="headerlink" href="#key-metrics-to-watch" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Organic revenue growth:</strong> Should stay &gt;2% (warning if negative)</li>
+<li><strong>Client retention rate:</strong> Should stay &gt;70% (warning if &lt;65%)</li>
+<li><strong>Operating margin:</strong> Should stay &gt;14% (warning if &lt;13%)</li>
+<li><strong>IPG merger progress:</strong> Closes H2 2025, watch integration execution</li>
+</ol>
+<h3 id="sell-signals">Sell Signals:<a class="headerlink" href="#sell-signals" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Organic revenue growth negative 2 quarters in a row</li>
+<li>Operating margin below 13% for 2 quarters</li>
+<li>Major client losses announced (&gt;$500M annual billings)</li>
+<li>IPG merger fails or causes significant client attrition</li>
+</ul>
+<h3 id="re-evaluation-triggers">Re-evaluation Triggers:<a class="headerlink" href="#re-evaluation-triggers" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Stock hits $95-100 (target reached, consider taking profits)</li>
+<li>Stock drops below $65 (thesis broken, cut losses)</li>
+<li>AI disruption accelerates (e.g., major brands replace agencies with AI tools)</li>
+</ul>
+<hr />
+<h2 id="appendix-questions-to-research-further">APPENDIX: Questions to Research Further<a class="headerlink" href="#appendix-questions-to-research-further" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>OMC dividend policy:</strong> Does it pay? What's the yield and payout ratio?</li>
+<li><strong>Historical PE range:</strong> What's 5-10 year average PE for context?</li>
+<li><strong>IPG merger details:</strong> Exact synergy breakdown, timeline, integration risks</li>
+<li><strong>AI investment details:</strong> How much is OMC actually spending on AI tools?</li>
+<li><strong>Sector exposure:</strong> Which industries are biggest clients? (recession sensitivity)</li>
+<li><strong>Geographic mix:</strong> 55% US, 45% international - which regions growing?</li>
+</ol>
+<hr />
+<p><strong>Bottom Line:</strong> OMC at PE 11.3 with 27% ROE is reasonable value, not a steal. Industry faces secular headwinds (AI, in-housing) but not structural collapse like cable. Small speculative position justified if balanced with safer holdings like MOH. Pass on CMCSA entirely.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024 Investment Analysis Framework
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/rubenayla/invest" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://pypi.org/project/invest/" target="_blank" rel="noopener" title="pypi.org" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.8 200.5c-7.7-30.9-22.3-54.2-53.4-54.2h-40.1v47.4c0 36.8-31.2 67.8-66.8 67.8H172.7c-29.2 0-53.4 25-53.4 54.3v101.8c0 29 25.2 46 53.4 54.3 33.8 9.9 66.3 11.7 106.8 0 26.9-7.8 53.4-23.5 53.4-54.3v-40.7H226.2v-13.6h160.2c31.1 0 42.6-21.7 53.4-54.2 11.2-33.5 10.7-65.7 0-108.6M286.2 444.7a20.4 20.4 0 1 1 0-40.7 20.4 20.4 0 1 1 0 40.7M167.8 248.1h106.8c29.7 0 53.4-24.5 53.4-54.3V91.9c0-29-24.4-50.7-53.4-55.6-35.8-5.9-74.7-5.6-106.8.1-45.2 8-53.4 24.7-53.4 55.6v40.7h106.9v13.6h-147c-31.1 0-58.3 18.7-66.8 54.2-9.8 40.7-10.2 66.1 0 108.6 7.6 31.6 25.7 54.2 56.8 54.2H101v-48.8c0-35.3 30.5-66.4 66.8-66.4m-6.6-183.4a20.4 20.4 0 1 1 0 40.8 20.4 20.4 0 1 1 0-40.8"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "search.highlight", "search.share", "toc.follow", "content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      
+    
+  </body>
+</html>
