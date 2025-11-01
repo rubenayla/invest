@@ -12,13 +12,9 @@
         <meta name="author" content="Investment Analysis Framework">
       
       
-        <link rel="canonical" href="https://rubenayla.github.io/invest/models/gbm-lite/">
+        <link rel="canonical" href="https://rubenayla.github.io/invest/models/rim/">
       
       
-        <link rel="prev" href="../">
-      
-      
-        <link rel="next" href="../../developer-guide/architecture/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -26,7 +22,7 @@
     
     
       
-        <title>GBM Lite - Systematic Investment Analysis Framework</title>
+        <title>Residual Income Model (RIM) - Systematic Investment Analysis Framework</title>
       
     
     
@@ -78,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#gbm-lite-models" class="md-skip">
+        <a href="#residual-income-model-rim" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              GBM Lite
+              Residual Income Model (RIM)
             
           </span>
         </div>
@@ -285,12 +281,10 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../" class="md-tabs__link">
           
   
@@ -787,31 +781,28 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -824,7 +815,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             Valuation Models
@@ -858,32 +849,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    GBM Lite
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../gbm-lite/" class="md-nav__link">
         
   
   
@@ -894,296 +863,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    <span class="md-ellipsis">
-      Overview
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#key-features" class="md-nav__link">
-    <span class="md-ellipsis">
-      Key Features
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#available-variants" class="md-nav__link">
-    <span class="md-ellipsis">
-      Available Variants
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Available Variants">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gbm-lite-1y" class="md-nav__link">
-    <span class="md-ellipsis">
-      GBM Lite 1y
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gbm-lite-3y" class="md-nav__link">
-    <span class="md-ellipsis">
-      GBM Lite 3y
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-it-works" class="md-nav__link">
-    <span class="md-ellipsis">
-      How It Works
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="How It Works">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-feature-engineering" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Feature Engineering
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-whats-excluded-vs-full-gbm" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. What's Excluded (vs Full GBM)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-training-process" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Training Process
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-prediction-output" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Prediction Output
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#performance-metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      Performance Metrics
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Performance Metrics">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#rank-information-coefficient-ic" class="md-nav__link">
-    <span class="md-ellipsis">
-      Rank Information Coefficient (IC)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#decile-spread" class="md-nav__link">
-    <span class="md-ellipsis">
-      Decile Spread
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#comparison-to-full-gbm" class="md-nav__link">
-    <span class="md-ellipsis">
-      Comparison to Full GBM
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#theoretical-foundation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Theoretical Foundation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Theoretical Foundation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#cross-sectional-learning" class="md-nav__link">
-    <span class="md-ellipsis">
-      Cross-Sectional Learning
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#why-it-works-with-minimal-history" class="md-nav__link">
-    <span class="md-ellipsis">
-      Why It Works with Minimal History
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#use-cases" class="md-nav__link">
-    <span class="md-ellipsis">
-      Use Cases
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Use Cases">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#best-for" class="md-nav__link">
-    <span class="md-ellipsis">
-      Best For
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#not-ideal-for" class="md-nav__link">
-    <span class="md-ellipsis">
-      Not Ideal For
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#implementation-example" class="md-nav__link">
-    <span class="md-ellipsis">
-      Implementation Example
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      References
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#academic-background" class="md-nav__link">
-    <span class="md-ellipsis">
-      Academic Background
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Academic Background">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gradient-boosting-machines" class="md-nav__link">
-    <span class="md-ellipsis">
-      Gradient Boosting Machines
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#factor-models-cross-sectional-prediction" class="md-nav__link">
-    <span class="md-ellipsis">
-      Factor Models &amp; Cross-Sectional Prediction
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#information-coefficient" class="md-nav__link">
-    <span class="md-ellipsis">
-      Information Coefficient
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1755,44 +1434,11 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#key-features" class="md-nav__link">
+  <a href="#core-concept" class="md-nav__link">
     <span class="md-ellipsis">
-      Key Features
+      Core Concept
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#available-variants" class="md-nav__link">
-    <span class="md-ellipsis">
-      Available Variants
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Available Variants">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gbm-lite-1y" class="md-nav__link">
-    <span class="md-ellipsis">
-      GBM Lite 1y
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#gbm-lite-3y" class="md-nav__link">
-    <span class="md-ellipsis">
-      GBM Lite 3y
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1807,36 +1453,45 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-feature-engineering" class="md-nav__link">
+  <a href="#1-starting-point-book-value" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Feature Engineering
+      1. Starting Point: Book Value
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-whats-excluded-vs-full-gbm" class="md-nav__link">
+  <a href="#2-calculate-residual-income" class="md-nav__link">
     <span class="md-ellipsis">
-      2. What's Excluded (vs Full GBM)
+      2. Calculate Residual Income
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-training-process" class="md-nav__link">
+  <a href="#3-project-book-value-growth" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Training Process
+      3. Project Book Value Growth
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-prediction-output" class="md-nav__link">
+  <a href="#4-terminal-value" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Prediction Output
+      4. Terminal Value
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-sum-to-fair-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Sum to Fair Value
     </span>
   </a>
   
@@ -1848,37 +1503,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#performance-metrics" class="md-nav__link">
+  <a href="#when-rim-works-best" class="md-nav__link">
     <span class="md-ellipsis">
-      Performance Metrics
+      When RIM Works Best
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Performance Metrics">
+    <nav class="md-nav" aria-label="When RIM Works Best">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#rank-information-coefficient-ic" class="md-nav__link">
+  <a href="#ideal-candidates" class="md-nav__link">
     <span class="md-ellipsis">
-      Rank Information Coefficient (IC)
+      Ideal Candidates
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#decile-spread" class="md-nav__link">
+  <a href="#why-its-better-than-dcf-for-banks" class="md-nav__link">
     <span class="md-ellipsis">
-      Decile Spread
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#comparison-to-full-gbm" class="md-nav__link">
-    <span class="md-ellipsis">
-      Comparison to Full GBM
+      Why It's Better Than DCF for Banks
     </span>
   </a>
   
@@ -1890,28 +1536,46 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#theoretical-foundation" class="md-nav__link">
+  <a href="#model-advantages" class="md-nav__link">
     <span class="md-ellipsis">
-      Theoretical Foundation
+      Model Advantages
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Theoretical Foundation">
+    <nav class="md-nav" aria-label="Model Advantages">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cross-sectional-learning" class="md-nav__link">
+  <a href="#1-less-terminal-value-dependence" class="md-nav__link">
     <span class="md-ellipsis">
-      Cross-Sectional Learning
+      1. Less Terminal Value Dependence
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#why-it-works-with-minimal-history" class="md-nav__link">
+  <a href="#2-accounting-based" class="md-nav__link">
     <span class="md-ellipsis">
-      Why It Works with Minimal History
+      2. Accounting-Based
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-mean-reversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Mean Reversion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-handles-negatives" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Handles Negatives
     </span>
   </a>
   
@@ -1923,28 +1587,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#use-cases" class="md-nav__link">
+  <a href="#implementation" class="md-nav__link">
     <span class="md-ellipsis">
-      Use Cases
+      Implementation
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Use Cases">
+    <nav class="md-nav" aria-label="Implementation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#best-for" class="md-nav__link">
+  <a href="#parameters" class="md-nav__link">
     <span class="md-ellipsis">
-      Best For
+      Parameters
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#not-ideal-for" class="md-nav__link">
+  <a href="#code-example" class="md-nav__link">
     <span class="md-ellipsis">
-      Not Ideal For
+      Code Example
     </span>
   </a>
   
@@ -1956,11 +1620,263 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#implementation-example" class="md-nav__link">
+  <a href="#key-assumptions" class="md-nav__link">
     <span class="md-ellipsis">
-      Implementation Example
+      Key Assumptions
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Key Assumptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-clean-surplus-relation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Clean Surplus Relation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-roe-mean-reversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. ROE Mean Reversion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-book-value-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Book Value Quality
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sector-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sector Applications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sector Applications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#banks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Banks
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#insurance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Insurance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#asset-heavy-industrials" class="md-nav__link">
+    <span class="md-ellipsis">
+      Asset-Heavy Industrials
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Limitations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-growth-companies" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Growth Companies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-accounting-dependence" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Accounting Dependence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-assumes-clean-surplus" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Assumes Clean Surplus
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-terminal-value-still-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Terminal Value Still Matters
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparison-to-dcf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comparison to DCF
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#academic-foundation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Academic Foundation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Academic Foundation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-theory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Theory
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#empirical-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Empirical Validation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Extensions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Extensions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-roe-decomposition-dupont" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. ROE Decomposition (DuPont)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-economic-value-added-eva" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Economic Value Added (EVA)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-roic-based-variant" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. ROIC-Based Variant
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      When to Use
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="When to Use">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#primary-valuation-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Primary Valuation Method
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secondary-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Secondary Check
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avoid" class="md-nav__link">
+    <span class="md-ellipsis">
+      Avoid
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1970,48 +1886,6 @@
       References
     </span>
   </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#academic-background" class="md-nav__link">
-    <span class="md-ellipsis">
-      Academic Background
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Academic Background">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#gradient-boosting-machines" class="md-nav__link">
-    <span class="md-ellipsis">
-      Gradient Boosting Machines
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#factor-models-cross-sectional-prediction" class="md-nav__link">
-    <span class="md-ellipsis">
-      Factor Models &amp; Cross-Sectional Prediction
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#information-coefficient" class="md-nav__link">
-    <span class="md-ellipsis">
-      Information Coefficient
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -2031,7 +1905,7 @@
 
 
   
-    <a href="https://github.com/rubenayla/invest/edit/main/docs/models/gbm-lite.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/rubenayla/invest/edit/main/docs/models/rim.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -2040,210 +1914,277 @@
     
       
     
-    <a href="https://github.com/rubenayla/invest/raw/main/docs/models/gbm-lite.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/rubenayla/invest/raw/main/docs/models/rim.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
     </a>
   
 
 
-<h1 id="gbm-lite-models">GBM Lite Models<a class="headerlink" href="#gbm-lite-models" title="Permanent link">&para;</a></h1>
-<p>Ultra-lightweight gradient boosting models optimized for maximum stock coverage with minimal data requirements.</p>
+<h1 id="residual-income-model-rim">Residual Income Model (RIM)<a class="headerlink" href="#residual-income-model-rim" title="Permanent link">&para;</a></h1>
+<p>Valuation based on book value plus the present value of expected "excess" returns above the cost of equity.</p>
 <h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p>GBM Lite models use machine learning to rank stocks by expected returns while requiring only <strong>2 quarters of historical data</strong> - enabling predictions for ~98% of stocks in the database.</p>
-<h2 id="key-features">Key Features<a class="headerlink" href="#key-features" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Minimal Data Requirements</strong>: Only 2 quarters needed (vs 8+ for full GBM)</li>
-<li><strong>Maximum Coverage</strong>: Works for 589/598 stocks (98.5%)</li>
-<li><strong>Strong Performance</strong>: Rank IC 0.50 (1y) and 0.40 (3y)</li>
-<li><strong>Efficient</strong>: 59 features (vs 464 for full GBM)</li>
-</ul>
-<h2 id="available-variants">Available Variants<a class="headerlink" href="#available-variants" title="Permanent link">&para;</a></h2>
-<h3 id="gbm-lite-1y">GBM Lite 1y<a class="headerlink" href="#gbm-lite-1y" title="Permanent link">&para;</a></h3>
-<p>Predicts 1-year forward returns.</p>
-<ul>
-<li><strong>Rank IC</strong>: 0.50</li>
-<li><strong>Decile Spread</strong>: 66%</li>
-<li><strong>Coverage</strong>: 589 stocks</li>
-</ul>
-<h3 id="gbm-lite-3y">GBM Lite 3y<a class="headerlink" href="#gbm-lite-3y" title="Permanent link">&para;</a></h3>
-<p>Predicts 3-year forward returns.</p>
-<ul>
-<li><strong>Rank IC</strong>: 0.40</li>
-<li><strong>Decile Spread</strong>: 145%</li>
-<li><strong>Coverage</strong>: 589 stocks</li>
-</ul>
-<h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
-<h3 id="1-feature-engineering">1. Feature Engineering<a class="headerlink" href="#1-feature-engineering" title="Permanent link">&para;</a></h3>
-<p>The model uses 59 engineered features derived from:</p>
-<p><strong>Current Snapshot (27 base features)</strong>:
-- Profitability: profit_margins, operating_margins, gross_margins, ROE, ROA
-- Growth: revenue_growth, earnings_growth
-- Balance Sheet: debt_to_equity, current_ratio, quick_ratio
-- Valuation: PE, PB, PS, EV/EBITDA, EV/Revenue
-- Dividends: dividend_yield, payout_ratio
-- Company: market_cap, beta
-- Market: VIX, 10Y Treasury
-- Price Momentum: returns_1m, returns_3m, returns_6m, returns_1y, volatility, volume_trend</p>
-<p><strong>Engineered Features</strong> (2.2x per base feature):
-- Computed yields: FCF yield, OCF yield, earnings yield
-- Log transforms: log(market_cap)
-- <strong>QoQ changes</strong>: Quarter-over-quarter deltas
-- Missingness flags: Binary indicators for missing data
-- Categorical: Sector encoding</p>
-<h3 id="2-whats-excluded-vs-full-gbm">2. What's Excluded (vs Full GBM)<a class="headerlink" href="#2-whats-excluded-vs-full-gbm" title="Permanent link">&para;</a></h3>
-<p>To achieve 2-quarter minimum, we removed:</p>
-<ul>
-<li>❌ <strong>Lag features</strong> (would require 3+ quarters)</li>
-<li>❌ <strong>Rolling windows</strong> (would require 4-6+ quarters)</li>
-<li>❌ <strong>YoY changes</strong> (would require 5 quarters)</li>
-</ul>
-<h3 id="3-training-process">3. Training Process<a class="headerlink" href="#3-training-process" title="Permanent link">&para;</a></h3>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Cross-sectional normalization</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">features_normalized</span> <span class="o">=</span> <span class="n">winsorize</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="mi">1</span><span class="n">st</span><span class="o">-</span><span class="mi">99</span><span class="n">th</span> <span class="n">percentile</span><span class="p">)</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">features_normalized</span> <span class="o">=</span> <span class="n">standardize</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">by_date</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># LightGBM ranking objective</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">model</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">train</span><span class="p">(</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;objective&#39;</span><span class="p">:</span> <span class="s1">&#39;regression&#39;</span><span class="p">,</span> <span class="s1">&#39;metric&#39;</span><span class="p">:</span> <span class="s1">&#39;rmse&#39;</span><span class="p">},</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">train_data</span><span class="o">=</span><span class="n">train_set</span><span class="p">,</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">early_stopping_rounds</span><span class="o">=</span><span class="mi">50</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">)</span>
+<p>RIM is particularly well-suited for financial institutions and asset-heavy businesses where book value is meaningful. It focuses on returns above what shareholders require, making it complementary to DCF.</p>
+<h2 id="core-concept">Core Concept<a class="headerlink" href="#core-concept" title="Permanent link">&para;</a></h2>
+<p><strong>Key Insight:</strong> A company is worth its book value plus (or minus) the present value of all future returns above (or below) the cost of equity.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Value = Book Value + PV(Future Residual Income)
 </span></code></pre></div>
-<h3 id="4-prediction-output">4. Prediction Output<a class="headerlink" href="#4-prediction-output" title="Permanent link">&para;</a></h3>
-<p>For each stock, the model provides:</p>
-<ul>
-<li><strong>Expected Return</strong>: Predicted percentage return over horizon</li>
-<li><strong>Percentile Rank</strong>: 0-100 ranking vs all stocks</li>
-<li><strong>Decile</strong>: 1-10 grouping (10 = top 10% expected returns)</li>
-</ul>
-<h2 id="performance-metrics">Performance Metrics<a class="headerlink" href="#performance-metrics" title="Permanent link">&para;</a></h2>
-<h3 id="rank-information-coefficient-ic">Rank Information Coefficient (IC)<a class="headerlink" href="#rank-information-coefficient-ic" title="Permanent link">&para;</a></h3>
-<p>Measures correlation between predicted ranks and actual returns:</p>
-<ul>
-<li><strong>GBM Lite 1y</strong>: 0.50 (strong predictive power)</li>
-<li><strong>GBM Lite 3y</strong>: 0.40 (good long-term signal)</li>
-</ul>
-<h3 id="decile-spread">Decile Spread<a class="headerlink" href="#decile-spread" title="Permanent link">&para;</a></h3>
-<p>Average return difference between top and bottom deciles:</p>
-<ul>
-<li><strong>GBM Lite 1y</strong>: 66% (top 10% outperform bottom 10% by 66%)</li>
-<li><strong>GBM Lite 3y</strong>: 145% (massive 3-year spread)</li>
-</ul>
-<h3 id="comparison-to-full-gbm">Comparison to Full GBM<a class="headerlink" href="#comparison-to-full-gbm" title="Permanent link">&para;</a></h3>
+<p>Where:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Residual Income = (ROE - Cost of Equity) × Book Value
+</span></code></pre></div></p>
+<h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
+<h3 id="1-starting-point-book-value">1. Starting Point: Book Value<a class="headerlink" href="#1-starting-point-book-value" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Book Value per Share = Total Equity / Shares Outstanding
+</span></code></pre></div>
+<p><strong>Quality Check:</strong>
+- Adjust for intangibles (goodwill)
+- Check for off-balance sheet items
+- Verify accounting quality</p>
+<h3 id="2-calculate-residual-income">2. Calculate Residual Income<a class="headerlink" href="#2-calculate-residual-income" title="Permanent link">&para;</a></h3>
+<p><strong>For Each Future Period:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>RI_t = (ROE_t - r_e) × BV_{t-1}
+</span></code></pre></div></p>
+<p>Where:
+- <code>ROE_t</code> = Return on Equity in period t
+- <code>r_e</code> = Cost of Equity (required return)
+- <code>BV_{t-1}</code> = Book Value at start of period</p>
+<h3 id="3-project-book-value-growth">3. Project Book Value Growth<a class="headerlink" href="#3-project-book-value-growth" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>BV_t = BV_{t-1} × (1 + g)
+</span></code></pre></div>
+<p>Where <code>g</code> = Sustainable growth rate = ROE × (1 - Payout Ratio)</p>
+<h3 id="4-terminal-value">4. Terminal Value<a class="headerlink" href="#4-terminal-value" title="Permanent link">&para;</a></h3>
+<p><strong>Perpetuity Method:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Terminal RI = RI_final / (r_e - g_terminal)
+</span></code></pre></div></p>
+<p><strong>Fade-to-Normal Method:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Assume ROE gradually converges to cost of equity
+</span></code></pre></div></p>
+<h3 id="5-sum-to-fair-value">5. Sum to Fair Value<a class="headerlink" href="#5-sum-to-fair-value" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Fair Value = BV_0 + Σ(RI_t / (1 + r_e)^t) + (Terminal_RI / (1 + r_e)^n)
+</span></code></pre></div>
+<h2 id="when-rim-works-best">When RIM Works Best<a class="headerlink" href="#when-rim-works-best" title="Permanent link">&para;</a></h2>
+<h3 id="ideal-candidates">Ideal Candidates<a class="headerlink" href="#ideal-candidates" title="Permanent link">&para;</a></h3>
+<p><strong>Financial Institutions:</strong>
+- Banks
+- Insurance companies
+- Asset managers
+- REITs (with adjustments)</p>
+<p><strong>Characteristics:</strong>
+- Meaningful book value
+- Stable ROE
+- Transparent balance sheets
+- Regulated industries</p>
+<h3 id="why-its-better-than-dcf-for-banks">Why It's Better Than DCF for Banks<a class="headerlink" href="#why-its-better-than-dcf-for-banks" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Cash Flow Ambiguity</strong>: Bank "cash flows" are hard to define</li>
+<li><strong>Book Value Relevance</strong>: Regulatory capital is key metric</li>
+<li><strong>ROE Focus</strong>: Banks managed on ROE targets</li>
+<li><strong>Balance Sheet Business</strong>: Assets/liabilities are the product</li>
+</ol>
+<h2 id="model-advantages">Model Advantages<a class="headerlink" href="#model-advantages" title="Permanent link">&para;</a></h2>
+<h3 id="1-less-terminal-value-dependence">1. Less Terminal Value Dependence<a class="headerlink" href="#1-less-terminal-value-dependence" title="Permanent link">&para;</a></h3>
+<p>Unlike DCF where terminal value is 60-80%, RIM starts with current book value (tangible anchor)</p>
+<h3 id="2-accounting-based">2. Accounting-Based<a class="headerlink" href="#2-accounting-based" title="Permanent link">&para;</a></h3>
+<p>Uses reported financials directly, easier to verify</p>
+<h3 id="3-mean-reversion">3. Mean Reversion<a class="headerlink" href="#3-mean-reversion" title="Permanent link">&para;</a></h3>
+<p>Natural assumption that excess returns fade over time (competitive forces)</p>
+<h3 id="4-handles-negatives">4. Handles Negatives<a class="headerlink" href="#4-handles-negatives" title="Permanent link">&para;</a></h3>
+<p>Works even with negative earnings (as long as positive equity)</p>
+<h2 id="implementation">Implementation<a class="headerlink" href="#implementation" title="Permanent link">&para;</a></h2>
+<h3 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h3>
+<p><strong>Cost of Equity (CAPM):</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>r_e = Risk_Free_Rate + Beta × Market_Risk_Premium
+</span></code></pre></div></p>
+<p><strong>Typical Values:</strong>
+- Banks: 10-12%
+- Utilities: 8-10%
+- Industrial: 10-14%</p>
+<p><strong>ROE Assumptions:</strong>
+- Use historical average
+- Adjust for one-time items
+- Consider industry trends</p>
+<p><strong>Forecast Horizon:</strong>
+- Explicit forecasts: 5-10 years
+- Fade period: 5 years to terminal
+- Terminal ROE: Converge to cost of equity</p>
+<h3 id="code-example">Code Example<a class="headerlink" href="#code-example" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">invest.valuation.rim_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">RIMModel</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># Initialize</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">rim</span> <span class="o">=</span> <span class="n">RIMModel</span><span class="p">()</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># Calculate</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="n">result</span> <span class="o">=</span> <span class="n">rim</span><span class="o">.</span><span class="n">calculate_fair_value</span><span class="p">(</span><span class="n">stock_data</span><span class="p">)</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;suitable&#39;</span><span class="p">]:</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Book Value: $</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;details&#39;</span><span class="p">][</span><span class="s1">&#39;book_value&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Residual Income PV: $</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;details&#39;</span><span class="p">][</span><span class="s1">&#39;ri_pv&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fair Value: $</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;fair_value&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="key-assumptions">Key Assumptions<a class="headerlink" href="#key-assumptions" title="Permanent link">&para;</a></h2>
+<h3 id="1-clean-surplus-relation">1. Clean Surplus Relation<a class="headerlink" href="#1-clean-surplus-relation" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>BV_t = BV_{t-1} + Earnings_t - Dividends_t
+</span></code></pre></div>
+<p>Must hold for RIM to be theoretically sound. Violated by:
+- Stock buybacks (adjust for repurchases)
+- Currency translation adjustments
+- Pension accounting</p>
+<h3 id="2-roe-mean-reversion">2. ROE Mean Reversion<a class="headerlink" href="#2-roe-mean-reversion" title="Permanent link">&para;</a></h3>
+<p><strong>Empirical Evidence:</strong>
+- High ROE (&gt;20%) typically fades 50% in 5 years
+- Low ROE (&lt;10%) typically improves but slowly
+- Industry median is attractor</p>
+<p><strong>Competitive Forces:</strong>
+- High returns attract competition
+- Low returns force restructuring or exit</p>
+<h3 id="3-book-value-quality">3. Book Value Quality<a class="headerlink" href="#3-book-value-quality" title="Permanent link">&para;</a></h3>
+<p><strong>Red Flags:</strong>
+- Large goodwill (&gt;30% of equity)
+- Frequent write-downs
+- Off-balance sheet vehicles
+- Mark-to-model assets</p>
+<h2 id="sector-applications">Sector Applications<a class="headerlink" href="#sector-applications" title="Permanent link">&para;</a></h2>
+<h3 id="banks">Banks<a class="headerlink" href="#banks" title="Permanent link">&para;</a></h3>
+<p><strong>Perfect fit:</strong>
+- Book value = regulatory capital
+- ROE = primary management metric
+- Stable business model</p>
+<p><strong>Adjustments:</strong>
+- Normalize for credit cycles
+- Adjust for loan loss reserves
+- Consider Basel III impacts</p>
+<h3 id="insurance">Insurance<a class="headerlink" href="#insurance" title="Permanent link">&para;</a></h3>
+<p><strong>Good fit:</strong>
+- Assets = liabilities + equity
+- Underwriting profit + investment returns</p>
+<p><strong>Adjustments:</strong>
+- Normalize catastrophe losses
+- Adjust reserves for conservatism
+- Consider float value</p>
+<h3 id="asset-heavy-industrials">Asset-Heavy Industrials<a class="headerlink" href="#asset-heavy-industrials" title="Permanent link">&para;</a></h3>
+<p><strong>Moderate fit:</strong>
+- Book value less relevant
+- ROIC often better than ROE</p>
+<p><strong>Use with caution:</strong>
+- Depreciation policy affects book value
+- Asset impairments common
+- Intangibles growing</p>
+<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
+<h3 id="1-growth-companies">1. Growth Companies<a class="headerlink" href="#1-growth-companies" title="Permanent link">&para;</a></h3>
+<p>Book value is tiny relative to intangible value (brand, patents, network effects)</p>
+<h3 id="2-accounting-dependence">2. Accounting Dependence<a class="headerlink" href="#2-accounting-dependence" title="Permanent link">&para;</a></h3>
+<p>Vulnerable to accounting manipulation:
+- Aggressive revenue recognition
+- Understated reserves
+- Goodwill avoidance</p>
+<h3 id="3-assumes-clean-surplus">3. Assumes Clean Surplus<a class="headerlink" href="#3-assumes-clean-surplus" title="Permanent link">&para;</a></h3>
+<p>Share buybacks, special dividends, FX adjustments violate assumption</p>
+<h3 id="4-terminal-value-still-matters">4. Terminal Value Still Matters<a class="headerlink" href="#4-terminal-value-still-matters" title="Permanent link">&para;</a></h3>
+<p>If ROE &gt;&gt; r_e persists, terminal value dominates (same DCF problem)</p>
+<h2 id="comparison-to-dcf">Comparison to DCF<a class="headerlink" href="#comparison-to-dcf" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Metric</th>
-<th>GBM Lite 1y</th>
-<th>GBM Full 1y</th>
-<th>Delta</th>
+<th>Aspect</th>
+<th>RIM</th>
+<th>DCF</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Rank IC</td>
-<td>0.50</td>
-<td>0.59</td>
-<td>-15%</td>
+<td>Starting Point</td>
+<td>Book Value</td>
+<td>Cash Flows</td>
 </tr>
 <tr>
-<td>Decile Spread</td>
-<td>66%</td>
-<td>75%</td>
-<td>-12%</td>
+<td>Best For</td>
+<td>Banks, asset-heavy</td>
+<td>Operating companies</td>
 </tr>
 <tr>
-<td>Features</td>
-<td>59</td>
-<td>464</td>
-<td>-87%</td>
+<td>Terminal Value</td>
+<td>Smaller component</td>
+<td>Larger component</td>
 </tr>
 <tr>
-<td>Coverage</td>
-<td>589 stocks</td>
-<td>589 stocks</td>
-<td>Same</td>
+<td>Accounting</td>
+<td>Direct use</td>
+<td>Adjustments needed</td>
 </tr>
 <tr>
-<td>Min Quarters</td>
-<td>2</td>
-<td>8</td>
-<td>-75%</td>
+<td>Growth Bias</td>
+<td>Less sensitive</td>
+<td>Very sensitive</td>
+</tr>
+<tr>
+<td>Intangibles</td>
+<td>Undervalues</td>
+<td>Better capture</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Key Insight</strong>: GBM Lite achieves 85-88% of full GBM's performance while covering the same stocks with 76% fewer features.</p>
-<h2 id="theoretical-foundation">Theoretical Foundation<a class="headerlink" href="#theoretical-foundation" title="Permanent link">&para;</a></h2>
-<h3 id="cross-sectional-learning">Cross-Sectional Learning<a class="headerlink" href="#cross-sectional-learning" title="Permanent link">&para;</a></h3>
-<p>GBM models learn <strong>relative</strong> patterns, not absolute values:</p>
-<ol>
-<li><strong>Z-score normalization per date</strong>: All features standardized within each time period</li>
-<li><strong>Ranking objective</strong>: Model predicts relative ordering, not exact returns</li>
-<li><strong>Regime-agnostic</strong>: Works across market conditions by focusing on cross-sectional relationships</li>
-</ol>
-<h3 id="why-it-works-with-minimal-history">Why It Works with Minimal History<a class="headerlink" href="#why-it-works-with-minimal-history" title="Permanent link">&para;</a></h3>
-<p><strong>Current snapshot + momentum captures most signal</strong>:
-- Fundamental quality metrics (profitability, growth, leverage)
-- Valuation multiples (relative cheapness)
-- Recent price momentum (trend signals)
-- QoQ changes (acceleration/deceleration)</p>
-<p><strong>What historical depth adds</strong> (full GBM):
-- Mean reversion patterns (rolling averages)
-- Volatility trends (rolling std)
-- Long-term momentum (lags, slopes)</p>
-<p>For stock ranking, current state + recent changes provide most discriminating power.</p>
-<h2 id="use-cases">Use Cases<a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h2>
-<h3 id="best-for">Best For<a class="headerlink" href="#best-for" title="Permanent link">&para;</a></h3>
+<h2 id="academic-foundation">Academic Foundation<a class="headerlink" href="#academic-foundation" title="Permanent link">&para;</a></h2>
+<h3 id="core-theory">Core Theory<a class="headerlink" href="#core-theory" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>New listings</strong>: Stocks with limited trading history</li>
-<li><strong>Broad coverage</strong>: When you need predictions for almost all stocks</li>
-<li><strong>Resource efficiency</strong>: Fast training and prediction</li>
-<li><strong>Baseline model</strong>: Good starting point before adding complexity</li>
+<li><strong>Edwards &amp; Bell (1961)</strong>: <em>The Theory and Measurement of Business Income</em></li>
+<li>
+<p>Early residual income concepts</p>
+</li>
+<li>
+<p><strong>Ohlson (1995)</strong>: "Earnings, Book Values, and Dividends in Equity Valuation"</p>
+</li>
+<li>Modern RIM framework</li>
+<li>
+<p>Proof of equivalence to dividend discount model</p>
+</li>
+<li>
+<p><strong>Feltham &amp; Ohlson (1995)</strong>: "Valuation and Clean Surplus Accounting"</p>
+</li>
+<li>Clean surplus relation formalization</li>
 </ul>
-<h3 id="not-ideal-for">Not Ideal For<a class="headerlink" href="#not-ideal-for" title="Permanent link">&para;</a></h3>
+<h3 id="empirical-validation">Empirical Validation<a class="headerlink" href="#empirical-validation" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Absolute return forecasts</strong>: Use LSTM models instead</li>
-<li><strong>Maximum accuracy</strong>: Use full GBM if you have 8+ quarters</li>
-<li><strong>Market timing</strong>: Use Opportunistic GBM instead</li>
+<li><strong>Frankel &amp; Lee (1998)</strong>: RIM explains 70% of stock price variation</li>
+<li><strong>Dechow, Hutton &amp; Sloan (1999)</strong>: RIM outperforms DCF for banks</li>
+<li><strong>Penman &amp; Sougiannis (1998)</strong>: Combining earnings and book value improves forecasts</li>
 </ul>
-<h2 id="implementation-example">Implementation Example<a class="headerlink" href="#implementation-example" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">invest.scripts.run_gbm_predictions</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_predictions</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Run GBM Lite 1y predictions</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">predictions</span> <span class="o">=</span> <span class="n">run_predictions</span><span class="p">(</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">variant</span><span class="o">=</span><span class="s1">&#39;lite&#39;</span><span class="p">,</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">horizon</span><span class="o">=</span><span class="s1">&#39;1y&#39;</span><span class="p">,</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">db_path</span><span class="o">=</span><span class="s1">&#39;data/stock_data.db&#39;</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">)</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="c1"># Get top decile stocks</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="n">top_stocks</span> <span class="o">=</span> <span class="n">predictions</span><span class="p">[</span><span class="n">predictions</span><span class="p">[</span><span class="s1">&#39;decile&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">9</span><span class="p">]</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Top 20% stocks: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">top_stocks</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<h2 id="advanced-extensions">Advanced Extensions<a class="headerlink" href="#advanced-extensions" title="Permanent link">&para;</a></h2>
+<h3 id="1-roe-decomposition-dupont">1. ROE Decomposition (DuPont)<a class="headerlink" href="#1-roe-decomposition-dupont" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>ROE = Net Margin × Asset Turnover × Equity Multiplier
 </span></code></pre></div>
+<p>Forecast each component separately for detailed analysis</p>
+<h3 id="2-economic-value-added-eva">2. Economic Value Added (EVA)<a class="headerlink" href="#2-economic-value-added-eva" title="Permanent link">&para;</a></h3>
+<p>Related concept: Value = Capital + PV(EVA)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>EVA = NOPAT - (Capital × WACC)
+</span></code></pre></div></p>
+<h3 id="3-roic-based-variant">3. ROIC-Based Variant<a class="headerlink" href="#3-roic-based-variant" title="Permanent link">&para;</a></h3>
+<p>Use ROIC instead of ROE for capital structure neutrality</p>
+<h2 id="when-to-use">When to Use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h2>
+<h3 id="primary-valuation-method">Primary Valuation Method<a class="headerlink" href="#primary-valuation-method" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Banks and financial institutions</li>
+<li>Mature, stable companies with clean accounting</li>
+<li>Asset-heavy businesses with transparent books</li>
+</ul>
+<h3 id="secondary-check">Secondary Check<a class="headerlink" href="#secondary-check" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Validate DCF for companies with significant book value</li>
+<li>Assess quality of returns (ROE vs cost of equity)</li>
+</ul>
+<h3 id="avoid">Avoid<a class="headerlink" href="#avoid" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Tech/software companies (minimal book value)</li>
+<li>Companies with aggressive accounting</li>
+<li>High-growth unprofitable companies</li>
+</ul>
 <h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../gbm-full/">GBM Full Models</a> - For comparison with full-featured version</li>
-<li><a href="https://github.com/rubenayla/invest/blob/main/neural_network/training/train_gbm_lite_stock_ranker.py">Training Script</a></li>
-<li><a href="https://github.com/rubenayla/invest/blob/main/neural_network/training/gbm_lite_feature_config.py">Feature Configuration</a></li>
-<li><a href="https://github.com/rubenayla/invest/blob/main/scripts/run_gbm_predictions.py">Prediction Script</a></li>
-</ul>
-<h2 id="academic-background">Academic Background<a class="headerlink" href="#academic-background" title="Permanent link">&para;</a></h2>
-<h3 id="gradient-boosting-machines">Gradient Boosting Machines<a class="headerlink" href="#gradient-boosting-machines" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Chen &amp; Guestrin (2016). "XGBoost: A Scalable Tree Boosting System". KDD '16</li>
-<li>Ke et al. (2017). "LightGBM: A Highly Efficient Gradient Boosting Decision Tree". NIPS '17</li>
-</ul>
-<h3 id="factor-models-cross-sectional-prediction">Factor Models &amp; Cross-Sectional Prediction<a class="headerlink" href="#factor-models-cross-sectional-prediction" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Fama &amp; French (1993). "Common risk factors in the returns on stocks and bonds"</li>
-<li>Gu, Kelly, &amp; Xiu (2020). "Empirical Asset Pricing via Machine Learning". Review of Financial Studies</li>
-<li>Moritz &amp; Zimmermann (2016). "Tree-based Conditional Portfolio Sorts"</li>
-</ul>
-<h3 id="information-coefficient">Information Coefficient<a class="headerlink" href="#information-coefficient" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Grinold &amp; Kahn (2000). "Active Portfolio Management" (Information Ratio framework)</li>
+<li>Dechow, P., Hutton, A., &amp; Sloan, R. (1999). "An Empirical Assessment of the Residual Income Valuation Model". <em>Journal of Accounting and Economics</em>.</li>
+<li>Edwards, E., &amp; Bell, P. (1961). <em>The Theory and Measurement of Business Income</em>. University of California Press.</li>
+<li>Feltham, G., &amp; Ohlson, J. (1995). "Valuation and Clean Surplus Accounting for Operating and Financial Activities". <em>Contemporary Accounting Research</em>.</li>
+<li>Frankel, R., &amp; Lee, C. (1998). "Accounting Valuation, Market Expectation, and Cross-Sectional Stock Returns". <em>Journal of Accounting and Economics</em>.</li>
+<li>Ohlson, J. (1995). "Earnings, Book Values, and Dividends in Equity Valuation". <em>Contemporary Accounting Research</em>.</li>
+<li>Penman, S., &amp; Sougiannis, T. (1998). "A Comparison of Dividend, Cash Flow, and Earnings Approaches to Equity Valuation". <em>Contemporary Accounting Research</em>.</li>
 </ul>
 
 

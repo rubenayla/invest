@@ -12,28 +12,24 @@
         <meta name="author" content="Investment Analysis Framework">
       
       
-        <link rel="canonical" href="https://rubenayla.github.io/invest/models/">
+        <link rel="canonical" href="https://rubenayla.github.io/invest/models/dcf/">
       
       
-        <link rel="prev" href="../user-guide/troubleshooting/">
       
       
-        <link rel="next" href="gbm-lite/">
-      
-      
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.21">
     
     
       
-        <title>Overview - Systematic Investment Analysis Framework</title>
+        <title>Discounted Cash Flow (DCF) Model - Systematic Investment Analysis Framework</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.2a3383ac.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.2a3383ac.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -52,7 +48,7 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#valuation-models" class="md-skip">
+        <a href="#discounted-cash-flow-dcf-model" class="md-skip">
           Skip to content
         </a>
       
@@ -92,7 +88,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Systematic Investment Analysis Framework" class="md-header__button md-logo" aria-label="Systematic Investment Analysis Framework" data-md-component="logo">
+    <a href="../.." title="Systematic Investment Analysis Framework" class="md-header__button md-logo" aria-label="Systematic Investment Analysis Framework" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -112,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              Discounted Cash Flow (DCF) Model
             
           </span>
         </div>
@@ -228,7 +224,7 @@
   
   
     <li class="md-tabs__item">
-      <a href=".." class="md-tabs__link">
+      <a href="../.." class="md-tabs__link">
         
   
   
@@ -249,7 +245,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../getting-started/installation/" class="md-tabs__link">
+        <a href="../../getting-started/installation/" class="md-tabs__link">
           
   
   
@@ -269,7 +265,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../user-guide/overview/" class="md-tabs__link">
+        <a href="../../user-guide/overview/" class="md-tabs__link">
           
   
   
@@ -285,13 +281,11 @@
   
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
-        <a href="./" class="md-tabs__link">
+      <li class="md-tabs__item">
+        <a href="../" class="md-tabs__link">
           
   
   
@@ -311,7 +305,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../developer-guide/architecture/" class="md-tabs__link">
+        <a href="../../developer-guide/architecture/" class="md-tabs__link">
           
   
   
@@ -331,7 +325,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../api-reference/pipeline/" class="md-tabs__link">
+        <a href="../../api-reference/pipeline/" class="md-tabs__link">
           
   
   
@@ -351,7 +345,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../tutorials/basic-screening/" class="md-tabs__link">
+        <a href="../../tutorials/basic-screening/" class="md-tabs__link">
           
   
   
@@ -369,7 +363,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../contributing/" class="md-tabs__link">
+      <a href="../../contributing/" class="md-tabs__link">
         
   
   
@@ -404,7 +398,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Systematic Investment Analysis Framework" class="md-nav__button md-logo" aria-label="Systematic Investment Analysis Framework" data-md-component="logo">
+    <a href="../.." title="Systematic Investment Analysis Framework" class="md-nav__button md-logo" aria-label="Systematic Investment Analysis Framework" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -434,7 +428,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -501,7 +495,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../getting-started/installation/" class="md-nav__link">
+      <a href="../../getting-started/installation/" class="md-nav__link">
         
   
   
@@ -524,7 +518,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../getting-started/quickstart/" class="md-nav__link">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
         
   
   
@@ -547,7 +541,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../getting-started/configuration/" class="md-nav__link">
+      <a href="../../getting-started/configuration/" class="md-nav__link">
         
   
   
@@ -622,7 +616,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/overview/" class="md-nav__link">
+      <a href="../../user-guide/overview/" class="md-nav__link">
         
   
   
@@ -645,7 +639,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/running-analysis/" class="md-nav__link">
+      <a href="../../user-guide/running-analysis/" class="md-nav__link">
         
   
   
@@ -668,7 +662,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/dashboard/" class="md-nav__link">
+      <a href="../../user-guide/dashboard/" class="md-nav__link">
         
   
   
@@ -691,7 +685,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/understanding-results/" class="md-nav__link">
+      <a href="../../user-guide/understanding-results/" class="md-nav__link">
         
   
   
@@ -714,7 +708,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/configuration-options/" class="md-nav__link">
+      <a href="../../user-guide/configuration-options/" class="md-nav__link">
         
   
   
@@ -737,7 +731,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/output-formats/" class="md-nav__link">
+      <a href="../../user-guide/output-formats/" class="md-nav__link">
         
   
   
@@ -760,7 +754,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../user-guide/troubleshooting/" class="md-nav__link">
+      <a href="../../user-guide/troubleshooting/" class="md-nav__link">
         
   
   
@@ -787,31 +781,28 @@
       
   
   
-    
   
   
-  
     
     
     
     
-      
-        
-        
       
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -824,7 +815,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             Valuation Models
@@ -835,32 +826,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Overview
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
         
   
   
@@ -871,86 +840,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#model-categories" class="md-nav__link">
-    <span class="md-ellipsis">
-      Model Categories
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Model Categories">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#classic-valuation-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      Classic Valuation Models
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#machine-learning-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      Machine Learning Models
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#model-comparison" class="md-nav__link">
-    <span class="md-ellipsis">
-      Model Comparison
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-use-multiple-models" class="md-nav__link">
-    <span class="md-ellipsis">
-      How to Use Multiple Models
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#understanding-predictions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Understanding Predictions
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -963,7 +852,7 @@
   
   
     <li class="md-nav__item">
-      <a href="gbm-lite/" class="md-nav__link">
+      <a href="../gbm-lite/" class="md-nav__link">
         
   
   
@@ -1038,7 +927,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../developer-guide/architecture/" class="md-nav__link">
+      <a href="../../developer-guide/architecture/" class="md-nav__link">
         
   
   
@@ -1061,7 +950,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../dashboard-scaling-solution/" class="md-nav__link">
+      <a href="../../dashboard-scaling-solution/" class="md-nav__link">
         
   
   
@@ -1084,7 +973,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../developer-guide/pipeline-components/" class="md-nav__link">
+      <a href="../../developer-guide/pipeline-components/" class="md-nav__link">
         
   
   
@@ -1107,7 +996,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../developer-guide/adding-screeners/" class="md-nav__link">
+      <a href="../../developer-guide/adding-screeners/" class="md-nav__link">
         
   
   
@@ -1130,7 +1019,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../developer-guide/data-providers/" class="md-nav__link">
+      <a href="../../developer-guide/data-providers/" class="md-nav__link">
         
   
   
@@ -1153,7 +1042,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../developer-guide/extending/" class="md-nav__link">
+      <a href="../../developer-guide/extending/" class="md-nav__link">
         
   
   
@@ -1228,7 +1117,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api-reference/pipeline/" class="md-nav__link">
+      <a href="../../api-reference/pipeline/" class="md-nav__link">
         
   
   
@@ -1251,7 +1140,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api-reference/screening/" class="md-nav__link">
+      <a href="../../api-reference/screening/" class="md-nav__link">
         
   
   
@@ -1274,7 +1163,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api-reference/data/" class="md-nav__link">
+      <a href="../../api-reference/data/" class="md-nav__link">
         
   
   
@@ -1297,7 +1186,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api-reference/configuration/" class="md-nav__link">
+      <a href="../../api-reference/configuration/" class="md-nav__link">
         
   
   
@@ -1372,7 +1261,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tutorials/basic-screening/" class="md-nav__link">
+      <a href="../../tutorials/basic-screening/" class="md-nav__link">
         
   
   
@@ -1395,7 +1284,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tutorials/custom-configurations/" class="md-nav__link">
+      <a href="../../tutorials/custom-configurations/" class="md-nav__link">
         
   
   
@@ -1418,7 +1307,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tutorials/sp500-analysis/" class="md-nav__link">
+      <a href="../../tutorials/sp500-analysis/" class="md-nav__link">
         
   
   
@@ -1441,7 +1330,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tutorials/international-markets/" class="md-nav__link">
+      <a href="../../tutorials/international-markets/" class="md-nav__link">
         
   
   
@@ -1464,7 +1353,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../tutorials/ai-tools/" class="md-nav__link">
+      <a href="../../tutorials/ai-tools/" class="md-nav__link">
         
   
   
@@ -1494,7 +1383,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributing/" class="md-nav__link">
+      <a href="../../contributing/" class="md-nav__link">
         
   
   
@@ -1536,28 +1425,64 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#model-categories" class="md-nav__link">
+  <a href="#overview" class="md-nav__link">
     <span class="md-ellipsis">
-      Model Categories
+      Overview
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Model Categories">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How It Works
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How It Works">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#classic-valuation-models" class="md-nav__link">
+  <a href="#1-free-cash-flow-calculation" class="md-nav__link">
     <span class="md-ellipsis">
-      Classic Valuation Models
+      1. Free Cash Flow Calculation
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#machine-learning-models" class="md-nav__link">
+  <a href="#2-projection-phase" class="md-nav__link">
     <span class="md-ellipsis">
-      Machine Learning Models
+      2. Projection Phase
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-terminal-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Terminal Value
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-discount-to-present-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Discount to Present Value
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-per-share-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Per-Share Value
     </span>
   </a>
   
@@ -1569,27 +1494,153 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#model-comparison" class="md-nav__link">
+  <a href="#cost-of-capital-wacc" class="md-nav__link">
     <span class="md-ellipsis">
-      Model Comparison
+      Cost of Capital (WACC)
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-to-use-multiple-models" class="md-nav__link">
+  <a href="#when-dcf-works-best" class="md-nav__link">
     <span class="md-ellipsis">
-      How to Use Multiple Models
+      When DCF Works Best
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="When DCF Works Best">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ideal-candidates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ideal Candidates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#poor-candidates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Poor Candidates
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#understanding-predictions" class="md-nav__link">
+  <a href="#model-parameters" class="md-nav__link">
     <span class="md-ellipsis">
-      Understanding Predictions
+      Model Parameters
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Model Parameters">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#growth-rate-caps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Growth Rate Caps
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wacc-bounds" class="md-nav__link">
+    <span class="md-ellipsis">
+      WACC Bounds
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terminal-growth" class="md-nav__link">
+    <span class="md-ellipsis">
+      Terminal Growth
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Example
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#academic-foundation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Academic Foundation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Academic Foundation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-papers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Papers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#empirical-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Empirical Evidence
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationship-to-other-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      Relationship to Other Models
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
     </span>
   </a>
   
@@ -1611,7 +1662,7 @@
 
 
   
-    <a href="https://github.com/rubenayla/invest/edit/main/docs/models/index.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/rubenayla/invest/edit/main/docs/models/dcf.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1620,98 +1671,149 @@
     
       
     
-    <a href="https://github.com/rubenayla/invest/raw/main/docs/models/index.md" title="View source of this page" class="md-content__button md-icon">
+    <a href="https://github.com/rubenayla/invest/raw/main/docs/models/dcf.md" title="View source of this page" class="md-content__button md-icon">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
     </a>
   
 
 
-<h1 id="valuation-models">Valuation Models<a class="headerlink" href="#valuation-models" title="Permanent link">&para;</a></h1>
-<p>The framework employs multiple valuation approaches to provide diverse perspectives on stock value. Each model has different strengths, assumptions, and data requirements.</p>
-<h2 id="model-categories">Model Categories<a class="headerlink" href="#model-categories" title="Permanent link">&para;</a></h2>
-<h3 id="classic-valuation-models">Classic Valuation Models<a class="headerlink" href="#classic-valuation-models" title="Permanent link">&para;</a></h3>
-<p>Traditional finance models based on fundamental analysis and cash flow projections.</p>
+<h1 id="discounted-cash-flow-dcf-model">Discounted Cash Flow (DCF) Model<a class="headerlink" href="#discounted-cash-flow-dcf-model" title="Permanent link">&para;</a></h1>
+<p>The classic DCF model estimates intrinsic value by discounting projected future free cash flows to present value.</p>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>DCF is the foundational valuation method taught in finance courses and used widely in investment banking. It's based on the principle that a company is worth the present value of all its future cash flows.</p>
+<h2 id="how-it-works">How It Works<a class="headerlink" href="#how-it-works" title="Permanent link">&para;</a></h2>
+<h3 id="1-free-cash-flow-calculation">1. Free Cash Flow Calculation<a class="headerlink" href="#1-free-cash-flow-calculation" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>FCF = Operating Cash Flow - Capital Expenditures
+</span></code></pre></div>
+<p>For each company, we calculate:
+- Historical FCF trend
+- FCF margin (FCF / Revenue)
+- FCF growth rate</p>
+<h3 id="2-projection-phase">2. Projection Phase<a class="headerlink" href="#2-projection-phase" title="Permanent link">&para;</a></h3>
+<p><strong>Growth Rate Estimation:</strong>
+- Use historical revenue growth if available
+- Cap at reasonable limits (typically -50% to 200%)
+- Apply sector-specific adjustments</p>
+<p><strong>Projection Period:</strong>
+- Typically 5-10 years of explicit forecasts
+- Year-by-year cash flow projections</p>
+<h3 id="3-terminal-value">3. Terminal Value<a class="headerlink" href="#3-terminal-value" title="Permanent link">&para;</a></h3>
+<p>Two methods for perpetual value beyond projection period:</p>
+<p><strong>Gordon Growth Model:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Terminal Value = FCF_final × (1 + g) / (WACC - g)
+</span></code></pre></div></p>
+<p>Where:
+- <code>g</code> = perpetual growth rate (typically 2-3%)
+- <code>WACC</code> = Weighted Average Cost of Capital</p>
+<h3 id="4-discount-to-present-value">4. Discount to Present Value<a class="headerlink" href="#4-discount-to-present-value" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>PV = Σ(FCF_t / (1 + WACC)^t) + (Terminal_Value / (1 + WACC)^n)
+</span></code></pre></div>
+<h3 id="5-per-share-value">5. Per-Share Value<a class="headerlink" href="#5-per-share-value" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Fair Value per Share = Enterprise Value / Shares Outstanding
+</span></code></pre></div>
+<h2 id="cost-of-capital-wacc">Cost of Capital (WACC)<a class="headerlink" href="#cost-of-capital-wacc" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>WACC = (E/V × Cost_of_Equity) + (D/V × Cost_of_Debt × (1 - Tax_Rate))
+</span></code></pre></div>
+<p><strong>Components:</strong>
+- <strong>Cost of Equity</strong>: CAPM model using beta, risk-free rate, market risk premium
+- <strong>Cost of Debt</strong>: Interest expense / Total debt
+- <strong>Weights</strong>: Market value proportions of equity and debt</p>
+<h2 id="when-dcf-works-best">When DCF Works Best<a class="headerlink" href="#when-dcf-works-best" title="Permanent link">&para;</a></h2>
+<h3 id="ideal-candidates">Ideal Candidates<a class="headerlink" href="#ideal-candidates" title="Permanent link">&para;</a></h3>
 <ul>
-<li><a href="dcf/">Discounted Cash Flow (DCF)</a></li>
-<li><a href="dcf-enhanced/">Enhanced DCF with Dividends</a></li>
-<li><a href="growth-dcf/">Growth-Adjusted DCF</a></li>
-<li><a href="multi-stage-dcf/">Multi-Stage DCF</a></li>
-<li><a href="rim/">Residual Income Model (RIM)</a></li>
-<li><a href="simple-ratios/">Simple Ratios (Multiples)</a></li>
+<li><strong>Stable, predictable cash flows</strong>: Mature companies with consistent FCF</li>
+<li><strong>Capital-light businesses</strong>: High FCF conversion</li>
+<li><strong>Low cyclicality</strong>: Predictable revenue streams</li>
+<li><strong>Examples</strong>: Consumer staples, utilities, established tech</li>
 </ul>
-<h3 id="machine-learning-models">Machine Learning Models<a class="headerlink" href="#machine-learning-models" title="Permanent link">&para;</a></h3>
-<p>Data-driven models using gradient boosting to rank stocks by expected returns.</p>
+<h3 id="poor-candidates">Poor Candidates<a class="headerlink" href="#poor-candidates" title="Permanent link">&para;</a></h3>
 <ul>
-<li><a href="gbm-full/">GBM Full Models</a> - 464 features, highest predictive power</li>
-<li><a href="gbm-lite/">GBM Lite Models</a> - 59 features, maximum stock coverage</li>
-<li><a href="gbm-opportunistic/">GBM Opportunistic Models</a> - Peak return prediction</li>
+<li><strong>Negative or volatile FCF</strong>: Startups, turnarounds</li>
+<li><strong>High capital intensity</strong>: Airlines, manufacturing</li>
+<li><strong>Financial institutions</strong>: Banks, insurance (use RIM instead)</li>
+<li><strong>Commodity businesses</strong>: Oil &amp; gas, mining (highly cyclical)</li>
 </ul>
-<h2 id="model-comparison">Model Comparison<a class="headerlink" href="#model-comparison" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Model</th>
-<th>Coverage</th>
-<th>Data Required</th>
-<th>Best For</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>DCF Models</td>
-<td>~98%</td>
-<td>1+ quarters</td>
-<td>Stable cash flows</td>
-</tr>
-<tr>
-<td>Simple Ratios</td>
-<td>~99%</td>
-<td>Current data</td>
-<td>Quick valuation</td>
-</tr>
-<tr>
-<td>RIM</td>
-<td>~85%</td>
-<td>Book value</td>
-<td>Financial institutions</td>
-</tr>
-<tr>
-<td>GBM Full</td>
-<td>~52%</td>
-<td>8+ quarters</td>
-<td>Long-history stocks</td>
-</tr>
-<tr>
-<td><strong>GBM Lite</strong></td>
-<td><strong>~98%</strong></td>
-<td><strong>2+ quarters</strong></td>
-<td><strong>Maximum coverage</strong></td>
-</tr>
-<tr>
-<td>GBM Opportunistic</td>
-<td>~52%</td>
-<td>8+ quarters</td>
-<td>Timing signals</td>
-</tr>
-</tbody>
-</table>
-<h2 id="how-to-use-multiple-models">How to Use Multiple Models<a class="headerlink" href="#how-to-use-multiple-models" title="Permanent link">&para;</a></h2>
-<p>The dashboard displays all available models for each stock. Consider:</p>
+<h2 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong>Convergence</strong>: When multiple models agree, confidence is higher</li>
-<li><strong>Divergence</strong>: Indicates model assumptions may not fit the business</li>
-<li><strong>Consensus</strong>: Average of all successful models provides balanced view</li>
-<li><strong>Model-Specific</strong>: Some businesses fit certain models better (e.g., REITs → RIM)</li>
+<li><strong>Sensitivity to Assumptions</strong>: Small changes in growth rate or WACC dramatically affect value</li>
+<li><strong>Terminal Value Dominance</strong>: Often 60-80% of value comes from terminal value</li>
+<li><strong>Forecast Uncertainty</strong>: Projecting 5-10 years ahead is inherently uncertain</li>
+<li><strong>Ignores Strategic Value</strong>: M&amp;A premiums, synergies not captured</li>
+<li><strong>Working Capital</strong>: Simplifies working capital dynamics</li>
 </ol>
-<h2 id="understanding-predictions">Understanding Predictions<a class="headerlink" href="#understanding-predictions" title="Permanent link">&para;</a></h2>
+<h2 id="model-parameters">Model Parameters<a class="headerlink" href="#model-parameters" title="Permanent link">&para;</a></h2>
+<h3 id="growth-rate-caps">Growth Rate Caps<a class="headerlink" href="#growth-rate-caps" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>Fair Value</strong>: Estimated intrinsic value per share</li>
-<li><strong>Margin of Safety</strong>: (Fair Value - Current Price) / Current Price</li>
-<li><strong>Confidence</strong>: Model-specific reliability indicator</li>
-<li><strong>Rank/Percentile</strong>: For GBM models - relative ranking vs other stocks</li>
+<li><strong>Minimum</strong>: -50% (deep contraction scenarios)</li>
+<li><strong>Maximum</strong>: 200% (high-growth companies)</li>
+<li><strong>Typical</strong>: 3-15% for mature companies</li>
 </ul>
-<p>For detailed information on each model, click the links above.</p>
+<h3 id="wacc-bounds">WACC Bounds<a class="headerlink" href="#wacc-bounds" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Minimum</strong>: 5% (ultra-safe businesses)</li>
+<li><strong>Maximum</strong>: 20% (high-risk ventures)</li>
+<li><strong>Typical</strong>: 8-12% for most companies</li>
+</ul>
+<h3 id="terminal-growth">Terminal Growth<a class="headerlink" href="#terminal-growth" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Standard</strong>: 2-3% (GDP growth proxy)</li>
+<li><strong>Mature Markets</strong>: 1-2%</li>
+<li><strong>Emerging Markets</strong>: 3-5%</li>
+</ul>
+<h2 id="implementation-example">Implementation Example<a class="headerlink" href="#implementation-example" title="Permanent link">&para;</a></h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">invest.valuation.dcf_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">DCFModel</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># Initialize model</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">dcf</span> <span class="o">=</span> <span class="n">DCFModel</span><span class="p">()</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1"># Get valuation</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">result</span> <span class="o">=</span> <span class="n">dcf</span><span class="o">.</span><span class="n">calculate_fair_value</span><span class="p">(</span><span class="n">stock_data</span><span class="p">)</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;suitable&#39;</span><span class="p">]:</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Fair Value: $</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;fair_value&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Current Price: $</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;current_price&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Margin of Safety: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;margin_of_safety&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="academic-foundation">Academic Foundation<a class="headerlink" href="#academic-foundation" title="Permanent link">&para;</a></h2>
+<h3 id="core-papers">Core Papers<a class="headerlink" href="#core-papers" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Modigliani &amp; Miller (1958)</strong>: "The Cost of Capital, Corporation Finance and the Theory of Investment"</li>
+<li>
+<p>Foundational work on capital structure and cost of capital</p>
+</li>
+<li>
+<p><strong>Gordon &amp; Shapiro (1956)</strong>: "Capital Equipment Analysis: The Required Rate of Profit"</p>
+</li>
+<li>
+<p>Gordon Growth Model for terminal value</p>
+</li>
+<li>
+<p><strong>Damodaran (2012)</strong>: "Investment Valuation"</p>
+</li>
+<li>Comprehensive DCF framework and implementation</li>
+</ul>
+<h3 id="empirical-evidence">Empirical Evidence<a class="headerlink" href="#empirical-evidence" title="Permanent link">&para;</a></h3>
+<ul>
+<li>DCF valuations correlate 0.6-0.7 with subsequent returns (Francis et al., 2000)</li>
+<li>Works better for large-cap than small-cap stocks</li>
+<li>Accuracy improves with analyst forecast consensus vs historical trends</li>
+</ul>
+<h2 id="relationship-to-other-models">Relationship to Other Models<a class="headerlink" href="#relationship-to-other-models" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Enhanced DCF</strong>: Adds dividend policy considerations</li>
+<li><strong>Growth DCF</strong>: Separates growth and maintenance CapEx</li>
+<li><strong>Multi-Stage DCF</strong>: Multiple growth phases</li>
+<li><strong>RIM</strong>: Alternative using book value and residual income</li>
+<li><strong>GBM Models</strong>: ML-based ranking vs DCF's absolute valuation</li>
+</ul>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Damodaran, A. (2012). <em>Investment Valuation: Tools and Techniques</em>. Wiley.</li>
+<li>Francis, J., Olsson, P., &amp; Oswald, D. (2000). "Comparing the Accuracy and Explainability of Dividend, Free Cash Flow, and Abnormal Earnings Equity Value Estimates". <em>Journal of Accounting Research</em>.</li>
+<li>Gordon, M. J., &amp; Shapiro, E. (1956). "Capital Equipment Analysis: The Required Rate of Profit". <em>Management Science</em>.</li>
+<li>Modigliani, F., &amp; Miller, M. H. (1958). "The Cost of Capital, Corporation Finance and the Theory of Investment". <em>American Economic Review</em>.</li>
+</ul>
 
 
 
@@ -1797,10 +1899,10 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "search.highlight", "search.share", "toc.follow", "content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "search.highlight", "search.share", "toc.follow", "content.action.edit", "content.action.view", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
     
   </body>
