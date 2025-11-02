@@ -88,7 +88,7 @@ def backfill_vix(db_path: str):
     # Get all snapshots missing VIX
     cursor.execute('''
         SELECT id, snapshot_date
-        FROM snapshots
+        FROM fundamental_history
         WHERE vix IS NULL
         ORDER BY snapshot_date
     ''')
@@ -119,7 +119,7 @@ def backfill_vix(db_path: str):
         vix_value = get_vix_for_date(vix_cache, snapshot_date)
 
         cursor.execute('''
-            UPDATE snapshots
+            UPDATE fundamental_history
             SET vix = ?
             WHERE id = ?
         ''', (vix_value, snapshot_id))
@@ -149,7 +149,7 @@ def verify_results(db_path: str):
             COUNT(*) as total,
             COUNT(CASE WHEN vix IS NOT NULL THEN 1 END) as with_vix,
             COUNT(CASE WHEN vix IS NULL THEN 1 END) as without_vix
-        FROM snapshots
+        FROM fundamental_history
     ''')
 
     total, with_vix, without_vix = cursor.fetchone()
@@ -166,7 +166,7 @@ def verify_results(db_path: str):
     cursor.execute('''
         SELECT COUNT(DISTINCT a.symbol)
         FROM assets a
-        JOIN snapshots s ON a.id = s.asset_id
+        JOIN fundamental_history s ON a.id = s.asset_id
         WHERE s.vix IS NOT NULL
         AND s.snapshot_date >= date('now', '-3 years')
     ''')

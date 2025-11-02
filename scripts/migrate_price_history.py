@@ -68,7 +68,7 @@ def main():
             ph.stock_splits,
             ph.created_at
         FROM price_history_old ph
-        JOIN snapshots s ON ph.snapshot_id = s.id
+        JOIN fundamental_history s ON ph.snapshot_id = s.id
         JOIN assets a ON s.asset_id = a.id
         WHERE ph.date IS NOT NULL
         GROUP BY a.symbol, ph.date

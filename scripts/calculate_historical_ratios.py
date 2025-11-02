@@ -118,7 +118,7 @@ class HistoricalRatioCalculator:
 
             if updates:
                 params.append(snapshot_id)
-                query = f'UPDATE snapshots SET {", ".join(updates)} WHERE id = ?'
+                query = f'UPDATE fundamental_history SET {", ".join(updates)} WHERE id = ?'
                 self.cursor.execute(query, params)
                 self.conn.commit()
                 return True
@@ -139,7 +139,7 @@ class HistoricalRatioCalculator:
                 s.snapshot_date,
                 s.trailing_eps,
                 s.book_value
-            FROM snapshots s
+            FROM fundamental_history s
             JOIN assets a ON s.asset_id = a.id
             WHERE (s.pe_ratio IS NULL OR s.pb_ratio IS NULL)
                 AND s.trailing_eps IS NOT NULL
@@ -198,7 +198,7 @@ class HistoricalRatioCalculator:
 
                 if updates:
                     params.append(snapshot_id)
-                    query_update = f'UPDATE snapshots SET {", ".join(updates)} WHERE id = ?'
+                    query_update = f'UPDATE fundamental_history SET {", ".join(updates)} WHERE id = ?'
                     self.cursor.execute(query_update, params)
                     self.conn.commit()
                     updated_count += 1

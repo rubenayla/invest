@@ -154,17 +154,17 @@ def main():
         cursor = conn.cursor()
 
         # Check if columns exist
-        cursor.execute("PRAGMA table_info(snapshots)")
+        cursor.execute("PRAGMA table_info(fundamental_history)")
         existing_columns = [col[1] for col in cursor.fetchall()]
 
         if 'realistic_return_1y' not in existing_columns:
-            logger.info('Adding realistic_return_1y column to snapshots table...')
-            cursor.execute('ALTER TABLE snapshots ADD COLUMN realistic_return_1y REAL')
+            logger.info('Adding realistic_return_1y column to fundamental_history table...')
+            cursor.execute('ALTER TABLE fundamental_history ADD COLUMN realistic_return_1y REAL')
             conn.commit()
 
         if 'realistic_return_3y' not in existing_columns:
-            logger.info('Adding realistic_return_3y column to snapshots table...')
-            cursor.execute('ALTER TABLE snapshots ADD COLUMN realistic_return_3y REAL')
+            logger.info('Adding realistic_return_3y column to fundamental_history table...')
+            cursor.execute('ALTER TABLE fundamental_history ADD COLUMN realistic_return_3y REAL')
             conn.commit()
 
         # Get all snapshots that need realistic returns calculated
@@ -173,7 +173,7 @@ def main():
                 s.id as snapshot_id,
                 s.snapshot_date,
                 a.symbol as ticker
-            FROM snapshots s
+            FROM fundamental_history s
             JOIN assets a ON s.asset_id = a.id
             WHERE s.realistic_return_1y IS NULL
             ORDER BY s.snapshot_date, a.symbol
@@ -262,14 +262,14 @@ def main():
         if updates_1y:
             logger.info(f'Updating {len(updates_1y)} snapshots with 1y realistic returns...')
             cursor.executemany(
-                'UPDATE snapshots SET realistic_return_1y = ? WHERE id = ?',
+                'UPDATE fundamental_history SET realistic_return_1y = ? WHERE id = ?',
                 updates_1y
             )
 
         if updates_3y:
             logger.info(f'Updating {len(updates_3y)} snapshots with 3y realistic returns...')
             cursor.executemany(
-                'UPDATE snapshots SET realistic_return_3y = ? WHERE id = ?',
+                'UPDATE fundamental_history SET realistic_return_3y = ? WHERE id = ?',
                 updates_3y
             )
 
@@ -311,13 +311,13 @@ def main():
 
         # Verify the update worked
         cursor.execute("""
-            SELECT COUNT(*) FROM snapshots
+            SELECT COUNT(*) FROM fundamental_history
             WHERE realistic_return_1y IS NOT NULL
         """)
         count_1y = cursor.fetchone()[0]
 
         cursor.execute("""
-            SELECT COUNT(*) FROM snapshots
+            SELECT COUNT(*) FROM fundamental_history
             WHERE realistic_return_3y IS NOT NULL
         """)
         count_3y = cursor.fetchone()[0]

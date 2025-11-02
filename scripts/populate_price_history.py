@@ -68,7 +68,7 @@ class PriceHistoryPopulator:
                 s.id as snapshot_id,
                 a.symbol as ticker,
                 s.snapshot_date
-            FROM snapshots s
+            FROM fundamental_history s
             JOIN assets a ON s.asset_id = a.id
             WHERE s.vix IS NOT NULL
             AND NOT EXISTS (
