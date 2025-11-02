@@ -479,6 +479,32 @@ def get_universe_tickers(universe: str) -> List[str]:
                     '7203.T', '6098.T', '4063.T', '4502.T', '9984.T', '9432.T', '8316.T',
                     '6758.T', '7267.T', '6861.T', '6954.T', '6920.T', '6752.T', '4543.T'
                 ],
+                'spain': [
+                    'SAN.MC', 'BBVA.MC', 'CABK.MC', 'SAB.MC', 'BKT.MC', 'MAP.MC',
+                    'IBE.MC', 'ELE.MC', 'ENG.MC', 'RED.MC', 'REE.MC', 'NTGY.MC',
+                    'REP.MC', 'TEF.MC', 'ITX.MC', 'ACS.MC', 'FER.MC', 'FCC.MC',
+                    'ACX.MC', 'ANA.MC', 'AENA.MC', 'IAG.MC', 'MEL.MC', 'GRF.MC',
+                    'IDR.MC', 'COL.MC', 'CLNX.MC', 'ALM.MC', 'AMS.MC', 'SGRE.MC',
+                    'VIS.MC', 'MRL.MC', 'ROVI.MC', 'SLR.MC'
+                ],
+                'europe': [
+                    # France
+                    'MC.PA', 'OR.PA', 'SAN.PA', 'TTE.PA', 'AI.PA', 'SU.PA', 'BNP.PA',
+                    'RMS.PA', 'CS.PA', 'DG.PA', 'SAF.PA', 'EL.PA', 'DSY.PA', 'CA.PA',
+                    'ORA.PA', 'EN.PA', 'VIE.PA', 'SGO.PA', 'KER.PA', 'STLAM.PA',
+                    # Germany
+                    'SAP.DE', 'SIE.DE', 'AIR.DE', 'ALV.DE', 'BAS.DE', 'MBG.DE', 'VOW3.DE',
+                    'BMW.DE', 'DTE.DE', 'EOAN.DE', 'MUV2.DE', 'ADS.DE', 'DB1.DE', 'IFX.DE',
+                    'SHL.DE', 'BNR.DE',
+                    # Netherlands
+                    'ASML.AS', 'PHIA.AS', 'INGA.AS', 'ABN.AS', 'AD.AS', 'HEIA.AS',
+                    # Italy
+                    'ENI.MI', 'ISP.MI', 'ENEL.MI', 'G.MI', 'STM.MI',
+                    # Spain
+                    'SAN.MC', 'BBVA.MC', 'IBE.MC', 'ITX.MC',
+                    # Belgium
+                    'ABI.BR'
+                ],
                 'growth': [
                     'TSLA', 'SHOP', 'ROKU', 'ZM', 'SNOW', 'PLTR', 'RBLX', 'U', 'DDOG', 'CRWD'
                 ],
