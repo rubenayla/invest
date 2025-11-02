@@ -72,17 +72,22 @@ Safe commands:
 
 ---
 
-## Commit Discipline
+## Testing Strategy
 
-1. Run tests: `uv run pytest` (ALL must pass)
-2. Run linter: `uv run ruff check src tests --select=E9,F63,F7,F82`
-3. Keep commits small: <100 lines changed
-4. One issue per commit
+**When to run tests locally:**
+- Logic changes in core modules: `uv run pytest`
+- Testing-specific changes: `uv run pytest tests/test_file.py`
+- Major refactoring: `uv run pytest`
+- Skip tests for: docs, configs, small UI tweaks (let CI handle it)
 
-**NEVER:**
-- Commit failing tests
-- Refactor multiple files at once
-- Change >100 lines in one commit
+**After pushing:**
+- Check CI status: `gh run list --limit 1`
+- If CI fails: `gh run view --log-failed` to see details
+
+**Commit discipline:**
+- Keep commits small: <100 lines changed
+- One issue per commit
+- Never refactor multiple files at once
 
 ---
 
