@@ -29,8 +29,6 @@ Rallo https://youtu.be/VWClThyfDlQ?si=NUhi2H437V3OVa0T
     > what happens when the company reinvests all its cash flows? It's not giving net income but its intrinsic value is increasing
     Affected by the growth, which increases with reinvestmente rate, and by the % of cash flow that can be extracted, which decreases with reinvestment rate
 
-![](stuff/20250409161842.png)
-
 # notes to really intuitively understand bond markets and its behavior
 So right now (2025-06-09) USA interest rates are high, about 5%, yield curve is inverted, which means expectation of recession in the next 1-2 years, and inflation moderately high, trending down but hardly, at about 3%. It's sticky. Right now the rates are expected to stay high for a while, it's time to prepare, so at the end of the year the time may be good to buy bonds, until mid-recession there are investment opportunities and the bonds can be sold at a profit, using the liquidity for investment opportunities.
 
