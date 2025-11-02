@@ -294,7 +294,7 @@ class HistoricalSnapshotFetcher:
         for snapshot in snapshots:
             try:
                 self.cursor.execute('''
-                    INSERT INTO snapshots (
+                    INSERT INTO fundamental_history (
                         asset_id, snapshot_date, market_cap, pe_ratio, pb_ratio,
                         profit_margins, operating_margins, return_on_equity,
                         revenue_growth, earnings_growth, debt_to_equity,
