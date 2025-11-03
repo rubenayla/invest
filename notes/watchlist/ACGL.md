@@ -4,6 +4,9 @@
 **Current Price**: $87.17
 **P/E Ratio**: 9.0
 
+
+their assets are generally defensive
+
 ## Investment Thesis
 - Best-in-class insurance underwriting
 - Consistent growth across all metrics
