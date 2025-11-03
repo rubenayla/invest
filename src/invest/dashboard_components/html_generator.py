@@ -728,7 +728,8 @@ class HTMLGenerator:
         
         .table-container {
             overflow-x: auto;
-            overflow-y: visible;
+            overflow-y: auto;
+            max-height: calc(100vh - 300px);
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
