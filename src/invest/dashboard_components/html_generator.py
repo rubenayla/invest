@@ -728,6 +728,7 @@ class HTMLGenerator:
         
         .table-container {
             overflow-x: auto;
+            overflow-y: visible;
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -749,6 +750,7 @@ class HTMLGenerator:
             text-align: left;
             cursor: pointer;
             user-select: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .stock-table th:hover {
