@@ -102,8 +102,6 @@ training_run.log
 neural_network/training/training_data_cache.json
 
 # Neural network training artifacts
-*.pt
-*.pth
 *_training.log
 *_collection.log
 collection_*.log
@@ -132,7 +130,6 @@ scripts/demo_multi_horizon_predictions.py
 old_artifacts/
 
 # Neural network models directory (trained models)
-neural_network/models/
 neural_network/invest_training_package/
 neural_network/*.tar.gz
 
