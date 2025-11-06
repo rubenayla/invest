@@ -149,7 +149,6 @@ data/stock_cache/*.json
 # Training logs
 *.log
 fetch_log*.txt
-neural_network/training/gbm_model_*.txt
 # UV local cache for CI/CD
 .uv/
 
