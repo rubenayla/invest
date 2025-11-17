@@ -253,7 +253,7 @@ Neural network outperforms traditional models for:
 - **Evaluation report:** `neural_network/training/evaluation_results/evaluation_report.txt`
 - **Development diary:** `stuff.md` (2025-10-09 entry)
 - **Model architecture:** `src/invest/valuation/lstm_transformer_model.py`
-- **Database docs:** See `CLAUDE.md` (DATABASE ARCHITECTURE section)
+- **Database docs:** See `AGENTS.md` (DATABASE ARCHITECTURE section)
 
 ---
 

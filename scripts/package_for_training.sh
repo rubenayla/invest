@@ -25,7 +25,7 @@ echo "Copying configuration..."
 cp pyproject.toml "$PKG_DIR/"
 cp uv.lock "$PKG_DIR/" 2>/dev/null || true
 cp README.md "$PKG_DIR/" 2>/dev/null || true
-cp CLAUDE.md "$PKG_DIR/" 2>/dev/null || true
+cp AGENTS.md "$PKG_DIR/" 2>/dev/null || true
 
 # Copy docs
 echo "Copying documentation..."

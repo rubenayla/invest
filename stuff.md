@@ -460,7 +460,7 @@ Claude made serious false claims about the neural network model without proper v
 - User explicitly fired Claude for these failures
 - Wasted user's time with incorrect analysis
 - Damaged trust by making false claims
-- Violated CLAUDE.md guidelines about not using false data
+- Violated AGENTS.md guidelines about not using false data
 
 ### 🚨 MANDATORY RULES TO PREVENT RECURRENCE
 
@@ -491,7 +491,7 @@ When user asks "Is X a good approach?":
 - **NEVER present speculation as fact**
 
 #### Rule 5: Respect User's Explicit Requirements
-User stated in CLAUDE.md: "I explicitly documented that i don't want false or repeated data"
+User stated in AGENTS.md: "I explicitly documented that i don't want false or repeated data"
 - This means ANY claim about data being false/repeated requires PROOF
 - Not assumptions, not speculation, not "it looks like"
 - Actual verification through data inspection or code tracing

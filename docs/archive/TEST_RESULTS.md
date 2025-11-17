@@ -52,7 +52,7 @@ Updated unified script to use correct table names:
 - `snapshots` → `fundamental_history`
 - Alias `s` → `fh` (for fundamental_history)
 
-### CLAUDE.md Updated
+### AGENTS.md Updated
 Added rule: **DATABASE IS SOURCE OF TRUTH - NOT SCRIPTS**
 
 When there's a mismatch between database schema and scripts, always trust the database and fix the scripts.
@@ -88,7 +88,7 @@ uv run python scripts/run_all_predictions.py
 - ✅ 2 ways to run all predictions (shell + Python)
 - ✅ Database indexes for performance
 - ✅ Colored output with timing
-- ✅ CLAUDE.md updated with database-first rule
+- ✅ AGENTS.md updated with database-first rule
 
 **Lines saved**: ~1,970
 **Maintainability**: 6× easier (change once instead of 6 times)
