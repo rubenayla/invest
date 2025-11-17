@@ -18,6 +18,7 @@ Output:
 import json
 import sqlite3
 import sys
+from datetime import datetime
 from pathlib import Path
 
 # Add project root to path
@@ -76,11 +77,12 @@ def load_stocks_from_database() -> dict:
     valuations_query = '''
         SELECT ticker, model_name, suitable, fair_value, current_price,
                margin_of_safety, upside_pct, confidence, error_message,
-               failure_reason, details_json
+               failure_reason, details_json, timestamp
         FROM valuation_results
     '''
 
     valuation_count = 0
+    latest_price_by_ticker = {}
     for row in conn.execute(valuations_query).fetchall():
         ticker = row['ticker']
 
@@ -110,6 +112,21 @@ def load_stocks_from_database() -> dict:
 
             stocks[ticker]['valuations'][model_name] = valuation
             valuation_count += 1
+
+            # Track latest price used in valuations for dashboard price column
+            if row['current_price'] is not None and row['timestamp'] is not None:
+                try:
+                    ts = datetime.fromisoformat(row['timestamp'])
+                except ValueError:
+                    ts = None
+
+                prev = latest_price_by_ticker.get(ticker)
+                if ts is not None:
+                    if not prev or ts > prev['timestamp']:
+                        latest_price_by_ticker[ticker] = {
+                            'price': row['current_price'],
+                            'timestamp': ts
+                        }
         else:
             # Failed valuation
             stocks[ticker]['valuations'][model_name] = {
@@ -117,6 +134,10 @@ def load_stocks_from_database() -> dict:
                 'error': row['error_message'],
                 'reason': row['failure_reason']
             }
+
+    # Override displayed current price with the latest valuation price when available
+    for ticker, price_data in latest_price_by_ticker.items():
+        stocks[ticker]['current_price'] = price_data['price']
 
     conn.close()
 

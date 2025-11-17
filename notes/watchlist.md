@@ -9,7 +9,7 @@
 - [8058.T](watchlist/8058.md) (Mitsubishi Corp.) - PE 15.2, P/B 1.54
 - NVDA (Nvidia) - Revenue +385%, Earnings +647% (AI boom)
 - MSFT (Microsoft) - Revenue +42%, Earnings +40%
-- GOOGL (Google) - Revenue +36%, Earnings +32%, FCF $73B
+- [GOOGL](watchlist/GOOGL.md) (Google) - Revenue +36%, Earnings +32%, FCF $73B — Bought $2.3k @ ~$289 (≈7.9 sh)
 - NFLX (Netflix) - Revenue +31%, Earnings +70%
 - MOH (Molina Healthcare) - Giant crash like CNC, but better balance sheet
 - PFE (Pfizer Inc) - Defensive, COVID revenue normalized
