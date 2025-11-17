@@ -375,13 +375,12 @@ class HTMLGenerator:
             conf_label = ''
             if isinstance(conf, (int, float)):
                 conf_value = conf
-                conf_label = f'{conf * 100:.1f}%'
             elif isinstance(conf, str):
                 conf_lower = conf.lower()
                 mapping = {'high': 0.9, 'medium': 0.5, 'low': 0.2}
                 conf_value = mapping.get(conf_lower, 0.5)
-                conf_label = conf.capitalize()
             if conf_value is not None:
+                conf_label = f'{conf_value * 100:.1f}%'
                 # color: high green, medium yellow, low red
                 if conf_value >= 0.75:
                     conf_style = 'background: #d4edda; color: #155724'
@@ -389,8 +388,7 @@ class HTMLGenerator:
                     conf_style = 'background: #fff3cd; color: #856404'
                 else:
                     conf_style = 'background: #f8d7da; color: #721c24'
-                display_label = conf_label if '%' in conf_label else f'Confidence: {conf_label}'
-                confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">{display_label}</div>'
+                confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">Confidence: {conf_label}</div>'
 
         return f'''
         <div class="valuation-cell">
