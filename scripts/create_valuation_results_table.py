@@ -61,6 +61,7 @@ def create_valuation_results_table():
 
             -- Confidence (mainly for NN models: 'high', 'medium', 'low')
             confidence TEXT,
+            confidence_numeric REAL,
 
             -- Ensure only one result per ticker-model pair (replace on conflict)
             UNIQUE(ticker, model_name) ON CONFLICT REPLACE

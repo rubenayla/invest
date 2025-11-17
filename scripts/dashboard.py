@@ -76,7 +76,7 @@ def load_stocks_from_database() -> dict:
     # Get all valuation results (including unsuitable ones with error messages)
     valuations_query = '''
         SELECT ticker, model_name, suitable, fair_value, current_price,
-               margin_of_safety, upside_pct, confidence, error_message,
+               margin_of_safety, upside_pct, confidence, confidence_numeric, error_message,
                failure_reason, details_json, timestamp
         FROM valuation_results
     '''
@@ -94,13 +94,21 @@ def load_stocks_from_database() -> dict:
 
         if row['suitable']:
             # Successful valuation
+            confidence_val = row['confidence_numeric']
+            if confidence_val is None:
+                raw_conf = row['confidence']
+                try:
+                    confidence_val = float(raw_conf)
+                except (TypeError, ValueError):
+                    confidence_val = raw_conf
+
             valuation = {
                 'suitable': True,
                 'fair_value': row['fair_value'],
                 'current_price': row['current_price'],
                 'margin_of_safety': row['margin_of_safety'],
                 'upside': row['upside_pct'],
-                'confidence': row['confidence']
+                'confidence': confidence_val
             }
 
             # Parse details JSON if present
