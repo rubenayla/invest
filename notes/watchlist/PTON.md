@@ -8,8 +8,8 @@
 
 > **Alert plan**
 > - Speculative nibble only if price washes out to **<$5** with improving subs.
-> - Momentum/trade watch if it spikes above **$10** on volume (would reassess fundamentals).
-> - Thesis invalidated if subscriber base keeps shrinking or cash burn accelerates again.
+> - Set alert at **$10** for potential short-term trade if volume spikes.
+> - Thesis invalidated if subs keep shrinking or cash burn reaccelerates (monitor quarterly results).
 
 ## ⚠️ Investment Thesis: AVOID
 
