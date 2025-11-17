@@ -59,9 +59,8 @@ def create_valuation_results_table():
             -- NN: confidence intervals, hit_rate, correlation
             details_json TEXT,
 
-            -- Confidence (mainly for NN models: 'high', 'medium', 'low')
-            confidence TEXT,
-            confidence_numeric REAL,
+            -- Confidence (numeric 0-1)
+            confidence REAL,
 
             -- Ensure only one result per ticker-model pair (replace on conflict)
             UNIQUE(ticker, model_name) ON CONFLICT REPLACE

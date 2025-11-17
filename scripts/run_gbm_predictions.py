@@ -399,8 +399,8 @@ def save_to_database(
         cursor.execute('''
             INSERT INTO valuation_results
             (ticker, model_name, fair_value, current_price, margin_of_safety,
-             upside_pct, suitable, confidence, confidence_numeric, details_json)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             upside_pct, suitable, confidence, details_json)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             ticker,
             model_name,
@@ -409,7 +409,6 @@ def save_to_database(
             float(margin_of_safety),
             float(upside_pct),
             1,  # suitable = True
-            str(confidences[i]),
             float(confidences[i]),
             json.dumps(details)
         ))
