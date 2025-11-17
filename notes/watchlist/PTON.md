@@ -4,6 +4,12 @@
 **Current Price**: $7.26
 **Market Cap**: $3.03B
 **IPO**: September 26, 2019 at $29/share (down 75% from IPO)
+**Position**: None (watchlist only)
+
+> **Alert plan**
+> - Speculative nibble only if price washes out to **<$5** with improving subs.
+> - Momentum/trade watch if it spikes above **$10** on volume (would reassess fundamentals).
+> - Thesis invalidated if subscriber base keeps shrinking or cash burn accelerates again.
 
 ## ⚠️ Investment Thesis: AVOID
 

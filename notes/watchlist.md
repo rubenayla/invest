@@ -19,6 +19,8 @@
 - NVO (Novo Nordisk) - GLP-1 drugs (Ozempic/Wegovy), +106% revenue
 - [CVX](watchlist/CVX.md) (Chevron)
 - [TSLA](watchlist/TSLA.md) (Tesla) - Robotaxi potential, high valuation
+- [LULU](watchlist/LULU.md) (Lululemon Athletica) - Premium athleisure, watch for entry $150
+- [PTON](watchlist/PTON.md) (Peloton) - Speculative turnaround, no position
 - NE (Noble Corporation) - PE 15.2, P/TBV 0.99
 - NEM (Newmont) - PE 13.5, P/B 1.0, defensive gold
 - HIG (Hartford) - Insurance, recovered from 2008
