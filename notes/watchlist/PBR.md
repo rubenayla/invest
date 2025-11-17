@@ -9,7 +9,9 @@
 
 https://www.investidorpetrobras.com.br/en/results-and-announcements/results-center/
 
-
+## Position
+- Holding: ~$1,756 (≈€1.6k) initiated as high-beta energy exposure.
+- Role: Speculative FX + oil levered trade; cap at <5% of portfolio due to political/currency risk.
 
 ## ⚠️ Investment Thesis: Currency Bet on Brazilian Real Stabilization
 

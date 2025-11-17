@@ -4,6 +4,10 @@
 **Current Price**: $87.17
 **P/E Ratio**: 9.0
 
+## Position
+- Holding: ~$2,000 (≈€1.8k) built in Nov 2025 for the low-PE insurance exposure.
+- Role: Core value position; target 5-7% of portfolio while cat-loss overhang keeps valuation depressed.
+
 
 their assets are generally defensive
 

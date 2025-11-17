@@ -8,6 +8,7 @@
 ## Position
 
 - **Purchase**: $2,300 on 2025-11-17 at ~$289/share (≈7.95 shares).
+- **Current Holding**: ~$2,000 after recent reallocations; maintain ~5% weight.
 - Goal: Core AI/cloud exposure alongside META/NVDA with stronger valuation support.
 
 ## Quick Metrics

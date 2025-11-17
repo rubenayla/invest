@@ -11,13 +11,13 @@
 - MSFT (Microsoft) - Revenue +42%, Earnings +40%
 - [GOOGL](watchlist/GOOGL.md) (Google) - Revenue +36%, Earnings +32%, FCF $73B — Bought $2.3k @ ~$289 (≈7.9 sh)
 - NFLX (Netflix) - Revenue +31%, Earnings +70%
-- MOH (Molina Healthcare) - Giant crash like CNC, but better balance sheet
+- [MOH](watchlist/MOH.md) (Molina Healthcare) - Giant crash like CNC, but better balance sheet
 - PFE (Pfizer Inc) - Defensive, COVID revenue normalized
 - [SQM](watchlist/SQM.md) (Sociedad Quimica y Minera) - Low-cost lithium producer
 - BRK.B (Berkshire Hathaway)
 - NVO (Novo Nordisk) - GLP-1 drugs (Ozempic/Wegovy), +106% revenue
-- CVX (Chevron)
-- TSLA (Tesla) - Robotaxi potential, high valuation
+- [CVX](watchlist/CVX.md) (Chevron)
+- [TSLA](watchlist/TSLA.md) (Tesla) - Robotaxi potential, high valuation
 - NE (Noble Corporation) - PE 15.2, P/TBV 0.99
 - NEM (Newmont) - PE 13.5, P/B 1.0, defensive gold
 - HIG (Hartford) - Insurance, recovered from 2008
@@ -40,7 +40,7 @@
 - COIN (Coinbase) - SEC regulatory issues
 - CSU (Constellation Software) - Software acquirer
 - MBLY (Mobileye) - Israel, Tesla competition
-- DIS (Disney) - Media/parks
+- [DIS](watchlist/DIS.md) (Disney) - Media/parks
 - LOGI (Logitech) - Peripherals
 - SWKS (Skyworks) - Semiconductors
 - MMM (3M) - Industrials, lawsuit risk
