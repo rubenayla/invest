@@ -283,12 +283,12 @@ class HTMLGenerator:
         multi_dcf_html = self._format_valuation_cell(valuations.get("multi_stage_dcf", {}), current_price)
 
         # Format GBM predictions (6 models)
-        gbm_1y_html = self._format_valuation_cell(valuations.get("gbm_1y", {}), current_price)
-        gbm_3y_html = self._format_valuation_cell(valuations.get("gbm_3y", {}), current_price)
-        gbm_lite_1y_html = self._format_valuation_cell(valuations.get("gbm_lite_1y", {}), current_price)
-        gbm_lite_3y_html = self._format_valuation_cell(valuations.get("gbm_lite_3y", {}), current_price)
-        gbm_opp_1y_html = self._format_valuation_cell(valuations.get("gbm_opportunistic_1y", {}), current_price)
-        gbm_opp_3y_html = self._format_valuation_cell(valuations.get("gbm_opportunistic_3y", {}), current_price)
+        gbm_1y_html = self._format_valuation_cell(valuations.get("gbm_1y", {}), current_price, show_confidence=True)
+        gbm_3y_html = self._format_valuation_cell(valuations.get("gbm_3y", {}), current_price, show_confidence=True)
+        gbm_lite_1y_html = self._format_valuation_cell(valuations.get("gbm_lite_1y", {}), current_price, show_confidence=True)
+        gbm_lite_3y_html = self._format_valuation_cell(valuations.get("gbm_lite_3y", {}), current_price, show_confidence=True)
+        gbm_opp_1y_html = self._format_valuation_cell(valuations.get("gbm_opportunistic_1y", {}), current_price, show_confidence=True)
+        gbm_opp_3y_html = self._format_valuation_cell(valuations.get("gbm_opportunistic_3y", {}), current_price, show_confidence=True)
 
         # Calculate consensus
         consensus_html = self._format_consensus_cell(valuations, current_price)
@@ -341,7 +341,7 @@ class HTMLGenerator:
         
         return f'<span title="{message}">{icon} {display_name}</span>'
     
-    def _format_valuation_cell(self, valuation: Dict, current_price: float = None) -> str:
+    def _format_valuation_cell(self, valuation: Dict, current_price: float = None, show_confidence: bool = False) -> str:
         """Format a valuation cell with fair value, margin, and ratio."""
         if valuation.get("failed", False):
             reason = valuation.get("failure_reason", "Model failed")
@@ -368,11 +368,35 @@ class HTMLGenerator:
         # Color code the margin
         margin_class = self._get_margin_class(margin)
         
+        confidence_badge = ''
+        if show_confidence:
+            conf = valuation.get('confidence')
+            conf_value = None
+            conf_label = ''
+            if isinstance(conf, (int, float)):
+                conf_value = conf
+                conf_label = f'{conf * 100:.1f}%'
+            elif isinstance(conf, str):
+                conf_lower = conf.lower()
+                mapping = {'high': 0.9, 'medium': 0.5, 'low': 0.2}
+                conf_value = mapping.get(conf_lower, 0.5)
+                conf_label = conf.capitalize()
+            if conf_value is not None:
+                # color: high green, medium yellow, low red
+                if conf_value >= 0.75:
+                    conf_style = 'background: #d4edda; color: #155724'
+                elif conf_value >= 0.4:
+                    conf_style = 'background: #fff3cd; color: #856404'
+                else:
+                    conf_style = 'background: #f8d7da; color: #721c24'
+                confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">{conf_label}</div>'
+
         return f'''
         <div class="valuation-cell">
             <div class="fair-value">{fair_value_str}</div>
             <div class="margin {margin_class}">{margin_str}</div>
             {ratio_str}
+            {confidence_badge}
         </div>'''
 
     def _format_nn_cell(self, valuation: Dict, current_price: float = None) -> str:
@@ -518,12 +542,26 @@ class HTMLGenerator:
         avg_margin_str = self._safe_percent(avg_margin)
         avg_ratio_str = f"{avg_ratio:.2f}x" if avg_ratio > 0 else "-"
         margin_class = self._get_margin_class(avg_margin)
+
+        # Show weighted confidence (average of weights) if available
+        confidence_badge = ''
+        if weights:
+            avg_conf = sum(weights) / len(weights)
+            if avg_conf >= 0.75:
+                conf_style = 'background: #d4edda; color: #155724'
+            elif avg_conf >= 0.4:
+                conf_style = 'background: #fff3cd; color: #856404'
+            else:
+                conf_style = 'background: #f8d7da; color: #721c24'
+            conf_label = f'{avg_conf * 100:.1f}%'
+            confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">{conf_label}</div>'
         
         return f'''
         <div class="consensus-cell">
             <div class="fair-value"><strong>{avg_fair_value_str}</strong></div>
             <div class="margin {margin_class}"><strong>{avg_margin_str}</strong></div>
             <div class="ratio"><strong>{avg_ratio_str}</strong></div>
+            {confidence_badge}
             <div class="model-count">({len(fair_values)} models)</div>
         </div>'''
     
