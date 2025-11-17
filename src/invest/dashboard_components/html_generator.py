@@ -484,6 +484,7 @@ class HTMLGenerator:
     def _format_consensus_cell(self, valuations: Dict, current_price: float) -> str:
         """Format the consensus cell with average valuation."""
         fair_values = []
+        weights = []
         for val in valuations.values():
             # Skip non-dict values like current_price
             if not isinstance(val, dict):
@@ -492,11 +493,24 @@ class HTMLGenerator:
                 fv = val.get("fair_value")
                 if fv and isinstance(fv, (int, float)) and fv > 0:
                     fair_values.append(fv)
-        
+                    # Use provided confidence (0-1). Default to 0.5 if missing.
+                    conf = val.get('confidence')
+                    if isinstance(conf, str):
+                        conf = conf.lower()
+                        conf = {"high": 0.9, "medium": 0.5, "low": 0.2}.get(conf, 0.5)
+                    if not isinstance(conf, (int, float)) or conf <= 0:
+                        conf = 0.5
+                    weights.append(min(max(conf, 0.0), 1.0))
+
         if not fair_values:
             return "-"
-        
-        avg_fair_value = sum(fair_values) / len(fair_values)
+
+        # Weighted average (confidence-based); fallback to simple average if no weights
+        if any(weights):
+            total_weight = sum(weights)
+            avg_fair_value = sum(f * w for f, w in zip(fair_values, weights)) / total_weight if total_weight else sum(fair_values) / len(fair_values)
+        else:
+            avg_fair_value = sum(fair_values) / len(fair_values)
         avg_margin = (avg_fair_value - current_price) / current_price if current_price > 0 else 0
         avg_ratio = avg_fair_value / current_price if current_price > 0 else 0
         
