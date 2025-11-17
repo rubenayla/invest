@@ -321,25 +321,16 @@ def prepare_features(
 
 
 def assign_confidence(predictions: np.ndarray) -> list:
-    """
-    Assign confidence based on decile ranking.
+    """Return confidence scores based on percentile ranking (0.5-1.0)."""
+    if len(predictions) == 0:
+        return []
 
-    Top 20% (deciles 9-10): High confidence (strong buy)
-    Bottom 20% (deciles 1-2): High confidence (strong avoid)
-    Middle 60%: Medium confidence
-    """
-    ranks = pd.qcut(predictions, q=10, labels=False, duplicates='drop')
+    series = pd.Series(predictions)
+    percentiles = series.rank(pct=True, method='average').values  # 0-1 range
+    confidence = np.maximum(percentiles, 1 - percentiles)  # Extremes = higher confidence
+    confidence = np.clip(confidence, 0.5, 1.0)
 
-    confidences = []
-    for rank in ranks:
-        if rank >= 8:  # Top 20%
-            confidences.append('High')
-        elif rank <= 1:  # Bottom 20%
-            confidences.append('High')
-        else:
-            confidences.append('Medium')
-
-    return confidences
+    return confidence.tolist()
 
 
 def save_to_database(

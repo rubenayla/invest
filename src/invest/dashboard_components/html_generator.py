@@ -372,14 +372,20 @@ class HTMLGenerator:
         if show_confidence:
             conf = valuation.get('confidence')
             conf_value = None
-            conf_label = ''
             if isinstance(conf, (int, float)):
                 conf_value = conf
             elif isinstance(conf, str):
                 conf_lower = conf.lower()
                 mapping = {'high': 0.9, 'medium': 0.5, 'low': 0.2}
-                conf_value = mapping.get(conf_lower, 0.5)
+                conf_value = mapping.get(conf_lower, None)
+            if conf_value is None:
+                details = valuation.get('details', {})
+                percentile = details.get('ranking_percentile')
+                if isinstance(percentile, (int, float)):
+                    percentile = percentile / 100 if percentile > 1 else percentile
+                    conf_value = max(percentile, 1 - percentile)
             if conf_value is not None:
+                conf_value = min(max(conf_value, 0.0), 1.0)
                 conf_label = f'{conf_value * 100:.1f}%'
                 # color: high green, medium yellow, low red
                 if conf_value >= 0.75:
@@ -518,12 +524,20 @@ class HTMLGenerator:
                     fair_values.append(fv)
                     # Use provided confidence (0-1). Default to 0.5 if missing.
                     conf = val.get('confidence')
+                    conf_value = None
                     if isinstance(conf, str):
-                        conf = conf.lower()
-                        conf = {"high": 0.9, "medium": 0.5, "low": 0.2}.get(conf, 0.5)
-                    if not isinstance(conf, (int, float)) or conf <= 0:
-                        conf = 0.5
-                    weights.append(min(max(conf, 0.0), 1.0))
+                        conf_value = {"high": 0.9, "medium": 0.5, "low": 0.2}.get(conf.lower())
+                    elif isinstance(conf, (int, float)):
+                        conf_value = conf
+                    if conf_value is None:
+                        details = val.get('details', {})
+                        percentile = details.get('ranking_percentile')
+                        if isinstance(percentile, (int, float)):
+                            percentile = percentile / 100 if percentile > 1 else percentile
+                            conf_value = max(percentile, 1 - percentile)
+                    if conf_value is None:
+                        conf_value = 0.5
+                    weights.append(min(max(conf_value, 0.0), 1.0))
 
         if not fair_values:
             return "-"
