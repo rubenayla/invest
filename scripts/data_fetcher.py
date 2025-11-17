@@ -545,7 +545,6 @@ async def main():
     parser = argparse.ArgumentParser(description='Fetch stock data asynchronously')
     parser.add_argument('--universe', default='sp500', help='Stock universe to fetch')
     parser.add_argument('--max-concurrent', type=int, default=10, help='Max concurrent requests')
-    parser.add_argument('--force-refresh', action='store_true', help='Ignore cache and fetch fresh data')
     
     args = parser.parse_args()
     

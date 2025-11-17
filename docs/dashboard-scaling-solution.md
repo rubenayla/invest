@@ -92,17 +92,16 @@ open dashboard/valuation_dashboard.html
 
 ### Cache Features
 - **Automatic Freshness**: 24-hour expiration by default
-- **Intelligent Caching**: Only fetches stale or missing data
+- **Intelligent Caching**: Fetch order prioritizes empty/broken entries, then oldest data
 - **Metadata Tracking**: Size, timestamps, data quality indicators
-- **Force Refresh**: `--force-refresh` flag to ignore cache
 
 ```bash
 # Check cache status
 ls -la data/stock_cache/
 cat data/stock_cache/cache_index.json | jq '.stocks | length'
 
-# Force refresh all data
-uv run python scripts/data_fetcher.py --universe sp500 --force-refresh
+# Refresh from oldest to newest (default behavior)
+uv run python scripts/data_fetcher.py --universe sp500
 ```
 
 ## Architecture Benefits
