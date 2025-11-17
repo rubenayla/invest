@@ -389,7 +389,8 @@ class HTMLGenerator:
                     conf_style = 'background: #fff3cd; color: #856404'
                 else:
                     conf_style = 'background: #f8d7da; color: #721c24'
-                confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">{conf_label}</div>'
+                display_label = conf_label if '%' in conf_label else f'Confidence: {conf_label}'
+                confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">{display_label}</div>'
 
         return f'''
         <div class="valuation-cell">
@@ -553,7 +554,7 @@ class HTMLGenerator:
                 conf_style = 'background: #fff3cd; color: #856404'
             else:
                 conf_style = 'background: #f8d7da; color: #721c24'
-            conf_label = f'{avg_conf * 100:.1f}%'
+            conf_label = f'Confidence: {avg_conf * 100:.1f}%'
             confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">{conf_label}</div>'
         
         return f'''
