@@ -14,6 +14,7 @@
 - [MOH](watchlist/MOH.md) (Molina Healthcare) - Giant crash like CNC, but better balance sheet
 - PFE (Pfizer Inc) - Defensive, COVID revenue normalized
 - [SQM](watchlist/SQM.md) (Sociedad Quimica y Minera) - Low-cost lithium producer
+- [PBR](watchlist/PBR.md) (Petrobras) - FX-levered Brazilian oil major (≈$1.7k position)
 - BRK.B (Berkshire Hathaway)
 - NVO (Novo Nordisk) - GLP-1 drugs (Ozempic/Wegovy), +106% revenue
 - [CVX](watchlist/CVX.md) (Chevron)

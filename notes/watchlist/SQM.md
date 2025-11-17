@@ -6,6 +6,11 @@
 **Market Cap**: ~$17B  
 **Position**: €6.8k (existing) – evaluating trim vs. hold
 
+> **Plan cheat sheet:**  
+> • Trim €2k if price hits **$68-70** (prior 2023 resistance).  
+> • Trim another slice if lithium carbonate exceeds **$18k/t** and stock pushes **$72+**.  
+> • Protect downside with alert at **$55** and review if Li₂CO₃ drops < **$14k/t**.
+
 ## Business Mix (FY23/FY24 run-rate)
 
 | Segment | % Revenue | Notes |
