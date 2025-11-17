@@ -5,6 +5,12 @@
 **Current Price**: $11.60
 **Market Cap**: $74.3B
 
+![](PBR/20251103164804.png)
+
+https://www.investidorpetrobras.com.br/en/results-and-announcements/results-center/
+
+
+
 ## ⚠️ Investment Thesis: Currency Bet on Brazilian Real Stabilization
 
 **NOT a value trap - the business is healthy. This is a bet on the Brazilian Real stabilizing.**
@@ -46,12 +52,12 @@
 
 ### Financial Performance (Annual)
 
-| Year | Revenue | Operating Income | Net Income | FCF |
-|------|---------|------------------|------------|-----|
-| 2021 | $84B | $31B (37% margin) | $20B | $31B |
-| 2022 | $124B | $53B (43% margin) | $37B | $40B |
-| 2023 | $102B | $39B (38% margin) | $25B | $31B |
-| 2024 | $91B | $26B (28% margin) | **$7.5B** | $23B |
+| Year | Revenue | Operating Income  | Net Income | FCF  |
+| ---- | ------- | ----------------- | ---------- | ---- |
+| 2021 | $84B    | $31B (37% margin) | $20B       | $31B |
+| 2022 | $124B   | $53B (43% margin) | $37B       | $40B |
+| 2023 | $102B   | $39B (38% margin) | $25B       | $31B |
+| 2024 | $91B    | $26B (28% margin) | **$7.5B**  | $23B |
 
 ### What Happened in 2024?
 
@@ -156,10 +162,10 @@ They extrapolate those growth rates forward, which is unrealistic at $81 oil.
 
 **PBR is NOT just a domestic Brazilian company:**
 
-| Revenue Source | Amount | % of Total | Currency |
-|----------------|--------|-----------|----------|
-| **Oil Exports** | ~$44B | 48% | Sold in USD |
-| **Domestic Sales** | ~$48B | 52% | Sold in Real |
+| Revenue Source     | Amount | % of Total | Currency     |
+| ------------------ | ------ | ---------- | ------------ |
+| **Oil Exports**    | ~$44B  | 48%        | Sold in USD  |
+| **Domestic Sales** | ~$48B  | 52%        | Sold in Real |
 
 **Export destinations (2024)**:
 - 44% to China
@@ -256,9 +262,9 @@ Export Revenue (NEGATIVE):
 
 **Accounting Asymmetry**:
 
-| Item | Accounting Treatment | Impact |
-|------|---------------------|---------|
-| USD Debt | Marked-to-market IMMEDIATELY | Shows as $15B loss in Q4 |
+| Item            | Accounting Treatment           | Impact                    |
+| --------------- | ------------------------------ | ------------------------- |
+| USD Debt        | Marked-to-market IMMEDIATELY   | Shows as $15B loss in Q4  |
 | Export Revenues | Recognized OVER TIME as earned | Benefit spreads over 2025 |
 
 **Reality**: The $15B FX loss is partially offset by ~$8-9B in export competitiveness gains that show up gradually.
@@ -289,15 +295,15 @@ Export Revenue (NEGATIVE):
 
 **If you want energy exposure:**
 
-| Metric | PBR | HAL |
-|--------|-----|-----|
-| **Upside** | +280% (DCF) / +18% (GBM) | +34% (consensus) |
-| **Political Risk** | HIGH (Brazil) | LOW (US) |
-| **Currency Risk** | HIGH (Real) | NONE |
-| **Valuation** | Extremely cheap | Fairly valued |
-| **Debt** | 92% D/E | 84% D/E |
-| **Operating Margin** | 28% | 13% |
-| **Risk of Disaster** | 25% | 5% |
+| Metric               | PBR                      | HAL              |
+| -------------------- | ------------------------ | ---------------- |
+| **Upside**           | +280% (DCF) / +18% (GBM) | +34% (consensus) |
+| **Political Risk**   | HIGH (Brazil)            | LOW (US)         |
+| **Currency Risk**    | HIGH (Real)              | NONE             |
+| **Valuation**        | Extremely cheap          | Fairly valued    |
+| **Debt**             | 92% D/E                  | 84% D/E          |
+| **Operating Margin** | 28%                      | 13%              |
+| **Risk of Disaster** | 25%                      | 5%               |
 
 **Trade-off**:
 - HAL: 28% upside with 5% disaster risk
@@ -408,11 +414,11 @@ Petrobras is a healthy oil company generating $23-26B in annual free cash flow, 
 
 ### Three Scenarios
 
-| Scenario | Probability | Real Rate | Stock Price | Return | Timeline |
-|----------|------------|-----------|-------------|---------|----------|
-| **Bull** | 30% | 5.0-5.5 | $22-25 | +90-115% | Immediate |
-| **Base** | 50% | 5.5-6.0 | $15-17 | +30-45% | 6-12 months |
-| **Bear** | 20% | 7.0+ | $9-11 | -5-20% | Ongoing |
+| Scenario | Probability | Real Rate | Stock Price | Return   | Timeline    |
+| -------- | ----------- | --------- | ----------- | -------- | ----------- |
+| **Bull** | 30%         | 5.0-5.5   | $22-25      | +90-115% | Immediate   |
+| **Base** | 50%         | 5.5-6.0   | $15-17      | +30-45%  | 6-12 months |
+| **Bear** | 20%         | 7.0+      | $9-11       | -5-20%   | Ongoing     |
 
 ### Final Answer to "Should I Buy?"
 
