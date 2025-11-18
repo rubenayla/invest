@@ -1,0 +1,103 @@
+# International Value Stocks Configuration  
+# Diversified international value opportunities across major markets
+
+universe:
+  name: "International Value"
+  market: "international_diversified"
+  description: "Value opportunities across Japan, Europe, and other international markets"
+  
+  # Broader international universe
+  filters:
+    min_market_cap_b: 2.0    # Include mid-to-large caps
+    max_market_cap_b: null   # No upper limit
+    exclude_sectors: []       # All sectors included
+    include_sectors: []       # No sector restrictions
+
+screening:
+  # Value-focused criteria for international markets
+  quality:
+    min_roe: 0.08            # 8%+ ROE (adjusted for international standards)
+    min_roic: 0.06           # 6%+ ROIC 
+    max_debt_equity: 2.0     # More flexible for different market norms
+    min_current_ratio: 1.0   # Basic liquidity
+    weight: 0.25
+
+  value:
+    max_pe_ratio: 18.0       # Strict value criteria
+    max_pb_ratio: 2.0        # Reasonable book value multiples
+    max_ev_ebitda: 12.0      # Conservative enterprise value
+    weight: 0.40             # Heavy weight on value (40%)
+
+  growth:
+    min_revenue_growth: 0.01  # 1%+ revenue growth (very conservative)
+    min_earnings_growth: 0.0  # Break-even earnings acceptable
+    weight: 0.15             # Lower weight on growth
+
+  risk:
+    max_beta: 1.8            # Accept higher volatility for value
+    max_debt_service_ratio: 0.5
+    weight: 0.20
+
+valuation:
+  dcf:
+    enabled: true
+    growth_rate: 0.025       # 2.5% conservative long-term growth
+    discount_rate: 0.10      # 10% discount rate (international risk premium)
+    terminal_multiple: 12.0   # Conservative terminal value
+    margin_of_safety: 0.30   # 30% margin of safety for international investing
+    
+output:
+  formats: ["txt", "csv", "json"]
+  top_n: 20                # Top 20 international value opportunities
+  include_all_stocks: true
+
+# International market coverage
+market_coverage:
+  japan:
+    focus: "Post-COVID recovery, corporate governance improvements"
+    opportunities: "Trading houses, technology, automotive"
+    
+  europe:
+    focus: "Energy transition, defensive sectors"  
+    opportunities: "Utilities, industrials, consumer staples"
+    
+  uk:
+    focus: "Post-Brexit value, dividend yields"
+    opportunities: "Banks, energy, telecommunications"
+    
+  germany:
+    focus: "Industrial strength, automotive innovation"
+    opportunities: "Manufacturing, chemicals, automotive"
+    
+# Investment advantages
+international_advantages:
+  diversification:
+    - "Geographic revenue diversification"
+    - "Currency diversification benefits"
+    - "Different economic cycle exposure"
+    
+  valuations:
+    - "Often 20-40% cheaper than US equivalents"
+    - "Less speculative premium pricing"
+    - "Higher dividend yields typically"
+    
+  opportunities:
+    - "Undervalued due to home bias"
+    - "Strong businesses at discount prices"
+    - "Improving corporate governance"
+    
+# Risk considerations  
+risks_and_considerations:
+  currency:
+    - "USD strength can impact returns"
+    - "Hedging considerations for portfolios"
+    
+  regulatory:
+    - "Different accounting standards"
+    - "Varying corporate governance"
+    - "Tax implications"
+    
+  market:
+    - "Lower liquidity in some names"
+    - "Different market dynamics"
+    - "Time zone trading considerations"
