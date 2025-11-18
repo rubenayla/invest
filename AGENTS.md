@@ -23,6 +23,10 @@ uv run python script.py
 uv run pytest
 ```
 
+## Agent Configs
+
+- Keep all agent-specific configuration files (MCP, Claude desktop, etc.) under `.agents/`. The repo root should not contain residual `config/` folders.
+
 ---
 
 ## Database Architecture

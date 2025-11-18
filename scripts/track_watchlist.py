@@ -10,7 +10,7 @@ import yaml
 
 def load_watchlist():
     """Load watchlist from YAML config."""
-    config_path = Path('config/watchlist.yaml')
+    config_path = Path('notes/watchlist/watchlist.yaml')
     if config_path.exists():
         with open(config_path, 'r') as f:
             config = yaml.safe_load(f)
