@@ -537,7 +537,18 @@ class HTMLGenerator:
                             conf_value = max(percentile, 1 - percentile)
                     if conf_value is None:
                         conf_value = 0.5
-                    weights.append(min(max(conf_value, 0.0), 1.0))
+                    weight = min(max(conf_value, 0.0), 1.0)
+
+                    # Apply ratio-based damping so extreme fair values don't dominate
+                    ratio_penalty = 1.0
+                    if current_price and current_price > 0:
+                        ratio = fv / current_price
+                        if ratio > 5:
+                            ratio_penalty = 1 / (1 + (ratio - 5) / 5)
+                        elif ratio < 0.2 and ratio > 0:
+                            ratio_penalty = 1 / (1 + (0.2 - ratio) / 0.2)
+
+                    weights.append(weight * ratio_penalty)
 
         if not fair_values:
             return "-"
