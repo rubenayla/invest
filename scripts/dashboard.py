@@ -94,20 +94,13 @@ def load_stocks_from_database() -> dict:
 
         if row['suitable']:
             # Successful valuation
-            confidence_val = row['confidence']
-            if isinstance(confidence_val, str):
-                try:
-                    confidence_val = float(confidence_val)
-                except ValueError:
-                    pass
-
             valuation = {
                 'suitable': True,
                 'fair_value': row['fair_value'],
                 'current_price': row['current_price'],
                 'margin_of_safety': row['margin_of_safety'],
                 'upside': row['upside_pct'],
-                'confidence': confidence_val
+                'confidence': row['confidence']
             }
 
             # Parse details JSON if present
