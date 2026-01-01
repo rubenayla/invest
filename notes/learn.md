@@ -12,7 +12,7 @@
 > - = Net **Earnings**, Net Income, Net Profit - Related to Profit Margin = Net Earnings / Revenue
 >     - Beware, net income may be low or negative and the company go well, if they're investing for growth!
 
-- EBITDA? remove taxes but not R&D
+- If you exclude Depreciation and Amortization from Operating Expenses, the new Operating Income obtained is EBITDA. It basically pretends that capital doesn’t wear out. Charlie Munger hates it for this reason.
 
 - CapEx: Long-term investments, like a factory
     - Buyin an asset spends cash. Right after the purchase, the net earnings **are unchanged**. The depreciation of the assets will slowly cause OpEx in the following years.
