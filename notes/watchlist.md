@@ -20,6 +20,7 @@
 - [CVX](watchlist/CVX.md) (Chevron)
 - [TSLA](watchlist/TSLA.md) (Tesla) - Robotaxi potential, high valuation
 - [LULU](watchlist/LULU.md) (Lululemon Athletica) - Premium athleisure, watch for entry $150
+- [IT](watchlist/IT.md) (Gartner) - Guidance reset, growth deceleration, valuation near fair
 - [PTON](watchlist/PTON.md) (Peloton) - Speculative turnaround, no position
 - NE (Noble Corporation) - PE 15.2, P/TBV 0.99
 - NEM (Newmont) - PE 13.5, P/B 1.0, defensive gold
