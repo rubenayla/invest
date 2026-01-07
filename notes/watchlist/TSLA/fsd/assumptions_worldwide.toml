@@ -1,0 +1,26 @@
+# TSLA FSD/robotaxi ceiling case: worldwide adoption.
+# This is intentionally idealistic to show a theoretical upper bound.
+
+[assumptions]
+currency = 'EUR'
+operating_hours_per_day = 18.0
+avg_speed_kph = 35.0
+days_per_year = 365
+km_per_year_override = 225000
+
+price_per_km = 0.45
+electricity_per_km = 0.05
+maintenance_per_km = 0.04
+insurance_cleaning_misc_per_year = 2000.0
+
+vehicle_cost = 35000.0
+required_return_rate = 0.10
+
+tesla_capture_rate = 0.60
+# Worldwide travel volume: population * km_per_person_per_day * days_per_year.
+population = 8100000000
+# 7.5 km/day implies ~10T annual spend at EUR 0.45/km for 8.1B people.
+km_per_person_per_day = 7.5
+adoption_rate = 1.0
+operating_margin = 0.50
+valuation_multiple = 15.0

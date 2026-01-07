@@ -1,0 +1,23 @@
+# TSLA FSD/robotaxi valuation assumptions
+# All currency figures are per year unless noted.
+
+[assumptions]
+currency = 'EUR'
+operating_hours_per_day = 18.0
+avg_speed_kph = 35.0
+days_per_year = 365
+# Remove this line to use hours * speed * days for annual kilometers.
+km_per_year_override = 225000
+
+price_per_km = 0.45
+electricity_per_km = 0.05
+maintenance_per_km = 0.04
+insurance_cleaning_misc_per_year = 2000.0
+
+vehicle_cost = 35000.0
+required_return_rate = 0.10
+
+tesla_capture_rate = 0.60
+fleet_size = 10000000
+operating_margin = 0.50
+valuation_multiple = 15.0
