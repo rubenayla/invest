@@ -26,6 +26,13 @@ uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --
 cat sp500_full_screen_*_results.csv
 ```
 
+## Update Everything (Data + Models + Dashboard)
+
+```bash
+# Fetch fresh data, run models (GBM/NN/classic), and regenerate the dashboard
+uv run python scripts/update_all.py --universe sp500
+```
+
 ## Key Features
 
 ### 🎯 **AI-Controlled Dual Analysis Approach**

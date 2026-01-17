@@ -38,6 +38,13 @@ uv run systematic-invest --list-configs
 uv run systematic-invest --save-csv --save-json --output results/
 ```
 
+### Docs (Local)
+
+```bash
+uv run mkdocs serve
+# open http://localhost:8000
+```
+
 ### Static HTML Dashboard
 
 View your investment analysis in a clean, fast static HTML dashboard:
