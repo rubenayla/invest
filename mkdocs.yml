@@ -51,6 +51,7 @@ nav:
     - Overview: user-guide/overview.md
     - Running Analysis: user-guide/running-analysis.md
     - Dashboard: user-guide/dashboard.md
+    - Technical Analysis: user-guide/technical-analysis.md
     - Understanding Results: user-guide/understanding-results.md
     - Configuration Options: user-guide/configuration-options.md
     - Output Formats: user-guide/output-formats.md
