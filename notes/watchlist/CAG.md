@@ -1,48 +1,29 @@
 # Conagra Brands, Inc. (CAG)
 
-**Sector**: Consumer Defensive (Food Products)
-**Current Price**: $18.48
-**P/E Ratio**: 10.4
+## Summary
+- Decision: Do not buy
+- Reason: Low growth plus high leverage, with a recent large impairment driving a negative TTM P/E
 
-## Investment Thesis
-- Stable consumer staples business
-- Strong dividend (7.3% yield)
-- Recovery from 2024 earnings trough
+## Fundamentals (FY ends May 31)
+- Revenue: 2022 11.54B, 2023 12.28B, 2024 12.05B, 2025 11.61B
+- Net income: 2022 0.89B, 2023 0.68B, 2024 0.35B, 2025 1.15B
 
-## Fundamental Trends (2022-2025)
+## Why TTM P/E is negative
+- TTM net income: about -0.098B (sum of last 4 quarters)
+- Quarter 2025-11-30 net income: -0.664B
+- Unusual items in that quarter:
+  - Total unusual items: -0.969B
+  - Special income charges: -0.969B
+  - Impairment of capital assets: 0.968B
+  - Tax effect of unusual items: -0.203B
 
-**Earnings**: 📈 GROWING (+30% - recovering from 2024 dip)
-- 2022: $888M
-- 2023: $684M
-- 2024: $347M ← Temporary trough
-- 2025: $1.15B ← Full recovery!
+## Cash flow and leverage
+- TTM free cash flow: about 0.876B
+- Dividend: 1.40 per share (last 4 payouts), about 1.3x covered by TTM FCF
+- Total debt: 8.07B; cash: 0.07B
 
-**Revenue**: ✅ STABLE (+1%)
-- 2022: $11.54B
-- 2023: $12.28B
-- 2024: $12.05B
-- 2025: $11.61B
-
-**Free Cash Flow**: 📈 GROWING (+83%)
-- 2022: $713M
-- 2023: $633M
-- 2024: $1.63B
-- 2025: $1.30B
-
-## Key Insight
-- 2024 was a temporary earnings dip (inflation/margin pressure)
-- Revenue remained stable throughout
-- 2025 shows full recovery to $1.15B earnings
-- **NOT a value trap** - fundamentals are solid
-
-## Valuation
-- DCF Upside: 650%
-- P/E: 10.4
-- Dividend Yield: 7.3%
-
-## Decision
-✅ **BUY €1,500** - Value + income + recovery story
+## Conclusion
+Cheap on market cap alone, but not enough for me given flat-to-lower revenue vs FY2023 and high leverage. I will revisit if volumes stabilize, margins hold, and debt keeps trending down.
 
 ## Notes
-- Analysis date: 2025-10-28
-- Classic example of why multi-year trends matter
+- Analysis date: 2026-01-07
