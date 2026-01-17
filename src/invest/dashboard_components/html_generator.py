@@ -809,7 +809,8 @@ class HTMLGenerator:
         .table-container {
             overflow-x: auto;
             overflow-y: auto;
-            max-height: calc(100vh - 300px);
+            height: calc(100vh - 220px);
+            min-height: 420px;
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -960,6 +961,7 @@ class HTMLGenerator:
             .summary-grid { grid-template-columns: repeat(2, 1fr); }
             .stock-table { font-size: 12px; }
             .stock-table th, .stock-table td { padding: 6px 4px; }
+            .table-container { height: 60vh; min-height: 280px; }
         }"""
     
     def _get_javascript(self) -> str:
