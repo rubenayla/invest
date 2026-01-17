@@ -1,82 +1,41 @@
 # Warren Buffett's Japanese Stock Favorites
 # Based on Berkshire Hathaway's actual holdings and Buffett's stated preferences
 
+name: "japan_buffett_favorites"
+description: "Japanese stocks aligned with Warren Buffett's investment philosophy"
+
 universe:
-  name: "Japan Buffett Favorites"
+  region: "JP"
   market: "japan_buffett"
-  description: "Japanese stocks aligned with Warren Buffett's investment philosophy"
-  
-  # Focus on Buffett's actual holdings and value philosophy
-  filters:
-    min_market_cap_b: 3.0    # Include smaller value opportunities
-    max_market_cap_b: null   # No upper limit
-    exclude_sectors: []       # Buffett invests across sectors
-    include_sectors: []       # No restrictions
+  min_market_cap: 3000  # $3B minimum (USD millions)
 
-screening:
-  # Buffett's investment criteria adapted for Japan
-  quality:
-    min_roe: 0.10            # 10%+ ROE (Buffett likes high returns)
-    min_roic: 0.08           # 8%+ ROIC (efficient capital allocation)
-    max_debt_equity: 1.0     # Conservative debt levels
-    min_current_ratio: 1.2   # Strong liquidity position
-    weight: 0.35             # Buffett emphasizes quality
+quality:
+  min_roe: 0.10
+  min_roic: 0.08
+  max_debt_equity: 1.0
+  min_current_ratio: 1.2
 
-  value:
-    max_pe_ratio: 20.0       # Reasonable valuations (Buffett's sweet spot)
-    max_pb_ratio: 2.0        # Not paying excessive premiums  
-    max_ev_ebitda: 15.0      # Conservative enterprise value
-    weight: 0.35             # Equal weight with quality
+value:
+  max_pe: 20
+  max_pb: 2.0
+  max_ev_ebitda: 15
 
-  growth:
-    min_revenue_growth: 0.03  # 3%+ revenue growth 
-    min_earnings_growth: 0.02 # 2%+ earnings growth
-    weight: 0.20             # Buffett likes growth but not at any price
+growth:
+  min_revenue_growth: 0.03
+  min_earnings_growth: 0.02
 
-  risk:
-    max_beta: 1.3            # Lower volatility preference
-    max_debt_service_ratio: 0.3  # Conservative debt service
-    weight: 0.10             # Lower weight on risk metrics
+risk:
+  max_beta: 1.3
+  cyclical_adjustment: true
 
 valuation:
-  dcf:
-    enabled: true
-    growth_rate: 0.035       # 3.5% long-term growth
-    discount_rate: 0.09      # 9% discount rate (higher for selectivity)
-    terminal_multiple: 14.0   # Reasonable terminal multiple
-    margin_of_safety: 0.25   # 25% margin of safety (Buffett's approach)
-    
-output:
-  formats: ["txt", "csv", "json"]  
-  top_n: 10                # Focus on top 10 Buffett-style opportunities
-  include_all_stocks: true
+  models: ["dcf", "rim"]
+  scenarios: ["bear", "base", "bull"]
+  dcf_years: 10
+  terminal_growth_rate: 0.025
+  rim_years: 10
 
-# Buffett's Japanese investment thesis
-investment_thesis:
-  berkshire_holdings:
-    - "Mitsubishi Corporation (8058.T) - 8.3% stake"
-    - "Mitsui & Co (8031.T) - 8.0% stake" 
-    - "Itochu Corporation (8001.T) - 8.5% stake"
-    - "Sumitomo Corporation (2768.T) - 8.2% stake"
-    - "Marubeni Corporation (8002.T) - 8.1% stake"
-    
-  buffett_criteria:
-    - "Predictable business models with moats"
-    - "Strong free cash flow generation"
-    - "Reasonable valuations vs US markets"
-    - "Improving corporate governance"
-    - "Shareholder-friendly capital allocation"
-    
-  japan_advantages:
-    - "20-30% valuation discount to US equivalents"
-    - "Strong balance sheets, low debt"
-    - "Increasing dividend payouts and buybacks"
-    - "Global diversification benefits"
-    - "Currency hedge against USD"
-    
-  target_characteristics:
-    - "ROE > 10% (quality businesses)"
-    - "P/E < 20 (reasonable valuations)"  
-    - "Net cash or low debt positions"
-    - "Dominant market positions"
-    - "Stable, predictable earnings"
+max_results: 10
+sort_by: "composite_score"
+generate_reports: true
+save_data: true

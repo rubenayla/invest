@@ -1,77 +1,41 @@
 # Japan TOPIX Core 30 Analysis Configuration
-# Focus on the largest 30 Japanese companies - Warren Buffett's preferred market
+# Focus on the largest 30 Japanese companies (TOPIX Core 30)
+
+name: "japan_topix30_screen"
+description: "Top 30 Japanese stocks by market capitalization (TOPIX Core 30)"
 
 universe:
-  name: "Japan TOPIX Core 30"
+  region: "JP"
   market: "japan_topix30"
-  description: "Top 30 Japanese stocks by market capitalization (TOPIX Core 30)"
-  
-  # Japanese market characteristics - more conservative/traditional
-  filters:
-    min_market_cap_b: 5.0    # ¥5B+ market cap (large caps only)
-    max_market_cap_b: null   # No upper limit
-    exclude_sectors: []       # Include all sectors
-    include_sectors: []       # No sector restrictions
+  min_market_cap: 5000  # $5B minimum (USD millions)
 
-screening:
-  # Adjusted for Japanese market characteristics
-  quality:
-    min_roe: 0.08            # 8%+ ROE (Japanese companies often lower ROE)
-    min_roic: 0.06           # 6%+ ROIC (more conservative for Japan)
-    max_debt_equity: 1.5     # Japanese companies often have higher debt
-    min_current_ratio: 1.0   # Basic liquidity requirement
-    weight: 0.30
+quality:
+  min_roe: 0.08
+  min_roic: 0.06
+  max_debt_equity: 1.5
+  min_current_ratio: 1.0
 
-  value:
-    max_pe_ratio: 25.0       # Japanese stocks often trade at lower multiples
-    max_pb_ratio: 2.5        # P/B more reasonable in Japan
-    max_ev_ebitda: 18.0      # Conservative EBITDA multiple
-    weight: 0.30
+value:
+  max_pe: 25
+  max_pb: 2.5
+  max_ev_ebitda: 18
 
-  growth:
-    min_revenue_growth: 0.02  # 2%+ revenue growth (Japan has slower growth)
-    min_earnings_growth: 0.01 # 1%+ earnings growth (very conservative)
-    weight: 0.25
+growth:
+  min_revenue_growth: 0.02
+  min_earnings_growth: 0.01
 
-  risk:
-    max_beta: 1.6            # Moderate volatility tolerance
-    max_debt_service_ratio: 0.4
-    weight: 0.15
+risk:
+  max_beta: 1.6
+  cyclical_adjustment: true
 
 valuation:
-  dcf:
-    enabled: true
-    growth_rate: 0.03        # 3% long-term growth (Japan's economy)
-    discount_rate: 0.08      # 8% discount rate (JPY rates + risk premium) 
-    terminal_multiple: 12.0   # Conservative terminal multiple
-    
-output:
-  formats: ["txt", "csv", "json"]
-  top_n: 15                 # Focus on top 15 opportunities
-  include_all_stocks: true  # Show all analyzed stocks with pass/fail
+  models: ["dcf", "rim"]
+  scenarios: ["bear", "base", "bull"]
+  dcf_years: 10
+  terminal_growth_rate: 0.025
+  rim_years: 10
 
-# Japanese market context
-market_context:
-  currency: "JPY"
-  exchange: "Tokyo Stock Exchange" 
-  timezone: "Asia/Tokyo"
-  characteristics:
-    - "Value-oriented market with lower multiples"
-    - "Corporate governance improvements driving value"
-    - "Currency hedging considerations for USD investors"
-    - "Dividend culture with steady payouts"
-    - "Warren Buffett's recent focus market"
-  
-  advantages:
-    - "Undervalued relative to US markets"
-    - "Strong corporate balance sheets"
-    - "Improving shareholder returns"
-    - "Global export exposure"
-    - "Technological leadership in key industries"
-    
-  considerations:
-    - "Economic growth slower than US"
-    - "Demographic headwinds (aging population)"
-    - "Currency risk for USD investors"
-    - "Different accounting standards"
-    - "Corporate culture differences"
+max_results: 15
+sort_by: "composite_score"
+generate_reports: true
+save_data: true
