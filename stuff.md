@@ -199,6 +199,20 @@ Consider `current_stock_data` as the "curated universe" and only track those 302
 - Wastes training data on 56 stocks we never use
 - Major companies like AAPL missing is unacceptable
 
+---
+
+## 2026-01-17: Portfolio Reflections (User Notes)
+
+### SQM (Sociedad Quimica y Minera)
+- Lithium demand should grow, but price depends on higher-cost competitors.
+- High prices benefit SQM; low prices cap earnings even if SQM stays competitive.
+- SQM likely avoids bankruptcy; the goal is more growth than current setup offers.
+
+### PTON (Peloton)
+- Potential tailwinds from US health administration focus and America-first policies.
+- Lower inflation and rates could help; still uncertain because scaling is not clear.
+- Overall view: higher upside but less confidence in execution details.
+
 ### 🔑 Key Lessons
 
 #### 1. Silent Failures Are Worse Than Loud Ones
