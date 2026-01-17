@@ -40,6 +40,8 @@ uv run systematic-invest --save-csv --save-json --output results/
 
 ### Docs (Local)
 
+Docs: https://rubenayla.github.io/invest/
+
 ```bash
 uv run mkdocs serve
 # open http://localhost:8000
