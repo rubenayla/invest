@@ -1,4 +1,6 @@
 # Watchlist
+- [PTON](watchlist/PTON.md) (Peloton) - Speculative turnaround, no position
+- SMFG (Sumitomo Mitsui Financial Group) - Improving fundamentals, rate-sensitive
 - [ACGL](watchlist/ACGL.md) (Arch Capital Group Ltd) - PE 9.0, Revenue +90%, Earnings +100%
 - [SYF](watchlist/SYF.md) (Synchrony Financial) - PE 8.0, Revenue +58%, $1B/year buybacks
     - High risk compared with ACGL, but lots of upside if economy holds
@@ -21,7 +23,6 @@
 - [TSLA](watchlist/TSLA.md) (Tesla) - Robotaxi potential, high valuation
 - [LULU](watchlist/LULU.md) (Lululemon Athletica) - Premium athleisure, watch for entry $150
 - [IT](watchlist/IT.md) (Gartner) - Guidance reset, growth deceleration, valuation near fair
-- [PTON](watchlist/PTON.md) (Peloton) - Speculative turnaround, no position
 - NE (Noble Corporation) - PE 15.2, P/TBV 0.99
 - NEM (Newmont) - PE 13.5, P/B 1.0, defensive gold
 - HIG (Hartford) - Insurance, recovered from 2008
