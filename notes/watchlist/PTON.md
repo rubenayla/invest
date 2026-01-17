@@ -193,3 +193,30 @@ FY2025: $2.5B revenue, $914M SG&A → Lost $119M  (cut 52% of SG&A!)
 - Data source: yfinance, S-1 filing
 - Fiscal year ends June 30
 - FY2025 = July 2024 - June 2025
+
+## Insider Activity (Public Form 4s)
+
+**Window:** 2025-01-18 to 2026-01-18 (last 12 months)
+
+- Form 4/4-A filings: 102
+- Open-market buys (code P): 0 shares
+- Open-market sells (code S): 5,101,923 shares
+- Most activity: option exercises (code M: 264) and stock awards (code A: 26)
+
+**Top open-market sellers by shares:**
+- Jennifer Cunningham Cotter: 1,446,486
+- Elizabeth F. Coddington: 1,139,476
+- Dion C. Sanders: 946,457
+- Nick V. Caldwell: 779,094
+- Peter C. Stern: 308,126
+
+**Recent open-market sales (examples):**
+- 2026-01-13: Baig Saqib, 10,000 @ $6.868
+- 2026-01-13: Nick V. Caldwell, 25,135 @ $7.0001
+- 2026-01-02: Peter C. Stern, 124,405 @ $6.0359
+- 2025-12-15: Elizabeth F. Coddington, 21,820 @ $6.313
+
+**Takeaway:** mildly negative/cautious signal. No insider open-market buys, steady selling. Many trades are routine (options/awards), so the signal is weak but still not bullish.
+
+**Sources:** SEC EDGAR Form 4 filings (public)
+**Update date:** 2026-01-18
