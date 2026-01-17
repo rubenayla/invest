@@ -94,10 +94,10 @@ Always include full, runnable examples with `uv run`:
 
 ```bash
 # ✅ Good
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv
 
 # ❌ Bad
-python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv
 ```
 
 ### Admonitions

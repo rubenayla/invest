@@ -17,10 +17,10 @@ uv run python scripts/systematic_analysis.py [CONFIG_FILE] [OPTIONS]
 uv run python scripts/systematic_analysis.py
 
 # Analyze specific configuration with CSV output
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv
 
 # Run with all output formats
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --save-json --output results/
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv --save-json --output results/
 ```
 
 ## Available Configurations
@@ -71,7 +71,7 @@ For long-running analyses, use background execution:
 
 ```bash
 # Run in background
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --quiet &
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv --quiet &
 
 # Monitor progress
 tail -f sp500_full_screen_*_report.txt
@@ -99,7 +99,7 @@ Examples:
 By default, files are saved in the current directory. Use `--output` to specify a different location:
 
 ```bash
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --output ~/investment_results/
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv --output ~/investment_results/
 ```
 
 ## Performance Considerations
@@ -132,7 +132,7 @@ The framework fetches data from Yahoo Finance:
 
 **Configuration file not found**:
 ```bash
-ERROR: Configuration file not found: configs/my_config.yaml
+ERROR: Configuration file not found: analysis/configs/my_config.yaml
 ```
 Solution: Verify the file path and ensure the file exists.
 
@@ -166,7 +166,7 @@ Solution: Use `--output` to specify a writable directory.
 Use `--verbose` for detailed progress information:
 
 ```bash
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --verbose
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --verbose
 ```
 
 Shows:
@@ -180,7 +180,7 @@ Shows:
 Use `--quiet` to minimize output:
 
 ```bash
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --quiet
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --quiet
 ```
 
 Only shows:
@@ -200,7 +200,7 @@ configs=("conservative_value" "aggressive_growth" "sp500_full")
 
 for config in "${configs[@]}"; do
     echo "Running analysis: $config"
-    uv run python scripts/systematic_analysis.py "configs/${config}.yaml" --save-csv --quiet
+    uv run python scripts/systematic_analysis.py "analysis/configs/${config}.yaml" --save-csv --quiet
 done
 ```
 
@@ -211,7 +211,7 @@ For regular analysis updates, use cron jobs:
 ```bash
 # Add to crontab (crontab -e)
 # Run analysis every Sunday at 8 PM
-0 20 * * 0 cd /path/to/invest && uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --quiet
+0 20 * * 0 cd /path/to/invest && uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv --quiet
 ```
 
 ## Next Steps

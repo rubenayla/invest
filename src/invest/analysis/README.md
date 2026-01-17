@@ -56,7 +56,7 @@ Each stock undergoes comprehensive screening:
 ## Configuration
 
 Pipeline behavior is defined in YAML configuration files:
-- `configs/` directory contains predefined configurations
+- `analysis/configs/` directory contains predefined configurations
 - Allows customizing:
   - Screening thresholds
   - Valuation models

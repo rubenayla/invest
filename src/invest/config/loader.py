@@ -41,7 +41,7 @@ def get_default_config_path() -> Path:
     # Look for configs directory relative to this file
     current_dir = Path(__file__).parent
     project_root = current_dir.parent.parent.parent  # Go up to project root
-    configs_dir = project_root / "configs"
+    configs_dir = project_root / "analysis" / "configs"
 
     return configs_dir / "default_analysis.yaml"
 
@@ -50,7 +50,7 @@ def list_available_configs() -> list[Path]:
     """List all available configuration files."""
     current_dir = Path(__file__).parent
     project_root = current_dir.parent.parent.parent
-    configs_dir = project_root / "configs"
+    configs_dir = project_root / "analysis" / "configs"
 
     if not configs_dir.exists():
         return []

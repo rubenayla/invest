@@ -23,13 +23,13 @@ uv sync
 uv run systematic-invest
 
 # Use specific configuration
-uv run systematic-invest configs/aggressive_growth.yaml
+uv run systematic-invest analysis/configs/aggressive_growth.yaml
 
 # International markets (Warren Buffett's Japanese favorites)
-uv run python scripts/systematic_analysis.py configs/japan_buffett_favorites.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/japan_buffett_favorites.yaml --save-csv
 
 # Alternative: Direct script execution (also requires uv run)
-uv run python scripts/systematic_analysis.py configs/sp500_top100.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_top100.yaml --save-csv
 
 # List available configurations
 uv run systematic-invest --list-configs
@@ -64,10 +64,10 @@ To analyze ALL S&P 500 stocks (takes 10-15 minutes):
 
 ```bash
 # Run full S&P 500 analysis with CSV output
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv
 
 # Run quietly in background (no progress output)
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --quiet &
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv --quiet &
 
 # Check progress (if running in background)
 tail -f sp500_full_screen_*_report.txt
@@ -109,7 +109,7 @@ src/invest/
 ├── dcf.py            # DCF valuation model
 └── rim.py            # Residual Income Model
 
-configs/               # Analysis configurations
+analysis/configs/               # Analysis configurations
 ├── default_analysis.yaml
 ├── aggressive_growth.yaml
 └── sector_benchmarks.yaml
@@ -145,7 +145,7 @@ The framework includes a production-ready LSTM/Transformer hybrid model for stoc
 - **Architecture**: Single-horizon (1-year) predictions with Monte Carlo Dropout for confidence
 - **Database**: 1.4GB SQLite with complete fundamental data
 
-For details, see `SINGLE_HORIZON_NN.md` (neural network documentation) and `stuff.md` (development journey).
+For historical context and notes, see `stuff.md`.
 
 ## Usage Examples
 
@@ -156,10 +156,10 @@ For details, see `SINGLE_HORIZON_NN.md` (neural network documentation) and `stuf
 uv run python scripts/systematic_analysis.py
 
 # Full S&P 500 analysis with CSV output
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv
 
 # Custom configuration with multiple output formats
-uv run python scripts/systematic_analysis.py configs/my_strategy.yaml --save-csv --save-json
+uv run python scripts/systematic_analysis.py analysis/configs/my_strategy.yaml --save-csv --save-json
 ```
 
 ## Extending the Framework

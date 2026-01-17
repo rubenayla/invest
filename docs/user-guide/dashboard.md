@@ -6,7 +6,7 @@ The valuation dashboard is a single static HTML file that renders all recently g
 
 ```bash
 # 1. Run your preferred analysis pipeline (examples)
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv
 
 # 2. Regenerate the dashboard HTML from the SQLite results database
 uv run python scripts/dashboard.py

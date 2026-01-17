@@ -8,8 +8,8 @@ Usage:
     python systematic_analysis.py --create-example
 
 Examples:
-    python systematic_analysis.py configs/default_analysis.yaml
-    python systematic_analysis.py configs/aggressive_growth.yaml --output results/
+    python systematic_analysis.py analysis/configs/default_analysis.yaml
+    python systematic_analysis.py analysis/configs/aggressive_growth.yaml --output results/
     python systematic_analysis.py --config conservative_value --save-csv
 """
 
@@ -35,7 +35,7 @@ def parse_arguments():
         epilog="""
 Examples:
   %(prog)s                                    # Use default configuration
-  %(prog)s configs/aggressive_growth.yaml    # Use specific config
+  %(prog)s analysis/configs/aggressive_growth.yaml    # Use specific config
   %(prog)s --list-configs                    # Show available configs
   %(prog)s --create-example my_config.yaml  # Create example config
   %(prog)s --config default --output results/ --save-csv
@@ -125,7 +125,7 @@ def run_analysis(config_file: str, args) -> dict:
         config_path = Path(config_file)
         if not config_path.exists():
             # Try in configs directory
-            configs_dir = Path(__file__).parent.parent / "configs"
+            configs_dir = Path(__file__).parent.parent / "analysis" / "configs"
             config_path = configs_dir / f"{config_file}.yaml"
             if not config_path.exists():
                 config_path = configs_dir / config_file

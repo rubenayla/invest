@@ -187,7 +187,7 @@ For detailed debugging information:
 
 ```bash
 # Enable verbose logging
-uv run python scripts/systematic_analysis.py configs/my_config.yaml --verbose
+uv run python scripts/systematic_analysis.py analysis/configs/my_config.yaml --verbose
 
 # Python debugging
 PYTHONPATH=src python -c "

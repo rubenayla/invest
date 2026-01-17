@@ -20,7 +20,7 @@ uv run python scripts/dashboard.py
 open dashboard/valuation_dashboard.html
 
 # Or run command-line analysis
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv
 
 # View results
 cat sp500_full_screen_*_results.csv
@@ -111,10 +111,10 @@ Perfect for empowering AI models to provide comprehensive investment research wi
 ### Step 1: AI Runs Systematic Screening
 ```bash
 # AI model executes systematic analysis on US markets
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv
 
 # AI model analyzes international markets (Warren Buffett's Japanese favorites)
-uv run python scripts/systematic_analysis.py configs/japan_buffett_favorites.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/japan_buffett_favorites.yaml --save-csv
 
 # AI automatically filters to 25-50 companies globally that pass all criteria
 ```

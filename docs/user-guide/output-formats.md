@@ -347,7 +347,7 @@ Examples:
 Recommended directory structure:
 ```
 investment_analysis/
-├── configs/
+├── analysis/configs/
 │   ├── my_strategy.yaml
 │   └── backup_configs/
 ├── results/
@@ -370,7 +370,7 @@ mkdir -p results/$(date +%Y-%m)/sp500_analysis
 
 # Run analysis with organized output
 uv run python scripts/systematic_analysis.py \
-  configs/sp500_full.yaml \
+  analysis/configs/sp500_full.yaml \
   --save-csv --save-json \
   --output results/$(date +%Y-%m)/sp500_analysis/
 ```

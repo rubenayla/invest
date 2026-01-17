@@ -243,7 +243,7 @@ Test multiple configurations:
 
 ```python
 import glob
-for config_file in glob.glob("configs/*.yaml"):
+for config_file in glob.glob("backtesting/configs/*.yaml"):
     results = run_backtest(config_file)
     print(f"{config_file}: {results.get_summary()}")
 ```
@@ -256,7 +256,7 @@ from invest.analysis.pipeline import AnalysisPipeline
 from invest.config.loader import load_analysis_config
 
 # Use existing screening configuration
-main_config = load_analysis_config("configs/sp500_top100.yaml") 
+main_config = load_analysis_config("analysis/configs/sp500_top100.yaml") 
 # Adapt for backtesting...
 ```
 
@@ -281,7 +281,7 @@ main_config = load_analysis_config("configs/sp500_top100.yaml")
 - Check logs for detailed error messages
 - Verify YAML configuration syntax
 - Test with smaller universes first
-- Review the example configurations in `configs/`
+- Review the example configurations in `backtesting/configs/`
 
 ---
 

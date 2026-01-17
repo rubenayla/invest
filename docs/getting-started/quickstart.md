@@ -12,7 +12,7 @@ Get up and running with the Systematic Investment Analysis Framework in 5 minute
 Run a simple analysis on major tech companies:
 
 ```bash
-uv run python scripts/systematic_analysis.py configs/test_tech_giants.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/test_tech_giants.yaml --save-csv
 ```
 
 This will:
@@ -39,7 +39,7 @@ cat tech_giants_test_*_results.csv
 
 ```bash
 # Run full S&P 500 analysis
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml --save-csv --quiet &
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv --quiet &
 
 # Monitor progress
 tail -f sp500_full_screen_*_report.txt
@@ -96,7 +96,7 @@ Common configurations:
 uv run python scripts/systematic_analysis.py [config_file]
 
 # With options
-uv run python scripts/systematic_analysis.py configs/sp500_full.yaml \
+uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml \
   --save-csv \
   --save-json \
   --output results/ \
@@ -145,21 +145,21 @@ uv run python scripts/systematic_analysis.py configs/sp500_full.yaml \
 
 ```bash
 # Look for undervalued quality companies
-uv run python scripts/systematic_analysis.py configs/conservative_value.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/conservative_value.yaml --save-csv
 ```
 
 ### Growth Stock Screening
 
 ```bash
 # Focus on high-growth companies
-uv run python scripts/systematic_analysis.py configs/aggressive_growth.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/aggressive_growth.yaml --save-csv
 ```
 
 ### Custom Analysis
 
-1. Copy an existing config: `cp configs/sp500_full.yaml configs/my_strategy.yaml`
-2. Edit the criteria in `configs/my_strategy.yaml`
-3. Run: `uv run python scripts/systematic_analysis.py configs/my_strategy.yaml --save-csv`
+1. Copy an existing config: `cp analysis/configs/sp500_full.yaml analysis/configs/my_strategy.yaml`
+2. Edit the criteria in `analysis/configs/my_strategy.yaml`
+3. Run: `uv run python scripts/systematic_analysis.py analysis/configs/my_strategy.yaml --save-csv`
 
 ## 🤖 Using with AI Assistants
 

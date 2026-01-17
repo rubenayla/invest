@@ -67,7 +67,7 @@ Test that everything works:
 
 ```bash
 # Run a simple analysis
-uv run python scripts/systematic_analysis.py configs/test_tech_giants.yaml --save-csv
+uv run python scripts/systematic_analysis.py analysis/configs/test_tech_giants.yaml --save-csv
 
 # Check if results were generated
 ls *.csv
