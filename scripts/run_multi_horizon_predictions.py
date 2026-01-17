@@ -82,21 +82,12 @@ def main():
     print(f'\n📦 Stock cache directory: {stock_cache_dir}')
 
     # Load model
-    model_path = project_root / 'neural_network' / 'training' / 'multi_horizon_model.pt'
+    model_path = project_root / 'neural_network' / 'models' / 'multi_horizon_model.pt'
     if not model_path.exists():
-        fallback_paths = [
-            project_root / 'neural_network' / 'models' / 'multi_horizon_model.pt',
-            project_root / 'neural_network' / 'training' / 'old_models' / 'multi_horizon_model.pt',
-        ]
-        for candidate in fallback_paths:
-            if candidate.exists():
-                model_path = candidate
-                break
-        else:
-            raise FileNotFoundError(
-                'Multi-horizon model not found. Expected one of: '
-                f'{model_path}, {fallback_paths[0]}, {fallback_paths[1]}'
-            )
+        raise FileNotFoundError(
+            'Multi-horizon model not found. Expected: '
+            f'{model_path}'
+        )
     print(f'\n🔧 Loading model from: {model_path}')
 
     checkpoint = torch.load(model_path, map_location='cpu')
