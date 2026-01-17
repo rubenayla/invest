@@ -1,4 +1,13 @@
 watchlist:
+  # Top priorities
+  priority:
+    - ticker: PTON
+      name: Peloton Interactive, Inc.
+      notes: Turnaround; improving cash flow
+    - ticker: SMFG
+      name: Sumitomo Mitsui Financial Group
+      notes: Improving fundamentals; rate-sensitive
+
   # Buffett holdings/style
   buffett:
     - ticker: ALLE
