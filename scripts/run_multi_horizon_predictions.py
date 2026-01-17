@@ -158,19 +158,22 @@ def main():
             # Convert numpy types to Python types for JSON serialization
             fair_value = float(prediction.fair_values[prediction.recommended_horizon])
             margin_of_safety = (fair_value - current_price) / current_price if current_price > 0 else 0
+            upside_pct = ((fair_value / current_price) - 1) * 100 if current_price > 0 else 0
+
+            details = {
+                'predictions': {k: float(v) for k, v in prediction.predictions.items()},
+                'fair_values': {k: float(v) for k, v in prediction.fair_values.items()},
+                'confidence_scores': {k: float(v) for k, v in prediction.confidence_scores.items()},
+                'recommended_horizon': prediction.recommended_horizon,
+                'overall_score': float(prediction.overall_score)
+            }
 
             result = {
                 'fair_value': fair_value,
-                'upside': float(((fair_value / current_price) - 1) * 100),
+                'upside': float(upside_pct),
                 'margin_of_safety': float(margin_of_safety),
                 'suitable': True,
-                'details': {
-                    'predictions': {k: float(v) for k, v in prediction.predictions.items()},
-                    'fair_values': {k: float(v) for k, v in prediction.fair_values.items()},
-                    'confidence_scores': {k: float(v) for k, v in prediction.confidence_scores.items()},
-                    'recommended_horizon': prediction.recommended_horizon,
-                    'overall_score': float(prediction.overall_score)
-                }
+                'details': details
             }
 
             # Add to stock valuations
@@ -182,23 +185,16 @@ def main():
             # Also store current_price at stock level for dashboard display
             stock['current_price'] = float(current_price)
 
-            # Save to database using new utility
-            horizons_data = {}
-            for horizon in prediction.predictions.keys():
-                horizons_data[horizon] = {
-                    'predicted_return': float(prediction.predictions[horizon]),
-                    'fair_value': float(prediction.fair_values[horizon]),
-                    'confidence_score': float(prediction.confidence_scores[horizon])
-                }
-
             save_nn_prediction(
                 db_conn,
                 'multi_horizon_nn',
                 ticker,
-                horizons_data,
-                prediction.recommended_horizon,
+                fair_value,
                 float(current_price),
-                float(prediction.overall_score)
+                float(margin_of_safety),
+                float(upside_pct),
+                confidence=float(prediction.overall_score),
+                details=details
             )
             db_save_count += 1
 
