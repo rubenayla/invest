@@ -145,7 +145,7 @@ def save_nn_prediction(
     upside_pct : float
         Upside percentage
     confidence : float, optional
-        Overall confidence score
+        Confidence score for the recommended prediction
     details : dict, optional
         Additional NN prediction details
     suitable : bool

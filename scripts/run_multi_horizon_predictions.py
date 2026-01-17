@@ -150,6 +150,7 @@ def main():
             fair_value = float(prediction.fair_values[prediction.recommended_horizon])
             margin_of_safety = (fair_value - current_price) / current_price if current_price > 0 else 0
             upside_pct = ((fair_value / current_price) - 1) * 100 if current_price > 0 else 0
+            confidence = float(prediction.confidence_scores[prediction.recommended_horizon])
 
             details = {
                 'predictions': {k: float(v) for k, v in prediction.predictions.items()},
@@ -184,7 +185,7 @@ def main():
                 float(current_price),
                 float(margin_of_safety),
                 float(upside_pct),
-                confidence=float(prediction.overall_score),
+                confidence=confidence,
                 details=details
             )
             db_save_count += 1
