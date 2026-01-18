@@ -36,7 +36,6 @@
 - SAP (SAP)
 
 # High-risk 2y candidates (screen)
-- MU (Micron) - memory cycle / AI HBM demand
 - MRVL (Marvell) - AI/Networking silicon, strong revenue growth
 - AMD (AMD) - AI accelerators + CPU share gains
 - LRCX (Lam Research) - wafer fab equipment, memory cycle leverage
@@ -64,6 +63,7 @@
 
 # Nope
 - CNC (Centene)
+- [MU](watchlist/MU/cycle-pricing-analysis.md) (Micron) - cycle looks priced in vs temporary premium model
 - EL:NYSE (Estee Lauder Companies Inc)
     - declining margins
   - Giant crash due to unexpected ACA risk adjustment payment (they have healthier patients for the same costs)
