@@ -9,6 +9,7 @@ This component is responsible for:
 """
 
 import logging
+import math
 from datetime import datetime
 from typing import Dict, Any, List, Tuple
 from pathlib import Path
@@ -517,42 +518,53 @@ class HTMLGenerator:
     def _format_consensus_cell(self, valuations: Dict, current_price: float) -> str:
         """Format the consensus cell with average valuation."""
         fair_values = []
+        softened_values = []
         weights = []
+        soften_scale = 1.5
         for val in valuations.values():
             # Skip non-dict values like current_price
             if not isinstance(val, dict):
                 continue
             if not val.get("failed", False):
                 fv = val.get("fair_value")
-                if fv and isinstance(fv, (int, float)) and fv > 0:
-                    fair_values.append(fv)
-                    # Use provided confidence (0-1). Default to 0.5 if missing.
-                    conf = val.get('confidence')
-                    conf_value = None
-                    if isinstance(conf, str):
-                        conf_value = {"high": 0.9, "medium": 0.5, "low": 0.2}.get(conf.lower())
-                    elif isinstance(conf, (int, float)):
-                        conf_value = conf
-                    if conf_value is None:
-                        details = val.get('details', {})
-                        percentile = details.get('ranking_percentile')
-                        if isinstance(percentile, (int, float)):
-                            percentile = percentile / 100 if percentile > 1 else percentile
-                            conf_value = max(percentile, 1 - percentile)
-                    if conf_value is None:
-                        conf_value = 0.5
-                    weight = min(max(conf_value, 0.0), 1.0)
+                if not isinstance(fv, (int, float)) or not math.isfinite(fv):
+                    continue
+                fair_values.append(fv)
 
-                    # Apply ratio-based damping so extreme fair values don't dominate
-                    ratio_penalty = 1.0
-                    if current_price and current_price > 0:
-                        ratio = fv / current_price
-                        if ratio > 5:
-                            ratio_penalty = 1 / (1 + (ratio - 5) / 5)
-                        elif ratio < 0.2 and ratio > 0:
-                            ratio_penalty = 1 / (1 + (0.2 - ratio) / 0.2)
+                softened_fv = fv
+                if current_price and current_price > 0:
+                    margin = (fv - current_price) / current_price
+                    softened_margin = soften_scale * math.asinh(margin / soften_scale)
+                    softened_fv = current_price * (1 + softened_margin)
+                softened_values.append(softened_fv)
 
-                    weights.append(weight * ratio_penalty)
+                # Use provided confidence (0-1). Default to 0.5 if missing.
+                conf = val.get('confidence')
+                conf_value = None
+                if isinstance(conf, str):
+                    conf_value = {'high': 0.9, 'medium': 0.5, 'low': 0.2}.get(conf.lower())
+                elif isinstance(conf, (int, float)):
+                    conf_value = conf
+                if conf_value is None:
+                    details = val.get('details', {})
+                    percentile = details.get('ranking_percentile')
+                    if isinstance(percentile, (int, float)):
+                        percentile = percentile / 100 if percentile > 1 else percentile
+                        conf_value = max(percentile, 1 - percentile)
+                if conf_value is None:
+                    conf_value = 0.5
+                weight = min(max(conf_value, 0.0), 1.0)
+
+                # Apply ratio-based damping so extreme fair values don't dominate
+                ratio_penalty = 1.0
+                if current_price and current_price > 0:
+                    ratio = abs(fv / current_price)
+                    if ratio > 5:
+                        ratio_penalty = 1 / (1 + (ratio - 5) / 5)
+                    elif ratio < 0.2:
+                        ratio_penalty = 1 / (1 + (0.2 - ratio) / 0.2)
+
+                weights.append(weight * ratio_penalty)
 
         if not fair_values:
             return "-"
@@ -560,9 +572,9 @@ class HTMLGenerator:
         # Weighted average (confidence-based); fallback to simple average if no weights
         if any(weights):
             total_weight = sum(weights)
-            avg_fair_value = sum(f * w for f, w in zip(fair_values, weights)) / total_weight if total_weight else sum(fair_values) / len(fair_values)
+            avg_fair_value = sum(f * w for f, w in zip(softened_values, weights)) / total_weight if total_weight else sum(softened_values) / len(softened_values)
         else:
-            avg_fair_value = sum(fair_values) / len(fair_values)
+            avg_fair_value = sum(softened_values) / len(softened_values)
         avg_margin = (avg_fair_value - current_price) / current_price if current_price > 0 else 0
         avg_ratio = avg_fair_value / current_price if current_price > 0 else 0
         
