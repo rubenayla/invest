@@ -35,6 +35,16 @@
 - PYPL (PayPal)
 - SAP (SAP)
 
+# High-risk 2y candidates (screen)
+- MU (Micron) - memory cycle / AI HBM demand
+- MRVL (Marvell) - AI/Networking silicon, strong revenue growth
+- AMD (AMD) - AI accelerators + CPU share gains
+- LRCX (Lam Research) - wafer fab equipment, memory cycle leverage
+- ZS (Zscaler) - cybersecurity growth
+- SNOW (Snowflake) - data platform growth
+- COIN (Coinbase) - crypto leverage, high volatility
+- PLTR (Palantir) - AI software platform, high valuation
+
 # Backlog
 - [8002 (Marubeni Corp.)](watchlist/8002.md) - Japanese trading conglomerate
 - [SQM (Sociedad Quimica y Minera)](watchlist/SQM.md) - Lithium producer
@@ -61,15 +71,13 @@
   - 
 - Big bear
     - Spending money like crazy on salaries and bonuses, i can't understand the actual value proposition in depth
-- PLTR (Palantir)
-    - I don't understand the moat and value proposition well enough to justify the high valuation, though it may be good.
 
 # Todo take a look
 Based on strong model consensus (where models agree):
 
 Tier 1: High Conviction Picks (70%+ model agreement, all bullish)
 
-1. FPH (Five Point Holdings) - 11/11 models bullish, avg +107.6% upside
+1. [FPH](watchlist/FPH.md) (Five Point Holdings) - 11/11 models bullish, avg +107.6% upside
 2. ALL (Allstate) - 11/11 models bullish, avg +38.4% upside
 3. HAL (Halliburton) - 11/12 models bullish, avg +40.5% upside
 4. UPS (United Parcel Service) - 13/14 models bullish, avg +36.8% upside
