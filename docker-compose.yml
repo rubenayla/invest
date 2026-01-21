@@ -1,0 +1,25 @@
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: invest_grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount the project data directory (read-only for safety)
+      # This gives Grafana access to stock_data.db
+      - ./data:/var/lib/grafana/data:ro
+      
+      # Mount provisioning config to automatically add the SQLite data source
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      
+      # Persistence for dashboards, users, and alerts
+      - grafana_storage:/var/lib/grafana
+    environment:
+      - GF_INSTALL_PLUGINS=frser-sqlite-datasource
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+
+volumes:
+  grafana_storage:

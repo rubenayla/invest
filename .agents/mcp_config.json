@@ -2,10 +2,29 @@
   "mcpServers": {
     "investment-analysis": {
       "command": "uv",
-      "args": ["run", "python", "mcp_server_v2.py"],
+      "args": [
+        "run",
+        "python",
+        "mcp_server_v2.py"
+      ],
       "env": {
         "PYTHONPATH": "."
       }
+    },
+    "sqlite": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sqlite",
+        "--file",
+        "/Users/rubenayla/repos/invest/neural_network/training/stock_data.db"
+      ]
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ]
     }
   }
 }
