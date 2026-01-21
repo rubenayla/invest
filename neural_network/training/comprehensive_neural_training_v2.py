@@ -137,7 +137,7 @@ TRAINING_UNIVERSE = LARGE_CAP_UNIVERSE + ADDITIONAL_UNIVERSE
 # LOGGING SETUP
 # ============================================================================
 
-def setup_logging(log_file: str = 'comprehensive_training.log') -> logging.Logger:
+def setup_logging(log_file: str = 'neural_network/training/logs/comprehensive_training.log') -> logging.Logger:
     """Setup logging configuration with file and console output.
 
     Args:

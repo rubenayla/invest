@@ -35,7 +35,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('comprehensive_training.log'),
+        logging.FileHandler('neural_network/training/logs/comprehensive_training.log'),
         logging.StreamHandler()
     ]
 )

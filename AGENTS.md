@@ -15,6 +15,15 @@ print(income.loc['Net Income'])
 
 ---
 
+## 🛑 FILE MODIFICATION SAFETY
+
+**NEVER modify a file without reading it first.**
+- You must know if the file exists and what is in it before overwriting.
+- **NEVER** overwrite ignored files (like `todo.md`) without explicit confirmation or checking content first, as they cannot be recovered via git.
+- **ALWAYS** check `git status` before modifying files to ensure you don't destroy uncommitted work.
+
+---
+
 ## Always Use uv
 
 ALL Python commands must use `uv run`:

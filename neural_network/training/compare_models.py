@@ -55,11 +55,11 @@ def load_lstm_results() -> dict:
 def load_gbm_results() -> dict:
     """Load GBM model evaluation results from log file."""
     # Try with price features first (newer version)
-    log_file = Path(__file__).parent / 'train_gbm_1y_with_price.log'
+    log_file = Path(__file__).parent / 'logs' / 'train_gbm_1y_with_price.log'
 
     if not log_file.exists():
         # Fall back to fundamentals-only version
-        log_file = Path(__file__).parent / 'train_gbm_1y.log'
+        log_file = Path(__file__).parent / 'logs' / 'train_gbm_1y.log'
 
     if not log_file.exists():
         logger.warning('No GBM training log found')
