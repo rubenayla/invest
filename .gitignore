@@ -155,6 +155,5 @@ fetch_log*.txt
 # SEC EDGAR downloaded data (large files)
 data/sec_edgar/raw/
 tmp.md
-todo.md
 backups/
 .agents/scratch.md
