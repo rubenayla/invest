@@ -73,7 +73,8 @@ class PriceHistoryPopulator:
             WHERE s.vix IS NOT NULL
             AND NOT EXISTS (
                 SELECT 1 FROM price_history ph
-                WHERE ph.snapshot_id = s.id
+                WHERE ph.ticker = a.symbol
+                AND ph.date = s.snapshot_date
             )
             {ticker_filter}
             ORDER BY a.symbol, s.snapshot_date
@@ -150,11 +151,11 @@ class PriceHistoryPopulator:
                 try:
                     cursor.execute('''
                         INSERT OR IGNORE INTO price_history (
-                            snapshot_id, date, open, high, low, close,
+                            ticker, date, open, high, low, close,
                             volume, dividends, stock_splits
                         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ''', (
-                        snapshot_id,
+                        ticker,
                         date.strftime('%Y-%m-%d'),
                         float(row['Open']) if pd.notna(row['Open']) else None,
                         float(row['High']) if pd.notna(row['High']) else None,

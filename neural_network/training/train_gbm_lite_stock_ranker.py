@@ -926,7 +926,11 @@ class GBMLiteStockRanker:
         if path is None:
             path = f'gbm_lite_model_{self.target_horizon}.txt'
 
-        save_path = Path(__file__).parent / path
+        # Save to neural_network/models/gbm/
+        save_dir = Path(__file__).parent.parent / 'models/gbm'
+        save_dir.mkdir(parents=True, exist_ok=True)
+        save_path = save_dir / path
+        
         self.model.save_model(str(save_path))
         logger.info(f'Model saved to {save_path}')
 

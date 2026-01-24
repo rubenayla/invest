@@ -573,7 +573,7 @@ class GBMStockRanker:
         query = f'''
             SELECT
                 {', '.join(all_cols)}
-            FROM snapshots s
+            FROM fundamental_history s
             JOIN assets a ON s.asset_id = a.id
             WHERE s.vix IS NOT NULL
             ORDER BY a.symbol, s.snapshot_date
@@ -1047,7 +1047,11 @@ class GBMStockRanker:
         if path is None:
             path = f'gbm_opportunistic_model_{self.target_horizon}.txt'
 
-        save_path = Path(__file__).parent / path
+        # Save to neural_network/models/gbm/
+        save_dir = Path(__file__).parent.parent / 'models/gbm'
+        save_dir.mkdir(parents=True, exist_ok=True)
+        save_path = save_dir / path
+        
         self.model.save_model(str(save_path))
         logger.info(f'Model saved to {save_path}')
 

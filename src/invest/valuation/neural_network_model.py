@@ -764,12 +764,10 @@ class NeuralNetworkValuationModel(ValuationModel):
         
         # Check if model is trained
         if not self.feature_engineer.is_fitted:
-            # For demo purposes, return a simple ratio-based estimate
-            # In production, this would load a pre-trained model
-            self.logger.warning(
-                'Neural network model not trained. Using simplified heuristic valuation.'
+            raise ValuationError(
+                f"Neural network model not trained/loaded for {ticker}. "
+                "Ensure a valid model weights file (.pt) is available."
             )
-            return self._heuristic_valuation(ticker, data, features)
         
         # Transform features for model input
         feature_array = self.feature_engineer.transform(features)
@@ -790,11 +788,16 @@ class NeuralNetworkValuationModel(ValuationModel):
         
         # Score 50 = fair value, >50 = undervalued, <50 = overvalued
         # Each point roughly represents 2% deviation from fair value
-        fair_value_multiplier = 1 + (score - 50) * 0.02
-        fair_value = current_price * fair_value_multiplier
+        # Explicitly cast score to float to avoid numpy types leaking into results
+        score_val = float(score)
+        fair_value_multiplier = 1 + (score_val - 50) * 0.02
+        fair_value = float(current_price * fair_value_multiplier)
         
         # Calculate margin of safety
-        margin_of_safety = ((fair_value - current_price) / current_price) * 100
+        if current_price and current_price != 0:
+            margin_of_safety = float(((fair_value - current_price) / current_price) * 100)
+        else:
+            margin_of_safety = 0.0
         
         return ValuationResult(
             ticker=ticker,
@@ -816,87 +819,7 @@ class NeuralNetworkValuationModel(ValuationModel):
             },
             warnings=self._generate_warnings(features, score)
         )
-    
-    def _heuristic_valuation(self, ticker: str, data: Dict[str, Any], 
-                            features: Dict[str, float]) -> ValuationResult:
-        """
-        Simple heuristic valuation when model is not trained.
-        
-        Uses weighted average of key valuation metrics.
-        """
-        info = data.get('info', {})
-        current_price = self._safe_float(info.get('currentPrice'))
-        
-        # Simple scoring based on key metrics
-        score = 50.0  # Start at neutral
-        
-        # P/E ratio scoring
-        pe_ratio = features.get('pe_ratio', 0)
-        if 0 < pe_ratio < 15:
-            score += 10
-        elif 15 <= pe_ratio < 25:
-            score += 5
-        elif pe_ratio > 35:
-            score -= 10
-        
-        # PEG ratio scoring
-        peg_ratio = features.get('peg_ratio', 0)
-        if 0 < peg_ratio < 1:
-            score += 10
-        elif 1 <= peg_ratio < 2:
-            score += 5
-        elif peg_ratio > 3:
-            score -= 5
-        
-        # Profitability scoring
-        if features.get('roe', 0) > 15:
-            score += 5
-        if features.get('profit_margin', 0) > 0.1:
-            score += 5
-        
-        # Growth scoring
-        if features.get('revenue_growth', 0) > 0.1:
-            score += 5
-        
-        # Financial health scoring
-        if features.get('debt_to_equity', 0) < 1:
-            score += 5
-        if features.get('current_ratio', 0) > 1.5:
-            score += 5
-        
-        # Momentum scoring
-        if features.get('52w_high_ratio', 0) > 0.9:
-            score -= 5  # Near 52-week high
-        if features.get('52w_low_ratio', 0) < 1.2:
-            score += 5  # Near 52-week low
-        
-        # Cap score between 0 and 100
-        score = max(0, min(100, score))
-        
-        # Convert to fair value
-        fair_value_multiplier = 1 + (score - 50) * 0.02
-        fair_value = current_price * fair_value_multiplier
-        margin_of_safety = ((fair_value - current_price) / current_price) * 100
-        
-        return ValuationResult(
-            ticker=ticker,
-            model=self.name,
-            fair_value=fair_value,
-            current_price=current_price,
-            margin_of_safety=margin_of_safety,
-            confidence='low',  # Low confidence for heuristic
-            inputs={
-                'method': 'heuristic',
-                'feature_count': len(features),
-                'model_score': float(score),
-                'time_horizon': self.time_horizon
-            },
-            outputs={
-                'score': float(score),
-                'fair_value_multiplier': float(fair_value_multiplier)
-            },
-            warnings=['Model not trained - using heuristic valuation']
-        )
+
     
     def _estimate_uncertainty(self, features: Dict[str, float], score: float) -> float:
         '''
