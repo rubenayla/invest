@@ -15,8 +15,9 @@ Traditional finance models based on fundamental analysis and cash flow projectio
 - [Simple Ratios (Multiples)](simple-ratios.md)
 
 ### Machine Learning Models
-Data-driven models using gradient boosting to rank stocks by expected returns.
+Data-driven models using deep learning or gradient boosting to rank stocks or predict intrinsic value.
 
+- [Neural Network Model](../neural_network_model.md) - Deep learning on 60+ engineered features
 - [GBM Full Models](gbm-full.md) - 464 features, highest predictive power
 - [GBM Lite Models](gbm-lite.md) - 59 features, maximum stock coverage
 - [GBM Opportunistic Models](gbm-opportunistic.md) - Peak return prediction
@@ -28,6 +29,7 @@ Data-driven models using gradient boosting to rank stocks by expected returns.
 | DCF Models | ~98% | 1+ quarters | Stable cash flows |
 | Simple Ratios | ~99% | Current data | Quick valuation |
 | RIM | ~85% | Book value | Financial institutions |
+| **Neural Network**| **~95%** | **2+ quarters** | **Pattern recognition** |
 | GBM Full | ~52% | 8+ quarters | Long-history stocks |
 | **GBM Lite** | **~98%** | **2+ quarters** | **Maximum coverage** |
 | GBM Opportunistic | ~52% | 8+ quarters | Timing signals |

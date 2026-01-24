@@ -190,8 +190,8 @@ def main():
     print('=' * 60)
     print('\nKey Takeaways:')
     print('1. The model works with any stock that has sufficient data')
-    print('2. Without training, it uses heuristic scoring')
-    print('3. Training improves accuracy significantly')
+    print('2. The model requires a trained weights file (.pt) to function')
+    print('3. Training on historical data allows it to learn complex patterns')
     print('4. Different time horizons can give different valuations')
     print('5. Always verify results with fundamental analysis')
 

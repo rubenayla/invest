@@ -169,7 +169,8 @@ class TestNeuralNetworkValuationModel:
     @pytest.fixture
     def model(self):
         """Create a neural network model instance."""
-        return NeuralNetworkValuationModel(time_horizon='1year')
+        # Use a non-existent path to prevent auto-loading of real models
+        return NeuralNetworkValuationModel(time_horizon='1year', model_path=Path("non_existent_model.pt"))
     
     @pytest.fixture
     def complete_data(self):
@@ -249,18 +250,12 @@ class TestNeuralNetworkValuationModel:
         with pytest.raises(InsufficientDataError):
             model._validate_inputs('TEST', incomplete_data)
     
-    def test_heuristic_valuation(self, model, complete_data):
-        """Test heuristic valuation when model is not trained."""
-        result = model._calculate_valuation('TEST', complete_data)
+    def test_raises_when_untrained(self, model, complete_data):
+        """Test that ValuationError is raised when model is not trained."""
+        from src.invest.exceptions import ValuationError
         
-        assert isinstance(result, ValuationResult)
-        assert result.ticker == 'TEST'
-        assert result.model == 'neural_network'
-        assert result.fair_value is not None
-        assert result.current_price == 150.0
-        assert result.margin_of_safety is not None
-        assert result.confidence == 'low'  # Heuristic has low confidence
-        assert 'Model not trained' in result.warnings[0]
+        with pytest.raises(ValuationError, match="not trained/loaded"):
+            model._calculate_valuation('TEST', complete_data)
     
     def test_training_workflow(self, model, complete_data):
         """Test the training workflow."""
@@ -293,7 +288,20 @@ class TestNeuralNetworkValuationModel:
     @pytest.mark.parametrize('time_horizon', ['1month', '1year', '5year'])
     def test_different_time_horizons(self, time_horizon, complete_data):
         """Test model with different time horizons."""
-        model = NeuralNetworkValuationModel(time_horizon=time_horizon)
+        # Use dummy path to prevent loading real model
+        model = NeuralNetworkValuationModel(time_horizon=time_horizon, model_path=Path("dummy"))
+        
+        # Fake training to allow valuation
+        features = model.feature_engineer.extract_features(complete_data)
+        scaled_features = model.feature_engineer.fit_transform([features, features])
+        
+        # Re-initialize model with correct input dimension
+        input_dim = scaled_features.shape[1]
+        model.model = NeuralNetworkArchitecture(
+            input_dim=input_dim,
+            output_type='score'
+        ).to(model.device)
+        
         result = model._calculate_valuation('TEST', complete_data)
         
         assert result.inputs['time_horizon'] == time_horizon
@@ -317,30 +325,57 @@ class TestNeuralNetworkValuationModel:
         assert new_model.feature_engineer.is_fitted
         assert new_model.time_horizon == model.time_horizon
     
-    def test_model_with_extreme_values(self, model):
-        """Test model behavior with extreme input values."""
-        extreme_data = {
-            'info': {
-                'currentPrice': 0.01,  # Penny stock
-                'marketCap': 1000000,  # Small cap
-                'enterpriseValue': 5000000,
-                'totalRevenue': 100000,
-                'trailingEps': -10.0,  # Negative earnings
-                'forwardEps': -5.0,
-                'pegRatio': -1.0,
-                'debtToEquity': 10.0,  # High debt
-                'beta': 3.0,  # Very volatile
-                'profitMargins': -0.5  # Negative margins
+        def test_model_with_extreme_values(self, model):
+            """Test model behavior with extreme input values."""
+            extreme_data = {
+                'info': {
+                    'currentPrice': 0.01,  # Penny stock
+                    'marketCap': 1000000,  # Small cap
+                    'enterpriseValue': 5000000,
+                    'totalRevenue': 100000,
+                    'trailingEps': -10.0,  # Negative earnings
+                    'forwardEps': -5.0,
+                    'pegRatio': -1.0,
+                    'debtToEquity': 10.0,  # High debt
+                    'beta': 3.0,  # Very volatile
+                    'profitMargins': -0.5  # Negative margins
+                }
             }
-        }
         
-        result = model._calculate_valuation('EXTREME', extreme_data)
+            # Fake training
+            features = model.feature_engineer.extract_features(extreme_data)
+            scaled_features = model.feature_engineer.fit_transform([features, features])
+            
+            # Re-initialize model with correct input dimension
+            input_dim = scaled_features.shape[1]
+            model.model = NeuralNetworkArchitecture(
+                input_dim=input_dim,
+                output_type='score'
+            ).to(model.device)
         
-        assert isinstance(result, ValuationResult)
-        assert len(result.warnings) > 0  # Should generate warnings
-    
+            result = model._calculate_valuation('EXTREME', extreme_data)
+            
+            assert isinstance(result, ValuationResult)
+            # With random weights, we can't guarantee warnings about overvaluation,
+            # but we can check the plumbing holds up.
+            # assert len(result.warnings) > 0  # Only works if model logic triggers warnings based on inputs alone
+            # The warnings in _generate_warnings are based on FEATURES and SCORE.
+            # Features are extreme, so some warnings should appear regardless of score.
+            # e.g. "Negative profit margins"
+            assert any('Negative profit margins' in w for w in result.warnings)    
     def test_feature_importance(self, model, complete_data):
         """Test that top features are extracted correctly."""
+        # Fake training
+        features = model.feature_engineer.extract_features(complete_data)
+        scaled_features = model.feature_engineer.fit_transform([features, features])
+        
+        # Re-initialize model with correct input dimension
+        input_dim = scaled_features.shape[1]
+        model.model = NeuralNetworkArchitecture(
+            input_dim=input_dim,
+            output_type='score'
+        ).to(model.device)
+        
         result = model._calculate_valuation('TEST', complete_data)
         
         top_features = result.outputs.get('top_features', {})

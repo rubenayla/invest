@@ -71,7 +71,8 @@ from invest.valuation.model_registry import ModelRegistry
 registry = ModelRegistry()
 model = registry.get_model('neural_network')
 
-# Will use heuristic valuation if not trained
+# Requires a trained model file to be present in neural_network/models/
+# Otherwise raises ValuationError
 result = model.value_company('AAPL')
 print(f'Fair Value: ${result.fair_value:.2f}')
 print(f'Margin of Safety: {result.margin_of_safety:.1f}%')
@@ -137,7 +138,7 @@ result = model.value_company('TSLA')
 The model provides three confidence levels:
 - **High**: Low prediction uncertainty (<5% std dev)
 - **Medium**: Moderate uncertainty (5-10% std dev)
-- **Low**: High uncertainty (>10% std dev) or using heuristic method
+- **Low**: High uncertainty (>10% std dev)
 
 ## Integration with Existing Models
 
@@ -149,12 +150,6 @@ The neural network model is fully integrated with:
 
 ## Performance Expectations
 
-### Without Training (Heuristic Mode)
-- Uses rule-based scoring
-- Accuracy: Similar to simple ratio models
-- Best for: Quick screening
-
-### With Training
 - Accuracy: Depends on training data quality and quantity
 - Recommended: 1000+ training samples
 - Retraining: Quarterly or when market regime changes

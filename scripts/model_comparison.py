@@ -229,13 +229,18 @@ def run_comparison():
     }
     
     # Load trained neural network if available
-    trained_nn_path = Path('trained_nn_1year.pt')
+    trained_nn_path = Path('neural_network/models/trained_nn_2year.pt')
     if trained_nn_path.exists():
         models_to_test['neural_network'] = NeuralNetworkValuationModel(model_path=trained_nn_path)
         print('✓ Using trained neural network model')
     else:
-        models_to_test['neural_network'] = registry.get_model('neural_network')
-        print('⚠ Using untrained neural network model (heuristic mode)')
+        # Try registry (which now auto-resolves paths)
+        try:
+            models_to_test['neural_network'] = registry.get_model('neural_network')
+            print('✓ Using neural network model (auto-resolved)')
+        except Exception:
+            print('⚠ Neural network model could not be loaded (requires training)')
+            del models_to_test['neural_network']
     
     # Run evaluations
     all_results = {}
