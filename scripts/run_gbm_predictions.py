@@ -465,17 +465,9 @@ Examples:
 
     # Load data and engineer features
     df = load_and_engineer_features(str(db_path), feature_config, training_module)
-    if 'TRNR' in df['ticker'].values:
-        logger.info("TRNR found in df after load_and_engineer_features")
-    else:
-        logger.warning("TRNR NOT found in df after load_and_engineer_features")
 
     # Prepare features
     X, feature_cols, df_norm = prepare_features(df, feature_config, training_module)
-    if 'TRNR' in df_norm['ticker'].values:
-        logger.info("TRNR found in df_norm after prepare_features")
-    else:
-        logger.warning("TRNR NOT found in df_norm after prepare_features")
 
     # Make predictions
     logger.info('Making predictions...')
