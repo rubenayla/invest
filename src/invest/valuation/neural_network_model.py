@@ -122,8 +122,13 @@ class FeatureEngineer:
             Dictionary of engineered features
         """
         features = {}
-        # Merge info and financials sections (data_fetcher splits them)
-        info = {**data.get('info', {}), **(data.get('financials') or {})}
+        
+        # Standardize financials to dictionary format
+        # This handles variability between offline cache (dict) and live yfinance (DataFrame)
+        financials = self._convert_to_dict(data.get('financials'))
+            
+        # Merge info and financials
+        info = {**data.get('info', {}), **financials}
         
         # Valuation Ratios
         features['pe_ratio'] = self._safe_ratio(
@@ -238,6 +243,33 @@ class FeatureEngineer:
 
         return features
     
+    def _convert_to_dict(self, data: Any) -> Dict[str, Any]:
+        """
+        Convert input data (Dict or DataFrame) to a dictionary predictably.
+        
+        - If Dict: Return as is.
+        - If DataFrame: Return the most recent column (first column) as dict.
+        - If None/Other: Return empty dict.
+        """
+        if data is None:
+            return {}
+            
+        if isinstance(data, dict):
+            return data
+            
+        # Handle DataFrame without triggering ambiguity error
+        # Check for DataFrame-like attributes
+        if hasattr(data, 'to_dict') and hasattr(data, 'iloc'):
+            try:
+                if hasattr(data, 'empty') and data.empty:
+                    return {}
+                # Take the most recent data (first column usually in yfinance)
+                return data.iloc[:, 0].to_dict()
+            except Exception:
+                return {}
+                
+        return {}
+
     def _safe_ratio(self, numerator: Any, denominator: Any, 
                    default: float = 0.0) -> float:
         """Calculate ratio safely handling None and zero values."""
@@ -568,6 +600,34 @@ class NeuralNetworkValuationModel(ValuationModel):
         super().__init__('neural_network')
         
         self.time_horizon = time_horizon
+        
+        # Resolve default model path if not provided
+        if model_path is None:
+            # Try to find model in standard locations
+            # Path(__file__) is .../src/invest/valuation/neural_network_model.py
+            # Parent x4 is project root
+            project_root = Path(__file__).parent.parent.parent.parent
+            default_model_dir = project_root / 'neural_network' / 'models'
+            
+            # Map horizon to filename
+            horizon_map = {
+                '1month': 'trained_nn_1month.pt',
+                '3month': 'trained_nn_3month.pt',
+                '6month': 'trained_nn_6month.pt',
+                '1year': 'trained_nn_2year.pt',  # Fallback to 2year
+                '18month': 'trained_nn_18month.pt',
+                '2year': 'trained_nn_2year.pt',
+                '3year': 'trained_nn_2year.pt',  # Fallback
+                '5year': 'trained_nn_2year.pt',  # Fallback
+            }
+            
+            filename = horizon_map.get(time_horizon, 'trained_nn_2year.pt')
+            candidate_path = default_model_dir / filename
+            
+            if candidate_path.exists():
+                model_path = candidate_path
+                self.logger.info(f"Auto-resolved model path: {model_path}")
+
         self.model_path = model_path
         
         # Initialize components
