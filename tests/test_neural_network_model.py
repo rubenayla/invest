@@ -325,44 +325,44 @@ class TestNeuralNetworkValuationModel:
         assert new_model.feature_engineer.is_fitted
         assert new_model.time_horizon == model.time_horizon
     
-        def test_model_with_extreme_values(self, model):
-            """Test model behavior with extreme input values."""
-            extreme_data = {
-                'info': {
-                    'currentPrice': 0.01,  # Penny stock
-                    'marketCap': 1000000,  # Small cap
-                    'enterpriseValue': 5000000,
-                    'totalRevenue': 100000,
-                    'trailingEps': -10.0,  # Negative earnings
-                    'forwardEps': -5.0,
-                    'pegRatio': -1.0,
-                    'debtToEquity': 10.0,  # High debt
-                    'beta': 3.0,  # Very volatile
-                    'profitMargins': -0.5  # Negative margins
-                }
+    def test_model_with_extreme_values(self, model):
+        """Test model behavior with extreme input values."""
+        extreme_data = {
+            'info': {
+                'currentPrice': 0.01,  # Penny stock
+                'marketCap': 1000000,  # Small cap
+                'enterpriseValue': 5000000,
+                'totalRevenue': 100000,
+                'trailingEps': -10.0,  # Negative earnings
+                'forwardEps': -5.0,
+                'pegRatio': -1.0,
+                'debtToEquity': 10.0,  # High debt
+                'beta': 3.0,  # Very volatile
+                'profitMargins': -0.5  # Negative margins
             }
+        }
+    
+        # Fake training
+        features = model.feature_engineer.extract_features(extreme_data)
+        scaled_features = model.feature_engineer.fit_transform([features, features])
         
-            # Fake training
-            features = model.feature_engineer.extract_features(extreme_data)
-            scaled_features = model.feature_engineer.fit_transform([features, features])
-            
-            # Re-initialize model with correct input dimension
-            input_dim = scaled_features.shape[1]
-            model.model = NeuralNetworkArchitecture(
-                input_dim=input_dim,
-                output_type='score'
-            ).to(model.device)
+        # Re-initialize model with correct input dimension
+        input_dim = scaled_features.shape[1]
+        model.model = NeuralNetworkArchitecture(
+            input_dim=input_dim,
+            output_type='score'
+        ).to(model.device)
+    
+        result = model._calculate_valuation('EXTREME', extreme_data)
         
-            result = model._calculate_valuation('EXTREME', extreme_data)
-            
-            assert isinstance(result, ValuationResult)
-            # With random weights, we can't guarantee warnings about overvaluation,
-            # but we can check the plumbing holds up.
-            # assert len(result.warnings) > 0  # Only works if model logic triggers warnings based on inputs alone
-            # The warnings in _generate_warnings are based on FEATURES and SCORE.
-            # Features are extreme, so some warnings should appear regardless of score.
-            # e.g. "Negative profit margins"
-            assert any('Negative profit margins' in w for w in result.warnings)    
+        assert isinstance(result, ValuationResult)
+        # With random weights, we can't guarantee warnings about overvaluation,
+        # but we can check the plumbing holds up.
+        # assert len(result.warnings) > 0  # Only works if model logic triggers warnings based on inputs alone
+        # The warnings in _generate_warnings are based on FEATURES and SCORE.
+        # Features are extreme, so some warnings should appear regardless of score.
+        # e.g. "Negative profit margins"
+        assert any('Negative profit margins' in w for w in result.warnings)    
     def test_feature_importance(self, model, complete_data):
         """Test that top features are extracted correctly."""
         # Fake training
@@ -382,6 +382,36 @@ class TestNeuralNetworkValuationModel:
         if top_features:  # Only if model provides this
             assert isinstance(top_features, dict)
             assert len(top_features) <= 5
+
+    def test_result_types(self, model, complete_data):
+        """Test that valuation results are standard python types (not numpy)."""
+        # Fake training
+        features = model.feature_engineer.extract_features(complete_data)
+        scaled_features = model.feature_engineer.fit_transform([features, features])
+        
+        input_dim = scaled_features.shape[1]
+        model.model = NeuralNetworkArchitecture(
+            input_dim=input_dim,
+            output_type='score'
+        ).to(model.device)
+        
+        result = model._calculate_valuation('TEST', complete_data)
+        
+        # Check types
+        assert isinstance(result.fair_value, float)
+        assert not isinstance(result.fair_value, np.number)
+        
+        if result.margin_of_safety is not None:
+            assert isinstance(result.margin_of_safety, float)
+            assert not isinstance(result.margin_of_safety, np.number)
+            
+        if result.inputs.get('model_score'):
+            assert isinstance(result.inputs['model_score'], float)
+            assert not isinstance(result.inputs['model_score'], np.number)
+            
+        if result.outputs.get('score'):
+            assert isinstance(result.outputs['score'], float)
+            assert not isinstance(result.outputs['score'], np.number)
     
     @patch('torch.cuda.is_available')
     def test_gpu_support(self, mock_cuda, complete_data):
