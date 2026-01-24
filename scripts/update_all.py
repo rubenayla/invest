@@ -17,8 +17,10 @@ import time
 from pathlib import Path
 from typing import List
 
-
 REPO_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(REPO_ROOT / 'src'))
+
+from invest.config.logging_config import setup_logging
 
 
 def run_cmd(cmd: List[str], label: str) -> None:
@@ -79,6 +81,8 @@ def run_gbm_predictions() -> None:
 
 
 def main() -> int:
+    setup_logging(log_file_path="logs/update_all.log")
+    
     parser = argparse.ArgumentParser(
         description='Update data, run predictions, and regenerate the dashboard',
     )
