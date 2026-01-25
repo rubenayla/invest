@@ -4,6 +4,10 @@ datasources:
   - name: Invest SQLite
     type: frser-sqlite-datasource
     uid: invest_sqlite
-    url: /var/lib/grafana/data/stock_data.db
     access: proxy
     isDefault: true
+    jsonData:
+      path: /data/stock_data.db
+      pathPrefix: 'file:'
+      pathOptions: mode=ro
+      attachLimit: 0

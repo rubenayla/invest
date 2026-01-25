@@ -4,6 +4,24 @@ A log of significant progress, achievements, and learnings.
 
 ---
 
+## 2026-01-25: Grafana SQLite Docker Fix (Gemini Loop)
+
+### What went wrong
+- Gemini kept iterating on Docker bind mounts and file permissions, but the SQLite plugin was opening a blank DB.
+- The datasource was provisioned with `path`/`url`, which the frser SQLite plugin ignores; it only reads `jsonData.path`.
+- A test query used `test_table`, which does not exist in the real DB, masking the real issue.
+
+### What fixed it
+1. Updated datasource provisioning to use `jsonData.path` plus:
+   - `jsonData.pathPrefix: 'file:'`
+   - `jsonData.pathOptions: mode=ro`
+   - `jsonData.attachLimit: 0`
+2. Restarted Grafana to re-provision.
+3. Verified with `SELECT COUNT(*) FROM assets` returning data.
+
+### Result
+Grafana now reads the copied DB at `/var/lib/grafana/stock_data.db` and queries return real tables/data.
+
 ## 2025-10-20: Critical Database Blindspot - Silent Data Loss in ML Predictions
 
 ### 🚨 Discovery: The Missing 20%
