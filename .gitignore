@@ -36,6 +36,7 @@ site/
 .vscode/
 .idea/
 .DS_Store
+.gemini-clipboard/
 
 # Personal/temporary configs
 # my_*.yaml
