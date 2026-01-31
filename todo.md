@@ -9,6 +9,9 @@ _(Note: Restored from previous content on 2026-01-21)_
 
 - META?
 - check energy companies
+- analyze CEG, VSG, NEE, and ETN
+- analyze AEP, EXC, VRT, HUBB
+- consider Argentina ETF (ARGT): availability on IBKR/Revolut + investment decision
 
 - I want to run some simulations of investments using each model, investing on
   old data, so we can check how much money would they have made if used in the
