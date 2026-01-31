@@ -5,9 +5,13 @@ Print info about a specific company
 import yfinance as yf
 import pandas as pd
 import re
+import sys
 
-stock = yf.Ticker("AAPL")
+ticker = sys.argv[1] if len(sys.argv) > 1 else "AAPL"
+stock = yf.Ticker(ticker)
 search = ['cap', 'gross', 'margin', 'shares', 'grow', 'ratio', 'revenue', 'expense']
+
+print(f"--- Info for {ticker} ---")
 
 for line in stock.info:
     response_line = f"{line:>36}: {stock.info[line]}"

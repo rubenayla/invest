@@ -1,4 +1,7 @@
 # Watchlist
+
+> **See also**: [Investment Theses](theses/README.md) for macro-level commodity/sector bets (copper, etc.)
+
 - [PTON](watchlist/PTON.md) (Peloton) - Speculative turnaround, no position
 - SMFG (Sumitomo Mitsui Financial Group) - Improving fundamentals, rate-sensitive
 - [ACGL](watchlist/ACGL.md) (Arch Capital Group Ltd) - PE 9.0, Revenue +90%, Earnings +100%
