@@ -1,4 +1,6 @@
-# Quick Start Guide
+# Quick Reference
+
+Command reference for common operations.
 
 ## Update All Predictions
 
@@ -95,12 +97,16 @@ uv run python scripts/run_all_predictions.py --models gbm
 **Location**: `data/stock_data.db`
 
 **Main Tables**:
-- `current_stock_data` - Current snapshot (598 stocks)
-- `valuation_results` - All model predictions with timestamps
-- `snapshots` - Historical fundamentals (358 stocks)
-- `price_history` - Historical prices
+
+| Table | Description |
+|-------|-------------|
+| `current_stock_data` | Current snapshot (598 stocks) |
+| `valuation_results` | All model predictions with timestamps |
+| `snapshots` | Historical fundamentals (358 stocks) |
+| `price_history` | Historical prices |
 
 **Model Names**:
+
 - `gbm_1y`, `gbm_3y`
 - `gbm_lite_1y`, `gbm_lite_3y`
 - `gbm_opportunistic_1y`, `gbm_opportunistic_3y`
@@ -135,11 +141,13 @@ uv run pytest -v
 
 Tests are marked with these categories:
 
-- **`requires_models`** - Needs trained models (GBM, NN). Auto-skipped if models missing.
-- **`requires_data`** - Needs full database with historical data. Auto-skipped if missing.
-- **`slow`** - Long-running tests (>5 seconds)
-- **`integration`** - Integration tests
-- **`unit`** - Fast unit tests
+| Marker | Description |
+|--------|-------------|
+| `requires_models` | Needs trained models (GBM, NN). Auto-skipped if models missing. |
+| `requires_data` | Needs full database with historical data. Auto-skipped if missing. |
+| `slow` | Long-running tests (>5 seconds) |
+| `integration` | Integration tests |
+| `unit` | Fast unit tests |
 
 **Auto-skip behavior**: Tests marked with `requires_models` or `requires_data` will automatically be skipped if the resources don't exist. You'll see a helpful message:
 

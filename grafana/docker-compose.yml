@@ -7,10 +7,10 @@ services:
       - "3000:3000"
     volumes:
       # Mount the real database directly (read-only)
-      - ./data/stock_data.db:/data/stock_data.db:ro
+      - ../data/stock_data.db:/data/stock_data.db:ro
 
       # Mount provisioning
-      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./provisioning:/etc/grafana/provisioning
 
       # Persistence
       - grafana_storage:/var/lib/grafana

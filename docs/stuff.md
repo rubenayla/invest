@@ -611,9 +611,9 @@ Hipoteca 1.5-3% es prácticamente dinero gratis (inflación españa 6%)
 │ │                                                                                                                                                                                  │ │
 │ │ 2.1 Create MCP Servers from Claude Tools                                                                                                                                         │ │
 │ │                                                                                                                                                                                  │ │
-│ │ - mcp_servers/investment_analysis.py - Stock analysis server                                                                                                                     │ │
-│ │ - mcp_servers/portfolio_tools.py - Portfolio management server                                                                                                                   │ │
-│ │ - mcp_servers/screening.py - Stock screening server                                                                                                                              │ │
+│ │ - .agents/mcp_servers/investment_analysis.py - Stock analysis server                                                                                                              │ │
+│ │ - .agents/mcp_servers/portfolio_tools.py - Portfolio management server                                                                                                            │ │
+│ │ - .agents/mcp_servers/screening.py - Stock screening server                                                                                                                              │ │
 │ │                                                                                                                                                                                  │ │
 │ │ 2.2 Enable Claude Integration                                                                                                                                                    │ │
 │ │                                                                                                                                                                                  │ │
