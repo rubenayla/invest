@@ -203,7 +203,7 @@ class AnalysisPipeline:
         if has_international or universe_config.region == "ALL":
             # Use universal fetcher for mixed/international portfolios
             logger.info("Using universal fetcher for mixed international stocks...")
-            from ..data.universal_fetcher import UniversalStockFetcher
+            # from ..data.universal_fetcher import UniversalStockFetcher
             
             fetcher = UniversalStockFetcher(convert_currency=True)
             fetcher_results = fetcher.fetch_multiple(tickers, max_workers=10)
@@ -219,7 +219,7 @@ class AnalysisPipeline:
         else:
             # Use universal fetcher for all stocks (handles both domestic and international)
             logger.info("Using universal fetcher for all stocks...")
-            from ..data.universal_fetcher import UniversalStockFetcher
+            # from ..data.universal_fetcher import UniversalStockFetcher
             
             fetcher = UniversalStockFetcher(convert_currency=True)
             fetcher_results = fetcher.fetch_multiple(tickers, max_workers=10)
