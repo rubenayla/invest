@@ -38,6 +38,20 @@ uv run systematic-invest --list-configs
 uv run systematic-invest --save-csv --save-json --output results/
 ```
 
+### CPU / GPU Torch
+
+Torch is optional. Install one of the extras:
+
+```bash
+# CPU-only
+uv sync --extra cpu
+
+# GPU (CUDA) - replace cu118 if your CUDA version differs
+uv sync --extra gpu --default-index https://download.pytorch.org/whl/cu118 --index https://pypi.org/simple
+```
+
+Choose the CUDA index (cu118, cu126, cu128, etc.) from the PyTorch install page.
+
 ### Docs (Local)
 
 Docs: https://rubenayla.github.io/invest/
