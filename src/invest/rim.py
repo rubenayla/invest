@@ -94,10 +94,10 @@ def calculate_rim(
 ) -> Dict:
     """
     Calculate Residual Income Model (RIM) valuation.
-    
+
     Perfect for financial companies and asset-heavy businesses where book value
     is a meaningful measure of invested capital and ROE is relatively stable.
-    
+
     Parameters
     ----------
     ticker : str
@@ -120,14 +120,14 @@ def calculate_rim(
         Whether to adjust cost of equity based on sector, default True
     verbose : bool
         Whether to print detailed analysis, default True
-        
+
     Returns
     -------
     Dict
         RIM valuation results including fair value, margin of safety, and components
     """
     # Create error context for comprehensive error handling
-    error_context = create_error_context(ticker=ticker, model="RIM", function_name="calculate_rim")
+    create_error_context(ticker=ticker, model="RIM", function_name="calculate_rim")
 
     try:
         stock = yf.Ticker(ticker)
@@ -569,7 +569,7 @@ def _print_rim_analysis(results: Dict, ticker: str) -> None:
 def calculate_residual_income_model(ticker: str, **kwargs) -> Dict:
     """
     Wrapper function for dashboard compatibility.
-    
+
     This provides the same interface as other valuation models for easy integration.
     """
     return calculate_rim(ticker, **kwargs)

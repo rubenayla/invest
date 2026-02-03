@@ -39,11 +39,11 @@ class StockAnalysisMCPServer:
         async def analyze_stock(ticker: str, use_cache: bool = True) -> str:
             """
             Analyze a stock with multiple valuation models.
-            
+
             Args:
                 ticker: Stock ticker symbol
                 use_cache: Whether to use cached data (default: True)
-            
+
             Returns:
                 Comprehensive stock analysis with valuations
             """
@@ -96,10 +96,10 @@ class StockAnalysisMCPServer:
         async def compare_stocks(tickers: List[str]) -> str:
             """
             Compare multiple stocks side by side.
-            
+
             Args:
                 tickers: List of stock ticker symbols
-            
+
             Returns:
                 Comparison table with key metrics
             """
@@ -130,10 +130,10 @@ class StockAnalysisMCPServer:
         async def get_cached_data(ticker: str) -> str:
             """
             Retrieve cached data for a stock.
-            
+
             Args:
                 ticker: Stock ticker symbol
-            
+
             Returns:
                 Cached data with timestamp
             """
@@ -170,10 +170,10 @@ class StockAnalysisMCPServer:
         async def clear_cache(ticker: Optional[str] = None) -> str:
             """
             Clear cached data for a specific ticker or all tickers.
-            
+
             Args:
                 ticker: Stock ticker to clear (None = clear all)
-            
+
             Returns:
                 Confirmation message
             """
@@ -199,10 +199,10 @@ class StockAnalysisMCPServer:
         async def track_portfolio(tickers: List[str]) -> str:
             """
             Track portfolio performance with systematic analysis.
-            
+
             Args:
                 tickers: List of stock tickers in portfolio
-            
+
             Returns:
                 Portfolio analysis and recommendations
             """
@@ -238,13 +238,13 @@ class StockAnalysisMCPServer:
         ) -> str:
             """
             Find undervalued stocks based on criteria.
-            
+
             Args:
                 min_pe: Minimum P/E ratio
                 max_pe: Maximum P/E ratio (default: 15)
                 min_roe: Minimum ROE percentage (default: 15)
                 sector: Specific sector to search
-            
+
             Returns:
                 List of stocks meeting criteria
             """

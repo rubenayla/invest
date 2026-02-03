@@ -3,7 +3,7 @@ Cache Backend Implementations
 
 This module provides different caching backend implementations:
 - MemoryCache: In-memory LRU cache for fast access
-- FileCache: Persistent file-based cache 
+- FileCache: Persistent file-based cache
 - RedisCache: Redis-based distributed cache (optional)
 
 Each backend implements a common interface for consistency.
@@ -61,7 +61,7 @@ class MemoryCache(CacheBackend):
     def __init__(self, max_size: int = 1000, default_ttl: int = 3600):
         """
         Initialize memory cache.
-        
+
         Parameters
         ----------
         max_size : int
@@ -190,7 +190,7 @@ class FileCache(CacheBackend):
     def __init__(self, cache_dir: str = ".cache", default_ttl: int = 86400):
         """
         Initialize file cache.
-        
+
         Parameters
         ----------
         cache_dir : str
@@ -297,7 +297,7 @@ class FileCache(CacheBackend):
 
             return True
 
-        except:
+        except Exception:
             # Clean up corrupted file
             if cache_file.exists():
                 cache_file.unlink()
@@ -363,7 +363,7 @@ class RedisCache(CacheBackend):
                  default_ttl: int = 3600, key_prefix: str = 'invest:'):
         """
         Initialize Redis cache.
-        
+
         Parameters
         ----------
         host : str

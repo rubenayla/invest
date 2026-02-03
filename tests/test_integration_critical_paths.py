@@ -44,7 +44,7 @@ class TestUnifiedValuationModels:
             assert model in available_models, f"Core model {model} not found in available models"
 
         # Neural network models are optional (may not be available in CI environments)
-        neural_models = [m for m in available_models if 'neural_network' in m]
+        [m for m in available_models if 'neural_network' in m]
 
         # Test model metadata is available for all available models
         metadata = registry.get_model_metadata()
@@ -234,7 +234,7 @@ class TestCachingSystemIntegration:
         mock_get.return_value = mock_response
 
         # Test caching with universal fetcher
-        fetcher = UniversalStockFetcher()
+        UniversalStockFetcher()
         test_tickers = ['AAPL', 'MSFT', 'GOOGL']
 
         # First call (cache miss)
@@ -436,7 +436,6 @@ class TestEndToEndWorkflows:
     @pytest.mark.performance
     def test_performance_benchmarks(self):
         """Test that system meets performance benchmarks."""
-        max_time = 10.0  # seconds
 
         # Test cache initialization time
         start_time = time.time()
@@ -447,7 +446,7 @@ class TestEndToEndWorkflows:
 
         # Test model registry initialization time
         start_time = time.time()
-        registry = ModelRegistry()
+        ModelRegistry()
         registry_init_time = time.time() - start_time
 
         assert registry_init_time < 2.0, f"Model registry init took {registry_init_time:.3f}s (should be < 2.0s)"

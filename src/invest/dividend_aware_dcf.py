@@ -98,7 +98,7 @@ def calculate_enhanced_dcf(
         Comprehensive valuation results including dividend and growth components
     """
     # Create error context for comprehensive error handling
-    error_context = create_error_context(ticker=ticker, model="Enhanced DCF", function_name="calculate_enhanced_dcf")
+    create_error_context(ticker=ticker, model="Enhanced DCF", function_name="calculate_enhanced_dcf")
 
     try:
         stock = yf.Ticker(ticker)

@@ -67,7 +67,7 @@ def calculate_forward_return(ticker: str, start_date: datetime, months: int) -> 
         days_to_avg = min(30, len(hist) - start_idx)
         start_window = hist['Close'].iloc[start_idx:start_idx + days_to_avg]
 
-        days_to_avg_end = min(30, len(hist) - max(0, end_idx - 29))
+        min(30, len(hist) - max(0, end_idx - 29))
         end_window = hist['Close'].iloc[max(0, end_idx - 29):end_idx + 1]
 
         if len(start_window) < 10 or len(end_window) < 10:
@@ -90,7 +90,7 @@ def collect_timeframe_data(tickers: List[str], months_forward: int,
                           num_periods: int = 15) -> List[Tuple[str, Dict[str, Any], float]]:
     """
     Collect training data for specific time horizon.
-    
+
     Parameters
     ----------
     tickers : List[str]
@@ -103,7 +103,7 @@ def collect_timeframe_data(tickers: List[str], months_forward: int,
     training_data = []
 
     # Calculate how far back to start (need time for forward returns)
-    lookback_months = months_forward + num_periods
+    months_forward + num_periods
     end_date = datetime.now() - timedelta(days=months_forward * 30)
 
     dates = []

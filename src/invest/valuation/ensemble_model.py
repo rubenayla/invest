@@ -66,7 +66,7 @@ class EnsembleResult(ValuationResult):
 class EnsembleModel(ValuationModel):
     """
     Ensemble valuation model that combines multiple approaches.
-    
+
     This model:
     - Automatically selects appropriate models for each company
     - Applies intelligent weighting based on model suitability and confidence
@@ -77,7 +77,7 @@ class EnsembleModel(ValuationModel):
     def __init__(self, model_selection: str = 'auto'):
         """
         Initialize ensemble model.
-        
+
         Parameters
         ----------
         model_selection : str
@@ -423,7 +423,7 @@ class EnsembleModel(ValuationModel):
                 return ocf is not None and ocf > 0
 
             return False
-        except:
+        except Exception:
             return False
 
     def _has_stable_roe(self, data: Dict[str, Any]) -> bool:
@@ -432,7 +432,7 @@ class EnsembleModel(ValuationModel):
             info = data.get('info', {})
             roe = info.get('returnOnEquity')
             return roe is not None and 0.05 < roe < 0.3
-        except:
+        except Exception:
             return False
 
     def _is_reinvestment_heavy(self, data: Dict[str, Any]) -> bool:
@@ -452,7 +452,7 @@ class EnsembleModel(ValuationModel):
                             capex_intensity = capex / revenue
                             if capex_intensity > 0.03:  # >3% CapEx/Revenue
                                 return True
-                except:
+                except Exception:
                     pass
 
             # Check 2: Industry characteristics (known reinvestment-heavy sectors)
@@ -478,5 +478,5 @@ class EnsembleModel(ValuationModel):
 
             return False
 
-        except:
+        except Exception:
             return False

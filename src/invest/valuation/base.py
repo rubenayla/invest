@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 class ValuationResult:
     """
     Standardized result structure for all valuation models.
-    
+
     This ensures consistent output format across different valuation approaches
     and makes it easier to compare results and generate reports.
     """
@@ -71,7 +71,7 @@ class ValuationResult:
 class ValuationModel(ABC):
     """
     Abstract base class for all valuation models.
-    
+
     This ensures consistent interface across different valuation approaches
     and provides common functionality like error handling and validation.
     """
@@ -79,7 +79,7 @@ class ValuationModel(ABC):
     def __init__(self, name: str):
         """
         Initialize the valuation model.
-        
+
         Parameters
         ----------
         name : str
@@ -92,14 +92,14 @@ class ValuationModel(ABC):
     def is_suitable(self, ticker: str, data: Dict[str, Any]) -> bool:
         """
         Check if this model is suitable for valuing the given company.
-        
+
         Parameters
         ----------
         ticker : str
             Stock ticker symbol
         data : Dict[str, Any]
             Company financial data
-            
+
         Returns
         -------
         bool
@@ -111,14 +111,14 @@ class ValuationModel(ABC):
     def _validate_inputs(self, ticker: str, data: Dict[str, Any]) -> None:
         """
         Validate that all required input data is available and reasonable.
-        
+
         Parameters
         ----------
         ticker : str
-            Stock ticker symbol  
+            Stock ticker symbol
         data : Dict[str, Any]
             Company financial data
-            
+
         Raises
         ------
         InsufficientDataError
@@ -130,14 +130,14 @@ class ValuationModel(ABC):
     def _calculate_valuation(self, ticker: str, data: Dict[str, Any]) -> ValuationResult:
         """
         Perform the actual valuation calculation.
-        
+
         Parameters
         ----------
         ticker : str
             Stock ticker symbol
         data : Dict[str, Any]
             Company financial data
-            
+
         Returns
         -------
         ValuationResult
@@ -148,26 +148,26 @@ class ValuationModel(ABC):
     def value_company(self, ticker: str, verbose: bool = False) -> ValuationResult:
         """
         Main entry point for company valuation.
-        
+
         This method orchestrates the entire valuation process:
         1. Fetch required data
-        2. Check model suitability  
+        2. Check model suitability
         3. Validate inputs
         4. Perform calculation
         5. Return standardized result
-        
+
         Parameters
         ----------
         ticker : str
             Stock ticker symbol
         verbose : bool
             Whether to enable verbose logging
-            
+
         Returns
         -------
         ValuationResult
             The valuation result
-            
+
         Raises
         ------
         ModelNotSuitableError
@@ -205,15 +205,15 @@ class ValuationModel(ABC):
     def _fetch_data(self, ticker: str) -> Dict[str, Any]:
         """
         Fetch required data for the valuation with caching.
-        
+
         This implementation uses cached data fetching to improve performance
         and reduce API calls to external data providers.
-        
+
         Parameters
         ----------
         ticker : str
             Stock ticker symbol
-            
+
         Returns
         -------
         Dict[str, Any]
@@ -292,12 +292,12 @@ class ValuationModel(ABC):
     def get_required_fields(self) -> FieldRequirement:
         """
         Get the data field requirements for this model.
-        
+
         Returns
         -------
         FieldRequirement
             Object describing required, optional, and conditional fields
-            
+
         Raises
         ------
         ValueError
@@ -308,15 +308,15 @@ class ValuationModel(ABC):
     def validate_data_completeness(self, data: Dict[str, Any]) -> tuple[bool, str]:
         """
         Validate if the provided data meets this model's requirements.
-        
+
         This provides a more detailed check than is_suitable(), specifically
         focused on data completeness rather than business logic suitability.
-        
+
         Parameters
         ----------
         data : Dict[str, Any]
             Company financial data
-            
+
         Returns
         -------
         tuple[bool, str]
@@ -332,12 +332,12 @@ class ValuationModel(ABC):
     def get_minimal_mock_data(cls, model_name: str) -> Dict[str, Any]:
         """
         Get minimal mock data for testing this model.
-        
+
         Parameters
         ----------
         model_name : str
             Name of the model (e.g., 'simple_ratios', 'dcf')
-            
+
         Returns
         -------
         Dict[str, Any]

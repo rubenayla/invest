@@ -121,13 +121,13 @@ class ErrorHandler:
     ) -> ErrorInfo:
         """
         Handle an error with comprehensive information and recovery.
-        
+
         Args:
             exception: The exception that occurred
             context: Context information about when/where the error occurred
             custom_message: Custom user-friendly message
             suggested_actions: Custom suggested actions for the user
-            
+
         Returns:
             ErrorInfo object with comprehensive error details
         """
@@ -428,7 +428,7 @@ def handle_errors(
 ):
     """
     Decorator for automatic error handling in functions.
-    
+
     Args:
         custom_message: Custom user-friendly error message
         suggested_actions: Custom suggested actions
@@ -444,7 +444,7 @@ def handle_errors(
                     user_input={"args": str(args)[:200], "kwargs": str(kwargs)[:200]}
                 )
 
-                error_info = error_handler.handle_error(
+                error_handler.handle_error(
                     exception=e,
                     context=context,
                     custom_message=custom_message,

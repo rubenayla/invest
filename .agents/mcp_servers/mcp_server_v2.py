@@ -138,13 +138,13 @@ async def analyze_stock(
 ) -> str:
     """
     Comprehensive stock analysis with multiple valuation models.
-    
+
     Args:
         ticker: Stock ticker symbol (e.g., 'AAPL', 'MSFT')
-        models: List of models to use. Available: dcf, dcf_enhanced, multi_stage_dcf, 
+        models: List of models to use. Available: dcf, dcf_enhanced, multi_stage_dcf,
                growth_dcf, rim, simple_ratios, neural_network_best, neural_network_consensus, ensemble
         use_cache: Whether to use cached data (default: True)
-    
+
     Returns:
         Detailed analysis with valuations from multiple models
     """
@@ -197,12 +197,12 @@ async def neural_predict(
 ) -> str:
     """
     Get neural network predictions for a stock.
-    
+
     Args:
         ticker: Stock ticker symbol
         timeframe: Prediction horizon ('1month', '3month', '6month', '1year', '18month', '2year', '3year')
         include_all_timeframes: If True, show predictions from all neural network models
-    
+
     Returns:
         Neural network predictions with confidence metrics and model performance data
     """
@@ -289,10 +289,10 @@ async def neural_predict(
 async def get_model_info(model_name: Optional[str] = None) -> str:
     """
     Get information about valuation models.
-    
+
     Args:
         model_name: Specific model to get info about (None = list all models)
-    
+
     Returns:
         Model information including description, suitable use cases, and requirements
     """
@@ -359,10 +359,10 @@ async def get_model_info(model_name: Optional[str] = None) -> str:
 async def quick_compare(ticker: str) -> str:
     """
     Quick comparison of key valuation models for a stock.
-    
+
     Args:
         ticker: Stock ticker symbol
-    
+
     Returns:
         Side-by-side comparison of DCF, neural network, and market ratio valuations
     """

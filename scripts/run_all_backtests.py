@@ -110,7 +110,7 @@ def parse_backtest_results(report_dir: Path) -> pd.DataFrame:
     for file in summary_files:
         try:
             # Read summary data
-            df = pd.read_csv(file)
+            pd.read_csv(file)
 
             # Extract strategy name from filename
             strategy_name = file.stem.replace('_summary', '').replace('_' + file.stem.split('_')[-1], '')

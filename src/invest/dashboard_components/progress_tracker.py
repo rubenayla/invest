@@ -43,7 +43,7 @@ class ProgressTracker:
     def initialize_progress(self, tickers: List[str], models: List[str]):
         """
         Initialize progress tracking for a new update cycle.
-        
+
         Parameters
         ----------
         tickers : List[str]

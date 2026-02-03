@@ -69,7 +69,7 @@ class GrowthAdjustedDCFModel(DCFModel):
 
             return True
 
-        except:
+        except Exception:
             return False
 
     def _validate_inputs(self, ticker: str, data: Dict[str, Any]) -> None:
@@ -340,7 +340,7 @@ class GrowthAdjustedDCFModel(DCFModel):
 
             return current_revenue * min_ratio
 
-        except:
+        except Exception:
             return None
 
     def _value_growth_investments(self, growth_capex: float, data: Dict[str, Any]) -> float:
@@ -430,7 +430,7 @@ class GrowthAdjustedDCFModel(DCFModel):
 
             return roic
 
-        except:
+        except Exception:
             return None
 
     def _calculate_capex_intensity(self, data: Dict[str, Any]) -> Optional[float]:

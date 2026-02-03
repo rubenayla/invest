@@ -4,7 +4,7 @@ ValuationDashboard - Main orchestrator for the modular dashboard components.
 This is the main interface that brings together all the modular components:
 - ValuationEngine: Executes valuation models
 - DataManager: Handles data persistence
-- ProgressTracker: Tracks update progress  
+- ProgressTracker: Tracks update progress
 - HTMLGenerator: Generates dashboard HTML
 - StockPrioritizer: Prioritizes stock analysis
 
@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 class ValuationDashboard:
     """
     Modular investment dashboard that orchestrates valuation analysis.
-    
+
     This is the main interface that coordinates all dashboard components
     to provide a comprehensive stock valuation dashboard with real-time updates.
     """
@@ -38,7 +38,7 @@ class ValuationDashboard:
     def __init__(self, output_dir: str = "dashboard"):
         """
         Initialize the modular dashboard.
-        
+
         Parameters
         ----------
         output_dir : str
@@ -63,7 +63,7 @@ class ValuationDashboard:
     ):
         """
         Update dashboard with latest valuations using modular components.
-        
+
         Parameters
         ----------
         tickers : List[str]
@@ -274,14 +274,14 @@ class ValuationDashboard:
 def create_dashboard(tickers: List[str] = None) -> str:
     """
     Create a dashboard with the given tickers.
-    
+
     This function maintains backward compatibility with the original dashboard API.
-    
+
     Parameters
     ----------
     tickers : List[str], optional
         Stock tickers to analyze
-        
+
     Returns
     -------
     str

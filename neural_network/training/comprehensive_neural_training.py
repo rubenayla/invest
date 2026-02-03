@@ -630,7 +630,7 @@ class ComprehensiveNeuralTrainer:
                         predicted_return = (result.fair_value - result.current_price) / result.current_price
                         predictions.append(predicted_return)
                         actuals.append(actual_return)
-                except:
+                except Exception:
                     continue
 
             if len(predictions) < 10:  # Need minimum samples for meaningful correlation

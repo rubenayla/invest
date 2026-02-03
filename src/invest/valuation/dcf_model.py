@@ -3,7 +3,7 @@ DCF Model implementations consolidated under the unified structure.
 
 This module contains all DCF-based valuation models:
 - Standard DCF
-- Enhanced DCF 
+- Enhanced DCF
 - Multi-Stage DCF
 
 All inherit from the base ValuationModel class for consistency.
@@ -19,20 +19,20 @@ from .base import ValuationModel, ValuationResult
 class DCFModel(ValuationModel):
     """
     Standard Discounted Cash Flow valuation model.
-    
+
     Discounts projected future free cash flows to present value. Best for
     companies with positive and predictable cash flows.
-    
+
     Data Requirements
     -----------------
     Required fields:
         - currentPrice: Current stock price
         - sharesOutstanding: Number of shares outstanding
-        
+
     Required (at least one):
         - freeCashflow: Free cash flow from operations
         - operatingCashFlow: Operating cash flow (alternative)
-        
+
     Optional fields (improve accuracy):
         - revenueGrowth: Historical revenue growth rate
         - beta: Stock beta for discount rate calculation
@@ -59,7 +59,7 @@ class DCFModel(ValuationModel):
                 return False
 
             return True
-        except:
+        except Exception:
             return False
 
     def _validate_inputs(self, ticker: str, data: Dict[str, Any]) -> None:

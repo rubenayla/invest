@@ -82,7 +82,7 @@ def calculate_1year_return(ticker: str, start_date: datetime) -> float:
 def collect_training_data(tickers: List[str], num_months: int = 24) -> List[Tuple[str, Dict[str, Any], float]]:
     """
     Collect training data using monthly rolling windows.
-    
+
     For each month going back num_months, get fundamental data and 1-year forward returns.
     This gives us 4x more training data and avoids calendar effects.
     """

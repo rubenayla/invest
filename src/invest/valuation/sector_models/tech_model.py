@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 class TechModel(ValuationModel):
     """
     Specialized valuation model for technology companies.
-    
+
     This model emphasizes:
     - Revenue growth and scalability
     - Forward-looking multiples
@@ -191,7 +191,7 @@ class TechModel(ValuationModel):
                 return None
 
             # PEG ratio: P/E / Growth Rate
-            peg_ratio = forward_pe / (earnings_growth * 100)  # Convert to percentage
+            forward_pe / (earnings_growth * 100)  # Convert to percentage
 
             # Adjust target PEG based on tech growth quality
             if earnings_growth > 0.50:  # >50% growth

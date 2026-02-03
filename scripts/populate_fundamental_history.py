@@ -160,11 +160,10 @@ class HistoricalSnapshotFetcher:
             try:
                 info = stock.info
                 sector = info.get('sector', 'Unknown')
-                industry = info.get('industry', 'Unknown')
+                info.get('industry', 'Unknown')
             except Exception as e:
                 logger.warning(f'{ticker}: Could not fetch current info - {e}')
                 sector = 'Unknown'
-                industry = 'Unknown'
 
             # Get historical data
             snapshots = []

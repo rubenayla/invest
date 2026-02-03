@@ -225,7 +225,7 @@ class TestNeuralNetworkValuationModel:
 
     def test_is_suitable(self, model, complete_data):
         """Test model suitability check."""
-        assert model.is_suitable('TEST', complete_data) == True
+        assert model.is_suitable('TEST', complete_data)
 
         # Test with insufficient data
         insufficient_data = {
@@ -233,7 +233,7 @@ class TestNeuralNetworkValuationModel:
                 'currentPrice': 100.0
             }
         }
-        assert model.is_suitable('TEST', insufficient_data) == False
+        assert not model.is_suitable('TEST', insufficient_data)
 
     def test_validate_inputs(self, model, complete_data):
         """Test input validation."""

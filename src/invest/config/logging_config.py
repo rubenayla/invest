@@ -20,7 +20,7 @@ def setup_logging(
 ) -> None:
     """
     Configure logging for the investment analysis system.
-    
+
     Args:
         level: Logging level (DEBUG, INFO, WARNING, ERROR)
         log_to_file: Whether to write logs to file
@@ -126,7 +126,7 @@ def get_logging_config(
 class StructuredFormatter(logging.Formatter):
     """
     Custom formatter that outputs structured JSON logs.
-    
+
     This enables better log analysis and monitoring in production.
     """
 
@@ -168,10 +168,10 @@ class StructuredFormatter(logging.Formatter):
 def get_logger(name: str) -> logging.Logger:
     """
     Get a logger instance with the given name.
-    
+
     Args:
         name: Logger name (typically __name__)
-        
+
     Returns:
         Configured logger instance
     """

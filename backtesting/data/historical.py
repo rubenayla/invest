@@ -39,7 +39,7 @@ class HistoricalDataProvider:
                         lookback_days: int = 365) -> Dict[str, Any]:
         """
         Get all data available as of a specific date (point-in-time).
-        
+
         Parameters
         ----------
         date : pd.Timestamp
@@ -48,7 +48,7 @@ class HistoricalDataProvider:
             List of tickers to get data for
         lookback_days : int
             Number of days of history to include
-            
+
         Returns
         -------
         Dict[str, Any]
@@ -176,7 +176,7 @@ class HistoricalDataProvider:
                                  date: pd.Timestamp) -> Dict[str, Dict]:
         """
         Get fundamental data as it would have been available at a point in time.
-        
+
         Note: This is simplified - in reality, fundamental data has reporting delays.
         For accurate backtesting, you'd need to account for earnings release dates.
         """
@@ -189,8 +189,6 @@ class HistoricalDataProvider:
 
                 # Get quarterly financials
                 financials = stock.quarterly_financials
-                balance_sheet = stock.quarterly_balance_sheet
-                cash_flow = stock.quarterly_cashflow
 
                 # Only use data from before the as-of date
                 # (In reality, there's a lag between period end and reporting)

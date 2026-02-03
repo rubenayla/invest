@@ -66,7 +66,7 @@ class MultiTimeframeNeuralNetworks:
     def __init__(self, models_directory: Path = None):
         """
         Initialize multi-timeframe neural networks.
-        
+
         Parameters
         ----------
         models_directory : Path, optional
@@ -93,12 +93,12 @@ class MultiTimeframeNeuralNetworks:
     def get_model(self, timeframe: str) -> Optional[NeuralNetworkValuationModel]:
         """
         Get neural network model for specific timeframe.
-        
+
         Parameters
         ----------
         timeframe : str
             Timeframe identifier ('1month', '1year', etc.)
-            
+
         Returns
         -------
         Optional[NeuralNetworkValuationModel]
@@ -135,12 +135,12 @@ class MultiTimeframeNeuralNetworks:
     def value_company_all_timeframes(self, ticker: str) -> Dict[str, Optional[ValuationResult]]:
         """
         Value a company using all available timeframe models.
-        
+
         Parameters
         ----------
         ticker : str
             Stock ticker symbol
-            
+
         Returns
         -------
         Dict[str, Optional[ValuationResult]]
@@ -167,14 +167,14 @@ class MultiTimeframeNeuralNetworks:
                                weights: Dict[str, float] = None) -> Optional[ValuationResult]:
         """
         Get consensus valuation across multiple timeframes.
-        
+
         Parameters
         ----------
         ticker : str
             Stock ticker symbol
         weights : Dict[str, float], optional
             Weights for each timeframe. If None, uses correlation-based weighting.
-            
+
         Returns
         -------
         Optional[ValuationResult]

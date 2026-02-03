@@ -16,7 +16,7 @@ F = TypeVar('F', bound=Callable[..., Any])
 def ensure_python_types(func: F) -> F:
     """
     Decorator to ensure function returns Python primitives, not pandas objects.
-    
+
     Converts pandas Series/DataFrame scalars to Python float/int/str.
     """
     @wraps(func)
@@ -62,17 +62,17 @@ def _convert_to_python_type(value: Any) -> Union[float, int, str, bool, None, An
 def validate_price_dict(prices: Dict[str, Any]) -> Dict[str, float]:
     """
     Validate and convert price dictionary to ensure all values are Python floats.
-    
+
     Parameters
     ----------
     prices : Dict[str, Any]
         Dictionary that should contain ticker -> price mappings
-        
+
     Returns
     -------
     Dict[str, float]
         Validated dictionary with Python float values
-        
+
     Raises
     ------
     TypeError

@@ -532,7 +532,7 @@ def get_universe_tickers(universe: str) -> List[str]:
                     fallback_tickers = json.load(f)
                 logger.info(f"Fallback: loaded {len(fallback_tickers)} S&P 500 tickers from file")
                 return fallback_tickers
-            except:
+            except Exception:
                 pass
 
         # Final fallback - minimal set

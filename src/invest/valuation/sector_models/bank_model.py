@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 class BankModel(ValuationModel):
     """
     Specialized valuation model for banks and financial institutions.
-    
+
     This model uses bank-specific metrics like:
     - Return on Assets (ROA) and Return on Equity (ROE)
     - Net Interest Margin (NIM)
@@ -246,7 +246,7 @@ class BankModel(ValuationModel):
             info = data.get('info', {})
 
             dividend_rate = self._safe_float(info.get('dividendRate'))
-            dividend_yield = self._safe_float(info.get('dividendYield'))
+            self._safe_float(info.get('dividendYield'))
 
             if not dividend_rate or dividend_rate <= 0:
                 return None

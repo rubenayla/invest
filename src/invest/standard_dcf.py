@@ -14,7 +14,7 @@ Key Features:
 
 Variables:
     enterprise_value     : Present value of projected FCFs + terminal value
-    estimated_market_cap : Enterprise value - net debt 
+    estimated_market_cap : Enterprise value - net debt
     fair_value_per_share : Market cap / shares outstanding
 
 Best Used For: Large caps, utilities, mature industrials
@@ -113,7 +113,7 @@ def calculate_dcf(
               - Other inputs and intermediate values.
     """
     # Create error context for comprehensive error handling
-    error_context = create_error_context(ticker=ticker, model="DCF", function_name="calculate_dcf")
+    create_error_context(ticker=ticker, model="DCF", function_name="calculate_dcf")
 
     try:
         stock = yf.Ticker(ticker)

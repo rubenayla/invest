@@ -3,7 +3,7 @@ ValuationEngine - Handles execution and coordination of valuation models.
 
 This component is responsible for:
 - Running individual valuation models safely with timeouts
-- Handling model-specific errors and failures  
+- Handling model-specific errors and failures
 - Formatting and cleaning valuation results
 - Managing concurrent model execution
 """
@@ -35,7 +35,7 @@ class ValuationEngine:
     def run_valuation(self, ticker: str, model: str, timeout: int = 30) -> Optional[Dict]:
         """
         Run a single valuation model safely with timeout and error handling.
-        
+
         Parameters
         ----------
         ticker : str
@@ -44,7 +44,7 @@ class ValuationEngine:
             Valuation model name ('dcf', 'rim', etc.)
         timeout : int
             Timeout in seconds for the valuation
-            
+
         Returns
         -------
         Optional[Dict]

@@ -15,7 +15,7 @@ def get_sp500_tickers():
         tickers = [ticker.replace('.', '-') for ticker in tickers]
         print(f"✓ Found {len(tickers)} S&P 500 tickers from Wikipedia")
         return tickers
-    except:
+    except Exception:
         print("Could not fetch from Wikipedia, using comprehensive fallback list")
         # Comprehensive S&P 500 list (as of 2024)
         return [

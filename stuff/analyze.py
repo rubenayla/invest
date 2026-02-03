@@ -27,9 +27,9 @@ def fill(company: dict, verbose = True) -> None:
     """
     Fills company with info from Yahoo Finance
     Prints the updated info
-    
+
     c must have at least a ticker key, in lowercase
-    
+
     """
     stock = yf.Ticker(company["_ticker"])
 
@@ -86,7 +86,7 @@ def fill(company: dict, verbose = True) -> None:
 def update_data(file_path: str = "companies.yaml", verbose = False) -> None:
     """
     Updates the companies in the YAML file with data from Yahoo Finance. Keeps custom names, and ignores invalid results.
-    
+
     Args:
         file_path (str): _description_
         verbose (bool, optional): _description_. Defaults to False.
@@ -121,10 +121,10 @@ def analyze_company(c: dict) -> None:
     """
     Calculates valorations from the c company dictionary
     Adds or modifies the values in c
-    
+
     Args:
         c (dict): company dictionary
-    
+
     """
     # TODO price_to_net
     # Valoration - value_to_gross is subjective, gives a valoration to the gross profit generated. Ignores the equity, unlike price_to_gross

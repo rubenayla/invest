@@ -30,7 +30,7 @@ class RecoveryStrategy:
     def attempt_recovery(self, error_info: ErrorInfo) -> bool:
         """
         Attempt to recover from the error.
-        
+
         Returns:
             True if recovery was successful, False otherwise
         """

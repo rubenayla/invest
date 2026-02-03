@@ -141,7 +141,6 @@ async def handle_call_tool(
         stock_data = fetcher.fetch_multiple(tickers)
 
         # Calculate portfolio metrics
-        portfolio_value = 0
         portfolio_pe = 0
         portfolio_dividend_yield = 0
         portfolio_beta = 0

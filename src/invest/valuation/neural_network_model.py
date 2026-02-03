@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 class NeuralNetworkArchitecture(nn.Module):
     """
     Neural network architecture for stock valuation.
-    
+
     Features a deep architecture with dropout for regularization
     and batch normalization for stable training.
     """
@@ -39,7 +39,7 @@ class NeuralNetworkArchitecture(nn.Module):
                  dropout_rate: float = 0.3, output_type: str = 'score'):
         """
         Initialize the neural network.
-        
+
         Parameters
         ----------
         input_dim : int
@@ -94,7 +94,7 @@ class NeuralNetworkArchitecture(nn.Module):
 class FeatureEngineer:
     """
     Feature engineering for neural network input.
-    
+
     Transforms raw financial data into normalized features suitable
     for neural network training.
     """
@@ -244,7 +244,7 @@ class FeatureEngineer:
     def _convert_to_dict(self, data: Any) -> Dict[str, Any]:
         """
         Convert input data (Dict or DataFrame) to a dictionary predictably.
-        
+
         - If Dict: Return as is.
         - If DataFrame: Return the most recent column (first column) as dict.
         - If None/Other: Return empty dict.
@@ -522,12 +522,12 @@ class FeatureEngineer:
     def fit_transform(self, features_list: List[Dict[str, float]]) -> np.ndarray:
         """
         Fit the scaler and transform features.
-        
+
         Parameters
         ----------
         features_list : List[Dict[str, float]]
             List of feature dictionaries
-            
+
         Returns
         -------
         np.ndarray
@@ -551,12 +551,12 @@ class FeatureEngineer:
     def transform(self, features: Dict[str, float]) -> np.ndarray:
         """
         Transform features using fitted scaler.
-        
+
         Parameters
         ----------
         features : Dict[str, float]
             Feature dictionary
-            
+
         Returns
         -------
         np.ndarray
@@ -578,7 +578,7 @@ class FeatureEngineer:
 class NeuralNetworkValuationModel(ValuationModel):
     """
     Neural network-based valuation model.
-    
+
     This model uses a deep neural network trained on historical market data
     to predict company valuations. It incorporates extensive feature engineering
     and can target different time horizons.
@@ -587,7 +587,7 @@ class NeuralNetworkValuationModel(ValuationModel):
     def __init__(self, time_horizon: str = '1year', model_path: Optional[Path] = None):
         """
         Initialize the neural network valuation model.
-        
+
         Parameters
         ----------
         time_horizon : str
@@ -655,17 +655,17 @@ class NeuralNetworkValuationModel(ValuationModel):
     def is_suitable(self, ticker: str, data: Dict[str, Any]) -> bool:
         """
         Check if this model is suitable for the given company.
-        
+
         Neural network model is generally applicable to all companies
         with sufficient fundamental data.
-        
+
         Parameters
         ----------
         ticker : str
             Stock ticker symbol
         data : Dict[str, Any]
             Company financial data
-            
+
         Returns
         -------
         bool
@@ -693,14 +693,14 @@ class NeuralNetworkValuationModel(ValuationModel):
     def _validate_inputs(self, ticker: str, data: Dict[str, Any]) -> None:
         """
         Validate that required input data is available.
-        
+
         Parameters
         ----------
         ticker : str
             Stock ticker symbol
         data : Dict[str, Any]
             Company financial data
-            
+
         Raises
         ------
         InsufficientDataError
@@ -742,14 +742,14 @@ class NeuralNetworkValuationModel(ValuationModel):
     def _calculate_valuation(self, ticker: str, data: Dict[str, Any]) -> ValuationResult:
         """
         Perform neural network valuation.
-        
+
         Parameters
         ----------
         ticker : str
             Stock ticker symbol
         data : Dict[str, Any]
             Company financial data
-            
+
         Returns
         -------
         ValuationResult
@@ -925,7 +925,7 @@ class NeuralNetworkValuationModel(ValuationModel):
                    validation_split: float = 0.2, epochs: int = 100) -> Dict[str, float]:
         """
         Train the neural network model on historical data.
-        
+
         Parameters
         ----------
         training_data : List[Tuple[str, Dict[str, Any], float]]
@@ -934,7 +934,7 @@ class NeuralNetworkValuationModel(ValuationModel):
             Fraction of data to use for validation
         epochs : int
             Number of training epochs
-            
+
         Returns
         -------
         Dict[str, float]

@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class MarketCapStrategy:
     """
     Simple strategy that buys the largest stocks by market capitalization.
-    
+
     This serves as a baseline strategy for comparison - it simply invests
     in the biggest companies, which historically has been a reasonable
     approach due to the quality and stability of large-cap stocks.
@@ -23,7 +23,7 @@ class MarketCapStrategy:
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         """
         Initialize strategy with configuration.
-        
+
         Parameters
         ----------
         config : Dict[str, Any], optional
@@ -49,7 +49,7 @@ class MarketCapStrategy:
                          date: pd.Timestamp) -> Dict[str, float]:
         """
         Generate target portfolio weights based on market cap ranking.
-        
+
         Parameters
         ----------
         market_data : Dict[str, Any]
@@ -58,7 +58,7 @@ class MarketCapStrategy:
             Current portfolio holdings
         date : pd.Timestamp
             Current date
-            
+
         Returns
         -------
         Dict[str, float]
@@ -151,7 +151,7 @@ class MarketCapStrategy:
                          current_portfolio: Dict[str, float]) -> bool:
         """
         Determine if rebalancing is needed based on drift from target.
-        
+
         This helps reduce transaction costs by only rebalancing when
         the portfolio has drifted significantly from target weights.
         """

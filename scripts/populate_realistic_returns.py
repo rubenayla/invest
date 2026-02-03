@@ -84,12 +84,12 @@ def calculate_realistic_exit_return(
     hit_20_mask = window_data['return'] >= 0.20
     if hit_20_mask.any():
         first_20_idx = hit_20_mask.idxmax()
-        exit_20_price = window_data.loc[first_20_idx, 'close']
+        window_data.loc[first_20_idx, 'close']
         exit_20_return = 0.20  # Exactly 20% gain
         exit_20_date = window_data.loc[first_20_idx, 'date']
     else:
         # If never hits 20%, use final price for this portion
-        exit_20_price = window_data.iloc[-1]['close']
+        window_data.iloc[-1]['close']
         exit_20_return = window_data.iloc[-1]['return']
         exit_20_date = window_data.iloc[-1]['date']
 
@@ -97,18 +97,18 @@ def calculate_realistic_exit_return(
     hit_50_mask = window_data['return'] >= 0.50
     if hit_50_mask.any():
         first_50_idx = hit_50_mask.idxmax()
-        exit_50_price = window_data.loc[first_50_idx, 'close']
+        window_data.loc[first_50_idx, 'close']
         exit_50_return = 0.50  # Exactly 50% gain
         exit_50_date = window_data.loc[first_50_idx, 'date']
     else:
         # If never hits 50%, use final price for this portion
-        exit_50_price = window_data.iloc[-1]['close']
+        window_data.iloc[-1]['close']
         exit_50_return = window_data.iloc[-1]['return']
         exit_50_date = window_data.iloc[-1]['date']
 
     # 3. Peak price in window
     peak_idx = window_data['close'].idxmax()
-    peak_price = window_data.loc[peak_idx, 'close']
+    window_data.loc[peak_idx, 'close']
     peak_return = window_data.loc[peak_idx, 'return']
     peak_date = window_data.loc[peak_idx, 'date']
 

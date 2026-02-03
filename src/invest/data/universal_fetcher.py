@@ -89,7 +89,7 @@ class UniversalStockFetcher:
     def __init__(self, convert_currency: bool = True, target_currency: str = 'USD'):
         """
         Initialize the universal fetcher.
-        
+
         Args:
             convert_currency: Whether to convert all prices to target currency
             target_currency: Target currency for conversion (default: USD)
@@ -101,7 +101,7 @@ class UniversalStockFetcher:
     def parse_ticker(self, ticker_input: str) -> str:
         """
         Parse various ticker formats into Yahoo Finance format.
-        
+
         Examples:
             'AAPL' -> 'AAPL'
             'AAPL:NASDAQ' -> 'AAPL'
@@ -134,10 +134,10 @@ class UniversalStockFetcher:
     def fetch_stock(self, ticker_input: str) -> Optional[Dict]:
         """
         Fetch data for a single stock from any exchange.
-        
+
         Args:
             ticker_input: Ticker in any supported format
-            
+
         Returns:
             Dictionary with normalized stock data
         """
@@ -174,11 +174,11 @@ class UniversalStockFetcher:
     def fetch_multiple(self, tickers: List[str], max_workers: int = 10) -> Dict[str, Optional[Dict]]:
         """
         Fetch data for multiple stocks concurrently.
-        
+
         Args:
             tickers: List of tickers in any supported format
             max_workers: Maximum concurrent threads
-            
+
         Returns:
             Dictionary mapping original ticker -> stock data
         """
@@ -266,7 +266,7 @@ class UniversalStockFetcher:
                 rate_data = yf.Ticker(rate_ticker).info
                 rate = rate_data.get('regularMarketPrice', 1.0)
                 self._exchange_rates[source_currency] = rate
-            except:
+            except Exception:
                 logger.warning(f'Could not get exchange rate for {source_currency} to {self.target_currency}')
                 self._exchange_rates[source_currency] = 1.0
 
@@ -340,11 +340,11 @@ class UniversalStockFetcher:
 def compare_international_stocks(tickers: List[str], metrics: List[str] = None) -> Dict:
     """
     Compare stocks from different exchanges on common metrics.
-    
+
     Args:
         tickers: List of tickers (can be from different exchanges)
         metrics: Specific metrics to compare (default: key valuation metrics)
-        
+
     Returns:
         Comparison dictionary with normalized data
     """

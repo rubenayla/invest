@@ -20,7 +20,7 @@ class PerformanceMetrics:
                   benchmark_data: Optional[pd.DataFrame] = None) -> Dict[str, Any]:
         """
         Calculate comprehensive performance metrics.
-        
+
         Parameters
         ----------
         portfolio_values : pd.DataFrame
@@ -29,7 +29,7 @@ class PerformanceMetrics:
             Initial portfolio value
         benchmark_data : pd.DataFrame, optional
             Benchmark price data for comparison
-            
+
         Returns
         -------
         Dict[str, Any]
@@ -204,14 +204,14 @@ class PerformanceMetrics:
                                    window: int = 252) -> pd.DataFrame:
         """
         Calculate rolling performance metrics.
-        
+
         Parameters
         ----------
         portfolio_values : pd.DataFrame
             Portfolio value history
         window : int
             Rolling window size in days
-            
+
         Returns
         -------
         pd.DataFrame

@@ -49,12 +49,12 @@ class Portfolio:
     def get_value(self, current_prices: Dict[str, float]) -> float:
         """
         Calculate total portfolio value.
-        
+
         Parameters
         ----------
         current_prices : Dict[str, float]
             Current prices for all holdings (must be Python floats, not pandas objects)
-            
+
         Returns
         -------
         float
@@ -92,7 +92,7 @@ class Portfolio:
                   date: pd.Timestamp = None) -> List[Trade]:
         """
         Rebalance portfolio to target weights.
-        
+
         Parameters
         ----------
         target_weights : Dict[str, float]
@@ -105,7 +105,7 @@ class Portfolio:
             Slippage as percentage
         date : pd.Timestamp
             Date of rebalancing
-            
+
         Returns
         -------
         List[Trade]

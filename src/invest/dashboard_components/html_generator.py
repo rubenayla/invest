@@ -28,7 +28,7 @@ class HTMLGenerator:
     def generate_dashboard_html(self, stocks_data: Dict, progress_data: Dict, metadata: Dict = None) -> str:
         """
         Generate complete HTML dashboard.
-        
+
         Parameters
         ----------
         stocks_data : Dict
@@ -37,7 +37,7 @@ class HTMLGenerator:
             Progress tracking information
         metadata : Dict, optional
             Additional metadata for the dashboard
-            
+
         Returns
         -------
         str
@@ -72,9 +72,9 @@ class HTMLGenerator:
                 <button onclick="exportToCSV()" style="color: white; background: rgba(40,167,69,0.8); border: none; padding: 8px 16px; border-radius: 6px; font-weight: 500; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='rgba(40,167,69,1)'" onmouseout="this.style.background='rgba(40,167,69,0.8)'">📥 Export to CSV</button>
             </div>
         </header>
-        
+
         {progress_html}
-        
+
         <div class="controls">
             <div class="universe-selector">
                 <label for="universe">Select Universe:</label>
@@ -93,14 +93,14 @@ class HTMLGenerator:
             </div>
             <button id="updateButton" onclick="updateDashboard()">🔄 Update Data</button>
         </div>
-        
+
         {summary_html}
-        
+
         <div class="stock-analysis">
             <h2>📈 Stock Analysis Results</h2>
             {table_html}
         </div>
-        
+
         <footer class="dashboard-footer">
             <p>💡 <strong>How to read this dashboard:</strong></p>
             <ul>
@@ -112,7 +112,7 @@ class HTMLGenerator:
             <p class="disclaimer">⚠️ This is for educational purposes. Not investment advice. Do your own research.</p>
         </footer>
     </div>
-    
+
     <script>
         {self._get_javascript()}
     </script>
@@ -227,7 +227,7 @@ class HTMLGenerator:
         current_price = stock_data.get("current_price", 0)
         valuations = stock_data.get("valuations", {})
         status = stock_data.get("status", "pending")
-        status_message = stock_data.get("status_message", "Unknown")
+        stock_data.get("status_message", "Unknown")
         company_name = stock_data.get("company_name", ticker)
 
         # Create meaningful status based on what actually worked
@@ -349,7 +349,7 @@ class HTMLGenerator:
         """Format a valuation cell with fair value, margin, and ratio."""
         if valuation.get("failed", False):
             reason = valuation.get("failure_reason", "Model failed")
-            short_reason = reason[:30] + "..." if len(reason) > 30 else reason
+            reason[:30] + "..." if len(reason) > 30 else reason
             return f'<span title="{reason}">❌</span>'
 
         fair_value = valuation.get("fair_value")
@@ -412,12 +412,12 @@ class HTMLGenerator:
         """Format neural network valuation cell with confidence indicator."""
         if not valuation or not valuation.get('suitable'):
             reason = valuation.get('error', 'No prediction') if valuation else 'No data'
-            short_reason = reason[:30] + '...' if len(reason) > 30 else reason
+            reason[:30] + '...' if len(reason) > 30 else reason
             return f'<span title="{reason}">-</span>'
 
         fair_value = valuation.get('fair_value')
         margin = valuation.get('margin_of_safety')
-        confidence = valuation.get('confidence', 'unknown')
+        valuation.get('confidence', 'unknown')
 
         if fair_value is None or fair_value == 0:
             return '-'
@@ -683,7 +683,7 @@ class HTMLGenerator:
         """Get CSS styles for the dashboard."""
         return """
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
@@ -691,7 +691,7 @@ class HTMLGenerator:
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
         }
-        
+
         .container {
             width: 100%;
             margin: 0;
@@ -699,7 +699,7 @@ class HTMLGenerator:
             background: rgba(255, 255, 255, 0.95);
             min-height: 100vh;
         }
-        
+
         .dashboard-header {
             text-align: center;
             margin-bottom: 30px;
@@ -708,24 +708,24 @@ class HTMLGenerator:
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         .dashboard-header h1 {
             color: #2c3e50;
             margin-bottom: 10px;
             font-size: 2.5em;
         }
-        
+
         .subtitle {
             color: #7f8c8d;
             font-size: 1.2em;
             margin-bottom: 10px;
         }
-        
+
         .last-updated {
             color: #95a5a6;
             font-size: 0.9em;
         }
-        
+
         .progress-section {
             margin-bottom: 20px;
             padding: 15px;
@@ -733,7 +733,7 @@ class HTMLGenerator:
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        
+
         .progress-bar {
             width: 100%;
             height: 20px;
@@ -742,19 +742,19 @@ class HTMLGenerator:
             overflow: hidden;
             margin-bottom: 10px;
         }
-        
+
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #3498db, #2ecc71);
             transition: width 0.3s ease;
         }
-        
+
         .progress-text {
             text-align: center;
             font-weight: 500;
             color: #2c3e50;
         }
-        
+
         .controls {
             display: flex;
             justify-content: space-between;
@@ -765,7 +765,7 @@ class HTMLGenerator:
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        
+
         .universe-selector select, .universe-selector input {
             padding: 8px 12px;
             border: 2px solid #ddd;
@@ -773,7 +773,7 @@ class HTMLGenerator:
             font-size: 14px;
             margin-left: 10px;
         }
-        
+
         #updateButton {
             background: linear-gradient(135deg, #3498db, #2980b9);
             color: white;
@@ -785,11 +785,11 @@ class HTMLGenerator:
             font-weight: 500;
             transition: transform 0.2s;
         }
-        
+
         #updateButton:hover {
             transform: translateY(-2px);
         }
-        
+
         .analysis-summary {
             margin-bottom: 20px;
             padding: 20px;
@@ -797,14 +797,14 @@ class HTMLGenerator:
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        
+
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
-        
+
         .summary-item {
             text-align: center;
             padding: 15px;
@@ -812,11 +812,11 @@ class HTMLGenerator:
             border-radius: 6px;
             border-left: 4px solid #3498db;
         }
-        
+
         .stock-analysis {
             margin-bottom: 30px;
         }
-        
+
         .table-container {
             overflow-x: auto;
             overflow-y: auto;
@@ -826,13 +826,13 @@ class HTMLGenerator:
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         .stock-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 14px;
         }
-        
+
         .stock-table th {
             position: sticky;
             top: 0;
@@ -845,99 +845,99 @@ class HTMLGenerator:
             user-select: none;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
+
         .stock-table th:hover {
             background: #2c3e50;
         }
-        
+
         .stock-table th.sorted,
         .stock-table th.sort-asc,
         .stock-table th.sort-desc {
             background: #2c3e50;
         }
-        
+
         .stock-table th.sort-asc::after {
             content: ' ↑';
             color: #bdc3c7;
         }
-        
+
         .stock-table th.sort-desc::after {
             content: ' ↓';
             color: #bdc3c7;
         }
-        
+
         .stock-table td {
             padding: 10px 8px;
             border-bottom: 1px solid #ecf0f1;
         }
-        
+
         .stock-row:hover {
             background: #f8f9fa;
         }
-        
+
         .stock-row.completed {
             background: rgba(46, 204, 113, 0.1);
         }
-        
+
         .stock-row.analyzing {
             background: rgba(52, 152, 219, 0.1);
         }
-        
+
         .valuation-cell {
             text-align: center;
         }
-        
+
         .fair-value {
             font-weight: 500;
             margin-bottom: 2px;
         }
-        
+
         .margin {
             font-size: 12px;
             padding: 2px 6px;
             border-radius: 3px;
             font-weight: 500;
         }
-        
+
         .ratio {
             font-size: 11px;
             color: #6c757d;
             font-weight: 500;
             margin-top: 1px;
         }
-        
+
         .margin-excellent {
             background: #d4edda;
             color: #155724;
         }
-        
+
         .margin-good {
             background: #fff3cd;
             color: #856404;
         }
-        
+
         .margin-neutral {
             background: #e2e3e5;
             color: #383d41;
         }
-        
+
         .margin-poor {
             background: #f8d7da;
             color: #721c24;
         }
-        
+
         .consensus-cell {
             text-align: center;
             border-left: 3px solid #3498db;
             padding-left: 8px;
         }
-        
+
         .model-count {
             font-size: 11px;
             color: #7f8c8d;
             margin-top: 2px;
         }
-        
+
         .dashboard-footer {
             margin-top: 30px;
             padding: 20px;
@@ -945,11 +945,11 @@ class HTMLGenerator:
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        
+
         .dashboard-footer ul {
             margin: 10px 0 10px 20px;
         }
-        
+
         .disclaimer {
             margin-top: 15px;
             padding: 10px;
@@ -958,14 +958,14 @@ class HTMLGenerator:
             color: #856404;
             font-size: 14px;
         }
-        
+
         .no-data {
             text-align: center;
             padding: 40px;
             color: #7f8c8d;
             font-style: italic;
         }
-        
+
         @media (max-width: 768px) {
             .container { padding: 10px; }
             .controls { flex-direction: column; gap: 15px; }
@@ -979,12 +979,12 @@ class HTMLGenerator:
         """Get JavaScript for dashboard interactivity."""
         return """
         let isUpdating = false;
-        
+
         // Simple, reliable table sorting
         document.addEventListener('DOMContentLoaded', function() {
             const table = document.getElementById('stockTable');
             if (!table) return;
-            
+
             // Add click handlers to all headers
             const headers = table.querySelectorAll('th');
             headers.forEach((header, columnIndex) => {
@@ -993,55 +993,55 @@ class HTMLGenerator:
                 header.addEventListener('click', () => sortTableByColumn(columnIndex));
             });
         });
-        
+
         function sortTableByColumn(columnIndex) {
             const table = document.getElementById('stockTable');
             const tbody = table.querySelector('tbody');
             const rows = Array.from(tbody.querySelectorAll('tr'));
-            
+
             // Determine sort direction
             const header = table.querySelectorAll('th')[columnIndex];
             const isAscending = !header.classList.contains('sort-asc');
-            
+
             // Clear all sort classes
             table.querySelectorAll('th').forEach(h => {
                 h.classList.remove('sort-asc', 'sort-desc');
             });
-            
+
             // Add sort class to current header
             header.classList.add(isAscending ? 'sort-asc' : 'sort-desc');
-            
+
             // Sort rows
             rows.sort((rowA, rowB) => {
                 const cellA = rowA.cells[columnIndex];
                 const cellB = rowB.cells[columnIndex];
-                
+
                 if (!cellA || !cellB) return 0;
-                
+
                 let textA = cellA.textContent.trim();
                 let textB = cellB.textContent.trim();
-                
+
                 // Check for empty/placeholder values - always put these last
                 const isEmptyA = textA === '-' || textA === 'N/A' || textA === '';
                 const isEmptyB = textB === '-' || textB === 'N/A' || textB === '';
-                
+
                 if (isEmptyA && isEmptyB) return 0;  // Both empty, equal
                 if (isEmptyA) return 1;              // A is empty, put it last
                 if (isEmptyB) return -1;             // B is empty, put it last
-                
+
                 // Extract ratio values from ratio divs if they exist
                 const ratioA = cellA.querySelector('.ratio');
                 const ratioB = cellB.querySelector('.ratio');
                 const marginA = cellA.querySelector('.margin');
                 const marginB = cellB.querySelector('.margin');
-                
+
                 let comparison = 0;
-                
+
                 if (ratioA && ratioB) {
                     // Both have ratio data - sort by expected value to market price ratio
                     const ratioValueA = parseFloat(ratioA.textContent.replace(/[x]/g, ''));
                     const ratioValueB = parseFloat(ratioB.textContent.replace(/[x]/g, ''));
-                    
+
                     if (!isNaN(ratioValueA) && !isNaN(ratioValueB)) {
                         comparison = ratioValueB - ratioValueA; // Higher ratios first (more undervalued)
                     } else {
@@ -1062,29 +1062,29 @@ class HTMLGenerator:
                     // No percentages, sort by dollar values or text
                     const numA = parseFloat(textA.replace(/[$,%]/g, ''));
                     const numB = parseFloat(textB.replace(/[$,%]/g, ''));
-                    
+
                     if (!isNaN(numA) && !isNaN(numB)) {
                         comparison = numB - numA; // Higher values first
                     } else {
                         comparison = textA.localeCompare(textB);
                     }
                 }
-                
+
                 return isAscending ? comparison : -comparison;
             });
-            
+
             // Rebuild table
             rows.forEach(row => tbody.appendChild(row));
         }
-        
+
         function updateDashboard() {
             if (isUpdating) return;
-            
+
             const universe = document.getElementById('universe').value;
             const customTickers = document.getElementById('customTickers').value;
             const button = document.getElementById('updateButton');
             const progressSection = document.getElementById('progressSection');
-            
+
             // Show progress section and disable button
             if (progressSection) progressSection.style.display = 'block';
             if (button) {
@@ -1092,12 +1092,12 @@ class HTMLGenerator:
                 button.textContent = '🔄 Updating...';
             }
             isUpdating = true;
-            
+
             const requestData = { universe: universe };
             if (universe === 'custom' && customTickers) {
                 requestData.tickers = customTickers.split(',').map(t => t.trim().toUpperCase());
             }
-            
+
             fetch('/update', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1113,25 +1113,25 @@ class HTMLGenerator:
                 resetUpdateButton();
             });
         }
-        
+
         function startProgressPolling() {
             const pollInterval = setInterval(() => {
                 location.reload();
             }, 3000);
-            
+
             setTimeout(() => {
                 clearInterval(pollInterval);
                 resetUpdateButton();
             }, 600000);
         }
-        
+
         function resetUpdateButton() {
             const button = document.getElementById('updateButton');
             button.disabled = false;
             button.textContent = '🔄 Update Data';
             isUpdating = false;
         }
-        
+
         // Universe selector handling
         document.getElementById('universe').addEventListener('change', function() {
             const customInput = document.getElementById('customTickers');
@@ -1200,8 +1200,8 @@ class HTMLGenerator:
 
             console.log(`Exported ${rows.length - 1} rows to CSV`);
         }
-        
-        
+
+
         // Auto-refresh when update is in progress
         document.addEventListener('DOMContentLoaded', function() {
             const progressSection = document.getElementById('progressSection');

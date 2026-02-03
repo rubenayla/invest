@@ -99,7 +99,7 @@ class MultiHorizonTrainer:
 
             # Build data dict (dummy structure for compatibility with FeatureEngineer)
             # The actual features are already extracted in the database
-            data = {
+            {
                 'info': {},
                 'history': pd.DataFrame(),  # Empty, features already extracted
                 'macro': {}
@@ -229,7 +229,6 @@ class MultiHorizonTrainer:
         logger.info('='*60)
 
         model.model.eval()
-        test_predictions = []
 
         with torch.no_grad():
             X_test_t = torch.FloatTensor(X_test).to(model.device)

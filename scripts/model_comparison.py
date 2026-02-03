@@ -278,7 +278,7 @@ def run_comparison():
         return
 
     # Create comparison table
-    comparison_df = pd.DataFrame(all_results).T
+    pd.DataFrame(all_results).T
 
     print('\nPrediction Accuracy:')
     print(f'{"Model":<15} {"MAE":<8} {"Correlation":<12} {"Hit Rate":<10} {"Predictions":<12}')

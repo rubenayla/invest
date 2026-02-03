@@ -6,14 +6,14 @@ different assumptions for growth rates, discount rates, margins, etc. to produce
 probability distributions of fair values.
 
 Key Benefits:
-- Shows uncertainty and risk in valuations 
+- Shows uncertainty and risk in valuations
 - Provides confidence intervals (e.g., 68% chance fair value is $40-60)
 - Identifies most sensitive assumptions
 - Professional-grade probabilistic analysis
 
 Output Example:
 - Fair Value: $45.67 (Median)
-- 68% Confidence Range: $38.12 - $52.34  
+- 68% Confidence Range: $38.12 - $52.34
 - 95% Confidence Range: $31.45 - $67.89
 - Probability of 50%+ upside: 23%
 - Key risk factors: Revenue growth uncertainty, margin compression risk
@@ -51,10 +51,10 @@ def calculate_monte_carlo_dcf(
 ) -> Dict:
     """
     Monte Carlo DCF with probabilistic inputs and confidence intervals.
-    
+
     Runs thousands of DCF scenarios with randomized inputs to generate
     probability distributions of fair values and key risk metrics.
-    
+
     Parameters
     ----------
     ticker : str
@@ -67,7 +67,7 @@ def calculate_monte_carlo_dcf(
         Standard deviation of revenue growth rate uncertainty
     margin_uncertainty : float
         Standard deviation of profit margin uncertainty
-    discount_rate_uncertainty : float  
+    discount_rate_uncertainty : float
         Standard deviation of discount rate uncertainty
     terminal_growth_uncertainty : float
         Standard deviation of terminal growth rate uncertainty
@@ -81,14 +81,14 @@ def calculate_monte_carlo_dcf(
         Whether to model correlations between variables, default True
     verbose : bool
         Whether to print detailed results, default True
-        
+
     Returns
     -------
     Dict
         Monte Carlo results with confidence intervals, risk metrics, and sensitivity analysis
     """
     # Create error context for comprehensive error handling
-    error_context = create_error_context(ticker=ticker, model="Monte Carlo DCF", function_name="calculate_monte_carlo_dcf")
+    create_error_context(ticker=ticker, model="Monte Carlo DCF", function_name="calculate_monte_carlo_dcf")
 
     try:
         # Get base company data
@@ -230,7 +230,7 @@ def _extract_base_metrics(info: Dict, financials, cashflow, ticker: str) -> Dict
 
     # Financial metrics
     market_cap = info.get('marketCap')
-    enterprise_value = info.get('enterpriseValue')
+    info.get('enterpriseValue')
 
     # Revenue and profitability
     revenue = info.get('totalRevenue')
@@ -610,7 +610,7 @@ def _print_monte_carlo_analysis(results: Dict, ticker: str) -> None:
 def calculate_monte_carlo_valuation(ticker: str, **kwargs) -> Dict:
     """
     Wrapper function for dashboard integration.
-    
+
     Provides same interface as other valuation models with Monte Carlo enhancement.
     """
     result = calculate_monte_carlo_dcf(ticker, **kwargs)

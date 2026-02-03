@@ -43,7 +43,7 @@ class RIMModel(ValuationModel):
 
             return True
 
-        except:
+        except Exception:
             return False
 
     def _validate_inputs(self, ticker: str, data: Dict[str, Any]) -> None:

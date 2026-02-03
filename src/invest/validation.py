@@ -14,13 +14,13 @@ from .exceptions import ValidationError, raise_ticker_validation_error
 def validate_ticker(ticker: str) -> str:
     """
     Validate and normalize ticker symbol.
-    
+
     Args:
         ticker: Stock ticker symbol to validate
-        
+
     Returns:
         Normalized ticker symbol (uppercase, stripped)
-        
+
     Raises:
         ValidationError: If ticker format is invalid
     """
@@ -44,13 +44,13 @@ def validate_ticker(ticker: str) -> str:
 def validate_ticker_list(tickers: List[str]) -> List[str]:
     """
     Validate and normalize a list of ticker symbols.
-    
+
     Args:
         tickers: List of ticker symbols
-        
+
     Returns:
         List of normalized ticker symbols
-        
+
     Raises:
         ValidationError: If any ticker is invalid
     """
@@ -70,15 +70,15 @@ def validate_ticker_list(tickers: List[str]) -> List[str]:
 def validate_positive_number(value: Any, field_name: str, allow_zero: bool = False) -> float:
     """
     Validate that a value is a positive number.
-    
+
     Args:
         value: Value to validate
         field_name: Name of the field for error messages
         allow_zero: Whether to allow zero values
-        
+
     Returns:
         Validated float value
-        
+
     Raises:
         ValidationError: If value is not a positive number
     """
@@ -99,16 +99,16 @@ def validate_positive_number(value: Any, field_name: str, allow_zero: bool = Fal
 def validate_percentage(value: Any, field_name: str, min_pct: float = 0.0, max_pct: float = 1.0) -> float:
     """
     Validate that a value is a valid percentage (0-1 decimal format).
-    
+
     Args:
         value: Value to validate
         field_name: Name of the field for error messages
         min_pct: Minimum allowed percentage (default 0.0)
         max_pct: Maximum allowed percentage (default 1.0)
-        
+
     Returns:
         Validated percentage as decimal
-        
+
     Raises:
         ValidationError: If value is not a valid percentage
     """
@@ -127,16 +127,16 @@ def validate_percentage(value: Any, field_name: str, min_pct: float = 0.0, max_p
 def validate_integer_range(value: Any, field_name: str, min_val: int, max_val: int) -> int:
     """
     Validate that a value is an integer within specified range.
-    
+
     Args:
         value: Value to validate
         field_name: Name of the field for error messages
         min_val: Minimum allowed value (inclusive)
         max_val: Maximum allowed value (inclusive)
-        
+
     Returns:
         Validated integer value
-        
+
     Raises:
         ValidationError: If value is not a valid integer in range
     """
@@ -158,14 +158,14 @@ def validate_integer_range(value: Any, field_name: str, min_val: int, max_val: i
 def validate_financial_data(data: Dict[str, Any], required_fields: List[str]) -> Dict[str, Any]:
     """
     Validate that financial data contains required fields with valid values.
-    
+
     Args:
         data: Dictionary of financial data
         required_fields: List of required field names
-        
+
     Returns:
         Validated financial data dictionary
-        
+
     Raises:
         ValidationError: If required fields are missing or invalid
     """
@@ -202,14 +202,14 @@ def validate_financial_data(data: Dict[str, Any], required_fields: List[str]) ->
 def validate_config_dict(config: Dict[str, Any], schema: Dict[str, type]) -> Dict[str, Any]:
     """
     Validate configuration dictionary against a schema.
-    
+
     Args:
         config: Configuration dictionary to validate
         schema: Dictionary mapping field names to expected types
-        
+
     Returns:
         Validated configuration dictionary
-        
+
     Raises:
         ValidationError: If configuration doesn't match schema
     """

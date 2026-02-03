@@ -54,12 +54,12 @@ class Backtester:
     def run(self, strategy) -> 'BacktestResults':
         """
         Run backtest with given strategy.
-        
+
         Parameters
         ----------
         strategy : Strategy
             Investment strategy to test
-            
+
         Returns
         -------
         BacktestResults

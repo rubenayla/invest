@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 class ETFPortfolioStrategy:
     """
     ETF-based portfolio strategy for backtesting.
-    
+
     Supports multiple allocation approaches:
     - Core-Satellite: Broad market core with tactical satellite positions
     - Risk Parity: Balance risk across asset classes
@@ -33,7 +33,7 @@ class ETFPortfolioStrategy:
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         """
         Initialize ETF strategy with configuration.
-        
+
         Parameters
         ----------
         config : Dict[str, Any], optional
@@ -81,7 +81,7 @@ class ETFPortfolioStrategy:
                          date: pd.Timestamp) -> Dict[str, float]:
         """
         Generate target ETF portfolio weights based on selected strategy.
-        
+
         Parameters
         ----------
         market_data : Dict[str, Any]
@@ -90,7 +90,7 @@ class ETFPortfolioStrategy:
             Current portfolio holdings
         date : pd.Timestamp
             Current date
-            
+
         Returns
         -------
         Dict[str, float]

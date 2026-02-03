@@ -15,24 +15,24 @@ from .base import ValuationModel, ValuationResult
 class SimpleRatiosModel(ValuationModel):
     """
     Simple ratios-based valuation model using market multiples.
-    
+
     Uses P/E, P/B, P/S ratios for quick valuation. Best for mature companies
     with stable earnings and established market comparables.
-    
+
     Data Requirements
     -----------------
     Required fields:
         - currentPrice: Current stock price
-        
+
     Required (at least one):
         - trailingEps: Trailing twelve months earnings per share
         - bookValue: Book value per share
         - revenuePerShare: Revenue per share
-        
+
     Optional fields (improve accuracy):
         - totalCash: Total cash on balance sheet
         - sharesOutstanding: Shares outstanding
-        - sector: Company sector for industry-specific multiples  
+        - sector: Company sector for industry-specific multiples
         - beta: Stock beta for risk adjustment
     """
 
@@ -66,7 +66,7 @@ class SimpleRatiosModel(ValuationModel):
 
             return any(metric and metric > 0 for metric in metrics_available)
 
-        except:
+        except Exception:
             return False
 
     def _validate_inputs(self, ticker: str, data: Dict[str, Any]) -> None:
@@ -215,12 +215,12 @@ class SimpleRatiosModel(ValuationModel):
     def _get_industry_pe_multiple(self, info: Dict[str, Any]) -> float:
         """Get appropriate P/E multiple based on industry/growth."""
         # Try to get forward P/E for growth adjustment
-        forward_pe = self._safe_float(info.get('forwardPE'))
-        trailing_pe = self._safe_float(info.get('trailingPE'))
+        self._safe_float(info.get('forwardPE'))
+        self._safe_float(info.get('trailingPE'))
 
         # Use industry/sector to adjust multiple (simplified)
         sector = info.get('sector', '')
-        industry = info.get('industry', '')
+        info.get('industry', '')
 
         base_pe = self.default_multiples['pe_ratio']
 

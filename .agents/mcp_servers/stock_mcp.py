@@ -25,11 +25,11 @@ cache_dir = Path('data/cache')
 async def analyze_stock(ticker: str, use_cache: bool = True) -> list[TextContent]:
     """
     Analyze a stock with multiple valuation models.
-    
+
     Args:
         ticker: Stock ticker symbol (e.g., 'AAPL', 'MSFT')
         use_cache: Whether to use cached data (default: True)
-    
+
     Returns:
         Comprehensive analysis including valuations and key metrics
     """
@@ -97,10 +97,10 @@ async def analyze_stock(ticker: str, use_cache: bool = True) -> list[TextContent
 async def compare_stocks(*tickers: str) -> list[TextContent]:
     """
     Compare multiple stocks side by side.
-    
+
     Args:
         tickers: Stock ticker symbols to compare (e.g., 'AAPL', 'MSFT', 'GOOGL')
-    
+
     Returns:
         Comparison table with key metrics for each stock
     """
@@ -161,10 +161,10 @@ async def compare_stocks(*tickers: str) -> list[TextContent]:
 async def get_cache_info(ticker: str = None) -> list[TextContent]:
     """
     Get information about cached data.
-    
+
     Args:
         ticker: Specific ticker to check (optional, shows all if not provided)
-    
+
     Returns:
         Cache status and age information
     """
@@ -235,11 +235,11 @@ async def get_cache_info(ticker: str = None) -> list[TextContent]:
 async def find_value_stocks(max_pe: float = 15, min_roe: float = 15) -> list[TextContent]:
     """
     Find undervalued stocks based on P/E and ROE criteria.
-    
+
     Args:
         max_pe: Maximum P/E ratio (default: 15)
         min_roe: Minimum ROE percentage (default: 15)
-    
+
     Returns:
         List of stocks meeting the value criteria
     """
@@ -307,10 +307,10 @@ async def find_value_stocks(max_pe: float = 15, min_roe: float = 15) -> list[Tex
 async def clear_cache(ticker: str = None) -> list[TextContent]:
     """
     Clear cached data for a specific ticker or all tickers.
-    
+
     Args:
         ticker: Specific ticker to clear (optional, clears all if not provided)
-    
+
     Returns:
         Confirmation of cache clearing
     """

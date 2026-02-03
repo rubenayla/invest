@@ -96,7 +96,7 @@ class MultiHorizonCacheGenerator:
                 macro_data['vix'] = float(hist['Close'].iloc[-1])
             else:
                 macro_data['vix'] = 20.0  # Default VIX
-        except:
+        except Exception:
             macro_data['vix'] = 20.0
 
         # 10-Year Treasury Yield
@@ -107,7 +107,7 @@ class MultiHorizonCacheGenerator:
                 macro_data['treasury_10y'] = float(hist['Close'].iloc[-1])
             else:
                 macro_data['treasury_10y'] = 3.0  # Default 10Y
-        except:
+        except Exception:
             macro_data['treasury_10y'] = 3.0
 
         # Dollar Index
@@ -118,7 +118,7 @@ class MultiHorizonCacheGenerator:
                 macro_data['dollar_index'] = float(hist['Close'].iloc[-1])
             else:
                 macro_data['dollar_index'] = 100.0  # Default DXY
-        except:
+        except Exception:
             macro_data['dollar_index'] = 100.0
 
         # Crude Oil
@@ -129,7 +129,7 @@ class MultiHorizonCacheGenerator:
                 macro_data['oil_price'] = float(hist['Close'].iloc[-1])
             else:
                 macro_data['oil_price'] = 70.0  # Default oil price
-        except:
+        except Exception:
             macro_data['oil_price'] = 70.0
 
         # Gold
@@ -140,7 +140,7 @@ class MultiHorizonCacheGenerator:
                 macro_data['gold_price'] = float(hist['Close'].iloc[-1])
             else:
                 macro_data['gold_price'] = 1800.0  # Default gold price
-        except:
+        except Exception:
             macro_data['gold_price'] = 1800.0
 
         return macro_data

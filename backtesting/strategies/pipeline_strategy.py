@@ -36,7 +36,7 @@ class PipelineStrategy:
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         """
         Initialize strategy with configuration that matches AnalysisConfig.
-        
+
         Parameters
         ----------
         config : Dict[str, Any], optional
@@ -134,7 +134,7 @@ class PipelineStrategy:
                          date: pd.Timestamp) -> Dict[str, float]:
         """
         Generate target portfolio weights using the real analysis pipeline.
-        
+
         Parameters
         ----------
         market_data : Dict[str, Any]
@@ -143,7 +143,7 @@ class PipelineStrategy:
             Current portfolio holdings
         date : pd.Timestamp
             Current date
-            
+
         Returns
         -------
         Dict[str, float]

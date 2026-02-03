@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 class ModelRegistry:
     """
     Central registry for all valuation models.
-    
+
     This class manages model instantiation, provides model metadata,
     and offers utilities for model selection and execution.
     """
@@ -184,12 +184,12 @@ class ModelRegistry:
     def get_model_metadata(self, model_name: str = None) -> Dict[str, Any]:
         """
         Get metadata for a specific model or all models.
-        
+
         Parameters
         ----------
         model_name : str, optional
             Name of specific model. If None, returns all model metadata.
-            
+
         Returns
         -------
         Dict[str, Any]
@@ -202,17 +202,17 @@ class ModelRegistry:
     def get_model(self, model_name: str) -> ValuationModel:
         """
         Get a model instance by name.
-        
+
         Parameters
         ----------
         model_name : str
             Name of the model to instantiate
-            
+
         Returns
         -------
         ValuationModel
             The model instance
-            
+
         Raises
         ------
         ValueError
@@ -232,7 +232,7 @@ class ModelRegistry:
     def run_valuation(self, model_name: str, ticker: str, verbose: bool = False) -> Optional[ValuationResult]:
         """
         Run a valuation using the specified model.
-        
+
         Parameters
         ----------
         model_name : str
@@ -241,7 +241,7 @@ class ModelRegistry:
             Stock ticker symbol
         verbose : bool
             Whether to enable verbose logging
-            
+
         Returns
         -------
         Optional[ValuationResult]
@@ -270,14 +270,14 @@ class ModelRegistry:
     def run_all_suitable_models(self, ticker: str, verbose: bool = False) -> Dict[str, ValuationResult]:
         """
         Run all models that are suitable for the given ticker.
-        
+
         Parameters
         ----------
         ticker : str
             Stock ticker symbol
         verbose : bool
             Whether to enable verbose logging
-            
+
         Returns
         -------
         Dict[str, ValuationResult]
@@ -316,14 +316,14 @@ class ModelRegistry:
     def get_model_recommendations(self, ticker: str, data: Dict[str, Any] = None) -> List[str]:
         """
         Get recommended models for a specific ticker based on its characteristics.
-        
+
         Parameters
         ----------
         ticker : str
             Stock ticker symbol
         data : Dict[str, Any], optional
             Pre-fetched company data
-            
+
         Returns
         -------
         List[str]
@@ -333,7 +333,7 @@ class ModelRegistry:
             try:
                 sample_model = self.get_model('simple_ratios')
                 data = sample_model._fetch_data(ticker)
-            except:
+            except Exception:
                 # Return general recommendations if data fetch fails
                 return ['simple_ratios', 'dcf', 'rim']
 
@@ -423,7 +423,7 @@ class ModelRegistry:
                 return ocf is not None and ocf > 0
 
             return False
-        except:
+        except Exception:
             return False
 
     def _has_stable_roe(self, data: Dict[str, Any]) -> bool:
@@ -433,7 +433,7 @@ class ModelRegistry:
             info = data.get('info', {})
             roe = info.get('returnOnEquity')
             return roe is not None and 0.05 < roe < 0.3  # 5% to 30% ROE range
-        except:
+        except Exception:
             return False
 
     def _is_reinvestment_heavy(self, data: Dict[str, Any]) -> bool:
@@ -453,7 +453,7 @@ class ModelRegistry:
                             capex_intensity = capex / revenue
                             if capex_intensity > 0.03:  # >3% CapEx/Revenue
                                 return True
-                except:
+                except Exception:
                     pass
 
             # Check 2: Industry characteristics (known reinvestment-heavy sectors)
@@ -489,7 +489,7 @@ class ModelRegistry:
 
             return False
 
-        except:
+        except Exception:
             return False
 
     def get_registry_stats(self) -> Dict[str, Any]:

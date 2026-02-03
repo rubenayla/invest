@@ -77,7 +77,7 @@ def run_command(cmd: list[str], description: str) -> tuple[bool, float]:
     start = time.time()
 
     try:
-        result = subprocess.run(
+        subprocess.run(
             cmd,
             check=True,
             capture_output=True,

@@ -5,12 +5,12 @@ This model addresses the limitation of traditional single-stage DCF models that 
 linear growth decline. Instead, it models company growth in three realistic phases:
 
 Phase 1: High Growth (Years 1-5) - Companies with competitive advantages
-Phase 2: Transition (Years 6-10) - Market maturation and increased competition  
+Phase 2: Transition (Years 6-10) - Market maturation and increased competition
 Phase 3: Terminal Stable (Years 11+) - Mature steady-state growth
 
 The model automatically adjusts phase durations and growth rates based on:
 - Company size (market cap)
-- Industry maturity 
+- Industry maturity
 - Historical growth patterns
 - Competitive position indicators
 
@@ -43,7 +43,7 @@ def calculate_multi_stage_dcf(
 ) -> Dict:
     """
     Calculate multi-stage DCF with realistic growth phases.
-    
+
     Parameters
     ----------
     ticker : str
@@ -68,14 +68,14 @@ def calculate_multi_stage_dcf(
         Terminal growth rate, default 0.025
     verbose : bool
         Whether to print detailed output, default True
-        
+
     Returns
     -------
     Dict
         Comprehensive multi-stage DCF valuation results
     """
     # Create error context for comprehensive error handling
-    error_context = create_error_context(ticker=ticker, model="Multi-Stage DCF", function_name="calculate_multi_stage_dcf")
+    create_error_context(ticker=ticker, model="Multi-Stage DCF", function_name="calculate_multi_stage_dcf")
 
     try:
         stock = yf.Ticker(ticker)
@@ -284,7 +284,7 @@ def _analyze_company_profile(info: Dict, stock, verbose: bool) -> Dict:
     # Historical growth analysis
     try:
         revenue_growth = info.get("revenueGrowth")
-        earnings_growth = info.get("earningsGrowth")
+        info.get("earningsGrowth")
 
         if revenue_growth:
             profile["revenue_growth_5y"] = min(max(revenue_growth, -0.20), 0.50)  # Cap between -20% and 50%

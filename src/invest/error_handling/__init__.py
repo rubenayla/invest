@@ -7,7 +7,7 @@ user-friendly error management to improve system reliability and user experience
 Usage:
     # Basic error handling
     from src.invest.error_handling import handle_error, create_error_context
-    
+
     try:
         # Some operation that might fail
         result = risky_operation()
@@ -16,17 +16,17 @@ Usage:
         error_info = handle_error(e, context=context)
         print(f"User message: {error_info.user_message}")
         print(f"Suggested actions: {error_info.suggested_actions}")
-    
+
     # Using decorator for automatic error handling
     from src.invest.error_handling import handle_errors
-    
+
     @handle_errors(custom_message="DCF calculation failed")
     def calculate_dcf_with_error_handling(ticker):
         return calculate_dcf(ticker)
-    
+
     # Using context manager
     from src.invest.error_handling import ErrorHandlingContext, create_error_context
-    
+
     context = create_error_context(ticker="AAPL", model="dcf")
     with ErrorHandlingContext(context, reraise=False) as error_ctx:
         result = risky_operation()
@@ -66,7 +66,7 @@ logger = get_logger(__name__)
 def setup_error_handling(enable_recovery: bool = True):
     """
     Setup comprehensive error handling for the application.
-    
+
     Args:
         enable_recovery: Whether to enable automatic error recovery
     """

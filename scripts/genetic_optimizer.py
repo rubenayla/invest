@@ -134,13 +134,12 @@ class GeneticOptimizer:
 
             # Modify architecture in the model (simplified approach)
             # This is a hack - in production would need to modify the model class
-            original_hidden_dims = [256, 128, 64, 32]
 
             # Train on train + val data
             combined_train = train_data + val_data
 
             # Create custom training parameters
-            metrics = model.train_model(
+            model.train_model(
                 combined_train,
                 validation_split=0.25,
                 epochs=30  # Shorter training for GA
@@ -158,7 +157,7 @@ class GeneticOptimizer:
                         predicted_return = (result.fair_value - current_price) / current_price
                         test_predictions.append(predicted_return)
                         test_actuals.append(actual_return)
-                except:
+                except Exception:
                     continue
 
             if len(test_predictions) >= 5:

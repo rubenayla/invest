@@ -30,7 +30,6 @@ def monitor_training_logs(log_file: Path = Path('comprehensive_training.log')):
     print('Press Ctrl+C to stop monitoring\n')
 
     last_position = 0
-    epochs_data = []
 
     try:
         while True:
@@ -51,21 +50,21 @@ def monitor_training_logs(log_file: Path = Path('comprehensive_training.log')):
                         epoch_part = line.split('Epoch ')[1]
                         current_epoch = int(epoch_part.split('/')[0])
                         print(f'\n📊 Epoch {current_epoch}')
-                    except:
+                    except Exception:
                         pass
 
                 elif 'Train Loss:' in line:
                     try:
                         train_loss = float(line.split('Train Loss: ')[1])
                         print(f'   🔸 Train Loss: {train_loss:.4f}')
-                    except:
+                    except Exception:
                         pass
 
                 elif 'Val Loss:' in line:
                     try:
                         val_loss = float(line.split('Val Loss: ')[1])
                         print(f'   🔹 Val Loss: {val_loss:.4f}')
-                    except:
+                    except Exception:
                         pass
 
                 elif 'Correlation:' in line:
@@ -79,7 +78,7 @@ def monitor_training_logs(log_file: Path = Path('comprehensive_training.log')):
                             print('      📈 Good correlation')
                         elif correlation > 0.1:
                             print('      ⚠️ Weak correlation')
-                    except:
+                    except Exception:
                         pass
 
                 elif '✅ Improvement found' in line:

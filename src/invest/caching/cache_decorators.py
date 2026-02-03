@@ -23,7 +23,7 @@ def cached_api_call(data_type: str = 'default',
                    skip_cache: bool = False):
     """
     Decorator for caching API call results.
-    
+
     Parameters
     ----------
     data_type : str
@@ -34,7 +34,7 @@ def cached_api_call(data_type: str = 'default',
         Prefix to add to generated cache keys
     skip_cache : bool
         If True, skip caching (useful for debugging)
-        
+
     Usage
     -----
     @cached_api_call(data_type='stock_info', ttl=3600)
@@ -96,7 +96,7 @@ def cached_computation(ttl: int = 3600,
                       skip_cache: bool = False):
     """
     Decorator for caching expensive computation results.
-    
+
     Parameters
     ----------
     ttl : int
@@ -105,7 +105,7 @@ def cached_computation(ttl: int = 3600,
         Prefix to add to generated cache keys
     skip_cache : bool
         If True, skip caching (useful for debugging)
-        
+
     Usage
     -----
     @cached_computation(ttl=1800)  # 30 minutes
@@ -165,17 +165,17 @@ def cached_computation(ttl: int = 3600,
 def cache_result_by_ticker(data_type: str, ttl: Optional[int] = None):
     """
     Specialized decorator for functions that take a ticker as first argument.
-    
+
     This decorator automatically generates cache keys based on the ticker symbol
     and uses the appropriate caching strategy for financial data.
-    
+
     Parameters
     ----------
     data_type : str
         Type of financial data ('stock_info', 'financials', 'valuation', etc.)
     ttl : Optional[int]
         Custom TTL in seconds
-        
+
     Usage
     -----
     @cache_result_by_ticker('stock_info', ttl=86400)

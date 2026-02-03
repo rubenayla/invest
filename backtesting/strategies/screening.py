@@ -20,7 +20,7 @@ class ScreeningStrategy:
     def __init__(self, config: Optional[Dict[str, Any]] = None):
         """
         Initialize strategy with configuration.
-        
+
         Parameters
         ----------
         config : Dict[str, Any], optional
@@ -60,7 +60,7 @@ class ScreeningStrategy:
                          date: pd.Timestamp) -> Dict[str, float]:
         """
         Generate target portfolio weights based on screening.
-        
+
         Parameters
         ----------
         market_data : Dict[str, Any]
@@ -69,7 +69,7 @@ class ScreeningStrategy:
             Current portfolio holdings
         date : pd.Timestamp
             Current date
-            
+
         Returns
         -------
         Dict[str, float]

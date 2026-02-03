@@ -157,7 +157,7 @@ async def handle_call_tool(
 
 **📍 Company Info:**
 • Exchange: {data.get('exchange', 'N/A')}
-• Country: {data.get('country', 'N/A')} 
+• Country: {data.get('country', 'N/A')}
 • Sector: {data.get('sector', 'N/A')}
 • Industry: {data.get('industry', 'N/A')}
 
@@ -298,7 +298,7 @@ async def handle_call_tool(
 
 **🎯 Valuation Ratios:**
 • P/E Target Fair Value: ${result.get('pe_fair_value', 0):.2f}
-• P/B Target Fair Value: ${result.get('pb_fair_value', 0):.2f} 
+• P/B Target Fair Value: ${result.get('pb_fair_value', 0):.2f}
 • P/S Target Fair Value: ${result.get('ps_fair_value', 0):.2f}
 • EV/EBITDA Fair Value: ${result.get('ev_ebitda_fair_value', 0):.2f}
 

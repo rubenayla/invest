@@ -83,7 +83,7 @@ class CacheManager:
                  redis_config: Optional[Dict[str, Any]] = None):
         """
         Initialize cache manager with multiple backends.
-        
+
         Parameters
         ----------
         memory_cache_size : int
@@ -135,14 +135,14 @@ class CacheManager:
     def get(self, key: str, data_type: str = 'default') -> Optional[Any]:
         """
         Get value from appropriate cache backend.
-        
+
         Parameters
         ----------
         key : str
             Cache key
         data_type : str
             Type of data to determine cache backend and TTL
-            
+
         Returns
         -------
         Optional[Any]
@@ -171,7 +171,7 @@ class CacheManager:
             ttl: Optional[int] = None) -> None:
         """
         Set value in appropriate cache backend.
-        
+
         Parameters
         ----------
         key : str

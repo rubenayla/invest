@@ -49,7 +49,7 @@ def get_momentum_signals(ticker, days=30):
             'rsi': rsi.iloc[-1] if len(rsi) > 0 else None,
             'price_trend': 'UP' if price_change > 5 else 'DOWN' if price_change < -5 else 'FLAT'
         }
-    except:
+    except Exception:
         return {}
 
 def analyze_watchlist_with_signals():

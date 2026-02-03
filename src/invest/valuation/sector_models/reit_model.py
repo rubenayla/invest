@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 class REITModel(ValuationModel):
     """
     Specialized valuation model for Real Estate Investment Trusts (REITs).
-    
+
     This model uses REIT-specific metrics like:
     - Funds From Operations (FFO)
     - Adjusted Funds From Operations (AFFO)

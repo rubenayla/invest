@@ -41,14 +41,14 @@ class StockPrioritizer:
     def prioritize_stocks(self, tickers: List[str], stock_data: Dict[str, Dict]) -> List[str]:
         """
         Prioritize stocks for analysis based on their current state.
-        
+
         Parameters
         ----------
         tickers : List[str]
             List of stock tickers to prioritize
         stock_data : Dict[str, Dict]
             Current data for each stock
-            
+
         Returns
         -------
         List[str]
@@ -72,7 +72,7 @@ class StockPrioritizer:
     def _calculate_priority(self, ticker: str, stock_data: Dict[str, Dict]) -> Tuple[Priority, float, str]:
         """
         Calculate priority for a single stock.
-        
+
         Returns
         -------
         Tuple[Priority, float, str]
@@ -159,14 +159,14 @@ class StockPrioritizer:
     def should_throttle_analysis(self, completed_count: int, total_count: int) -> bool:
         """
         Determine if analysis should be throttled to avoid rate limits.
-        
+
         Parameters
         ----------
         completed_count : int
             Number of stocks completed so far
         total_count : int
             Total number of stocks being analyzed
-            
+
         Returns
         -------
         bool
@@ -188,12 +188,12 @@ class StockPrioritizer:
     def get_recommended_batch_size(self, total_stocks: int) -> int:
         """
         Get recommended batch size for concurrent processing.
-        
+
         Parameters
         ----------
         total_stocks : int
             Total number of stocks to analyze
-            
+
         Returns
         -------
         int
@@ -212,14 +212,14 @@ class StockPrioritizer:
     def estimate_completion_time(self, total_stocks: int, avg_time_per_stock: float = 30.0) -> int:
         """
         Estimate total completion time in seconds.
-        
+
         Parameters
         ----------
         total_stocks : int
             Number of stocks to analyze
         avg_time_per_stock : float
             Average time per stock in seconds
-            
+
         Returns
         -------
         int

@@ -212,7 +212,7 @@ def create_rolling_features(
                 try:
                     slope, _, _, _, _ = linregress(x, series)
                     return slope
-                except:
+                except Exception:
                     return np.nan
 
             df[slope_col] = df.groupby('ticker')[feat].transform(
@@ -902,7 +902,7 @@ class GBMLiteStockRanker:
 
         try:
             ndcg = ndcg_score(y_true_gains, y_pred_ranks, k=10)
-        except:
+        except Exception:
             ndcg = 0.0
 
         metrics = {

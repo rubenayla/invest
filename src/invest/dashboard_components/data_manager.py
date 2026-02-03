@@ -23,7 +23,7 @@ class DataManager:
     def __init__(self, output_dir: str = "dashboard"):
         """
         Initialize the data manager.
-        
+
         Parameters
         ----------
         output_dir : str

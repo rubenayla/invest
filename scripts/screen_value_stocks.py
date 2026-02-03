@@ -156,7 +156,7 @@ def screen_stocks() -> List[Dict]:
         pb = row['price_to_book']
         roe = row['return_on_equity']
         pe = row['trailing_pe']
-        current_price = row['current_price']
+        row['current_price']
         market_cap = row['market_cap']
 
         # Get dividend and buyback info

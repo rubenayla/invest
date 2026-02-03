@@ -73,7 +73,7 @@ def get_vix_for_date(vix_cache: dict, date_str: str) -> float:
             check_date = (target_date - timedelta(days=days_back)).strftime('%Y-%m-%d')
             if check_date in vix_cache:
                 return vix_cache[check_date]
-    except:
+    except Exception:
         pass
 
     # Default fallback

@@ -35,7 +35,7 @@ class FieldRequirement:
     def validate_data(self, data: Dict) -> tuple[bool, str]:
         """
         Validate if data meets requirements.
-        
+
         Returns:
             (is_valid, error_message)
         """
@@ -173,17 +173,17 @@ class ModelDataRequirements:
     def get_requirements(cls, model_name: str) -> FieldRequirement:
         """
         Get requirements for a specific model.
-        
+
         Parameters
         ----------
         model_name : str
             Name of the model (e.g., 'simple_ratios', 'dcf')
-            
+
         Returns
         -------
         FieldRequirement
             The field requirements for the model
-            
+
         Raises
         ------
         ValueError
@@ -212,14 +212,14 @@ class ModelDataRequirements:
     def get_minimal_mock_data(cls, model_name: str) -> Dict:
         """
         Get minimal mock data that satisfies a model's requirements.
-        
+
         Useful for testing.
-        
+
         Parameters
         ----------
         model_name : str
             Name of the model
-            
+
         Returns
         -------
         Dict

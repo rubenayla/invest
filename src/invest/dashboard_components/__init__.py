@@ -7,7 +7,7 @@ into maintainable, testable, and reusable parts.
 Components:
 - ValuationEngine: Handles valuation model execution and coordination
 - DataManager: Handles data persistence, loading, and caching
-- ProgressTracker: Tracks and manages dashboard update progress  
+- ProgressTracker: Tracks and manages dashboard update progress
 - HTMLGenerator: Generates dashboard HTML templates and content
 - StockPrioritizer: Handles stock analysis prioritization logic
 - ValuationDashboard: Orchestrates all components (main interface)

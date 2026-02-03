@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 class UtilityModel(ValuationModel):
     """
     Specialized valuation model for utility companies.
-    
+
     This model emphasizes:
     - Dividend yield and sustainability
     - Regulated return on equity
@@ -241,7 +241,7 @@ class UtilityModel(ValuationModel):
             info = data.get('info', {})
 
             dividend_rate = self._safe_float(info.get('dividendRate'))
-            dividend_yield = self._safe_float(info.get('dividend_yield'))
+            self._safe_float(info.get('dividend_yield'))
             current_price = self._safe_float(info.get('currentPrice'))
 
             if not dividend_rate or not current_price or dividend_rate <= 0 or current_price <= 0:
