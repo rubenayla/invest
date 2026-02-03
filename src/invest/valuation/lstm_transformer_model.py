@@ -14,12 +14,12 @@ Architecture:
     MC Dropout → Confidence intervals
 """
 
+from dataclasses import dataclass
+from typing import List, Optional, Tuple
+
 import numpy as np
-import pandas as pd
 import torch
 import torch.nn as nn
-from typing import Dict, List, Optional, Tuple
-from dataclasses import dataclass
 
 from invest.valuation.feature_extraction import FeatureExtractor
 

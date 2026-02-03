@@ -13,16 +13,16 @@ Components:
 - ValuationDashboard: Orchestrates all components (main interface)
 """
 
-from .valuation_engine import ValuationEngine
-from .data_manager import DataManager
-from .progress_tracker import ProgressTracker
-from .html_generator import HTMLGenerator
-from .stock_prioritizer import StockPrioritizer
 from .dashboard import ValuationDashboard
+from .data_manager import DataManager
+from .html_generator import HTMLGenerator
+from .progress_tracker import ProgressTracker
+from .stock_prioritizer import StockPrioritizer
+from .valuation_engine import ValuationEngine
 
 __all__ = [
     'ValuationEngine',
-    'DataManager', 
+    'DataManager',
     'ProgressTracker',
     'HTMLGenerator',
     'StockPrioritizer',

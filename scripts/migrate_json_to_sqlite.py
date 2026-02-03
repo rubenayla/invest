@@ -7,8 +7,8 @@ Reads all JSON cache files and populates the current_stock_data table.
 
 import json
 import sqlite3
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 
 # Get project root
 project_root = Path(__file__).parent.parent
@@ -124,12 +124,12 @@ def migrate_stock_data():
     conn.commit()
     conn.close()
 
-    print(f'\n✅ Migration complete!')
+    print('\n✅ Migration complete!')
     print(f'  Successful: {success_count}')
     print(f'  Errors: {error_count}')
 
     if errors:
-        print(f'\nErrors:')
+        print('\nErrors:')
         for filename, error in errors[:10]:  # Show first 10 errors
             print(f'  {filename}: {error}')
 

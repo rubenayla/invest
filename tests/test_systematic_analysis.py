@@ -234,7 +234,7 @@ class TestAnalysisPipeline:
             max_results=10,
         )
 
-    @pytest.mark.skip(reason="Pipeline integration tested via working systematic analysis script")  
+    @pytest.mark.skip(reason="Pipeline integration tested via working systematic analysis script")
     @patch("invest.data.universal_fetcher.UniversalStockFetcher.fetch_multiple")
     def test_pipeline_execution(self, mock_fetch_multiple, mock_config):
         """Test that pipeline executes without errors."""

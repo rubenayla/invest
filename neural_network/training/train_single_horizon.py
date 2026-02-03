@@ -27,26 +27,22 @@ Database Structure:
 """
 
 import argparse
-import json
 import logging
 import sqlite3
 import sys
-from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 import numpy as np
-import pandas as pd
 import torch
 import torch.nn as nn
-from torch.utils.data import Dataset, DataLoader
-from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader, Dataset
 
 # Add project root to path
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root / 'src'))
 
-from invest.valuation.lstm_transformer_model import SingleHorizonModel, LSTMTransformerNetwork
+from invest.valuation.lstm_transformer_model import LSTMTransformerNetwork
 
 # Setup logging
 logging.basicConfig(
@@ -482,7 +478,7 @@ class SingleHorizonTrainer:
         static_dim = train_samples[0][1].shape[0]
 
         logger.info(f'Feature dimensions: temporal={temporal_dim}, static={static_dim}')
-        logger.info(f'Expected: temporal=17 (4 price + 5 macro + 8 fundamental), static=30 (5 macro + 14 fundamental + 11 sectors)')
+        logger.info('Expected: temporal=17 (4 price + 5 macro + 8 fundamental), static=30 (5 macro + 14 fundamental + 11 sectors)')
 
         self.model = LSTMTransformerNetwork(
             temporal_features=temporal_dim,

@@ -10,22 +10,21 @@ This component is responsible for:
 
 import logging
 import math
-from datetime import datetime
-from typing import Dict, Any, List, Tuple
 from pathlib import Path
+from typing import Any, Dict, List, Tuple
 
 logger = logging.getLogger(__name__)
 
 
 class HTMLGenerator:
     """Generates HTML content for the investment dashboard."""
-    
+
     def __init__(self, output_dir: str = "dashboard"):
         """Initialize the HTML generator."""
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
         self.html_file = self.output_dir / "valuation_dashboard.html"
-    
+
     def generate_dashboard_html(self, stocks_data: Dict, progress_data: Dict, metadata: Dict = None) -> str:
         """
         Generate complete HTML dashboard.
@@ -45,12 +44,12 @@ class HTMLGenerator:
             Complete HTML content
         """
         last_updated = metadata.get("last_updated", "Never") if metadata else "Never"
-        
+
         # Generate main content sections
         progress_html = self._generate_progress_section(progress_data)
         summary_html = self._generate_summary_section(stocks_data)
         table_html = self._generate_stock_table(stocks_data)
-        
+
         # Create complete HTML document
         html_content = f"""<!DOCTYPE html>
 <html lang="en">
@@ -119,9 +118,9 @@ class HTMLGenerator:
     </script>
 </body>
 </html>"""
-        
+
         return html_content
-    
+
     def _generate_progress_section(self, progress_data: Dict) -> str:
         """Generate the progress section HTML."""
         status = progress_data.get("status", "idle")
@@ -130,7 +129,7 @@ class HTMLGenerator:
         completion_pct = progress_data.get("completion_percentage", 0)
         current_ticker = progress_data.get("current_ticker", "")
         current_model = progress_data.get("current_model", "")
-        
+
         if status == "idle":
             return '''
             <div class="progress-section" style="display: none;" id="progressSection">
@@ -139,11 +138,11 @@ class HTMLGenerator:
                 </div>
                 <div class="progress-text">Ready to update</div>
             </div>'''
-        
+
         progress_text = f"{completed}/{total} tasks ({completion_pct:.1f}%)"
         if current_ticker and current_model:
             progress_text += f" • Current: {current_ticker} {current_model}"
-        
+
         return f'''
         <div class="progress-section" id="progressSection">
             <div class="progress-bar">
@@ -151,26 +150,26 @@ class HTMLGenerator:
             </div>
             <div class="progress-text" id="progressText">{progress_text}</div>
         </div>'''
-    
+
     def _generate_summary_section(self, stocks_data: Dict) -> str:
         """Generate the analysis summary section."""
         total_stocks = len(stocks_data)
         completed_stocks = len([s for s in stocks_data.values() if s.get("models_completed", 0) > 0])
-        
+
         # Calculate model success rates
         model_counts = {}
         for stock in stocks_data.values():
             for model in stock.get("valuations", {}):
                 model_counts[model] = model_counts.get(model, 0) + 1
-        
+
         summary_items = []
         summary_items.append(f"<div class='summary-item'><strong>{total_stocks}</strong><br>Total Stocks</div>")
         summary_items.append(f"<div class='summary-item'><strong>{completed_stocks}</strong><br>Analyzed</div>")
-        
+
         for model, count in model_counts.items():
             model_name = model.replace('_', ' ').title()
             summary_items.append(f"<div class='summary-item'><strong>{count}</strong><br>{model_name}</div>")
-        
+
         return f'''
         <div class="analysis-summary">
             <h2>📊 Analysis Summary</h2>
@@ -178,21 +177,21 @@ class HTMLGenerator:
                 {''.join(summary_items)}
             </div>
         </div>'''
-    
+
     def _generate_stock_table(self, stocks_data: Dict) -> str:
         """Generate the stock analysis table."""
         if not stocks_data:
             return '<p class="no-data">No stock data available. Click "Update Data" to start analysis.</p>'
-        
+
         # Sort stocks by status and performance
         sorted_stocks = self._sort_stocks_for_display(stocks_data)
-        
+
         # Generate table rows
         table_rows = []
         for ticker, stock_data in sorted_stocks:
             row_html = self._generate_stock_row(ticker, stock_data)
             table_rows.append(row_html)
-        
+
         return f'''
         <div class="table-container">
             <table class="stock-table results-table" id="stockTable">
@@ -222,7 +221,7 @@ class HTMLGenerator:
                 </tbody>
             </table>
         </div>'''
-    
+
     def _generate_stock_row(self, ticker: str, stock_data: Dict) -> str:
         """Generate a single stock table row."""
         current_price = stock_data.get("current_price", 0)
@@ -230,11 +229,11 @@ class HTMLGenerator:
         status = stock_data.get("status", "pending")
         status_message = stock_data.get("status_message", "Unknown")
         company_name = stock_data.get("company_name", ticker)
-        
+
         # Create meaningful status based on what actually worked
         working_models = []
         failed_models = []
-        
+
         model_names = {
             "dcf": "DCF",
             "dcf_enhanced": "Enh.DCF",
@@ -251,7 +250,7 @@ class HTMLGenerator:
             "multi_horizon_nn": "NN",
             "ensemble": "Consensus"
         }
-        
+
         for model_key, result in valuations.items():
             # Skip non-dict values like current_price
             if not isinstance(result, dict):
@@ -261,7 +260,7 @@ class HTMLGenerator:
                 working_models.append(model_name)
             else:
                 failed_models.append(model_name)
-        
+
         # Create better status
         if working_models:
             if len(working_models) >= 3:
@@ -273,10 +272,10 @@ class HTMLGenerator:
         else:
             new_status = "failed"
             new_message = f"❌ All models failed or unsuitable for {ticker}"
-        
+
         # Format status
         status_html = self._format_status_cell(new_status, new_message)
-        
+
         # Format valuation columns
         dcf_html = self._format_valuation_cell(valuations.get("dcf", {}), current_price)
         enh_dcf_html = self._format_valuation_cell(valuations.get("dcf_enhanced", {}), current_price)
@@ -317,35 +316,35 @@ class HTMLGenerator:
             <td>{nn_html}</td>
             <td>{consensus_html}</td>
         </tr>'''
-    
+
     def _format_status_cell(self, status: str, message: str) -> str:
         """Format the status cell with icon and tooltip."""
         status_icons = {
             "completed": "✅",
             "partial": "⚠️",
-            "failed": "❌", 
-            "analyzing": "🔄", 
+            "failed": "❌",
+            "analyzing": "🔄",
             "pending": "⏳",
             "data_missing": "❌",
             "rate_limited": "🚫",
             "model_failed": "⚠️",
         }
-        
+
         icon = status_icons.get(status, "❓")
-        
+
         # Custom display names for better readability
         display_names = {
             "completed": "Complete",
-            "partial": "Partial", 
+            "partial": "Partial",
             "failed": "Failed",
             "analyzing": "Running",
             "pending": "Pending"
         }
-        
+
         display_name = display_names.get(status, status.replace("_", " ").title())
-        
+
         return f'<span title="{message}">{icon} {display_name}</span>'
-    
+
     def _format_valuation_cell(self, valuation: Dict, current_price: float = None, show_confidence: bool = False) -> str:
         """Format a valuation cell with fair value, margin, and ratio."""
         if valuation.get("failed", False):
@@ -360,19 +359,19 @@ class HTMLGenerator:
             # Show error message in tooltip if available
             error_msg = valuation.get("error_message") or valuation.get("error", "No valuation available")
             return f'<span title="{error_msg}">-</span>'
-        
+
         fair_value_str = self._safe_format(fair_value, prefix="$")
         margin_str = self._safe_percent(margin)
-        
+
         # Calculate ratio if current price is available
         ratio_str = ""
         if current_price and current_price > 0:
             ratio = fair_value / current_price
             ratio_str = f'<div class="ratio">{ratio:.2f}x</div>'
-        
+
         # Color code the margin
         margin_class = self._get_margin_class(margin)
-        
+
         confidence_badge = ''
         if show_confidence:
             conf = valuation.get('confidence')
@@ -577,7 +576,7 @@ class HTMLGenerator:
             avg_fair_value = sum(softened_values) / len(softened_values)
         avg_margin = (avg_fair_value - current_price) / current_price if current_price > 0 else 0
         avg_ratio = avg_fair_value / current_price if current_price > 0 else 0
-        
+
         avg_fair_value_str = self._safe_format(avg_fair_value, prefix="$")
         avg_margin_str = self._safe_percent(avg_margin)
         avg_ratio_str = f"{avg_ratio:.2f}x" if avg_ratio > 0 else "-"
@@ -595,7 +594,7 @@ class HTMLGenerator:
                 conf_style = 'background: #f8d7da; color: #721c24'
             conf_label = f'Confidence: {avg_conf * 100:.1f}%'
             confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">{conf_label}</div>'
-        
+
         return f'''
         <div class="consensus-cell">
             <div class="fair-value"><strong>{avg_fair_value_str}</strong></div>
@@ -604,13 +603,13 @@ class HTMLGenerator:
             {confidence_badge}
             <div class="model-count">({len(fair_values)} models)</div>
         </div>'''
-    
+
     def _sort_stocks_for_display(self, stocks_data: Dict) -> List[Tuple[str, Dict]]:
         """Sort stocks for optimal display order."""
         def get_sort_key(stock_item):
             ticker, stock_data = stock_item
             status = stock_data.get("status", "pending")
-            
+
             # Status priority (lower = higher priority)
             status_priority = {
                 "completed": 1,
@@ -620,7 +619,7 @@ class HTMLGenerator:
                 "rate_limited": 5,
                 "model_failed": 6,
             }.get(status, 7)
-            
+
             # Best margin of safety for secondary sort
             valuations = stock_data.get("valuations", {})
             margins = []
@@ -632,13 +631,13 @@ class HTMLGenerator:
                     margin = val.get("margin_of_safety")
                     if margin is not None:
                         margins.append(margin)
-            
+
             best_margin = max(margins) if margins else -999
-            
+
             return (status_priority, -best_margin)
-        
+
         return sorted(stocks_data.items(), key=get_sort_key)
-    
+
     def _get_margin_class(self, margin: float) -> str:
         """Get CSS class for margin color coding."""
         if margin is None:
@@ -651,7 +650,7 @@ class HTMLGenerator:
             return "margin-neutral"
         else:
             return "margin-poor"
-    
+
     def _safe_format(self, value: Any, format_str: str = ".2f", placeholder: str = "-", prefix: str = "") -> str:
         """Safely format a numeric value."""
         try:
@@ -661,7 +660,7 @@ class HTMLGenerator:
             return f"{prefix}{formatted}"
         except (ValueError, TypeError):
             return placeholder
-    
+
     def _safe_percent(self, value: Any, placeholder: str = "-") -> str:
         """Safely format a percentage value."""
         try:
@@ -670,7 +669,7 @@ class HTMLGenerator:
             return f"{float(value) * 100:+.1f}%"
         except (ValueError, TypeError):
             return placeholder
-    
+
     def save_html(self, html_content: str):
         """Save HTML content to file."""
         try:
@@ -679,7 +678,7 @@ class HTMLGenerator:
             logger.info(f"Dashboard HTML saved to {self.html_file}")
         except Exception as e:
             logger.error(f"Failed to save HTML: {e}")
-    
+
     def _get_css_styles(self) -> str:
         """Get CSS styles for the dashboard."""
         return """
@@ -975,7 +974,7 @@ class HTMLGenerator:
             .stock-table th, .stock-table td { padding: 6px 4px; }
             .table-container { height: 60vh; min-height: 140px; }
         }"""
-    
+
     def _get_javascript(self) -> str:
         """Get JavaScript for dashboard interactivity."""
         return """

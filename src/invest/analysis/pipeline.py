@@ -1,17 +1,18 @@
 import logging
 from typing import Any, Dict, List
 
-from ..config.schema import AnalysisConfig
 from ..config.constants import ANALYSIS_LIMITS
+from ..config.schema import AnalysisConfig
+
 # Removed old data fetching modules - now using universal_fetcher for all stocks
 from ..data.universal_fetcher import UniversalStockFetcher
-from ..standard_dcf import calculate_dcf
 from ..dividend_aware_dcf import calculate_enhanced_dcf
 from ..screening.growth import screen_growth
 from ..screening.quality import screen_quality
 from ..screening.risk import apply_cyclical_adjustments, screen_risk
 from ..screening.value import screen_value
 from ..simple_ratios import calculate_simple_ratios_valuation
+from ..standard_dcf import calculate_dcf
 
 # Import the modern valuation system
 try:
@@ -33,7 +34,7 @@ class AnalysisPipeline:
     def __init__(self, config: AnalysisConfig):
         self.config = config
         self.results = {}
-        
+
         # Initialize modern valuation system if available
         if MODEL_REGISTRY_AVAILABLE:
             self.model_registry = ModelRegistry()
@@ -114,7 +115,7 @@ class AnalysisPipeline:
     def _get_universe(self) -> List[Dict]:
         """Build the stock universe based on configuration."""
         universe_config = self.config.universe
-        
+
         # Check if we have direct tickers in config (new style)
         if hasattr(self.config, 'tickers') and self.config.tickers:
             tickers = self.config.tickers
@@ -146,7 +147,7 @@ class AnalysisPipeline:
                 # Japanese blue chip companies Buffett might like
                 tickers = ["7203.T", "6758.T", "8058.T", "8002.T", "4063.T", "9432.T"]
             elif market == "international_buffett":
-                # International value stocks 
+                # International value stocks
                 tickers = ["ASML.AS", "NESN.SW", "SAP.DE", "MC.PA", "7203.T", "8002.T"]
             else:
                 # Default international mix
@@ -173,7 +174,7 @@ class AnalysisPipeline:
             # Get basic market cap data for sorting (faster than full data)
             # Limit to prevent timeout during market cap fetching
             max_fetch = min(
-                len(tickers), 
+                len(tickers),
                 max(
                     ANALYSIS_LIMITS.MAX_TICKERS_FOR_MARKET_CAP_FETCH,
                     universe_config.top_n_by_market_cap * ANALYSIS_LIMITS.MARKET_CAP_FETCH_MULTIPLIER
@@ -185,10 +186,10 @@ class AnalysisPipeline:
             def progress_callback(completed: int, total: int):
                 if completed % 25 == 0:
                     logger.info(f"Processed {completed}/{total} tickers for market cap...")
-            
+
             fetcher = UniversalStockFetcher(convert_currency=True)
             fetcher_results = fetcher.fetch_multiple(tickers[:max_fetch])
-            
+
             ticker_market_caps = []
             for ticker, stock_data in fetcher_results.items():
                 if stock_data and 'marketCap' in stock_data:
@@ -208,17 +209,17 @@ class AnalysisPipeline:
 
         # Check if we have mixed international tickers
         has_international = any('.' in str(t) or ':' in str(t) for t in tickers)
-        
+
         stocks_data = []
-        
+
         if has_international or universe_config.region == "ALL":
             # Use universal fetcher for mixed/international portfolios
             logger.info("Using universal fetcher for mixed international stocks...")
             # from ..data.universal_fetcher import UniversalStockFetcher
-            
+
             fetcher = UniversalStockFetcher(convert_currency=True)
             fetcher_results = fetcher.fetch_multiple(tickers, max_workers=10)
-            
+
             for ticker in tickers:
                 stock_data = fetcher_results.get(ticker)
                 if stock_data:
@@ -231,14 +232,14 @@ class AnalysisPipeline:
             # Use universal fetcher for all stocks (handles both domestic and international)
             logger.info("Using universal fetcher for all stocks...")
             # from ..data.universal_fetcher import UniversalStockFetcher
-            
+
             fetcher = UniversalStockFetcher(convert_currency=True)
             fetcher_results = fetcher.fetch_multiple(tickers, max_workers=10)
-            
+
             for ticker in tickers:
                 stock_data = fetcher_results.get(ticker)
                 if stock_data:
-                    # Check filters and add filter status  
+                    # Check filters and add filter status
                     stock_data["passes_universe_filters"] = self._passes_universe_filters(
                         stock_data, universe_config
                     )
@@ -414,12 +415,12 @@ class AnalysisPipeline:
                 if self.model_registry is not None:
                     # Get the configured models, default to comprehensive analysis for dashboard
                     models_to_run = self.config.valuation.models
-                    
+
                     # For dashboard updates, always include neural networks
                     if hasattr(self.config, 'is_dashboard_update') and self.config.is_dashboard_update:
-                        models_to_run = ['dcf', 'dcf_enhanced', 'simple_ratios', 
+                        models_to_run = ['dcf', 'dcf_enhanced', 'simple_ratios',
                                        'neural_network_best', 'neural_network_consensus']
-                    
+
                     # Run all requested models using the registry
                     for model_name in models_to_run:
                         try:
@@ -437,7 +438,7 @@ class AnalysisPipeline:
                         except Exception as e:
                             logger.warning(f"Model {model_name} failed for {ticker}: {e}")
                             continue
-                
+
                 else:
                     # Fallback to legacy models
                     # Run DCF if configured

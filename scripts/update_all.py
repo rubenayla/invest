@@ -40,8 +40,8 @@ def ensure_dashboard_data() -> bool:
 
     sys.path.insert(0, str(REPO_ROOT / 'src'))
     try:
-        from invest.data.stock_data_reader import StockDataReader
         from invest.dashboard_components.data_manager import DataManager
+        from invest.data.stock_data_reader import StockDataReader
     except Exception as exc:
         print(f'Could not import dashboard helpers: {exc}')
         return False
@@ -82,7 +82,7 @@ def run_gbm_predictions() -> None:
 
 def main() -> int:
     setup_logging(log_file_path="logs/update_all.log")
-    
+
     parser = argparse.ArgumentParser(
         description='Update data, run predictions, and regenerate the dashboard',
     )

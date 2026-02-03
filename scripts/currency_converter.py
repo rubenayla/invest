@@ -5,8 +5,8 @@ Currency conversion utilities for stock data.
 Handles detection and conversion of foreign currency financials to USD.
 """
 
-from typing import Dict, Optional
 import logging
+from typing import Dict, Optional
 
 logger = logging.getLogger(__name__)
 

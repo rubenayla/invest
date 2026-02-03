@@ -21,10 +21,10 @@ import random
 import shutil
 import sys
 import time
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import List, Tuple, Dict, Any, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 import yfinance as yf
@@ -34,7 +34,6 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.invest.valuation.neural_network_model import NeuralNetworkValuationModel
-
 
 # ============================================================================
 # CONFIGURATION

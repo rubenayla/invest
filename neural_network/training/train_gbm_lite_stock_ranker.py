@@ -14,32 +14,30 @@ import argparse
 import json
 import logging
 import sqlite3
-import sys
 import warnings
-from datetime import datetime, timedelta
+from datetime import timedelta
 from pathlib import Path
 from typing import Dict, List, Tuple
 
 import lightgbm as lgb
 import numpy as np
 import pandas as pd
-from scipy import stats
-from scipy.stats import linregress
-from sklearn.metrics import ndcg_score
 
 # Import LITE feature configuration
 from gbm_lite_feature_config import (
     BASE_FEATURES,
-    FUNDAMENTAL_FEATURES,
-    MARKET_FEATURES,
-    PRICE_FEATURES,
     CASHFLOW_FEATURES,
     CATEGORICAL_FEATURES,
+    FUNDAMENTAL_FEATURES,
     LAG_PERIODS,
+    MARKET_FEATURES,
+    PRICE_FEATURES,
     ROLLING_WINDOWS,
-    get_snapshot_query_columns,
-    get_min_quarters_required
+    get_min_quarters_required,
 )
+from scipy import stats
+from scipy.stats import linregress
+from sklearn.metrics import ndcg_score
 
 # Suppress warnings
 warnings.filterwarnings('ignore')
@@ -930,7 +928,7 @@ class GBMLiteStockRanker:
         save_dir = Path(__file__).parent.parent / 'models/gbm'
         save_dir.mkdir(parents=True, exist_ok=True)
         save_path = save_dir / path
-        
+
         self.model.save_model(str(save_path))
         logger.info(f'Model saved to {save_path}')
 

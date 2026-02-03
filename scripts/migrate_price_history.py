@@ -137,8 +137,8 @@ def main():
     conn.close()
 
     print('\n✅ Migration complete!')
-    print(f'\nNew schema: price_history(ticker, date, OHLCV)')
-    print(f'Query example: SELECT close FROM price_history WHERE ticker=\'AAPL\' AND date=\'2025-10-15\'')
+    print('\nNew schema: price_history(ticker, date, OHLCV)')
+    print('Query example: SELECT close FROM price_history WHERE ticker=\'AAPL\' AND date=\'2025-10-15\'')
 
 
 if __name__ == '__main__':

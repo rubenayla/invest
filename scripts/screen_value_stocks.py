@@ -13,8 +13,8 @@ Criteria:
 - Business outlook indicators
 """
 
-import sqlite3
 import json
+import sqlite3
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 

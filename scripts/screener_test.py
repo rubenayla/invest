@@ -14,10 +14,9 @@ Filter stocks with python
 Alternative that costs money: https://www.alphavantage.co/
 """
 
-import yfinance as yf
+
 import pandas as pd
-import matplotlib.pyplot as plt
-from datetime import datetime
+import yfinance as yf
 
 # Fetch stock data from yfinance
 # data = yf.download('AAPL MSFT GOOGL AMZN META INTC NVDA GDOT ADBE CRM CSCO PYPL NFLX TSLA ORCL IBM SAP QCOM BIDU JD AMD SNAP PDD SHOP DOCU ZM BABA ATVI UBER LYFT SQ LRCX ZS NOW OKTA TEAM CRWD PINS ZI DOCN ESTC ROKU VMW SPLK AKAM TWLO HUBS RNG LSCC CRWD RGEN ETSY MPWR ARLO SFM HUBS APPS IPGP TEAM RPD VREX QDEL PLNT DORM QNST MRCY',
@@ -41,10 +40,10 @@ for ticker in [ticker for ticker in tickers if ((yf.Ticker(ticker).info.get('rev
                                                       (yf.Ticker(ticker).info.get('marketCap') is not None))]:
     # Get stock data
     stock = data['Close'][ticker]
-    
+
     # Get fundamental data
     stock_info = yf.Ticker(ticker).info
-    
+
     # Append fundamental data to `fundamental_data`
     fundamental_data = fundamental_data.append({
         'Ticker': ticker,

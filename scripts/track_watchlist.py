@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 """Track watchlist companies over time and identify momentum/value changes."""
 
-import yfinance as yf
-import pandas as pd
-from datetime import datetime, timedelta
-import json
+from datetime import datetime
 from pathlib import Path
+
+import pandas as pd
 import yaml
+import yfinance as yf
+
 
 def load_watchlist():
     """Load watchlist from YAML config."""
@@ -25,23 +26,23 @@ def get_momentum_signals(ticker, days=30):
     try:
         stock = yf.Ticker(ticker)
         hist = stock.history(period=f'{days}d')
-        
+
         if len(hist) < 2:
             return {}
-        
+
         # Calculate momentum indicators
         price_change = (hist['Close'][-1] - hist['Close'][0]) / hist['Close'][0] * 100
         avg_volume = hist['Volume'].mean()
         recent_volume = hist['Volume'][-5:].mean()  # Last 5 days
         volume_surge = (recent_volume - avg_volume) / avg_volume * 100 if avg_volume > 0 else 0
-        
+
         # RSI calculation (simplified)
         delta = hist['Close'].diff()
         gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
         loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
         rs = gain / loss
         rsi = 100 - (100 / (1 + rs))
-        
+
         return {
             f'{days}d_price_change': price_change,
             f'{days}d_volume_surge': volume_surge,
@@ -55,16 +56,16 @@ def analyze_watchlist_with_signals():
     """Analyze watchlist with momentum and timing signals."""
     tickers = load_watchlist()
     results = []
-    
+
     print("Analyzing watchlist with momentum signals...")
     print("=" * 80)
-    
+
     for ticker in tickers:
         print(f"Analyzing {ticker}...")
         try:
             stock = yf.Ticker(ticker)
             info = stock.info
-            
+
             # Get basic metrics
             metrics = {
                 'ticker': ticker,
@@ -75,11 +76,11 @@ def analyze_watchlist_with_signals():
                 '52w_high': info.get('fiftyTwoWeekHigh'),
                 '52w_low': info.get('fiftyTwoWeekLow'),
             }
-            
+
             # Add momentum signals
             momentum = get_momentum_signals(ticker)
             metrics.update(momentum)
-            
+
             # Calculate buy signal strength
             buy_score = 0
             if metrics.get('pe_ratio') and metrics['pe_ratio'] < 20:
@@ -90,29 +91,29 @@ def analyze_watchlist_with_signals():
                 buy_score += 3  # Strong oversold signal
             if metrics.get('30d_volume_surge') and metrics['30d_volume_surge'] > 50:
                 buy_score += 1  # High interest
-            
+
             metrics['buy_signal_strength'] = buy_score
             results.append(metrics)
-            
+
         except Exception as e:
             print(f"  Error: {e}")
-    
+
     # Convert to DataFrame and sort by buy signal
     df = pd.DataFrame(results)
     df = df.sort_values('buy_signal_strength', ascending=False)
-    
+
     # Save results with timestamp
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     output_dir = Path('data/watchlist_tracking')
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     df.to_csv(output_dir / f'watchlist_{timestamp}.csv', index=False)
     df.to_csv('latest_watchlist_analysis.csv', index=False)
-    
+
     print("\n" + "=" * 80)
     print("STRONGEST BUY SIGNALS")
     print("=" * 80)
-    
+
     top_signals = df.head(5)
     for _, row in top_signals.iterrows():
         print(f"\n{row['ticker']}")
@@ -122,7 +123,7 @@ def analyze_watchlist_with_signals():
         if row.get('rsi'):
             print(f"  RSI: {row['rsi']:.1f}")
         print(f"  Trend: {row.get('price_trend', 'Unknown')}")
-    
+
     return df
 
 if __name__ == '__main__':

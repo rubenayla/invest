@@ -7,7 +7,7 @@ Provides unified interface to read stock data from SQLite database.
 import json
 import sqlite3
 from pathlib import Path
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
 
 
 class StockDataReader:

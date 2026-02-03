@@ -15,18 +15,17 @@ Usage:
 import asyncio
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Dict, List
 
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from mcp.server import Server
-from mcp.server.models import InitializationOptions
 import mcp.server.stdio
 import mcp.types as types
+from mcp.server import Server
+from mcp.server.models import InitializationOptions
 
 from invest.data.universal_fetcher import UniversalStockFetcher
-
 
 # Initialize the MCP server
 server = Server("stock-screening")
@@ -34,13 +33,13 @@ server = Server("stock-screening")
 # Predefined stock universes for screening
 STOCK_UNIVERSES = {
     "us_large_cap": [
-        "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "TSLA", "META", "BRK-B", 
+        "AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "TSLA", "META", "BRK-B",
         "UNH", "XOM", "JNJ", "JPM", "PG", "V", "HD", "MA", "PFE", "AVGO",
         "CVX", "ABBV", "KO", "LLY", "BAC", "COST", "PEP", "TMO", "WMT",
         "DIS", "ABT", "ACN", "VZ", "MRK", "CSCO", "ADBE", "CRM", "NKE"
     ],
     "japanese_blue_chip": [
-        "7203.T", "6758.T", "8058.T", "9984.T", "6861.T", "8002.T", 
+        "7203.T", "6758.T", "8058.T", "9984.T", "6861.T", "8002.T",
         "4063.T", "9432.T", "6752.T", "7267.T", "6954.T", "4502.T"
     ],
     "european_leaders": [
@@ -48,7 +47,7 @@ STOCK_UNIVERSES = {
         "AZN.L", "SHEL.AS", "OR.PA", "INGA.AS"
     ],
     "mixed_international": [
-        "AAPL", "MSFT", "7203.T", "ASML.AS", "NESN.SW", "8002.T", 
+        "AAPL", "MSFT", "7203.T", "ASML.AS", "NESN.SW", "8002.T",
         "BABA", "TSM", "BIDU", "0700.HK", "MC.PA", "SAP.DE"
     ]
 }
@@ -97,13 +96,13 @@ async def handle_list_tools() -> list[types.Tool]:
             }
         ),
         types.Tool(
-            name="value_screen", 
+            name="value_screen",
             description="Pre-configured value stock screen",
             inputSchema={
                 "type": "object",
                 "properties": {
                     "universe": {
-                        "type": "string", 
+                        "type": "string",
                         "enum": list(STOCK_UNIVERSES.keys()),
                         "default": "us_large_cap"
                     },
@@ -117,7 +116,7 @@ async def handle_list_tools() -> list[types.Tool]:
         ),
         types.Tool(
             name="quality_screen",
-            description="Pre-configured quality/dividend screen", 
+            description="Pre-configured quality/dividend screen",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -133,7 +132,7 @@ async def handle_list_tools() -> list[types.Tool]:
             name="growth_screen",
             description="Pre-configured growth stock screen",
             inputSchema={
-                "type": "object", 
+                "type": "object",
                 "properties": {
                     "universe": {
                         "type": "string",
@@ -155,7 +154,7 @@ async def handle_list_tools() -> list[types.Tool]:
                     },
                     "universe": {
                         "type": "string",
-                        "enum": list(STOCK_UNIVERSES.keys()), 
+                        "enum": list(STOCK_UNIVERSES.keys()),
                         "default": "mixed_international"
                     }
                 },
@@ -169,7 +168,7 @@ def apply_screen_criteria(stock_data: Dict, criteria: Dict) -> tuple[bool, List[
     """Apply screening criteria to stock data."""
     passes = True
     reasons = []
-    
+
     # P/E ratio checks
     pe = stock_data.get('trailing_pe')
     if pe:
@@ -179,32 +178,32 @@ def apply_screen_criteria(stock_data: Dict, criteria: Dict) -> tuple[bool, List[
         if criteria.get('min_pe') and pe < criteria['min_pe']:
             passes = False
             reasons.append(f"P/E {pe:.1f} < {criteria['min_pe']}")
-    
+
     # P/B ratio check
     pb = stock_data.get('price_to_book')
     if pb and criteria.get('max_pb') and pb > criteria['max_pb']:
         passes = False
         reasons.append(f"P/B {pb:.1f} > {criteria['max_pb']}")
-    
+
     # ROE check
     roe = stock_data.get('return_on_equity')
     if roe and criteria.get('min_roe') and roe < criteria['min_roe']:
         passes = False
         reasons.append(f"ROE {roe*100:.1f}% < {criteria['min_roe']*100:.1f}%")
-    
+
     # Dividend yield check
     div_yield = stock_data.get('dividend_yield')
     if criteria.get('min_dividend_yield'):
         if not div_yield or div_yield < criteria['min_dividend_yield']:
             passes = False
             reasons.append(f"Dividend yield {(div_yield or 0)*100:.2f}% < {criteria['min_dividend_yield']*100:.2f}%")
-    
+
     # Debt/Equity check
     debt_equity = stock_data.get('debt_to_equity')
     if debt_equity and criteria.get('max_debt_equity') and debt_equity > criteria['max_debt_equity']:
         passes = False
         reasons.append(f"D/E {debt_equity:.1f} > {criteria['max_debt_equity']}")
-    
+
     # Market cap check (in billions)
     market_cap = stock_data.get('market_cap_usd', stock_data.get('market_cap', 0))
     if market_cap and criteria.get('min_market_cap'):
@@ -212,14 +211,14 @@ def apply_screen_criteria(stock_data: Dict, criteria: Dict) -> tuple[bool, List[
         if market_cap_b < criteria['min_market_cap']:
             passes = False
             reasons.append(f"Market cap ${market_cap_b:.1f}B < ${criteria['min_market_cap']}B")
-    
+
     # Sector check
     if criteria.get('sectors'):
         sector = stock_data.get('sector', '')
         if sector not in criteria['sectors']:
             passes = False
             reasons.append(f"Sector '{sector}' not in allowed list")
-    
+
     return passes, reasons
 
 
@@ -228,44 +227,44 @@ async def handle_call_tool(
     name: str, arguments: dict
 ) -> list[types.TextContent | types.ImageContent | types.EmbeddedResource]:
     """Handle tool calls for stock screening."""
-    
+
     if name == "screen_stocks":
         universe_name = arguments.get("universe", "us_large_cap")
         criteria = arguments.get("criteria", {})
         custom_tickers = arguments.get("custom_tickers")
-        
+
         # Get tickers to screen
         if custom_tickers:
             tickers = custom_tickers
             universe_name = "custom"
         else:
             tickers = STOCK_UNIVERSES.get(universe_name, STOCK_UNIVERSES["us_large_cap"])
-        
+
         # Fetch data
         fetcher = UniversalStockFetcher(convert_currency=True)
         stock_data = fetcher.fetch_multiple(tickers)
-        
+
         # Apply screening
         passed_stocks = []
         failed_stocks = []
-        
+
         for ticker in tickers:
             data = stock_data.get(ticker)
             if not data:
                 failed_stocks.append((ticker, ["No data available"]))
                 continue
-            
+
             passes, reasons = apply_screen_criteria(data, criteria)
-            
+
             if passes:
                 passed_stocks.append((ticker, data))
             else:
                 failed_stocks.append((ticker, reasons))
-        
+
         # Format results
         result = f"🔍 **Stock Screening Results** ({universe_name})\n\n"
         result += f"**📊 Summary:** {len(passed_stocks)} passed, {len(failed_stocks)} failed\n\n"
-        
+
         if passed_stocks:
             result += "**✅ Stocks That Passed:**\n"
             for ticker, data in passed_stocks:
@@ -275,21 +274,21 @@ async def handle_call_tool(
                 pb = data.get('price_to_book', 0)
                 roe = data.get('return_on_equity', 0) * 100
                 sector = data.get('sector', 'N/A')[:15]
-                
+
                 result += f"• **{ticker}** ({name}) - ${price:.2f}\n"
                 result += f"  P/E: {pe:.1f} | P/B: {pb:.1f} | ROE: {roe:.1f}% | {sector}\n"
-        
+
         if failed_stocks and len(failed_stocks) <= 10:  # Only show failures for small lists
-            result += f"\n**❌ Stocks That Failed:**\n"
+            result += "\n**❌ Stocks That Failed:**\n"
             for ticker, reasons in failed_stocks[:5]:  # Limit to first 5
                 result += f"• {ticker}: {', '.join(reasons[:2])}\n"  # First 2 reasons
-        
+
         return [types.TextContent(type="text", text=result)]
-    
+
     elif name == "value_screen":
         universe_name = arguments.get("universe", "us_large_cap")
         aggressive = arguments.get("aggressive", False)
-        
+
         if aggressive:
             criteria = {
                 "max_pe": 12,
@@ -304,53 +303,53 @@ async def handle_call_tool(
                 "min_roe": 0.10,
                 "max_debt_equity": 1.0
             }
-        
+
         # Reuse the screen_stocks logic
         return await handle_call_tool("screen_stocks", {
             "universe": universe_name,
             "criteria": criteria
         })
-    
+
     elif name == "quality_screen":
         universe_name = arguments.get("universe", "us_large_cap")
-        
+
         criteria = {
             "min_roe": 0.15,
             "max_debt_equity": 0.5,
             "min_dividend_yield": 0.015,  # 1.5%+
             "min_market_cap": 1.0  # $1B+
         }
-        
+
         return await handle_call_tool("screen_stocks", {
             "universe": universe_name,
             "criteria": criteria
         })
-    
+
     elif name == "growth_screen":
         universe_name = arguments.get("universe", "us_large_cap")
-        
+
         criteria = {
             "min_roe": 0.15,
             "max_debt_equity": 1.5,
             "min_market_cap": 0.5  # Allow smaller growth companies
         }
-        
-        return await handle_call_tool("screen_stocks", {
-            "universe": universe_name, 
-            "criteria": criteria
-        })
-    
-    elif name == "sector_screen":
-        sector = arguments["sector"]
-        universe_name = arguments.get("universe", "mixed_international")
-        
-        criteria = {"sectors": [sector]}
-        
+
         return await handle_call_tool("screen_stocks", {
             "universe": universe_name,
             "criteria": criteria
         })
-    
+
+    elif name == "sector_screen":
+        sector = arguments["sector"]
+        universe_name = arguments.get("universe", "mixed_international")
+
+        criteria = {"sectors": [sector]}
+
+        return await handle_call_tool("screen_stocks", {
+            "universe": universe_name,
+            "criteria": criteria
+        })
+
     else:
         return [types.TextContent(
             type="text",

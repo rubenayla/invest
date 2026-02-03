@@ -13,16 +13,17 @@ import json
 import sqlite3
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Optional
+
 import pandas as pd
 
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root / 'src'))
 
-from invest.valuation.model_registry import ModelRegistry
-from invest.valuation.base import ModelNotSuitableError
 from invest.data.stock_data_reader import StockDataReader
+from invest.valuation.base import ModelNotSuitableError
+from invest.valuation.model_registry import ModelRegistry
 
 # Models to run (excluding sector-specific and ensemble models for now)
 # Format: (registry_name, db_name)
@@ -209,12 +210,12 @@ def main():
     print('=' * 60)
 
     # Initialize stock data reader
-    print(f'\n📦 Initializing stock data reader (SQLite database)...')
+    print('\n📦 Initializing stock data reader (SQLite database)...')
     reader = StockDataReader()
     db_path = project_root / 'data' / 'stock_data.db'
 
     # Get list of tickers from database
-    print(f'\n📂 Loading tickers from database...')
+    print('\n📂 Loading tickers from database...')
     conn = sqlite3.connect(db_path)
     query = 'SELECT DISTINCT ticker FROM current_stock_data WHERE current_price IS NOT NULL'
     tickers = [row[0] for row in conn.execute(query).fetchall()]
@@ -224,7 +225,7 @@ def main():
     stats = {db_name: {'success': 0, 'unsuitable': 0, 'error': 0, 'cache_miss': 0} for _, db_name in MODELS_TO_RUN}
 
     # Run valuations on each stock
-    print(f'\n🔄 Running valuations...')
+    print('\n🔄 Running valuations...')
 
     for i, ticker in enumerate(tickers):
         # Load stock data from SQLite
@@ -276,9 +277,9 @@ def main():
     conn.close()
 
     # Summary
-    print(f'\n✅ Classic valuations complete!')
+    print('\n✅ Classic valuations complete!')
     print('=' * 60)
-    print(f'📊 Results by model:')
+    print('📊 Results by model:')
     print()
 
     for _, db_name in MODELS_TO_RUN:
@@ -292,7 +293,7 @@ def main():
 
     print()
     print(f'Total stocks processed: {len(tickers)}')
-    print(f'💾 Saved to database: data/stock_data.db (valuation_results table)')
+    print('💾 Saved to database: data/stock_data.db (valuation_results table)')
     print('💡 Run dashboard.py to update the dashboard HTML')
 
     return 0

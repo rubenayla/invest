@@ -10,14 +10,13 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from mcp import Server, NotificationOptions
 from mcp.server.models import InitializationOptions
 from mcp.server.stdio import stdio_server
-from mcp.types import Tool, TextContent
+from mcp.types import Tool
 
 # Import your existing modules
 from src.data_fetcher import DataFetcher
-from src.valuation_models import SimpleRatiosModel, DCFModel, GrahamModel
+from src.valuation_models import DCFModel, GrahamModel, SimpleRatiosModel
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -30,21 +29,21 @@ async def analyze_stock(arguments: dict[str, Any]) -> list[types.TextContent]:
     """Analyze a stock with multiple valuation models."""
     ticker = arguments.get('ticker', '').upper()
     use_cache = arguments.get('use_cache', True)
-    
+
     try:
         # Fetch data
         data = data_fetcher.fetch_stock_data(ticker, use_cache=use_cache)
-        
+
         if not data:
             return [types.TextContent(
                 type='text',
                 text=f'Failed to fetch data for {ticker}'
             )]
-        
+
         # Run valuation models
         models = [SimpleRatiosModel(), DCFModel(), GrahamModel()]
         results = []
-        
+
         for model in models:
             try:
                 valuation = model.calculate(data)
@@ -58,7 +57,7 @@ async def analyze_stock(arguments: dict[str, Any]) -> list[types.TextContent]:
                     'model': model.__class__.__name__,
                     'error': str(e)
                 })
-        
+
         # Format response
         current_price = data.get('currentPrice', 'N/A')
         response = f'=== Analysis for {ticker} ===\n'
@@ -66,16 +65,16 @@ async def analyze_stock(arguments: dict[str, Any]) -> list[types.TextContent]:
         response += f'P/E Ratio: {data.get("trailingPE", "N/A")}\n'
         response += f'Market Cap: ${data.get("marketCap", 0)/1e9:.1f}B\n\n'
         response += 'Valuations:\n'
-        
+
         for result in results:
             if 'error' in result:
                 response += f'- {result["model"]}: Error - {result["error"]}\n'
             else:
                 response += f'- {result["model"]}: ${result["fair_value"]:.2f} '
                 response += f'(Margin: {result["margin_of_safety"]:.1f}%)\n'
-        
+
         return [types.TextContent(type='text', text=response)]
-        
+
     except Exception as e:
         return [types.TextContent(
             type='text',
@@ -85,16 +84,16 @@ async def analyze_stock(arguments: dict[str, Any]) -> list[types.TextContent]:
 async def compare_stocks(arguments: dict[str, Any]) -> list[types.TextContent]:
     """Compare multiple stocks side by side."""
     tickers = arguments.get('tickers', [])
-    
+
     if not tickers:
         return [types.TextContent(
             type='text',
             text='Please provide a list of tickers to compare'
         )]
-    
+
     try:
         comparison_data = []
-        
+
         for ticker in tickers[:10]:  # Limit to 10 stocks
             data = data_fetcher.fetch_stock_data(ticker)
             if data:
@@ -106,34 +105,34 @@ async def compare_stocks(arguments: dict[str, Any]) -> list[types.TextContent]:
                     'ROE': f'{data.get("returnOnEquity", 0)*100:.1f}%' if data.get('returnOnEquity') else 'N/A',
                     'Margin': f'{data.get("grossMargins", 0)*100:.1f}%' if data.get('grossMargins') else 'N/A'
                 })
-        
+
         # Format as text table
         if not comparison_data:
             return [types.TextContent(
                 type='text',
                 text='No data available for the provided tickers'
             )]
-        
+
         # Create formatted table
         headers = list(comparison_data[0].keys())
         col_widths = {h: max(len(h), max(len(str(r.get(h, ''))) for r in comparison_data)) for h in headers}
-        
+
         # Header row
         header_line = ' | '.join(h.ljust(col_widths[h]) for h in headers)
         separator = '-+-'.join('-' * col_widths[h] for h in headers)
-        
+
         # Data rows
         data_lines = []
         for row in comparison_data:
             data_lines.append(' | '.join(str(row.get(h, '')).ljust(col_widths[h]) for h in headers))
-        
+
         response = 'Stock Comparison:\n\n'
         response += header_line + '\n'
         response += separator + '\n'
         response += '\n'.join(data_lines)
-        
+
         return [types.TextContent(type='text', text=response)]
-        
+
     except Exception as e:
         return [types.TextContent(
             type='text',
@@ -143,23 +142,23 @@ async def compare_stocks(arguments: dict[str, Any]) -> list[types.TextContent]:
 async def get_cached_data(arguments: dict[str, Any]) -> list[types.TextContent]:
     """Retrieve cached data for a stock."""
     ticker = arguments.get('ticker', '').upper()
-    
+
     try:
         cache_file = cache_dir / f'{ticker}.json'
-        
+
         if not cache_file.exists():
             return [types.TextContent(
                 type='text',
                 text=f'No cached data found for {ticker}'
             )]
-        
+
         with open(cache_file, 'r') as f:
             data = json.load(f)
-        
+
         # Get cache age
         cache_time = datetime.fromtimestamp(cache_file.stat().st_mtime)
         age_hours = (datetime.now() - cache_time).total_seconds() / 3600
-        
+
         # Format key metrics
         response = f'=== Cached Data for {ticker} ===\n'
         response += f'Cache Age: {age_hours:.1f} hours\n'
@@ -169,9 +168,9 @@ async def get_cached_data(arguments: dict[str, Any]) -> list[types.TextContent]:
         response += f'- 52W Range: ${data.get("fiftyTwoWeekLow", "N/A")} - ${data.get("fiftyTwoWeekHigh", "N/A")}\n'
         response += f'- Market Cap: ${data.get("marketCap", 0)/1e9:.1f}B\n'
         response += f'- P/E Ratio: {data.get("trailingPE", "N/A")}\n'
-        
+
         return [types.TextContent(type='text', text=response)]
-        
+
     except Exception as e:
         return [types.TextContent(
             type='text',
@@ -181,7 +180,7 @@ async def get_cached_data(arguments: dict[str, Any]) -> list[types.TextContent]:
 async def clear_cache(arguments: dict[str, Any]) -> list[types.TextContent]:
     """Clear cached data."""
     ticker = arguments.get('ticker')
-    
+
     try:
         if ticker:
             cache_file = cache_dir / f'{ticker.upper()}.json'
@@ -205,7 +204,7 @@ async def clear_cache(arguments: dict[str, Any]) -> list[types.TextContent]:
                 type='text',
                 text=f'Cleared {count} cached files'
             )]
-            
+
     except Exception as e:
         return [types.TextContent(
             type='text',
@@ -216,20 +215,20 @@ async def find_value_stocks(arguments: dict[str, Any]) -> list[types.TextContent
     """Find undervalued stocks based on criteria."""
     max_pe = arguments.get('max_pe', 15)
     min_roe = arguments.get('min_roe', 15)
-    
+
     try:
         # Analyze known watchlist
         watchlist = ['MOH', 'ACGL', 'NEM', 'HIG', 'STLD', 'CVX', 'DHI', 'ALLE', 'NUE']
         matches = []
-        
+
         for ticker in watchlist:
             data = data_fetcher.fetch_stock_data(ticker)
             if not data:
                 continue
-            
+
             pe = data.get('trailingPE', float('inf'))
             roe = data.get('returnOnEquity', 0) * 100 if data.get('returnOnEquity') else 0
-            
+
             # Check criteria
             if pe <= max_pe and roe >= min_roe:
                 matches.append({
@@ -239,25 +238,25 @@ async def find_value_stocks(arguments: dict[str, Any]) -> list[types.TextContent
                     'price': data.get('currentPrice', 'N/A'),
                     'name': data.get('longName', ticker)
                 })
-        
+
         if not matches:
             return [types.TextContent(
                 type='text',
                 text='No stocks found matching criteria'
             )]
-        
+
         # Sort by P/E ratio
         matches.sort(key=lambda x: x['pe'])
-        
+
         response = f'=== Value Stocks (P/E ≤ {max_pe}, ROE ≥ {min_roe}%) ===\n\n'
         for match in matches:
             response += f'{match["ticker"]} ({match["name"]})\n'
             response += f'  P/E: {match["pe"]:.1f}\n'
             response += f'  ROE: {match["roe"]:.1f}%\n'
             response += f'  Price: ${match["price"]}\n\n'
-        
+
         return [types.TextContent(type='text', text=response)]
-        
+
     except Exception as e:
         return [types.TextContent(
             type='text',

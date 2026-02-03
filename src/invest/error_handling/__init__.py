@@ -34,19 +34,31 @@ Usage:
             print(f"Error handled: {error_ctx.error_info.user_message}")
 """
 
-from .error_manager import (
-    ErrorHandler, ErrorInfo, ErrorContext, ErrorSeverity, ErrorCategory,
-    error_handler, handle_error, get_error_summary, create_error_context,
-    handle_errors, ErrorHandlingContext
-)
-
-from .recovery_strategies import (
-    RecoveryStrategy, RecoveryManager, recovery_manager,
-    RetryWithBackoffStrategy, FallbackDataStrategy, ModelSubstitutionStrategy,
-    GracefulDegradationStrategy, UserGuidanceStrategy, SystemHealthStrategy
-)
-
 from ..config.logging_config import get_logger
+from .error_manager import (
+    ErrorCategory,
+    ErrorContext,
+    ErrorHandler,
+    ErrorHandlingContext,
+    ErrorInfo,
+    ErrorSeverity,
+    create_error_context,
+    error_handler,
+    get_error_summary,
+    handle_error,
+    handle_errors,
+)
+from .recovery_strategies import (
+    FallbackDataStrategy,
+    GracefulDegradationStrategy,
+    ModelSubstitutionStrategy,
+    RecoveryManager,
+    RecoveryStrategy,
+    RetryWithBackoffStrategy,
+    SystemHealthStrategy,
+    UserGuidanceStrategy,
+    recovery_manager,
+)
 
 logger = get_logger(__name__)
 
@@ -59,15 +71,15 @@ def setup_error_handling(enable_recovery: bool = True):
         enable_recovery: Whether to enable automatic error recovery
     """
     logger.info("Setting up comprehensive error handling system")
-    
+
     if enable_recovery:
         # Integrate recovery manager with error handler
         original_handle_error = error_handler.handle_error
-        
+
         def enhanced_handle_error(exception, context=None, **kwargs):
             """Enhanced error handler with recovery attempts."""
             error_info = original_handle_error(exception, context, **kwargs)
-            
+
             # Attempt recovery
             if error_info.recoverable:
                 successful_strategies = recovery_manager.attempt_recovery(error_info)
@@ -76,13 +88,13 @@ def setup_error_handling(enable_recovery: bool = True):
                         f"Recovery attempted for {error_info.error_id}",
                         extra={"successful_strategies": successful_strategies}
                     )
-            
+
             return error_info
-        
+
         # Replace the handle_error method
         error_handler.handle_error = enhanced_handle_error
         logger.info("Error recovery system enabled")
-    
+
     # Log setup completion
     logger.info("Error handling system setup complete")
 
@@ -91,7 +103,7 @@ def get_system_health_report() -> dict:
     """Get comprehensive system health report including error patterns."""
     error_summary = get_error_summary(hours=24)
     recovery_stats = recovery_manager.get_strategy_statistics()
-    
+
     return {
         "timestamp": error_handler.error_history[-1].context.timestamp.isoformat() if error_handler.error_history else None,
         "error_summary": error_summary,
@@ -137,22 +149,22 @@ __all__ = [
     # Core classes
     'ErrorHandler', 'ErrorInfo', 'ErrorContext', 'ErrorSeverity', 'ErrorCategory',
     'RecoveryStrategy', 'RecoveryManager',
-    
-    # Global instances  
+
+    # Global instances
     'error_handler', 'recovery_manager',
-    
+
     # Core functions
     'handle_error', 'get_error_summary', 'create_error_context',
-    
+
     # Decorators and context managers
     'handle_errors', 'ErrorHandlingContext',
-    
+
     # Setup and reporting
     'setup_error_handling', 'get_system_health_report',
-    
+
     # Convenience functions
     'handle_data_fetch_error', 'handle_valuation_error', 'handle_validation_error',
-    
+
     # Recovery strategies
     'RetryWithBackoffStrategy', 'FallbackDataStrategy', 'ModelSubstitutionStrategy',
     'GracefulDegradationStrategy', 'UserGuidanceStrategy', 'SystemHealthStrategy'

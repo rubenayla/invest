@@ -16,9 +16,8 @@ import logging
 import sqlite3
 import sys
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Optional
 
-import pandas as pd
 import yfinance as yf
 
 # Add project root to path

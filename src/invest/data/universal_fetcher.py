@@ -12,12 +12,13 @@ Ticker formats supported:
 - Yahoo format: '7203.T' (Toyota on Tokyo), 'NESN.SW' (Nestle on Swiss)
 """
 
-from typing import Dict, List, Optional, Tuple, Union
-import yfinance as yf
-from concurrent.futures import ThreadPoolExecutor, as_completed
 import logging
-from numbers import Number
 import math
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from numbers import Number
+from typing import Dict, List, Optional
+
+import yfinance as yf
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,7 @@ EXCHANGE_SUFFIXES = {
     'NYSE': '',
     'NASDAQ': '',
     'AMEX': '',
-    
+
     # Asia
     'TSE': '.T',      # Tokyo Stock Exchange
     'OSE': '.T',      # Osaka (merged with TSE)
@@ -38,7 +39,7 @@ EXCHANGE_SUFFIXES = {
     'SGX': '.SI',     # Singapore
     'BSE': '.BO',     # Bombay
     'NSE': '.NS',     # India NSE
-    
+
     # Europe
     'LSE': '.L',      # London
     'XETRA': '.DE',   # Germany
@@ -51,7 +52,7 @@ EXCHANGE_SUFFIXES = {
     'HEL': '.HE',     # Helsinki
     'CPH': '.CO',     # Copenhagen
     'OSL': '.OL',     # Oslo
-    
+
     # Other
     'TSX': '.TO',     # Toronto
     'ASX': '.AX',     # Australia
@@ -70,12 +71,12 @@ TICKER_ALIASES = {
     '6758': '6758.T',  # Sony
     '8058': '8058.T',  # Mitsubishi Corp
     '4063': '4063.T',  # Shin-Etsu Chemical
-    
+
     # European companies
     'ASML': 'ASML.AS',  # ASML (Amsterdam)
     'NESN': 'NESN.SW',  # Nestle (Swiss)
     'SAP': 'SAP.DE',    # SAP (Germany)
-    
+
     # Special cases
     'BRK.B': 'BRK-B',   # Berkshire Hathaway B
     'BRK.A': 'BRK-A',   # Berkshire Hathaway A
@@ -84,7 +85,7 @@ TICKER_ALIASES = {
 
 class UniversalStockFetcher:
     """Fetches stock data from any exchange worldwide."""
-    
+
     def __init__(self, convert_currency: bool = True, target_currency: str = 'USD'):
         """
         Initialize the universal fetcher.
@@ -96,7 +97,7 @@ class UniversalStockFetcher:
         self.convert_currency = convert_currency
         self.target_currency = target_currency
         self._exchange_rates = {}
-    
+
     def parse_ticker(self, ticker_input: str) -> str:
         """
         Parse various ticker formats into Yahoo Finance format.
@@ -111,7 +112,7 @@ class UniversalStockFetcher:
         # Check if it's in our alias map
         if ticker_input in TICKER_ALIASES:
             return TICKER_ALIASES[ticker_input]
-        
+
         # Handle exchange-specified format (TICKER:EXCHANGE)
         if ':' in ticker_input:
             ticker, exchange = ticker_input.split(':', 1)
@@ -122,14 +123,14 @@ class UniversalStockFetcher:
             else:
                 logger.warning(f'Unknown exchange {exchange}, using ticker as-is')
                 return ticker
-        
+
         # Auto-detect Japanese stocks (4-digit numbers)
         if ticker_input.isdigit() and len(ticker_input) == 4:
             return f'{ticker_input}.T'
-        
+
         # Return as-is (might already be in Yahoo format or US stock)
         return ticker_input
-    
+
     def fetch_stock(self, ticker_input: str) -> Optional[Dict]:
         """
         Fetch data for a single stock from any exchange.
@@ -141,35 +142,35 @@ class UniversalStockFetcher:
             Dictionary with normalized stock data
         """
         yahoo_ticker = self.parse_ticker(ticker_input)
-        
+
         try:
             stock = yf.Ticker(yahoo_ticker)
             info = stock.info
-            
+
             if not info or 'symbol' not in info:
                 logger.warning(f'No data found for {ticker_input} (tried {yahoo_ticker})')
                 return None
-            
+
             # Normalize the data
             normalized = self._normalize_data(info, ticker_input)
-            
+
             # Add exchange info
             normalized['original_ticker'] = ticker_input
             normalized['yahoo_ticker'] = yahoo_ticker
             normalized['exchange'] = info.get('exchange', 'Unknown')
             normalized['currency'] = info.get('currency', 'USD')
             normalized['country'] = info.get('country', 'Unknown')
-            
+
             # Convert currency if requested
             if self.convert_currency and normalized['currency'] != self.target_currency:
                 normalized = self._convert_prices(normalized)
-            
+
             return normalized
-            
+
         except Exception as e:
             logger.error(f'Error fetching {ticker_input}: {e}')
             return None
-    
+
     def fetch_multiple(self, tickers: List[str], max_workers: int = 10) -> Dict[str, Optional[Dict]]:
         """
         Fetch data for multiple stocks concurrently.
@@ -182,13 +183,13 @@ class UniversalStockFetcher:
             Dictionary mapping original ticker -> stock data
         """
         results = {}
-        
+
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             future_to_ticker = {
-                executor.submit(self.fetch_stock, ticker): ticker 
+                executor.submit(self.fetch_stock, ticker): ticker
                 for ticker in tickers
             }
-            
+
             for future in as_completed(future_to_ticker):
                 ticker = future_to_ticker[future]
                 try:
@@ -197,14 +198,14 @@ class UniversalStockFetcher:
                 except Exception as e:
                     logger.error(f'Error fetching {ticker}: {e}')
                     results[ticker] = None
-        
+
         return results
-    
+
     def _normalize_data(self, info: Dict, original_ticker: str) -> Dict:
         """Normalize yfinance data to consistent field names."""
         # Start with all original data
         normalized = dict(info)
-        
+
         # Add normalized field names
         normalized.update({
             'ticker': original_ticker,
@@ -235,20 +236,20 @@ class UniversalStockFetcher:
             'total_debt': info.get('totalDebt'),
             'total_cash': info.get('totalCash'),
         })
-        
+
         return normalized
-    
+
     def _convert_prices(self, data: Dict) -> Dict:
         """Convert price fields to target currency."""
         source_currency = data.get('currency')
         data['original_currency'] = source_currency
-        
+
         if not source_currency:
             data['currency'] = self.target_currency
             data['exchange_rate'] = 1.0
             data['converted_to'] = self.target_currency
             return data
-        
+
         if source_currency == self.target_currency:
             data['exchange_rate'] = 1.0
             data['converted_to'] = self.target_currency
@@ -257,7 +258,7 @@ class UniversalStockFetcher:
                 data.setdefault('financialCurrency_original', data['financialCurrency'])
                 data['financialCurrency'] = self.target_currency
             return data
-        
+
         # Get exchange rate
         if source_currency not in self._exchange_rates:
             rate_ticker = f'{source_currency}{self.target_currency}=X'
@@ -268,7 +269,7 @@ class UniversalStockFetcher:
             except:
                 logger.warning(f'Could not get exchange rate for {source_currency} to {self.target_currency}')
                 self._exchange_rates[source_currency] = 1.0
-        
+
         rate = self._exchange_rates[source_currency]
 
         def _convert_field(field_name: str) -> None:
@@ -288,7 +289,7 @@ class UniversalStockFetcher:
             converted_value = numeric_value * rate
             data[field_name] = converted_value
             data[f'{field_name}_{self.target_currency.lower()}'] = converted_value
-        
+
         # Convert price fields
         price_fields = [
             'current_price', 'currentPrice', 'regularMarketPrice',
@@ -304,10 +305,10 @@ class UniversalStockFetcher:
             'forward_eps', 'forwardEps',
             'previousClose', 'open', 'dayHigh', 'dayLow'
         ]
-        
+
         for field in price_fields:
             _convert_field(field)
-        
+
         # Convert value fields
         value_fields = [
             'market_cap', 'marketCap',
@@ -321,7 +322,7 @@ class UniversalStockFetcher:
             'total_assets', 'totalAssets',
             'total_liabilities', 'totalLiab'
         ]
-        
+
         for field in value_fields:
             _convert_field(field)
 
@@ -329,10 +330,10 @@ class UniversalStockFetcher:
         if 'financialCurrency' in data:
             data.setdefault('financialCurrency_original', data['financialCurrency'])
             data['financialCurrency'] = self.target_currency
-        
+
         data['exchange_rate'] = rate
         data['converted_to'] = self.target_currency
-        
+
         return data
 
 
@@ -350,13 +351,13 @@ def compare_international_stocks(tickers: List[str], metrics: List[str] = None) 
     if metrics is None:
         metrics = [
             'current_price', 'market_cap', 'trailing_pe', 'price_to_book',
-            'return_on_equity', 'debt_to_equity', 'revenue_growth', 
+            'return_on_equity', 'debt_to_equity', 'revenue_growth',
             'dividend_yield', 'ev_to_ebitda'
         ]
-    
+
     fetcher = UniversalStockFetcher(convert_currency=True)
     data = fetcher.fetch_multiple(tickers)
-    
+
     comparison = {}
     for ticker, stock_data in data.items():
         if stock_data:
@@ -371,5 +372,5 @@ def compare_international_stocks(tickers: List[str], metrics: List[str] = None) 
                     for metric in metrics
                 }
             }
-    
+
     return comparison

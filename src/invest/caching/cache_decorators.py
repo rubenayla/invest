@@ -5,19 +5,19 @@ This module provides decorators that can be applied to functions to
 automatically cache their results based on function arguments.
 """
 
+import functools
 import hashlib
 import json
-import functools
-import time
 import logging
-from typing import Any, Callable, Optional, Dict, Tuple, Union
+import time
+from typing import Any, Callable, Dict, Optional, Tuple
 
-from .cache_manager import get_cache_manager, CacheKey
+from .cache_manager import CacheKey, get_cache_manager
 
 logger = logging.getLogger(__name__)
 
 
-def cached_api_call(data_type: str = 'default', 
+def cached_api_call(data_type: str = 'default',
                    ttl: Optional[int] = None,
                    key_prefix: str = '',
                    skip_cache: bool = False):
@@ -42,42 +42,42 @@ def cached_api_call(data_type: str = 'default',
         # Expensive API call
         return fetch_from_api(ticker)
     """
-    
+
     def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             if skip_cache:
                 return func(*args, **kwargs)
-            
+
             cache_manager = get_cache_manager()
-            
+
             # Generate cache key from function name and arguments
             cache_key = _generate_function_cache_key(func, args, kwargs, key_prefix)
-            
+
             # Try to get from cache first
             cached_result = cache_manager.get(cache_key, data_type)
             if cached_result is not None:
                 logger.debug(f"Cache hit for {func.__name__} with key: {cache_key}")
                 return cached_result
-            
+
             # Cache miss - execute function
             start_time = time.time()
             try:
                 result = func(*args, **kwargs)
                 execution_time = time.time() - start_time
-                
+
                 # Cache the result if it's not None
                 if result is not None:
                     cache_manager.set(cache_key, result, data_type, ttl)
                     logger.debug(f"Cached result for {func.__name__} (exec: {execution_time:.2f}s)")
-                
+
                 return result
-                
+
             except Exception as e:
                 execution_time = time.time() - start_time
                 logger.warning(f"Function {func.__name__} failed after {execution_time:.2f}s: {e}")
                 raise
-        
+
         # Add cache control methods to the function
         wrapper.cache_invalidate = lambda *args, **kwargs: _invalidate_function_cache(
             func, args, kwargs, key_prefix, data_type
@@ -85,13 +85,13 @@ def cached_api_call(data_type: str = 'default',
         wrapper.cache_key = lambda *args, **kwargs: _generate_function_cache_key(
             func, args, kwargs, key_prefix
         )
-        
+
         return wrapper
-    
+
     return decorator
 
 
-def cached_computation(ttl: int = 3600, 
+def cached_computation(ttl: int = 3600,
                       key_prefix: str = '',
                       skip_cache: bool = False):
     """
@@ -113,42 +113,42 @@ def cached_computation(ttl: int = 3600,
         # Expensive computation
         return compute_result(ticker, params)
     """
-    
+
     def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             if skip_cache:
                 return func(*args, **kwargs)
-            
+
             cache_manager = get_cache_manager()
-            
+
             # Generate cache key
             cache_key = _generate_function_cache_key(func, args, kwargs, key_prefix)
-            
+
             # Try cache first
             cached_result = cache_manager.get(cache_key, 'computation')
             if cached_result is not None:
                 logger.debug(f"Computation cache hit for {func.__name__}")
                 return cached_result
-            
+
             # Execute computation
             start_time = time.time()
             try:
                 result = func(*args, **kwargs)
                 execution_time = time.time() - start_time
-                
+
                 # Cache the result
                 if result is not None:
                     cache_manager.set(cache_key, result, 'computation', ttl)
                     logger.debug(f"Cached computation result for {func.__name__} (exec: {execution_time:.2f}s)")
-                
+
                 return result
-                
+
             except Exception as e:
                 execution_time = time.time() - start_time
                 logger.warning(f"Computation {func.__name__} failed after {execution_time:.2f}s: {e}")
                 raise
-        
+
         # Add cache control methods
         wrapper.cache_invalidate = lambda *args, **kwargs: _invalidate_function_cache(
             func, args, kwargs, key_prefix, 'computation'
@@ -156,9 +156,9 @@ def cached_computation(ttl: int = 3600,
         wrapper.cache_key = lambda *args, **kwargs: _generate_function_cache_key(
             func, args, kwargs, key_prefix
         )
-        
+
         return wrapper
-    
+
     return decorator
 
 
@@ -182,62 +182,62 @@ def cache_result_by_ticker(data_type: str, ttl: Optional[int] = None):
     def get_stock_info(ticker: str) -> dict:
         return fetch_stock_info(ticker)
     """
-    
+
     def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
         def wrapper(ticker: str, *args, **kwargs):
             cache_manager = get_cache_manager()
-            
+
             # Generate ticker-based cache key
             base_key = _get_ticker_cache_key(data_type, ticker, func.__name__)
-            
+
             # Add additional args/kwargs to key if present
             if args or kwargs:
                 arg_hash = _hash_args_kwargs(args, kwargs)
                 cache_key = f"{base_key}:{arg_hash}"
             else:
                 cache_key = base_key
-            
+
             # Try cache first
             cached_result = cache_manager.get(cache_key, data_type)
             if cached_result is not None:
                 logger.debug(f"Ticker cache hit for {func.__name__}({ticker})")
                 return cached_result
-            
+
             # Execute function
             start_time = time.time()
             try:
                 result = func(ticker, *args, **kwargs)
                 execution_time = time.time() - start_time
-                
+
                 # Cache the result
                 if result is not None:
                     cache_manager.set(cache_key, result, data_type, ttl)
                     logger.debug(f"Cached {data_type} for {ticker} (exec: {execution_time:.2f}s)")
-                
+
                 return result
-                
+
             except Exception as e:
                 execution_time = time.time() - start_time
                 logger.warning(f"Function {func.__name__}({ticker}) failed after {execution_time:.2f}s: {e}")
                 raise
-        
+
         # Add cache control methods
         wrapper.cache_invalidate = lambda ticker, *args, **kwargs: _invalidate_ticker_cache(
             data_type, ticker, func.__name__, args, kwargs
         )
-        
+
         return wrapper
-    
+
     return decorator
 
 
-def _generate_function_cache_key(func: Callable, args: Tuple, kwargs: Dict, 
+def _generate_function_cache_key(func: Callable, args: Tuple, kwargs: Dict,
                                 prefix: str = '') -> str:
     """Generate a cache key for a function call."""
     # Create base key from function name
     base_key = f"{prefix}{func.__module__}.{func.__name__}" if prefix else f"{func.__module__}.{func.__name__}"
-    
+
     # Hash arguments to create unique key
     if args or kwargs:
         arg_hash = _hash_args_kwargs(args, kwargs)
@@ -254,13 +254,13 @@ def _hash_args_kwargs(args: Tuple, kwargs: Dict) -> str:
             'args': args,
             'kwargs': sorted(kwargs.items()) if kwargs else {}
         }
-        
+
         # Convert to JSON string for hashing (handles most data types)
         arg_json = json.dumps(arg_data, sort_keys=True, default=str)
-        
+
         # Create hash
         return hashlib.md5(arg_json.encode()).hexdigest()[:16]  # Use first 16 chars
-        
+
     except (TypeError, ValueError):
         # Fallback for non-serializable objects
         arg_str = f"{str(args)}{str(kwargs)}"
@@ -270,7 +270,7 @@ def _hash_args_kwargs(args: Tuple, kwargs: Dict) -> str:
 def _get_ticker_cache_key(data_type: str, ticker: str, func_name: str) -> str:
     """Generate a cache key for ticker-based data."""
     ticker = ticker.upper()
-    
+
     if data_type == 'stock_info':
         return CacheKey.stock_info(ticker)
     elif data_type == 'financials':
@@ -295,15 +295,15 @@ def _invalidate_ticker_cache(data_type: str, ticker: str, func_name: str,
                             args: Tuple, kwargs: Dict) -> bool:
     """Invalidate cache for a ticker-based function call."""
     cache_manager = get_cache_manager()
-    
+
     base_key = _get_ticker_cache_key(data_type, ticker, func_name)
-    
+
     if args or kwargs:
         arg_hash = _hash_args_kwargs(args, kwargs)
         cache_key = f"{base_key}:{arg_hash}"
     else:
         cache_key = base_key
-    
+
     return cache_manager.delete(cache_key, data_type)
 
 

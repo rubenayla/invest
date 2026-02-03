@@ -7,15 +7,15 @@ valuation approaches.
 """
 
 from .base import ValuationModel, ValuationResult
-from .dcf_model import DCFModel, EnhancedDCFModel, MultiStageDCFModel  
-from .rim_model import RIMModel
-from .ratios_model import SimpleRatiosModel
+from .dcf_model import DCFModel, EnhancedDCFModel, MultiStageDCFModel
 from .model_registry import ModelRegistry
+from .ratios_model import SimpleRatiosModel
+from .rim_model import RIMModel
 
 # Export the main interfaces
 __all__ = [
     'ValuationModel',
-    'ValuationResult', 
+    'ValuationResult',
     'DCFModel',
     'EnhancedDCFModel',
     'MultiStageDCFModel',

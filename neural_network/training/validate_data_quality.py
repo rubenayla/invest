@@ -13,7 +13,6 @@ Not included in CI/CD since it requires the database.
 import sqlite3
 import sys
 from pathlib import Path
-from typing import Dict, List, Tuple
 
 
 class DataQualityValidator:

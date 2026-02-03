@@ -3,24 +3,24 @@
 Train multi-horizon neural network model using cached stock data.
 """
 
-import json
+import logging
 import sqlite3
 import sys
-import numpy as np
-import torch
-from pathlib import Path
 from datetime import datetime
-import logging
-import yfinance as yf
-import pandas as pd
+from pathlib import Path
 from typing import Dict, List, Tuple
+
+import numpy as np
+import pandas as pd
+import torch
 
 # Add project root to path
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from src.invest.valuation.neural_network_model import FeatureEngineer
 from src.invest.valuation.multi_horizon_nn import MultiHorizonValuationModel
+
+from src.invest.valuation.neural_network_model import FeatureEngineer
 
 # Setup logging
 logging.basicConfig(
@@ -53,7 +53,7 @@ class MultiHorizonTrainer:
 
         logger.info(f'Loaded {snapshot_count} snapshots from database')
         logger.info(f'Data period: {start_date} to {end_date}')
-        logger.info(f'Horizons: [\'1m\', \'3m\', \'6m\', \'1y\', \'2y\']')
+        logger.info('Horizons: [\'1m\', \'3m\', \'6m\', \'1y\', \'2y\']')
 
         # Load all snapshots with their forward returns
         cursor.execute('''
@@ -266,7 +266,7 @@ class MultiHorizonTrainer:
         test_sample = X_test[0:1]
         prediction = model.predict(test_sample, current_price=100.0)
 
-        logger.info(f'Predictions for test sample:')
+        logger.info('Predictions for test sample:')
         for horizon in model.model.horizons:
             logger.info(f'  {horizon:3s}: {prediction.predictions[horizon]:+6.2f}% '
                        f'[Confidence: {prediction.confidence_scores[horizon]:.1%}]')

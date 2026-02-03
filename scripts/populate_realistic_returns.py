@@ -13,7 +13,7 @@ These returns better reflect actual trading behavior compared to fixed-horizon r
 import logging
 import sqlite3
 import sys
-from datetime import datetime, timedelta
+from datetime import timedelta
 from pathlib import Path
 
 import numpy as np
@@ -304,7 +304,7 @@ def main():
             logger.info(f'  >200% returns: {sum(r > 2.0 for r in returns_3y)} '
                       f'({100*sum(r > 2.0 for r in returns_3y)/len(returns_3y):.1f}%)')
 
-        logger.info(f'\n✅ Successfully populated realistic returns!')
+        logger.info('\n✅ Successfully populated realistic returns!')
         logger.info(f'  1y returns: {len(updates_1y)} snapshots')
         logger.info(f'  3y returns: {len(updates_3y)} snapshots')
         logger.info(f'  Errors: {errors} snapshots')
@@ -322,7 +322,7 @@ def main():
         """)
         count_3y = cursor.fetchone()[0]
 
-        logger.info(f'\nDatabase now contains:')
+        logger.info('\nDatabase now contains:')
         logger.info(f'  {count_1y} snapshots with 1y realistic returns')
         logger.info(f'  {count_3y} snapshots with 3y realistic returns')
 

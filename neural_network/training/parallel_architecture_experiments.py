@@ -7,8 +7,8 @@ Run multiple neural network architectures in parallel using the same cached data
 This script modifies the NeuralNetworkArchitecture to test different configurations.
 """
 
-import sys
 import os
+import sys
 from pathlib import Path
 
 # Add src to path
@@ -37,6 +37,7 @@ neural_network_model.NeuralNetworkArchitecture.__init__ = patched_init
 
 # Now run the comprehensive training
 import asyncio
+
 from neural_network.training.comprehensive_neural_training import main
 
 if __name__ == '__main__':

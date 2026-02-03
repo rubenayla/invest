@@ -16,7 +16,7 @@ import sqlite3
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 # Setup logging
 logging.basicConfig(
@@ -140,7 +140,7 @@ class SECDataPopulator:
                         # This company has common stock - likely has a ticker
                         # We'll need to match by CIK from database
                         mapping[cik] = entity_name
-            except Exception as e:
+            except Exception:
                 continue
 
         logger.info(f'Found {len(mapping)} companies with SEC data')

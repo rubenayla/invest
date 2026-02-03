@@ -5,7 +5,7 @@ This module defines specific exceptions that provide better error handling
 and debugging information than generic Exception catching.
 """
 
-from typing import Optional, List
+from typing import List, Optional
 
 
 class InvestmentAnalysisError(Exception):
@@ -20,7 +20,7 @@ class DataProviderError(InvestmentAnalysisError):
 
 class DataFetchError(DataProviderError):
     """Error occurred while fetching stock data."""
-    
+
     def __init__(self, ticker: str, message: str, provider: str = "unknown"):
         self.ticker = ticker
         self.provider = provider
@@ -29,7 +29,7 @@ class DataFetchError(DataProviderError):
 
 class RateLimitError(DataProviderError):
     """API rate limit has been exceeded."""
-    
+
     def __init__(self, provider: str, retry_after: Optional[int] = None):
         self.provider = provider
         self.retry_after = retry_after
@@ -41,7 +41,7 @@ class RateLimitError(DataProviderError):
 
 class ValidationError(InvestmentAnalysisError):
     """Input validation failed."""
-    
+
     def __init__(self, field: str, value: str, reason: str):
         self.field = field
         self.value = value
@@ -56,7 +56,7 @@ class ValuationError(InvestmentAnalysisError):
 
 class ModelNotSuitableError(ValuationError):
     """Valuation model is not suitable for this company type."""
-    
+
     def __init__(self, model: str, ticker: str, reason: str):
         self.model = model
         self.ticker = ticker
@@ -66,7 +66,7 @@ class ModelNotSuitableError(ValuationError):
 
 class InsufficientDataError(ValuationError):
     """Not enough data available to perform valuation."""
-    
+
     def __init__(self, ticker: str, missing_fields: List[str]):
         self.ticker = ticker
         self.missing_fields = missing_fields
@@ -75,7 +75,7 @@ class InsufficientDataError(ValuationError):
 
 class AnalysisError(InvestmentAnalysisError):
     """Error during analysis pipeline execution."""
-    
+
     def __init__(self, stage: str, message: str, ticker: Optional[str] = None):
         self.stage = stage
         self.ticker = ticker

@@ -17,13 +17,13 @@ The model automatically adjusts phase durations and growth rates based on:
 Author: Multi-stage growth modeling
 """
 
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Optional
 
-import numpy as np
 import yfinance as yf
+
 from .config.constants import VALUATION_DEFAULTS
-from .config.logging_config import get_logger, log_data_fetch, log_valuation_result, log_error_with_context
-from .error_handling import handle_valuation_error, create_error_context, ErrorHandlingContext
+from .config.logging_config import get_logger, log_data_fetch, log_valuation_result
+from .error_handling import create_error_context
 from .exceptions import InsufficientDataError, ModelNotSuitableError
 
 logger = get_logger(__name__)
@@ -76,7 +76,7 @@ def calculate_multi_stage_dcf(
     """
     # Create error context for comprehensive error handling
     error_context = create_error_context(ticker=ticker, model="Multi-Stage DCF", function_name="calculate_multi_stage_dcf")
-    
+
     try:
         stock = yf.Ticker(ticker)
         info = stock.info
@@ -86,7 +86,7 @@ def calculate_multi_stage_dcf(
         log_data_fetch(logger, ticker, "market_data", False, error=str(e))
         if verbose:
             logger.warning(f"Unable to retrieve market data for {ticker}: {e}")
-    
+
     # Fetch missing data
     if fcf is None:
         fcf = info.get("freeCashflow")
@@ -100,7 +100,7 @@ def calculate_multi_stage_dcf(
                         fcf = fcf_values.iloc[0]
             except Exception:
                 pass
-    
+
     if shares is None:
         shares = info.get("sharesOutstanding")
     if cash is None:
@@ -109,7 +109,7 @@ def calculate_multi_stage_dcf(
         debt = info.get("totalDebt", 0)
     if current_price is None:
         current_price = info.get("currentPrice")
-    
+
     # Validate essential data
     missing_data = []
     if fcf is None:
@@ -118,26 +118,26 @@ def calculate_multi_stage_dcf(
         missing_data.append("shares")
     if current_price is None:
         missing_data.append("current_price")
-        
+
     if missing_data:
         raise InsufficientDataError(ticker, missing_data)
-    
+
     # Check for Multi-Stage DCF model suitability
     if fcf <= 0:
         # Multi-stage DCF is inappropriate for companies with negative FCF
         sector = info.get('sector', '').lower()
         industry = info.get('industry', '').lower()
-        
+
         # Exception for early-stage biotech (they often have negative FCF but high potential)
         is_early_biotech = (
-            'biotechnology' in industry or 
+            'biotechnology' in industry or
             ('healthcare' in sector and any(keyword in industry for keyword in ['drug', 'biotech', 'pharmaceutical']))
         )
-        
+
         if not is_early_biotech:
             raise ModelNotSuitableError(
                 "Multi-Stage DCF",
-                ticker, 
+                ticker,
                 f"Negative FCF (${fcf:,.0f}) makes multi-stage growth projections unrealistic. Use single-stage DCF or other valuation methods."
             )
         else:
@@ -145,26 +145,26 @@ def calculate_multi_stage_dcf(
                 f"Multi-Stage DCF applied to biotech with negative FCF: {ticker}",
                 extra={"ticker": ticker, "fcf": fcf, "reason": "biotech_exception"}
             )
-    
+
     # Analyze company characteristics to determine growth phases
     company_profile = _analyze_company_profile(info, stock, verbose)
-    
+
     # Determine phase-specific growth rates
     growth_phases = _determine_growth_phases(
         company_profile, high_growth_years, transition_years, terminal_growth
     )
-    
+
     # Project multi-stage cash flows
     projections = _project_multi_stage_cashflows(fcf, growth_phases)
-    
+
     # Calculate present values for each phase
     valuation = _calculate_multi_stage_present_values(
         projections, growth_phases, discount_rate, cash, debt, shares
     )
-    
+
     # Calculate margin of safety
     margin_of_safety = (valuation["fair_value_per_share"] - current_price) / current_price
-    
+
     # Prepare comprehensive results
     results = {
         "ticker": ticker,
@@ -172,28 +172,28 @@ def calculate_multi_stage_dcf(
         "fair_value": valuation["fair_value_per_share"],  # Dashboard compatibility
         "current_price": current_price,
         "margin_of_safety": margin_of_safety,
-        
+
         # Phase-specific valuations
         "high_growth_value": valuation["high_growth_pv"] / shares,
         "transition_value": valuation["transition_pv"] / shares,
         "terminal_value_per_share": valuation["terminal_pv"] / shares,
-        
+
         # Growth phase details
         "high_growth_rate": growth_phases["high_growth_rate"],
         "transition_start_rate": growth_phases["transition_rates"][0] if growth_phases["transition_rates"] else 0,
         "transition_end_rate": growth_phases["transition_rates"][-1] if growth_phases["transition_rates"] else 0,
         "terminal_growth_rate": terminal_growth,
-        
+
         # Company profile insights
         "company_stage": company_profile["stage"],
         "market_cap_category": company_profile["market_cap_category"],
         "industry_maturity": company_profile["industry_maturity"],
         "competitive_strength": company_profile["competitive_strength"],
-        
+
         # Traditional DCF components
         "enterprise_value": valuation["enterprise_value"],
         "terminal_value": valuation["terminal_value"],
-        
+
         # Inputs and assumptions
         "inputs": {
             "base_fcf": fcf,
@@ -206,7 +206,7 @@ def calculate_multi_stage_dcf(
             "total_projection_years": high_growth_years + transition_years,
         },
     }
-    
+
     # Log the multi-stage DCF valuation result
     log_valuation_result(
         logger,
@@ -218,12 +218,12 @@ def calculate_multi_stage_dcf(
         terminal_growth_rate=results['terminal_growth_rate'],
         company_stage=company_profile['stage']
     )
-    
+
     if verbose:
         _print_multi_stage_dcf_summary(results, ticker, growth_phases, company_profile)
-    
+
     return results
-    
+
 
 
 def _analyze_company_profile(info: Dict, stock, verbose: bool) -> Dict:
@@ -231,13 +231,13 @@ def _analyze_company_profile(info: Dict, stock, verbose: bool) -> Dict:
     profile = {
         "market_cap_category": "unknown",
         "stage": "mature",
-        "industry_maturity": "mature", 
+        "industry_maturity": "mature",
         "competitive_strength": "moderate",
         "historical_growth": 0.05,
         "revenue_growth_5y": 0.05,
         "profitability_trend": "stable",
     }
-    
+
     # Market cap analysis
     market_cap = info.get("marketCap", 0)
     if market_cap > 200e9:  # $200B+
@@ -252,11 +252,11 @@ def _analyze_company_profile(info: Dict, stock, verbose: bool) -> Dict:
     else:  # <$2B
         profile["market_cap_category"] = "small_cap"
         profile["stage"] = "early_growth"
-    
+
     # Industry analysis
     sector = info.get("sector", "").lower()
     industry = info.get("industry", "").lower()
-    
+
     # Tech and growth sectors
     if any(keyword in sector for keyword in ["technology", "communication", "biotechnology"]):
         if any(keyword in industry for keyword in ["software", "internet", "cloud", "ai", "biotech"]):
@@ -268,11 +268,11 @@ def _analyze_company_profile(info: Dict, stock, verbose: bool) -> Dict:
         profile["industry_maturity"] = "mature"
     else:
         profile["industry_maturity"] = "growth"
-    
+
     # Competitive strength indicators
     roe = info.get("returnOnEquity", 0)
     profit_margin = info.get("profitMargins", 0)
-    
+
     if roe and profit_margin:
         if roe > 0.20 and profit_margin > 0.15:
             profile["competitive_strength"] = "strong"
@@ -280,15 +280,15 @@ def _analyze_company_profile(info: Dict, stock, verbose: bool) -> Dict:
             profile["competitive_strength"] = "moderate"
         else:
             profile["competitive_strength"] = "weak"
-    
+
     # Historical growth analysis
     try:
         revenue_growth = info.get("revenueGrowth")
         earnings_growth = info.get("earningsGrowth")
-        
+
         if revenue_growth:
             profile["revenue_growth_5y"] = min(max(revenue_growth, -0.20), 0.50)  # Cap between -20% and 50%
-        
+
         # Historical FCF growth from financials
         cf = stock.cashflow
         if not cf.empty and "Free Cash Flow" in cf.index:
@@ -302,7 +302,7 @@ def _analyze_company_profile(info: Dict, stock, verbose: bool) -> Dict:
     except Exception as e:
         if verbose:
             logger.debug(f"Could not analyze historical growth for {info.get('symbol', 'unknown')}: {e}")
-    
+
     return profile
 
 
@@ -310,7 +310,7 @@ def _determine_growth_phases(
     profile: Dict, high_growth_years: int, transition_years: int, terminal_growth: float
 ) -> Dict:
     """Determine realistic growth rates for each phase based on company profile."""
-    
+
     # Base growth rates by company stage and industry
     base_growth_matrix = {
         ("early_growth", "emerging"): 0.25,
@@ -326,11 +326,11 @@ def _determine_growth_phases(
         ("mature", "growth"): 0.10,
         ("mature", "mature"): 0.08,
     }
-    
+
     stage = profile["stage"]
     industry_maturity = profile["industry_maturity"]
     base_high_growth = base_growth_matrix.get((stage, industry_maturity), 0.10)
-    
+
     # Adjust based on competitive strength
     competitive_multipliers = {
         "strong": 1.2,
@@ -338,18 +338,18 @@ def _determine_growth_phases(
         "weak": 0.8,
     }
     competitive_adj = competitive_multipliers.get(profile["competitive_strength"], 1.0)
-    
+
     # Incorporate historical performance
     historical_growth = profile.get("historical_growth", 0.05)
     revenue_growth = profile.get("revenue_growth_5y", 0.05)
-    
+
     # Blend model-based and historical growth (60% model, 40% historical)
     historical_blend = (historical_growth + revenue_growth) / 2
     high_growth_rate = (0.6 * base_high_growth * competitive_adj + 0.4 * historical_blend)
-    
+
     # Apply reasonable bounds
     high_growth_rate = min(max(high_growth_rate, 0.02), 0.30)  # Between 2% and 30%
-    
+
     # Create transition phase with gradual decline to terminal
     transition_rates = []
     if transition_years > 0:
@@ -358,7 +358,7 @@ def _determine_growth_phases(
             rate = high_growth_rate - (decline_per_year * (i + 1))
             rate = max(rate, terminal_growth)  # Don't go below terminal
             transition_rates.append(rate)
-    
+
     return {
         "high_growth_rate": high_growth_rate,
         "high_growth_years": high_growth_years,
@@ -377,10 +377,10 @@ def _project_multi_stage_cashflows(fcf: float, growth_phases: Dict) -> Dict:
         "years": [],
         "growth_rates": [],
     }
-    
+
     current_fcf = fcf
     year = 0
-    
+
     # High growth phase
     high_growth_rate = growth_phases["high_growth_rate"]
     for i in range(growth_phases["high_growth_years"]):
@@ -390,7 +390,7 @@ def _project_multi_stage_cashflows(fcf: float, growth_phases: Dict) -> Dict:
         projections["all_fcf"].append(current_fcf)
         projections["years"].append(year)
         projections["growth_rates"].append(high_growth_rate)
-    
+
     # Transition phase
     for i, transition_rate in enumerate(growth_phases["transition_rates"]):
         year += 1
@@ -399,17 +399,17 @@ def _project_multi_stage_cashflows(fcf: float, growth_phases: Dict) -> Dict:
         projections["all_fcf"].append(current_fcf)
         projections["years"].append(year)
         projections["growth_rates"].append(transition_rate)
-    
+
     # Terminal FCF (first year of terminal phase)
     terminal_fcf = current_fcf * (1 + growth_phases["terminal_growth"])
     projections["terminal_fcf"] = terminal_fcf
     projections["final_projection_fcf"] = current_fcf
-    
+
     return projections
 
 
 def _calculate_multi_stage_present_values(
-    projections: Dict, 
+    projections: Dict,
     growth_phases: Dict,
     discount_rate: float,
     cash: float,
@@ -417,35 +417,35 @@ def _calculate_multi_stage_present_values(
     shares: float
 ) -> Dict:
     """Calculate present values for each growth phase."""
-    
+
     # Present value of high growth phase
     high_growth_pv = sum(
         fcf / (1 + discount_rate) ** (i + 1)
         for i, fcf in enumerate(projections["high_growth_fcf"])
     )
-    
+
     # Present value of transition phase
     transition_start_year = growth_phases["high_growth_years"] + 1
     transition_pv = sum(
         fcf / (1 + discount_rate) ** (transition_start_year + i)
         for i, fcf in enumerate(projections["transition_fcf"])
     )
-    
+
     # Terminal value using Gordon Growth Model
     terminal_fcf = projections["terminal_fcf"]
     terminal_value = terminal_fcf / (discount_rate - growth_phases["terminal_growth"])
-    
+
     # Present value of terminal value
     total_projection_years = growth_phases["high_growth_years"] + growth_phases["transition_years"]
     terminal_pv = terminal_value / (1 + discount_rate) ** total_projection_years
-    
+
     # Enterprise and equity value
     enterprise_value = high_growth_pv + transition_pv + terminal_pv
     equity_value = enterprise_value - debt + cash
-    
+
     # Fair value per share
     fair_value_per_share = equity_value / shares
-    
+
     return {
         "high_growth_pv": high_growth_pv,
         "transition_pv": transition_pv,
@@ -464,20 +464,20 @@ def _print_multi_stage_dcf_summary(
     print(f"\n{'='*65}")
     print(f"MULTI-STAGE DCF VALUATION - {ticker}")
     print(f"{'='*65}")
-    
+
     # Valuation summary
     print("\n📊 VALUATION SUMMARY")
     print(f"Current Price:           ${results['current_price']:>10,.2f}")
     print(f"Fair Value per Share:    ${results['fair_value_per_share']:>10,.2f}")
     print(f"Margin of Safety:        {results['margin_of_safety']:>10.1%}")
-    
+
     # Value by phase
     print("\n🎯 VALUE BY GROWTH PHASE")
     total_value = results['fair_value_per_share']
     print(f"High Growth Value:       ${results['high_growth_value']:>10,.2f} ({results['high_growth_value']/total_value:.1%})")
     print(f"Transition Value:        ${results['transition_value']:>10,.2f} ({results['transition_value']/total_value:.1%})")
     print(f"Terminal Value:          ${results['terminal_value_per_share']:>10,.2f} ({results['terminal_value_per_share']/total_value:.1%})")
-    
+
     # Growth phases
     print("\n📈 GROWTH PHASES")
     print(f"High Growth (Yrs 1-{growth_phases['high_growth_years']:<2}):  {results['high_growth_rate']:>10.1%}")
@@ -486,18 +486,18 @@ def _print_multi_stage_dcf_summary(
         end_yr = start_yr + growth_phases['transition_years'] - 1
         print(f"Transition (Yrs {start_yr}-{end_yr}):    {results['transition_start_rate']:>7.1%} → {results['transition_end_rate']:.1%}")
     print(f"Terminal (Yr {growth_phases['high_growth_years'] + growth_phases['transition_years'] + 1}+):          {results['terminal_growth_rate']:>10.1%}")
-    
+
     # Company profile
     print("\n🏢 COMPANY PROFILE")
     print(f"Stage:                   {company_profile['stage'].replace('_', ' ').title()}")
     print(f"Market Cap:              {company_profile['market_cap_category'].replace('_', ' ').title()}")
     print(f"Industry Maturity:       {company_profile['industry_maturity'].title()}")
     print(f"Competitive Strength:    {company_profile['competitive_strength'].title()}")
-    
+
     # Key assumptions
     print("\n📋 KEY ASSUMPTIONS")
     print(f"Discount Rate:           {results['inputs']['discount_rate']:>10.1%}")
     print(f"Base FCF:                ${results['inputs']['base_fcf']:>10,.0f}")
     print(f"Total Projection Years:  {results['inputs']['total_projection_years']:>10}")
-    
+
     print(f"\n{'='*65}")

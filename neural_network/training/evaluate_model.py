@@ -70,7 +70,7 @@ class ModelEvaluator:
         model.to(self.device)
         model.eval()
 
-        print(f'Model loaded successfully (9 temporal, 16 static features)')
+        print('Model loaded successfully (9 temporal, 16 static features)')
         return model
 
     def load_test_data(self, test_start: str = '2021-01-01') -> pd.DataFrame:

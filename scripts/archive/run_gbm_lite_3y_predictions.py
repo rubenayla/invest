@@ -23,25 +23,24 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'neural_network/training'))
 
 # Import feature engineering from LITE training script
-from train_gbm_lite_stock_ranker import (
-    create_lag_features,
-    create_change_features,
-    create_rolling_features,
-    winsorize_by_date,
-    standardize_by_date
-)
-
 # Import LITE feature configuration
 from gbm_lite_feature_config import (
     BASE_FEATURES,
-    FUNDAMENTAL_FEATURES,
-    MARKET_FEATURES,
-    PRICE_FEATURES,
     CASHFLOW_FEATURES,
     CATEGORICAL_FEATURES,
+    FUNDAMENTAL_FEATURES,
     LAG_PERIODS,
+    MARKET_FEATURES,
+    MIN_QUARTERS_REQUIRED,
+    PRICE_FEATURES,
     ROLLING_WINDOWS,
-    MIN_QUARTERS_REQUIRED
+)
+from train_gbm_lite_stock_ranker import (
+    create_change_features,
+    create_lag_features,
+    create_rolling_features,
+    standardize_by_date,
+    winsorize_by_date,
 )
 
 from invest.data.stock_data_reader import StockDataReader
@@ -425,7 +424,7 @@ def main():
     confidences = assign_confidence(predictions)
 
     # Log summary
-    logger.info(f'Predictions summary:')
+    logger.info('Predictions summary:')
     logger.info(f'  Stocks analyzed: {len(predictions)}')
     logger.info(f'  Mean predicted return: {np.mean(predictions):.2%}')
     logger.info(f'  Median predicted return: {np.median(predictions):.2%}')

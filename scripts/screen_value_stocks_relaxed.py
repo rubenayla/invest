@@ -11,8 +11,8 @@ Relaxed Criteria:
 - Positive operating margins (proxy for quality)
 """
 
-import sqlite3
 import json
+import sqlite3
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -153,7 +153,7 @@ def screen_stocks() -> List[Dict]:
                 'div_yield': div_yield,
             })
 
-        except (ValueError, TypeError) as e:
+        except (ValueError, TypeError):
             # Skip stocks with data type issues
             continue
 

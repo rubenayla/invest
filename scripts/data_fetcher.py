@@ -9,26 +9,27 @@ Usage:
     uv run python scripts/data_fetcher.py --universe sp500 --max-stocks 1000
 """
 
+import argparse
 import asyncio
 import json
 import logging
-import argparse
-import time
-import sqlite3
-from datetime import datetime, timedelta
-from pathlib import Path
-from typing import List, Dict, Optional, Set
-import yfinance as yf
-from concurrent.futures import ThreadPoolExecutor, as_completed
-import tempfile
 import os
+import sqlite3
 
 # Import currency converter (dynamically since it's in scripts/)
 import sys
+import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime
+from pathlib import Path
 from pathlib import Path as PathLib
+from typing import Dict, List, Optional, Set
+
+import yfinance as yf
+
 if str(PathLib(__file__).parent) not in sys.path:
     sys.path.insert(0, str(PathLib(__file__).parent))
-from currency_converter import convert_financials_to_usd, convert_financial_statements_to_usd
+from currency_converter import convert_financial_statements_to_usd, convert_financials_to_usd
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -36,7 +37,7 @@ logger = logging.getLogger(__name__)
 
 class StockDataCache:
     """Manages local stock data cache"""
-    
+
     def __init__(self, cache_dir: str = 'data/stock_cache', db_path: Optional[str] = None):
         self.cache_dir = Path(cache_dir)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
@@ -49,7 +50,7 @@ class StockDataCache:
 
         self.index_file = self.cache_dir / 'cache_index.json'
         self.load_index()
-    
+
     def load_index(self):
         """Load cache index tracking what data we have"""
         if self.index_file.exists():
@@ -61,11 +62,11 @@ class StockDataCache:
                 'last_updated': datetime.now().isoformat(),
                 'version': '1.0'
             }
-    
+
     def save_index(self):
         """Save cache index atomically to prevent corruption"""
         self.index['last_updated'] = datetime.now().isoformat()
-        
+
         # Write to temporary file first, then atomic rename
         temp_file = self.index_file.with_suffix('.tmp')
         try:
@@ -78,7 +79,7 @@ class StockDataCache:
             if temp_file.exists():
                 temp_file.unlink()
             raise e
-    
+
     def get_update_order(self, tickers: List[str]) -> List[str]:
         """Get tickers in update order: broken/empty first, then oldest to newest"""
         empty_stocks = []
@@ -101,7 +102,7 @@ class StockDataCache:
 
         # Priority: 1) Empty (not in index), 2) Broken (< 500 bytes), 3) Oldest to newest
         return empty_stocks + broken_stocks + cached_stocks
-    
+
     def get_cached_data(self, ticker: str) -> Optional[Dict]:
         """Get cached data for a ticker"""
         cache_file = self.cache_dir / f'{ticker}.json'
@@ -109,7 +110,7 @@ class StockDataCache:
             with open(cache_file, 'r') as f:
                 return json.load(f)
         return None
-    
+
     def save_to_sqlite(self, ticker: str, data: Dict):
         """Save stock data to SQLite database"""
         try:
@@ -221,7 +222,7 @@ class StockDataCache:
             'has_income': 'income' in data
         }
         self.save_index()
-    
+
     def get_cached_tickers(self) -> Set[str]:
         """Get all tickers we have cached data for"""
         return set(self.index['stocks'].keys())
@@ -229,17 +230,17 @@ class StockDataCache:
 
 class AsyncStockDataFetcher:
     """Fetches stock data using thread pool (simplified)"""
-    
+
     def __init__(self, max_workers: int = 10):
         self.cache = StockDataCache()
         self.max_workers = max_workers
-    
+
     async def __aenter__(self):
         return self
-    
+
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         pass
-    
+
     def fetch_stock_data_sync(self, ticker: str, max_retries: int = 6) -> Dict:
         """Fetch fresh data for a single stock with retry logic"""
         last_error = None
@@ -407,29 +408,29 @@ class AsyncStockDataFetcher:
             'error': f'Failed after {max_retries} attempts: {str(last_error)}',
             'fetch_timestamp': datetime.now().isoformat()
         }
-    
+
     async def fetch_multiple_stocks(self, tickers: List[str], max_concurrent: int = 10) -> Dict[str, Dict]:
         """Fetch data for multiple stocks concurrently"""
         results = {}
-        
+
         # Use ThreadPoolExecutor for yfinance calls (they're synchronous)
         with ThreadPoolExecutor(max_workers=max_concurrent) as executor:
             # Submit all tasks
             future_to_ticker = {
-                executor.submit(self.fetch_stock_data_sync, ticker): ticker 
+                executor.submit(self.fetch_stock_data_sync, ticker): ticker
                 for ticker in tickers
             }
-            
+
             # Collect results as they complete
             for i, future in enumerate(as_completed(future_to_ticker), 1):
                 ticker = future_to_ticker[future]
                 try:
                     data = future.result(timeout=30)  # 30 second timeout per stock
                     results[ticker] = data
-                    
+
                     if i % 10 == 0 or i == len(tickers):
                         logger.info(f"Completed {i}/{len(tickers)} stocks")
-                        
+
                 except Exception as e:
                     logger.error(f"Failed to fetch {ticker}: {e}")
                     results[ticker] = {
@@ -437,7 +438,7 @@ class AsyncStockDataFetcher:
                         'error': str(e),
                         'fetch_timestamp': datetime.now().isoformat()
                     }
-        
+
         return results
 
 
@@ -445,18 +446,18 @@ def get_universe_tickers(universe: str) -> List[str]:
     """Get ticker list for a universe using dynamic index manager."""
     import sys
     from pathlib import Path
-    
+
     # Add project root to path for imports
     project_root = Path(__file__).parent.parent
     if str(project_root) not in sys.path:
         sys.path.insert(0, str(project_root))
-    
+
     from scripts.index_manager import IndexManager
-    
+
     try:
         # Initialize the index manager
         index_manager = IndexManager()
-        
+
         # Map universe names to index manager methods
         if universe == 'sp500':
             tickers = index_manager.get_index_tickers('sp500')
@@ -514,15 +515,15 @@ def get_universe_tickers(universe: str) -> List[str]:
                 ],
             }
             tickers = universe_configs.get(universe, [])
-        
+
         # Log the result
         logger.info(f"Universe '{universe}': {len(tickers)} tickers (from dynamic index manager)")
-        
+
         return tickers
-        
+
     except Exception as e:
         logger.error(f"Failed to get dynamic tickers for {universe}: {e}")
-        
+
         # Fallback to legacy sp500_tickers.json for S&P 500
         if universe == 'sp500':
             try:
@@ -533,7 +534,7 @@ def get_universe_tickers(universe: str) -> List[str]:
                 return fallback_tickers
             except:
                 pass
-        
+
         # Final fallback - minimal set
         fallback_tickers = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'NVDA', 'ORCL', 'CRM', 'ADBE']
         logger.warning(f"Using minimal fallback: {len(fallback_tickers)} tickers")
@@ -545,30 +546,30 @@ async def main():
     parser = argparse.ArgumentParser(description='Fetch stock data asynchronously')
     parser.add_argument('--universe', default='sp500', help='Stock universe to fetch')
     parser.add_argument('--max-concurrent', type=int, default=10, help='Max concurrent requests')
-    
+
     args = parser.parse_args()
-    
+
     # Get ticker list
     tickers = get_universe_tickers(args.universe)
     logger.info(f"Planning to fetch data for {len(tickers)} stocks from {args.universe} universe")
-    
+
     # Get update order: empty stocks first, then oldest to newest
     cache = StockDataCache()
     tickers = cache.get_update_order(tickers)
-    
+
     logger.info(f"Will update {len(tickers)} stocks in optimal order (empty first, then oldest to newest)")
-    
+
     # Fetch data
     start_time = time.time()
-    
+
     async with AsyncStockDataFetcher(max_workers=args.max_concurrent) as fetcher:
         results = await fetcher.fetch_multiple_stocks(tickers, args.max_concurrent)
-    
+
     # Report results
     successful = sum(1 for r in results.values() if 'error' not in r)
     failed = len(results) - successful
     elapsed = time.time() - start_time
-    
+
     logger.info(f"""
 Data fetching complete:
   - Total stocks: {len(results)}
@@ -578,7 +579,7 @@ Data fetching complete:
   - Average: {elapsed/len(results):.2f} sec/stock" if results else "  - Average: N/A (no results)"
   - Cache location: {fetcher.cache.cache_dir}
     """)
-    
+
     # Save summary report
     summary = {
         'universe': args.universe,
@@ -589,11 +590,11 @@ Data fetching complete:
         'fetch_timestamp': datetime.now().isoformat(),
         'failed_tickers': [ticker for ticker, data in results.items() if 'error' in data]
     }
-    
+
     summary_file = Path(f'data_fetch_summary_{args.universe}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json')
     with open(summary_file, 'w') as f:
         json.dump(summary, f, indent=2)
-    
+
     logger.info(f"Summary saved to: {summary_file}")
 
 

@@ -4,16 +4,16 @@ Train multi-horizon model with real macro data.
 """
 
 import json
+import logging
 import sys
-import torch
+from pathlib import Path
+
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.optim as optim
-from pathlib import Path
-from torch.utils.data import DataLoader, TensorDataset
-from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
-import logging
+from torch.utils.data import DataLoader, TensorDataset
 
 # Add project root to path
 project_root = Path(__file__).parent.parent.parent

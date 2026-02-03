@@ -4,11 +4,11 @@ Diagnostic version of value stock screener.
 Shows how many stocks pass each filter.
 """
 
-import sqlite3
 import json
-from pathlib import Path
-from typing import Dict, Optional, Tuple
+import sqlite3
 from collections import defaultdict
+from pathlib import Path
+from typing import Optional, Tuple
 
 
 def get_db_path() -> Path:

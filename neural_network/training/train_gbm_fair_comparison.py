@@ -4,6 +4,7 @@ Fair comparison: Train full GBM only on stocks with >=12 quarters.
 """
 import sqlite3
 from pathlib import Path
+
 from train_gbm_stock_ranker import GBMStockRanker
 
 # Get stocks with sufficient history

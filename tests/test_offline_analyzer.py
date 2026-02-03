@@ -1,31 +1,29 @@
 """Tests for offline analyzer functionality."""
 
 import json
-import tempfile
-from pathlib import Path
-from unittest.mock import Mock, patch
-import pytest
-import sys
 import os
+import sys
+
+import pytest
 
 # Add parent directory to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from scripts.offline_analyzer import OfflineValuationEngine, DashboardIntegration
+from scripts.offline_analyzer import DashboardIntegration, OfflineValuationEngine
 
 
 class TestOfflineValuationEngine:
     """Test the offline valuation analysis engine."""
-    
+
     def test_engine_initialization(self, tmp_path):
         """Test engine initializes with cache."""
         engine = OfflineValuationEngine(cache_dir=str(tmp_path))
         assert engine.cache is not None
-    
+
     def test_calculate_composite_score(self, tmp_path):
         """Test composite score calculation."""
         engine = OfflineValuationEngine(cache_dir=str(tmp_path))
-        
+
         stock_data = {
             'financials': {
                 'trailingPE': 15,
@@ -34,15 +32,15 @@ class TestOfflineValuationEngine:
                 'earningsGrowth': 0.10
             }
         }
-        
+
         score = engine.calculate_composite_score(stock_data)
         assert 0 <= score <= 100
         assert isinstance(score, (int, float))
-    
+
     def test_analyze_stock_with_complete_data(self, tmp_path):
         """Test analyzing stock with complete data."""
         engine = OfflineValuationEngine(cache_dir=str(tmp_path))
-        
+
         stock_data = {
             'ticker': 'AAPL',
             'info': {
@@ -66,9 +64,9 @@ class TestOfflineValuationEngine:
                 'price_52w_low': 120
             }
         }
-        
+
         analysis = engine.analyze_stock('AAPL', stock_data)
-        
+
         assert analysis['ticker'] == 'AAPL'
         assert analysis['status'] == 'completed'
         assert analysis['market_cap'] == 3000000000000
@@ -76,30 +74,30 @@ class TestOfflineValuationEngine:
         # Check for available models (some may fail due to insufficient data)
         valuations = analysis['valuations']
         assert len(valuations) > 1  # Should have current_price plus at least one model
-        
+
         # Verify structure of returned models (any that were attempted)
         available_models = [k for k in valuations.keys() if k != 'current_price']
         assert len(available_models) >= 1  # At least one model should be attempted
-        
+
         # All model results should have consistent structure
         for model_name in available_models:
             model_result = valuations[model_name]
             assert 'fair_value' in model_result
             assert 'confidence' in model_result
-    
+
     def test_analyze_stock_with_missing_data(self, tmp_path):
         """Test analyzing stock with missing data."""
         engine = OfflineValuationEngine(cache_dir=str(tmp_path))
-        
+
         stock_data = {
             'ticker': 'XYZ',
             'info': {},
             'financials': {},
             'price_data': {}
         }
-        
+
         analysis = engine.analyze_stock('XYZ', stock_data)
-        
+
         assert analysis['ticker'] == 'XYZ'
         assert analysis['status'] == 'completed'
         assert analysis['market_cap'] == 0
@@ -114,11 +112,11 @@ class TestOfflineValuationEngine:
             if model_result is not None:
                 assert 'fair_value' in model_result
                 assert 'confidence' in model_result
-    
+
     def test_multiple_valuation_methods(self, tmp_path):
         """Test all valuation methods are calculated."""
         engine = OfflineValuationEngine(cache_dir=str(tmp_path))
-        
+
         stock_data = {
             'info': {
                 'marketCap': 1000000000,
@@ -134,14 +132,14 @@ class TestOfflineValuationEngine:
             },
             'price_data': {'current_price': 100.0}
         }
-        
+
         analysis = engine.analyze_stock('TEST', stock_data)
         valuations = analysis['valuations']
-        
+
         # Check that multiple valuation methods are attempted
         available_models = [k for k in valuations.keys() if k != 'current_price']
         assert len(available_models) >= 5, f"Expected at least 5 models, got {len(available_models)}: {available_models}"
-        
+
         # Verify all attempted models have consistent structure
         for model_name in available_models:
             model_result = valuations[model_name]
@@ -152,11 +150,11 @@ class TestOfflineValuationEngine:
 
 class TestDashboardIntegration:
     """Test dashboard integration functionality."""
-    
+
     def test_update_dashboard_data(self, tmp_path):
         """Test updating dashboard with analysis results."""
         integration = DashboardIntegration(dashboard_dir=str(tmp_path))
-        
+
         analysis_results = {
             'AAPL': {
                 'ticker': 'AAPL',
@@ -171,13 +169,13 @@ class TestDashboardIntegration:
                 'composite_score': 80
             }
         }
-        
+
         integration.update_dashboard_data(analysis_results)
-        
+
         # Check dashboard file was created
         dashboard_file = tmp_path / 'dashboard_data.json'
         assert dashboard_file.exists()
-        
+
         # Verify content
         with open(dashboard_file) as f:
             data = json.load(f)
@@ -185,24 +183,24 @@ class TestDashboardIntegration:
             assert data['successful_analyses'] == 2
             assert 'AAPL' in data['stocks']
             assert 'GOOGL' in data['stocks']
-    
+
     def test_dashboard_summary_in_data(self, tmp_path):
         """Test dashboard data includes summary information."""
         integration = DashboardIntegration(dashboard_dir=str(tmp_path))
-        
+
         analysis_results = {
             'AAPL': {'composite_score': 85, 'status': 'completed', 'ticker': 'AAPL'},
             'GOOGL': {'composite_score': 80, 'status': 'completed', 'ticker': 'GOOGL'},
             'FAIL': {'status': 'failed', 'ticker': 'FAIL'}
         }
-        
+
         integration.update_dashboard_data(analysis_results)
-        
+
         # Read the saved dashboard data
         dashboard_file = tmp_path / 'dashboard_data.json'
         with open(dashboard_file) as f:
             data = json.load(f)
-        
+
         # Check summary fields in dashboard data
         assert data['total_stocks'] == 3
         assert data['successful_analyses'] == 2

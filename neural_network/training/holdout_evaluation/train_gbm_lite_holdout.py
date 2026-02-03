@@ -32,15 +32,14 @@ sys.path.append(str(Path(__file__).parent.parent))
 # Import LITE feature configuration
 from gbm_lite_feature_config import (
     BASE_FEATURES,
-    FUNDAMENTAL_FEATURES,
-    MARKET_FEATURES,
-    PRICE_FEATURES,
     CASHFLOW_FEATURES,
     CATEGORICAL_FEATURES,
+    FUNDAMENTAL_FEATURES,
     LAG_PERIODS,
+    MARKET_FEATURES,
+    PRICE_FEATURES,
     ROLLING_WINDOWS,
-    get_snapshot_query_columns,
-    get_min_quarters_required
+    get_min_quarters_required,
 )
 
 # Suppress warnings

@@ -477,7 +477,7 @@ Examples:
     confidences = assign_confidence(predictions)
 
     # Log summary
-    logger.info(f'Predictions summary:')
+    logger.info('Predictions summary:')
     logger.info(f'  Mean predicted return: {np.mean(predictions):.2%}')
     logger.info(f'  Median predicted return: {np.median(predictions):.2%}')
     logger.info(f'  Top prediction: {np.max(predictions):.2%}')

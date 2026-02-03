@@ -5,17 +5,19 @@ Run multi-horizon neural network predictions on all stocks in dashboard_data.jso
 
 import json
 import sys
-import torch
-import numpy as np
 from pathlib import Path
+
+import numpy as np
+import torch
 
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root / 'src'))
 
 from invest.valuation.multi_horizon_nn import MultiHorizonValuationModel
-from invest.valuation.neural_network_model import FeatureEngineer
+
 from invest.valuation.db_utils import get_db_connection, save_nn_prediction
+from invest.valuation.neural_network_model import FeatureEngineer
 
 
 def load_stock_cache(ticker: str, stock_cache_dir: Path) -> dict:
@@ -39,7 +41,7 @@ def load_stock_cache(ticker: str, stock_cache_dir: Path) -> dict:
                 'balance_sheet': stock_data.get('balance_sheet', []),
                 'income': stock_data.get('income', []),
             }
-    except Exception as e:
+    except Exception:
         pass  # Silently fall back to JSON
 
     # Fallback to JSON cache
@@ -104,12 +106,12 @@ def main():
     feature_engineer = FeatureEngineer()
 
     # Connect to database
-    print(f'\n💾 Connecting to database...')
+    print('\n💾 Connecting to database...')
     db_conn = get_db_connection()
-    print(f'   Database connected')
+    print('   Database connected')
 
     # Run predictions on each stock
-    print(f'\n🔄 Running predictions...')
+    print('\n🔄 Running predictions...')
     success_count = 0
     error_count = 0
     cache_miss_count = 0
@@ -210,17 +212,17 @@ def main():
 
     # Close database connection
     db_conn.close()
-    print(f'   Database connection closed')
+    print('   Database connection closed')
 
     # Save updated data
-    print(f'\n💾 Saving updated dashboard data...')
+    print('\n💾 Saving updated dashboard data...')
     with open(dashboard_data_path, 'w') as f:
         json.dump(data, f, indent=2)
 
     # Summary
-    print(f'\n✅ Predictions complete!')
+    print('\n✅ Predictions complete!')
     print('=' * 60)
-    print(f'📊 Summary:')
+    print('📊 Summary:')
     print(f'   Successful predictions: {success_count}')
     print(f'   Saved to database: {db_save_count}')
     print(f'   Cache misses: {cache_miss_count}')

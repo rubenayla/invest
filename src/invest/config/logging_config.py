@@ -9,7 +9,7 @@ import logging
 import logging.config
 import sys
 from pathlib import Path
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 def setup_logging(
@@ -27,16 +27,16 @@ def setup_logging(
         log_file_path: Path to log file
         enable_structured_logging: Whether to use structured JSON logging
     """
-    
+
     # Create logs directory if it doesn't exist
     if log_to_file:
         log_path = Path(log_file_path)
         log_path.parent.mkdir(parents=True, exist_ok=True)
-    
+
     # Configure logging
     config = get_logging_config(level, log_to_file, log_file_path, enable_structured_logging)
     logging.config.dictConfig(config)
-    
+
     # Set up specific loggers for external libraries to reduce noise
     logging.getLogger("yfinance").setLevel(logging.WARNING)
     logging.getLogger("requests").setLevel(logging.WARNING)
@@ -50,7 +50,7 @@ def get_logging_config(
     enable_structured_logging: bool
 ) -> Dict[str, Any]:
     """Get logging configuration dictionary."""
-    
+
     # Formatters
     formatters = {
         "standard": {
@@ -62,13 +62,13 @@ def get_logging_config(
             "datefmt": "%Y-%m-%d %H:%M:%S"
         }
     }
-    
+
     if enable_structured_logging:
         formatters["structured"] = {
             "()": StructuredFormatter,
             "datefmt": "%Y-%m-%d %H:%M:%S"
         }
-    
+
     # Handlers
     handlers = {
         "console": {
@@ -78,7 +78,7 @@ def get_logging_config(
             "stream": sys.stdout
         }
     }
-    
+
     if log_to_file:
         handlers["file"] = {
             "class": "logging.handlers.RotatingFileHandler",
@@ -88,7 +88,7 @@ def get_logging_config(
             "maxBytes": 10485760,  # 10MB
             "backupCount": 5
         }
-        
+
         if enable_structured_logging:
             handlers["structured_file"] = {
                 "class": "logging.handlers.RotatingFileHandler",
@@ -98,12 +98,12 @@ def get_logging_config(
                 "maxBytes": 10485760,  # 10MB
                 "backupCount": 5
             }
-    
+
     # Root logger configuration
     root_handlers = ["console"]
     if log_to_file:
         root_handlers.extend(["file", "structured_file"] if enable_structured_logging else ["file"])
-    
+
     return {
         "version": 1,
         "disable_existing_loggers": False,
@@ -129,11 +129,11 @@ class StructuredFormatter(logging.Formatter):
     
     This enables better log analysis and monitoring in production.
     """
-    
+
     def format(self, record):
         import json
         from datetime import datetime
-        
+
         # Base log structure
         log_entry = {
             "timestamp": datetime.fromtimestamp(record.created).isoformat(),
@@ -144,7 +144,7 @@ class StructuredFormatter(logging.Formatter):
             "line": record.lineno,
             "message": record.getMessage()
         }
-        
+
         # Add exception info if present
         if record.exc_info:
             log_entry["exception"] = {
@@ -152,7 +152,7 @@ class StructuredFormatter(logging.Formatter):
                 "message": str(record.exc_info[1]) if record.exc_info[1] else None,
                 "traceback": self.formatException(record.exc_info) if record.exc_info else None
             }
-        
+
         # Add any extra fields that were passed to the log call
         for key, value in record.__dict__.items():
             if key not in ['name', 'msg', 'args', 'levelname', 'levelno', 'pathname',
@@ -161,7 +161,7 @@ class StructuredFormatter(logging.Formatter):
                           'getMessage', 'exc_info', 'exc_text', 'stack_info']:
                 log_entry["extra"] = log_entry.get("extra", {})
                 log_entry["extra"][key] = value
-        
+
         return json.dumps(log_entry)
 
 

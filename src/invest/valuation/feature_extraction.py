@@ -4,10 +4,10 @@ Feature extraction utilities for LSTM/Transformer model.
 Extracts temporal and static features from stock data for model training and prediction.
 """
 
+from typing import Dict, List, Optional, Tuple
+
 import numpy as np
 import pandas as pd
-from typing import Dict, List, Optional, Tuple
-from datetime import datetime
 
 
 class FeatureExtractor:

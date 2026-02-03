@@ -8,7 +8,7 @@ Provides actionable warnings when data is missing or stale.
 
 import sqlite3
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -196,7 +196,7 @@ class DatabaseHealthChecker:
                 f'{missing_assets} stocks in current_stock_data but not in assets - GBM models unavailable'
             )
             print(f'    (Examples: {", ".join(gaps["missing_from_assets"][:5])}...)')
-            print(f'    → Run: populate_fundamental_history.py')
+            print('    → Run: populate_fundamental_history.py')
 
         print(f'  • Stocks missing from current_stock_data:  {missing_current:>3}')
         if missing_current > 0:

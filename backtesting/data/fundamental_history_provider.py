@@ -3,13 +3,14 @@ Historical fundamental data provider for GBM backtesting.
 Provides point-in-time fundamental data from the fundamental_history table.
 """
 
-import pandas as pd
-import numpy as np
-import sqlite3
-from typing import Dict, List, Optional, Any
-from datetime import datetime, timedelta
-from pathlib import Path
 import logging
+import sqlite3
+from datetime import timedelta
+from pathlib import Path
+from typing import Dict, List, Optional
+
+import numpy as np
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 

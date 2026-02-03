@@ -2,6 +2,7 @@
 """Get the real S&P 500 ticker list"""
 import json
 
+
 def get_sp500_tickers():
     """Get S&P 500 tickers from Wikipedia or fallback to comprehensive list"""
     try:
@@ -77,8 +78,8 @@ def get_sp500_tickers():
 if __name__ == '__main__':
     tickers = get_sp500_tickers()
     print(f"\nTotal S&P 500 companies: {len(tickers)}")
-    
+
     # Save to file for use in data_fetcher.py
     with open('sp500_tickers.json', 'w') as f:
         json.dump(tickers, f, indent=2)
-    print(f"Saved to sp500_tickers.json")
+    print("Saved to sp500_tickers.json")

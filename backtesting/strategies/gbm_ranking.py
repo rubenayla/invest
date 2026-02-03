@@ -3,14 +3,15 @@ GBM-based ranking strategy for backtesting.
 Uses trained Gradient Boosted Machine models to predict stock returns and rank stocks.
 """
 
-import pandas as pd
-import numpy as np
-from typing import Dict, List, Optional, Any
-from pathlib import Path
 import logging
-import lightgbm as lgb
-import sys
 import sqlite3
+import sys
+from pathlib import Path
+from typing import Any, Dict, Optional
+
+import lightgbm as lgb
+import numpy as np
+import pandas as pd
 
 # Add neural_network/training to path for imports
 training_path = Path(__file__).parent.parent.parent / 'neural_network' / 'training'
@@ -18,22 +19,22 @@ sys.path.insert(0, str(training_path))
 
 from gbm_feature_config import (
     BASE_FEATURES,
-    FUNDAMENTAL_FEATURES,
-    MARKET_FEATURES,
-    PRICE_FEATURES,
     CASHFLOW_FEATURES,
     CATEGORICAL_FEATURES,
+    FUNDAMENTAL_FEATURES,
     LAG_PERIODS,
-    ROLLING_WINDOWS
+    MARKET_FEATURES,
+    PRICE_FEATURES,
+    ROLLING_WINDOWS,
 )
 
 # Import feature engineering from training (THIS IS THE KEY!)
 from train_gbm_stock_ranker import (
-    create_lag_features,
     create_change_features,
+    create_lag_features,
     create_rolling_features,
+    standardize_by_date,
     winsorize_by_date,
-    standardize_by_date
 )
 
 from backtesting.data.fundamental_history_provider import FundamentalHistoryProvider

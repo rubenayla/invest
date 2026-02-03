@@ -11,25 +11,26 @@ Comprehensive evaluation system with:
 - Error analysis and edge case detection
 '''
 
-import sys
 import asyncio
+import json
+import logging
+import sys
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
 import numpy as np
 import pandas as pd
-from pathlib import Path
-from datetime import datetime, timedelta
-from typing import List, Tuple, Dict, Any, Optional
-from dataclasses import dataclass
-from collections import defaultdict
-import logging
-import json
 from scipy import stats
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.invest.valuation.neural_network_model import NeuralNetworkValuationModel
-from src.invest.valuation.model_registry import ModelRegistry
 import yfinance as yf
+
+from src.invest.valuation.model_registry import ModelRegistry
+from src.invest.valuation.neural_network_model import NeuralNetworkValuationModel
 
 # Setup logging
 logging.basicConfig(

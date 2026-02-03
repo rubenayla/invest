@@ -5,19 +5,19 @@ Provides access to neural network models trained for different time horizons,
 allowing users to select the appropriate model based on their investment timeline.
 """
 
-from pathlib import Path
-from typing import Dict, List, Optional
 import logging
+from pathlib import Path
+from typing import Dict, Optional
 
-from .neural_network_model import NeuralNetworkValuationModel
 from .base import ValuationResult
+from .neural_network_model import NeuralNetworkValuationModel
 
 logger = logging.getLogger(__name__)
 
 
 class MultiTimeframeNeuralNetworks:
     """Manager for multiple neural network models across different time horizons."""
-    
+
     AVAILABLE_TIMEFRAMES = {
         '1month': {
             'model_path': 'trained_nn_1month.pt',
@@ -26,7 +26,7 @@ class MultiTimeframeNeuralNetworks:
             'best_for': 'Trading, short-term opportunities'
         },
         '3month': {
-            'model_path': 'trained_nn_3month.pt', 
+            'model_path': 'trained_nn_3month.pt',
             'description': '3-month prediction horizon - quarterly performance cycles',
             'months': 3,
             'best_for': 'Quarterly trading, earnings cycles'
@@ -62,7 +62,7 @@ class MultiTimeframeNeuralNetworks:
             'best_for': 'Buy-and-hold investing'
         }
     }
-    
+
     def __init__(self, models_directory: Path = None):
         """
         Initialize multi-timeframe neural networks.
@@ -74,22 +74,22 @@ class MultiTimeframeNeuralNetworks:
         """
         self.models_directory = models_directory or Path.cwd()
         self._loaded_models = {}
-    
+
     def get_available_timeframes(self) -> Dict[str, Dict]:
         """Get information about available timeframes."""
         available = {}
-        
+
         for timeframe, info in self.AVAILABLE_TIMEFRAMES.items():
             model_path = self.models_directory / info['model_path']
-            
+
             available[timeframe] = {
                 **info,
                 'available': model_path.exists(),
                 'full_path': str(model_path)
             }
-        
+
         return available
-    
+
     def get_model(self, timeframe: str) -> Optional[NeuralNetworkValuationModel]:
         """
         Get neural network model for specific timeframe.
@@ -107,18 +107,18 @@ class MultiTimeframeNeuralNetworks:
         if timeframe not in self.AVAILABLE_TIMEFRAMES:
             logger.error(f'Unknown timeframe: {timeframe}. Available: {list(self.AVAILABLE_TIMEFRAMES.keys())}')
             return None
-        
+
         # Use cached model if already loaded
         if timeframe in self._loaded_models:
             return self._loaded_models[timeframe]
-        
+
         # Load model from disk
         model_path = self.models_directory / self.AVAILABLE_TIMEFRAMES[timeframe]['model_path']
-        
+
         if not model_path.exists():
             logger.warning(f'Model file not found: {model_path}')
             return None
-        
+
         try:
             model = NeuralNetworkValuationModel(
                 time_horizon=timeframe,
@@ -127,11 +127,11 @@ class MultiTimeframeNeuralNetworks:
             self._loaded_models[timeframe] = model
             logger.info(f'Loaded {timeframe} neural network model')
             return model
-        
+
         except Exception as e:
             logger.error(f'Failed to load {timeframe} model: {e}')
             return None
-    
+
     def value_company_all_timeframes(self, ticker: str) -> Dict[str, Optional[ValuationResult]]:
         """
         Value a company using all available timeframe models.
@@ -147,10 +147,10 @@ class MultiTimeframeNeuralNetworks:
             Results for each timeframe
         """
         results = {}
-        
+
         for timeframe in self.AVAILABLE_TIMEFRAMES.keys():
             model = self.get_model(timeframe)
-            
+
             if model:
                 try:
                     result = model.value_company(ticker, verbose=False)
@@ -160,10 +160,10 @@ class MultiTimeframeNeuralNetworks:
                     results[timeframe] = None
             else:
                 results[timeframe] = None
-        
+
         return results
-    
-    def get_consensus_valuation(self, ticker: str, 
+
+    def get_consensus_valuation(self, ticker: str,
                                weights: Dict[str, float] = None) -> Optional[ValuationResult]:
         """
         Get consensus valuation across multiple timeframes.
@@ -181,23 +181,23 @@ class MultiTimeframeNeuralNetworks:
             Consensus valuation result
         """
         results = self.value_company_all_timeframes(ticker)
-        
+
         # Filter valid results
-        valid_results = {tf: result for tf, result in results.items() 
+        valid_results = {tf: result for tf, result in results.items()
                         if result and result.fair_value}
-        
+
         if not valid_results:
             return None
-        
+
         # Use correlation-based weights if not provided
         if weights is None:
             weights = self._get_correlation_weights()
-        
+
         # Calculate weighted consensus
         weighted_fair_value = 0
         total_weight = 0
         current_price = None
-        
+
         for timeframe, result in valid_results.items():
             weight = weights.get(timeframe, 0)
             if weight > 0:
@@ -205,13 +205,13 @@ class MultiTimeframeNeuralNetworks:
                 total_weight += weight
                 if current_price is None:
                     current_price = result.current_price
-        
+
         if total_weight == 0:
             return None
-        
+
         consensus_fair_value = weighted_fair_value / total_weight
         margin_of_safety = ((consensus_fair_value - current_price) / current_price * 100) if current_price else None
-        
+
         # Create consensus result
         consensus_result = ValuationResult(
             ticker=ticker,
@@ -230,26 +230,26 @@ class MultiTimeframeNeuralNetworks:
                 'weight_total': total_weight
             }
         )
-        
+
         return consensus_result
-    
+
     def _get_correlation_weights(self) -> Dict[str, float]:
         """Get weights based on historical correlation performance."""
         # Based on multi-timeframe analysis results
         correlation_weights = {
             '1month': 0.05,   # Correlation: 0.050
-            '3month': 0.25,   # Correlation: 0.250  
+            '3month': 0.25,   # Correlation: 0.250
             '6month': 0.16,   # Correlation: 0.157
             '1year': 0.01,    # Correlation: 0.011
             '18month': 0.0,   # Correlation: -0.061 (negative)
             '2year': 0.52,    # Correlation: 0.518 (best)
             '3year': 0.33     # Correlation: 0.328
         }
-        
+
         # Normalize weights
         total = sum(correlation_weights.values())
         return {tf: weight / total for tf, weight in correlation_weights.items()}
-    
+
     def get_performance_summary(self) -> Dict[str, Dict]:
         """Get performance summary for all timeframes."""
         # Performance data from multi-timeframe analysis
@@ -262,25 +262,25 @@ class MultiTimeframeNeuralNetworks:
             '2year': {'correlation': 0.518, 'hit_rate': 1.00, 'mae': 0.873, 'val_mae': 26.243},
             '3year': {'correlation': 0.328, 'hit_rate': 1.00, 'mae': 3.693, 'val_mae': 22.002}
         }
-        
+
         summary = {}
         for timeframe, info in self.AVAILABLE_TIMEFRAMES.items():
             perf = performance_data.get(timeframe, {})
-            
+
             summary[timeframe] = {
                 **info,
                 **perf,
                 'rank_by_correlation': self._rank_by_metric(performance_data, 'correlation', timeframe),
                 'recommended': timeframe == '2year'  # Best correlation
             }
-        
+
         return summary
-    
+
     def _rank_by_metric(self, data: Dict, metric: str, timeframe: str) -> int:
         """Rank timeframe by specific metric."""
         values = [(tf, d.get(metric, 0)) for tf, d in data.items()]
         values.sort(key=lambda x: x[1], reverse=True)
-        
+
         for i, (tf, _) in enumerate(values):
             if tf == timeframe:
                 return i + 1

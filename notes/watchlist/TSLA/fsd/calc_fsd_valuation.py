@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
-from pathlib import Path
 import sys
 import tomllib
+from dataclasses import dataclass
+from pathlib import Path
 
 DEFAULT_ASSUMPTIONS_PATH = Path(__file__).with_name('assumptions.toml')
 

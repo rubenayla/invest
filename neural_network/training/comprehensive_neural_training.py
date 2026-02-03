@@ -11,24 +11,25 @@ Advanced training system that:
 - Validates on out-of-sample recent data
 """
 
-import sys
 import asyncio
-import random
-import numpy as np
-import pandas as pd
-from pathlib import Path
-from datetime import datetime, timedelta
-from typing import List, Tuple, Dict, Any, Optional
-from dataclasses import dataclass
-import logging
 import json
+import logging
+import random
+import sys
 import time
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+import numpy as np
 
 # Add src to path (go up to repo root)
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from src.invest.valuation.neural_network_model import NeuralNetworkValuationModel
 import yfinance as yf
+
+from src.invest.valuation.neural_network_model import NeuralNetworkValuationModel
 
 # Setup logging
 logging.basicConfig(
@@ -90,7 +91,7 @@ class ComprehensiveNeuralTrainer:
         # Stock universe for training
         self.stock_universe = self._get_training_universe()
         logger.info(f'Training universe: {len(self.stock_universe)} stocks')
-        
+
     def _get_training_universe(self) -> List[str]:
         """Get comprehensive stock universe for training."""
         # Large, diverse universe of stocks that have been around for years
@@ -102,16 +103,16 @@ class ComprehensiveNeuralTrainer:
             'DHR', 'VZ', 'QCOM', 'TXN', 'MDT', 'NEE', 'LIN', 'BMY', 'PM',
             'HON', 'T', 'UNP', 'LOW', 'IBM', 'AMD', 'INTC', 'GS', 'SPGI'
         ]
-        
+
         # Add some mid-caps and historically stable stocks
         additional_stocks = [
             'CAT', 'MMM', 'AXP', 'WBA', 'GE', 'F', 'GM', 'KO', 'MCD', 'SBUX',
             'CMG', 'GILD', 'AMGN', 'BKNG', 'COP', 'SLB', 'HAL', 'MDLZ', 'MNST',
             'ZTS', 'MU', 'AMAT', 'ADI', 'KLAC', 'MRVL', 'FTNT', 'PANW', 'NOW'
         ]
-        
+
         return large_caps + additional_stocks
-        
+
     def _build_stock_availability_map(self) -> Dict[str, Tuple[datetime, datetime]]:
         """Build a map of when each stock was trading."""
         logger.info('Building stock availability map...')
@@ -318,7 +319,7 @@ class ComprehensiveNeuralTrainer:
             self._save_cache(training_samples)
 
         return training_samples
-    
+
     def _get_historical_stock_data(self, ticker: str, date: datetime) -> Optional[Dict]:
         """Get historical stock data for a specific date."""
         try:
@@ -412,71 +413,71 @@ class ComprehensiveNeuralTrainer:
             }
 
             return data
-            
+
         except Exception as e:
             logger.warning(f'Error getting historical data for {ticker}: {e}')
             return None
-    
+
     def _calculate_forward_return(self, ticker: str, start_date: datetime, months: int) -> Optional[float]:
         """Calculate forward return from start_date."""
         try:
             end_date = start_date + timedelta(days=months * 30)
-            
+
             stock = yf.Ticker(ticker)
             hist = stock.history(
-                start=start_date - timedelta(days=10), 
+                start=start_date - timedelta(days=10),
                 end=end_date + timedelta(days=10)
             )
-            
+
             if len(hist) < months * 15:  # Need reasonable amount of data
                 return None
-            
+
             # Find start and end prices (handle timezone-aware indices)
             hist_index = hist.index.tz_localize(None) if hist.index.tz is not None else hist.index
             start_prices = hist[hist_index >= start_date]['Close']
             end_prices = hist[hist_index >= end_date]['Close']
-            
+
             if len(start_prices) == 0 or len(end_prices) == 0:
                 return None
-                
+
             start_price = start_prices.iloc[0]
             end_price = end_prices.iloc[0]
-            
+
             if start_price <= 0:
                 return None
-                
+
             return (end_price - start_price) / start_price
-            
+
         except Exception as e:
             logger.warning(f'Error calculating forward return for {ticker}: {e}')
             return None
-    
+
     def train_with_progress_monitoring(self, training_data: List[Tuple]) -> Dict[str, Any]:
         """Train neural network with intelligent progress monitoring."""
         logger.info(f'Starting comprehensive training with {len(training_data)} samples')
-        
+
         # Initialize model
         model = NeuralNetworkValuationModel(
             time_horizon='comprehensive_2year'
         )
-        
+
         # Split data
         random.shuffle(training_data)
         n_samples = len(training_data)
         n_train = int(n_samples * (1 - self.config.validation_split - self.config.test_split))
         n_val = int(n_samples * self.config.validation_split)
-        
+
         train_data = training_data[:n_train]
         val_data = training_data[n_train:n_train + n_val]
         test_data = training_data[n_train + n_val:]
-        
+
         logger.info(f'Data split: Train={len(train_data)}, Val={len(val_data)}, Test={len(test_data)}')
-        
+
         # Training loop with progress monitoring
         best_val_loss = float('inf')
         epochs_without_improvement = 0
         total_epochs = 0
-        
+
         training_results = {
             'total_epochs': 0,
             'best_val_loss': float('inf'),
@@ -486,16 +487,16 @@ class ComprehensiveNeuralTrainer:
             'test_correlation': 0,
             'training_history': []
         }
-        
+
         # Initial training phase
         logger.info(f'Starting initial training phase: {self.config.initial_epochs} epochs')
-        
+
         try:
             while total_epochs < self.config.max_total_epochs:
                 # Train for a batch of epochs
-                epochs_this_batch = min(self.config.initial_epochs, 
+                epochs_this_batch = min(self.config.initial_epochs,
                                       self.config.max_total_epochs - total_epochs)
-                
+
                 # Combine train and val data for train_model to split internally
                 combined_data = train_data + val_data
 
@@ -505,17 +506,17 @@ class ComprehensiveNeuralTrainer:
                     validation_split=0.2,  # Let model handle validation split
                     epochs=epochs_this_batch
                 )
-                
+
                 total_epochs += epochs_this_batch
-                
+
                 # Evaluate progress
                 current_val_loss = batch_results.get('final_val_loss', float('inf'))
                 current_train_loss = batch_results.get('final_train_loss', float('inf'))
                 val_mae = batch_results.get('val_mae', float('inf'))
-                
+
                 # Calculate correlation on validation set
                 correlation = self._calculate_correlation(model, val_data)
-                
+
                 # Track progress
                 progress = TrainingProgress(
                     epoch=total_epochs,
@@ -526,20 +527,20 @@ class ComprehensiveNeuralTrainer:
                     best_val_loss=best_val_loss,
                     epochs_without_improvement=epochs_without_improvement
                 )
-                
+
                 self.progress_history.append(progress)
-                
+
                 # Check for improvement
                 improvement = best_val_loss - current_val_loss
                 if improvement > self.config.min_improvement:
                     best_val_loss = current_val_loss
                     epochs_without_improvement = 0
-                    
+
                     # Save best model
                     best_model_path = Path(f'best_comprehensive_nn_2year_{total_epochs}epochs.pt')
                     model.save_model(best_model_path)
                     self.best_model_path = best_model_path
-                    
+
                     logger.info(f'[OK] Improvement found at epoch {total_epochs}!')
                     logger.info(f'   Val Loss: {current_val_loss:.4f} (↓{improvement:.4f})')
                     logger.info(f'   Correlation: {correlation:.3f}')
@@ -549,30 +550,30 @@ class ComprehensiveNeuralTrainer:
                     logger.info(f'[WARNING]  No significant improvement at epoch {total_epochs}')
                     logger.info(f'   Val Loss: {current_val_loss:.4f} (best: {best_val_loss:.4f})')
                     logger.info(f'   Epochs without improvement: {epochs_without_improvement}')
-                
+
                 # Early stopping check
                 if epochs_without_improvement >= self.config.patience:
                     logger.info(f'[STOP] Early stopping triggered after {epochs_without_improvement} epochs without improvement')
                     progress.should_stop = True
                     break
-                
+
                 # Progress report
                 logger.info(f'[INFO] Progress Report - Epoch {total_epochs}/{self.config.max_total_epochs}')
                 logger.info(f'   Train Loss: {current_train_loss:.4f}')
-                logger.info(f'   Val Loss: {current_val_loss:.4f}') 
+                logger.info(f'   Val Loss: {current_val_loss:.4f}')
                 logger.info(f'   Val MAE: {val_mae:.4f}')
                 logger.info(f'   Correlation: {correlation:.3f}')
                 logger.info(f'   Best Val Loss: {best_val_loss:.4f}')
-                
+
                 # Small delay to avoid overwhelming logs
                 time.sleep(1)
-        
+
         except KeyboardInterrupt:
             logger.info('Training interrupted by user')
         except Exception as e:
             logger.error(f'Training error: {e}')
             raise
-        
+
         # Final evaluation on test set
         test_correlation = 0
         if test_data and self.best_model_path and self.best_model_path.exists():
@@ -583,7 +584,7 @@ class ComprehensiveNeuralTrainer:
                 logger.info(f'[RESULT] Final test correlation: {test_correlation:.3f}')
             except Exception as e:
                 logger.warning(f'Error calculating test correlation: {e}')
-        
+
         # Compile final results
         training_results.update({
             'total_epochs': total_epochs,
@@ -606,22 +607,22 @@ class ComprehensiveNeuralTrainer:
                 for p in self.progress_history
             ]
         })
-        
+
         # Save training results
         results_path = Path(f'comprehensive_training_results_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json')
         with open(results_path, 'w') as f:
             json.dump(training_results, f, indent=2, default=str)
-        
+
         logger.info(f'[FILE] Training results saved: {results_path}')
-        
+
         return training_results
-    
+
     def _calculate_correlation(self, model: NeuralNetworkValuationModel, data: List[Tuple]) -> float:
         """Calculate correlation between model predictions and actual returns."""
         try:
             predictions = []
             actuals = []
-            
+
             for ticker, stock_data, actual_return in data:
                 try:
                     result = model._calculate_valuation(ticker, stock_data)
@@ -631,16 +632,16 @@ class ComprehensiveNeuralTrainer:
                         actuals.append(actual_return)
                 except:
                     continue
-            
+
             if len(predictions) < 10:  # Need minimum samples for meaningful correlation
                 return 0.0
-                
+
             return np.corrcoef(predictions, actuals)[0, 1] if len(predictions) > 1 else 0.0
-            
+
         except Exception as e:
             logger.warning(f'Error calculating correlation: {e}')
             return 0.0
-    
+
     def run_comprehensive_training(self) -> Dict[str, Any]:
         """Run the complete comprehensive training pipeline."""
         logger.info('[START] Starting Comprehensive Neural Network Training')
@@ -648,21 +649,21 @@ class ComprehensiveNeuralTrainer:
         logger.info(f'Target: {self.config.target_samples} samples from {self.config.start_year}-{self.config.end_year}')
         logger.info(f'Universe: {len(self.stock_universe)} stocks')
         logger.info(f'Max epochs: {self.config.max_total_epochs}, Patience: {self.config.patience}')
-        
+
         start_time = time.time()
-        
+
         try:
             # Step 1: Collect historical data
             logger.info('\n[INFO] Step 1: Collecting Historical Data')
             training_data = self.collect_historical_data()
-            
+
             if len(training_data) < 100:
                 raise ValueError(f'Insufficient training data: {len(training_data)} samples')
-            
+
             # Step 2: Train with progress monitoring
             logger.info('\n[TRAIN] Step 2: Training Neural Network')
             results = self.train_with_progress_monitoring(training_data)
-            
+
             # Step 3: Final summary
             training_time = time.time() - start_time
             logger.info('\n[COMPLETE] Training Complete!')
@@ -672,18 +673,18 @@ class ComprehensiveNeuralTrainer:
             logger.info(f'Best validation loss: {results["best_val_loss"]:.4f}')
             logger.info(f'Test correlation: {results["test_correlation"]:.3f}')
             logger.info(f'Early stopped: {results["early_stopped"]}')
-            
+
             if self.best_model_path:
                 logger.info(f'Best model: {self.best_model_path}')
-                
+
                 # Copy to standard location
                 final_model_path = Path('trained_nn_2year_comprehensive.pt')
                 import shutil
                 shutil.copy2(self.best_model_path, final_model_path)
                 logger.info(f'Model copied to: {final_model_path}')
-            
+
             return results
-            
+
         except Exception as e:
             logger.error(f'Training failed: {e}')
             raise
@@ -693,21 +694,21 @@ async def main():
     """Main training function."""
     # Use default config values from the dataclass
     config = TrainingConfig()
-    
+
     trainer = ComprehensiveNeuralTrainer(config)
-    
+
     try:
         results = trainer.run_comprehensive_training()
-        
+
         print('\n[RESULT] COMPREHENSIVE TRAINING SUMMARY')
         print('=' * 50)
-        print(f'Final Results:')
+        print('Final Results:')
         print(f'  • Training Time: {results.get("training_time", 0)/3600:.1f} hours')
-        print(f'  • Total Epochs: {results["total_epochs"]}')  
+        print(f'  • Total Epochs: {results["total_epochs"]}')
         print(f'  • Best Val Loss: {results["best_val_loss"]:.4f}')
         print(f'  • Test Correlation: {results["test_correlation"]:.3f}')
         print(f'  • Early Stopped: {results["early_stopped"]}')
-        
+
         if results["test_correlation"] > 0.4:
             print('[EXCELLENT] Excellent correlation achieved!')
         elif results["test_correlation"] > 0.2:

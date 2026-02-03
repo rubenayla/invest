@@ -14,11 +14,11 @@ NOTE THAT THE VALORATION IS VERY SENSITIVE TO THE PARAMETER "VALUE_TO_GROSS", WH
 TODO FIX FOR SONY, SOME VALUES COME IN YEN, OTHERS IN DOLLARS
 """
 
-import yfinance as yf
-import yaml
-from datetime import datetime
 import os
-import re
+from datetime import datetime
+
+import yaml
+import yfinance as yf
 
 # Set the current folder to the parent of this python file
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -32,7 +32,7 @@ def fill(company: dict, verbose = True) -> None:
     
     """
     stock = yf.Ticker(company["_ticker"])
-    
+
     # Attributes to extract and their new names in the dictionary
     atts = [
         ("cap", "marketCap"),
@@ -47,7 +47,7 @@ def fill(company: dict, verbose = True) -> None:
         ("name", "longName"),
     ]
     # Other attributes: profitMargins, floatShares, , sharesShort, sharesShortPriorMonth, sharesShortPreviousMonthDate, sharesPercentSharesOut, impliedSharesOutstanding, , revenueGrowth
-    
+
     # Extracting and assigning data
     company["did_not_update"] = None
     for new_name, att in atts:
@@ -62,7 +62,7 @@ def fill(company: dict, verbose = True) -> None:
             if company.get(new_name) is None:
                 company[new_name] = 1e-15
             # else, keep the previous value
-    
+
     # Custom fields
     company["stock_price"] = stock.info.get("previousClose") # $/share
     company["gross"] = float(company["gross"]) # $/year
@@ -72,12 +72,12 @@ def fill(company: dict, verbose = True) -> None:
     company["total_debt"] = stock.balance_sheet.loc['Total Debt'].iloc[0]
     company["revenue"] = stock.financials.loc["Total Revenue"].iloc[0]
     company["earnings"] = stock.financials.loc["Net Income"].iloc[0]
-    
+
     # Update last_updated, formatted like 202311272013
     company["last_updated"] = datetime.now().strftime("%Y.%m.%d %H:%M")
     company["equity_per_share"] = company.get("equity", 0) / company["shares"]
-    
-    
+
+
     # Print all parameters of company
     if verbose:
         for i in company:
@@ -110,13 +110,13 @@ def update_company(ticker: str, file_path: str = "companies.yaml", verbose = Fal
     """
     print(f"Updating data for {ticker}... (in ./{file_path})")
     ticker = ticker.lower()
-    
+
     with open(file_path, 'r') as file:
         companies = yaml.safe_load(file)
     fill(companies[ticker], verbose=verbose)
     with open(file_path, 'w') as file:
         yaml.dump(companies, file)
-    
+
 def analyze_company(c: dict) -> None:
     """
     Calculates valorations from the c company dictionary
@@ -133,12 +133,12 @@ def analyze_company(c: dict) -> None:
     c_val = c['valoration']
     c_val['value'] = c['equity'] + c_val.get('_value_to_gross', -1e15) * c['gross']
     c_val['target_stock_price'] = c_val['value'] / c['shares']
-    
+
     c_val['gain_factor'] = c_val['target_stock_price'] / c['stock_price']
-    
+
     # Add warnings
     c_val['warnings']: str = ""
-    
+
     if (c['cap']/c['gross']) > 10.:
         c_val['warnings'] += f"cap/gross > 10, = {c['cap']/c['gross']:.2f}\n"
     if c['gross'] < .1:
@@ -159,7 +159,7 @@ def analyze_companies(file_path: str = "companies.yaml", verbose = False) -> Non
     # Saving the modified company back to the YAML file
     with open(file_path, 'w') as file:
         yaml.dump(companies, file)
-    
+
 def print_best(file_path = "companies.yaml"):
     """
     Prints the companies in the file_path from best to worst
@@ -167,18 +167,18 @@ def print_best(file_path = "companies.yaml"):
     # Reading the YAML file
     with open(file_path, 'r') as file:
         companies = yaml.safe_load(file)
-    
+
     # Sort companies
     companies = list(companies.values())
     companies.sort(key=lambda c: c['valoration']['gain_factor'], reverse=True) # or pass a function, f ex sorter(c): return c['valoration']['gain_factor']...
-    
+
     # Print best
     print(f"BEST COMPANIES:\n  {'TICKER':>8} | {'GAIN FACTOR':>11} | {'PRICE':>6} | TARGET | WARNINGS (More in {file_path})")
     for c in companies:
         msg = f"  {c['_ticker']:>8} | {c['valoration']['gain_factor']:^11.2f} | {c['stock_price']:6.2f} | {c['valoration']['target_stock_price']:6.2f} | {c['valoration']['warnings']}"
         msg = msg.replace('\n', ', ')
         print(msg)
-    
+
     # --- Test other sortings
     # companies.sort(key=lambda c: c['equity_per_share']/c['stock_price'], reverse=True)
     # for c in companies:

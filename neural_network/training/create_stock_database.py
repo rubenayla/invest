@@ -186,8 +186,8 @@ def create_database(db_path: str = 'stock_data.db'):
     conn.close()
 
     print(f'✅ Database created: {db_path}')
-    print(f'   Tables: assets, snapshots, forward_returns, price_history, company_info')
-    print(f'   Indexes: 7 performance indexes created')
+    print('   Tables: assets, snapshots, forward_returns, price_history, company_info')
+    print('   Indexes: 7 performance indexes created')
     return db_path
 
 

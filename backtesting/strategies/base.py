@@ -2,7 +2,8 @@
 Base strategy interface for investment strategies.
 """
 
-from typing import Protocol, Dict, Any, Optional
+from typing import Any, Dict, Optional, Protocol
+
 import pandas as pd
 
 
@@ -13,7 +14,7 @@ class Strategy(Protocol):
     This ensures compatibility with the backtesting engine while allowing
     flexibility in implementation details.
     """
-    
+
     def __init__(self, config: Optional[Dict[str, Any]] = None) -> None:
         """
         Initialize strategy with configuration.
@@ -24,7 +25,7 @@ class Strategy(Protocol):
             Strategy-specific configuration parameters
         """
         ...
-    
+
     def generate_signals(self, market_data: Dict[str, Any],
                          current_portfolio: Dict[str, float],
                          date: pd.Timestamp) -> Dict[str, float]:

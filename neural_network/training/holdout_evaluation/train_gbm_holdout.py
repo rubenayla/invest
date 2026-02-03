@@ -38,14 +38,13 @@ sys.path.append(str(Path(__file__).parent.parent))
 # Import feature configuration
 from gbm_feature_config import (
     BASE_FEATURES,
-    FUNDAMENTAL_FEATURES,
-    MARKET_FEATURES,
-    PRICE_FEATURES,
     CASHFLOW_FEATURES,
     CATEGORICAL_FEATURES,
+    FUNDAMENTAL_FEATURES,
     LAG_PERIODS,
+    MARKET_FEATURES,
+    PRICE_FEATURES,
     ROLLING_WINDOWS,
-    get_snapshot_query_columns
 )
 
 # Suppress warnings

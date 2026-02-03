@@ -21,27 +21,26 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'neural_network/training'))
 
 # Import feature engineering from training script
-from train_gbm_stock_ranker import (
-    create_lag_features,
-    create_change_features,
-    create_rolling_features,
-    winsorize_by_date,
-    standardize_by_date
-)
-
-from invest.data.stock_data_reader import StockDataReader
-
 # Import feature configuration
 from gbm_feature_config import (
     BASE_FEATURES,
-    FUNDAMENTAL_FEATURES,
-    MARKET_FEATURES,
-    PRICE_FEATURES,
     CASHFLOW_FEATURES,
     CATEGORICAL_FEATURES,
+    FUNDAMENTAL_FEATURES,
     LAG_PERIODS,
-    ROLLING_WINDOWS
+    MARKET_FEATURES,
+    PRICE_FEATURES,
+    ROLLING_WINDOWS,
 )
+from train_gbm_stock_ranker import (
+    create_change_features,
+    create_lag_features,
+    create_rolling_features,
+    standardize_by_date,
+    winsorize_by_date,
+)
+
+from invest.data.stock_data_reader import StockDataReader
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -381,7 +380,7 @@ def main():
     confidences = assign_confidence(predictions)
 
     # Log summary
-    logger.info(f'Predictions summary:')
+    logger.info('Predictions summary:')
     logger.info(f'  Mean predicted return: {np.mean(predictions):.2%}')
     logger.info(f'  Median predicted return: {np.median(predictions):.2%}')
     logger.info(f'  Top prediction: {np.max(predictions):.2%}')

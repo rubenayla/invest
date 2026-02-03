@@ -5,11 +5,8 @@ Compare LSTM vs GBM model performance.
 Loads evaluation results from both models and presents a comprehensive comparison.
 """
 
-import json
 import logging
 from pathlib import Path
-
-import pandas as pd
 
 logging.basicConfig(level=logging.INFO, format='%(message)s')
 logger = logging.getLogger(__name__)
@@ -124,9 +121,9 @@ def compare_models():
         logger.info(f'  Decile Spread:    {gbm_results.get("decile_spread", "N/A"):.4f}')
         logger.info(f'  NDCG@10:          {gbm_results.get("ndcg", "N/A"):.4f}')
         if gbm_results.get('has_price_features'):
-            logger.info(f'  Features:         Fundamentals + Price (returns, volatility, volume)')
+            logger.info('  Features:         Fundamentals + Price (returns, volatility, volume)')
         else:
-            logger.info(f'  Features:         Fundamentals only')
+            logger.info('  Features:         Fundamentals only')
     else:
         logger.info('  No results available yet - training in progress')
     logger.info('')

@@ -15,14 +15,18 @@ Key Improvements:
 Author: Enhanced for proper dividend treatment
 """
 
-import logging
 from typing import Dict, List, Optional
 
 import numpy as np
 import yfinance as yf
 
-from .config.logging_config import get_logger, log_data_fetch, log_valuation_result, log_error_with_context
-from .error_handling import handle_valuation_error, create_error_context, ErrorHandlingContext
+from .config.logging_config import (
+    get_logger,
+    log_data_fetch,
+    log_error_with_context,
+    log_valuation_result,
+)
+from .error_handling import create_error_context, handle_valuation_error
 from .exceptions import InsufficientDataError, ModelNotSuitableError
 
 logger = get_logger(__name__)
@@ -95,10 +99,10 @@ def calculate_enhanced_dcf(
     """
     # Create error context for comprehensive error handling
     error_context = create_error_context(ticker=ticker, model="Enhanced DCF", function_name="calculate_enhanced_dcf")
-    
+
     try:
         stock = yf.Ticker(ticker)
-        
+
         try:
             info = stock.info
         except Exception as e:
@@ -110,7 +114,7 @@ def calculate_enhanced_dcf(
         # Fetch missing data
         if fcf is None:
             fcf = info.get("freeCashflow")
-            
+
             # If FCF not in info, try to get it from cashflow statement (common for financial companies)
             if fcf is None:
                 try:
@@ -125,7 +129,7 @@ def calculate_enhanced_dcf(
                 except Exception as e:
                     if verbose:
                         logger.warning(f"Could not retrieve FCF from cashflow statement for {ticker}: {e}")
-        
+
         if shares is None:
             shares = info.get("sharesOutstanding")
         if cash is None:
@@ -144,10 +148,10 @@ def calculate_enhanced_dcf(
         if fcf is None:
             missing_data.append("fcf")
         if shares is None:
-            missing_data.append("shares")  
+            missing_data.append("shares")
         if current_price is None:
             missing_data.append("current_price")
-            
+
         if missing_data:
             # For financial companies, try alternative approaches
             sector = info.get("sector", "").lower()
@@ -178,10 +182,10 @@ def calculate_enhanced_dcf(
             # Enhanced DCF requires positive FCF for dividend analysis
             raise ModelNotSuitableError(
                 "Enhanced DCF",
-                ticker, 
+                ticker,
                 f"Negative FCF (${fcf:,.0f}) makes dividend-based valuation inappropriate. Use traditional DCF or other methods."
             )
-    
+
         # Use normalized FCF if enabled
         base_fcf = _calculate_normalized_fcf(stock, fcf, use_normalized_fcf, verbose, ticker)
 
@@ -254,7 +258,7 @@ def calculate_enhanced_dcf(
             dividend_yield=results['dividend_yield'],
             sustainable_growth_rate=results['sustainable_growth_rate']
         )
-        
+
         if verbose:
             _print_enhanced_dcf_summary(results, ticker)
 
@@ -263,17 +267,17 @@ def calculate_enhanced_dcf(
     except Exception as e:
         # Handle any unexpected errors with comprehensive error context
         error_info = handle_valuation_error(e, ticker, "Enhanced DCF")
-        
+
         # Log the error with full context
         log_error_with_context(
-            logger, 
+            logger,
             error_info.technical_message,
-            ticker=ticker, 
-            model="Enhanced DCF", 
+            ticker=ticker,
+            model="Enhanced DCF",
             error_id=error_info.error_id,
             user_message=error_info.user_message
         )
-        
+
         # Re-raise the original exception to maintain existing behavior
         raise
 

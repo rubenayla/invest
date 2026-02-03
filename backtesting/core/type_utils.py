@@ -2,10 +2,11 @@
 Type validation utilities for backtesting system.
 """
 
-import pandas as pd
-from typing import Dict, Any, Callable, TypeVar, Union
 import logging
 from functools import wraps
+from typing import Any, Callable, Dict, TypeVar, Union
+
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -21,14 +22,14 @@ def ensure_python_types(func: F) -> F:
     @wraps(func)
     def wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
-        
+
         if isinstance(result, dict):
             # Convert dictionary values
             return {k: _convert_to_python_type(v) for k, v in result.items()}
         else:
             # Convert single value
             return _convert_to_python_type(result)
-    
+
     return wrapper
 
 
@@ -53,7 +54,7 @@ def _convert_to_python_type(value: Any) -> Union[float, int, str, bool, None, An
         else:
             logger.warning(f"Cannot convert pandas object with length {len(value)} to scalar")
             return value
-    
+
     # Already a Python type or unknown type
     return value
 
@@ -78,13 +79,13 @@ def validate_price_dict(prices: Dict[str, Any]) -> Dict[str, float]:
         If any price cannot be converted to float
     """
     validated: Dict[str, float] = {}
-    
+
     for ticker, price in prices.items():
         try:
             if pd.isna(price):
                 logger.warning(f"Price for {ticker} is NaN, skipping")
                 continue
-                
+
             # Convert pandas objects to Python float
             if hasattr(price, 'item'):
                 validated[ticker] = float(price.item())
@@ -96,9 +97,9 @@ def validate_price_dict(prices: Dict[str, Any]) -> Dict[str, float]:
                     continue
             else:
                 validated[ticker] = float(price)
-                
+
         except (ValueError, TypeError) as e:
             logger.error(f"Cannot convert price for {ticker} to float: {price} ({type(price)}) - {e}")
             raise TypeError(f"Invalid price data for {ticker}: {price}")
-    
+
     return validated

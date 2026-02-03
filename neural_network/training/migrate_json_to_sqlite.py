@@ -10,8 +10,7 @@ import json
 import sqlite3
 import sys
 from pathlib import Path
-from datetime import datetime
-from typing import Dict, Any
+from typing import Dict
 
 # Add project root to path
 project_root = Path(__file__).parent.parent.parent
@@ -218,7 +217,7 @@ def migrate_data(
     # Verify migration
     print('\n✅ Migration complete!')
     print('='*60)
-    print(f'📊 Statistics:')
+    print('📊 Statistics:')
     print(f'   Tickers added: {stats["tickers_added"]}')
     print(f'   Snapshots added: {stats["snapshots_added"]}')
     print(f'   Returns added: {stats["returns_added"]}')
@@ -234,7 +233,7 @@ def migrate_data(
     cursor.execute('SELECT COUNT(*) FROM forward_returns')
     return_count = cursor.fetchone()[0]
 
-    print(f'\n📊 Database contents:')
+    print('\n📊 Database contents:')
     print(f'   Assets: {asset_count}')
     print(f'   Snapshots: {snapshot_count}')
     print(f'   Forward returns: {return_count}')

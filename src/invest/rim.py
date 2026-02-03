@@ -18,11 +18,16 @@ to earn returns above what investors require, applied to the capital employed.
 
 from typing import Dict, List, Optional
 
-import numpy as np
 import yfinance as yf
+
 from .config.constants import VALUATION_DEFAULTS
-from .config.logging_config import get_logger, log_data_fetch, log_valuation_result, log_error_with_context
-from .error_handling import handle_valuation_error, create_error_context, ErrorHandlingContext
+from .config.logging_config import (
+    get_logger,
+    log_data_fetch,
+    log_error_with_context,
+    log_valuation_result,
+)
+from .error_handling import create_error_context, handle_valuation_error
 from .exceptions import InsufficientDataError, ModelNotSuitableError
 
 logger = get_logger(__name__)
@@ -123,43 +128,43 @@ def calculate_rim(
     """
     # Create error context for comprehensive error handling
     error_context = create_error_context(ticker=ticker, model="RIM", function_name="calculate_rim")
-    
+
     try:
         stock = yf.Ticker(ticker)
-        
+
         try:
             info = stock.info
             log_data_fetch(logger, ticker, "market_data", True)
         except Exception as e:
             info = {}
             log_data_fetch(logger, ticker, "market_data", False, error=str(e))
-        
+
         # Fetch missing data
         if book_value_per_share is None:
             book_value_per_share = info.get('bookValue')
-        
+
         if roe is None:
             roe = info.get('returnOnEquity')
-            
+
         if current_price is None:
             current_price = info.get('currentPrice') or info.get('regularMarketPrice')
-        
+
         # Validate essential data
         missing_data = []
         if book_value_per_share is None or book_value_per_share <= 0:
             missing_data.append("book_value_per_share")
         if roe is None:
-            missing_data.append("roe") 
+            missing_data.append("roe")
         if current_price is None or current_price <= 0:
             missing_data.append("current_price")
-            
+
         if missing_data:
             raise InsufficientDataError(ticker, missing_data)
-    
+
         # Sector-based cost of equity adjustments
         sector = info.get('sector', '').lower()
         adjusted_cost_of_equity = cost_of_equity
-        
+
         if use_sector_adjustment:
             sector_adjustments = {
             'financial': -0.01,      # Banks often have lower risk due to regulation
@@ -170,7 +175,7 @@ def calculate_rim(
             'biotechnology': +0.04,  # High risk, high uncertainty
             'energy': +0.01,         # Commodity risk
         }
-        
+
         for sector_key, adjustment in sector_adjustments.items():
             if sector_key in sector:
                 adjusted_cost_of_equity += adjustment
@@ -184,43 +189,43 @@ def calculate_rim(
                     }
                 )
                 break
-    
+
         # Check for RIM model suitability
         sector = info.get('sector', '').lower()
-    
+
         # RIM is less suitable for:
         if book_value_per_share <= 0:
             raise ModelNotSuitableError(
-            "RIM", 
-            ticker, 
+            "RIM",
+            ticker,
             f"Negative or zero book value (${book_value_per_share:.2f}). Book value must be positive for RIM."
         )
-    
+
         if roe <= 0:
             raise ModelNotSuitableError(
-            "RIM", 
+            "RIM",
             ticker,
             f"Negative or zero ROE ({roe:.1%}). Companies with negative ROE cannot generate residual income."
         )
-    
+
         # Warning for asset-light businesses (but don't fail)
         if 'software' in sector or 'technology' in sector:
             logger.warning(
             f"RIM may be less reliable for asset-light {sector} companies",
             extra={"ticker": ticker, "sector": sector, "reason": "intangible_heavy_business"}
         )
-    
+
         # Calculate sustainable ROE first (before projections)
             sustainable_roe = _estimate_sustainable_roe(info, roe)
-    
+
         # Set terminal ROE (long-term sustainable level)
         if terminal_roe is None:
             terminal_roe = adjusted_cost_of_equity  # Long-run, ROE converges to cost of equity
-    
+
         # Use sustainable ROE for projections instead of current ROE
         # This prevents extreme current ROE from distorting the entire valuation
         normalized_initial_roe = min(sustainable_roe, roe) if sustainable_roe < roe else roe
-    
+
         if normalized_initial_roe != roe:
             logger.warning(
             f"Using normalized ROE for {ticker}",
@@ -233,7 +238,7 @@ def calculate_rim(
         )
         if verbose:
             print(f"⚠️  Using normalized ROE {normalized_initial_roe:.1%} instead of current {roe:.1%} for projections")
-    
+
         # Calculate residual income projections
             projections = _project_residual_income(
         book_value_per_share=book_value_per_share,
@@ -243,57 +248,57 @@ def calculate_rim(
         roe_decay_rate=roe_decay_rate,
         projection_years=projection_years
         )
-    
+
         # Calculate present value of residual income
             pv_residual_income = _calculate_present_value(
         projections['residual_income'],
         adjusted_cost_of_equity,
         projection_years
         )
-    
+
         # Calculate terminal value (assume no residual income growth beyond terminal year)
         terminal_residual_income = projections['residual_income'][-1]
         terminal_value = terminal_residual_income / adjusted_cost_of_equity  # Perpetuity
         pv_terminal_value = terminal_value / ((1 + adjusted_cost_of_equity) ** projection_years)
-    
+
         # Fair value = Current Book Value + PV of all future residual income
         fair_value_per_share = book_value_per_share + pv_residual_income + pv_terminal_value
-    
+
         # Calculate margin of safety
         margin_of_safety = (fair_value_per_share - current_price) / current_price
-    
+
         # Additional analysis
         current_residual_income = (roe - adjusted_cost_of_equity) * book_value_per_share
-    
+
         # Quality metrics
         roe_spread = roe - adjusted_cost_of_equity
         # sustainable_roe already calculated above
-    
+
         results = {
         'ticker': ticker,
         'current_price': current_price,
         'fair_value': fair_value_per_share,
         'fair_value_per_share': fair_value_per_share,  # Compatibility
         'margin_of_safety': margin_of_safety,
-        
+
         # Core RIM components
         'book_value_per_share': book_value_per_share,
         'current_roe': roe,
         'cost_of_equity': adjusted_cost_of_equity,
         'terminal_roe': terminal_roe,
         'roe_spread': roe_spread,  # ROE - Cost of Equity
-        
+
         # Valuation breakdown
         'book_value_component': book_value_per_share,
         'pv_residual_income': pv_residual_income,
         'pv_terminal_value': pv_terminal_value,
         'current_residual_income': current_residual_income,
-        
+
         # Quality indicators
         'sustainable_roe': sustainable_roe,
         'roe_quality_score': _calculate_roe_quality_score(info, roe),
         'asset_quality_score': _calculate_asset_quality_score(info),
-        
+
         # Model assumptions
         'inputs': {
             'projection_years': projection_years,
@@ -301,41 +306,41 @@ def calculate_rim(
             'sector': sector,
             'sector_adjustment_applied': adjusted_cost_of_equity != cost_of_equity,
         },
-        
+
         # Projections for analysis
         'projections': projections,
         }
-    
+
         # Log the valuation result
         log_valuation_result(
-        logger, 
-        ticker, 
-        "RIM", 
+        logger,
+        ticker,
+        "RIM",
         fair_value_per_share,
         margin_of_safety=margin_of_safety,
         roe_spread=roe_spread,
         sustainable_roe=sustainable_roe
         )
-    
+
         if verbose:
             _print_rim_analysis(results, ticker)
-        
+
         return results
-    
+
     except Exception as e:
         # Handle any unexpected errors with comprehensive error context
         error_info = handle_valuation_error(e, ticker, "RIM")
-        
+
         # Log the error with full context
         log_error_with_context(
-            logger, 
+            logger,
             error_info.technical_message,
-            ticker=ticker, 
-            model="RIM", 
+            ticker=ticker,
+            model="RIM",
             error_id=error_info.error_id,
             user_message=error_info.user_message
         )
-        
+
         # Re-raise the original exception to maintain existing behavior
         raise
 
@@ -349,30 +354,30 @@ def _project_residual_income(
     projection_years: int
 ) -> Dict:
     """Project future book value and residual income."""
-    
+
     book_values = [book_value_per_share]
     roes = [initial_roe]
     residual_incomes = []
-    
+
     for year in range(projection_years):
         # Current year calculations
         current_bv = book_values[-1]
         current_roe = roes[-1]
-        
+
         # Calculate residual income
         residual_income = (current_roe - cost_of_equity) * current_bv
         residual_incomes.append(residual_income)
-        
+
         # Project next year's book value (assumes all earnings retained - conservative)
         # BV grows by: ROE * BV (assuming no dividends, conservative assumption)
         retention_rate = 0.7  # Assume 70% retention for most companies
         next_bv = current_bv * (1 + current_roe * retention_rate)
         book_values.append(next_bv)
-        
+
         # ROE mean reversion toward terminal ROE
         next_roe = current_roe + (terminal_roe - current_roe) * roe_decay_rate
         roes.append(next_roe)
-    
+
     return {
         'book_values': book_values[:-1],  # Remove last (unused) value
         'roes': roes[:-1],
@@ -391,16 +396,16 @@ def _calculate_present_value(residual_incomes: List[float], discount_rate: float
 def _estimate_sustainable_roe(info: Dict, current_roe: float) -> float:
     """Estimate long-term sustainable ROE based on fundamentals."""
     # Use DuPont analysis: ROE = (Net Margin) × (Asset Turnover) × (Equity Multiplier)
-    
+
     profit_margin = info.get('profitMargins', 0)
     asset_turnover = info.get('assetTurnover', 1)  # Revenue / Total Assets
     equity_multiplier = info.get('debtToEquity', 0)
-    
+
     if equity_multiplier:
         equity_multiplier = 1 + equity_multiplier  # Convert to assets/equity ratio
     else:
         equity_multiplier = 1.5  # Conservative default
-    
+
     # Conservative sustainable ROE with extreme ROE protection
     if profit_margin and asset_turnover:
         sustainable_roe = profit_margin * asset_turnover * equity_multiplier
@@ -410,7 +415,7 @@ def _estimate_sustainable_roe(info: Dict, current_roe: float) -> float:
     else:
         # Fallback: conservative estimate based on current ROE
         sustainable_roe = min(current_roe * 0.8, 0.15)  # 80% of current, max 15%
-    
+
     # Special handling for extreme ROE cases (>50%)
     if current_roe > 0.50:  # More than 50% ROE is likely unsustainable
         # Use industry/sector median ROE as reality check
@@ -421,21 +426,21 @@ def _estimate_sustainable_roe(info: Dict, current_roe: float) -> float:
             sector_median_roe = 0.12  # Financial companies 10-15%
         else:
             sector_median_roe = 0.12  # General default
-        
+
         # For extreme ROE, bias toward sector median
         extreme_adjustment = min(current_roe * 0.3, sector_median_roe * 1.5)
         sustainable_roe = min(sustainable_roe, extreme_adjustment)
-        
+
         # Absolute cap: no sustainable ROE above configured maximum
         sustainable_roe = min(sustainable_roe, VALUATION_DEFAULTS.RIM_MAX_SUSTAINABLE_ROE)
-    
+
     return sustainable_roe
 
 
 def _calculate_roe_quality_score(info: Dict, roe: float) -> float:
     """Score ROE quality based on its components and stability."""
     score = 50  # Base score
-    
+
     # High ROE is good, but extremely high might be unsustainable
     if 0.12 <= roe <= 0.25:  # Sweet spot: 12-25%
         score += 20
@@ -445,28 +450,28 @@ def _calculate_roe_quality_score(info: Dict, roe: float) -> float:
         score += 5
     elif roe < 0.05:  # Too low
         score -= 20
-    
+
     # Debt levels (lower is better for ROE quality)
     debt_to_equity = info.get('debtToEquity', 1)
     if debt_to_equity < 0.3:  # Low debt
         score += 10
     elif debt_to_equity > 2:  # High debt - ROE might be leveraged
         score -= 15
-    
+
     # Profit margins (higher is better)
     profit_margin = info.get('profitMargins', 0)
     if profit_margin > 0.15:  # High margins
         score += 10
     elif profit_margin < 0.05:  # Low margins
         score -= 10
-    
+
     return max(0, min(100, score))
 
 
 def _calculate_asset_quality_score(info: Dict) -> float:
     """Score asset quality for book value reliability."""
     score = 50  # Base score
-    
+
     # Current ratio (liquidity)
     current_ratio = info.get('currentRatio', 1)
     if current_ratio > 2:
@@ -475,14 +480,14 @@ def _calculate_asset_quality_score(info: Dict) -> float:
         score += 10
     elif current_ratio < 1:
         score -= 20
-    
+
     # Asset turnover (efficiency)
     asset_turnover = info.get('totalRevenue', 0) / info.get('totalAssets', 1) if info.get('totalAssets') else 0
     if asset_turnover > 1:  # Efficient asset use
         score += 10
     elif asset_turnover < 0.5:  # Inefficient
         score -= 10
-    
+
     # Tangible assets (more reliable than intangibles)
     # This is harder to get from yfinance, so we use sector as proxy
     sector = info.get('sector', '').lower()
@@ -490,7 +495,7 @@ def _calculate_asset_quality_score(info: Dict) -> float:
         score += 5  # Financial assets are fairly valued
     elif 'technology' in sector:
         score -= 5  # More intangible assets
-    
+
     return max(0, min(100, score))
 
 
@@ -499,43 +504,43 @@ def _print_rim_analysis(results: Dict, ticker: str) -> None:
     print(f"\n{'='*60}")
     print(f"RESIDUAL INCOME MODEL (RIM) - {ticker}")
     print(f"{'='*60}")
-    
-    print(f"\n📊 VALUATION SUMMARY")
+
+    print("\n📊 VALUATION SUMMARY")
     print(f"Current Price:           ${results['current_price']:>8.2f}")
     print(f"Fair Value per Share:    ${results['fair_value']:>8.2f}")
     print(f"Margin of Safety:        {results['margin_of_safety']:>8.1%}")
-    
-    print(f"\n💰 VALUE COMPONENTS")
+
+    print("\n💰 VALUE COMPONENTS")
     print(f"Book Value per Share:    ${results['book_value_component']:>8.2f}")
     print(f"PV of Residual Income:   ${results['pv_residual_income']:>8.2f}")
     print(f"PV of Terminal Value:    ${results['pv_terminal_value']:>8.2f}")
-    
-    print(f"\n📈 ROE ANALYSIS")
+
+    print("\n📈 ROE ANALYSIS")
     print(f"Current ROE:             {results['current_roe']:>8.1%}")
     print(f"Cost of Equity:          {results['cost_of_equity']:>8.1%}")
     print(f"ROE Spread:              {results['roe_spread']:>8.1%}")
     print(f"Sustainable ROE:         {results['sustainable_roe']:>8.1%}")
     print(f"Current Residual Income: ${results['current_residual_income']:>8.2f}")
-    
-    print(f"\n⭐ QUALITY SCORES")
+
+    print("\n⭐ QUALITY SCORES")
     print(f"ROE Quality Score:       {results['roe_quality_score']:>8.0f}/100")
     print(f"Asset Quality Score:     {results['asset_quality_score']:>8.0f}/100")
-    
-    print(f"\n📋 MODEL ASSUMPTIONS")
+
+    print("\n📋 MODEL ASSUMPTIONS")
     print(f"Projection Years:        {results['inputs']['projection_years']:>8}")
     print(f"ROE Decay Rate:          {results['inputs']['roe_decay_rate']:>8.1%}")
     print(f"Sector:                  {results['inputs']['sector'].title()}")
     print(f"Sector Adjustment:       {'Yes' if results['inputs']['sector_adjustment_applied'] else 'No'}")
-    
+
     # Investment recommendation
     print(f"\n{'='*60}")
     print("RIM INVESTMENT RECOMMENDATION")
     print(f"{'='*60}")
-    
+
     margin = results['margin_of_safety']
     roe_spread = results['roe_spread']
     roe_quality = results['roe_quality_score']
-    
+
     if margin > 0.3 and roe_spread > 0.05 and roe_quality > 70:
         recommendation = "STRONG BUY - Excellent ROE with significant discount to fair value"
     elif margin > 0.15 and roe_spread > 0.02 and roe_quality > 60:
@@ -546,9 +551,9 @@ def _print_rim_analysis(results: Dict, ticker: str) -> None:
         recommendation = "AVOID - Destroying shareholder value (ROE < Cost of Equity)"
     else:
         recommendation = "SELL - Overvalued relative to book value and earning power"
-    
+
     print(recommendation)
-    
+
     # Warnings and notes
     if roe_spread < 0.02:
         print("⚠️  Warning: Low ROE spread - company barely beating cost of capital")
@@ -556,7 +561,7 @@ def _print_rim_analysis(results: Dict, ticker: str) -> None:
         print("⚠️  Warning: Very high ROE may not be sustainable")
     if results['asset_quality_score'] < 40:
         print("⚠️  Warning: Low asset quality - book value may not be reliable")
-    
+
     print(f"{'='*60}\n")
 
 

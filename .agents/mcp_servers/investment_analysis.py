@@ -22,23 +22,21 @@ Then configure in Claude Desktop with:
 import asyncio
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
 
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from mcp.server import Server
-from mcp.server.models import InitializationOptions
 import mcp.server.stdio
 import mcp.types as types
+from mcp.server import Server
+from mcp.server.models import InitializationOptions
 
 from invest.data.universal_fetcher import UniversalStockFetcher, compare_international_stocks
-from invest.standard_dcf import calculate_dcf
 from invest.dividend_aware_dcf import calculate_enhanced_dcf
-from invest.probabilistic_dcf import calculate_monte_carlo_dcf
 from invest.growth_phase_dcf import calculate_multi_stage_dcf
+from invest.probabilistic_dcf import calculate_monte_carlo_dcf
 from invest.simple_ratios import calculate_simple_ratios_valuation
-
+from invest.standard_dcf import calculate_dcf
 
 # Initialize the MCP server
 server = Server("investment-analysis")
@@ -71,7 +69,7 @@ async def handle_list_tools() -> list[types.Tool]:
             name="compare_stocks",
             description="Compare multiple stocks across different exchanges",
             inputSchema={
-                "type": "object", 
+                "type": "object",
                 "properties": {
                     "tickers": {
                         "type": "array",
@@ -95,7 +93,7 @@ async def handle_list_tools() -> list[types.Tool]:
                 "type": "object",
                 "properties": {
                     "ticker": {
-                        "type": "string", 
+                        "type": "string",
                         "description": "Stock ticker to value"
                     },
                     "model": {
@@ -110,7 +108,7 @@ async def handle_list_tools() -> list[types.Tool]:
                         "default": 0.12
                     },
                     "terminal_growth": {
-                        "type": "number", 
+                        "type": "number",
                         "description": "Terminal growth rate",
                         "default": 0.025
                     }
@@ -119,7 +117,7 @@ async def handle_list_tools() -> list[types.Tool]:
             }
         ),
         types.Tool(
-            name="ratio_analysis", 
+            name="ratio_analysis",
             description="Calculate key financial ratios and valuations",
             inputSchema={
                 "type": "object",
@@ -140,20 +138,20 @@ async def handle_call_tool(
     name: str, arguments: dict
 ) -> list[types.TextContent | types.ImageContent | types.EmbeddedResource]:
     """Handle tool calls for investment analysis."""
-    
+
     if name == "get_stock_data":
         ticker = arguments["ticker"]
         convert_currency = arguments.get("convert_currency", False)
-        
+
         fetcher = UniversalStockFetcher(convert_currency=convert_currency, target_currency='USD')
         data = fetcher.fetch_stock(ticker)
-        
+
         if not data:
             return [types.TextContent(
                 type="text",
                 text=f"❌ Could not fetch data for {ticker}. Please check the ticker symbol."
             )]
-        
+
         # Format key information
         result = f"""📊 **{data.get('longName', ticker)}** ({ticker})
 
@@ -186,49 +184,49 @@ async def handle_call_tool(
             result += f"\n**💱 USD Converted:**\n• Price: ${data.get('current_price_usd', 'N/A'):.2f}\n• Market Cap: ${data.get('market_cap_usd', 0)/1e9:.1f}B"
 
         return [types.TextContent(type="text", text=result)]
-    
+
     elif name == "compare_stocks":
         tickers = arguments["tickers"]
         metrics = arguments.get("metrics", ["current_price", "trailing_pe", "return_on_equity", "market_cap"])
-        
+
         comparison = compare_international_stocks(tickers, metrics)
-        
+
         if not comparison:
             return [types.TextContent(
-                type="text", 
+                type="text",
                 text="❌ Could not fetch comparison data for the provided tickers."
             )]
-        
+
         result = "📊 **Stock Comparison**\n\n"
-        
+
         for ticker, info in comparison.items():
             result += f"**{ticker}** - {info['name']}\n"
             result += f"• Exchange: {info['exchange']} | Country: {info['country']}\n"
             result += f"• Sector: {info['sector']}\n"
-            
+
             for metric in metrics:
                 value = info['metrics'].get(metric)
                 if value is not None:
                     if metric in ['current_price', 'market_cap']:
                         result += f"• {metric.replace('_', ' ').title()}: {value:.2f}\n"
                     elif metric in ['trailing_pe', 'return_on_equity']:
-                        result += f"• {metric.replace('_', ' ').title()}: {value:.2f}\n" 
+                        result += f"• {metric.replace('_', ' ').title()}: {value:.2f}\n"
                     else:
                         result += f"• {metric.replace('_', ' ').title()}: {value}\n"
             result += "\n"
-        
+
         return [types.TextContent(type="text", text=result)]
-    
+
     elif name == "dcf_valuation":
         ticker = arguments["ticker"]
         model = arguments.get("model", "standard")
         discount_rate = arguments.get("discount_rate", 0.12)
         terminal_growth = arguments.get("terminal_growth", 0.025)
-        
+
         try:
             if model == "standard":
                 result = calculate_dcf(ticker, discount_rate=discount_rate, terminal_growth=terminal_growth)
-            elif model == "dividend_aware": 
+            elif model == "dividend_aware":
                 result = calculate_enhanced_dcf(ticker, discount_rate=discount_rate, terminal_growth=terminal_growth)
             elif model == "probabilistic":
                 result = calculate_monte_carlo_dcf(ticker, base_discount_rate=discount_rate, base_terminal_growth=terminal_growth)
@@ -239,18 +237,18 @@ async def handle_call_tool(
                     type="text",
                     text=f"❌ Unknown DCF model: {model}"
                 )]
-            
+
             if result.get('error'):
                 return [types.TextContent(
-                    type="text", 
+                    type="text",
                     text=f"❌ DCF Error for {ticker}: {result['error']}"
                 )]
-            
+
             # Format DCF results
             fair_value = result.get('fair_value_per_share', 0)
             current_price = result.get('current_price', 0)
             upside = ((fair_value - current_price) / current_price * 100) if current_price else 0
-            
+
             dcf_text = f"""🧮 **{model.replace('_', ' ').title()} DCF Analysis: {ticker}**
 
 **💰 Valuation Results:**
@@ -275,27 +273,27 @@ async def handle_call_tool(
 • 95% range: ${conf_95[0]:.2f} - ${conf_95[1]:.2f}
 • Probability of 50%+ upside: {result.get('upside_probability', 0)*100:.1f}%
 """
-            
+
             return [types.TextContent(type="text", text=dcf_text)]
-            
+
         except Exception as e:
             return [types.TextContent(
                 type="text",
                 text=f"❌ DCF calculation failed for {ticker}: {str(e)}"
             )]
-    
+
     elif name == "ratio_analysis":
         ticker = arguments["ticker"]
-        
+
         try:
             result = calculate_simple_ratios_valuation(ticker)
-            
+
             if result.get('error'):
                 return [types.TextContent(
                     type="text",
                     text=f"❌ Ratio analysis error for {ticker}: {result['error']}"
                 )]
-            
+
             ratios_text = f"""📊 **Financial Ratio Analysis: {ticker}**
 
 **🎯 Valuation Ratios:**
@@ -315,15 +313,15 @@ async def handle_call_tool(
 • Current Price: ${result.get('current_price', 0):.2f}
 • Implied Upside: {result.get('upside_percentage', 0):+.1f}%
 """
-            
+
             return [types.TextContent(type="text", text=ratios_text)]
-            
+
         except Exception as e:
             return [types.TextContent(
                 type="text",
                 text=f"❌ Ratio analysis failed for {ticker}: {str(e)}"
             )]
-    
+
     else:
         return [types.TextContent(
             type="text",
@@ -336,7 +334,7 @@ async def main():
     async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
         await server.run(
             read_stream,
-            write_stream, 
+            write_stream,
             InitializationOptions(
                 server_name="investment-analysis",
                 server_version="1.0.0",

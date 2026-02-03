@@ -7,16 +7,16 @@ for multiple time horizons (1m, 3m, 6m, 1y, 2y), and stores them in SQLite datab
 """
 
 import json
+import logging
 import sqlite3
 import sys
-import yfinance as yf
-from pathlib import Path
-from datetime import datetime, timedelta
-from typing import Dict, List, Tuple, Optional
-import logging
 import time
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
+
 import pandas as pd
-import numpy as np
+import yfinance as yf
 
 # Add project root to path
 project_root = Path(__file__).parent.parent.parent
@@ -421,7 +421,7 @@ class MultiHorizonCacheGenerator:
 
         db_size_mb = self.db_path.stat().st_size / (1024 * 1024)
         logger.info(f'Database size: {db_size_mb:.1f} MB')
-        logger.info(f'\n✅ Multi-horizon data generation complete!')
+        logger.info('\n✅ Multi-horizon data generation complete!')
 
 
 if __name__ == '__main__':

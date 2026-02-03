@@ -5,14 +5,14 @@ This module defines the common interfaces and data structures that all
 valuation models must implement for consistency and interoperability.
 """
 
+import logging
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Any, Union
 from datetime import datetime
-import logging
+from typing import Any, Dict, List, Optional
 
-from ..exceptions import ModelNotSuitableError, InsufficientDataError, ValuationError
-from .model_requirements import ModelDataRequirements, FieldRequirement
+from ..exceptions import InsufficientDataError, ModelNotSuitableError, ValuationError
+from .model_requirements import FieldRequirement, ModelDataRequirements
 
 logger = logging.getLogger(__name__)
 
@@ -31,16 +31,16 @@ class ValuationResult:
     current_price: Optional[float] = None
     margin_of_safety: Optional[float] = None
     enterprise_value: Optional[float] = None
-    
+
     # Model-specific data
     inputs: Dict[str, Any] = field(default_factory=dict)
     outputs: Dict[str, Any] = field(default_factory=dict)
-    
+
     # Metadata
     calculated_at: datetime = field(default_factory=datetime.now)
     confidence: Optional[str] = None  # 'high', 'medium', 'low'
     warnings: List[str] = field(default_factory=list)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary format for JSON serialization."""
         return {
@@ -57,7 +57,7 @@ class ValuationResult:
             'confidence': self.confidence,
             'warnings': self.warnings,
         }
-    
+
     def is_valid(self) -> bool:
         """Check if the valuation result is valid and complete."""
         return (
@@ -75,7 +75,7 @@ class ValuationModel(ABC):
     This ensures consistent interface across different valuation approaches
     and provides common functionality like error handling and validation.
     """
-    
+
     def __init__(self, name: str):
         """
         Initialize the valuation model.
@@ -87,7 +87,7 @@ class ValuationModel(ABC):
         """
         self.name = name
         self.logger = logging.getLogger(f'{__name__}.{name}')
-    
+
     @abstractmethod
     def is_suitable(self, ticker: str, data: Dict[str, Any]) -> bool:
         """
@@ -106,7 +106,7 @@ class ValuationModel(ABC):
             True if model is suitable, False otherwise
         """
         pass
-    
+
     @abstractmethod
     def _validate_inputs(self, ticker: str, data: Dict[str, Any]) -> None:
         """
@@ -125,7 +125,7 @@ class ValuationModel(ABC):
             If required data is missing or invalid
         """
         pass
-    
+
     @abstractmethod
     def _calculate_valuation(self, ticker: str, data: Dict[str, Any]) -> ValuationResult:
         """
@@ -144,7 +144,7 @@ class ValuationModel(ABC):
             The valuation result
         """
         pass
-    
+
     def value_company(self, ticker: str, verbose: bool = False) -> ValuationResult:
         """
         Main entry point for company valuation.
@@ -180,28 +180,28 @@ class ValuationModel(ABC):
         try:
             # Fetch company data
             data = self._fetch_data(ticker)
-            
+
             # Check if model is suitable
             if not self.is_suitable(ticker, data):
                 raise ModelNotSuitableError(self.name, ticker, 'Model not suitable for this company')
-            
+
             # Validate inputs
             self._validate_inputs(ticker, data)
-            
+
             # Perform calculation
             result = self._calculate_valuation(ticker, data)
-            
+
             # Log result if verbose
             if verbose:
                 self.logger.info(f'{self.name} valuation completed for {ticker}: ${result.fair_value:.2f}')
-            
+
             return result
-            
+
         except (ModelNotSuitableError, InsufficientDataError):
             raise
         except Exception as e:
             raise ValuationError(f'{self.name} valuation failed for {ticker}: {str(e)}') from e
-    
+
     def _fetch_data(self, ticker: str) -> Dict[str, Any]:
         """
         Fetch required data for the valuation with caching.
@@ -220,39 +220,39 @@ class ValuationModel(ABC):
             Company data dictionary
         """
         from ..caching.cache_decorators import cached_api_call
-        
+
         # Define cached data fetching functions
         @cached_api_call(data_type='stock_info', ttl=24*3600)  # 24 hours
         def fetch_stock_info(ticker: str):
             import yfinance as yf
             stock = yf.Ticker(ticker)
             return stock.info
-        
+
         @cached_api_call(data_type='financials', ttl=6*3600)  # 6 hours
         def fetch_financials(ticker: str):
             import yfinance as yf
             stock = yf.Ticker(ticker)
             return stock.financials
-        
+
         @cached_api_call(data_type='financials', ttl=6*3600)  # 6 hours
         def fetch_balance_sheet(ticker: str):
             import yfinance as yf
             stock = yf.Ticker(ticker)
             return stock.balance_sheet
-        
+
         @cached_api_call(data_type='financials', ttl=6*3600)  # 6 hours
         def fetch_cashflow(ticker: str):
             import yfinance as yf
             stock = yf.Ticker(ticker)
             return stock.cashflow
-        
+
         try:
             # Fetch all data with caching
             info = fetch_stock_info(ticker)
             financials = fetch_financials(ticker)
             balance_sheet = fetch_balance_sheet(ticker)
             cashflow = fetch_cashflow(ticker)
-            
+
             return {
                 'info': info,
                 'financials': financials,
@@ -260,14 +260,14 @@ class ValuationModel(ABC):
                 'cashflow': cashflow,
                 'ticker': ticker,
             }
-            
+
         except Exception as e:
             raise InsufficientDataError(ticker, ['data_fetch_failed']) from e
-    
+
     def _safe_get(self, data: Dict, key: str, default: Any = None) -> Any:
         """Safely get value from data dictionary with fallback."""
         return data.get(key, default)
-    
+
     def _safe_float(self, value: Any, default: float = 0.0) -> float:
         """Safely convert value to float."""
         try:
@@ -276,7 +276,7 @@ class ValuationModel(ABC):
             return float(value)
         except (ValueError, TypeError):
             return default
-    
+
     def _get_most_recent_value(self, series, default=None):
         """Get the most recent non-null value from a pandas series."""
         if series is None or series.empty:
@@ -288,7 +288,7 @@ class ValuationModel(ABC):
             return default
 
         return valid_values.iloc[0]
-    
+
     def get_required_fields(self) -> FieldRequirement:
         """
         Get the data field requirements for this model.
@@ -304,7 +304,7 @@ class ValuationModel(ABC):
             If this model is not documented in ModelDataRequirements
         """
         return ModelDataRequirements.get_requirements(self.name)
-    
+
     def validate_data_completeness(self, data: Dict[str, Any]) -> tuple[bool, str]:
         """
         Validate if the provided data meets this model's requirements.
@@ -327,7 +327,7 @@ class ValuationModel(ABC):
             return requirements.validate_data(data)
         except ValueError as e:
             return False, f"Model {self.name} not found in requirements registry: {e}"
-    
+
     @classmethod
     def get_minimal_mock_data(cls, model_name: str) -> Dict[str, Any]:
         """

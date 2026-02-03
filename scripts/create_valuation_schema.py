@@ -11,7 +11,6 @@ This script creates three tables:
 import sqlite3
 import sys
 from pathlib import Path
-from datetime import datetime
 
 # Database path
 DB_PATH = Path(__file__).parent.parent / 'neural_network' / 'training' / 'stock_data.db'
@@ -159,7 +158,7 @@ def create_schema(db_path: Path):
 
     print('\n✅ Schema created successfully!')
     print(f'   Database: {db_path}')
-    print(f'   Tables: models, valuation_predictions, nn_predictions')
+    print('   Tables: models, valuation_predictions, nn_predictions')
 
 
 def verify_schema(db_path: Path):

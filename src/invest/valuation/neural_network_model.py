@@ -6,22 +6,20 @@ from historical market data to predict company valuations. It uses engineered
 features from fundamental data and can target different time horizons.
 """
 
-from typing import Dict, Any, Optional, List, Tuple
 import logging
 import warnings
 from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
 import numpy as np
 import pandas as pd
-from datetime import datetime, timedelta
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from sklearn.preprocessing import RobustScaler
-from sklearn.model_selection import TimeSeriesSplit
 
+from ..exceptions import InsufficientDataError, ValuationError
 from .base import ValuationModel, ValuationResult
-from ..exceptions import ModelNotSuitableError, InsufficientDataError, ValuationError
 
 # Suppress sklearn warnings
 warnings.filterwarnings('ignore', category=UserWarning)
@@ -36,8 +34,8 @@ class NeuralNetworkArchitecture(nn.Module):
     Features a deep architecture with dropout for regularization
     and batch normalization for stable training.
     """
-    
-    def __init__(self, input_dim: int, hidden_dims: List[int] = None, 
+
+    def __init__(self, input_dim: int, hidden_dims: List[int] = None,
                  dropout_rate: float = 0.3, output_type: str = 'score'):
         """
         Initialize the neural network.
@@ -54,16 +52,16 @@ class NeuralNetworkArchitecture(nn.Module):
             Type of output ('score' for 0-100, 'return' for expected return)
         """
         super().__init__()
-        
+
         if hidden_dims is None:
             hidden_dims = [256, 128, 64, 32]
-        
+
         self.output_type = output_type
-        
+
         # Build the network layers
         layers = []
         prev_dim = input_dim
-        
+
         for hidden_dim in hidden_dims:
             layers.extend([
                 nn.Linear(prev_dim, hidden_dim),
@@ -72,24 +70,24 @@ class NeuralNetworkArchitecture(nn.Module):
                 nn.Dropout(dropout_rate)
             ])
             prev_dim = hidden_dim
-        
+
         # Output layer
         layers.append(nn.Linear(prev_dim, 1))
-        
+
         # Add sigmoid for score output (0-100 range)
         if output_type == 'score':
             layers.append(nn.Sigmoid())
-        
+
         self.network = nn.Sequential(*layers)
-    
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass through the network."""
         output = self.network(x)
-        
+
         # Scale to 0-100 for score output
         if self.output_type == 'score':
             output = output * 100
-        
+
         return output
 
 
@@ -100,13 +98,13 @@ class FeatureEngineer:
     Transforms raw financial data into normalized features suitable
     for neural network training.
     """
-    
+
     def __init__(self):
         """Initialize the feature engineer."""
         self.scaler = RobustScaler()
         self.feature_names = []
         self.is_fitted = False
-    
+
     def extract_features(self, data: Dict[str, Any]) -> Dict[str, float]:
         """
         Extract engineered features from raw financial data.
@@ -122,17 +120,17 @@ class FeatureEngineer:
             Dictionary of engineered features
         """
         features = {}
-        
+
         # Standardize financials to dictionary format
         # This handles variability between offline cache (dict) and live yfinance (DataFrame)
         financials = self._convert_to_dict(data.get('financials'))
-            
+
         # Merge info and financials
         info = {**data.get('info', {}), **financials}
-        
+
         # Valuation Ratios
         features['pe_ratio'] = self._safe_ratio(
-            info.get('currentPrice'), 
+            info.get('currentPrice'),
             info.get('trailingEps')
         )
         features['forward_pe'] = self._safe_ratio(
@@ -153,7 +151,7 @@ class FeatureEngineer:
             info.get('enterpriseValue'),
             info.get('totalRevenue')
         )
-        
+
         # Profitability Metrics
         features['profit_margin'] = info.get('profitMargins', 0.0) or 0.0
         features['operating_margin'] = info.get('operatingMargins', 0.0) or 0.0
@@ -161,14 +159,14 @@ class FeatureEngineer:
         features['roa'] = info.get('returnOnAssets', 0.0) or 0.0
         # features['roic'] = self._calculate_roic(info)  # REMOVED: 100% zeros in cache
         features['gross_margin'] = info.get('grossMargins', 0.0) or 0.0
-        
+
         # Growth Metrics
         features['revenue_growth'] = info.get('revenueGrowth', 0.0) or 0.0
         features['earnings_growth'] = info.get('earningsGrowth', 0.0) or 0.0
         # features['revenue_growth_3y'] = self._safe_float(
         #     info.get('revenueQuarterlyGrowth', 0.0)
         # )  # REMOVED: 100% zeros in cache
-        
+
         # Financial Health
         features['current_ratio'] = info.get('currentRatio', 0.0) or 0.0
         features['quick_ratio'] = info.get('quickRatio', 0.0) or 0.0
@@ -178,14 +176,14 @@ class FeatureEngineer:
             info.get('freeCashflow'),
             info.get('marketCap')
         )
-        
+
         # Market Metrics
         features['beta'] = info.get('beta', 1.0) or 1.0
         features['market_cap_log'] = np.log(max(info.get('marketCap') or 1e6, 1))
         features['avg_volume_log'] = np.log(max(info.get('averageVolume') or 1e3, 1))
         features['dividend_yield'] = info.get('dividendYield', 0.0) or 0.0
         features['payout_ratio'] = info.get('payoutRatio', 0.0) or 0.0
-        
+
         # Momentum Indicators
         features['52w_high_ratio'] = self._safe_ratio(
             info.get('currentPrice'),
@@ -218,7 +216,7 @@ class FeatureEngineer:
         # NEW: Technical indicators
         if history is not None and (hasattr(history, 'empty') and not history.empty or len(history) > 0):
             features.update(self._extract_technical_indicators(history))
-        
+
         # Analyst Sentiment (if available)
         features['analyst_count'] = info.get('numberOfAnalystOpinions', 0) or 0
         features['target_mean_ratio'] = self._safe_ratio(
@@ -228,7 +226,7 @@ class FeatureEngineer:
         features['recommendation_score'] = self._encode_recommendation(
             info.get('recommendationKey', 'none')
         )
-        
+
         # Sector encoding (simplified - could use one-hot encoding)
         features['sector_code'] = self._encode_sector(info.get('sector', 'Unknown'))
         features['industry_code'] = hash(info.get('industry', 'Unknown')) % 100
@@ -242,7 +240,7 @@ class FeatureEngineer:
             features['gold_price'] = macro.get('gold_price', 1800.0) / 2000.0  # Normalize gold price
 
         return features
-    
+
     def _convert_to_dict(self, data: Any) -> Dict[str, Any]:
         """
         Convert input data (Dict or DataFrame) to a dictionary predictably.
@@ -253,10 +251,10 @@ class FeatureEngineer:
         """
         if data is None:
             return {}
-            
+
         if isinstance(data, dict):
             return data
-            
+
         # Handle DataFrame without triggering ambiguity error
         # Check for DataFrame-like attributes
         if hasattr(data, 'to_dict') and hasattr(data, 'iloc'):
@@ -267,31 +265,31 @@ class FeatureEngineer:
                 return data.iloc[:, 0].to_dict()
             except Exception:
                 return {}
-                
+
         return {}
 
-    def _safe_ratio(self, numerator: Any, denominator: Any, 
+    def _safe_ratio(self, numerator: Any, denominator: Any,
                    default: float = 0.0) -> float:
         """Calculate ratio safely handling None and zero values."""
         try:
             num = float(numerator) if numerator is not None else 0.0
             den = float(denominator) if denominator is not None else 0.0
-            
+
             if den == 0:
                 return default
-            
+
             ratio = num / den
-            
+
             # Cap extreme ratios
             if ratio > 100:
                 return 100.0
             elif ratio < -100:
                 return -100.0
-            
+
             return ratio
         except (TypeError, ValueError):
             return default
-    
+
     def _safe_float(self, value: Any, default: float = 0.0) -> float:
         """Safely convert value to float."""
         try:
@@ -300,7 +298,7 @@ class FeatureEngineer:
             return float(value)
         except (TypeError, ValueError):
             return default
-    
+
     def _calculate_roic(self, info: Dict[str, Any]) -> float:
         """Calculate Return on Invested Capital."""
         ebit = info.get('ebit', 0)
@@ -308,28 +306,28 @@ class FeatureEngineer:
         total_assets = info.get('totalAssets', 0)
         current_liab = info.get('totalCurrentLiabilities', 0)
         cash = info.get('totalCash', 0)
-        
+
         if not ebit or not total_assets:
             return 0.0
-        
+
         nopat = ebit * (1 - tax_rate)
         invested_capital = total_assets - current_liab - cash
-        
+
         if invested_capital <= 0:
             return 0.0
-        
+
         return (nopat / invested_capital) * 100
-    
+
     def _calculate_interest_coverage(self, info: Dict[str, Any]) -> float:
         """Calculate interest coverage ratio."""
         ebit = info.get('ebit', 0)
         interest_expense = info.get('interestExpense', 0)
-        
+
         if not interest_expense or interest_expense == 0:
             return 10.0  # High coverage if no interest expense
-        
+
         return min(ebit / abs(interest_expense), 10.0)
-    
+
     def _encode_recommendation(self, rec_key: str) -> float:
         """Encode analyst recommendation to numeric value."""
         encoding = {
@@ -341,7 +339,7 @@ class FeatureEngineer:
             'none': 3.0
         }
         return encoding.get(rec_key.lower().replace('-', '_'), 3.0)
-    
+
     def _encode_sector(self, sector: str) -> float:
         """Simple sector encoding (could be improved with one-hot)."""
         sectors = {
@@ -537,19 +535,19 @@ class FeatureEngineer:
         """
         # Convert to DataFrame for easier handling
         df = pd.DataFrame(features_list)
-        
+
         # Store feature names
         self.feature_names = list(df.columns)
-        
+
         # Replace inf and -inf with NaN, then fill with 0
         df = df.replace([np.inf, -np.inf], np.nan).fillna(0)
-        
+
         # Fit and transform
         scaled_features = self.scaler.fit_transform(df)
         self.is_fitted = True
-        
+
         return scaled_features
-    
+
     def transform(self, features: Dict[str, float]) -> np.ndarray:
         """
         Transform features using fitted scaler.
@@ -566,13 +564,13 @@ class FeatureEngineer:
         """
         if not self.is_fitted:
             raise ValueError('FeatureEngineer must be fitted before transform')
-        
+
         # Ensure consistent feature ordering
         feature_array = np.array([features.get(name, 0.0) for name in self.feature_names])
-        
+
         # Handle inf and nan
         feature_array = np.nan_to_num(feature_array, nan=0.0, posinf=100.0, neginf=-100.0)
-        
+
         # Transform
         return self.scaler.transform(feature_array.reshape(1, -1))
 
@@ -585,7 +583,7 @@ class NeuralNetworkValuationModel(ValuationModel):
     to predict company valuations. It incorporates extensive feature engineering
     and can target different time horizons.
     """
-    
+
     def __init__(self, time_horizon: str = '1year', model_path: Optional[Path] = None):
         """
         Initialize the neural network valuation model.
@@ -598,9 +596,9 @@ class NeuralNetworkValuationModel(ValuationModel):
             Path to pre-trained model weights
         """
         super().__init__('neural_network')
-        
+
         self.time_horizon = time_horizon
-        
+
         # Resolve default model path if not provided
         if model_path is None:
             # Try to find model in standard locations
@@ -608,7 +606,7 @@ class NeuralNetworkValuationModel(ValuationModel):
             # Parent x4 is project root
             project_root = Path(__file__).parent.parent.parent.parent
             default_model_dir = project_root / 'neural_network' / 'models'
-            
+
             # Map horizon to filename
             horizon_map = {
                 '1month': 'trained_nn_1month.pt',
@@ -620,40 +618,40 @@ class NeuralNetworkValuationModel(ValuationModel):
                 '3year': 'trained_nn_2year.pt',  # Fallback
                 '5year': 'trained_nn_2year.pt',  # Fallback
             }
-            
+
             filename = horizon_map.get(time_horizon, 'trained_nn_2year.pt')
             candidate_path = default_model_dir / filename
-            
+
             if candidate_path.exists():
                 model_path = candidate_path
                 self.logger.info(f"Auto-resolved model path: {model_path}")
 
         self.model_path = model_path
-        
+
         # Initialize components
         self.feature_engineer = FeatureEngineer()
         self.model = None
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        
+
         # Load pre-trained model if provided
         if model_path and model_path.exists():
             self.load_model(model_path)
         else:
             # Initialize untrained model (will need training)
             self._initialize_model()
-    
+
     def _initialize_model(self):
         """Initialize an untrained model with default architecture."""
         # Default feature count (will be updated when fitted)
         input_dim = 40  # Approximate number of features
-        
+
         self.model = NeuralNetworkArchitecture(
             input_dim=input_dim,
             hidden_dims=[256, 128, 64, 32],
             dropout_rate=0.3,
             output_type='score'
         ).to(self.device)
-    
+
     def is_suitable(self, ticker: str, data: Dict[str, Any]) -> bool:
         """
         Check if this model is suitable for the given company.
@@ -674,24 +672,24 @@ class NeuralNetworkValuationModel(ValuationModel):
             True if model is suitable
         """
         info = data.get('info', {})
-        
+
         # Check for minimum required data
         required_fields = [
             'currentPrice', 'marketCap', 'totalRevenue',
             'trailingEps', 'enterpriseValue'
         ]
-        
+
         for field in required_fields:
             if not info.get(field):
                 return False
-        
+
         # Check for positive market cap
         market_cap = self._safe_float(info.get('marketCap'))
         if market_cap <= 0:
             return False
-        
+
         return True
-    
+
     def _validate_inputs(self, ticker: str, data: Dict[str, Any]) -> None:
         """
         Validate that required input data is available.
@@ -709,38 +707,38 @@ class NeuralNetworkValuationModel(ValuationModel):
             If required data is missing
         """
         info = data.get('info', {})
-        
+
         # Essential fields for feature engineering
         essential_fields = [
             'currentPrice', 'marketCap', 'enterpriseValue',
             'totalRevenue', 'trailingEps'
         ]
-        
+
         missing_fields = []
         for field in essential_fields:
             if not info.get(field):
                 missing_fields.append(field)
-        
+
         if missing_fields:
             raise InsufficientDataError(ticker, missing_fields)
-        
+
         # Warn about optional but useful fields
         optional_fields = [
             'returnOnEquity', 'debtToEquity', 'freeCashflow',
             'revenueGrowth', 'targetMeanPrice'
         ]
-        
+
         missing_optional = []
         for field in optional_fields:
             if not info.get(field):
                 missing_optional.append(field)
-        
+
         if missing_optional and len(missing_optional) > len(optional_fields) / 2:
             self.logger.warning(
                 f'Missing {len(missing_optional)} optional fields for {ticker}. '
                 f'Prediction accuracy may be reduced.'
             )
-    
+
     def _calculate_valuation(self, ticker: str, data: Dict[str, Any]) -> ValuationResult:
         """
         Perform neural network valuation.
@@ -758,21 +756,21 @@ class NeuralNetworkValuationModel(ValuationModel):
             The valuation result
         """
         info = data.get('info', {})
-        
+
         # Extract features
         features = self.feature_engineer.extract_features(data)
-        
+
         # Check if model is trained
         if not self.feature_engineer.is_fitted:
             raise ValuationError(
                 f"Neural network model not trained/loaded for {ticker}. "
                 "Ensure a valid model weights file (.pt) is available."
             )
-        
+
         # Transform features for model input
         feature_array = self.feature_engineer.transform(features)
         feature_tensor = torch.FloatTensor(feature_array).to(self.device)
-        
+
         # Get model prediction with uncertainty estimation
         self.model.eval()
         with torch.no_grad():
@@ -782,23 +780,23 @@ class NeuralNetworkValuationModel(ValuationModel):
             # Calculate uncertainty based on multiple factors
             uncertainty = self._estimate_uncertainty(features, score)
             confidence = self._score_to_confidence(uncertainty)
-        
+
         # Convert score to fair value estimate
         current_price = self._safe_float(info.get('currentPrice'))
-        
+
         # Score 50 = fair value, >50 = undervalued, <50 = overvalued
         # Each point roughly represents 2% deviation from fair value
         # Explicitly cast score to float to avoid numpy types leaking into results
         score_val = float(score)
         fair_value_multiplier = 1 + (score_val - 50) * 0.02
         fair_value = float(current_price * fair_value_multiplier)
-        
+
         # Calculate margin of safety
         if current_price and current_price != 0:
             margin_of_safety = float(((fair_value - current_price) / current_price) * 100)
         else:
             margin_of_safety = 0.0
-        
+
         return ValuationResult(
             ticker=ticker,
             model=self.name,
@@ -820,7 +818,7 @@ class NeuralNetworkValuationModel(ValuationModel):
             warnings=self._generate_warnings(features, score)
         )
 
-    
+
     def _estimate_uncertainty(self, features: Dict[str, float], score: float) -> float:
         '''
         Estimate prediction uncertainty based on multiple factors.
@@ -889,7 +887,7 @@ class NeuralNetworkValuationModel(ValuationModel):
             return 'medium'
         else:
             return 'low'
-    
+
     def _get_top_features(self, features: Dict[str, float], n: int = 5) -> Dict[str, float]:
         """Get the top n most influential features."""
         # For now, return key valuation metrics
@@ -898,31 +896,31 @@ class NeuralNetworkValuationModel(ValuationModel):
             'pe_ratio', 'peg_ratio', 'roe', 'profit_margin',
             'debt_to_equity', 'revenue_growth', '52w_high_ratio'
         ]
-        
+
         return {k: features.get(k, 0) for k in key_features[:n]}
-    
+
     def _generate_warnings(self, features: Dict[str, float], score: float) -> List[str]:
         """Generate warnings based on feature values and score."""
         warnings = []
-        
+
         # Check for extreme values
         if features.get('pe_ratio', 0) > 50:
             warnings.append('Very high P/E ratio - possible overvaluation')
-        
+
         if features.get('debt_to_equity', 0) > 3:
             warnings.append('High debt levels - increased financial risk')
-        
+
         if features.get('profit_margin', 0) < 0:
             warnings.append('Negative profit margins')
-        
+
         # Score-based warnings
         if score > 80:
             warnings.append('Strong buy signal - verify with fundamental analysis')
         elif score < 20:
             warnings.append('Strong sell signal - verify with fundamental analysis')
-        
+
         return warnings
-    
+
     def train_model(self, training_data: List[Tuple[str, Dict[str, Any], float]],
                    validation_split: float = 0.2, epochs: int = 100) -> Dict[str, float]:
         """
@@ -944,35 +942,35 @@ class NeuralNetworkValuationModel(ValuationModel):
         """
         if not training_data:
             raise ValueError('No training data provided')
-        
+
         self.logger.info(f'Training model on {len(training_data)} samples')
-        
+
         # Extract features and targets
         features_list = []
         targets = []
-        
+
         for ticker, data, target in training_data:
             try:
                 features = self.feature_engineer.extract_features(data)
                 features_list.append(features)
-                
+
                 # Convert return to score (0-100)
                 # -50% return = 0, 0% = 50, +50% = 100
                 score = 50 + (target * 100)
                 score = max(0, min(100, score))
                 targets.append(score)
-                
+
             except Exception as e:
                 self.logger.warning(f'Failed to extract features for {ticker}: {e}')
                 continue
-        
+
         if len(features_list) < 10:
             raise ValueError('Insufficient valid training samples')
-        
+
         # Fit scaler and transform features
         X = self.feature_engineer.fit_transform(features_list)
         y = np.array(targets)
-        
+
         # Update model input dimension
         input_dim = X.shape[1]
         self.model = NeuralNetworkArchitecture(
@@ -981,22 +979,22 @@ class NeuralNetworkValuationModel(ValuationModel):
             dropout_rate=0.3,
             output_type='score'
         ).to(self.device)
-        
+
         # Prepare data for PyTorch
         X_tensor = torch.FloatTensor(X).to(self.device)
         y_tensor = torch.FloatTensor(y.reshape(-1, 1)).to(self.device)
-        
+
         # Train/validation split
         split_idx = int(len(X) * (1 - validation_split))
         X_train, X_val = X_tensor[:split_idx], X_tensor[split_idx:]
         y_train, y_val = y_tensor[:split_idx], y_tensor[split_idx:]
-        
+
         # Training setup
         optimizer = optim.Adam(self.model.parameters(), lr=0.001)
         criterion = nn.MSELoss()
 
         # Create DataLoader for mini-batch training
-        from torch.utils.data import TensorDataset, DataLoader
+        from torch.utils.data import DataLoader, TensorDataset
 
         batch_size = 32  # Standard batch size for neural networks
         train_dataset = TensorDataset(X_train, y_train)
@@ -1039,16 +1037,16 @@ class NeuralNetworkValuationModel(ValuationModel):
                     f'Epoch {epoch + 1}/{epochs} - '
                     f'Train Loss: {avg_train_loss:.4f}, Val Loss: {val_loss.item():.4f}'
                 )
-        
+
         # Calculate final metrics
         self.model.eval()
         with torch.no_grad():
             final_train_pred = self.model(X_train).cpu().numpy()
             final_val_pred = self.model(X_val).cpu().numpy()
-        
+
         train_mae = np.mean(np.abs(final_train_pred.flatten() - y_train.cpu().numpy().flatten()))
         val_mae = np.mean(np.abs(final_val_pred.flatten() - y_val.cpu().numpy().flatten()))
-        
+
         metrics = {
             'final_train_loss': train_losses[-1],
             'final_val_loss': val_losses[-1],
@@ -1056,18 +1054,18 @@ class NeuralNetworkValuationModel(ValuationModel):
             'val_mae': val_mae,
             'epochs_trained': epochs
         }
-        
+
         self.logger.info(f'Training completed. Validation MAE: {val_mae:.2f}')
-        
+
         return metrics
-    
+
     def save_model(self, path: Path) -> None:
         """Save the trained model to disk."""
         if not self.model:
             raise ValueError('No model to save')
-        
+
         path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         checkpoint = {
             'model_state': self.model.state_dict(),
             'feature_names': self.feature_engineer.feature_names,
@@ -1077,23 +1075,23 @@ class NeuralNetworkValuationModel(ValuationModel):
             },
             'time_horizon': self.time_horizon
         }
-        
+
         torch.save(checkpoint, path)
         self.logger.info(f'Model saved to {path}')
-    
+
     def load_model(self, path: Path) -> None:
         """Load a trained model from disk."""
         if not path.exists():
             raise FileNotFoundError(f'Model file not found: {path}')
-        
+
         checkpoint = torch.load(path, map_location=self.device)
-        
+
         # Restore feature engineer
         self.feature_engineer.feature_names = checkpoint['feature_names']
         self.feature_engineer.scaler.center_ = np.array(checkpoint['scaler_params']['center_'])
         self.feature_engineer.scaler.scale_ = np.array(checkpoint['scaler_params']['scale_'])
         self.feature_engineer.is_fitted = True
-        
+
         # Restore model
         input_dim = len(self.feature_engineer.feature_names)
         self.model = NeuralNetworkArchitecture(
@@ -1102,8 +1100,8 @@ class NeuralNetworkValuationModel(ValuationModel):
             dropout_rate=0.3,
             output_type='score'
         ).to(self.device)
-        
+
         self.model.load_state_dict(checkpoint['model_state'])
         self.time_horizon = checkpoint.get('time_horizon', '1year')
-        
+
         self.logger.info(f'Model loaded from {path}')

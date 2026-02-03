@@ -4,10 +4,10 @@ Compare model performance with and without macro features.
 """
 
 import json
-import sys
-import numpy as np
-from pathlib import Path
 import logging
+from pathlib import Path
+
+import numpy as np
 
 # Setup logging
 logging.basicConfig(
@@ -108,7 +108,7 @@ def main():
     # Current cache (with macro)
     if Path('training_data_cache_multi_horizon.json').exists():
         current_cache = analyze_cache('training_data_cache_multi_horizon.json')
-        logger.info(f'Current cache:')
+        logger.info('Current cache:')
         logger.info(f'  Samples: {current_cache["sample_count"]}')
         logger.info(f'  Has macro: {current_cache["has_macro"]}')
         if current_cache['has_macro']:

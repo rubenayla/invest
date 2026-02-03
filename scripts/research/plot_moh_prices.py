@@ -1,5 +1,5 @@
-import yfinance as yf
 import matplotlib.pyplot as plt
+import yfinance as yf
 
 # Fetch MOH data from 2005 to 2015
 ticker = yf.Ticker('MOH')
@@ -18,7 +18,7 @@ plt.tight_layout()
 plt.show()
 
 # Print some summary statistics
-print(f'\nMOH Price Summary (2005-2015):')
+print('\nMOH Price Summary (2005-2015):')
 print(f'Starting Price (2005): ${hist["Close"].iloc[0]:.2f}')
 print(f'Ending Price (2015): ${hist["Close"].iloc[-1]:.2f}')
 print(f'Highest Price: ${hist["Close"].max():.2f}')

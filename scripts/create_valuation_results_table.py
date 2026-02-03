@@ -13,7 +13,6 @@ Database: data/stock_data.db
 """
 
 import sqlite3
-import sys
 from pathlib import Path
 
 # Add project root to path

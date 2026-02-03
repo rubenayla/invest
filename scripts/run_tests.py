@@ -6,8 +6,8 @@ This script runs the complete test suite and provides detailed output
 about test results, coverage, and performance.
 """
 
-import sys
 import subprocess
+import sys
 import time
 from pathlib import Path
 
@@ -18,18 +18,18 @@ def run_command(cmd, description):
     print(f"Running: {description}")
     print(f"Command: {' '.join(cmd)}")
     print('='*60)
-    
+
     start_time = time.time()
     try:
         result = subprocess.run(cmd, check=True, capture_output=True, text=True)
         duration = time.time() - start_time
-        
+
         print(f"✅ SUCCESS ({duration:.2f}s): {description}")
         if result.stdout.strip():
             print("Output:")
             print(result.stdout)
         return True
-        
+
     except subprocess.CalledProcessError as e:
         duration = time.time() - start_time
         print(f"❌ FAILED ({duration:.2f}s): {description}")
@@ -47,17 +47,17 @@ def main():
     """Run the complete test suite."""
     print("🧪 Investment Analysis Framework - Test Suite")
     print("=" * 60)
-    
+
     # Change to project root directory
     project_root = Path(__file__).parent.parent
     original_dir = Path.cwd()
-    
+
     try:
         os.chdir(project_root)
-        
+
         total_tests = 0
         passed_tests = 0
-        
+
         # Test categories to run
         test_categories = [
             {
@@ -111,20 +111,20 @@ def main():
                 'required': False
             }
         ]
-        
+
         # Run all test categories
         for test_category in test_categories:
             total_tests += 1
-            
+
             success = run_command(test_category['cmd'], test_category['name'])
-            
+
             if success:
                 passed_tests += 1
             elif test_category['required']:
                 print(f"\n❌ Required test failed: {test_category['name']}")
                 print("Stopping test execution due to critical failure.")
                 break
-        
+
         # Print summary
         print(f"\n{'='*60}")
         print("🏁 TEST SUMMARY")
@@ -133,7 +133,7 @@ def main():
         print(f"Passed: {passed_tests}")
         print(f"Failed: {total_tests - passed_tests}")
         print(f"Success rate: {(passed_tests/total_tests)*100:.1f}%")
-        
+
         if passed_tests == total_tests:
             print("\n🎉 ALL TESTS PASSED! 🎉")
             print("The investment analysis framework is working correctly.")
@@ -142,15 +142,15 @@ def main():
             print(f"\n❌ {total_tests - passed_tests} TEST(S) FAILED")
             print("Please fix the failing tests before proceeding.")
             return 1
-            
+
     except KeyboardInterrupt:
         print("\n\n⚠️  Test execution interrupted by user")
         return 1
-        
+
     except Exception as e:
         print(f"\n\n💥 Unexpected error during test execution: {e}")
         return 1
-        
+
     finally:
         os.chdir(original_dir)
 

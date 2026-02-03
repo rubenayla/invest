@@ -4,8 +4,9 @@ Tests for GBM models.
 These tests require trained models and will be skipped if models don't exist.
 """
 
-import pytest
 from pathlib import Path
+
+import pytest
 
 
 @pytest.mark.requires_models

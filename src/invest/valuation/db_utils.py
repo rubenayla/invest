@@ -5,11 +5,11 @@ This module stores predictions in the valuation_results table, which is the
 database source of truth for all model outputs.
 """
 
-import sqlite3
 import json
-from pathlib import Path
+import sqlite3
 from datetime import datetime
-from typing import Optional, Dict, Any
+from pathlib import Path
+from typing import Any, Dict, Optional
 
 # Default database path
 DEFAULT_DB_PATH = Path(__file__).parent.parent.parent.parent / 'data' / 'stock_data.db'

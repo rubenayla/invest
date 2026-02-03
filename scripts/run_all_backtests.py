@@ -3,12 +3,13 @@
 Run all backtest strategies and generate comparison report.
 """
 
+import logging
 import subprocess
 import sys
-from pathlib import Path
-import pandas as pd
-import logging
 from datetime import datetime
+from pathlib import Path
+
+import pandas as pd
 
 logging.basicConfig(
     level=logging.INFO,
@@ -226,7 +227,7 @@ def main():
         result = run_backtest(config['config'])
 
         if result['status'] == 'failed':
-            logger.error(f'Backtest failed. Check logs above.')
+            logger.error('Backtest failed. Check logs above.')
             # Continue with other backtests even if one fails
             continue
 

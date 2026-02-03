@@ -21,9 +21,14 @@ Best Used For: Large caps, utilities, mature industrials
 """
 
 import yfinance as yf
+
 from .config.constants import VALUATION_DEFAULTS
-from .config.logging_config import get_logger, log_data_fetch, log_valuation_result, log_error_with_context
-from .error_handling import handle_valuation_error, create_error_context
+from .config.logging_config import (
+    get_logger,
+    log_data_fetch,
+    log_error_with_context,
+)
+from .error_handling import create_error_context, handle_valuation_error
 from .exceptions import InsufficientDataError, ModelNotSuitableError
 
 logger = get_logger(__name__)
@@ -109,10 +114,10 @@ def calculate_dcf(
     """
     # Create error context for comprehensive error handling
     error_context = create_error_context(ticker=ticker, model="DCF", function_name="calculate_dcf")
-    
+
     try:
         stock = yf.Ticker(ticker)
-        
+
         try:
             info = stock.info
             log_data_fetch(logger, ticker, "market_data", True)
@@ -182,14 +187,14 @@ def calculate_dcf(
         # Check for inappropriate DCF application (biotech/pharma with negative FCF)
         sector = info.get('sector', '').lower()
         industry = info.get('industry', '').lower()
-        
+
         is_biotech_pharma = (
-            'biotechnology' in industry or 
+            'biotechnology' in industry or
             'pharmaceutical' in industry or
             'biotech' in industry or
             ('healthcare' in sector and any(keyword in industry for keyword in ['drug', 'medicine', 'therapeutic']))
         )
-        
+
         if is_biotech_pharma and base_fcf < 0:
             # DCF is inappropriate for pre-profitability biotech companies
             raise ModelNotSuitableError(
@@ -197,7 +202,7 @@ def calculate_dcf(
                 ticker,
                 f"Biotech/pharma company with negative FCF (${base_fcf:,.0f}). Use pipeline-based valuation methods instead."
             )
-        
+
         if base_fcf < 0 and abs(base_fcf) > info.get('totalCash', 0):
             # Very negative FCF that exceeds cash reserves suggests unsustainable model
             years_of_cash = info.get('totalCash', 0) / abs(base_fcf) if base_fcf < 0 else float('inf')
@@ -280,11 +285,11 @@ def calculate_dcf(
                 "debt": debt,
             },
         }
-        
+
     except Exception as e:
         # Handle any unexpected errors with comprehensive error context
         error_info = handle_valuation_error(e, ticker, "DCF")
-        
+
         # Log the error with full context
         log_error_with_context(
             logger,
@@ -296,6 +301,6 @@ def calculate_dcf(
                 "user_message": error_info.user_message
             }
         )
-        
+
         # Re-raise the original exception to maintain existing behavior
         raise

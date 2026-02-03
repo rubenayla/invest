@@ -17,7 +17,7 @@ import argparse
 import logging
 import sqlite3
 import sys
-from datetime import datetime, timedelta
+from datetime import timedelta
 from pathlib import Path
 from typing import Optional
 
