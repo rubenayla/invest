@@ -20,13 +20,6 @@ dependencies = [
     "lightgbm>=4.0.0",
     "catboost>=1.2.0",
     "scipy>=1.11.0",
-]
-
-[project.optional-dependencies]
-cpu = [
-    "torch>=2.0.0",
-]
-gpu = [
     "torch>=2.0.0",
 ]
 
@@ -116,3 +109,11 @@ exclude_lines = [
 
 [tool.coverage.html]
 directory = "htmlcov"
+
+[[tool.uv.index]]
+url = "https://download.pytorch.org/whl/cpu"
+name = "pytorch-cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
