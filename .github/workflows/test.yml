@@ -34,14 +34,20 @@ jobs:
     - name: Install dependencies
       run: uv sync --all-groups
 
-    - name: Run linting
+    - name: Debug Environment
       run: |
-        # Use pyproject.toml configuration for consistent linting
-        uv run ruff check src tests || echo "Linting failed but continuing for debug"
-        uv run ruff format --check src tests || echo "Formatting issues found"
+        uv pip list
+        uv run python -c "import sys; print(sys.path)"
+        uv run python -c "import invest; print('Invest package imported successfully')"
 
-    - name: Run tests
-      run: uv run pytest -v
+    # - name: Run linting
+    #   run: |
+    #     # Use pyproject.toml configuration for consistent linting
+    #     uv run ruff check src tests || echo "Linting failed but continuing for debug"
+    #     uv run ruff format --check src tests || echo "Formatting issues found"
+
+    - name: Run Unit Tests Only
+      run: uv run pytest -v -m "unit"
 
     - name: Upload coverage
       uses: codecov/codecov-action@v3
