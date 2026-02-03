@@ -124,10 +124,21 @@ class AnalysisPipeline:
             hasattr(universe_config, "pre_screening_universe")
             and universe_config.pre_screening_universe == "sp500"
         ):
-            # S&P 500 sample for analysis
-            tickers = ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "TSLA", "META", "BRK-B", 
-                      "UNH", "JNJ", "JPM", "V", "PG", "HD", "MA", "PFE", "AVGO", "CVX",
-                      "ABBV", "KO", "LLY", "BAC", "COST", "PEP", "TMO", "WMT", "DIS"]
+            # S&P 500 (Full Real List)
+            logger.info("Fetching real S&P 500 constituent list...")
+            from ..data.index_manager import IndexManager
+            im = IndexManager()
+            tickers = im.get_index_tickers('sp500')
+
+        elif (
+            hasattr(universe_config, "pre_screening_universe")
+            and universe_config.pre_screening_universe == "global"
+        ):
+            # Global (USA, Argentina, India, Japan)
+            logger.info("Fetching global constituent list (US, Arg, India, Japan)...")
+            from ..data.index_manager import IndexManager
+            im = IndexManager()
+            tickers = im.get_all_tickers()
         elif hasattr(universe_config, "market"):
             # International market support with predefined lists
             market = universe_config.market
