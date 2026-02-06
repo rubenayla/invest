@@ -93,6 +93,7 @@ def main() -> int:
     parser.add_argument('--skip-nn', action='store_true', help='Skip NN predictions')
     parser.add_argument('--skip-classic', action='store_true', help='Skip classic valuations')
     parser.add_argument('--skip-dashboard', action='store_true', help='Skip dashboard generation')
+    parser.add_argument('--skip-scanner', action='store_true', help='Skip opportunity scanner')
     args = parser.parse_args()
 
     if not args.skip_fetch:
@@ -125,6 +126,12 @@ def main() -> int:
         run_cmd(
             ['uv', 'run', 'python', 'scripts/dashboard.py'],
             'Dashboard generation',
+        )
+
+    if not args.skip_scanner:
+        run_cmd(
+            ['uv', 'run', 'python', 'scripts/run_opportunity_scan.py'],
+            'Opportunity scanner',
         )
 
     return 0
