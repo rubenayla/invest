@@ -1,19 +1,19 @@
 # Portfolio Snapshot (Feb 7, 2026)
-**Source:** IBKR & Revolut Screenshots
-**Total Estimated Value:** ~$50,000
+**Source:** IBKR & Revolut Screenshots (Corrected)
+**Total Estimated Value:** ~$46,000
 
 ## 📊 Combined Holdings
 
-### 1. The "Conviction" Pillars (>10% Allocation)
+### 1. The "Conviction" Pillars (>15% Allocation)
 | Ticker | Company | Approx Value | Source | Notes |
 | :--- | :--- | :--- | :--- | :--- |
-| **SQM** | Soc. Química y Minera | **~$8,735** | Revolut | Lithium play. +61% unrealized gain. |
-| **8002.T** | Marubeni Corp | **~$8,000** | IBKR | Japan trading house (Buffett play). +159% gain! |
-| **MOH** | Molina Healthcare | **~$7,280** | IBKR + Revolut | **Includes proposed +$2,250 buy.** Distressed value. |
+| **SQM** | Soc. Química y Minera | **~$8,735** | Revolut | Lithium play. +61% unrealized gain. **Largest Holding.** |
+| **MOH** | Molina Healthcare | **~$7,280** | IBKR + Revolut | **Includes proposed +$2,250 buy.** Distressed value. (#2 Holding). |
 
 ### 2. Core Positions (5-10% Allocation)
 | Ticker | Company | Approx Value | Source | Notes |
 | :--- | :--- | :--- | :--- | :--- |
+| **8002.T** | Marubeni Corp | **~$4,200** | IBKR | Japan trading house. (Corrected valuation). |
 | **TSLA** | Tesla | **~$3,345** | Revolut | AI/Robotaxi option. +40% gain. |
 | **ACGL** | Arch Capital | **~$2,420** | IBKR | Insurance. +19% gain. |
 | **GOOG** | Alphabet | **~$2,340** | Revolut | Tech monopoly. +11% gain. |
@@ -35,17 +35,14 @@
 ## ⚠️ Portfolio Health Check
 
 ### 1. Concentration Risk
-*   **Top 3 Holdings (SQM, 8002, MOH):** ~48% of total portfolio.
-*   **Sector Exposure:** Heavy on **Basic Materials/Commodities** (SQM, 8002, PBR, CVX, STLD). You are effectively "Long Inflation" and "Long Real Assets."
+*   **Top 2 Holdings (SQM, MOH):** ~35% of total portfolio.
+*   **SQM (Lithium)** is your biggest risk factor now. If EV demand crashes, SQM hurts more than MOH.
+*   **MOH (Healthcare)** is your second pillar. This provides good sector diversification (Materials vs. Healthcare).
 
 ### 2. Geographic Exposure
-*   **Japan:** Massive exposure via Marubeni (8002) + Sony. This is excellent (Buffett approved).
-*   **Emerging Markets:** Heavy Brazil (PBR) & Chile (SQM). High political risk but high yield.
-
-### 3. Action Items (Post-Rebalance)
-*   **MOH:** Monitor the "Concentration Risk" closely. If it drops 20%, it hurts the whole portfolio.
-*   **Tech Deficit:** Before adding SONY/GOOG, you were very light on Tech. The new buys balance this well.
+*   **Japan:** Exposure is lower than previously estimated (~$6k total via 8002 + SONY). Still a healthy weight (~13%).
+*   **Commodities:** Still the dominant theme (SQM, 8002, PBR, CVX, STLD).
 
 ## 📝 Change Log
-*   **2026-02-07:** Added manual snapshot derived from user screenshots.
-*   **2026-02-07:** Factored in new $5k deployment (MOH, SONY, SYF, BTC).
+*   **2026-02-07:** Corrected Marubeni (8002.T) valuation error (~$8k -> ~$4.2k).
+*   **2026-02-07:** Re-ranked holdings: SQM is #1, MOH is #2.
