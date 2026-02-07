@@ -1,5 +1,10 @@
 # Claude Memory and Instructions
 
+## 📚 KEY FILES (READ FIRST)
+Before performing tasks, consult:
+1. **`.agents/error_log.md`** - History of failures and prevention.
+2. **`.agents/definition_of_done.md`** - Checklist for completion.
+
 ## 🚨 THE IRON RULE: VERIFY TRENDS BEFORE CLAIMING
 
 **Before saying "declining" or "down X%", check yfinance 3-5 year trend:**
