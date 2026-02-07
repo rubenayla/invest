@@ -5,6 +5,29 @@ Before performing tasks, consult:
 1. **`.agents/error_log.md`** - History of failures and prevention.
 2. **`.agents/definition_of_done.md`** - Checklist for completion.
 
+## 🚨 INVESTMENT ANALYSIS PROTOCOL (STRICT MANDATE)
+
+**When analyzing a stock for investment, you MUST follow this "Triangulation" workflow:**
+
+1.  **CHECK EXISTING MODELS FIRST:**
+    *   Query the `valuation_results` table in `data/stock_data.db`.
+    *   Look for **ALL** model types: `dcf`, `gbm_opportunistic_1y`, `multi_horizon_nn`.
+    *   *Do not just run a fresh DCF script and ignore the rest.*
+
+2.  **THE "COMPLAINT" RULE:**
+    *   **Compare the models.** If DCF says "Overvalued" but GBM says "Rocket Ship" (e.g., Marubeni), you **MUST** point this out.
+    *   **Critique the models.** If a model looks broken (e.g., negative value for a profitable company), **complain to the user**. Say: *"The DCF model is failing here because..."*
+    *   **Value Divergence:** Use the divergence as a signal. High divergence = High Volatility/Momentum play. Low divergence = High Conviction Value play.
+
+3.  **FRESHNESS CHECK:**
+    *   Before citing a number, check the `timestamp` in the database or the `Data Date` in the script.
+    *   If data is >30 days old for a volatile stock, **refetch it**.
+
+4.  **MACRO CONTEXT:**
+    *   Always check the "Story" (News/Buffett/Sector trends) to explain *why* the numbers might be "wrong" (e.g., "The model hates it, but Buffett loves it").
+
+---
+
 ## 🚨 THE IRON RULE: VERIFY TRENDS BEFORE CLAIMING
 
 **Before saying "declining" or "down X%", check yfinance 3-5 year trend:**
