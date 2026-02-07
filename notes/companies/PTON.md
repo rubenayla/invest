@@ -1,17 +1,43 @@
 # Peloton Interactive Inc. (PTON)
 
 **Sector**: Consumer Cyclical (Fitness Equipment & Subscriptions)
-**Current Price**: $7.26
-**Market Cap**: $3.03B
-**IPO**: September 26, 2019 at $29/share (down 75% from IPO)
-**Position**: None (watchlist only)
+**Current Price**: ~$4.62 (Feb 2026)
+**Market Cap**: Distressed / Turnaround Play
+**Position**: Watchlist / Turnaround Speculation
 
-> **Alert plan**
-> - Speculative nibble only if price washes out to **<$5** with improving subs.
-> - Set alert at **$10** for potential short-term trade if volume spikes.
-> - Thesis invalidated if subs keep shrinking or cash burn reaccelerates (monitor quarterly results).
+## 🚨 Strategic Analysis: Feb 2026 (The "Turnaround" Bet)
 
-## ⚠️ Investment Thesis: AVOID
+**The "Dumb" DCF View:** **Sell / Zero Value**
+- A standard financial model hates this company. It sees negative free cash flow, declining revenue (-3% YoY), and a heavy debt load.
+- If you project current trends, the equity value is zero.
+
+**The "Strategic Reality" (Why it might be a Buy):**
+The investment thesis is entirely dependent on the new CEO's "Cardio Plus Strength" pivot working.
+
+1.  **The New Narrative (CEO Peter Stern, Jan 2025):**
+    - Moving away from just "bikes" to a broader "wellness platform."
+    - **"Cardio Plus Strength":** Attempting to capture the strength training market (larger TAM) and integrate AI coaching.
+    - **Commercial Push:** New unit combining Precor and Peloton for Business to attack hotels/gyms.
+
+2.  **The "Crash" (Why it dropped 20-25% recently):**
+    - Q2 2026 earnings missed expectations.
+    - **Hardware Flop:** The new AI-powered hardware refresh (Cross Training series) had a lukewarm reception. Existing users aren't upgrading.
+    - **Churn:** Price increases caused a 7% drop in paid subscribers.
+
+3.  **The Turnaround Math:**
+    - **Cost Cutting:** Aiming for $100M+ in savings to hit positive EBITDA.
+    - **Leverage:** If they stabilize revenue, the high-margin subscription business (software margins) creates massive operating leverage.
+    - **Binary Outcome:** This is not a "safe" value stock. It is a binary option.
+        - **Scenario A:** Stern fixes the cost structure → Stock is a multi-bagger from $4.
+        - **Scenario B:** Debt and cash burn consume them → Bankruptcy/Restructuring.
+
+**Verdict:**
+- **Avoid** if you want safe compounding.
+- **Speculative Buy** only if you believe in the "Cardio + Strength" strategic pivot and accept the risk of total loss.
+
+---
+
+## ⚠️ Legacy Thesis (Nov 2025): AVOID
 
 **Never been profitable in 13 years of existence.**
 
