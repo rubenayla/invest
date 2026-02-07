@@ -458,6 +458,49 @@ def get_universe_tickers(universe: str) -> List[str]:
         # Initialize the index manager
         index_manager = IndexManager()
 
+        # Curated fallback universes - small lists for specific themes
+        universe_configs = {
+            'japan': [
+                '7203.T', '6098.T', '4063.T', '4502.T', '9984.T', '9432.T', '8316.T',
+                '6758.T', '7267.T', '6861.T', '6954.T', '6920.T', '6752.T', '4543.T'
+            ],
+            'spain': [
+                'SAN.MC', 'BBVA.MC', 'CABK.MC', 'SAB.MC', 'BKT.MC', 'MAP.MC',
+                'IBE.MC', 'ELE.MC', 'ENG.MC', 'RED.MC', 'REE.MC', 'NTGY.MC',
+                'REP.MC', 'TEF.MC', 'ITX.MC', 'ACS.MC', 'FER.MC', 'FCC.MC',
+                'ACX.MC', 'ANA.MC', 'AENA.MC', 'IAG.MC', 'MEL.MC', 'GRF.MC',
+                'IDR.MC', 'COL.MC', 'CLNX.MC', 'ALM.MC', 'AMS.MC', 'SGRE.MC',
+                'VIS.MC', 'MRL.MC', 'ROVI.MC', 'SLR.MC'
+            ],
+            'europe': [
+                # France
+                'MC.PA', 'OR.PA', 'SAN.PA', 'TTE.PA', 'AI.PA', 'SU.PA', 'BNP.PA',
+                'RMS.PA', 'CS.PA', 'DG.PA', 'SAF.PA', 'EL.PA', 'DSY.PA', 'CA.PA',
+                'ORA.PA', 'EN.PA', 'VIE.PA', 'SGO.PA', 'KER.PA', 'STLAM.PA',
+                # Germany
+                'SAP.DE', 'SIE.DE', 'AIR.DE', 'ALV.DE', 'BAS.DE', 'MBG.DE', 'VOW3.DE',
+                'BMW.DE', 'DTE.DE', 'EOAN.DE', 'MUV2.DE', 'ADS.DE', 'DB1.DE', 'IFX.DE',
+                'SHL.DE', 'BNR.DE',
+                # Netherlands
+                'ASML.AS', 'PHIA.AS', 'INGA.AS', 'ABN.AS', 'AD.AS', 'HEIA.AS',
+                # Italy
+                'ENI.MI', 'ISP.MI', 'ENEL.MI', 'G.MI', 'STM.MI',
+                # Spain
+                'SAN.MC', 'BBVA.MC', 'IBE.MC', 'ITX.MC',
+                # Belgium
+                'ABI.BR'
+            ],
+            'growth': [
+                'TSLA', 'SHOP', 'ROKU', 'ZM', 'SNOW', 'PLTR', 'RBLX', 'U', 'DDOG', 'CRWD'
+            ],
+            'tech': [
+                'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'NVDA', 'ORCL', 'CRM', 'ADBE', 'INTC',
+                'AMD', 'QCOM', 'CSCO', 'IBM', 'NOW', 'INTU', 'TXN', 'MU', 'AMAT', 'LRCX'
+            ],
+        }
+
+        source_desc = 'from dynamic index manager'
+
         # Map universe names to index manager methods
         if universe == 'sp500':
             tickers = index_manager.get_index_tickers('sp500')
@@ -468,56 +511,24 @@ def get_universe_tickers(universe: str) -> List[str]:
             # Add more indices as they become available
             tickers = list(dict.fromkeys(tickers))  # Remove duplicates
         elif universe == 'all':
-            # Get all known tickers from the registry
-            tickers = index_manager.get_all_tickers()
+            # Get all known tickers + cached registry + curated lists
+            index_tickers = index_manager.get_all_tickers()
+            cached_tickers = list(index_manager.companies['companies'].keys())
+            curated_tickers = [t for lst in universe_configs.values() for t in lst]
+            tickers = list(dict.fromkeys(index_tickers + cached_tickers + curated_tickers))
+            source_desc = (
+                f"indices={len(index_tickers)}, cached={len(cached_tickers)}, "
+                f"curated={len(curated_tickers)}"
+            )
         elif universe == 'cached':
             # Return all companies in our registry
             tickers = list(index_manager.companies['companies'].keys())
         else:
             # Fallback universes - small curated lists for specific themes
-            universe_configs = {
-                'japan': [
-                    '7203.T', '6098.T', '4063.T', '4502.T', '9984.T', '9432.T', '8316.T',
-                    '6758.T', '7267.T', '6861.T', '6954.T', '6920.T', '6752.T', '4543.T'
-                ],
-                'spain': [
-                    'SAN.MC', 'BBVA.MC', 'CABK.MC', 'SAB.MC', 'BKT.MC', 'MAP.MC',
-                    'IBE.MC', 'ELE.MC', 'ENG.MC', 'RED.MC', 'REE.MC', 'NTGY.MC',
-                    'REP.MC', 'TEF.MC', 'ITX.MC', 'ACS.MC', 'FER.MC', 'FCC.MC',
-                    'ACX.MC', 'ANA.MC', 'AENA.MC', 'IAG.MC', 'MEL.MC', 'GRF.MC',
-                    'IDR.MC', 'COL.MC', 'CLNX.MC', 'ALM.MC', 'AMS.MC', 'SGRE.MC',
-                    'VIS.MC', 'MRL.MC', 'ROVI.MC', 'SLR.MC'
-                ],
-                'europe': [
-                    # France
-                    'MC.PA', 'OR.PA', 'SAN.PA', 'TTE.PA', 'AI.PA', 'SU.PA', 'BNP.PA',
-                    'RMS.PA', 'CS.PA', 'DG.PA', 'SAF.PA', 'EL.PA', 'DSY.PA', 'CA.PA',
-                    'ORA.PA', 'EN.PA', 'VIE.PA', 'SGO.PA', 'KER.PA', 'STLAM.PA',
-                    # Germany
-                    'SAP.DE', 'SIE.DE', 'AIR.DE', 'ALV.DE', 'BAS.DE', 'MBG.DE', 'VOW3.DE',
-                    'BMW.DE', 'DTE.DE', 'EOAN.DE', 'MUV2.DE', 'ADS.DE', 'DB1.DE', 'IFX.DE',
-                    'SHL.DE', 'BNR.DE',
-                    # Netherlands
-                    'ASML.AS', 'PHIA.AS', 'INGA.AS', 'ABN.AS', 'AD.AS', 'HEIA.AS',
-                    # Italy
-                    'ENI.MI', 'ISP.MI', 'ENEL.MI', 'G.MI', 'STM.MI',
-                    # Spain
-                    'SAN.MC', 'BBVA.MC', 'IBE.MC', 'ITX.MC',
-                    # Belgium
-                    'ABI.BR'
-                ],
-                'growth': [
-                    'TSLA', 'SHOP', 'ROKU', 'ZM', 'SNOW', 'PLTR', 'RBLX', 'U', 'DDOG', 'CRWD'
-                ],
-                'tech': [
-                    'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'META', 'NVDA', 'ORCL', 'CRM', 'ADBE', 'INTC',
-                    'AMD', 'QCOM', 'CSCO', 'IBM', 'NOW', 'INTU', 'TXN', 'MU', 'AMAT', 'LRCX'
-                ],
-            }
             tickers = universe_configs.get(universe, [])
 
         # Log the result
-        logger.info(f"Universe '{universe}': {len(tickers)} tickers (from dynamic index manager)")
+        logger.info(f"Universe '{universe}': {len(tickers)} tickers ({source_desc})")
 
         return tickers
 
