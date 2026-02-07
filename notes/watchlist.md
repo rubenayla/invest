@@ -2,6 +2,25 @@
 
 > **See also**: [Investment Theses](theses/README.md) for macro-level commodity/sector bets (copper, etc.)
 
+## Scanner Top Picks (2026-02-01)
+- CF - Scanner top pick (score 80.8)
+- SYF - Scanner top pick (score 78.3)
+- AMP - Scanner top pick (score 74.4)
+- PDD - Scanner top pick (score 74.2)
+- REGN - Scanner top pick (score 74.2)
+- GL - Scanner top pick (score 72.5)
+- CINF - Scanner top pick (score 72.4)
+- TME - Scanner top pick (score 71.6)
+- HIG - Scanner top pick (score 71.4)
+- TROW - Scanner top pick (score 71.4)
+
+## Manual Adds (Feb 2026)
+- BTC-USD (Bitcoin) - Crypto benchmark
+- MOH (Molina Healthcare) - Manual add
+- TSLA (Tesla) - Manual add
+- 6758.T (Sony Group Corp.) - Manual add
+- 4578.T (Otsuka Holdings Co., Ltd.) - Manual add; Clawd favored
+
 - [PTON](companies/PTON.md) (Peloton) - Speculative turnaround, no position
 - SMFG (Sumitomo Mitsui Financial Group) - Improving fundamentals, rate-sensitive
 - [ACGL](companies/ACGL.md) (Arch Capital Group Ltd) - PE 9.0, Revenue +90%, Earnings +100%

@@ -8,6 +8,57 @@ watchlist:
       name: Sumitomo Mitsui Financial Group
       notes: Improving fundamentals; rate-sensitive
 
+  # Scanner top picks (2026-02-01 preview)
+  scanner_top:
+    - ticker: CF
+      name: CF Industries Holdings
+      notes: Scanner top pick (score 80.8)
+    - ticker: SYF
+      name: Synchrony Financial
+      notes: Scanner top pick (score 78.3)
+    - ticker: AMP
+      name: Ameriprise Financial
+      notes: Scanner top pick (score 74.4)
+    - ticker: PDD
+      name: PDD Holdings
+      notes: Scanner top pick (score 74.2)
+    - ticker: REGN
+      name: Regeneron Pharmaceuticals
+      notes: Scanner top pick (score 74.2)
+    - ticker: GL
+      name: Globe Life
+      notes: Scanner top pick (score 72.5)
+    - ticker: CINF
+      name: Cincinnati Financial
+      notes: Scanner top pick (score 72.4)
+    - ticker: TME
+      name: Tencent Music Entertainment
+      notes: Scanner top pick (score 71.6)
+    - ticker: HIG
+      name: Hartford Financial
+      notes: Scanner top pick (score 71.4)
+    - ticker: TROW
+      name: T. Rowe Price Group
+      notes: Scanner top pick (score 71.4)
+
+  # Manual adds / dashboard checks
+  manual:
+    - ticker: BTC-USD
+      name: Bitcoin
+      notes: Manual add; crypto benchmark
+    - ticker: MOH
+      name: Molina Healthcare
+      notes: Manual add
+    - ticker: TSLA
+      name: Tesla
+      notes: Manual add
+    - ticker: 6758.T
+      name: Sony Group Corp.
+      notes: Manual add
+    - ticker: 4578.T
+      name: Otsuka Holdings Co., Ltd.
+      notes: Manual add; Clawd favored
+
   # Buffett holdings/style
   buffett:
     - ticker: ALLE
