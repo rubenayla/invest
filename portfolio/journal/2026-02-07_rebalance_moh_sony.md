@@ -1,37 +1,40 @@
-# Transaction Log: The "Regulatory Crisis" Rebalance
+# Transaction Log: The "Regulatory Crisis" Rebalance & Japan Trim
 
 **Date:** 2026-02-07
-**Tickers Involved:** MOH, SONY, SYF, BTC, TSLA
-**Action:** BUY / REBALANCE
-**Capital Deployed:** $5,000
+**Tickers Involved:** MOH, SONY, SYF, BTC, TSLA, 8002.T
+**Action:** BUY / REBALANCE / TRIM
+**Capital Deployed:** $5,000 (New) + $2,800 (from Marubeni trim)
 
 ## 1. Context & Trigger
-*   **Why now?** The user had $5k to deploy.
-*   **Trigger:** **Molina (MOH)** crashed due to "trough year" guidance and unfavorable Medicare rates. **Sony (SONY)** is trading near technical support despite strong sensor growth.
-*   **User Sentiment:** User holds TSLA ($3k) and wanted to diversify. Expressed FOMO on SONY.
+*   **Why now?** The user had $5k to deploy. Additionally, discovered that **Marubeni (8002.T)** had grown to a massive ~$7,000 position (+160% gain).
+*   **Trigger:** **Molina (MOH)** crashed on "trough year" guidance. **Marubeni** showed a dangerous divergence between Momentum (GBM) and Fundamentals (DCF).
+*   **User Sentiment:** User wanted to secure profits on Marubeni and diversify into Tech (SONY).
 
 ## 2. The Decision (The "Why")
 ### The "Aggressive Value" Barbell Strategy
-We avoided the general market (S&P 500) because Buffett is net selling. Instead, we picked specific "distressed" value plays.
+We are funding new value plays by taking profits from a massive winner.
 
-*   **Molina Healthcare (MOH):** **High Conviction.** The market is panicking over 2026 regulatory rates (Advance Notice). History shows rates usually improve in the Final Notice (April). We are buying the "political fear."
-*   **Sony Group (SONY):** **Sum-of-Parts.** Market hates the slowing PS5 sales (bad narrative) but ignores the booming Image Sensor monopoly (good reality).
-*   **Synchrony (SYF):** **Safety.** Trading at ~5x earnings with massive buybacks. A hedge against the volatility of the other picks.
+*   **Molina Healthcare (MOH):** **High Conviction.** Buying the "political fear" ahead of the April rate restoration.
+*   **Sony Group (SONY):** **Sum-of-Parts.** Diversifying Japan exposure from "Old Economy" (Marubeni) to "New Economy" (Sensors/AI).
+*   **Marubeni (8002.T):** **The 40% Trim.**
+    *   **The Divergence:** GBM model showed **+164% momentum** but DCF showed **-75% overvaluation**. 
+    *   **Logic:** Lock in principal and some profit. Let the remaining 60% (House Money) ride the momentum rocket with Buffett.
 
 ## 3. Execution Details
 | Ticker | Action | Amount ($) | Allocation | Price Strategy |
 | :--- | :--- | :--- | :--- | :--- |
-| **MOH** | BUY | **$2,250** | 45% | **Market.** Immediate execution to catch the dip. |
-| **SONY** | BUY | **$750** | 15% | **Market.** To cure FOMO and lock exposure. |
-| **SONY** | BUY LIMIT | **$1,000** | 20% | **Limit @ $21.75.** To catch technical support dip. |
-| **SYF** | BUY | **$750** | 15% | **Market.** |
-| **BTC** | BUY | **$250** | 5% | **DCA.** $50/week for 5 weeks (Macro hedge). |
-| **TSLA** | HOLD | -- | -- | Retaining existing ~$3k position. No new capital. |
+| **8002.T** | **SELL (TRIM)** | **~$2,800** | **-40%** | **Market.** Lock in 160% gains. |
+| **MOH** | BUY | **$2,250** | 45% | **Market.** Catch the regulatory dip. |
+| **SONY** | BUY | **$750** | 15% | **Market.** Lock exposure. |
+| **SONY** | BUY LIMIT | **$1,000** | 20% | **Limit @ $21.75.** Tech support level. |
+| **SYF** | BUY | **$750** | 15% | **Market.** Cash flow hedge. |
+| **BTC** | BUY | **$250** | 5% | **DCA.** $50/week for 5 weeks. |
+| **TSLA** | HOLD | -- | -- | Retain $3k position. |
 
 ## 4. Risk & Exit Plan
-*   **MOH:** Watch April 2026 Final Rate Announcement. If rates don't improve, thesis weakens. Critical support ~$110.
-*   **SONY:** If stock breaks below **$20.00**, the technical trend is broken.
-*   **TSLA:** Holding for the 2026/2027 Robotaxi narrative. Ignore auto margin noise.
+*   **MOH:** Watch April Final Rate Announcement. Support ~$110.
+*   **8002.T:** The remaining ~$4,200 is now "House Money." Zero stress.
+*   **SONY:** If breaks below $20.00, thesis is broken.
 
 ## 5. Reflections (Post-Trade)
 *(To be filled later)*
