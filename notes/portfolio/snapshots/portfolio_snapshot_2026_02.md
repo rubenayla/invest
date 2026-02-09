@@ -1,6 +1,6 @@
 # Portfolio Snapshot (Feb 7, 2026)
 **Source:** IBKR & Revolut Screenshots (FX Corrected)
-**Total Estimated Value:** ~$44,000
+**Total Estimated Value:** ~$44,550
 
 ## 📊 Combined Holdings
 
@@ -28,7 +28,7 @@
 | **CVX** | Chevron | **~$1,440** | IBKR | US Oil Major. +31% gain. |
 | **STLD** | Steel Dynamics | **~$1,375** | Revolut | Infrastructure/Steel. +50% gain. |
 | **SYF** | Synchrony | **~$750** | **New Buy** | Financials/Cash flow. |
-| **BTC** | Bitcoin | **~$250** | **New Buy** | Macro hedge. |
+| **BTC** | Bitcoin | **~$790** | Binance | Added €500. Macro hedge. |
 
 ---
 
@@ -46,3 +46,4 @@
 ## 📝 Change Log
 *   **2026-02-07:** Adjusted Marubeni valuation to ~$7,000 (reflecting ~€6,460) to account for JPY exchange rate.
 *   **2026-02-07:** Adjusted Total Estimated Value to ~$44,000.
+*   **2026-02-09:** Invested €500 in BTC (0.0085 BTC @ €58k).
