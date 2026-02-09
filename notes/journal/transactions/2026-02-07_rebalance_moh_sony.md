@@ -49,12 +49,11 @@ If you want to add explicit exposure now (instead of waiting), the current money
 ## 3. Execution Details
 | Ticker | Action | Amount ($) | Allocation | Price Strategy |
 | :--- | :--- | :--- | :--- | :--- |
-| **8002.T** | **SELL (TRIM)** | **~$2,800** | **-40%** | **Market.** Lock in 160% gains. |
-| **MOH** | BUY | **$2,250** | 45% | **Market.** Catch the regulatory dip. |
-| **SONY** | BUY | **$2300** |  |  |
-| **SYF** | BUY | **$750** | 15% | **Market.** Cash flow hedge. |
-| **BTC** | BUY | **$250** | 5% | **DCA.** $50/week for 5 weeks. |
-| **TSLA** | HOLD | -- | -- | Retain $3k position. |
+| **8002.T** | **SELL (TRIM)** | **~$2,800** | **-40%** | **Market.** Lock in 160% gains. | NOT DONE
+| **MOH** | BUY | **$2,250** | 45% | **Market.** Catch the regulatory dip. | NOT DONE
+| **SONY** | BUY | **$2300** |  |  | DONE MORE THAN PREVIOUSLY ESTIMATED
+| **SYF** | BUY | **$750** | 15% | **Market.** Cash flow hedge. | TO DO
+| **BTC** | BUY | **$500** | | **DCA.** $50/week for 5 weeks. | DONE
 
 ## 4. Risk & Exit Plan
 *   **MOH:** Watch April Final Rate Announcement. Support ~$110.
