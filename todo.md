@@ -1,5 +1,7 @@
-# Todo List
 
+
+# Todo List
+- Investigate other projects online to see if there's a promising one for stock analysis and valuation in medium/long term, mainly based on fundamentals. 
 - [ ] Configure Grafana (Fix permissions and setup dashboards)
 
 _(Note: Restored from previous content on 2026-01-21)_

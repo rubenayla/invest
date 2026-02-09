@@ -1,5 +1,3 @@
-[README](./README.md)
-
 # Definitions
 
 ## Income Statement --- Revenue, Income, Profit, Expenses, Net Income, EBIT, EBITDA, Free Cash Flow, Equity, Enterprise Value

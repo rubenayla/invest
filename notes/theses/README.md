@@ -6,15 +6,13 @@ Macro-level investment theses and sector/commodity analyses. Unlike individual s
 
 | Thesis | Status | Verdict | Last Updated |
 |--------|--------|---------|--------------|
-| [Copper](copper/copper-thesis.md) | Researched | Cautiously Bullish | 2026-01-31 |
-| [Power](power/power-thesis.md) | Researched | Bullish but Entry-Selective | 2026-01-31 |
-| [Argentina ETF](argentina/argentina-thesis.md) | Researched | Speculative Bullish | 2026-01-31 |
+| [Copper](copper-thesis.md) | Researched | Cautiously Bullish | 2026-01-31 |
+| [Power](power-thesis.md) | Researched | Bullish but Entry-Selective | 2026-02-09 |
+| [Argentina ETF](argentina-thesis.md) | Researched | Speculative Bullish | 2026-01-31 |
 
 ## Thesis Structure
 
-Each thesis folder contains:
-- `{name}-thesis.md` - Main analysis document
-- Supporting files (data, charts, updates)
+Each thesis is a single `*-thesis.md` file in this folder. If we ever need supporting material (data, charts), prefer adding it inline unless it becomes unwieldy.
 
 ## How to Use
 
