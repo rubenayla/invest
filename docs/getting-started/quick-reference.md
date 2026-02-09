@@ -45,8 +45,8 @@ uv run python scripts/run_gbm_predictions.py --variant opportunistic --horizon 3
 
 ### Neural Network Models
 ```bash
-uv run python scripts/run_nn_predictions.py      # 1-year
-uv run python scripts/run_nn_3y_predictions.py   # 3-year
+# Multi-horizon NN predictions (writes into valuation_results)
+uv run python scripts/run_multi_horizon_predictions.py
 ```
 
 ### Classic Valuations (DCF, RIM, etc.)

@@ -12,14 +12,14 @@ All models trained with `random_state=42, feature_fraction_seed=42, bagging_seed
 
 **1. Full GBM 1-year (gbm_1y)**
 - Model: `neural_network/training/gbm_model_1y.txt`
-- Prediction Script: `scripts/run_gbm_1y_predictions.py`
+- Prediction Script: `scripts/run_gbm_predictions.py --variant standard --horizon 1y`
 - Performance: Rank IC **0.6146**, Decile Spread 80.4%
 - Training Time: ~25 minutes
 - Database Column: `model_name = 'gbm_1y'`
 
 **2. Full GBM 3-year (gbm_3y)**
 - Model: `neural_network/training/gbm_model_3y.txt`
-- Prediction Script: `scripts/run_gbm_3y_predictions.py`
+- Prediction Script: `scripts/run_gbm_predictions.py --variant standard --horizon 3y`
 - Performance: Rank IC 0.5926, Decile Spread 175.8%
 - Training Time: ~19 minutes
 - Database Column: `model_name = 'gbm_3y'`
@@ -28,7 +28,7 @@ All models trained with `random_state=42, feature_fraction_seed=42, bagging_seed
 
 **3. Lite GBM 1-year (gbm_lite_1y)**
 - Model: `neural_network/training/gbm_lite_model_1y.txt`
-- Prediction Script: `scripts/run_gbm_lite_1y_predictions.py`
+- Prediction Script: `scripts/run_gbm_predictions.py --variant lite --horizon 1y`
 - Performance: Rank IC 0.5865, Decile Spread 77.2%
 - Training Time: ~19 minutes
 - Database Column: `model_name = 'gbm_lite_1y'`
@@ -36,7 +36,7 @@ All models trained with `random_state=42, feature_fraction_seed=42, bagging_seed
 
 **4. Lite GBM 3-year (gbm_lite_3y)**
 - Model: `neural_network/training/gbm_lite_model_3y.txt`
-- Prediction Script: `scripts/run_gbm_lite_3y_predictions.py`
+- Prediction Script: `scripts/run_gbm_predictions.py --variant lite --horizon 3y`
 - Performance: Rank IC **0.6076**, Decile Spread 185.0%
 - Training Time: ~19 minutes
 - Database Column: `model_name = 'gbm_lite_3y'`
@@ -137,14 +137,14 @@ Updated `src/invest/dashboard_components/html_generator.py`:
 **Full GBM Models:**
 ```bash
 cd /Users/rubenayla/repos/invest
-uv run python scripts/run_gbm_1y_predictions.py  # Predicts stocks with 12+ quarters
-uv run python scripts/run_gbm_3y_predictions.py  # Predicts stocks with 12+ quarters
+uv run python scripts/run_gbm_predictions.py --variant standard --horizon 1y  # 12+ quarters
+uv run python scripts/run_gbm_predictions.py --variant standard --horizon 3y  # 12+ quarters
 ```
 
 **Lite GBM Models:**
 ```bash
-uv run python scripts/run_gbm_lite_1y_predictions.py  # Predicts remaining stocks (4-11 quarters)
-uv run python scripts/run_gbm_lite_3y_predictions.py  # Predicts remaining stocks (4-11 quarters)
+uv run python scripts/run_gbm_predictions.py --variant lite --horizon 1y  # 4-11 quarters
+uv run python scripts/run_gbm_predictions.py --variant lite --horizon 3y  # 4-11 quarters
 ```
 
 ### Retraining Models
@@ -168,10 +168,7 @@ DYLD_LIBRARY_PATH=/opt/homebrew/opt/libomp/lib:$DYLD_LIBRARY_PATH uv run python 
 - `neural_network/training/train_gbm_lite_stock_ranker.py` - Added random seeds
 
 ### Prediction Scripts (Created)
-- `scripts/run_gbm_1y_predictions.py` (already existed)
-- `scripts/run_gbm_3y_predictions.py` (new)
-- `scripts/run_gbm_lite_1y_predictions.py` (already existed)
-- `scripts/run_gbm_lite_3y_predictions.py` (new)
+- Consolidated into `scripts/run_gbm_predictions.py` (variant + horizon flags)
 
 ### Dashboard (Modified)
 - `src/invest/dashboard_components/html_generator.py` - Added 4 GBM columns
@@ -182,7 +179,7 @@ DYLD_LIBRARY_PATH=/opt/homebrew/opt/libomp/lib:$DYLD_LIBRARY_PATH uv run python 
 
 ## Next Steps
 
-1. **Run Predictions**: Execute all 4 prediction scripts to populate database
+1. **Run Predictions**: Execute `scripts/run_gbm_predictions.py` for desired variants/horizons
 2. **Regenerate Dashboard**: Run `scripts/dashboard.py`
 3. **Monitor Performance**: Track Rank IC and Decile Spread over time
 4. **Ensemble Opportunity**: Consider combining Full + Lite predictions for maximum coverage

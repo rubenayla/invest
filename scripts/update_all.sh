@@ -14,8 +14,7 @@ uv run python scripts/run_gbm_predictions.py --variant opportunistic --horizon 3
 
 echo ""
 echo "🧠 Running neural network models..."
-uv run python scripts/run_nn_predictions.py
-uv run python scripts/run_nn_3y_predictions.py
+uv run python scripts/run_multi_horizon_predictions.py
 
 echo ""
 echo "💰 Running classic valuation models..."

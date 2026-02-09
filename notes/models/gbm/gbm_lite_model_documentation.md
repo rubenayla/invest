@@ -108,7 +108,7 @@ GBM Lite was created to extend coverage to these stocks while maintaining predic
   - Saves to `gbm_lite_model_1y.txt`
 
 ### Prediction
-- `scripts/run_gbm_lite_1y_predictions.py`
+- `scripts/run_gbm_predictions.py --variant lite --horizon 1y`
   - Identifies stocks needing lite model (no full GBM predictions)
   - Engineers features with reduced requirements
   - Saves results with model_name='gbm_lite_1y'
@@ -127,7 +127,7 @@ DYLD_LIBRARY_PATH=/opt/homebrew/opt/libomp/lib:$DYLD_LIBRARY_PATH \
 
 ### Generate Predictions
 ```bash
-uv run python scripts/run_gbm_lite_1y_predictions.py
+uv run python scripts/run_gbm_predictions.py --variant lite --horizon 1y
 ```
 
 Predictions are saved to `valuation_results` table with:

@@ -26,7 +26,7 @@
   - Training samples: 3,364
 
 ### 3. Predictions Generated (✅ COMPLETE)
-- **Created**: `scripts/run_nn_3y_predictions.py`
+- **Created**: `scripts/run_multi_horizon_predictions.py`
   - Loads `neural_network/training/best_model_3y.pt`
   - Saves predictions with model name: `'nn_3y'`
   - Updates `details` with `'expected_return_3y'` and `'horizon': '3y'`
@@ -148,7 +148,7 @@ When complete, you should have:
 2. `neural_network/training/train_single_horizon.py` - Added --target-horizon arg
 
 ### Created Files
-1. `scripts/run_nn_3y_predictions.py` - 3-year prediction script
+1. `scripts/run_multi_horizon_predictions.py` - multi-horizon prediction script (includes 3y)
 2. `notes/3year_model_status.md` - This file
 
 ### To Be Modified

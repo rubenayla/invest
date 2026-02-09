@@ -133,7 +133,7 @@ uv run python train_gbm_stock_ranker.py --target-horizon 1y
 ### Prediction
 ```bash
 cd /Users/rubenayla/repos/invest
-uv run python scripts/run_gbm_1y_predictions.py
+uv run python scripts/run_gbm_predictions.py --variant standard --horizon 1y
 ```
 
 ## Database Schema

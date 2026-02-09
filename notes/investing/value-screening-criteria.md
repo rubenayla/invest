@@ -42,11 +42,11 @@ Excluded sectors vulnerable to disruption:
 
 ## Implementation
 
-**Script**: `scripts/adhoc/screen_value_stocks_relaxed.py`
+This used to be a one-off script. The maintained implementation is now:
 
-```bash
-uv run python scripts/adhoc/screen_value_stocks_relaxed.py
-```
+- Thresholds: `analysis/configs/watchlist_analysis.yaml`
+- Scoring: `analysis/configs/scanner_config.yaml` and `src/invest/scanner/scoring_engine.py`
+- Filters: `src/invest/screening/value.py`, `src/invest/screening/quality.py`, `src/invest/screening/growth.py`, `src/invest/screening/risk.py`
 
 ## Notes
 
@@ -57,9 +57,9 @@ uv run python scripts/adhoc/screen_value_stocks_relaxed.py
 
 ## Related Tools
 
-- `scripts/adhoc/analyze_fundamental_trends.py` - Check 5-year trends for any stock
+- `scripts/offline_analyzer.py` - Analyze cached data and write results (incl. dashboard updates)
 - `scripts/check_database_health.py` - Verify data quality
-- `scripts/adhoc/analyze_candidate_valuations.py` - Get DCF/GBM valuations
+- `scripts/run_gbm_predictions.py` - Run GBM predictions (all variants/horizons)
 
 ## Last Updated
 2025-10-28

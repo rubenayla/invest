@@ -2,8 +2,16 @@
 """
 Run daily opportunity scanner.
 
-This script is designed to be run by OpenClaw for cron scheduling.
-It outputs alerts to stdout which OpenClaw can forward to Telegram.
+Purpose:
+- Run a *daily* scan over the stock universe.
+- Notify *only* when an opportunity clears a dynamically adjusted threshold that
+  targets ~1 notification per week on average over the long run (not "every
+  week" on a schedule).
+
+Delivery model:
+- This script prints the notification message to stdout.
+- A scheduler (systemd timer / OpenClaw / cron) should capture stdout and
+  forward it to Telegram (or any channel).
 
 Usage:
     uv run python scripts/run_opportunity_scan.py

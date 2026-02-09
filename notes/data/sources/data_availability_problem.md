@@ -143,11 +143,10 @@ Now NNs use the SAME fundamental data as traditional DCF/RIM models.
   - Updated to extract 14 fundamental features in static vector
 
 ### Prediction Scripts
-- `scripts/run_nn_predictions.py` (1-year)
-- `scripts/run_nn_3y_predictions.py` (3-year)
-  - Both updated to load models with new dimensions (17, 30)
-  - Both updated to query fundamental fields from database
-  - Both updated to calculate fundamental features for inference
+- Consolidated into `scripts/run_multi_horizon_predictions.py`
+  - Loads models with the new dimensions (17, 30)
+  - Queries fundamental fields from database
+  - Calculates fundamental features for inference
 
 ### Data Population
 - `data/sec_edgar/scripts/populate_from_sec.py`
