@@ -130,7 +130,13 @@ watchlist:
     - ticker: BIDU
       name: Baidu
       notes: Chinese search/AI
-  
+    - ticker: CA.PA
+      name: Carrefour SA
+      notes: EU defensive grocery retailer; thin margins, watch leverage/FCF durability
+    - ticker: G.MI
+      name: Assicurazioni Generali S.p.A.
+      notes: EU diversified insurer; solid ROE, balance-sheet/claims-cycle nuance
+
   # Speculative
   speculative:
     - ticker: NE
@@ -142,6 +148,9 @@ watchlist:
     - ticker: MSTR
       name: MicroStrategy
       notes: Bitcoin proxy
+    - ticker: TRNR
+      name: Interactive Strength Inc.
+      notes: Microcap; extreme drawdown; treat as catalyst-only speculation (high dilution risk)
 
 # Analysis thresholds
 buy_criteria:

@@ -42,10 +42,10 @@ Excluded sectors vulnerable to disruption:
 
 ## Implementation
 
-**Script**: `scripts/screen_value_stocks_relaxed.py`
+**Script**: `scripts/adhoc/screen_value_stocks_relaxed.py`
 
 ```bash
-uv run python scripts/screen_value_stocks_relaxed.py
+uv run python scripts/adhoc/screen_value_stocks_relaxed.py
 ```
 
 ## Notes
@@ -57,9 +57,9 @@ uv run python scripts/screen_value_stocks_relaxed.py
 
 ## Related Tools
 
-- `scripts/analyze_fundamental_trends.py` - Check 5-year trends for any stock
+- `scripts/adhoc/analyze_fundamental_trends.py` - Check 5-year trends for any stock
 - `scripts/check_database_health.py` - Verify data quality
-- `scripts/analyze_candidate_valuations.py` - Get DCF/GBM valuations
+- `scripts/adhoc/analyze_candidate_valuations.py` - Get DCF/GBM valuations
 
 ## Last Updated
 2025-10-28
