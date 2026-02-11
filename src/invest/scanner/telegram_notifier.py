@@ -93,9 +93,9 @@ class TelegramNotifier:
 
         # Header with emoji indicator
         if is_exceptional:
-            lines.append(f"🌟 {score.ticker} - {score.company_name}")
+            lines.append(f"🌟 **[{score.ticker}](https://finance.yahoo.com/quote/{score.ticker})** - {score.company_name}")
         else:
-            lines.append(f"📊 {score.ticker} - {score.company_name}")
+            lines.append(f"📊 **[{score.ticker}](https://finance.yahoo.com/quote/{score.ticker})** - {score.company_name}")
 
         lines.append("═" * 30)
 
@@ -161,6 +161,8 @@ class TelegramNotifier:
 
         # Footer with threshold context
         lines.append(f"📅 Threshold today: {threshold:.0f}/100")
+        lines.append("")
+        lines.append(f"🔎 [More Info](https://finance.yahoo.com/quote/{score.ticker})")
 
         return "\n".join(lines)
 

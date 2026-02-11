@@ -228,30 +228,40 @@ class ScoringEngine:
         """
         Score growth potential.
 
-        Sources: Revenue/earnings CAGR, FCF growth, trends
+        Sources: 3-Year CAGR (Revenue/Earnings) if available, otherwise fallback to quarterly.
+        Prioritizes multi-year trends to identify sustained growth vs cyclical bounces.
         """
         details = {}
         scores = []
 
-        # Revenue Growth: -5% min, 10% target, 30% exceptional
-        rev_growth = data.get('financials', {}).get('revenueGrowth')
-        if rev_growth is not None:
-            rg_score = self.normalize(rev_growth * 100, -5, 10, 30)
-            scores.append(rg_score)
-            details['revenue_growth'] = {'value': rev_growth * 100, 'score': rg_score}
+        financials = data.get('financials', {})
+        income_json = data.get('income_json') # Assuming this is available in 'data' dictionary.
+                                             # Note: StockDataReader needs to populate this.
+        
+        # Helper to calculate CAGR
+        def calculate_cagr(start_val, end_val, years):
+            if start_val is None or end_val is None or start_val <= 0 or years <= 0:
+                return None
+            return (end_val / start_val) ** (1 / years) - 1
 
-        # Earnings Growth: -10% min, 15% target, 40% exceptional
-        earn_growth = data.get('financials', {}).get('earningsGrowth')
-        if earn_growth is not None:
-            eg_score = self.normalize(earn_growth * 100, -10, 15, 40)
-            scores.append(eg_score)
-            details['earnings_growth'] = {'value': earn_growth * 100, 'score': eg_score}
-
-        # Price trend 30d as growth momentum proxy: -10% min, 5% target, 15% max
+        # 1. Revenue Growth (CAGR Priority)
+        rev_cagr = None
+        
+        # Try to calculate 3Y CAGR from income_json if available
+        # Note: income_json structure is list of dicts like: [{"index": "Total Revenue", "2024...": X, "2021...": Y}]
+        if income_json:
+            import json
+            try:
+                if isinstance(income_json, str):
+                    income_data = json.loads(income_json)
+                else:
+                    income_data = income_json
+                
+        # 3. Price Momentum (unchanged)
         price_trend = data.get('price_data', {}).get('price_trend_30d')
         if price_trend is not None:
             pt_score = self.normalize(price_trend * 100, -10, 5, 15)
-            scores.append(pt_score * 0.5)  # Lower weight for short-term trend
+            scores.append(pt_score * 0.5)
             details['price_trend_30d'] = {'value': price_trend * 100, 'score': pt_score}
 
         final_score = sum(scores) / len(scores) if scores else 50.0
@@ -467,3 +477,104 @@ class ScoringEngine:
         # Sort by opportunity score (highest first)
         scores.sort(key=lambda x: x.opportunity_score, reverse=True)
         return scores
+    def score_growth(self, data: Dict[str, Any]) -> tuple[float, Dict[str, Any]]:
+        """
+        Score growth potential.
+
+        Sources: 3-Year CAGR (Revenue/Earnings) if available.
+        Returns 0.0 total growth score if data is insufficient or invalid, forcing the scanner to fail the stock.
+        """
+        details = {}
+        scores = []
+        valid_growth_data = False
+
+        financials = data.get('financials', {})
+        income_json = data.get('income_json') 
+        
+        # Helper to calculate CAGR
+        def calculate_cagr(start_val, end_val, years):
+            if start_val is None or end_val is None or start_val <= 0 or years <= 0:
+                return None
+            return (end_val / start_val) ** (1 / years) - 1
+
+        # 1. Revenue Growth (CAGR Priority)
+        rev_cagr = None
+        
+        if income_json:
+            import json
+            try:
+                if isinstance(income_json, str):
+                    income_data = json.loads(income_json)
+                else:
+                    income_data = income_json
+                
+                rev_row = next((row for row in income_data if row.get("index") in ["Total Revenue", "Operating Revenue"]), None)
+                if rev_row:
+                    dates = sorted([k for k in rev_row.keys() if k != "index"], reverse=True)
+                    if len(dates) >= 4:
+                        latest_rev = rev_row[dates[0]]
+                        past_rev = rev_row[dates[3]]
+                        rev_cagr = calculate_cagr(past_rev, latest_rev, 3)
+            except Exception:
+                pass
+
+        if rev_cagr is not None:
+            rg_score = self.normalize(rev_cagr * 100, 0, 10, 25)
+            scores.append(rg_score)
+            details['revenue_growth_metric'] = 'CAGR_3Y'
+            details['revenue_growth'] = {'value': rev_cagr * 100, 'score': rg_score}
+            valid_growth_data = True
+        else:
+            # Explicitly mark as missing
+            details['revenue_growth_metric'] = 'MISSING'
+            details['revenue_growth'] = None
+
+        # 2. Earnings Growth (CAGR Priority)
+        earn_cagr = None
+        if income_json:
+            import json
+            try:
+                if isinstance(income_json, str):
+                    income_data = json.loads(income_json)
+                else:
+                    income_data = income_json
+                
+                ni_row = next((row for row in income_data if row.get("index") in ["Net Income", "Net Income Common Stockholders"]), None)
+                if ni_row:
+                    dates = sorted([k for k in ni_row.keys() if k != "index"], reverse=True)
+                    if len(dates) >= 4:
+                        latest_ni = ni_row[dates[0]]
+                        past_ni = ni_row[dates[3]]
+                        if past_ni > 0:
+                            earn_cagr = calculate_cagr(past_ni, latest_ni, 3)
+                        elif latest_ni > 0:
+                            earn_cagr = 0.5 
+                        else:
+                            earn_cagr = -0.1 
+            except Exception:
+                pass
+
+        if earn_cagr is not None:
+            eg_score = self.normalize(earn_cagr * 100, 0, 12, 30)
+            scores.append(eg_score)
+            details['earnings_growth_metric'] = 'CAGR_3Y'
+            details['earnings_growth'] = {'value': earn_cagr * 100, 'score': eg_score}
+            valid_growth_data = True
+        else:
+            details['earnings_growth_metric'] = 'MISSING'
+            details['earnings_growth'] = None
+
+        # 3. Price Momentum (unchanged)
+        price_trend = data.get('price_data', {}).get('price_trend_30d')
+        if price_trend is not None:
+            pt_score = self.normalize(price_trend * 100, -10, 5, 15)
+            scores.append(pt_score * 0.5)
+            details['price_trend_30d'] = {'value': price_trend * 100, 'score': pt_score}
+
+        # If we have NO valid fundamental growth data (Revenue or Earnings), return 0.0 (Fail)
+        # Force a failing grade so it never passes the threshold.
+        if not valid_growth_data:
+             return 0.0, details
+
+        final_score = sum(scores) / len(scores) if scores else 0.0
+        return final_score, details
