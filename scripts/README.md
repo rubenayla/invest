@@ -13,9 +13,10 @@ This folder contains the repo's runnable entrypoints (things we intentionally ke
 - `scripts/run_classic_valuations.py`: classic valuation models
 - `scripts/run_opportunity_scan.py`: daily opportunity scan + notifications
 - `scripts/dashboard.py`: regenerate HTML dashboard
+- `scripts/update_price_history_current.py`: refresh `price_history` for `current_stock_data` tickers
+- `scripts/update_macro_rates.py`: refresh risk-free rate series into `macro_rates`
 
 ## Setup / Ops
 - `scripts/setup-githooks.sh`
 - `scripts/package_for_training.sh`
 - `scripts/receive_trained_models.sh`
-

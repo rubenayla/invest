@@ -35,6 +35,7 @@ MODELS_TO_RUN = [
     ('simple_ratios', 'simple_ratios'),
     ('growth_dcf', 'growth_dcf'),
     ('multi_stage_dcf', 'multi_stage_dcf'),
+    ('black_scholes', 'black_scholes'),
 ]
 
 
@@ -96,7 +97,13 @@ def load_stock_data(ticker: str, reader: StockDataReader) -> Optional[dict]:
     # Models expect: {info: dict, cashflow: DataFrame, balance_sheet: DataFrame, income: DataFrame}
     # StockDataReader already merges financials into info, so just use it directly
     stock_data = {
-        'info': cache_data.get('info', {})
+        'info': cache_data.get('info', {}),
+        'market_data': reader.get_market_inputs(
+            ticker=ticker,
+            min_price_points=252,
+            max_price_age_days=30,
+            max_rate_age_days=30,
+        ),
     }
 
     # Convert cashflow from list of records to DataFrame
@@ -161,7 +168,12 @@ def run_valuation(registry_name: str, ticker: str, stock_data: dict) -> Optional
 
         # Check if model is suitable for this stock
         if not model.is_suitable(ticker, stock_data):
-            raise ModelNotSuitableError(ticker, f'Model {registry_name} not suitable', 'Data requirements not met')
+            reason = 'Data requirements not met'
+            if hasattr(model, 'get_suitability_reason'):
+                model_reason = model.get_suitability_reason()
+                if model_reason:
+                    reason = model_reason
+            raise ModelNotSuitableError(registry_name, ticker, reason)
 
         # Validate inputs
         model._validate_inputs(ticker, stock_data)

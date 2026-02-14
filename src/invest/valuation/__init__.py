@@ -7,6 +7,7 @@ valuation approaches.
 """
 
 from .base import ValuationModel, ValuationResult
+from .black_scholes_model import BlackScholesModel
 from .dcf_model import DCFModel, EnhancedDCFModel, MultiStageDCFModel
 from .model_registry import ModelRegistry
 from .ratios_model import SimpleRatiosModel
@@ -16,6 +17,7 @@ from .rim_model import RIMModel
 __all__ = [
     'ValuationModel',
     'ValuationResult',
+    'BlackScholesModel',
     'DCFModel',
     'EnhancedDCFModel',
     'MultiStageDCFModel',

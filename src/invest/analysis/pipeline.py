@@ -418,7 +418,7 @@ class AnalysisPipeline:
 
                     # For dashboard updates, always include neural networks
                     if hasattr(self.config, 'is_dashboard_update') and self.config.is_dashboard_update:
-                        models_to_run = ['dcf', 'dcf_enhanced', 'simple_ratios',
+                        models_to_run = ['dcf', 'dcf_enhanced', 'simple_ratios', 'black_scholes',
                                        'neural_network_best', 'neural_network_consensus']
 
                     # Run all requested models using the registry

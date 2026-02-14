@@ -85,9 +85,9 @@ class StockPrioritizer:
         if not valuations:
             return Priority.NEVER_ANALYZED, 0.0, "never_analyzed"
 
-        # Priority 2: Incomplete analysis (< 5 models)
+        # Priority 2: Incomplete analysis (< 6 models)
         completed_models = len(valuations)
-        expected_models = 5  # DCF, Enhanced DCF, Simple Ratios, RIM, Multi-Stage DCF
+        expected_models = 6  # DCF, Enhanced DCF, Simple Ratios, RIM, Multi-Stage DCF, Black-Scholes
 
         if completed_models < expected_models:
             # Secondary score: fewer models = higher priority (lower score)

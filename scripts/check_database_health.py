@@ -54,6 +54,16 @@ class DatabaseHealthChecker:
             'SELECT COUNT(DISTINCT ticker) FROM valuation_results'
         ).fetchone()[0]
 
+        macro_exists = self.cursor.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='macro_rates'"
+        ).fetchone()
+        if macro_exists:
+            coverage['macro_rates'] = self.cursor.execute(
+                'SELECT COUNT(*) FROM macro_rates'
+            ).fetchone()[0]
+        else:
+            coverage['macro_rates'] = 0
+
         return coverage
 
     def check_data_freshness(self) -> Dict[str, Tuple[str, int]]:
@@ -101,6 +111,18 @@ class DatabaseHealthChecker:
             days_old = (today - val_date).days
             freshness['valuation_results'] = (latest_valuation, days_old)
 
+        macro_exists = self.cursor.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='macro_rates'"
+        ).fetchone()
+        if macro_exists:
+            latest_macro = self.cursor.execute(
+                "SELECT MAX(date) FROM macro_rates WHERE rate_name = 'risk_free_rate'"
+            ).fetchone()[0]
+            if latest_macro:
+                macro_date = datetime.strptime(latest_macro, '%Y-%m-%d')
+                macro_days_old = (today - macro_date).days
+                freshness['macro_rates'] = (latest_macro, macro_days_old)
+
         return freshness
 
     def check_coverage_gaps(self) -> Dict[str, List[str]]:
@@ -140,7 +162,7 @@ class DatabaseHealthChecker:
         """Check which stocks have which valuation models."""
         model_coverage = {}
 
-        models = ['dcf', 'dcf_enhanced', 'rim', 'simple_ratios', 'gbm_1y', 'gbm_3y']
+        models = ['dcf', 'dcf_enhanced', 'rim', 'simple_ratios', 'black_scholes', 'gbm_1y', 'gbm_3y']
 
         for model in models:
             count = self.cursor.execute('''
@@ -179,6 +201,10 @@ class DatabaseHealthChecker:
             elif days > 7 and table == 'current_stock_data':
                 self.warnings.append(
                     f'Current stock data is {days} days old - run data_fetcher.py'
+                )
+            elif days > 7 and table == 'macro_rates':
+                self.warnings.append(
+                    f'Macro rates are {days} days old - run update_macro_rates.py'
                 )
         print()
 

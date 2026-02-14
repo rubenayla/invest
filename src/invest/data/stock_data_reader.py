@@ -6,6 +6,7 @@ Provides unified interface to read stock data from SQLite database.
 
 import json
 import sqlite3
+from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -305,3 +306,179 @@ class StockDataReader:
             Dictionary mapping year to free cash flow, or None if not found
         """
         return self.get_fundamental_history(ticker, 'Free Cash Flow')
+
+    def get_recent_price_closes(self, ticker: str, limit: int = 600) -> Dict[str, Any]:
+        """
+        Get most recent close prices for a ticker.
+
+        Parameters
+        ----------
+        ticker : str
+            Stock ticker symbol.
+        limit : int
+            Maximum number of rows to load.
+
+        Returns
+        -------
+        Dict[str, Any]
+            Price payload with `closes`, `dates`, `last_date`, and `price_points`.
+        """
+        conn = sqlite3.connect(self.db_path)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute(
+            '''
+            SELECT date, close
+            FROM price_history
+            WHERE ticker = ? AND close IS NOT NULL
+            ORDER BY date DESC
+            LIMIT ?
+            ''',
+            (ticker, limit),
+        )
+        rows = cursor.fetchall()
+        conn.close()
+
+        if not rows:
+            return {'closes': [], 'dates': [], 'last_date': None, 'price_points': 0}
+
+        # Reverse to ascending date order for return calculations.
+        rows = list(reversed(rows))
+        closes = [float(row['close']) for row in rows if row['close'] is not None]
+        dates = [row['date'] for row in rows if row['close'] is not None]
+        last_date = dates[-1] if dates else None
+
+        return {
+            'closes': closes,
+            'dates': dates,
+            'last_date': last_date,
+            'price_points': len(closes),
+        }
+
+    def get_latest_macro_rate(self, rate_name: str = 'risk_free_rate') -> Optional[Dict[str, Any]]:
+        """
+        Get the most recent macro rate from `macro_rates`.
+
+        Parameters
+        ----------
+        rate_name : str
+            Name of rate series.
+
+        Returns
+        -------
+        Optional[Dict[str, Any]]
+            Latest rate payload or None when unavailable.
+        """
+        conn = sqlite3.connect(self.db_path)
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        table_exists = cursor.execute(
+            '''
+            SELECT 1
+            FROM sqlite_master
+            WHERE type = 'table' AND name = 'macro_rates'
+            '''
+        ).fetchone()
+        if not table_exists:
+            conn.close()
+            return None
+
+        row = cursor.execute(
+            '''
+            SELECT rate_name, date, value, source, fetched_at
+            FROM macro_rates
+            WHERE rate_name = ?
+            ORDER BY date DESC
+            LIMIT 1
+            ''',
+            (rate_name,),
+        ).fetchone()
+        conn.close()
+
+        if not row:
+            return None
+
+        return {
+            'rate_name': row['rate_name'],
+            'date': row['date'],
+            'value': float(row['value']) if row['value'] is not None else None,
+            'source': row['source'],
+            'fetched_at': row['fetched_at'],
+        }
+
+    def get_market_inputs(
+        self,
+        ticker: str,
+        min_price_points: int = 252,
+        max_price_age_days: int = 30,
+        max_rate_age_days: int = 30,
+    ) -> Dict[str, Any]:
+        """
+        Get robust market inputs for structural valuation models.
+
+        Parameters
+        ----------
+        ticker : str
+            Stock ticker symbol.
+        min_price_points : int
+            Minimum close prices required by model.
+        max_price_age_days : int
+            Freshness threshold for close-price series.
+        max_rate_age_days : int
+            Freshness threshold for macro rate.
+
+        Returns
+        -------
+        Dict[str, Any]
+            Combined market inputs and quality metadata.
+        """
+        prices = self.get_recent_price_closes(ticker, limit=max(min_price_points + 50, 600))
+        closes = prices.get('closes', [])
+        last_price_date = prices.get('last_date')
+        price_age_days = None
+        price_is_fresh = False
+
+        if last_price_date:
+            try:
+                last_dt = datetime.strptime(last_price_date, '%Y-%m-%d')
+                price_age_days = (datetime.now() - last_dt).days
+                price_is_fresh = price_age_days <= max_price_age_days
+            except ValueError:
+                price_age_days = None
+                price_is_fresh = False
+
+        macro = self.get_latest_macro_rate('risk_free_rate')
+        risk_free_rate = None
+        rate_source = 'default_config'
+        rate_date = None
+        rate_age_days = None
+        rate_is_fresh = False
+
+        if macro and isinstance(macro.get('value'), float):
+            risk_free_rate = float(macro['value'])
+            rate_source = str(macro.get('source') or 'macro_rates')
+            rate_date = macro.get('date')
+
+            if rate_date:
+                try:
+                    rate_dt = datetime.strptime(rate_date, '%Y-%m-%d')
+                    rate_age_days = (datetime.now() - rate_dt).days
+                    rate_is_fresh = rate_age_days <= max_rate_age_days
+                except ValueError:
+                    rate_age_days = None
+                    rate_is_fresh = False
+
+        return {
+            'closes': closes,
+            'price_points': len(closes),
+            'price_last_date': last_price_date,
+            'price_age_days': price_age_days,
+            'price_is_fresh': price_is_fresh,
+            'min_price_points': min_price_points,
+            'risk_free_rate': risk_free_rate,
+            'rate_source': rate_source,
+            'rate_date': rate_date,
+            'rate_age_days': rate_age_days,
+            'rate_is_fresh': rate_is_fresh,
+        }

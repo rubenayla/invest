@@ -95,6 +95,16 @@ class ModelDataRequirements:
         description="DCF variant optimized for high-growth companies. Handles negative current cash flows."
     )
 
+    BLACK_SCHOLES = FieldRequirement(
+        required=['currentPrice', 'sharesOutstanding', 'marketCap', 'totalDebt'],
+        required_one_of=[],
+        optional=['totalCash', 'bookValue', 'beta', 'sector'],
+        description=(
+            'Structural Black-Scholes-Merton model. Uses equity volatility from price history and '
+            'risk-free rates to value equity as a call option on firm assets.'
+        ),
+    )
+
     RIM = FieldRequirement(
         required=['currentPrice', 'bookValue', 'sharesOutstanding'],
         required_one_of=['returnOnEquity', 'netIncome'],
@@ -194,6 +204,7 @@ class ModelDataRequirements:
             'dcf': cls.DCF,
             'dcf_enhanced': cls.DCF_ENHANCED,
             'growth_dcf': cls.GROWTH_DCF,
+            'black_scholes': cls.BLACK_SCHOLES,
             'rim': cls.RIM,
             'ensemble': cls.ENSEMBLE,
             'tech_model': cls.TECH_MODEL,
