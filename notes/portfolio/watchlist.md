@@ -21,7 +21,7 @@
 - 6758.T (Sony Group Corp.) - Manual add
 - 4578.T (Otsuka Holdings Co., Ltd.) - Manual add; Clawd favored
 
-- [PTON](../companies/PTON.md) (Peloton) - Speculative turnaround, no position
+- [PTON](../companies/PTON.md) (Peloton) - Speculative turnaround, 200 shares + 300 limit @ $4.18 pending
 - SMFG (Sumitomo Mitsui Financial Group) - Improving fundamentals, rate-sensitive
 - [ACGL](../companies/ACGL.md) (Arch Capital Group Ltd) - PE 9.0, Revenue +90%, Earnings +100%
 - [SYF](../companies/SYF.md) (Synchrony Financial) - PE 8.0, Revenue +58%, $1B/year buybacks
