@@ -1,4 +1,3 @@
-Do we still have the code that analyzes stocks and configures a threshold to report about 1 investing recommendation per week, programmed to run daily at about 5AM... all that? I told clawd to do that in the previous server, before moving to Hetzner. I want to set it up again.
 
 # improve SYF analysis, include risks
 Valuation – Cheap Relative to History and Peers

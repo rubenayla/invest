@@ -203,68 +203,21 @@ class ScoringEngine:
             scores.append(pb_score)
             details['pb'] = {'value': pb, 'score': pb_score}
 
-        # Model upside scoring (heavier weight)
-        upside_scores = []
+        # Model upside via unified consensus (heavier weight)
+        from ..valuation.consensus import compute_consensus_from_dicts
 
-        for model in ['dcf', 'dcf_enhanced', 'rim', 'ensemble']:
-            if model in valuations and valuations[model].get('suitable'):
-                upside = valuations[model].get('upside_pct', 0)
-                # Upside: -20% min, 20% target, 50% exceptional
-                upside_score = self.normalize(upside, -20, 20, 50)
-                upside_scores.append(upside_score)
-                details[f'{model}_upside'] = {'value': upside, 'score': upside_score}
+        current_price = data.get('info', {}).get('currentPrice') or data.get('price_data', {}).get('current_price')
+        consensus = compute_consensus_from_dicts(valuations, current_price) if current_price else None
 
-        if upside_scores:
-            # Weight model upside more heavily (50% of value score)
-            avg_upside = sum(upside_scores) / len(upside_scores)
+        if consensus is not None:
+            consensus_upside = consensus.margin_of_safety * 100  # as percentage
+            upside_score = self.normalize(consensus_upside, -20, 20, 50)
+            details['consensus_upside'] = {'value': consensus_upside, 'score': upside_score}
             ratio_avg = sum(scores) / len(scores) if scores else 50.0
-            final_score = ratio_avg * 0.5 + avg_upside * 0.5
+            final_score = ratio_avg * 0.5 + upside_score * 0.5
         else:
             final_score = sum(scores) / len(scores) if scores else 50.0
 
-        return final_score, details
-
-    def score_growth(self, data: Dict[str, Any]) -> tuple[float, Dict[str, Any]]:
-        """
-        Score growth potential.
-
-        Sources: 3-Year CAGR (Revenue/Earnings) if available, otherwise fallback to quarterly.
-        Prioritizes multi-year trends to identify sustained growth vs cyclical bounces.
-        """
-        details = {}
-        scores = []
-
-        financials = data.get('financials', {})
-        income_json = data.get('income_json') # Assuming this is available in 'data' dictionary.
-                                             # Note: StockDataReader needs to populate this.
-        
-        # Helper to calculate CAGR
-        def calculate_cagr(start_val, end_val, years):
-            if start_val is None or end_val is None or start_val <= 0 or years <= 0:
-                return None
-            return (end_val / start_val) ** (1 / years) - 1
-
-        # 1. Revenue Growth (CAGR Priority)
-        rev_cagr = None
-        
-        # Try to calculate 3Y CAGR from income_json if available
-        # Note: income_json structure is list of dicts like: [{"index": "Total Revenue", "2024...": X, "2021...": Y}]
-        if income_json:
-            import json
-            try:
-                if isinstance(income_json, str):
-                    income_data = json.loads(income_json)
-                else:
-                    income_data = income_json
-                
-        # 3. Price Momentum (unchanged)
-        price_trend = data.get('price_data', {}).get('price_trend_30d')
-        if price_trend is not None:
-            pt_score = self.normalize(price_trend * 100, -10, 5, 15)
-            scores.append(pt_score * 0.5)
-            details['price_trend_30d'] = {'value': price_trend * 100, 'score': pt_score}
-
-        final_score = sum(scores) / len(scores) if scores else 50.0
         return final_score, details
 
     def score_risk(self, data: Dict[str, Any]) -> tuple[float, Dict[str, Any]]:

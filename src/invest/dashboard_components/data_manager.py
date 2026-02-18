@@ -248,27 +248,29 @@ class DataManager:
         summary["successful_models"] = len(fair_values)
 
         if fair_values:
-            summary["average_fair_value"] = sum(fair_values) / len(fair_values)
+            # Valuation range is descriptive — keep min/max/spread
             summary["valuation_range"] = {
                 "min": min(fair_values),
                 "max": max(fair_values),
                 "spread": max(fair_values) - min(fair_values)
             }
 
-            # Simple consensus rating based on average margin of safety
+            # Use unified consensus for average fair value and rating
             current_price = stock.get("current_price")
             if current_price and current_price > 0:
-                avg_margin = (summary["average_fair_value"] - current_price) / current_price
-                if avg_margin > 0.3:
-                    summary["consensus_rating"] = "Strong Buy"
-                elif avg_margin > 0.15:
-                    summary["consensus_rating"] = "Buy"
-                elif avg_margin > -0.15:
-                    summary["consensus_rating"] = "Hold"
-                elif avg_margin > -0.3:
-                    summary["consensus_rating"] = "Sell"
+                from ..valuation.consensus import (
+                    compute_consensus_from_dicts,
+                    consensus_margin_to_rating,
+                )
+
+                consensus = compute_consensus_from_dicts(valuations, current_price)
+                if consensus:
+                    summary["average_fair_value"] = consensus.fair_value
+                    summary["consensus_rating"] = consensus_margin_to_rating(consensus.margin_of_safety)
                 else:
-                    summary["consensus_rating"] = "Strong Sell"
+                    summary["average_fair_value"] = sum(fair_values) / len(fair_values)
+            else:
+                summary["average_fair_value"] = sum(fair_values) / len(fair_values)
 
     def update_stock_status(self, ticker: str, status: str, message: str):
         """Update stock status and message."""

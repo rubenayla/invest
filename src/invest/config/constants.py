@@ -5,7 +5,7 @@ This module contains all hard-coded values that were previously scattered
 throughout the codebase, making them easily configurable and maintainable.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Dict
 
 
@@ -85,6 +85,59 @@ class DataProviderConfig:
 
 
 @dataclass(frozen=True)
+class ConsensusConfig:
+    """Configuration for consensus valuation (log-return averaging)."""
+
+    # Per-model prior weights (higher = more trusted)
+    MODEL_WEIGHTS: Dict[str, float] = field(default_factory=lambda: {
+        # GBM models (most trusted — strong empirical correlation)
+        'gbm_3y': 1.3,
+        'gbm_opportunistic_3y': 1.3,
+        'gbm_1y': 1.1,
+        'gbm_opportunistic_1y': 1.1,
+        'gbm_lite_3y': 1.0,
+        'gbm_lite_1y': 0.9,
+
+        # DCF models (solid theoretical foundation)
+        'dcf_enhanced': 0.9,
+        'growth_dcf': 0.9,
+        'dcf': 0.8,
+        'multi_stage_dcf': 0.7,
+
+        # Other fundamental models
+        'rim': 0.7,
+        'black_scholes': 0.5,
+        'simple_ratios': 0.4,
+
+        # Sector-specific (authoritative when applicable)
+        'reit': 0.9,
+        'bank': 0.9,
+        'tech': 0.8,
+        'utility': 0.8,
+
+        # Ensemble / multi-horizon (meta-models)
+        'ensemble': 0.6,
+        'multi_horizon_nn': 0.4,
+
+        # Neural network models (less trusted)
+        'neural_network_best': 0.5,
+        'neural_network_consensus': 0.4,
+        'neural_network': 0.3,
+        'neural_network_1year': 0.3,
+    })
+
+    # Confidence string → numeric mapping
+    CONFIDENCE_MAP: Dict[str, float] = field(default_factory=lambda: {
+        'high': 0.9,
+        'medium': 0.5,
+        'low': 0.2,
+    })
+
+    MAX_ABS_LOG_RATIO: float = 2.3     # ln(10) ≈ caps at 10x / 0.1x
+    DEFAULT_MODEL_WEIGHT: float = 0.5  # for unknown models
+
+
+@dataclass(frozen=True)
 class DashboardConfig:
     """Dashboard-specific configuration."""
 
@@ -101,6 +154,7 @@ class DashboardConfig:
 ANALYSIS_LIMITS = AnalysisLimits()
 VALUATION_DEFAULTS = ValuationDefaults()
 DATA_PROVIDER_CONFIG = DataProviderConfig()
+CONSENSUS_CONFIG = ConsensusConfig()
 DASHBOARD_CONFIG = DashboardConfig()
 
 
@@ -110,5 +164,10 @@ def get_config_summary() -> Dict[str, Any]:
         "analysis_limits": ANALYSIS_LIMITS.__dict__,
         "valuation_defaults": VALUATION_DEFAULTS.__dict__,
         "data_provider_config": DATA_PROVIDER_CONFIG.__dict__,
+        "consensus_config": {
+            "max_abs_log_ratio": CONSENSUS_CONFIG.MAX_ABS_LOG_RATIO,
+            "default_model_weight": CONSENSUS_CONFIG.DEFAULT_MODEL_WEIGHT,
+            "num_models": len(CONSENSUS_CONFIG.MODEL_WEIGHTS),
+        },
         "dashboard_config": DASHBOARD_CONFIG.__dict__,
     }

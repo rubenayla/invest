@@ -193,41 +193,52 @@ class MultiTimeframeNeuralNetworks:
         if weights is None:
             weights = self._get_correlation_weights()
 
-        # Calculate weighted consensus
-        weighted_fair_value = 0
-        total_weight = 0
+        # Extract current_price from first valid result
         current_price = None
+        for result in valid_results.values():
+            if result.current_price:
+                current_price = result.current_price
+                break
 
-        for timeframe, result in valid_results.items():
-            weight = weights.get(timeframe, 0)
-            if weight > 0:
-                weighted_fair_value += result.fair_value * weight
-                total_weight += weight
-                if current_price is None:
-                    current_price = result.current_price
-
-        if total_weight == 0:
+        if not current_price:
             return None
 
-        consensus_fair_value = weighted_fair_value / total_weight
-        margin_of_safety = ((consensus_fair_value - current_price) / current_price * 100) if current_price else None
+        # Use unified log-return consensus with correlation weights as confidence
+        from .consensus import ModelInput, compute_consensus
 
-        # Create consensus result
+        model_inputs = []
+        for tf, result in valid_results.items():
+            corr_weight = weights.get(tf, 0)
+            if corr_weight > 0:
+                model_inputs.append(ModelInput(
+                    model_name=f'neural_network_{tf}',
+                    fair_value=result.fair_value,
+                    confidence=corr_weight,  # correlation weight acts as confidence
+                ))
+
+        if not model_inputs:
+            return None
+
+        consensus = compute_consensus(model_inputs, current_price)
+        if consensus is None:
+            return None
+
+        # Create consensus result (margin_of_safety as percentage for NN convention)
         consensus_result = ValuationResult(
             ticker=ticker,
             model='neural_network_consensus',
-            fair_value=consensus_fair_value,
+            fair_value=consensus.fair_value,
             current_price=current_price,
-            margin_of_safety=margin_of_safety,
+            margin_of_safety=consensus.margin_of_safety * 100,
             inputs={
                 'timeframes_used': list(valid_results.keys()),
                 'weights': {tf: weights.get(tf, 0) for tf in valid_results.keys()},
                 'individual_fair_values': {tf: result.fair_value for tf, result in valid_results.items()}
             },
             outputs={
-                'consensus_method': 'correlation_weighted',
+                'consensus_method': 'log_return_weighted',
                 'timeframes_count': len(valid_results),
-                'weight_total': total_weight
+                'consensus_model_weights': consensus.model_weights,
             }
         )
 

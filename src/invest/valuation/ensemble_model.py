@@ -122,33 +122,28 @@ class EnsembleModel(ValuationModel):
         if not individual_results:
             raise InsufficientDataError(ticker, ['valid_model_results'])
 
-        # Calculate model weights
-        model_weights = self._calculate_model_weights(individual_results, data)
+        # Use unified log-return consensus
+        from .consensus import compute_consensus_from_results
 
-        # Calculate weighted fair value
-        weighted_sum = 0.0
-        total_weight = 0.0
+        current_price = data.get('info', {}).get('currentPrice')
 
-        for weight_info in model_weights:
-            model_name = weight_info.model_name
-            weight = weight_info.weight
-
-            if model_name in individual_results:
-                result = individual_results[model_name]
-                if result.fair_value is not None:
-                    weighted_sum += result.fair_value * weight
-                    total_weight += weight
-
-        if total_weight == 0:
+        consensus = compute_consensus_from_results(individual_results, current_price)
+        if consensus is None:
             raise InsufficientDataError(ticker, ['weighted_fair_value'])
 
-        fair_value = weighted_sum / total_weight
+        fair_value = consensus.fair_value
+        margin_of_safety = consensus.margin_of_safety
 
-        # Calculate margin of safety using ensemble fair value
-        current_price = data.get('info', {}).get('currentPrice')
-        margin_of_safety = None
-        if current_price and current_price > 0:
-            margin_of_safety = (fair_value - current_price) / current_price
+        # Build ModelWeight list from consensus weights for backward compatibility
+        model_weights = []
+        for model_name, weight in consensus.model_weights.items():
+            conf = individual_results[model_name].confidence if model_name in individual_results else 'medium'
+            model_weights.append(ModelWeight(
+                model_name=model_name,
+                weight=weight,
+                confidence=conf,
+                reason="log-return consensus",
+            ))
 
         # Determine ensemble confidence
         confidence = self._determine_ensemble_confidence(individual_results, model_weights)
@@ -177,10 +172,10 @@ class EnsembleModel(ValuationModel):
 
         result.outputs = {
             'weighted_fair_value': fair_value,
-            'total_weight': total_weight,
             'model_count': len(individual_results),
             'constituent_models': list(individual_results.keys()),
-            'individual_valuations': {name: result.fair_value for name, result in individual_results.items()},
+            'individual_valuations': {name: r.fair_value for name, r in individual_results.items()},
+            'consensus_model_weights': consensus.model_weights,
         }
 
         return result
@@ -249,122 +244,6 @@ class EnsembleModel(ValuationModel):
             selected_models.append('rim')
 
         return list(set(selected_models))  # Remove duplicates
-
-    def _calculate_model_weights(self, individual_results: Dict[str, ValuationResult],
-                                data: Dict[str, Any]) -> List[ModelWeight]:
-        """Calculate weights for each model based on various factors."""
-
-        model_weights = []
-
-        for model_name, result in individual_results.items():
-            # Base weight from model confidence
-            confidence_weights = {'high': 1.0, 'medium': 0.7, 'low': 0.4}
-            base_weight = confidence_weights.get(result.confidence, 0.5)
-
-            # Adjust weight based on model type and company characteristics
-            type_weight = self._get_model_type_weight(model_name, data)
-
-            # Adjust for result reasonableness
-            reasonableness_weight = self._assess_result_reasonableness(result, data)
-
-            # Final weight is product of all factors
-            final_weight = base_weight * type_weight * reasonableness_weight
-
-            # Determine reason for weight
-            reason = self._explain_weight_assignment(model_name, base_weight,
-                                                   type_weight, reasonableness_weight)
-
-            model_weights.append(ModelWeight(
-                model_name=model_name,
-                weight=final_weight,
-                confidence=result.confidence,
-                reason=reason
-            ))
-
-        # Normalize weights to sum to 1.0
-        total_weight = sum(w.weight for w in model_weights)
-        if total_weight > 0:
-            for weight_info in model_weights:
-                weight_info.weight = weight_info.weight / total_weight
-
-        return model_weights
-
-    def _get_model_type_weight(self, model_name: str, data: Dict[str, Any]) -> float:
-        """Get weight multiplier based on model type suitability."""
-
-        info = data.get('info', {})
-        sector = info.get('sector', '').lower()
-
-        # Sector-specific models get higher weights for their sectors
-        if model_name == 'reit' and 'real estate' in sector:
-            return 1.3
-        elif model_name == 'bank' and ('financial' in sector or 'bank' in sector):
-            return 1.3
-        elif model_name == 'tech' and 'technology' in sector:
-            return 1.3
-        elif model_name == 'utility' and 'utilit' in sector:
-            return 1.3
-
-        # Growth-Adjusted DCF gets highest weight for reinvestment-heavy companies
-        elif model_name == 'growth_dcf' and self._is_reinvestment_heavy(data):
-            return 1.4  # Highest weight - this is exactly what it's designed for
-
-        # DCF models get higher weight for profitable companies
-        elif model_name.startswith('dcf') and self._has_positive_cash_flow(data):
-            return 1.2
-
-        # RIM gets higher weight for stable companies
-        elif model_name == 'rim' and self._has_stable_roe(data):
-            return 1.1
-
-        # Simple ratios - always moderate weight
-        elif model_name == 'simple_ratios':
-            return 0.8  # Lower weight as it's more of a baseline
-
-        return 1.0  # Default weight
-
-    def _assess_result_reasonableness(self, result: ValuationResult,
-                                    data: Dict[str, Any]) -> float:
-        """Assess how reasonable a valuation result is."""
-
-        if not result.fair_value or not result.current_price:
-            return 0.5  # Neutral weight if missing data
-
-        # Check for extreme valuations
-        price_ratio = result.fair_value / result.current_price
-
-        # Very extreme valuations get lower weight
-        if price_ratio > 10 or price_ratio < 0.1:
-            return 0.3  # Very low weight for extreme results
-        elif price_ratio > 5 or price_ratio < 0.2:
-            return 0.6  # Reduced weight for large deviations
-        elif price_ratio > 3 or price_ratio < 0.33:
-            return 0.8  # Slight reduction for moderate deviations
-        else:
-            return 1.0  # Full weight for reasonable results
-
-    def _explain_weight_assignment(self, model_name: str, base_weight: float,
-                                 type_weight: float, reasonableness_weight: float) -> str:
-        """Generate human-readable explanation of weight assignment."""
-
-        reasons = []
-
-        if base_weight >= 0.9:
-            reasons.append("high model confidence")
-        elif base_weight >= 0.6:
-            reasons.append("medium model confidence")
-        else:
-            reasons.append("low model confidence")
-
-        if type_weight > 1.0:
-            reasons.append("sector specialization bonus")
-        elif type_weight < 1.0:
-            reasons.append("generic model penalty")
-
-        if reasonableness_weight < 0.8:
-            reasons.append("extreme valuation penalty")
-
-        return "; ".join(reasons)
 
     def _determine_ensemble_confidence(self, individual_results: Dict[str, ValuationResult],
                                      model_weights: List[ModelWeight]) -> str:

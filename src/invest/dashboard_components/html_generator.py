@@ -519,66 +519,15 @@ class HTMLGenerator:
         return tuple(cells)
 
     def _format_consensus_cell(self, valuations: Dict, current_price: float) -> str:
-        """Format the consensus cell with average valuation."""
-        fair_values = []
-        softened_values = []
-        weights = []
-        soften_scale = 1.5
-        for val in valuations.values():
-            # Skip non-dict values like current_price
-            if not isinstance(val, dict):
-                continue
-            if not val.get("failed", False):
-                fv = val.get("fair_value")
-                if not isinstance(fv, (int, float)) or not math.isfinite(fv):
-                    continue
-                fair_values.append(fv)
+        """Format the consensus cell with log-return weighted valuation."""
+        from ..valuation.consensus import compute_consensus_from_dicts
 
-                softened_fv = fv
-                if current_price and current_price > 0:
-                    margin = (fv - current_price) / current_price
-                    softened_margin = soften_scale * math.asinh(margin / soften_scale)
-                    softened_fv = current_price * (1 + softened_margin)
-                softened_values.append(softened_fv)
-
-                # Use provided confidence (0-1). Default to 0.5 if missing.
-                conf = val.get('confidence')
-                conf_value = None
-                if isinstance(conf, str):
-                    conf_value = {'high': 0.9, 'medium': 0.5, 'low': 0.2}.get(conf.lower())
-                elif isinstance(conf, (int, float)):
-                    conf_value = conf
-                if conf_value is None:
-                    details = val.get('details', {})
-                    percentile = details.get('ranking_percentile')
-                    if isinstance(percentile, (int, float)):
-                        percentile = percentile / 100 if percentile > 1 else percentile
-                        conf_value = max(percentile, 1 - percentile)
-                if conf_value is None:
-                    conf_value = 0.5
-                weight = min(max(conf_value, 0.0), 1.0)
-
-                # Apply ratio-based damping so extreme fair values don't dominate
-                ratio_penalty = 1.0
-                if current_price and current_price > 0:
-                    ratio = abs(fv / current_price)
-                    if ratio > 5:
-                        ratio_penalty = 1 / (1 + (ratio - 5) / 5)
-                    elif ratio < 0.2:
-                        ratio_penalty = 1 / (1 + (0.2 - ratio) / 0.2)
-
-                weights.append(weight * ratio_penalty)
-
-        if not fair_values:
+        consensus = compute_consensus_from_dicts(valuations, current_price)
+        if consensus is None:
             return "-"
 
-        # Weighted average (confidence-based); fallback to simple average if no weights
-        if any(weights):
-            total_weight = sum(weights)
-            avg_fair_value = sum(f * w for f, w in zip(softened_values, weights)) / total_weight if total_weight else sum(softened_values) / len(softened_values)
-        else:
-            avg_fair_value = sum(softened_values) / len(softened_values)
-        avg_margin = (avg_fair_value - current_price) / current_price if current_price > 0 else 0
+        avg_fair_value = consensus.fair_value
+        avg_margin = consensus.margin_of_safety
         avg_ratio = avg_fair_value / current_price if current_price > 0 else 0
 
         avg_fair_value_str = self._safe_format(avg_fair_value, prefix="$")
@@ -586,18 +535,15 @@ class HTMLGenerator:
         avg_ratio_str = f"{avg_ratio:.2f}x" if avg_ratio > 0 else "-"
         margin_class = self._get_margin_class(avg_margin)
 
-        # Show weighted confidence (average of weights) if available
-        confidence_badge = ''
-        if weights:
-            avg_conf = sum(weights) / len(weights)
-            if avg_conf >= 0.75:
-                conf_style = 'background: #d4edda; color: #155724'
-            elif avg_conf >= 0.4:
-                conf_style = 'background: #fff3cd; color: #856404'
-            else:
-                conf_style = 'background: #f8d7da; color: #721c24'
-            conf_label = f'Confidence: {avg_conf * 100:.1f}%'
-            confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">{conf_label}</div>'
+        # Confidence badge based on consensus confidence label
+        conf_label = consensus.confidence
+        if conf_label == 'high':
+            conf_style = 'background: #d4edda; color: #155724'
+        elif conf_label == 'medium':
+            conf_style = 'background: #fff3cd; color: #856404'
+        else:
+            conf_style = 'background: #f8d7da; color: #721c24'
+        confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">{conf_label.title()}</div>'
 
         return f'''
         <div class="consensus-cell">
@@ -605,7 +551,7 @@ class HTMLGenerator:
             <div class="margin {margin_class}"><strong>{avg_margin_str}</strong></div>
             <div class="ratio"><strong>{avg_ratio_str}</strong></div>
             {confidence_badge}
-            <div class="model-count">({len(fair_values)} models)</div>
+            <div class="model-count">({consensus.num_models} models)</div>
         </div>'''
 
     def _sort_stocks_for_display(self, stocks_data: Dict) -> List[Tuple[str, Dict]]:
