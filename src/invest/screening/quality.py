@@ -15,8 +15,8 @@ def calculate_roic(data: Dict) -> float:
 
     debt_ratio = data.get("debt_to_equity", 0)
     if debt_ratio and debt_ratio > 0:
-        # Rough ROIC approximation: ROE / (1 + D/E)
-        roic = roe / (1 + debt_ratio / 100)
+        # ROIC proxy: ROE / (1 + D/E) — unlevered return on capital
+        roic = roe / (1 + debt_ratio)
     else:
         roic = roe  # If no debt, ROIC ≈ ROE
 
@@ -24,23 +24,15 @@ def calculate_roic(data: Dict) -> float:
 
 
 def calculate_interest_coverage(data: Dict) -> Optional[float]:
-    """Calculate interest coverage ratio (EBIT / Interest Expense)."""
-    # This would require income statement data
-    # For now, use a proxy based on debt levels and profitability
-    debt_ratio = data.get("debt_to_equity", 0)
-    roe = data.get("return_on_equity", 0)
+    """Calculate interest coverage ratio (EBIT / Interest Expense).
 
-    if not debt_ratio or debt_ratio <= 0 or not roe:
-        return None
-
-    # Rough approximation: lower debt ratio = higher coverage
-    # This is very approximate - real calculation needs EBIT and interest expense
-    if debt_ratio < 20:
-        return 10.0  # Assume good coverage for low debt companies
-    elif debt_ratio < 50:
-        return 5.0  # Moderate coverage
-    else:
-        return 2.0  # Lower coverage for high debt
+    Returns None when the actual data is unavailable rather than
+    fabricating a proxy from unrelated metrics.
+    """
+    interest_coverage = data.get("interest_coverage")
+    if interest_coverage and isinstance(interest_coverage, (int, float)):
+        return interest_coverage
+    return None
 
 
 def assess_quality(data: Dict, thresholds: QualityThresholds) -> Dict:

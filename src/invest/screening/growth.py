@@ -4,15 +4,17 @@ from ..config.schema import GrowthThresholds
 
 
 def calculate_historical_cagr(data: Dict, years: int = 5) -> Optional[float]:
-    """Calculate historical revenue CAGR (approximation)."""
-    # Use current growth rate as proxy for historical CAGR
-    # In full implementation, would use historical financial data
+    """Estimate sustainable revenue growth rate.
+
+    Uses the trailing revenue growth with a mean-reversion haircut.
+    Not a true multi-year CAGR — requires historical data for that.
+    """
     revenue_growth = data.get("revenue_growth", 0)
     if not revenue_growth:
         return None
 
-    # Assume some mean reversion - current growth might be higher than historical
-    return revenue_growth * 0.85  # Conservative estimate
+    # Haircut for mean reversion — current YoY growth overstates long-run trend
+    return revenue_growth * 0.85
 
 
 def calculate_fcf_growth(data: Dict) -> Optional[float]:
@@ -27,15 +29,23 @@ def calculate_fcf_growth(data: Dict) -> Optional[float]:
 
 
 def calculate_book_value_growth(data: Dict) -> Optional[float]:
-    """Calculate book value growth (approximation)."""
+    """Calculate book value growth (approximation).
+
+    Book value growth ≈ ROE * retention ratio.
+    Uses actual payout ratio from data when available.
+    """
     roe = data.get("return_on_equity", 0)
     if not roe or roe <= 0:
         return None
 
-    # Book value growth ≈ ROE * (1 - payout_ratio)
-    # Assume moderate payout ratio of 40% for established companies
-    estimated_retention = 0.6
-    return roe * estimated_retention
+    # Use actual payout ratio if available, else default 40%
+    payout_ratio = data.get("payoutRatio")
+    if payout_ratio and isinstance(payout_ratio, (int, float)) and 0 <= payout_ratio <= 1:
+        retention = 1 - payout_ratio
+    else:
+        retention = 0.6
+
+    return roe * retention
 
 
 def assess_growth(data: Dict, thresholds: GrowthThresholds) -> Dict:
