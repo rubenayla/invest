@@ -95,12 +95,10 @@ class RIMModel(ValuationModel):
         ]
 
         # Calculate terminal value (assuming fade to cost of equity)
-        terminal_spread = roe_spread * VALUATION_DEFAULTS.ROE_FADE_RATE
-        terminal_book_value = projected_book_values[-1] * (1 + roe)
-        terminal_residual_income = terminal_spread * terminal_book_value
-
-        # Terminal value with perpetual growth
         terminal_growth = VALUATION_DEFAULTS.TERMINAL_GROWTH_RATE
+        terminal_spread = roe_spread * VALUATION_DEFAULTS.ROE_FADE_RATE
+        terminal_book_value = projected_book_values[-1] * (1 + terminal_growth)
+        terminal_residual_income = terminal_spread * terminal_book_value
         terminal_value = terminal_residual_income / (cost_of_equity - terminal_growth)
         pv_terminal = terminal_value / (1 + cost_of_equity)**self.projection_years
 
