@@ -117,7 +117,7 @@ class ConsensusConfig:
 
         # Ensemble / multi-horizon (meta-models)
         'ensemble': 0.6,
-        'multi_horizon_nn': 0.4,
+        # 'multi_horizon_nn': 0.4,  # Disabled: near-zero test correlation (2026-02-21)
 
         # Neural network models (less trusted)
         'neural_network_best': 0.5,

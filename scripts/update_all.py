@@ -109,12 +109,13 @@ def main() -> int:
     if not args.skip_gbm:
         run_gbm_predictions()
 
-    if not args.skip_nn:
-        if ensure_dashboard_data():
-            run_cmd(
-                ['uv', 'run', 'python', 'scripts/run_multi_horizon_predictions.py'],
-                'Neural network predictions (multi-horizon)',
-            )
+    # NN disabled: near-zero test correlation (2026-02-21)
+    # if not args.skip_nn:
+    #     if ensure_dashboard_data():
+    #         run_cmd(
+    #             ['uv', 'run', 'python', 'scripts/run_multi_horizon_predictions.py'],
+    #             'Neural network predictions (multi-horizon)',
+    #         )
 
     if not args.skip_classic:
         run_cmd(

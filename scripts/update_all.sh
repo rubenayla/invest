@@ -12,9 +12,10 @@ uv run python scripts/run_gbm_predictions.py --variant lite --horizon 3y
 uv run python scripts/run_gbm_predictions.py --variant opportunistic --horizon 1y
 uv run python scripts/run_gbm_predictions.py --variant opportunistic --horizon 3y
 
-echo ""
-echo "🧠 Running neural network models..."
-uv run python scripts/run_multi_horizon_predictions.py
+# NN disabled: near-zero test correlation (2026-02-21)
+# echo ""
+# echo "🧠 Running neural network models..."
+# uv run python scripts/run_multi_horizon_predictions.py
 
 echo ""
 echo "💰 Running classic valuation models..."

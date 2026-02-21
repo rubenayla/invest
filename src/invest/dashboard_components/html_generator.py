@@ -106,7 +106,7 @@ class HTMLGenerator:
             <ul>
                 <li><strong>Fair Value:</strong> Estimated intrinsic value per share from each model</li>
                 <li><strong>Margin of Safety:</strong> How much upside/downside vs current price</li>
-                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases), Black-Scholes-Merton (Structural equity option model), GBM (Gradient Boosted Machine ranking models - 6 variants: Full 1y/3y, Lite 1y/3y, Opportunistic 1y/3y), Multi-Horizon NN (recommended horizon)</li>
+                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases), Black-Scholes-Merton (Structural equity option model), GBM (Gradient Boosted Machine ranking models - 6 variants: Full 1y/3y, Lite 1y/3y, Opportunistic 1y/3y)</li>
                 <li><strong>Consensus:</strong> Average of all successful models</li>
             </ul>
             <p class="disclaimer">⚠️ This is for educational purposes. Not investment advice. Do your own research.</p>
@@ -213,7 +213,7 @@ class HTMLGenerator:
                         <th title="Gradient Boosted Machine Lite 3-year ranking (LightGBM with 247 features, Rank IC 0.61)">GBM Lite 3y</th>
                         <th title="Opportunistic GBM 1-year - Peak return prediction within 2 years (Rank IC 0.61)">GBM Opp 1y</th>
                         <th title="Opportunistic GBM 3-year - Peak return prediction within 3 years (Rank IC 0.64)">GBM Opp 3y</th>
-                        <th title="Multi-Horizon Neural Network (recommended horizon)">NN</th>
+                        <!-- NN column disabled: near-zero test correlation (2026-02-21) -->
                         <th title="Consensus valuation - Average of all successful model results">Consensus</th>
                     </tr>
                 </thead>
@@ -249,7 +249,7 @@ class HTMLGenerator:
             "gbm_lite_3y": "GBM-Lite3y",
             "gbm_opportunistic_1y": "GBM-Opp1y",
             "gbm_opportunistic_3y": "GBM-Opp3y",
-            "multi_horizon_nn": "NN",
+            # "multi_horizon_nn": "NN",  # Disabled: near-zero test correlation (2026-02-21)
             "ensemble": "Consensus"
         }
 
@@ -294,7 +294,8 @@ class HTMLGenerator:
         gbm_lite_3y_html = self._format_valuation_cell(valuations.get("gbm_lite_3y", {}), current_price, show_confidence=True)
         gbm_opp_1y_html = self._format_valuation_cell(valuations.get("gbm_opportunistic_1y", {}), current_price, show_confidence=True)
         gbm_opp_3y_html = self._format_valuation_cell(valuations.get("gbm_opportunistic_3y", {}), current_price, show_confidence=True)
-        nn_html = self._format_valuation_cell(valuations.get("multi_horizon_nn", {}), current_price, show_confidence=True)
+        # NN column disabled: near-zero test correlation (2026-02-21)
+        # nn_html = self._format_valuation_cell(valuations.get("multi_horizon_nn", {}), current_price, show_confidence=True)
 
         # Calculate consensus
         consensus_html = self._format_consensus_cell(valuations, current_price)
@@ -317,7 +318,6 @@ class HTMLGenerator:
             <td>{gbm_lite_3y_html}</td>
             <td>{gbm_opp_1y_html}</td>
             <td>{gbm_opp_3y_html}</td>
-            <td>{nn_html}</td>
             <td>{consensus_html}</td>
         </tr>'''
 

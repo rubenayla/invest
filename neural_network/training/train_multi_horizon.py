@@ -253,6 +253,11 @@ class MultiHorizonTrainer:
             'model_state_dict': model.model.state_dict(),
             'feature_dim': feature_dim,
             'feature_names': self.feature_engineer.feature_names,
+            'scaler_state': {
+                'center_': self.feature_engineer.scaler.center_.tolist(),
+                'scale_': self.feature_engineer.scaler.scale_.tolist(),
+            },
+            'target_type': 'excess_return',  # vs SPY
             'training_history': history,
             'split_method': 'chronological',
             'timestamp': datetime.now().isoformat()
