@@ -11,12 +11,12 @@ def calculate_financial_risk(data: Dict) -> Dict:
     # Financial risk score (0-100, lower is less risky)
     financial_risk = 0
 
-    # Debt risk
-    if debt_equity > 100:  # Very high debt
+    # Debt risk (debt_equity is a ratio, e.g. 0.93 = 93%)
+    if debt_equity > 1.0:  # Very high debt
         financial_risk += 40
-    elif debt_equity > 50:  # High debt
+    elif debt_equity > 0.5:  # High debt
         financial_risk += 25
-    elif debt_equity > 25:  # Moderate debt
+    elif debt_equity > 0.25:  # Moderate debt
         financial_risk += 10
 
     # Liquidity risk
@@ -30,9 +30,9 @@ def calculate_financial_risk(data: Dict) -> Dict:
     return {
         "financial_risk_score": min(100, financial_risk),
         "debt_risk_level": "high"
-        if debt_equity > 50
+        if debt_equity > 0.5
         else "moderate"
-        if debt_equity > 25
+        if debt_equity > 0.25
         else "low",
         "liquidity_risk_level": "high"
         if current_ratio < 1.0

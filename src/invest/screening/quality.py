@@ -104,9 +104,7 @@ def assess_quality(data: Dict, thresholds: QualityThresholds) -> Dict:
     # Debt/equity scoring (inverse - lower is better)
     if thresholds.max_debt_equity is not None:
         max_score += 1
-        debt_equity_ratio = (
-            debt_equity / 100 if debt_equity > 5 else debt_equity
-        )  # Handle percentage vs ratio
+        debt_equity_ratio = debt_equity  # DB stores as ratio (e.g. 0.93)
         if debt_equity_ratio <= thresholds.max_debt_equity:
             score += 1
         else:

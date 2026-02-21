@@ -153,11 +153,9 @@ class ScoringEngine:
         # Debt/Equity: 2.0 max, 0.5 target, 0 ideal (inverse)
         debt_equity = data.get('financials', {}).get('debtToEquity')
         if debt_equity is not None:
-            # Convert from percentage if needed
-            de = debt_equity / 100 if debt_equity > 5 else debt_equity
-            de_score = self.normalize(de, 0, 0.5, 2.0, inverse=True)
+            de_score = self.normalize(debt_equity, 0, 0.5, 2.0, inverse=True)
             scores.append(de_score)
-            details['debt_equity'] = {'value': de, 'score': de_score}
+            details['debt_equity'] = {'value': debt_equity, 'score': de_score}
 
         # Operating Margins: 0% min, 15% target, 40% exceptional
         op_margin = data.get('financials', {}).get('operatingMargins')
@@ -232,11 +230,10 @@ class ScoringEngine:
         # Debt/Equity as risk indicator: 2 max (risky), 0.5 target, 0 ideal
         debt_equity = data.get('financials', {}).get('debtToEquity')
         if debt_equity is not None:
-            de = debt_equity / 100 if debt_equity > 5 else debt_equity
             # Inverse: lower debt = higher score (less risky)
-            de_risk_score = self.normalize(de, 0, 0.5, 2.0, inverse=True)
+            de_risk_score = self.normalize(debt_equity, 0, 0.5, 2.0, inverse=True)
             scores.append(de_risk_score)
-            details['debt_equity_risk'] = {'value': de, 'score': de_risk_score}
+            details['debt_equity_risk'] = {'value': debt_equity, 'score': de_risk_score}
 
         # Current ratio as liquidity safety: 0.5 min (risky), 1.5 target, 3.0 safe
         current_ratio = data.get('financials', {}).get('currentRatio')

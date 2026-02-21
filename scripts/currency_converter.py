@@ -11,11 +11,10 @@ from typing import Dict, Optional
 logger = logging.getLogger(__name__)
 
 
-# Hardcoded exchange rates for major currencies (updated periodically)
-# These are approximate rates - in production would use a live forex API
-EXCHANGE_RATES = {
+# Fallback exchange rates — used only when live fetch fails
+_FALLBACK_RATES = {
     'USD': 1.0,
-    'JPY': 0.0067,  # ~150 JPY = 1 USD
+    'JPY': 0.0067,
     'EUR': 1.08,
     'GBP': 1.27,
     'CAD': 0.73,
@@ -24,17 +23,61 @@ EXCHANGE_RATES = {
     'CNY': 0.14,
     'HKD': 0.13,
     'SGD': 0.75,
-    'KRW': 0.00075,  # ~1330 KRW = 1 USD
-    'TWD': 0.032,  # ~31 TWD = 1 USD
+    'KRW': 0.00075,
+    'TWD': 0.032,
     'INR': 0.012,
     'BRL': 0.20,
     'MXN': 0.058,
-    'DKK': 0.145,  # Danish Krone
+    'DKK': 0.145,
     'NOK': 0.093,
     'SEK': 0.096,
     'NZD': 0.61,
     'ZAR': 0.054,
 }
+
+# Cache for live rates fetched during this session
+_live_rate_cache: Dict[str, float] = {}
+
+
+def _fetch_live_rate(currency: str) -> Optional[float]:
+    """Fetch live exchange rate from yfinance (currency per 1 USD)."""
+    if currency in _live_rate_cache:
+        return _live_rate_cache[currency]
+
+    try:
+        import yfinance as yf
+        # yfinance convention: XXXUSD=X gives how many USD per 1 XXX
+        pair = yf.Ticker(f'{currency}USD=X')
+        rate = pair.fast_info.get('lastPrice')
+        if rate and rate > 0:
+            _live_rate_cache[currency] = rate
+            return rate
+    except Exception as e:
+        logger.debug(f'Live rate fetch failed for {currency}: {e}')
+
+    return None
+
+
+def get_rate(currency: str) -> float:
+    """Get exchange rate to USD, trying live first then fallback."""
+    if currency == 'USD':
+        return 1.0
+
+    live = _fetch_live_rate(currency)
+    if live is not None:
+        return live
+
+    fallback = _FALLBACK_RATES.get(currency)
+    if fallback is not None:
+        logger.warning(f'Using fallback rate for {currency} (live fetch failed)')
+        return fallback
+
+    logger.warning(f'Unknown currency {currency}, assuming 1:1 with USD')
+    return 1.0
+
+
+# Keep EXCHANGE_RATES as alias for backward compatibility
+EXCHANGE_RATES = _FALLBACK_RATES
 
 
 def convert_to_usd(value: float, from_currency: str) -> float:
@@ -56,11 +99,7 @@ def convert_to_usd(value: float, from_currency: str) -> float:
     if not value or value == 0:
         return value
 
-    rate = EXCHANGE_RATES.get(from_currency, 1.0)
-    if rate == 1.0 and from_currency != 'USD':
-        logger.warning(f'Unknown currency {from_currency}, assuming 1:1 with USD')
-
-    return value * rate
+    return value * get_rate(from_currency)
 
 
 def detect_currency_mismatch(info: Dict, financials: Dict) -> tuple[bool, Optional[str]]:
@@ -127,7 +166,8 @@ def convert_financials_to_usd(info: Dict, financials: Dict) -> Dict:
     ]
 
     ticker = info.get('symbol', 'UNKNOWN')
-    logger.info(f'{ticker}: Converting financials from {financial_currency} to USD (rate: {EXCHANGE_RATES.get(financial_currency, 1.0):.4f})')
+    rate = get_rate(financial_currency)
+    logger.info(f'{ticker}: Converting financials from {financial_currency} to USD (rate: {rate:.4f})')
 
     # Convert each field
     converted_count = 0
@@ -142,7 +182,7 @@ def convert_financials_to_usd(info: Dict, financials: Dict) -> Dict:
     # Add metadata about conversion
     financials['_currency_converted'] = True
     financials['_original_currency'] = financial_currency
-    financials['_exchange_rate_used'] = EXCHANGE_RATES.get(financial_currency, 1.0)
+    financials['_exchange_rate_used'] = get_rate(financial_currency)
 
     logger.info(f'{ticker}: Converted {converted_count} fields from {financial_currency} to USD')
 
