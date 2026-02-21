@@ -105,11 +105,12 @@ class GrowthAdjustedDCFModel(DCFModel):
         normalized_fcf = operating_cf - maintenance_capex
 
         # Step 3: Project normalized FCF growth
+        # Use terminal growth for the base business — above-terminal growth
+        # comes entirely from _value_growth_investments to avoid double-counting
         wacc = self._estimate_wacc(data)
-        growth_rate = self._estimate_growth_rate(data)
         terminal_growth = VALUATION_DEFAULTS.TERMINAL_GROWTH_RATE
 
-        projected_normalized_fcfs = self._project_cash_flows(normalized_fcf, growth_rate, self.projection_years)
+        projected_normalized_fcfs = self._project_cash_flows(normalized_fcf, terminal_growth, self.projection_years)
 
         # Step 4: Value the base business (from normalized FCF)
         terminal_normalized_fcf = projected_normalized_fcfs[-1] * (1 + terminal_growth)
@@ -156,7 +157,6 @@ class GrowthAdjustedDCFModel(DCFModel):
             'normalized_fcf': normalized_fcf,
             'roic': self._calculate_roic(data),
             'wacc': wacc,
-            'growth_rate': growth_rate,
             'terminal_growth': terminal_growth,
             'capex_intensity': self._calculate_capex_intensity(data),
         }
@@ -380,7 +380,7 @@ class GrowthAdjustedDCFModel(DCFModel):
                 return None
 
             operating_income = None
-            income_fields = ['Operating Income', 'EBIT', 'Operating Revenue']
+            income_fields = ['Operating Income', 'EBIT']
 
             for field in income_fields:
                 if field in income.index:
