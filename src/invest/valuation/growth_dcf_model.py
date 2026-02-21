@@ -113,6 +113,8 @@ class GrowthAdjustedDCFModel(DCFModel):
         projected_normalized_fcfs = self._project_cash_flows(normalized_fcf, terminal_growth, self.projection_years)
 
         # Step 4: Value the base business (from normalized FCF)
+        if wacc <= terminal_growth:
+            raise ModelNotSuitableError('growth_dcf', ticker, f'WACC ({wacc:.2%}) <= terminal growth ({terminal_growth:.2%})')
         terminal_normalized_fcf = projected_normalized_fcfs[-1] * (1 + terminal_growth)
         terminal_value_base = terminal_normalized_fcf / (wacc - terminal_growth)
 
@@ -364,6 +366,8 @@ class GrowthAdjustedDCFModel(DCFModel):
         terminal_growth = VALUATION_DEFAULTS.TERMINAL_GROWTH_RATE
 
         # Use Gordon growth model for returns from growth investment
+        if wacc <= terminal_growth:
+            return 0
         pv_growth_returns = annual_returns / (wacc - terminal_growth)
 
         return pv_growth_returns

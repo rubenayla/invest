@@ -99,6 +99,8 @@ class RIMModel(ValuationModel):
         terminal_spread = roe_spread * VALUATION_DEFAULTS.ROE_FADE_RATE
         terminal_book_value = projected_book_values[-1] * (1 + terminal_growth)
         terminal_residual_income = terminal_spread * terminal_book_value
+        if cost_of_equity <= terminal_growth:
+            raise ModelNotSuitableError('rim', ticker, f'Cost of equity ({cost_of_equity:.2%}) <= terminal growth ({terminal_growth:.2%})')
         terminal_value = terminal_residual_income / (cost_of_equity - terminal_growth)
         pv_terminal = terminal_value / (1 + cost_of_equity)**self.projection_years
 

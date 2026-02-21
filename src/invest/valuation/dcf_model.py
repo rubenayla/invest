@@ -12,7 +12,7 @@ All inherit from the base ValuationModel class for consistency.
 from typing import Any, Dict, List, Optional
 
 from ..config.constants import VALUATION_DEFAULTS
-from ..exceptions import InsufficientDataError
+from ..exceptions import InsufficientDataError, ModelNotSuitableError
 from .base import ValuationModel, ValuationResult
 
 
@@ -53,9 +53,10 @@ class DCFModel(ValuationModel):
             if cashflow is None or cashflow.empty:
                 return False
 
-            # Check for free cash flow data (can be negative)
+            # Check for positive free cash flow (DCF is not meaningful with negative FCF)
             fcf = self._get_free_cash_flow(data)
-            if fcf is None:
+            if fcf is None or fcf <= 0:
+                self._last_suitability_reason = 'Negative or missing free cash flow'
                 return False
 
             return True
@@ -70,10 +71,10 @@ class DCFModel(ValuationModel):
             if field not in data or data[field] is None:
                 raise InsufficientDataError(ticker, [field])
 
-        # Validate we can calculate free cash flow (can be negative)
+        # Validate positive free cash flow
         fcf = self._get_free_cash_flow(data)
-        if fcf is None:
-            raise InsufficientDataError(ticker, ['free_cash_flow'])
+        if fcf is None or fcf <= 0:
+            raise ModelNotSuitableError('dcf', ticker, 'Negative or missing free cash flow')
 
     def _calculate_valuation(self, ticker: str, data: Dict[str, Any]) -> ValuationResult:
         """Perform DCF calculation."""
@@ -87,6 +88,8 @@ class DCFModel(ValuationModel):
         projected_fcfs = self._project_cash_flows(fcf, growth_rate, self.projection_years)
 
         # Calculate terminal value
+        if wacc <= terminal_growth:
+            raise ModelNotSuitableError('dcf', ticker, f'WACC ({wacc:.2%}) <= terminal growth ({terminal_growth:.2%})')
         terminal_fcf = projected_fcfs[-1] * (1 + terminal_growth)
         terminal_value = terminal_fcf / (wacc - terminal_growth)
 
@@ -192,10 +195,10 @@ class DCFModel(ValuationModel):
         earnings_growth = self._safe_float(info.get('earningsGrowth'))
         revenue_growth = self._safe_float(info.get('revenueGrowth'))
 
-        if earnings_growth and earnings_growth > 0:
-            return min(earnings_growth, VALUATION_DEFAULTS.MAX_GROWTH_RATE)
-        elif revenue_growth and revenue_growth > 0:
-            return min(revenue_growth, VALUATION_DEFAULTS.MAX_GROWTH_RATE)
+        if earnings_growth is not None:
+            return max(min(earnings_growth, VALUATION_DEFAULTS.MAX_GROWTH_RATE), -0.25)
+        elif revenue_growth is not None:
+            return max(min(revenue_growth, VALUATION_DEFAULTS.MAX_GROWTH_RATE), -0.25)
 
         # Default to conservative growth
         return VALUATION_DEFAULTS.DEFAULT_GROWTH_RATE
@@ -311,6 +314,8 @@ class MultiStageDCFModel(DCFModel):
         )
 
         # Calculate terminal value
+        if wacc <= terminal_growth:
+            raise ModelNotSuitableError('multi_stage_dcf', ticker, f'WACC ({wacc:.2%}) <= terminal growth ({terminal_growth:.2%})')
         terminal_fcf = moderate_growth_fcfs[-1] * (1 + terminal_growth)
         terminal_value = terminal_fcf / (wacc - terminal_growth)
 
