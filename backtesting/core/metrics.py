@@ -15,6 +15,22 @@ class PerformanceMetrics:
     """Calculate various performance metrics for backtest results."""
 
     @staticmethod
+    def _infer_periods_per_year(dates: pd.Series) -> float:
+        """
+        Infer annualization factor from observation dates.
+
+        Returns the estimated number of observations per year based on
+        the median gap between consecutive dates.
+        """
+        if len(dates) < 2:
+            return 1.0
+        diffs = pd.to_datetime(dates).diff().dropna().dt.days
+        median_gap = diffs.median()
+        if median_gap <= 0:
+            return 252.0
+        return 365.25 / median_gap
+
+    @staticmethod
     def calculate(portfolio_values: pd.DataFrame,
                   initial_value: float,
                   benchmark_data: Optional[pd.DataFrame] = None) -> Dict[str, Any]:
@@ -42,9 +58,12 @@ class PerformanceMetrics:
         total_return = (final_value / initial_value - 1) * 100
         metrics['total_return'] = total_return
 
-        # Calculate daily returns
+        # Calculate period returns
         portfolio_values = portfolio_values.copy()
         portfolio_values['returns'] = portfolio_values['value'].pct_change()
+
+        # Infer observation frequency for correct annualization
+        periods_per_year = PerformanceMetrics._infer_periods_per_year(portfolio_values['date'])
 
         # CAGR
         days = (portfolio_values['date'].iloc[-1] - portfolio_values['date'].iloc[0]).days
@@ -53,8 +72,8 @@ class PerformanceMetrics:
         metrics['cagr'] = cagr
 
         # Volatility (annualized)
-        daily_vol = portfolio_values['returns'].std()
-        annual_vol = daily_vol * np.sqrt(252)  # 252 trading days
+        period_vol = portfolio_values['returns'].std()
+        annual_vol = period_vol * np.sqrt(periods_per_year)
         metrics['volatility'] = annual_vol * 100
 
         # Sharpe Ratio (assuming risk-free rate of 2%)
@@ -109,7 +128,7 @@ class PerformanceMetrics:
 
         # Sortino Ratio (using downside deviation)
         downside_returns = portfolio_values['returns'][portfolio_values['returns'] < 0]
-        downside_std = downside_returns.std() * np.sqrt(252)
+        downside_std = downside_returns.std() * np.sqrt(periods_per_year)
         sortino = excess_return / downside_std if downside_std > 0 else 0
         metrics['sortino_ratio'] = sortino
 
@@ -193,7 +212,10 @@ class PerformanceMetrics:
                 metrics['beta'] = beta
 
                 # Information Ratio
-                tracking_error = (aligned['portfolio'] - aligned['benchmark']).std() * np.sqrt(252)
+                periods_per_year = PerformanceMetrics._infer_periods_per_year(
+                    pd.Series(aligned.index)
+                )
+                tracking_error = (aligned['portfolio'] - aligned['benchmark']).std() * np.sqrt(periods_per_year)
                 info_ratio = (alpha / 100) / tracking_error if tracking_error > 0 else 0
                 metrics['information_ratio'] = info_ratio
 
@@ -220,6 +242,9 @@ class PerformanceMetrics:
         portfolio_values = portfolio_values.copy()
         portfolio_values['returns'] = portfolio_values['value'].pct_change()
 
+        # Infer observation frequency for correct annualization
+        periods_per_year = PerformanceMetrics._infer_periods_per_year(portfolio_values['date'])
+
         rolling_metrics = pd.DataFrame(index=portfolio_values.index)
         rolling_metrics['date'] = portfolio_values['date']
 
@@ -230,16 +255,16 @@ class PerformanceMetrics:
 
         # Rolling volatility
         rolling_metrics['rolling_volatility'] = (
-            portfolio_values['returns'].rolling(window).std() * np.sqrt(252) * 100
+            portfolio_values['returns'].rolling(window).std() * np.sqrt(periods_per_year) * 100
         )
 
         # Rolling Sharpe
-        risk_free_rate = 0.02 / 252  # Daily risk-free rate
+        risk_free_rate = 0.02 / periods_per_year  # Per-period risk-free rate
         excess_returns = portfolio_values['returns'] - risk_free_rate
 
         rolling_metrics['rolling_sharpe'] = (
             excess_returns.rolling(window).mean() /
-            portfolio_values['returns'].rolling(window).std() * np.sqrt(252)
+            portfolio_values['returns'].rolling(window).std() * np.sqrt(periods_per_year)
         )
 
         # Rolling max drawdown
