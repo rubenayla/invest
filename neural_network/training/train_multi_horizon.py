@@ -4,6 +4,7 @@ Train multi-horizon neural network model using cached stock data.
 """
 
 import logging
+import shutil
 import sqlite3
 import sys
 from datetime import datetime
@@ -170,27 +171,25 @@ class MultiHorizonTrainer:
 
     def split_data(self, X: np.ndarray, y: Dict[str, np.ndarray],
                    train_ratio: float = 0.7, val_ratio: float = 0.15):
-        """Split data into train/val/test sets."""
+        """Split data into train/val/test sets using chronological ordering.
+
+        Data is already sorted by snapshot_date from the SQL query, so we
+        simply slice by position: oldest → train, middle → val, newest → test.
+        This prevents look-ahead bias (training on future data to predict the past).
+        """
         n_samples = len(X)
         n_train = int(n_samples * train_ratio)
         n_val = int(n_samples * val_ratio)
 
-        # Shuffle indices
-        indices = np.random.permutation(n_samples)
+        X_train = X[:n_train]
+        X_val = X[n_train:n_train + n_val]
+        X_test = X[n_train + n_val:]
 
-        train_idx = indices[:n_train]
-        val_idx = indices[n_train:n_train + n_val]
-        test_idx = indices[n_train + n_val:]
+        y_train = {h: y[h][:n_train] for h in y}
+        y_val = {h: y[h][n_train:n_train + n_val] for h in y}
+        y_test = {h: y[h][n_train + n_val:] for h in y}
 
-        X_train = X[train_idx]
-        X_val = X[val_idx]
-        X_test = X[test_idx]
-
-        y_train = {h: y[h][train_idx] for h in y}
-        y_val = {h: y[h][val_idx] for h in y}
-        y_test = {h: y[h][test_idx] for h in y}
-
-        logger.info(f'Data split: Train={len(X_train)}, Val={len(X_val)}, Test={len(X_test)}')
+        logger.info(f'Data split (chronological): Train={len(X_train)}, Val={len(X_val)}, Test={len(X_test)}')
 
         return X_train, X_val, X_test, y_train, y_val, y_test
 
@@ -245,15 +244,29 @@ class MultiHorizonTrainer:
 
                 logger.info(f'{horizon:3s}: MAE={mae:.2f}%, RMSE={rmse:.2f}%, Corr={correlation:.3f}')
 
-        # Save model
-        model_path = Path(__file__).parent / 'multi_horizon_model.pt'
-        torch.save({
+        # Save model with date in filename (preserves old models)
+        date_str = datetime.now().strftime('%Y%m%d')
+        model_dir = Path(__file__).parent
+        model_path = model_dir / f'multi_horizon_model_{date_str}.pt'
+
+        checkpoint = {
             'model_state_dict': model.model.state_dict(),
             'feature_dim': feature_dim,
             'feature_names': self.feature_engineer.feature_names,
             'training_history': history,
+            'split_method': 'chronological',
             'timestamp': datetime.now().isoformat()
-        }, model_path)
+        }
+        torch.save(checkpoint, model_path)
+
+        # Back up existing standard model, then overwrite with new one
+        standard_path = model_dir.parent / 'models' / 'multi_horizon_model.pt'
+        if standard_path.exists():
+            backup_path = model_dir / 'old_models' / f'multi_horizon_model_{date_str}_pre.pt'
+            backup_path.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(standard_path, backup_path)
+            logger.info(f'Backed up previous model to {backup_path}')
+        torch.save(checkpoint, standard_path)
 
         logger.info(f'\nModel saved to {model_path}')
 
