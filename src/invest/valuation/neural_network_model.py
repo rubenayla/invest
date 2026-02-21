@@ -123,7 +123,7 @@ class FeatureEngineer:
 
         # Standardize financials to dictionary format
         # This handles variability between offline cache (dict) and live yfinance (DataFrame)
-        financials = self._convert_to_dict(data.get('financials'))
+        financials = self._convert_to_dict(data.get('income'))
 
         # Merge info and financials
         info = {**data.get('info', {}), **financials}

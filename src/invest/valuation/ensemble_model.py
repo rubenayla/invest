@@ -319,7 +319,7 @@ class EnsembleModel(ValuationModel):
         try:
             info = data.get('info', {})
             cashflow = data.get('cashflow')
-            financials = data.get('financials')
+            financials = data.get('income')
 
             # Check 1: High CapEx intensity (>3% of revenue)
             if cashflow is not None and not cashflow.empty and financials is not None and not financials.empty:

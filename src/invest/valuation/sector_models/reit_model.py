@@ -167,7 +167,7 @@ class REITModel(ValuationModel):
             # Try to estimate FFO from available data
             # FFO = Net Income + Depreciation - Gains on Sales of Property
 
-            financials = data.get('financials')
+            financials = data.get('income')
             if financials is None or financials.empty:
                 return None
 

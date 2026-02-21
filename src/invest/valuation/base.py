@@ -255,7 +255,7 @@ class ValuationModel(ABC):
 
             return {
                 'info': info,
-                'financials': financials,
+                'income': financials,
                 'balance_sheet': balance_sheet,
                 'cashflow': cashflow,
                 'ticker': ticker,

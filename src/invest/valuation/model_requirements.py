@@ -240,7 +240,7 @@ class ModelDataRequirements:
 
         mock_data = {
             'info': {},
-            'financials': None,
+            'income': None,
             'balance_sheet': None,
             'cashflow': None,
         }
