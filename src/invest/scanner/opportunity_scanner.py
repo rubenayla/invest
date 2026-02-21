@@ -117,17 +117,21 @@ class OpportunityScanner:
         best = all_scores[0] if all_scores else None
         best_score = best.opportunity_score if best else None
 
-        # Determine if we should notify
+        # Determine if we should notify (for all stocks above threshold)
         notification_sent = False
         notification_message = None
 
-        if best and self.threshold_manager.should_notify(best.opportunity_score):
-            is_exceptional = best.opportunity_score >= self.threshold_manager.MAX_THRESHOLD
-            notification_message = self.notifier.format_notification(
-                best, threshold, is_exceptional
-            )
+        if above_threshold and self.threshold_manager.should_notify(above_threshold[0].opportunity_score):
+            messages = []
+            for stock in above_threshold[:5]:  # Cap at top 5 to avoid spam
+                is_exceptional = stock.opportunity_score >= self.threshold_manager.MAX_THRESHOLD
+                messages.append(self.notifier.format_notification(
+                    stock, threshold, is_exceptional
+                ))
+            notification_message = '\n---\n'.join(messages)
             notification_sent = True
-            logger.info(f"Notification triggered for {best.ticker} (score: {best.opportunity_score})")
+            tickers_str = ', '.join(s.ticker for s in above_threshold[:5])
+            logger.info(f"Notification triggered for {tickers_str}")
 
         # Record to database (unless dry run)
         if not dry_run:

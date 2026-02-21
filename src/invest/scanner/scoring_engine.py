@@ -104,8 +104,9 @@ class ScoringEngine:
             return 50.0  # Neutral score for missing data
 
         if inverse:
-            # Flip the scale for metrics where lower is better
+            # Flip value and target so lower-is-better maps to higher scores
             value = min_val + max_val - value
+            target = min_val + max_val - target
 
         if value <= min_val:
             # Below minimum: 0-20 points (linear)

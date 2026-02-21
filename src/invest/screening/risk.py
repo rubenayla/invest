@@ -50,29 +50,34 @@ def calculate_market_risk(data: Dict) -> Dict:
     sector = data.get("sector", "")
     market_cap = data.get("market_cap", 0) or 0
 
-    # Estimate beta based on sector (rough approximations)
-    sector_betas = {
-        "Technology": 1.3,
-        "Consumer Discretionary": 1.2,
-        "Financials": 1.4,
-        "Healthcare": 1.0,
-        "Energy": 1.5,
-        "Materials": 1.3,
-        "Industrials": 1.1,
-        "Consumer Staples": 0.7,
-        "Utilities": 0.6,
-        "Real Estate": 0.9,
-        "Communication Services": 1.2,
-    }
+    # Use actual beta from data if available (yfinance provides it)
+    actual_beta = data.get("beta")
+    if actual_beta and isinstance(actual_beta, (int, float)) and actual_beta > 0:
+        estimated_beta = actual_beta
+    else:
+        # Fall back to sector-based estimate
+        sector_betas = {
+            "Technology": 1.3,
+            "Consumer Discretionary": 1.2,
+            "Financials": 1.4,
+            "Healthcare": 1.0,
+            "Energy": 1.5,
+            "Materials": 1.3,
+            "Industrials": 1.1,
+            "Consumer Staples": 0.7,
+            "Utilities": 0.6,
+            "Real Estate": 0.9,
+            "Communication Services": 1.2,
+        }
 
-    estimated_beta = sector_betas.get(sector, 1.0)
+        estimated_beta = sector_betas.get(sector, 1.0)
 
-    # Adjust for size (smaller companies typically more volatile)
-    if market_cap > 0:
-        if market_cap < 2e9:  # Small cap
-            estimated_beta *= 1.2
-        elif market_cap > 200e9:  # Large cap
-            estimated_beta *= 0.9
+        # Adjust for size (smaller companies typically more volatile)
+        if market_cap > 0:
+            if market_cap < 2e9:  # Small cap
+                estimated_beta *= 1.2
+            elif market_cap > 200e9:  # Large cap
+                estimated_beta *= 0.9
 
     return {
         "estimated_beta": estimated_beta,

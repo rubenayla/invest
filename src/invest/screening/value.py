@@ -4,27 +4,19 @@ from ..config.schema import ValueThresholds
 
 
 def calculate_ev_ebit(data: Dict) -> Optional[float]:
-    """Calculate EV/EBIT ratio."""
-    ev_ebitda = data.get("ev_to_ebitda", 0)
-    if not ev_ebitda or ev_ebitda <= 0:
-        return None
-
-    # Rough approximation: EV/EBIT ≈ EV/EBITDA * 1.2-1.5
-    # (assuming depreciation is ~20-30% of EBITDA)
-    return ev_ebitda * 1.3
+    """Calculate EV/EBIT ratio from data if available, else None."""
+    # Only return a value if we have real EV/EBIT data (not a proxy)
+    return data.get("ev_to_ebit")
 
 
 def calculate_p_fcf(data: Dict) -> Optional[float]:
-    """Calculate Price/Free Cash Flow ratio."""
-    # Yahoo Finance doesn't directly provide FCF
-    # Use P/E as a rough proxy for now
-    # In a full implementation, would calculate from cash flow statement
-    pe = data.get("trailing_pe", 0)
-    if not pe or pe <= 0:
-        return None
-
-    # Rough approximation: P/FCF usually higher than P/E
-    return pe * 1.2
+    """Calculate Price/Free Cash Flow ratio from data if available, else None."""
+    # Only return a value if we have real P/FCF data (not a proxy)
+    price = data.get("current_price") or data.get("currentPrice")
+    fcf_per_share = data.get("fcf_per_share")
+    if price and fcf_per_share and fcf_per_share > 0:
+        return price / fcf_per_share
+    return None
 
 
 def assess_value(data: Dict, thresholds: ValueThresholds) -> Dict:
