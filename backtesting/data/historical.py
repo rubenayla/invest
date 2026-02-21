@@ -10,7 +10,6 @@ from typing import Any, Dict, List, Optional
 
 import numpy as np
 import pandas as pd
-import yfinance as yf
 
 logger = logging.getLogger(__name__)
 
@@ -93,27 +92,13 @@ class HistoricalDataProvider:
         }
 
     def get_prices(self, tickers: List[str], date: pd.Timestamp) -> Dict[str, float]:
-        """Get prices for specific tickers on a specific date."""
+        """Get prices for specific tickers on a specific date from the database."""
         prices: Dict[str, float] = {}
 
         for ticker in tickers:
-            try:
-                # Get price history around the date
-                start = date - timedelta(days=10)
-                end = date + timedelta(days=1)
-
-                data = yf.download(ticker, start=start, end=end, progress=False, auto_adjust=True)
-
-                if not data.empty:
-                    # Get the last available price up to and including the date
-                    valid_prices = data[data.index <= date]['Close']
-                    if not valid_prices.empty:
-                        # Ensure we return a Python float, not pandas scalar
-                        price_value = valid_prices.iloc[-1]
-                        prices[ticker] = float(price_value.item())
-
-            except Exception as e:
-                logger.warning(f"Could not get price for {ticker} on {date}: {e}")
+            price = self._get_single_price(ticker, date)
+            if price is not None:
+                prices[ticker] = price
 
         return prices
 
@@ -177,59 +162,122 @@ class HistoricalDataProvider:
         """
         Get fundamental data as it would have been available at a point in time.
 
-        Note: This is simplified - in reality, fundamental data has reporting delays.
-        For accurate backtesting, you'd need to account for earnings release dates.
+        Uses the fundamental_history table (point-in-time snapshots) instead of
+        yfinance's current data to avoid look-ahead bias. Applies a reporting
+        lag of 45 days (companies don't publish financials on period-end date).
         """
         fundamentals = {}
+        reporting_lag_days = 45  # Conservative lag for financial reporting
 
-        for ticker in tickers:
-            try:
-                stock = yf.Ticker(ticker)
-                info = stock.info
+        try:
+            conn = sqlite3.connect(self.db_path)
 
-                # Get quarterly financials
-                financials = stock.quarterly_financials
+            # Pre-fetch asset metadata (sector, industry) — these are stable
+            asset_meta = {}
+            meta_query = 'SELECT id, symbol, sector, industry FROM assets'
+            for row in conn.execute(meta_query).fetchall():
+                asset_meta[row[1]] = {'id': row[0], 'sector': row[2], 'industry': row[3]}
 
-                # Only use data from before the as-of date
-                # (In reality, there's a lag between period end and reporting)
+            for ticker in tickers:
+                meta = asset_meta.get(ticker, {})
+                asset_id = meta.get('id')
+
+                if asset_id is None:
+                    fundamentals[ticker] = {
+                        'sector': meta.get('sector'),
+                        'industry': meta.get('industry'),
+                    }
+                    continue
+
+                # Get the most recent snapshot available before (date - reporting_lag)
+                # This simulates what an investor would actually know at that date
+                available_date = (date - timedelta(days=reporting_lag_days)).strftime('%Y-%m-%d')
+
+                query = '''
+                    SELECT * FROM fundamental_history
+                    WHERE asset_id = ?
+                    AND snapshot_date <= ?
+                    ORDER BY snapshot_date DESC
+                    LIMIT 2
+                '''
+                cursor = conn.execute(query, (asset_id, available_date))
+                col_names = [desc[0] for desc in cursor.description]
+                rows = cursor.fetchall()
+
+                if not rows:
+                    fundamentals[ticker] = {
+                        'sector': meta.get('sector'),
+                        'industry': meta.get('industry'),
+                    }
+                    continue
+
+                latest = dict(zip(col_names, rows[0]))
+                previous = dict(zip(col_names, rows[1])) if len(rows) > 1 else None
+
+                # Compute P/E from price_history + trailing_eps if pe_ratio is empty
+                pe_ratio = latest.get('pe_ratio')
+                if pe_ratio is None and latest.get('trailing_eps'):
+                    price_on_date = self._get_single_price(ticker, date)
+                    if price_on_date and latest['trailing_eps'] > 0:
+                        pe_ratio = price_on_date / latest['trailing_eps']
+
+                # Compute revenue_growth from consecutive snapshots
+                revenue_growth = latest.get('revenue_growth')
+                if revenue_growth is None and previous:
+                    prev_rps = previous.get('revenue_per_share')
+                    curr_rps = latest.get('revenue_per_share')
+                    if prev_rps and curr_rps and prev_rps > 0:
+                        revenue_growth = (curr_rps - prev_rps) / prev_rps
+
                 fundamental_data = {
-                    'market_cap': info.get('marketCap'),
-                    'pe_ratio': info.get('trailingPE'),
-                    'pb_ratio': info.get('priceToBook'),
-                    'ps_ratio': info.get('priceToSalesTrailing12Months'),
-                    'debt_to_equity': info.get('debtToEquity'),
-                    'roe': info.get('returnOnEquity'),
-                    'roa': info.get('returnOnAssets'),
-                    'current_ratio': info.get('currentRatio'),
-                    'quick_ratio': info.get('quickRatio'),
-                    'gross_margins': info.get('grossMargins'),
-                    'operating_margins': info.get('operatingMargins'),
-                    'profit_margins': info.get('profitMargins'),
-                    'revenue_growth': info.get('revenueGrowth'),
-                    'earnings_growth': info.get('earningsGrowth'),
-                    'free_cash_flow': info.get('freeCashflow'),
-                    'dividend_yield': info.get('dividendYield'),
-                    'beta': info.get('beta'),
-                    'sector': info.get('sector'),
-                    'industry': info.get('industry')
+                    'market_cap': latest.get('market_cap'),
+                    'pe_ratio': pe_ratio,
+                    'pb_ratio': latest.get('price_to_book'),
+                    'ps_ratio': latest.get('price_to_sales'),
+                    'debt_to_equity': latest.get('debt_to_equity'),
+                    'roe': latest.get('return_on_equity'),
+                    'roa': latest.get('return_on_assets'),
+                    'current_ratio': latest.get('current_ratio'),
+                    'quick_ratio': latest.get('quick_ratio'),
+                    'gross_margins': latest.get('gross_margins'),
+                    'operating_margins': latest.get('operating_margins'),
+                    'profit_margins': latest.get('profit_margins'),
+                    'revenue_growth': revenue_growth,
+                    'earnings_growth': latest.get('earnings_growth'),
+                    'free_cash_flow': latest.get('free_cashflow'),
+                    'dividend_yield': latest.get('dividend_yield'),
+                    'beta': latest.get('beta'),
+                    'sector': meta.get('sector'),
+                    'industry': meta.get('industry'),
                 }
-
-                # Add time-sensitive data if available
-                if not financials.empty:
-                    # Get the most recent data before the as-of date
-                    valid_dates = [d for d in financials.columns if d <= date]
-                    if valid_dates:
-                        latest_date = max(valid_dates)
-                        fundamental_data['revenue'] = financials[latest_date].get('Total Revenue')
-                        fundamental_data['net_income'] = financials[latest_date].get('Net Income')
 
                 fundamentals[ticker] = fundamental_data
 
-            except Exception as e:
-                logger.warning(f"Could not get fundamentals for {ticker}: {e}")
-                fundamentals[ticker] = {}
+            conn.close()
+
+        except Exception as e:
+            logger.error(f"Error fetching fundamentals from database: {e}")
+            # Return empty dicts rather than crashing
+            for ticker in tickers:
+                if ticker not in fundamentals:
+                    fundamentals[ticker] = {}
 
         return fundamentals
+
+    def _get_single_price(self, ticker: str, date: pd.Timestamp) -> Optional[float]:
+        """Get the most recent closing price on or before a given date."""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            query = '''
+                SELECT close FROM price_history
+                WHERE ticker = ? AND date <= ?
+                ORDER BY date DESC LIMIT 1
+            '''
+            row = conn.execute(query, (ticker, date.strftime('%Y-%m-%d'))).fetchone()
+            conn.close()
+            return row[0] if row else None
+        except Exception:
+            return None
 
     def _calculate_metrics_as_of(self, tickers: List[str],
                                   price_history: pd.DataFrame,
