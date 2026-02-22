@@ -214,13 +214,8 @@ class SimpleRatiosModel(ValuationModel):
 
     def _get_industry_pe_multiple(self, info: Dict[str, Any]) -> float:
         """Get appropriate P/E multiple based on industry/growth."""
-        # Try to get forward P/E for growth adjustment
-        self._safe_float(info.get('forwardPE'))
-        self._safe_float(info.get('trailingPE'))
-
         # Use industry/sector to adjust multiple (simplified)
         sector = info.get('sector', '')
-        info.get('industry', '')
 
         base_pe = self.default_multiples['pe_ratio']
 
@@ -290,5 +285,5 @@ class SimpleRatiosModel(ValuationModel):
             return 0.0
 
         mean = sum(values) / len(values)
-        variance = sum((x - mean) ** 2 for x in values) / len(values)
+        variance = sum((x - mean) ** 2 for x in values) / (len(values) - 1)
         return variance ** 0.5

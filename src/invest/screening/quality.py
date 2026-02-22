@@ -59,66 +59,72 @@ def assess_quality(data: Dict, thresholds: QualityThresholds) -> Dict:
         "interest_coverage": interest_coverage,
     }
 
-    # Score each quality metric (0-1 scale)
-    score = 0
-    max_score = 0
+    # Continuous scoring: each component contributes 0.0-1.0, scaled to 0-100
+    component_scores = []
 
-    # ROIC scoring
+    # ROIC scoring — linear from 0 (ROIC<=0) to 1 (ROIC>=threshold)
     if thresholds.min_roic is not None:
-        max_score += 1
-        if roic >= thresholds.min_roic:
-            score += 1
-        else:
-            results["quality_flags"].append(
-                f"ROIC {roic:.1%} below threshold {thresholds.min_roic:.1%}"
+        t = thresholds.min_roic
+        s = min(1.0, max(0.0, roic / t)) if t > 0 else (1.0 if roic >= t else 0.0)
+        component_scores.append(s)
+        if roic < t:
+            results['quality_flags'].append(
+                f'ROIC {roic:.1%} below threshold {t:.1%}'
             )
 
-    # ROE scoring
+    # ROE scoring — linear from 0 (ROE<=0) to 1 (ROE>=threshold)
     if thresholds.min_roe is not None:
-        max_score += 1
-        if roe >= thresholds.min_roe:
-            score += 1
-        else:
-            results["quality_flags"].append(
-                f"ROE {roe:.1%} below threshold {thresholds.min_roe:.1%}"
+        t = thresholds.min_roe
+        s = min(1.0, max(0.0, roe / t)) if t > 0 else (1.0 if roe >= t else 0.0)
+        component_scores.append(s)
+        if roe < t:
+            results['quality_flags'].append(
+                f'ROE {roe:.1%} below threshold {t:.1%}'
             )
 
-    # Current ratio scoring
+    # Current ratio scoring — linear from 0 (ratio<=0) to 1 (ratio>=threshold)
     if thresholds.min_current_ratio is not None:
-        max_score += 1
-        if current_ratio >= thresholds.min_current_ratio:
-            score += 1
-        else:
-            results["quality_flags"].append(
-                f"Current ratio {current_ratio:.2f} below threshold {thresholds.min_current_ratio:.2f}"
+        t = thresholds.min_current_ratio
+        s = min(1.0, max(0.0, current_ratio / t)) if t > 0 else (
+            1.0 if current_ratio >= t else 0.0
+        )
+        component_scores.append(s)
+        if current_ratio < t:
+            results['quality_flags'].append(
+                f'Current ratio {current_ratio:.2f} below threshold {t:.2f}'
             )
 
-    # Debt/equity scoring (inverse - lower is better)
+    # Debt/equity scoring (inverse — lower is better)
+    # Linear from 1 (debt_equity<=0) to 0 (debt_equity>=2*threshold)
     if thresholds.max_debt_equity is not None:
-        max_score += 1
-        debt_equity_ratio = debt_equity  # DB stores as ratio (e.g. 0.93)
-        if debt_equity_ratio <= thresholds.max_debt_equity:
-            score += 1
-        else:
-            results["quality_flags"].append(
-                f"Debt/Equity {debt_equity_ratio:.2f} above threshold {thresholds.max_debt_equity:.2f}"
+        t = thresholds.max_debt_equity
+        upper = 2.0 * t if t > 0 else 1.0
+        s = min(1.0, max(0.0, 1.0 - debt_equity / upper)) if upper > 0 else (
+            1.0 if debt_equity <= t else 0.0
+        )
+        component_scores.append(s)
+        if debt_equity > t:
+            results['quality_flags'].append(
+                f'Debt/Equity {debt_equity:.2f} above threshold {t:.2f}'
             )
 
-    # Interest coverage scoring
+    # Interest coverage scoring — linear from 0 (coverage<=0) to 1 (coverage>=threshold)
     if thresholds.min_interest_coverage is not None and interest_coverage is not None:
-        max_score += 1
-        if interest_coverage >= thresholds.min_interest_coverage:
-            score += 1
-        else:
-            results["quality_flags"].append(
-                f"Interest coverage {interest_coverage:.1f} below threshold {thresholds.min_interest_coverage:.1f}"
+        t = thresholds.min_interest_coverage
+        s = min(1.0, max(0.0, interest_coverage / t)) if t > 0 else (
+            1.0 if interest_coverage >= t else 0.0
+        )
+        component_scores.append(s)
+        if interest_coverage < t:
+            results['quality_flags'].append(
+                f'Interest coverage {interest_coverage:.1f} below threshold {t:.1f}'
             )
 
     # Calculate final quality score (0-100 scale)
-    if max_score > 0:
-        results["quality_score"] = (score / max_score) * 100
+    if component_scores:
+        results['quality_score'] = (sum(component_scores) / len(component_scores)) * 100
     else:
-        results["quality_score"] = 0
+        results['quality_score'] = 0
 
     return results
 

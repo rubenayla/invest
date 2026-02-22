@@ -284,6 +284,11 @@ class BlackScholesModel(ValuationModel):
             },
         }
 
+        if asset_value_source == 'market_cap_plus_debt_minus_cash':
+            result.warnings.append(
+                'Fundamental asset value derived from market cap (circular); '
+                'no accounting-based total assets available'
+            )
         if not converged:
             result.warnings.append('Asset calibration did not fully converge; valuation confidence reduced')
         if not market_data.get('rate_is_fresh', False):
@@ -386,7 +391,14 @@ class BlackScholesModel(ValuationModel):
         shares: float,
     ) -> Tuple[str, float]:
         """
-        Estimate firm asset value from fundamental fields.
+        Estimate firm asset value from fundamental (non-market) fields.
+
+        Uses a priority chain of increasingly less ideal sources:
+        1. Balance-sheet total assets (best -- accounting-based, independent of
+           market price).
+        2. info-dict totalAssets snapshot (same accounting basis, less granular).
+        3. Book equity + debt (accounting-based reconstruction).
+        4. Market-cap-derived EV (CIRCULAR -- see warning below).
 
         Parameters
         ----------
@@ -408,6 +420,7 @@ class BlackScholesModel(ValuationModel):
         Tuple[str, float]
             (source_label, estimated_asset_value)
         """
+        # --- Priority 1: balance-sheet DataFrame total assets ----------------
         balance_sheet = data.get('balance_sheet')
         if balance_sheet is not None and hasattr(balance_sheet, 'index'):
             candidates = ['Total Assets', 'Total Asset', 'Total Assets As Reported']
@@ -421,10 +434,26 @@ class BlackScholesModel(ValuationModel):
                     except Exception:
                         pass
 
+        # --- Priority 2: info-dict totalAssets snapshot ----------------------
+        info = data.get('info', {})
+        info_total_assets = self._safe_float(
+            self._get_info_value(info, ['totalAssets', 'total_assets'])
+        )
+        if info_total_assets > 0:
+            return 'info_total_assets', info_total_assets
+
+        # --- Priority 3: book equity + debt ----------------------------------
         if book_value > 0 and shares > 0:
             return 'book_equity_plus_debt', max((book_value * shares) + total_debt, 1.0)
 
-        # Final fallback: enterprise-like approximation from market fields.
+        # --- Priority 4 (CIRCULAR): market-cap-derived EV --------------------
+        # BUG #17 -- Known limitation: using market_cap to derive asset value
+        # makes the Merton output partially circular because the "fundamental"
+        # fair value then reflects current market pricing.  This fallback is
+        # kept only when no accounting-based asset figure is available.  A
+        # proper fix would require an independent asset-value source (e.g.
+        # DCF-derived EV).  The confidence score is penalised when this path
+        # is taken (see _compute_confidence).
         return 'market_cap_plus_debt_minus_cash', max(market_cap + total_debt - total_cash, 1.0)
 
     def _calibrate_assets(
@@ -706,9 +735,10 @@ class BlackScholesModel(ValuationModel):
             score -= 0.1
 
         # Better confidence when using actual balance-sheet assets.
-        if asset_value_source == 'balance_sheet_total_assets':
+        if asset_value_source in ('balance_sheet_total_assets', 'info_total_assets'):
             score += 0.05
         elif asset_value_source == 'market_cap_plus_debt_minus_cash':
+            # Circular: market-derived EV used as "fundamental" asset value.
             score -= 0.05
 
         return min(max(score, 0.0), 1.0)

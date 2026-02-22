@@ -7,17 +7,32 @@ def calculate_financial_risk(data: Dict) -> Dict:
     """Calculate financial risk metrics."""
     debt_equity = data.get("debt_to_equity", 0) or 0
     current_ratio = data.get("current_ratio", 0) or 0
+    sector = data.get('sector', '')
 
     # Financial risk score (0-100, lower is less risky)
     financial_risk = 0
 
-    # Debt risk (debt_equity is a ratio, e.g. 0.93 = 93%)
-    if debt_equity > 1.0:  # Very high debt
-        financial_risk += 40
-    elif debt_equity > 0.5:  # High debt
-        financial_risk += 25
-    elif debt_equity > 0.25:  # Moderate debt
-        financial_risk += 10
+    # Financials (banks, insurance) naturally carry high D/E (10-15x);
+    # penalising them on the same scale as industrials double-counts risk
+    # already captured by the cyclical-sector penalty in business_risk.
+    financial_sectors = ['Financials']
+
+    if sector in financial_sectors:
+        # Sector-appropriate D/E thresholds for financials
+        if debt_equity > 20.0:
+            financial_risk += 40
+        elif debt_equity > 15.0:
+            financial_risk += 25
+        elif debt_equity > 10.0:
+            financial_risk += 10
+    else:
+        # Debt risk (debt_equity is a ratio, e.g. 0.93 = 93%)
+        if debt_equity > 1.0:  # Very high debt
+            financial_risk += 40
+        elif debt_equity > 0.5:  # High debt
+            financial_risk += 25
+        elif debt_equity > 0.25:  # Moderate debt
+            financial_risk += 10
 
     # Liquidity risk
     if current_ratio < 0.8:  # Poor liquidity
@@ -27,13 +42,23 @@ def calculate_financial_risk(data: Dict) -> Dict:
     elif current_ratio < 1.5:  # Adequate liquidity
         financial_risk += 5
 
+    # Sector-appropriate debt risk labels
+    if sector in financial_sectors:
+        debt_risk_level = (
+            'high' if debt_equity > 15.0
+            else 'moderate' if debt_equity > 10.0
+            else 'low'
+        )
+    else:
+        debt_risk_level = (
+            'high' if debt_equity > 0.5
+            else 'moderate' if debt_equity > 0.25
+            else 'low'
+        )
+
     return {
         "financial_risk_score": min(100, financial_risk),
-        "debt_risk_level": "high"
-        if debt_equity > 0.5
-        else "moderate"
-        if debt_equity > 0.25
-        else "low",
+        "debt_risk_level": debt_risk_level,
         "liquidity_risk_level": "high"
         if current_ratio < 1.0
         else "moderate"
@@ -240,16 +265,10 @@ def apply_cyclical_adjustments(stocks_data: list[Dict], thresholds: RiskThreshol
         adjusted = stock_data.copy()
         sector = stock_data.get("sector", "")
 
-        # Cyclical sectors get more conservative valuations
-        if sector in ["Energy", "Materials", "Industrials", "Consumer Discretionary"]:
-            # Adjust P/E expectations downward for cyclical stocks
-            if "trailing_pe" in adjusted and adjusted["trailing_pe"]:
-                adjusted["trailing_pe_adjusted"] = adjusted["trailing_pe"] * 0.85
-
-            # Mark as cyclical for special handling in valuation
-            adjusted["is_cyclical"] = True
-        else:
-            adjusted["is_cyclical"] = False
+        # Mark cyclical sectors for downstream consumers
+        adjusted['is_cyclical'] = sector in [
+            'Energy', 'Materials', 'Industrials', 'Consumer Discretionary',
+        ]
 
         adjusted_data.append(adjusted)
 

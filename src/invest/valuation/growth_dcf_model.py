@@ -104,6 +104,9 @@ class GrowthAdjustedDCFModel(DCFModel):
         operating_cf = self._get_operating_cash_flow(data)
         normalized_fcf = operating_cf - maintenance_capex
 
+        if normalized_fcf <= 0:
+            raise ModelNotSuitableError('growth_dcf', ticker, f'Negative normalized FCF ({normalized_fcf:,.0f}) - cannot produce meaningful DCF valuation')
+
         # Step 3: Project normalized FCF growth
         # Use terminal growth for the base business — above-terminal growth
         # comes entirely from _value_growth_investments to avoid double-counting
@@ -428,9 +431,13 @@ class GrowthAdjustedDCFModel(DCFModel):
 
             roic = nopat / invested_capital
 
-            # Sanity check - ROIC should be reasonable
-            if roic < 0 or roic > 1.0:  # >100% ROIC is suspicious
+            # Sanity check - ROIC should be positive
+            if roic < 0:
                 return None
+
+            # Cap at 100% for computation — asset-light businesses can legitimately
+            # exceed 100% ROIC but unbounded values distort the DCF
+            roic = min(roic, 1.0)
 
             return roic
 

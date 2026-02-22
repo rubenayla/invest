@@ -137,10 +137,12 @@ def compute_consensus(
     consensus_fv = current_price * math.exp(avg_log)
     margin = (consensus_fv - current_price) / current_price
 
-    # 6. Determine confidence label
-    if len(valid) >= 4:
+    # 6. Determine confidence label (model count + avg weight-adjusted confidence)
+    avg_conf = sum(m.confidence * config.MODEL_WEIGHTS.get(m.model_name, config.DEFAULT_MODEL_WEIGHT)
+                   for m in valid) / len(valid)
+    if len(valid) >= 4 and avg_conf >= 0.5:
         conf_label = 'high'
-    elif len(valid) >= 2:
+    elif len(valid) >= 2 and avg_conf >= 0.3:
         conf_label = 'medium'
     else:
         conf_label = 'low'
@@ -180,7 +182,7 @@ def compute_consensus_from_dicts(
             continue
 
         fv = val.get('fair_value')
-        if not isinstance(fv, (int, float)):
+        if not isinstance(fv, (int, float)) or fv <= 0:
             continue
 
         conf = resolve_confidence(val.get('confidence'), config)
