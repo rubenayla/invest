@@ -162,7 +162,7 @@ class DatabaseHealthChecker:
         """Check which stocks have which valuation models."""
         model_coverage = {}
 
-        models = ['dcf', 'dcf_enhanced', 'rim', 'simple_ratios', 'black_scholes', 'gbm_1y', 'gbm_3y']
+        models = ['dcf', 'dcf_enhanced', 'rim', 'simple_ratios', 'gbm_1y', 'gbm_3y']
 
         for model in models:
             count = self.cursor.execute('''

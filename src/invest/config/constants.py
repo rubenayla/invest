@@ -106,7 +106,6 @@ class ConsensusConfig:
 
         # Other fundamental models
         'rim': 0.7,
-        'black_scholes': 0.5,
         'simple_ratios': 0.4,
 
         # Sector-specific (authoritative when applicable)

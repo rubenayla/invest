@@ -9,7 +9,6 @@ import logging
 from typing import Any, Dict, List, Optional
 
 from .base import ValuationModel, ValuationResult
-from .black_scholes_model import BlackScholesModel
 from .dcf_model import DCFModel, EnhancedDCFModel, MultiStageDCFModel
 from .ensemble_model import EnsembleModel
 from .growth_dcf_model import GrowthAdjustedDCFModel
@@ -36,7 +35,6 @@ class ModelRegistry:
         'dcf_enhanced': EnhancedDCFModel,
         'multi_stage_dcf': MultiStageDCFModel,
         'growth_dcf': GrowthAdjustedDCFModel,
-        'black_scholes': BlackScholesModel,
         'rim': RIMModel,
         'simple_ratios': SimpleRatiosModel,
         'reit': REITModel,
@@ -82,14 +80,6 @@ class ModelRegistry:
             'time_horizon': '10 years',
             'complexity': 'high',
             'data_requirements': ['Multi-year cash flow data', 'CapEx breakdown', 'ROIC calculation data'],
-        },
-        'black_scholes': {
-            'name': 'Black-Scholes-Merton',
-            'description': 'Structural equity valuation treating equity as a call option on firm assets',
-            'suitable_for': ['Leveraged companies', 'Credit-risk-aware valuation', 'Balance-sheet-sensitive analysis'],
-            'time_horizon': '1 year',
-            'complexity': 'high',
-            'data_requirements': ['Market cap', 'Total debt', 'Shares outstanding', 'Price history volatility', 'Risk-free rate'],
         },
         'rim': {
             'name': 'Residual Income Model',
@@ -384,10 +374,6 @@ class ModelRegistry:
         # Add simple ratios
         potential_models.append('simple_ratios')
 
-        # Structural model for debt-sensitive valuation
-        if info.get('totalDebt') and info.get('sharesOutstanding'):
-            potential_models.append('black_scholes')
-
         # DCF models - good for most companies
         if self._has_positive_cash_flow(data):
             # Check for growth/reinvestment characteristics for Growth-Adjusted DCF
@@ -612,7 +598,3 @@ def calculate_growth_dcf_valuation(ticker: str, verbose: bool = False) -> Option
     result = run_valuation('growth_dcf', ticker, verbose)
     return result.to_dict() if result else None
 
-def calculate_black_scholes_valuation(ticker: str, verbose: bool = False) -> Optional[dict]:
-    """Backward compatibility wrapper for Black-Scholes-Merton model."""
-    result = run_valuation('black_scholes', ticker, verbose)
-    return result.to_dict() if result else None

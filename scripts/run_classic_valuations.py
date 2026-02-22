@@ -35,7 +35,6 @@ MODELS_TO_RUN = [
     ('simple_ratios', 'simple_ratios'),
     ('growth_dcf', 'growth_dcf'),
     ('multi_stage_dcf', 'multi_stage_dcf'),
-    ('black_scholes', 'black_scholes'),
 ]
 
 

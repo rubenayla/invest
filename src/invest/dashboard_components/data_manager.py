@@ -88,7 +88,6 @@ class DataManager:
                 "simple_ratios": "not_run",
                 "rim": "not_run",
                 "multi_stage_dcf": "not_run",
-                "black_scholes": "not_run",
             },
             "progress": {
                 "completed": 0,

@@ -54,7 +54,7 @@ class ValuationConfig(BaseModel):
 
     models: List[str] = Field(
         default=["dcf", "rim"]
-    )  # Models to run: dcf, dcf_enhanced, rim, simple_ratios, black_scholes
+    )  # Models to run: dcf, dcf_enhanced, rim, simple_ratios
     scenarios: List[str] = Field(default=["base"])  # Scenarios: bear, base, bull
 
     # DCF specific

@@ -106,7 +106,7 @@ class HTMLGenerator:
             <ul>
                 <li><strong>Fair Value:</strong> Estimated intrinsic value per share from each model</li>
                 <li><strong>Margin of Safety:</strong> How much upside/downside vs current price</li>
-                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases), Black-Scholes-Merton (Structural equity option model), GBM (Gradient Boosted Machine ranking models - 6 variants: Full 1y/3y, Lite 1y/3y, Opportunistic 1y/3y)</li>
+                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases), GBM (Gradient Boosted Machine ranking models - 6 variants: Full 1y/3y, Lite 1y/3y, Opportunistic 1y/3y)</li>
                 <li><strong>Consensus:</strong> Average of all successful models</li>
             </ul>
             <p class="disclaimer">⚠️ This is for educational purposes. Not investment advice. Do your own research.</p>
@@ -206,7 +206,6 @@ class HTMLGenerator:
                         <th title="Simple Ratios - P/E, P/B, and other multiple-based valuations">Ratios</th>
                         <th title="Residual Income Model - Values excess returns above cost of equity based on book value">RIM</th>
                         <th title="Multi-Stage DCF - Models different growth phases over time">Multi-DCF</th>
-                        <th title="Black-Scholes-Merton structural model - values equity as a call option on firm assets">B-S</th>
                         <th title="Gradient Boosted Machine 1-year ranking (LightGBM with 464 features, Rank IC 0.61)">GBM 1y</th>
                         <th title="Gradient Boosted Machine 3-year ranking (LightGBM with 464 features, Rank IC 0.59)">GBM 3y</th>
                         <th title="Gradient Boosted Machine Lite 1-year ranking (LightGBM with 247 features, Rank IC 0.59)">GBM Lite 1y</th>
@@ -242,7 +241,6 @@ class HTMLGenerator:
             "simple_ratios": "Ratios",
             "rim": "RIM",
             "multi_stage_dcf": "Multi",
-            "black_scholes": "B-S",
             "gbm_1y": "GBM1y",
             "gbm_3y": "GBM3y",
             "gbm_lite_1y": "GBM-Lite1y",
@@ -285,8 +283,6 @@ class HTMLGenerator:
         ratios_html = self._format_valuation_cell(valuations.get("simple_ratios", {}), current_price)
         rim_html = self._format_valuation_cell(valuations.get("rim", {}), current_price)
         multi_dcf_html = self._format_valuation_cell(valuations.get("multi_stage_dcf", {}), current_price)
-        black_scholes_html = self._format_valuation_cell(valuations.get("black_scholes", {}), current_price, show_confidence=True)
-
         # Format GBM predictions (6 models)
         gbm_1y_html = self._format_valuation_cell(valuations.get("gbm_1y", {}), current_price, show_confidence=True)
         gbm_3y_html = self._format_valuation_cell(valuations.get("gbm_3y", {}), current_price, show_confidence=True)
@@ -311,7 +307,6 @@ class HTMLGenerator:
             <td>{ratios_html}</td>
             <td>{rim_html}</td>
             <td>{multi_dcf_html}</td>
-            <td>{black_scholes_html}</td>
             <td>{gbm_1y_html}</td>
             <td>{gbm_3y_html}</td>
             <td>{gbm_lite_1y_html}</td>
