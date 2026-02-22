@@ -142,12 +142,14 @@ def load_stock_data(ticker: str, reader: StockDataReader) -> Optional[dict]:
     return stock_data
 
 
-def run_valuation(registry_name: str, ticker: str, stock_data: dict) -> Optional[dict]:
+def run_valuation(registry: ModelRegistry, registry_name: str, ticker: str, stock_data: dict) -> Optional[dict]:
     """
     Run a single valuation model on a stock.
 
     Parameters
     ----------
+    registry : ModelRegistry
+        Shared model registry instance
     registry_name : str
         Model name as used in the ModelRegistry
     ticker : str
@@ -160,7 +162,6 @@ def run_valuation(registry_name: str, ticker: str, stock_data: dict) -> Optional
     dict
         Valuation result or error information
     """
-    registry = ModelRegistry()
 
     try:
         # Get model instance
@@ -228,65 +229,66 @@ def main():
 
     # Get list of tickers from database
     print('\n📂 Loading tickers from database...')
+    registry = ModelRegistry()
     conn = sqlite3.connect(db_path)
-    query = 'SELECT DISTINCT ticker FROM current_stock_data WHERE current_price IS NOT NULL'
-    tickers = [row[0] for row in conn.execute(query).fetchall()]
-    print(f'   Found {len(tickers)} tickers with price data')
+    try:
+        query = 'SELECT DISTINCT ticker FROM current_stock_data WHERE current_price IS NOT NULL'
+        tickers = [row[0] for row in conn.execute(query).fetchall()]
+        print(f'   Found {len(tickers)} tickers with price data')
 
-    # Statistics
-    stats = {db_name: {'success': 0, 'unsuitable': 0, 'error': 0, 'cache_miss': 0} for _, db_name in MODELS_TO_RUN}
+        # Statistics
+        stats = {db_name: {'success': 0, 'unsuitable': 0, 'error': 0, 'cache_miss': 0} for _, db_name in MODELS_TO_RUN}
 
-    # Run valuations on each stock
-    print('\n🔄 Running valuations...')
+        # Run valuations on each stock
+        print('\n🔄 Running valuations...')
 
-    for i, ticker in enumerate(tickers):
-        # Load stock data from SQLite
-        stock_data = load_stock_data(ticker, reader)
+        for i, ticker in enumerate(tickers):
+            # Load stock data from SQLite
+            stock_data = load_stock_data(ticker, reader)
 
-        if not stock_data:
-            # Save "no data" failure for all models
-            for _, db_name in MODELS_TO_RUN:
-                stats[db_name]['cache_miss'] += 1
-                error_result = {
-                    'suitable': False,
-                    'error': 'Stock data not found in database',
-                    'reason': 'Missing stock data'
-                }
-                save_to_database(conn, ticker, db_name, error_result)
-            continue
+            if not stock_data:
+                # Save "no data" failure for all models
+                for _, db_name in MODELS_TO_RUN:
+                    stats[db_name]['cache_miss'] += 1
+                    error_result = {
+                        'suitable': False,
+                        'error': 'Stock data not found in database',
+                        'reason': 'Missing stock data'
+                    }
+                    save_to_database(conn, ticker, db_name, error_result)
+                continue
 
-        # Run each model
-        for registry_name, db_name in MODELS_TO_RUN:
-            try:
-                result = run_valuation(registry_name, ticker, stock_data)
+            # Run each model
+            for registry_name, db_name in MODELS_TO_RUN:
+                try:
+                    result = run_valuation(registry, registry_name, ticker, stock_data)
 
-                # Save to database
-                save_to_database(conn, ticker, db_name, result)
+                    # Save to database
+                    save_to_database(conn, ticker, db_name, result)
 
-                if result.get('suitable', False):
-                    stats[db_name]['success'] += 1
-                else:
-                    if 'error' in result:
-                        stats[db_name]['error'] += 1
+                    if result.get('suitable', False):
+                        stats[db_name]['success'] += 1
                     else:
-                        stats[db_name]['unsuitable'] += 1
+                        if 'error' in result:
+                            stats[db_name]['error'] += 1
+                        else:
+                            stats[db_name]['unsuitable'] += 1
 
-            except Exception as e:
-                print(f'   [{i+1}/{len(tickers)}] {ticker} - {db_name}: Unexpected error - {str(e)}')
-                error_result = {
-                    'suitable': False,
-                    'error': str(e),
-                    'reason': f'Unexpected error: {type(e).__name__}'
-                }
-                save_to_database(conn, ticker, db_name, error_result)
-                stats[db_name]['error'] += 1
+                except Exception as e:
+                    print(f'   [{i+1}/{len(tickers)}] {ticker} - {db_name}: Unexpected error - {str(e)}')
+                    error_result = {
+                        'suitable': False,
+                        'error': str(e),
+                        'reason': f'Unexpected error: {type(e).__name__}'
+                    }
+                    save_to_database(conn, ticker, db_name, error_result)
+                    stats[db_name]['error'] += 1
 
-        # Progress update
-        if (i + 1) % 50 == 0:
-            print(f'   [{i+1}/{len(tickers)}] Processed {ticker}...')
-
-    # Close database connection
-    conn.close()
+            # Progress update
+            if (i + 1) % 50 == 0:
+                print(f'   [{i+1}/{len(tickers)}] Processed {ticker}...')
+    finally:
+        conn.close()
 
     # Summary
     print('\n✅ Classic valuations complete!')

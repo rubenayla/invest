@@ -84,6 +84,7 @@ class StockDataReader:
                 'longName': row['long_name'],
                 'shortName': row['short_name'],
                 'currency': row['currency'],
+                'financialCurrency': row['financial_currency'] or 'USD',
                 'exchange': row['exchange'],
                 'country': row['country'],
                 # Critical fields for valuation models (also in financials for compatibility)
@@ -223,36 +224,51 @@ class StockDataReader:
             json.loads(balance_sheet_json) if balance_sheet_json else [],
         ]
 
-        # Search for metric across all sources
+        metric_lower = metric.lower()
+
+        def _extract_history(item: dict) -> Optional[Dict[str, float]]:
+            """Extract year:value pairs from a matching row."""
+            history = {}
+            for key, value in item.items():
+                if key == 'index':
+                    continue
+
+                # Extract year from date string (e.g., '2025-05-31 00:00:00' -> '2025')
+                year = key[:4] if len(key) >= 4 else key
+
+                # Skip NaN values
+                if value is not None and not (isinstance(value, float) and value != value):
+                    history[year] = value
+
+            # Return sorted by year (newest first)
+            if history:
+                return dict(sorted(history.items(), reverse=True))
+            return None
+
+        # Pass 1: exact match (case-insensitive)
         for data_list in data_sources:
             if not isinstance(data_list, list):
                 continue
-
             for item in data_list:
                 if not isinstance(item, dict) or 'index' not in item:
                     continue
+                if item['index'].lower() == metric_lower:
+                    result = _extract_history(item)
+                    if result:
+                        return result
 
-                # Check if this row matches our metric (case-insensitive partial match)
+        # Pass 2: partial/substring match as fallback
+        for data_list in data_sources:
+            if not isinstance(data_list, list):
+                continue
+            for item in data_list:
+                if not isinstance(item, dict) or 'index' not in item:
+                    continue
                 item_name = item['index'].lower()
-                metric_lower = metric.lower()
-
                 if metric_lower in item_name or item_name in metric_lower:
-                    # Extract year:value pairs
-                    history = {}
-                    for key, value in item.items():
-                        if key == 'index':
-                            continue
-
-                        # Extract year from date string (e.g., '2025-05-31 00:00:00' -> '2025')
-                        year = key[:4] if len(key) >= 4 else key
-
-                        # Skip NaN values
-                        if value is not None and not (isinstance(value, float) and value != value):
-                            history[year] = value
-
-                    # Return sorted by year (newest first)
-                    if history:
-                        return dict(sorted(history.items(), reverse=True))
+                    result = _extract_history(item)
+                    if result:
+                        return result
 
         return None
 

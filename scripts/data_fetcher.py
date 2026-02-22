@@ -125,7 +125,7 @@ class StockDataCache:
                 INSERT OR REPLACE INTO current_stock_data (
                     ticker,
                     current_price, market_cap, sector, industry, long_name, short_name,
-                    currency, exchange, country,
+                    currency, financial_currency, exchange, country,
                     trailing_pe, forward_pe, price_to_book, return_on_equity, debt_to_equity,
                     current_ratio, revenue_growth, earnings_growth, operating_margins, profit_margins,
                     total_revenue, total_cash, total_debt, shares_outstanding,
@@ -137,13 +137,13 @@ class StockDataCache:
                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                    ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?, ?
                 )
             ''', (
                 ticker,
                 info.get('currentPrice'), info.get('marketCap'), info.get('sector'),
                 info.get('industry'), info.get('longName'), info.get('shortName'),
-                info.get('currency'), info.get('exchange'), info.get('country'),
+                info.get('currency'), info.get('financialCurrency'), info.get('exchange'), info.get('country'),
                 financials.get('trailingPE'), financials.get('forwardPE'), financials.get('priceToBook'),
                 financials.get('returnOnEquity'), financials.get('debtToEquity'), financials.get('currentRatio'),
                 financials.get('revenueGrowth'), financials.get('earningsGrowth'), financials.get('operatingMargins'),
@@ -248,8 +248,8 @@ class AsyncStockDataFetcher:
         for attempt in range(max_retries):
             try:
                 if attempt > 0:
-                    # Exponential backoff: 5s, 10s, 20s, 40s, 80s, 160s
-                    wait_time = 5 * (2 ** (attempt - 1))
+                    # Exponential backoff: 5s, 10s, 20s, 30s, 30s, 30s (capped)
+                    wait_time = min(5 * (2 ** (attempt - 1)), 30)
                     logger.info(f"{ticker}: Retry {attempt}/{max_retries} after {wait_time}s wait")
                     time.sleep(wait_time)
 
@@ -425,7 +425,7 @@ class AsyncStockDataFetcher:
             for i, future in enumerate(as_completed(future_to_ticker), 1):
                 ticker = future_to_ticker[future]
                 try:
-                    data = future.result(timeout=30)  # 30 second timeout per stock
+                    data = future.result(timeout=300)  # 5 min timeout to accommodate retries
                     results[ticker] = data
 
                     if i % 10 == 0 or i == len(tickers):

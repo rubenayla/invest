@@ -201,7 +201,8 @@ class BacktestResults:
                 'date': config.end_date,
                 'value': float(final_value.iloc[0]) if hasattr(final_value, 'iloc') else float(final_value),
                 'cash': 0,  # Placeholder - all liquidated at end
-                'holdings': {}  # Placeholder - all liquidated at end
+                'holdings': {},  # Placeholder - all liquidated at end
+                'is_liquidation': True,  # Flag so metrics can exclude from turnover
             }
             self.portfolio_values = pd.concat([
                 self.portfolio_values,

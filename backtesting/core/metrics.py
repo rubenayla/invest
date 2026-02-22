@@ -93,9 +93,11 @@ class PerformanceMetrics:
         calmar = cagr / abs(max_drawdown) if max_drawdown != 0 else 0
         metrics['calmar_ratio'] = calmar
 
-        # Win Rate
-        positive_returns = portfolio_values['returns'] > 0
-        win_rate = positive_returns.sum() / len(portfolio_values['returns'].dropna()) * 100
+        # Win Rate (periods with nonzero returns only — excludes flat periods)
+        nonzero_returns = portfolio_values['returns'].dropna()
+        nonzero_returns = nonzero_returns[nonzero_returns != 0]
+        n_active = len(nonzero_returns)
+        win_rate = (nonzero_returns > 0).sum() / n_active * 100 if n_active > 0 else 0
         metrics['win_rate'] = win_rate
 
         # Average Win/Loss
@@ -133,8 +135,14 @@ class PerformanceMetrics:
         metrics['sortino_ratio'] = sortino
 
         # Portfolio Turnover (estimated from value changes)
-        value_changes = portfolio_values['value'].diff().abs()
-        avg_value = portfolio_values['value'].mean()
+        # Exclude final liquidation row if flagged by the engine
+        if 'is_liquidation' in portfolio_values.columns:
+            turnover_mask = ~portfolio_values['is_liquidation'].fillna(False).astype(bool)
+            pv_for_turnover = portfolio_values.loc[turnover_mask, 'value']
+        else:
+            pv_for_turnover = portfolio_values['value']
+        value_changes = pv_for_turnover.diff().abs()
+        avg_value = pv_for_turnover.mean()
         turnover = value_changes.sum() / (avg_value * years) if years > 0 else 0
         metrics['turnover'] = turnover
 
@@ -184,25 +192,33 @@ class PerformanceMetrics:
             metrics['alpha'] = alpha
 
             # Beta (correlation with benchmark)
-            # Resample both to daily frequency
-            portfolio_daily = portfolio_values.set_index('date')['returns']
-            benchmark_daily = benchmark_period.pct_change()
-
-            # Align indices and ensure both are Series
+            # Resample both to common (daily) frequency to avoid misalignment
             try:
+                # Build daily portfolio values, forward-fill sparse rebalance dates
+                portfolio_vals = portfolio_values.set_index('date')['value']
+                portfolio_vals.index = pd.to_datetime(portfolio_vals.index)
+                portfolio_vals = portfolio_vals[~portfolio_vals.index.duplicated(keep='last')]
+                portfolio_vals = portfolio_vals.resample('D').ffill().dropna()
+                portfolio_daily = portfolio_vals.pct_change().dropna()
+
+                benchmark_series_idx = benchmark_period.copy()
+                benchmark_series_idx.index = pd.to_datetime(benchmark_series_idx.index)
+                benchmark_series_idx = benchmark_series_idx[~benchmark_series_idx.index.duplicated(keep='last')]
+                benchmark_daily = benchmark_series_idx.resample('D').ffill().dropna().pct_change().dropna()
+
                 # Ensure both are Series, not DataFrames
                 if isinstance(portfolio_daily, pd.DataFrame):
                     portfolio_daily = portfolio_daily.iloc[:, 0]
                 if isinstance(benchmark_daily, pd.DataFrame):
                     benchmark_daily = benchmark_daily.iloc[:, 0]
 
-                # Create aligned DataFrame
+                # Create aligned DataFrame on common dates
                 aligned_data = pd.concat([portfolio_daily, benchmark_daily], axis=1, join='inner')
                 aligned_data.columns = ['portfolio', 'benchmark']
                 aligned = aligned_data.dropna()
 
             except Exception as e:
-                logger.warning(f"Could not align portfolio and benchmark data: {e}")
+                logger.warning(f'Could not align portfolio and benchmark data: {e}')
                 aligned = pd.DataFrame()  # Empty DataFrame to skip correlation calculations
 
             if len(aligned) > 1:
