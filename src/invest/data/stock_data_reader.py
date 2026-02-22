@@ -5,10 +5,13 @@ Provides unified interface to read stock data from SQLite database.
 """
 
 import json
+import logging
 import sqlite3
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+logger = logging.getLogger(__name__)
 
 
 class StockDataReader:
@@ -339,21 +342,26 @@ class StockDataReader:
         Dict[str, Any]
             Price payload with `closes`, `dates`, `last_date`, and `price_points`.
         """
-        conn = sqlite3.connect(self.db_path)
-        conn.row_factory = sqlite3.Row
-        cursor = conn.cursor()
-        cursor.execute(
-            '''
-            SELECT date, close
-            FROM price_history
-            WHERE ticker = ? AND close IS NOT NULL
-            ORDER BY date DESC
-            LIMIT ?
-            ''',
-            (ticker, limit),
-        )
-        rows = cursor.fetchall()
-        conn.close()
+        empty = {'closes': [], 'dates': [], 'last_date': None, 'price_points': 0}
+        try:
+            conn = sqlite3.connect(self.db_path)
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            cursor.execute(
+                '''
+                SELECT date, close
+                FROM price_history
+                WHERE ticker = ? AND close IS NOT NULL
+                ORDER BY date DESC
+                LIMIT ?
+                ''',
+                (ticker, limit),
+            )
+            rows = cursor.fetchall()
+            conn.close()
+        except sqlite3.OperationalError:
+            logger.warning('price_history table not found for %s — returning empty result', ticker)
+            return empty
 
         if not rows:
             return {'closes': [], 'dates': [], 'last_date': None, 'price_points': 0}

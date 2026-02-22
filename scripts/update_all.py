@@ -106,6 +106,9 @@ def main() -> int:
             f'Fetching data ({args.universe})',
         )
 
+    # --- Phase 2: Valuations (independent of each other) ---
+    # GBM reads fundamental_history + price_history; classic reads current_stock_data.
+    # Both write to valuation_results. Order between them doesn't matter.
     if not args.skip_gbm:
         run_gbm_predictions()
 
@@ -123,6 +126,10 @@ def main() -> int:
             'Classic valuations',
         )
 
+    # --- Phase 3: Consumers (independent of each other, need Phase 2 done) ---
+    # Dashboard renders valuation_results into HTML.
+    # Scanner reads valuation_results for its value_score component.
+    # Neither depends on the other; order between them doesn't matter.
     if not args.skip_dashboard:
         run_cmd(
             ['uv', 'run', 'python', 'scripts/dashboard.py'],

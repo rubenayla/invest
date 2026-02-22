@@ -221,7 +221,7 @@ class UniversalStockFetcher:
             'ev_to_revenue': info.get('enterpriseToRevenue'),
             'return_on_equity': info.get('returnOnEquity'),
             'return_on_assets': info.get('returnOnAssets'),
-            'debt_to_equity': info.get('debtToEquity'),
+            'debt_to_equity': self._calc_debt_to_equity(info),
             'current_ratio': info.get('currentRatio'),
             'revenue_growth': info.get('revenueGrowth'),
             'earnings_growth': info.get('earningsGrowth'),
@@ -238,6 +238,23 @@ class UniversalStockFetcher:
         })
 
         return normalized
+
+    @staticmethod
+    def _calc_debt_to_equity(info: Dict) -> Optional[float]:
+        """Calculate D/E as a ratio from raw fields.
+
+        yfinance returns debtToEquity as a percentage (e.g. 150 meaning 1.5x).
+        We recompute it from totalDebt / (bookValue * sharesOutstanding) so the
+        value is stored as a proper ratio, consistent with data_fetcher.py.
+        """
+        total_debt = info.get('totalDebt')
+        book_value = info.get('bookValue')
+        shares = info.get('sharesOutstanding')
+        if total_debt and book_value and shares and book_value > 0:
+            total_equity = book_value * shares
+            if total_equity > 0:
+                return total_debt / total_equity
+        return None
 
     def _convert_prices(self, data: Dict) -> Dict:
         """Convert price fields to target currency."""

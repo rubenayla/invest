@@ -173,9 +173,14 @@ class StockDataCache:
 
         # Check for minimum required fields
         info = data.get('info', {})
-        if not info or not info.get('currentPrice'):
-            logger.error(f'{ticker}: Skipping save - missing currentPrice in info dict')
+        if not info:
+            logger.error(f'{ticker}: Skipping save - empty info dict')
             return
+        if not info.get('currentPrice'):
+            # Don't skip — currentPrice may be missing in fresh fetch for some
+            # stocks (e.g., ADRs, delisted). Let the save proceed so other valid
+            # fields (sector, financials, etc.) are still cached.
+            logger.warning(f'{ticker}: currentPrice is missing — saving anyway')
 
         # Check if we have at least some data (not all None/empty)
         has_sector = info.get('sector') is not None
@@ -198,23 +203,24 @@ class StockDataCache:
             'data_source': 'yfinance'
         }
 
-        # Save to JSON atomically (backup)
+        # Save to SQLite first (source of truth)
+        self.save_to_sqlite(ticker, data)
+
+        # Save to JSON (best-effort backup). If this fails, SQLite still has
+        # the data so we log a warning instead of raising.
         try:
             with open(temp_file, 'w') as f:
                 json.dump(data, f, indent=2)
             os.rename(temp_file, cache_file)
         except Exception as e:
+            logger.warning(f'{ticker}: SQLite write succeeded but JSON write failed: {e}')
             if temp_file.exists():
                 temp_file.unlink()
-            raise e
-
-        # Save to SQLite (primary)
-        self.save_to_sqlite(ticker, data)
 
         # Update index
         self.index['stocks'][ticker] = {
             'last_updated': datetime.now().isoformat(),
-            'file_size': cache_file.stat().st_size,
+            'file_size': cache_file.stat().st_size if cache_file.exists() else 0,
             'has_financials': 'financials' in data,
             'has_info': 'info' in data,
             'has_cashflow': 'cashflow' in data,
@@ -329,21 +335,41 @@ class AsyncStockDataFetcher:
 
                 # Recent price data (for charts/trends)
                 try:
+                    from datetime import timedelta
                     hist = stock.history(period='1y')
                     if not hist.empty:
+                        # Use calendar-day cutoff, not bar index, to handle
+                        # holidays / missing trading days correctly.
+                        cutoff_30d = hist.index[-1] - timedelta(days=30)
+                        hist_30d = hist[hist.index >= cutoff_30d]
+                        if len(hist_30d) >= 2:
+                            trend_30d = float((hist_30d['Close'].iloc[-1] / hist_30d['Close'].iloc[0] - 1) * 100)
+                        else:
+                            trend_30d = None
                         data['price_data'] = {
                             'current_price': float(hist['Close'].iloc[-1]),
                             'price_52w_high': float(hist['High'].max()),
                             'price_52w_low': float(hist['Low'].min()),
                             'avg_volume': int(hist['Volume'].mean()),
-                            'price_trend_30d': float((hist['Close'].iloc[-1] / hist['Close'].iloc[-30] - 1) * 100) if len(hist) >= 30 else None
+                            'price_trend_30d': trend_30d,
                         }
                 except Exception as e:
                     logger.warning(f"Could not fetch price data for {ticker}: {e}")
 
                 # Raw financial statements (for DCF/RIM valuation models)
+                # NOTE: These raw statements are stored WITHOUT currency conversion.
+                # For ADRs reporting in non-USD (e.g., JPY, EUR), values are in the
+                # original financialCurrency. We store the currency alongside so
+                # downstream consumers can detect and handle this. Automatic
+                # conversion is too risky here — see convert_financial_statements_to_usd
+                # below for the converted path.
                 try:
                     import pandas as pd
+
+                    # Store financialCurrency so JSON consumers know the unit
+                    financial_currency = info.get('financialCurrency')
+                    if financial_currency:
+                        data['financial_statements_currency'] = financial_currency
 
                     # Cash flow statement
                     cashflow = stock.cashflow
