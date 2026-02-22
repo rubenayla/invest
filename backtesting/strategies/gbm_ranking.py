@@ -204,7 +204,7 @@ class GBMRankingStrategy:
         query = f'''
             SELECT
                 {', '.join(snapshot_cols)}
-            FROM snapshots s
+            FROM fundamental_history s
             JOIN assets a ON s.asset_id = a.id
             WHERE s.snapshot_date <= '{filing_lag_date.strftime('%Y-%m-%d')}'
             AND s.vix IS NOT NULL

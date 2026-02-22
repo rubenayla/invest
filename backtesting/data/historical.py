@@ -6,7 +6,7 @@ import logging
 import sqlite3
 from datetime import timedelta
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 import numpy as np
 import pandas as pd
@@ -57,30 +57,42 @@ class HistoricalDataProvider:
             - fundamentals: Dict of ticker -> fundamental data
             - financial_metrics: Dict of ticker -> metrics for screening
         """
-        logger.info(f"Getting point-in-time data as of {date}")
+        logger.info(f'Getting point-in-time data as of {date}')
 
         # Calculate lookback period
         start_date = date - timedelta(days=lookback_days)
 
+        # --- Survivorship-bias filter: drop delisted tickers --------------
+        available = self.get_available_tickers_as_of(date, tickers)
+        dropped = set(tickers) - available
+        if dropped:
+            for t in sorted(dropped):
+                logger.warning(
+                    'Ticker %s dropped from universe as of %s '
+                    '(no recent price data — likely delisted)', t, date
+                )
+        active_tickers = [t for t in tickers if t in available]
+        # ------------------------------------------------------------------
+
         # Get price data
         price_history = self._get_price_history_range(
-            tickers, start_date, date
+            active_tickers, start_date, date
         )
 
         # Get current prices (last available price before or on date)
         current_prices = {}
-        for ticker in tickers:
+        for ticker in active_tickers:
             if ticker in price_history.columns:
                 ticker_prices = price_history[ticker].dropna()
                 if len(ticker_prices) > 0:
                     current_prices[ticker] = ticker_prices.iloc[-1]
 
         # Get fundamental data (as it would have been available at that date)
-        fundamentals = self._get_fundamentals_as_of(tickers, date)
+        fundamentals = self._get_fundamentals_as_of(active_tickers, date)
 
         # Calculate financial metrics for screening
         financial_metrics = self._calculate_metrics_as_of(
-            tickers, price_history, fundamentals, date
+            active_tickers, price_history, fundamentals, date
         )
 
         return {
@@ -88,7 +100,8 @@ class HistoricalDataProvider:
             'current_prices': current_prices,
             'price_history': price_history,
             'fundamentals': fundamentals,
-            'financial_metrics': financial_metrics
+            'financial_metrics': financial_metrics,
+            'dropped_tickers': dropped,
         }
 
     def get_prices(self, tickers: List[str], date: pd.Timestamp) -> Dict[str, float]:
@@ -278,6 +291,62 @@ class HistoricalDataProvider:
             return row[0] if row else None
         except Exception:
             return None
+
+    def get_available_tickers_as_of(self, date: pd.Timestamp,
+                                       tickers: List[str],
+                                       max_gap_calendar_days: int = 7) -> Set[str]:
+        """
+        Return tickers that have price data on or near the given date.
+
+        A stock is considered 'available' (not delisted) if its most recent
+        price_history row is within *max_gap_calendar_days* of *date*
+        (roughly 5 trading days).
+
+        Parameters
+        ----------
+        date : pd.Timestamp
+            The as-of date.
+        tickers : List[str]
+            Candidate tickers to check.
+        max_gap_calendar_days : int
+            Maximum calendar-day gap allowed between the requested date
+            and the ticker's last price entry.  Default 7 (~5 trading days).
+
+        Returns
+        -------
+        Set[str]
+            Tickers that are still actively traded as of *date*.
+        """
+        if not tickers:
+            return set()
+
+        available: Set[str] = set()
+        cutoff = (date - timedelta(days=max_gap_calendar_days)).strftime('%Y-%m-%d')
+        date_str = date.strftime('%Y-%m-%d')
+
+        try:
+            conn = sqlite3.connect(self.db_path)
+            # Batch query: for each ticker get the max date <= requested date
+            placeholders = ','.join('?' for _ in tickers)
+            query = f'''
+                SELECT ticker, MAX(date) AS last_date
+                FROM price_history
+                WHERE ticker IN ({placeholders})
+                  AND date <= ?
+                GROUP BY ticker
+            '''
+            rows = conn.execute(query, (*tickers, date_str)).fetchall()
+            conn.close()
+
+            for ticker, last_date in rows:
+                if last_date >= cutoff:
+                    available.add(ticker)
+        except Exception as e:
+            logger.error(f'Error checking available tickers: {e}')
+            # Fail open: treat all as available so the backtest can proceed
+            return set(tickers)
+
+        return available
 
     def _calculate_metrics_as_of(self, tickers: List[str],
                                   price_history: pd.DataFrame,

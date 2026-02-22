@@ -3,7 +3,9 @@ Performance metrics calculation for backtesting.
 """
 
 import logging
-from typing import Any, Dict, Optional
+import sqlite3
+from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 import pandas as pd
@@ -29,6 +31,138 @@ class PerformanceMetrics:
         if median_gap <= 0:
             return 252.0
         return 365.25 / median_gap
+
+    @staticmethod
+    def _compute_intra_period_max_drawdown(
+        portfolio_values: pd.DataFrame,
+    ) -> Optional[float]:
+        """
+        Compute max drawdown from daily-resolution portfolio values.
+
+        Reconstructs daily portfolio value between rebalance dates by
+        looking up daily closes from the price_history DB table.
+
+        Returns the max drawdown as a negative percentage (e.g. -35.2),
+        or None if daily data is unavailable.
+        """
+        if 'holdings' not in portfolio_values.columns:
+            return None
+
+        db_path = Path(__file__).parent.parent.parent / 'data' / 'stock_data.db'
+        if not db_path.exists():
+            return None
+
+        try:
+            dates = pd.to_datetime(portfolio_values['date']).tolist()
+            holdings_list: List[Dict[str, float]] = portfolio_values['holdings'].tolist()
+            cash_list: List[float] = portfolio_values['cash'].tolist()
+
+            if len(dates) < 2:
+                return None
+
+            # Collect all tickers held across all periods
+            all_tickers = set()
+            for h in holdings_list:
+                if isinstance(h, dict):
+                    all_tickers.update(h.keys())
+
+            if not all_tickers:
+                return None
+
+            # Query daily prices for all relevant tickers in one go
+            start_date = min(dates).strftime('%Y-%m-%d')
+            end_date = max(dates).strftime('%Y-%m-%d')
+            placeholders = ','.join('?' for _ in all_tickers)
+
+            conn = sqlite3.connect(str(db_path))
+            try:
+                query = (
+                    f'SELECT ticker, date, close FROM price_history '
+                    f'WHERE ticker IN ({placeholders}) '
+                    f'AND date >= ? AND date <= ? '
+                    f'ORDER BY date'
+                )
+                params = list(all_tickers) + [start_date, end_date]
+                price_df = pd.read_sql_query(query, conn, params=params)
+            finally:
+                conn.close()
+
+            if price_df.empty:
+                return None
+
+            price_df['date'] = pd.to_datetime(price_df['date'])
+
+            # Pivot to get daily close for each ticker
+            price_pivot = price_df.pivot_table(
+                index='date', columns='ticker', values='close'
+            )
+
+            # Build daily portfolio value series across all periods
+            daily_values = []
+
+            for i in range(len(dates) - 1):
+                period_start = dates[i]
+                period_end = dates[i + 1]
+                holdings = holdings_list[i]
+                cash = cash_list[i]
+
+                if not isinstance(holdings, dict) or not holdings:
+                    # No holdings in this period — portfolio is just cash
+                    daily_values.append(
+                        pd.Series([cash], index=pd.DatetimeIndex([period_start]))
+                    )
+                    continue
+
+                # Get daily prices for this period
+                mask = (price_pivot.index >= period_start) & (
+                    price_pivot.index < period_end
+                )
+                period_prices = price_pivot.loc[mask]
+
+                if period_prices.empty:
+                    continue
+
+                # Compute daily value: sum(shares * close) + cash
+                held_tickers = [t for t in holdings if t in period_prices.columns]
+                if not held_tickers:
+                    # None of the held tickers have daily data
+                    daily_values.append(
+                        pd.Series([cash], index=pd.DatetimeIndex([period_start]))
+                    )
+                    continue
+
+                shares = pd.Series(
+                    {t: holdings[t] for t in held_tickers}
+                )
+                period_daily = (
+                    period_prices[held_tickers].ffill() * shares
+                ).sum(axis=1) + cash
+
+                daily_values.append(period_daily)
+
+            if not daily_values:
+                return None
+
+            full_daily = pd.concat(daily_values)
+            # Remove duplicate indices (period boundaries), keep last
+            full_daily = full_daily[~full_daily.index.duplicated(keep='last')]
+            full_daily = full_daily.sort_index()
+
+            if len(full_daily) < 2:
+                return None
+
+            # Compute max drawdown from daily series
+            running_max = full_daily.expanding().max()
+            drawdown = (full_daily - running_max) / running_max
+            max_dd = float(drawdown.min()) * 100
+
+            return max_dd
+
+        except Exception as e:
+            logger.warning(
+                'Could not compute intra-period max drawdown: %s', e
+            )
+            return None
 
     @staticmethod
     def calculate(portfolio_values: pd.DataFrame,
@@ -82,12 +216,21 @@ class PerformanceMetrics:
         sharpe = excess_return / annual_vol if annual_vol > 0 else 0
         metrics['sharpe_ratio'] = sharpe
 
-        # Maximum Drawdown
+        # Maximum Drawdown (from rebalance-date values only)
         cumulative = (1 + portfolio_values['returns']).cumprod()
         running_max = cumulative.expanding().max()
         drawdown = (cumulative - running_max) / running_max
         max_drawdown = drawdown.min() * 100
         metrics['max_drawdown'] = max_drawdown
+
+        # Intra-period max drawdown (daily resolution, best-effort)
+        intra_dd = PerformanceMetrics._compute_intra_period_max_drawdown(
+            portfolio_values
+        )
+        if intra_dd is not None:
+            metrics['intra_period_max_drawdown'] = intra_dd
+        else:
+            metrics['intra_period_max_drawdown'] = max_drawdown
 
         # Calmar Ratio (CAGR / Max Drawdown)
         calmar = cagr / abs(max_drawdown) if max_drawdown != 0 else 0

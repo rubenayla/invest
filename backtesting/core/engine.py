@@ -77,7 +77,7 @@ class Backtester:
 
         # Run strategy at each rebalance date
         for date in rebalance_dates:
-            logger.info(f"Rebalancing on {date}")
+            logger.info(f'Rebalancing on {date}')
 
             # Get point-in-time data (no look-ahead bias)
             market_data = self.data_provider.get_data_as_of(
@@ -85,6 +85,38 @@ class Backtester:
                 tickers=self.config.universe,
                 lookback_days=365  # 1 year of history for analysis
             )
+
+            # --- Auto-liquidate delisted positions -------------------------
+            held_tickers = list(self.portfolio.get_holdings().keys())
+            if held_tickers:
+                available_held = self.data_provider.get_available_tickers_as_of(
+                    date, held_tickers
+                )
+                delisted_held = [t for t in held_tickers if t not in available_held]
+                for ticker in delisted_held:
+                    last_price = self.data_provider._get_single_price(ticker, date)
+                    if last_price is None:
+                        logger.warning(
+                            'Delisted ticker %s has no price at all — '
+                            'writing off position to $0', ticker
+                        )
+                        last_price = 0.0
+                    shares = self.portfolio.holdings[ticker]
+                    logger.warning(
+                        'Auto-liquidating delisted position: %s '
+                        '(%.2f shares @ $%.2f, last available price)',
+                        ticker, shares, last_price
+                    )
+                    trade = self.portfolio._execute_sell(
+                        ticker=ticker,
+                        shares=shares,
+                        price=last_price,
+                        transaction_cost=self.config.transaction_cost,
+                        slippage=self.config.slippage,
+                        date=date,
+                    )
+                    transactions.append(trade)
+            # ---------------------------------------------------------------
 
             # Get strategy signals
             signals = strategy.generate_signals(
