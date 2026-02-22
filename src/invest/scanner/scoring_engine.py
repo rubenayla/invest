@@ -172,8 +172,95 @@ class ScoringEngine:
             scores.append(pm_score)
             details['profit_margin'] = {'value': profit_margin * 100, 'score': pm_score}
 
+        # Accrual-based earnings quality: lower accruals = more cash-backed earnings
+        accrual_score, accrual_details = self._score_accrual_quality(data)
+        if accrual_score is not None:
+            scores.append(accrual_score)
+            details['accrual_quality'] = accrual_details
+
         final_score = sum(scores) / len(scores) if scores else 50.0
         return final_score, details
+
+    def _score_accrual_quality(
+        self, data: Dict[str, Any]
+    ) -> tuple[Optional[float], Dict[str, Any]]:
+        """
+        Score earnings quality via accrual ratio.
+
+        Accruals = (Net Income - Operating Cash Flow) / Total Assets
+
+        High accruals → earnings driven by accounting, not cash (Enron-style).
+        Low/negative accruals → earnings backed by real cash flows.
+        """
+        import json
+
+        # Extract multi-year income data
+        income_raw = data.get('income') or data.get('income_json')
+        cashflow_raw = data.get('cashflow')
+        balance_sheet_raw = data.get('balance_sheet')
+
+        if not (income_raw and cashflow_raw and balance_sheet_raw):
+            return None, {'status': 'insufficient_data'}
+
+        def parse_json(raw):
+            if isinstance(raw, str):
+                return json.loads(raw)
+            return raw
+
+        try:
+            income_data = parse_json(income_raw)
+            cashflow_data = parse_json(cashflow_raw)
+            bs_data = parse_json(balance_sheet_raw)
+        except (json.JSONDecodeError, TypeError):
+            return None, {'status': 'parse_error'}
+
+        def get_most_recent(rows, metric_names):
+            """Get most recent value for a metric from list-of-dicts format."""
+            for row in rows:
+                if isinstance(row, dict) and row.get('index') in metric_names:
+                    dates = sorted(
+                        [k for k in row.keys() if k != 'index'], reverse=True
+                    )
+                    for d in dates:
+                        val = row.get(d)
+                        if val is not None and not (isinstance(val, float) and val != val):
+                            return float(val)
+            return None
+
+        net_income = get_most_recent(
+            income_data, ['Net Income', 'Net Income Common Stockholders']
+        )
+        operating_cf = get_most_recent(
+            cashflow_data, ['Operating Cash Flow', 'Cash Flow From Continuing Operating Activities']
+        )
+        total_assets = get_most_recent(
+            bs_data, ['Total Assets']
+        )
+
+        if net_income is None or operating_cf is None or total_assets is None:
+            return None, {'status': 'missing_fields'}
+
+        if total_assets <= 0:
+            return None, {'status': 'invalid_total_assets'}
+
+        accruals = (net_income - operating_cf) / total_assets
+
+        # Score: accruals 0.10 (10%) = poor, 0.03 = good, -0.05 = excellent
+        # Using inverse normalization: lower accruals → higher score
+        accrual_pct = accruals * 100
+        accrual_score = self.normalize(accrual_pct, -5, 3, 10, inverse=True)
+
+        details = {
+            'accrual_ratio': round(accruals, 4),
+            'accrual_pct': round(accrual_pct, 2),
+            'score': round(accrual_score, 1),
+            'net_income': net_income,
+            'operating_cashflow': operating_cf,
+            'total_assets': total_assets,
+            'quality': 'high' if accruals < 0.03 else 'moderate' if accruals < 0.07 else 'low',
+        }
+
+        return accrual_score, details
 
     def score_value(
         self,
@@ -440,11 +527,11 @@ class ScoringEngine:
         valid_growth_data = False
 
         financials = data.get('financials', {})
-        income_json = data.get('income_json') 
+        income_json = data.get('income') or data.get('income_json')
         
         # Helper to calculate CAGR
         def calculate_cagr(start_val, end_val, years):
-            if start_val is None or end_val is None or start_val <= 0 or years <= 0:
+            if start_val is None or end_val is None or start_val <= 0 or end_val <= 0 or years <= 0:
                 return None
             return (end_val / start_val) ** (1 / years) - 1
 
