@@ -1,9 +1,11 @@
 # Claude Memory and Instructions
 
-## 📚 KEY FILES (READ FIRST)
-Before performing tasks, consult:
-1. **`.agents/error_log.md`** - History of failures and prevention.
-2. **`.agents/definition_of_done.md`** - Checklist for completion.
+## .agents/ structure
+- `error_log.md`: Append-only log. Don't read on startup, search when debugging.
+- `solutions.md`: Curated fixes for recurring issues. Keep under 100 lines.
+- `architecture.md`: Key design decisions. Keep under 100 lines.
+- `definition_of_done.md`: Completion checklist.
+- `scratch.md`: Volatile notes, not for commit.
 
 ## 🚨 INVESTMENT ANALYSIS PROTOCOL (STRICT MANDATE)
 
