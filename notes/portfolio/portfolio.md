@@ -1,45 +1,23 @@
 # Portfolio
-**Source:** IBKR & Revolut Screenshots (FX Corrected)
-**Total Estimated Value:** ~$44,550
-**Last Updated:** 2026-02-18
 
-## Combined Holdings
+> Watchlist: [watchlist.md](watchlist.md)
 
-### 1. The "Conviction" Pillars (>15% Allocation)
-| Ticker | Company | Approx Value | Source | Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| **SQM** | Soc. Quimica y Minera | **~$8,735** | Revolut | Lithium play. +61% unrealized gain. **#1 Holding.** |
-| **MOH** | Molina Healthcare | **~$7,280** | IBKR + Revolut | **Includes proposed +$2,250 buy.** Distressed value. **#2 Holding.** |
-| **8002.T** | Marubeni Corp | **~$7,000** | IBKR | Japan trading house. Adjusted for JPY/EUR exchange rate (~€6,460). **#3 Holding.** |
+~$43,800 total. Source: IBKR & Revolut (FX corrected). Last updated 2026-02-18.
 
-### 2. Core Positions (5-10% Allocation)
-| Ticker | Company | Approx Value | Source | Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| **TSLA** | Tesla | **~$3,345** | Revolut | AI/Robotaxi option. +40% gain. |
-| **ACGL** | Arch Capital | **~$2,420** | IBKR | Insurance. +19% gain. |
-| **GOOG** | Alphabet | **~$2,340** | Revolut | Tech monopoly. +11% gain. |
-| **DIS** | Disney | **~$2,280** | Revolut | Content turnaround. +20% gain. |
-| **PBR** | Petrobras | **~$2,230** | IBKR | Brazil Oil. +27% gain. |
+| Ticker | Company | Value | Source | Notes |
+| :--- | :--- | ---: | :--- | :--- |
+| [SQM](../companies/SQM.md) | Soc. Quimica y Minera | ~$8,735 | Revolut | Lithium. +61% gain. |
+| [MOH](../companies/MOH.md) | Molina Healthcare | ~$7,280 | IBKR + Revolut | Distressed value. Includes proposed +$2,250 buy. |
+| [8002.T](../companies/8002.md) | Marubeni Corp | ~$7,000 | IBKR | Japan trading house. ~€6,460. |
+| [TSLA](../companies/TSLA.md) | Tesla | ~$3,345 | Revolut | AI/Robotaxi option. +40% gain. |
+| [ACGL](../companies/ACGL.md) | Arch Capital | ~$2,420 | IBKR | Insurance. +19% gain. |
+| [GOOG](../companies/GOOGL.md) | Alphabet | ~$2,340 | Revolut | Tech monopoly. +11% gain. |
+| [DIS](../companies/DIS.md) | Disney | ~$2,280 | Revolut | Content turnaround. +20% gain. |
+| [PBR](../companies/PBR.md) | Petrobras | ~$2,230 | IBKR | Brazil oil. +27% gain. |
+| [PTON](../companies/PTON.md) | Peloton | ~$2,090 | Revolut + IBKR | 200 shares + 300 limit @$4.18 pending. Turnaround bet. |
+| [SONY](../companies/SONY.md) | Sony Group | ~$1,750 | IBKR | Tech value / sensors. |
+| [CVX](../companies/CVX.md) | Chevron | ~$1,440 | IBKR | US oil major. +31% gain. |
+| [STLD](../companies/STLD.md) | Steel Dynamics | ~$1,375 | Revolut | Infrastructure/steel. +50% gain. |
+| BTC | Bitcoin | ~$790 | Binance | Macro hedge. |
 
-### 3. Tactical & Speculative (<5% Allocation)
-| Ticker | Company | Approx Value | Source | Notes |
-| :--- | :--- | :--- | :--- | :--- |
-| **SONY** | Sony Group | **~$1,750** | IBKR | Tech Value / Sensors. |
-| **PTON** | Peloton | **~$2,090** | Revolut + IBKR | 200 shares + 300 limit @ $4.18 pending. Turnaround bet. |
-| **CVX** | Chevron | **~$1,440** | IBKR | US Oil Major. +31% gain. |
-| **STLD** | Steel Dynamics | **~$1,375** | Revolut | Infrastructure/Steel. +50% gain. |
-| **SYF** | Synchrony | **~$750** | IBKR | Financials/Cash flow. |
-| **BTC** | Bitcoin | **~$790** | Binance | Macro hedge. |
-
----
-
-## Portfolio Health Check
-
-### Concentration Risk
-*   **Top 3 Holdings (SQM, MOH, 8002):** ~52% of total portfolio.
-*   **The "Japan & Commodities" Bias:** Portfolio heavily weighted towards **Inflation Hedges** (Lithium, Trading Houses, Oil). If deflation hits, this portfolio will suffer.
-*   **MOH (Healthcare)** is critical defensive ballast against that commodity exposure.
-
-### Geographic Exposure
-*   **Japan:** Exposure is ~$8,750 (8002 + SONY). ~20% of portfolio.
-*   **Emerging Markets:** Heavy Brazil (PBR) & Chile (SQM).
+Top 3 (SQM, MOH, 8002) = ~52% of portfolio. Heavy inflation-hedge bias (lithium, trading houses, oil). Japan ~20% (8002 + SONY). MOH is the defensive ballast.

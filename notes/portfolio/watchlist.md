@@ -1,137 +1,70 @@
 # Watchlist
 
-> **See also**: [Investment Theses](../theses/README.md) for macro-level commodity/sector bets (copper, etc.)
+> Current holdings: [portfolio.md](portfolio.md)
 
-## Scanner Top Picks (2026-02-01)
-- CF - Scanner top pick (score 80.8)
-- SYF - Scanner top pick (score 78.3)
-- AMP - Scanner top pick (score 74.4)
-- PDD - Scanner top pick (score 74.2)
-- REGN - Scanner top pick (score 74.2)
-- GL - Scanner top pick (score 72.5)
-- CINF - Scanner top pick (score 72.4)
-- TME - Scanner top pick (score 71.6)
-- HIG - Scanner top pick (score 71.4)
-- TROW - Scanner top pick (score 71.4)
+Prioritized by combined signals: scanner score, insider buying, activist stakes (13D/13G), smart money holdings (13F). Last updated 2026-02-24.
 
-## Manual Adds (Feb 2026)
-- BTC-USD (Bitcoin) - Crypto benchmark
-- MOH (Molina Healthcare) - Manual add
-- TSLA (Tesla) - Manual add
-- 6758.T (Sony Group Corp.) - Manual add
-- 4578.T (Otsuka Holdings Co., Ltd.) - Manual add; Clawd favored
+- [GL](../companies/GL.md) (Globe Life) - P/E 10, ROE 21%. 5 smart money funds (Pershing Square, Third Point, Bridgewater, Citadel, DE Shaw). Scanner score 72.5.
+- [CF](../companies/CF.md) (CF Industries) - 6 smart money funds. Scanner top pick (score 80.8). Fertilizer/nitrogen.
+- [PFE](../companies/PFE.md) (Pfizer) - 6x activist 13D filings (10% stake, likely Starboard Value). P/E ~10, pharma defensive.
+- [PRU](../companies/PRU.md) (Prudential Financial) - 17 large-holder filings (up to 45.5%), cluster of 4 insiders buying. P/E 10.4, DCF 68% upside.
+- [ABT](../companies/ABT.md) (Abbott Laboratories) - 3 smart money funds + CEO bought $2M + Director $1.1M. Healthcare defensive.
+- [SYF](../companies/SYF.md) (Synchrony Financial) - DE Shaw NEW position Q4 2025 + Bridgewater + Citadel. P/E 7.4, $1B/yr buybacks. 22% off 52w high.
+- [EG](../companies/EG.md) (Everest Group) - Lone Pine Capital NEW massive position (biggest Q4 buy). P/E 9, ROE 11%. 4 funds. Reinsurer like ACGL but cheaper.
+- [FI](../companies/FI.md) (Fiserv) - 7 funds incl. Pershing Square. P/E 10, ROE 14%. Payments/fintech.
+- [SPGI](../companies/SPGI.md) (S&P Global) - Director Hubert Joly bought $1M. 4 buys / 0 sells. Monopoly moat (credit ratings duopoly). 28% off high.
+- [MSFT](../companies/MSFT.md) (Microsoft) - Director bought $2M. Quality score 90.9 (highest in universe). 28% off high.
+- [PAYX](../companies/PAYX.md) (Paychex) - 2 directors bought, now underwater. ROE 41%, operating margin 42%. Payroll moat. Up to 79% model upside.
+- [TD](../companies/TD.md) (Toronto-Dominion Bank) - Third Point NEW position Q4. 5 funds total. P/E 11, ROE 17%.
+- [JD](../companies/JD.md) (JD.com) - 4 funds (Appaloosa, Citadel, DE Shaw, Tiger Global). P/E 9, ROE 12%.
+- [PDD](../companies/PDD.md) (PDD Holdings) - 3 funds. Scanner score 74.2.
+- [REGN](../companies/REGN.md) (Regeneron) - Scanner score 74.2.
+- [AMP](../companies/AMP.md) (Ameriprise) - Scanner score 74.4.
+- [CAG](../companies/CAG.md) (Conagra Brands) - P/E 10.4, 7.3% dividend, recovering earnings.
+- [NVO](../companies/NVO.md) (Novo Nordisk) - GLP-1 drugs (Ozempic/Wegovy).
+- [META](../companies/META.md) (Meta) - GBM models strongly bullish (+34% to +87%). Traditional DCF says overvalued. Revenue +40%, FCF $54B.
+- [NVDA](../companies/NVDA.md) (Nvidia) - GBM Opportunistic predicts +166%. Extreme valuations but ML sees AI dominance.
+- [LULU](../companies/LULU.md) (Lululemon) - Premium athleisure, watch for entry ~$150.
+- [BRK.B](../companies/BRK.B.md) (Berkshire Hathaway)
+- [SMFG](../companies/SMFG.md) (Sumitomo Mitsui) - Improving fundamentals, rate-sensitive.
+- [NE](../companies/NE.md) (Noble Corporation) - P/E 15.2, P/TBV 0.99.
+- [NEM](../companies/NEM.md) (Newmont) - P/E 13.5, P/B 1.0, defensive gold.
+- [HIG](../companies/HIG.md) (Hartford) - Insurance. Scanner score 71.4.
+- [MRVL](../companies/MRVL.md) (Marvell) - AI/Networking silicon, high-risk 2y.
+- [AMD](../companies/AMD.md) - AI accelerators + CPU share gains, high-risk 2y.
 
-- [PTON](../companies/PTON.md) (Peloton) - Speculative turnaround, 200 shares + 300 limit @ $4.18 pending
-- SMFG (Sumitomo Mitsui Financial Group) - Improving fundamentals, rate-sensitive
-- [ACGL](../companies/ACGL.md) (Arch Capital Group Ltd) - PE 9.0, Revenue +90%, Earnings +100%
-- [SYF](../companies/SYF.md) (Synchrony Financial) - PE 8.0, Revenue +58%, $1B/year buybacks
-    - High risk compared with ACGL, but lots of upside if economy holds
-- [ARKVX](../companies/ARKVX.md) (ARK Venture Fund) - Expense ratio 2.90%, YTD +43%, illiquid (quarterly withdrawals only)
-    - SKIP - High fees + illiquidity vs direct value investing
-- [CAG](../companies/CAG.md) (Conagra Brands Inc) - PE 10.4, 7.3% dividend, recovering earnings
-- [META](../companies/META.md) (Meta Platforms) - Revenue +40%, Earnings +58%, FCF $54B
-- [8058.T](../companies/8058.md) (Mitsubishi Corp.) - PE 15.2, P/B 1.54
-- NVDA (Nvidia) - Revenue +385%, Earnings +647% (AI boom)
-- MSFT (Microsoft) - Revenue +42%, Earnings +40%
-- [GOOGL](../companies/GOOGL.md) (Google) - Revenue +36%, Earnings +32%, FCF $73B — Bought $2.3k @ ~$289 (≈7.9 sh)
-- NFLX (Netflix) - Revenue +31%, Earnings +70%
-- [MOH](../companies/MOH.md) (Molina Healthcare) - Giant crash like CNC, but better balance sheet
-- PFE (Pfizer Inc) - Defensive, COVID revenue normalized
-- [SQM](../companies/SQM.md) (Sociedad Quimica y Minera) - Low-cost lithium producer
-- [PBR](../companies/PBR.md) (Petrobras) - FX-levered Brazilian oil major (≈$1.7k position)
-- BRK.B (Berkshire Hathaway)
-- NVO (Novo Nordisk) - GLP-1 drugs (Ozempic/Wegovy), +106% revenue
-- [CVX](../companies/CVX.md) (Chevron)
-- [TSLA](../companies/TSLA.md) (Tesla) - Robotaxi potential, high valuation
-- [LULU](../companies/LULU.md) (Lululemon Athletica) - Premium athleisure, watch for entry $150
-- [IT](../companies/IT.md) (Gartner) - Guidance reset, growth deceleration, valuation near fair
-- NE (Noble Corporation) - PE 15.2, P/TBV 0.99
-- NEM (Newmont) - PE 13.5, P/B 1.0, defensive gold
-- HIG (Hartford) - Insurance, recovered from 2008
-- QCOM (Qualcomm)
-- ASML (ASML Holding)
-- ORCL (Oracle)
-- IBM (IBM)
-- BIDU (Baidu)
-- CSCO (Cisco)
-- PYPL (PayPal)
-- SAP (SAP)
+---
 
-# High-risk 2y candidates (screen)
-- MRVL (Marvell) - AI/Networking silicon, strong revenue growth
-- AMD (AMD) - AI accelerators + CPU share gains
-- LRCX (Lam Research) - wafer fab equipment, memory cycle leverage
-- ZS (Zscaler) - cybersecurity growth
-- SNOW (Snowflake) - data platform growth
-- COIN (Coinbase) - crypto leverage, high volatility
-- PLTR (Palantir) - AI software platform, high valuation
+- [FPH](../companies/FPH.md) (Five Point Holdings) - 11/11 models bullish, avg +107.6% upside
+- [ALL](../companies/ALL.md) (Allstate) - 11/11 models bullish, avg +38.4% upside
+- [HAL](../companies/HAL.md) (Halliburton) - 11/12 models bullish, avg +40.5% upside
+- [UPS](../companies/UPS.md) (United Parcel Service) - 13/14 models bullish, avg +36.8% upside
+- [BMY](../companies/BMY.md) (Bristol-Myers Squibb)
+- [CSU](../companies/CSU.md) (Constellation Software) - Software acquirer
+- [QCOM](../companies/QCOM.md) (Qualcomm)
+- [ASML](../companies/ASML.md) (ASML Holding) - 5 smart money funds incl. Lone Pine (new Q4)
+- [ORCL](../companies/ORCL.md) (Oracle)
+- [IBM](../companies/IBM.md)
+- [SAP](../companies/SAP.md)
+- [BIDU](../companies/BIDU.md) (Baidu)
+- [CSCO](../companies/CSCO.md) (Cisco)
+- [PYPL](../companies/PYPL.md) (PayPal)
+- [LRCX](../companies/LRCX.md) (Lam Research) - wafer fab, memory cycle leverage
+- [ZS](../companies/ZS.md) (Zscaler) - cybersecurity growth
+- [SNOW](../companies/SNOW.md) (Snowflake) - data platform growth
+- [COIN](../companies/COIN.md) (Coinbase) - crypto leverage, high volatility
+- [PLTR](../companies/PLTR.md) (Palantir) - AI software, high valuation
+- [RIO](../companies/RIO.md) - Falling income, commodity cyclical
+- [MBLY](../companies/MBLY.md) (Mobileye) - Israel, Tesla competition
+- [LOGI](../companies/LOGI.md) (Logitech)
+- [SWKS](../companies/SWKS.md) (Skyworks)
+- [MMM](../companies/MMM.md) (3M) - Industrials, lawsuit risk
+- [SRFM](../companies/SRFM.md) - Hybrid airplanes
 
-# Backlog
-- [8002 (Marubeni Corp.)](../companies/8002.md) - Japanese trading conglomerate
-- [SQM (Sociedad Quimica y Minera)](../companies/SQM.md) - Lithium producer
-- [META (Meta Platforms)](../companies/META.md) - Social media / AI
-- [8058.T (Mitsubishi Corp.)](../companies/8058.md) - Japanese trading conglomerate
-- STLD - Steel producer, analyze again
-- RIO - Falling income, commodity cyclical
-- COIN (Coinbase) - SEC regulatory issues
-- CSU (Constellation Software) - Software acquirer
-- MBLY (Mobileye) - Israel, Tesla competition
-- [DIS](../companies/DIS.md) (Disney) - Media/parks
-- LOGI (Logitech) - Peripherals
-- SWKS (Skyworks) - Semiconductors
-- MMM (3M) - Industrials, lawsuit risk
-- SONY (Sony) - Electronics/entertainment
-- JD (JD.com) - Chinese e-commerce, low margins
+---
 
-# Nope
-- CNC (Centene)
-- [MU](../companies/MU/cycle-pricing-analysis.md) (Micron) - cycle looks priced in vs temporary premium model
-- EL:NYSE (Estee Lauder Companies Inc)
-    - declining margins
-  - Giant crash due to unexpected ACA risk adjustment payment (they have healthier patients for the same costs)
-- Cognizant (CTSH)
-  - 
-- Big bear
-    - Spending money like crazy on salaries and bonuses, i can't understand the actual value proposition in depth
-
-# Todo take a look
-Based on strong model consensus (where models agree):
-
-Tier 1: High Conviction Picks (70%+ model agreement, all bullish)
-
-1. [FPH](../companies/FPH.md) (Five Point Holdings) - 11/11 models bullish, avg +107.6% upside
-2. ALL (Allstate) - 11/11 models bullish, avg +38.4% upside
-3. HAL (Halliburton) - 11/12 models bullish, avg +40.5% upside
-4. UPS (United Parcel Service) - 13/14 models bullish, avg +36.8% upside
-
-Tier 2: Tech with ML Conviction (ML models strongly bullish, traditional mixed)
-
-1. META - GBM Opportunistic predicts +87%, all 6 GBM models predict +34% to +87%
-- Why: Strong fundamentals BUT ML sees momentum continuation
-- Risk: Traditional DCF says -50% overvalued
-2. NVDA - GBM Opportunistic predicts +166%, consensus +57%
-- Why: ML models see continued AI dominance
-- Risk: Extreme valuations (DCF says -80% overvalued)
-3. GOOG - 9/12 models bullish, avg +15% upside
-- More balanced - even some traditional models see value
-
-
-BMY
-
-Constellation Software Inc. 
-
-Bristol-Myers Squibb Co
-
-AST SpaceMobile Inc https://share.google/gxXuU0vh5hsxOi6j9
-
-why is acgl so cheap?
-
-
-Analyze APA and the other top stocks
-
-- investigate levels.
-
-NE
-
-
-srfm (hybrid airplanes)
+- [CNC](../companies/CNC.md) (Centene)
+- [MU](../companies/MU.md) (Micron) - cycle looks priced in vs temporary premium model
+- [EL](../companies/EL.md) (Estee Lauder) - declining margins
+- [CTSH](../companies/CTSH.md) (Cognizant)
+- [ARKVX](../companies/ARKVX.md) (ARK Venture Fund) - 2.90% expense ratio + illiquidity vs direct value investing
