@@ -93,6 +93,10 @@ def main() -> int:
     parser.add_argument('--skip-nn', action='store_true', help='Skip NN predictions')
     parser.add_argument('--skip-classic', action='store_true', help='Skip classic valuations')
     parser.add_argument('--skip-dashboard', action='store_true', help='Skip dashboard generation')
+    parser.add_argument('--skip-insider', action='store_true', help='Skip insider data fetching')
+    parser.add_argument('--skip-activist', action='store_true', help='Skip activist stakes (13D/13G)')
+    parser.add_argument('--skip-holdings', action='store_true', help='Skip institutional holdings (13F)')
+    parser.add_argument('--skip-edinet', action='store_true', help='Skip EDINET Japan data')
     parser.add_argument('--skip-scanner', action='store_true', help='Skip opportunity scanner')
     args = parser.parse_args()
 
@@ -105,6 +109,38 @@ def main() -> int:
             ],
             f'Fetching data ({args.universe})',
         )
+
+    # --- Phase 1b: Insider data (reads SEC EDGAR, writes insider_transactions) ---
+    if not args.skip_insider:
+        run_cmd(
+            ['uv', 'run', 'python', 'scripts/fetch_insider_data.py'],
+            'Fetching insider data (SEC Form 4)',
+        )
+
+    # --- Phase 1c: Activist stakes (SEC 13D/13G) ---
+    if not args.skip_activist:
+        run_cmd(
+            ['uv', 'run', 'python', 'scripts/fetch_activist_data.py'],
+            'Fetching activist stakes (SEC 13D/13G)',
+        )
+
+    # --- Phase 1d: Institutional holdings (SEC 13F) ---
+    if not args.skip_holdings:
+        run_cmd(
+            ['uv', 'run', 'python', 'scripts/fetch_holdings_data.py'],
+            'Fetching institutional holdings (SEC 13F)',
+        )
+
+    # --- Phase 1e: EDINET Japan (if API key set) ---
+    if not args.skip_edinet:
+        import os
+        if os.environ.get('EDINET_API_KEY'):
+            run_cmd(
+                ['uv', 'run', 'python', 'scripts/fetch_edinet_data.py'],
+                'Fetching EDINET Japan large shareholding reports',
+            )
+        else:
+            print('\n==> Skipping EDINET (EDINET_API_KEY not set)')
 
     # --- Phase 2: Valuations (independent of each other) ---
     # GBM reads fundamental_history + price_history; classic reads current_stock_data.

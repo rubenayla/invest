@@ -132,6 +132,10 @@ class StockDataReader:
             'balance_sheet': balance_sheet_data,
             'income': income_data,
             'fetch_timestamp': row['fetch_timestamp'],
+            'insider': self.get_insider_signal(ticker),
+            'activist': self.get_activist_signal(ticker),
+            'holdings': self.get_holdings_signal(ticker),
+            'japan_stakes': self.get_japan_signal(ticker),
         }
 
         return data
@@ -506,3 +510,61 @@ class StockDataReader:
             'rate_age_days': rate_age_days,
             'rate_is_fresh': rate_is_fresh,
         }
+
+    def get_insider_signal(self, ticker: str) -> Dict[str, Any]:
+        """
+        Get insider activity signal for a ticker.
+
+        Returns dict with has_data, net_buy_pct, cluster_score, recency_days,
+        dollar_conviction, buy_count, sell_count.
+        Gracefully returns {'has_data': False} if table doesn't exist.
+        """
+        no_data = {'has_data': False}
+        try:
+            from .insider_db import compute_insider_signal
+            conn = sqlite3.connect(self.db_path)
+            try:
+                return compute_insider_signal(conn, ticker)
+            finally:
+                conn.close()
+        except Exception:
+            return no_data
+
+    def get_activist_signal(self, ticker: str) -> Dict[str, Any]:
+        """Get activist/passive large-stake signal (13D/13G) for a ticker."""
+        no_data = {'has_data': False}
+        try:
+            from .activist_db import compute_activist_signal
+            conn = sqlite3.connect(self.db_path)
+            try:
+                return compute_activist_signal(conn, ticker)
+            finally:
+                conn.close()
+        except Exception:
+            return no_data
+
+    def get_holdings_signal(self, ticker: str) -> Dict[str, Any]:
+        """Get smart money institutional holdings signal (13F) for a ticker."""
+        no_data = {'has_data': False}
+        try:
+            from .holdings_db import compute_holdings_signal
+            conn = sqlite3.connect(self.db_path)
+            try:
+                return compute_holdings_signal(conn, ticker)
+            finally:
+                conn.close()
+        except Exception:
+            return no_data
+
+    def get_japan_signal(self, ticker: str) -> Dict[str, Any]:
+        """Get Japan large shareholding signal (EDINET) for a ticker."""
+        no_data = {'has_data': False}
+        try:
+            from .edinet_db import compute_japan_signal
+            conn = sqlite3.connect(self.db_path)
+            try:
+                return compute_japan_signal(conn, ticker)
+            finally:
+                conn.close()
+        except Exception:
+            return no_data

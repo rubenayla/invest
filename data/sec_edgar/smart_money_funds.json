@@ -1,0 +1,22 @@
+[
+  {"name": "Berkshire Hathaway", "cik": "0001067983", "style": "value"},
+  {"name": "Pershing Square", "cik": "0001336528", "style": "activist"},
+  {"name": "Appaloosa Management", "cik": "0001656456", "style": "value"},
+  {"name": "Greenlight Capital", "cik": "0001079114", "style": "value"},
+  {"name": "Third Point", "cik": "0001040273", "style": "activist"},
+  {"name": "ValueAct Capital", "cik": "0001345471", "style": "activist"},
+  {"name": "Baupost Group", "cik": "0001061768", "style": "value"},
+  {"name": "Elliott Management", "cik": "0001048445", "style": "activist"},
+  {"name": "Icahn Enterprises", "cik": "0000049588", "style": "activist"},
+  {"name": "Bridgewater Associates", "cik": "0001350694", "style": "macro"},
+  {"name": "Renaissance Technologies", "cik": "0001037389", "style": "quant"},
+  {"name": "Two Sigma Investments", "cik": "0001179392", "style": "quant"},
+  {"name": "Citadel Advisors", "cik": "0001423053", "style": "multi-strategy"},
+  {"name": "DE Shaw", "cik": "0001009207", "style": "quant"},
+  {"name": "Tiger Global Management", "cik": "0001167483", "style": "growth"},
+  {"name": "Lone Pine Capital", "cik": "0001061165", "style": "growth"},
+  {"name": "Viking Global Investors", "cik": "0001103804", "style": "long-short"},
+  {"name": "Scion Asset Management", "cik": "0001649339", "style": "value"},
+  {"name": "Starboard Value", "cik": "0001517137", "style": "activist"},
+  {"name": "Trian Fund Management", "cik": "0001345471", "style": "activist"}
+]

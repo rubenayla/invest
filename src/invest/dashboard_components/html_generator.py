@@ -213,6 +213,9 @@ class HTMLGenerator:
                         <th title="Opportunistic GBM 1-year - Peak return prediction within 2 years (Rank IC 0.61)">GBM Opp 1y</th>
                         <th title="Opportunistic GBM 3-year - Peak return prediction within 3 years (Rank IC 0.64)">GBM Opp 3y</th>
                         <!-- NN column disabled: near-zero test correlation (2026-02-21) -->
+                        <th title="Insider activity - Open-market buys (B) and sells (S) with total buy dollar value">Insider</th>
+                        <th title="Activist/passive 5%+ stakes from SEC 13D/13G filings">Activist</th>
+                        <th title="Smart money institutional holders from SEC 13F filings">Smart $</th>
                         <th title="Consensus valuation - Average of all successful model results">Consensus</th>
                     </tr>
                 </thead>
@@ -293,6 +296,13 @@ class HTMLGenerator:
         # NN column disabled: near-zero test correlation (2026-02-21)
         # nn_html = self._format_valuation_cell(valuations.get("multi_horizon_nn", {}), current_price, show_confidence=True)
 
+        # Format insider activity
+        insider_html = self._format_insider_cell(stock_data.get("insider", {}))
+
+        # Format activist and smart money columns
+        activist_html = self._format_activist_cell(stock_data.get("activist", {}), stock_data.get("japan_stakes", {}), ticker)
+        smart_money_html = self._format_smart_money_cell(stock_data.get("holdings", {}))
+
         # Calculate consensus
         consensus_html = self._format_consensus_cell(valuations, current_price)
 
@@ -313,6 +323,9 @@ class HTMLGenerator:
             <td>{gbm_lite_3y_html}</td>
             <td>{gbm_opp_1y_html}</td>
             <td>{gbm_opp_3y_html}</td>
+            <td>{insider_html}</td>
+            <td>{activist_html}</td>
+            <td>{smart_money_html}</td>
             <td>{consensus_html}</td>
         </tr>'''
 
@@ -548,6 +561,145 @@ class HTMLGenerator:
             {confidence_badge}
             <div class="model-count">({consensus.num_models} models)</div>
         </div>'''
+
+    def _format_insider_cell(self, insider: Dict) -> str:
+        """Format insider activity cell: '3B/1S $2.1M' with color coding."""
+        if not insider or not insider.get('has_data'):
+            return '<span style="color: #999;">-</span>'
+
+        buy_count = insider.get('buy_count', 0)
+        sell_count = insider.get('sell_count', 0)
+        dollars = insider.get('dollar_conviction', 0.0)
+
+        parts = []
+        if buy_count > 0:
+            parts.append(f"{buy_count}B")
+        if sell_count > 0:
+            parts.append(f"{sell_count}S")
+
+        activity = "/".join(parts) if parts else "-"
+
+        # Dollar formatting
+        if dollars >= 1_000_000:
+            dollar_str = f"${dollars / 1_000_000:.1f}M"
+        elif dollars >= 1_000:
+            dollar_str = f"${dollars / 1_000:.0f}K"
+        elif dollars > 0:
+            dollar_str = f"${dollars:.0f}"
+        else:
+            dollar_str = ""
+
+        # Color: green for net buying, red for net selling, grey for no activity
+        if buy_count > sell_count:
+            color = "#155724"
+            bg = "#d4edda"
+        elif sell_count > buy_count:
+            color = "#721c24"
+            bg = "#f8d7da"
+        else:
+            color = "#383d41"
+            bg = "#e2e3e5"
+
+        text = f"{activity}"
+        if dollar_str:
+            text += f" {dollar_str}"
+
+        return f'<span style="color: {color}; background: {bg}; padding: 2px 5px; border-radius: 3px; font-size: 11px; font-weight: 600;">{text}</span>'
+
+    def _format_activist_cell(self, activist: Dict, japan: Dict, ticker: str) -> str:
+        """Format activist/passive stakes cell. Shows Japan stakes for .T tickers."""
+        parts = []
+
+        # SEC 13D/13G
+        if activist and activist.get('has_data'):
+            activist_count = activist.get('activist_count', 0)
+            passive_count = activist.get('passive_count', 0)
+            max_pct = activist.get('max_stake_pct')
+            name = activist.get('recent_activist_name', '')
+
+            if activist_count > 0:
+                pct_str = f" {max_pct:.1f}%" if max_pct else ""
+                name_str = f" ({name[:15]})" if name else ""
+                parts.append(f"{activist_count}\u00d713D{name_str}{pct_str}")
+            if passive_count > 0:
+                parts.append(f"{passive_count}\u00d713G")
+
+        # Japan large shareholding (for .T tickers)
+        if japan and japan.get('has_data') and ticker.endswith('.T'):
+            count = japan.get('holder_count', 0)
+            max_pct = japan.get('max_stake_pct')
+            name = japan.get('recent_holder_name', '')
+            pct_str = f" {max_pct:.1f}%" if max_pct else ""
+            name_str = f" ({name[:12]})" if name else ""
+            parts.append(f"{count}JP{name_str}{pct_str}")
+
+        if not parts:
+            return '<span style="color: #999;">\u2014</span>'
+
+        text = " | ".join(parts)
+
+        # Color: activist = orange (high signal), passive = blue
+        has_activist = activist and activist.get('activist_count', 0) > 0
+        if has_activist:
+            color = "#7c4700"
+            bg = "#ffe0b2"
+        else:
+            color = "#1a3a5c"
+            bg = "#e3f2fd"
+
+        return f'<span style="color: {color}; background: {bg}; padding: 2px 5px; border-radius: 3px; font-size: 11px; font-weight: 600;">{text}</span>'
+
+    def _format_smart_money_cell(self, holdings: Dict) -> str:
+        """Format smart money institutional holdings cell."""
+        if not holdings or not holdings.get('has_data'):
+            return '<span style="color: #999;">\u2014</span>'
+
+        holders_count = holdings.get('smart_money_holders', 0)
+        value = holdings.get('total_smart_money_value_usd', 0)
+        new_positions = holdings.get('new_positions', [])
+        notable = holdings.get('notable_holders', [])
+
+        parts = []
+
+        # Show notable holder names (abbreviated)
+        if notable:
+            abbrevs = []
+            for name in notable[:3]:
+                # Abbreviate to first word or initials
+                words = name.split()
+                if len(words) == 1:
+                    abbrevs.append(words[0][:3].upper())
+                else:
+                    abbrevs.append("".join(w[0] for w in words[:3]).upper())
+            parts.append(", ".join(abbrevs))
+
+        # New positions
+        if new_positions:
+            parts.append(f"+{len(new_positions)} new")
+
+        # Value
+        if value >= 1_000_000_000:
+            parts.append(f"${value / 1_000_000_000:.1f}B")
+        elif value >= 1_000_000:
+            parts.append(f"${value / 1_000_000:.0f}M")
+
+        if not parts:
+            parts.append(f"{holders_count} funds")
+
+        text = " ".join(parts)
+
+        # Color based on holder count
+        if holders_count >= 3:
+            color = "#155724"
+            bg = "#d4edda"
+        elif holders_count >= 1:
+            color = "#1a3a5c"
+            bg = "#e3f2fd"
+        else:
+            color = "#383d41"
+            bg = "#e2e3e5"
+
+        return f'<span style="color: {color}; background: {bg}; padding: 2px 5px; border-radius: 3px; font-size: 11px; font-weight: 600;">{text}</span>'
 
     def _sort_stocks_for_display(self, stocks_data: Dict) -> List[Tuple[str, Dict]]:
         """Sort stocks for optimal display order."""
