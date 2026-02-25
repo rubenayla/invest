@@ -49,8 +49,16 @@ print(income.loc['Net Income'])
 
 **NEVER modify a file without reading it first.**
 - You must know if the file exists and what is in it before overwriting.
-- **NEVER** overwrite ignored files (like `todo.md`) without explicit confirmation or checking content first, as they cannot be recovered via git.
+- **NEVER** overwrite ignored files (like `TODO.md`) without explicit confirmation or checking content first, as they cannot be recovered via git.
 - **ALWAYS** check `git status` before modifying files to ensure you don't destroy uncommitted work.
+
+---
+
+## Root-Level Scratch Files
+
+- **`stuff.md`** — Unstructured notes dump. The user pours info here with no organization, as a grepable reference. **Do not delete or reorganize.**
+- **`stuff/`** — Scratch directory for misc files (scripts, screenshots, PDFs). Same purpose. **Do not delete.**
+- **`TODO.md`** — Active todo list. **Do not delete.**
 
 ---
 

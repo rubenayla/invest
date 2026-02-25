@@ -9,6 +9,7 @@ Macro-level investment theses and sector/commodity analyses. Unlike individual s
 | [Copper](copper-thesis.md) | Researched | Cautiously Bullish | 2026-01-31 |
 | [Power](power-thesis.md) | Researched | Bullish but Entry-Selective | 2026-02-09 |
 | [Argentina ETF](argentina-thesis.md) | Researched | Speculative Bullish | 2026-01-31 |
+| [AI Disruption "Hit List"](ai-disruption-thesis.md) | Researched | Actionable — Selective Shorts + Avoid | 2026-02-25 |
 
 ## Thesis Structure
 
