@@ -125,17 +125,38 @@ class IndexManager:
 
     def _fetch_sp500_tickers(self) -> List[str]:
         """Fetch S&P 500 tickers."""
+        import requests
+        import pandas as pd
+        from io import StringIO
+
+        # Method 1: Wikipedia (most reliably up-to-date)
         try:
-            import pandas as pd
+            resp = requests.get(
+                'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies',
+                headers={'User-Agent': 'Mozilla/5.0'},
+                timeout=15,
+            )
+            resp.raise_for_status()
+            tables = pd.read_html(StringIO(resp.text))
+            tickers = tables[0]['Symbol'].tolist()
+            if len(tickers) >= 490:  # sanity check
+                logger.info(f"✅ Fetched {len(tickers)} S&P 500 tickers from Wikipedia")
+                return tickers
+        except Exception as e1:
+            logger.warning(f"Wikipedia failed: {e1}")
+
+        # Method 2: datahub.io fallback
+        try:
             url = 'https://datahub.io/core/s-and-p-500-companies/r/constituents.csv'
             df = pd.read_csv(url)
             tickers = df['Symbol'].tolist()
             logger.info(f"✅ Fetched {len(tickers)} S&P 500 tickers from datahub.io")
             return tickers
-        except Exception as e:
-            logger.warning(f"Datahub failed: {e}, using fallback.")
-            # Basic fallback list
-            return ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "TSLA", "META", "BRK-B", "UNH", "JNJ"]
+        except Exception as e2:
+            logger.warning(f"Datahub failed: {e2}, using fallback.")
+
+        # Basic fallback list
+        return ["AAPL", "MSFT", "GOOGL", "AMZN", "NVDA", "TSLA", "META", "BRK-B", "UNH", "JNJ"]
 
     def _fetch_merval_tickers(self) -> List[str]:
         """Fetch Argentina Merval tickers."""

@@ -276,6 +276,15 @@ class AsyncStockDataFetcher:
                 # Fetch stock info (required for everything else)
                 info = stock.info
 
+                # Validate that info has real data — yfinance silently returns
+                # an empty/partial dict on rate-limit instead of raising, which
+                # would bypass the retry loop.  currentPrice is the bare minimum
+                # needed for any downstream valuation model.
+                if not info or not info.get('currentPrice'):
+                    raise RuntimeError(
+                        f"{ticker}: yfinance returned empty info (likely rate-limited)"
+                    )
+
                 # Basic info (most important)
                 data['info'] = {
                     'currentPrice': info.get('currentPrice'),

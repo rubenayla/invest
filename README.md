@@ -15,6 +15,20 @@ This framework is designed to be:
 
 ⚠️ **IMPORTANT: Always use `uv run` for all commands** - This project uses uv dependency management.
 
+### Using Claude Code
+
+The easiest way to run the full pipeline (data fetch, valuations, dashboard):
+
+```
+/update                        # Full S&P 500 pipeline
+/update --skip-fetch           # Re-run models on existing data
+/update --universe europe      # Different universe
+```
+
+This fetches data, runs all models (GBM + classic valuations), generates the dashboard, and starts a live server at http://localhost:8080.
+
+### Manual Commands
+
 ```bash
 # Install dependencies with uv
 uv sync
@@ -263,6 +277,10 @@ This framework addresses common issues in investment research:
 Ideal for investors seeking disciplined, objective stock analysis.
 
 ---
+
+## Related Projects
+
+- [investV2](https://github.com/albertorblan06/investV2) — C++20 quant trading terminal for Apple Silicon with real-time WebSocket feeds, on-device LLM sentiment (Qwen2-0.5B), XGBoost+LSTM ensemble, and GPU Monte Carlo. Complementary to this repo: they focus on real-time signals/execution, we focus on fundamental analysis/valuation. See `.agents/scratch.md` for cross-pollination ideas.
 
 ## Original References
 

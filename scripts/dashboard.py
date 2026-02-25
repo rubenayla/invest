@@ -139,9 +139,21 @@ def load_stocks_from_database() -> dict:
     for ticker, price_data in latest_price_by_ticker.items():
         stocks[ticker]['current_price'] = price_data['price']
 
+    # Load insider signals
+    insider_count = 0
+    try:
+        from invest.data.insider_db import compute_insider_signal
+        for ticker in stocks:
+            signal = compute_insider_signal(conn, ticker)
+            stocks[ticker]['insider'] = signal
+            if signal.get('has_data'):
+                insider_count += 1
+    except Exception as exc:
+        print(f'  Insider data not available: {exc}')
+
     conn.close()
 
-    print(f'Loaded {valuation_count} successful valuations')
+    print(f'Loaded {valuation_count} successful valuations, {insider_count} insider signals')
 
     return stocks
 
