@@ -132,12 +132,14 @@ class StockDataCache:
                     trailing_eps, book_value, revenue_per_share, price_to_sales_ttm,
                     price_52w_high, price_52w_low, avg_volume, price_trend_30d,
                     cashflow_json, balance_sheet_json, income_json,
-                    fetch_timestamp, last_updated
+                    fetch_timestamp, last_updated,
+                    exchange_rate_used, original_currency
                 ) VALUES (
                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                     ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                    ?, ?, ?, ?, ?, ?, ?, ?
+                    ?, ?, ?, ?, ?, ?, ?, ?,
+                    ?, ?
                 )
             ''', (
                 ticker,
@@ -156,7 +158,9 @@ class StockDataCache:
                 json.dumps(data.get('balance_sheet', [])),
                 json.dumps(data.get('income', [])),
                 data.get('fetch_timestamp', datetime.now().isoformat()),
-                datetime.now().isoformat()
+                datetime.now().isoformat(),
+                financials.get('_exchange_rate_used'),
+                financials.get('_original_currency')
             ))
 
             conn.commit()

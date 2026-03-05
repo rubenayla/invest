@@ -32,6 +32,7 @@ def load_stock_data(ticker: str, reader: StockDataReader) -> Optional[dict]:
 
     stock_data = {
         'info': cache_data.get('info', {}),
+        'financials': cache_data.get('financials', {}),
         'market_data': reader.get_market_inputs(
             ticker=ticker,
             min_price_points=252,
@@ -103,17 +104,30 @@ def main():
             print(f"Error: No data found for {ticker}")
             continue
 
-        current_price = stock_data['info'].get('currentPrice')
-        if current_price:
-            print(f"Current Price: ${current_price:.2f}")
+        info = stock_data['info']
+        current_price = info.get('currentPrice')
+        currency = info.get('currency', 'USD')
+        
+        # If the price is in JPY (or other non-USD), and we have conversion info, use it
+        if currency != 'USD' and '_exchange_rate_used' in stock_data.get('financials', {}):
+            rate = stock_data['financials']['_exchange_rate_used']
+            current_price_usd = current_price * rate
+            print(f"Current Price: {current_price:.2f} {currency} (${current_price_usd:.2f} USD)")
+            display_price = current_price_usd
         else:
-            print("Current Price: Unknown")
+            print(f"Current Price: ${current_price:.2f}" if current_price else "Current Price: Unknown")
+            display_price = current_price
 
         for reg_name, db_name in MODELS_TO_RUN:
             result = run_valuation(registry, reg_name, ticker, stock_data)
             if result.get('suitable'):
-                upside = result['upside']
                 fair_value = result['fair_value']
+                # Calculate upside using the same currency basis
+                if display_price and display_price > 0:
+                    upside = ((fair_value / display_price) - 1) * 100
+                else:
+                    upside = 0
+                
                 confidence = result['confidence']
                 print(f"  {db_name:20}: Fair Value: ${fair_value:8.2f} | Upside: {upside:6.1f}% | Confidence: {confidence}")
             else:

@@ -1,8 +1,10 @@
 # 🎯 Priority Watchlist - March 2026
 1. **Synchrony Financial (SYF)** - Deep value play (+150% to +300% upside). Strongest fundamental pick.
 2. **Alphabet (GOOGL)** - AI infrastructure leader with TPU advantage. Fairly valued but high strategic moat.
-3. **Capital One (COF)** - High-upside alternative to SYF (+123% upside) with scale from Discover merger.
-4. **Molina Healthcare (MOH)** - Solid defensive value pick.
+3. **Sumitomo Mitsui Financial (8316.T)** - Massive DCF upside (+327%). Primary beneficiary of rising JPY rates.
+4. **Capital One (COF)** - High-upside alternative to SYF (+123% upside) with scale from Discover merger.
+5. **Sumitomo Corporation (8053.T)** - Solid Sogo Shosha pick (+26.5% upside). Diversified "Buffett-style" hold.
+6. **Molina Healthcare (MOH)** - Solid defensive value pick.
 
 ---
 
