@@ -497,7 +497,8 @@ def get_universe_tickers(universe: str) -> List[str]:
         universe_configs = {
             'japan': [
                 '7203.T', '6098.T', '4063.T', '4502.T', '9984.T', '9432.T', '8316.T',
-                '6758.T', '7267.T', '6861.T', '6954.T', '6920.T', '6752.T', '4543.T'
+                '6758.T', '7267.T', '6861.T', '6954.T', '6920.T', '6752.T', '4543.T',
+                '8002.T', '8058.T', '8031.T', '8001.T', '8053.T',  # Sogo shosha
             ],
             'spain': [
                 'SAN.MC', 'BBVA.MC', 'CABK.MC', 'SAB.MC', 'BKT.MC', 'MAP.MC',

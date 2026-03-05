@@ -1,3 +1,91 @@
+# 🎯 Priority Watchlist - March 2026
+1. **Synchrony Financial (SYF)** - Deep value play (+150% to +300% upside). Strongest fundamental pick.
+2. **Alphabet (GOOGL)** - AI infrastructure leader with TPU advantage. Fairly valued but high strategic moat.
+3. **Capital One (COF)** - High-upside alternative to SYF (+123% upside) with scale from Discover merger.
+4. **Molina Healthcare (MOH)** - Solid defensive value pick.
+
+---
+
+⏺ Oof. Here's the picture:
+
+  SQM — The Numbers Tell the Story
+
+  ┌────────────┬───────┬────────┬───────┬────────┐
+  │            │ 2021  │  2022  │ 2023  │  2024  │
+  ├────────────┼───────┼────────┼───────┼────────┤
+  │ Revenue    │ $2.9B │ $10.7B │ $7.5B │  $4.5B │
+  ├────────────┼───────┼────────┼───────┼────────┤
+  │ Net Income │ $0.6B │  $3.9B │ $2.0B │ -$0.4B │
+  └────────────┴───────┴────────┴───────┴────────┘
+
+  Revenue down 57% from peak. Net income went negative in 2024. The lithium boom is fully unwound.
+
+  ┌──────────────┬─────────────────┬────────┬──────────┐
+  │    Metric    │       SQM       │ Google │ Sumitomo │
+  ├──────────────┼─────────────────┼────────┼──────────┤
+  │ P/E          │      35.6x      │ 29.2x  │  13.1x   │
+  ├──────────────┼─────────────────┼────────┼──────────┤
+  │ Fwd P/E      │      14.9x      │ 23.5x  │  14.9x   │
+  ├──────────────┼─────────────────┼────────┼──────────┤
+  │ ROE          │      9.3%       │ 35.7%  │  12.6%   │
+  ├──────────────┼─────────────────┼────────┼──────────┤
+  │ Rev Growth   │      -19%       │  +18%  │  +2.5%   │
+  ├──────────────┼─────────────────┼────────┼──────────┤
+  │ Earn Growth  │      -59%       │  +31%  │   +46%   │
+  ├──────────────┼─────────────────┼────────┼──────────┤
+  │ D/E          │      1.78       │  0.36  │   1.04   │
+  ├──────────────┼─────────────────┼────────┼──────────┤
+  │ Off 52w High │      -23%       │ -14.5% │  -6.3%   │
+  ├──────────────┼─────────────────┼────────┼──────────┤
+  │ DCF          │ -$3 (negative!) │  N/A   │   N/A    │
+  ├──────────────┼─────────────────┼────────┼──────────┤
+  │ GBM 1y       │      +21%       │  +27%  │   N/A    │
+  └──────────────┴─────────────────┴────────┴──────────┘
+
+  SQM is trading at 35x trailing earnings on a money-losing year, with revenue in freefall, high debt (1.78x D/E), and the Codelco JV taking 60-70% of future
+  operating profit. The only bull case is a lithium price spike — pure commodity speculation.
+
+  Should you sell?
+
+  Your notes say you hold ~€6.8k with a trim plan at $68-70. Current price is ~$66, so you're close to that first trim trigger.
+
+  I'd sell at least half. Here's why:
+
+  1. The business is losing money — negative NI in 2024, margins cratering
+  2. 35x P/E on impaired earnings — not cheap at all
+  3. Google at 29x P/E is growing 30% — why hold a 35x commodity stock that's shrinking?
+  4. Your own notes flag the risks — state take rising to 60-70%, capex heavy, commodity whipsaw
+  5. Opportunity cost — that €6.8k in Google would be buying a compounding machine instead of a lithium lottery ticket
+
+  If you still want lithium exposure, keep a small position (€2-3k). But rotating the bulk into Google at -14.5% from highs looks like a much better use of
+  capital right now.
+
+✻ Baked for 46s
+
+❯ ok limit sell of 70 sqm shares at 72 usd? i hope it trips sometime not too long in the future
+
+⏺ That aligns with your own trim plan in the SQM notes — you had $68-70 as the first trim trigger and $72+ for the second slice.
+
+  70 shares × $72 = $5,040 (~€4,700). That's a big chunk of your €6.8k position — roughly 70%. That's more aggressive than your original plan (which was €2k
+  first, then another slice), but given the deteriorating fundamentals I think it's the right call.
+
+  $72 is ~9% above current price ($66). It's been at $86 within the past year so it's not unrealistic, but lithium prices need to cooperate. Just be aware it
+  might sit unfilled for a while if lithium stays flat.
+
+  Go place it on your broker. And if it fills, we can talk about where to redeploy — Google being the obvious candidate at that point.
+
+❯ /Users/rubenayla/Library/Group\
+  Containers/group.com.apple.coreservices.useractivityd/shared-pasteboard/items/44711128-A38D-43B6-9710-2E44A9BBF711/AF76F3A1-B6FC-423F-A71A-9C1D52F02846.PNG
+
+  what do you think
+
+⏺ Read 1 file (ctrl+o to expand)
+
+⏺ The screenshot seems to have expired from the pasteboard. Could you paste it again or save it to a file? (e.g. drag it to the repo or stuff/ folder)
+
+✻ Churned for 30s
+
+
 
 # improve SYF analysis, include risks
 Valuation – Cheap Relative to History and Peers
