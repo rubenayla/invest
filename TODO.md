@@ -1,3 +1,5 @@
+https://gexanalyzer.streamlit.app/
+
 # 🎯 Priority Watchlist - March 2026
 1. **Synchrony Financial (SYF)** - Deep value play (+150% to +300% upside). Strongest fundamental pick.
 2. **Alphabet (GOOGL)** - AI infrastructure leader with TPU advantage. Fairly valued but high strategic moat.
