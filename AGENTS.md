@@ -6,8 +6,11 @@
 - `architecture.md`: Key design decisions. Keep under 100 lines.
 - `definition_of_done.md`: Completion checklist.
 - `scratch.md`: Volatile notes, not for commit.
+- `coding_standards.md`: Code style, testing strategy, commit discipline.
+- `data_conventions.md`: Ratio storage, yfinance quirks.
+- `gemini_cli.md`: Gemini CLI flags and resume.
 
-## 🚨 INVESTMENT ANALYSIS PROTOCOL (STRICT MANDATE)
+## INVESTMENT ANALYSIS PROTOCOL (STRICT MANDATE)
 
 **When analyzing a stock for investment, you MUST follow this "Triangulation" workflow:**
 
@@ -30,7 +33,7 @@
 
 ---
 
-## 🚨 THE IRON RULE: VERIFY TRENDS BEFORE CLAIMING
+## THE IRON RULE: VERIFY TRENDS BEFORE CLAIMING
 
 **Before saying "declining" or "down X%", check yfinance 3-5 year trend:**
 ```python
@@ -45,7 +48,7 @@ print(income.loc['Net Income'])
 
 ---
 
-## 🛑 FILE MODIFICATION SAFETY
+## FILE MODIFICATION SAFETY
 
 **NEVER modify a file without reading it first.**
 - You must know if the file exists and what is in it before overwriting.
@@ -78,7 +81,7 @@ uv run pytest
 
 ## Database Architecture
 
-**🚨 DATABASE IS SOURCE OF TRUTH - NOT SCRIPTS**
+**DATABASE IS SOURCE OF TRUTH - NOT SCRIPTS**
 
 **If there's a mismatch between database schema and script queries, the DATABASE is correct. Update the scripts.**
 
@@ -123,58 +126,10 @@ Safe commands:
 
 ---
 
-## Testing Strategy
+## Remote Server (Bots)
 
-**When to run tests locally:**
-- Logic changes in core modules: `uv run pytest`
-- Testing-specific changes: `uv run pytest tests/test_file.py`
-- Major refactoring: `uv run pytest`
-- Skip tests for: docs, configs, small UI tweaks (let CI handle it)
-
-**After pushing:**
-- Check CI status: `gh run list --limit 1`
-- If CI fails: `gh run view --log-failed` to see details
-
-**Commit discipline:**
-- Keep commits small: <100 lines changed
-- One issue per commit
-- Never refactor multiple files at once
-
----
-
-## Coding Standards
-
-- Single quotes: `'hello'`
-- Type hints always
-- Numpydoc docstrings
-- Guard clauses (early returns)
-- Use `@pytest.mark.parametrize` for test variations
-
----
-
-## Data Conventions
-
-**Ratios stored as ratios, not percentages:**
-- Store: `0.93` (not `93`)
-- Multiply directly: `debt * 0.93`
-
-**yfinance returns `debtToEquity` as percentage, so calculate manually:**
-```python
-debt_to_equity = total_debt / (book_value * shares_outstanding)
+The scanner and other bots run on a remote server. Connect via:
+```bash
+ssh bots
 ```
-Location: `scripts/data_fetcher.py:289-299`
-
----
-
-## Gemini CLI Context
-
-**Resume Capability**
-The CLI supports resuming previous sessions. This restores conversation history but check `AGENTS.md` or status files for project context.
-- `gemini --resume` (or `-r`) resumes the latest session.
-- `gemini --resume <index>` resumes a specific session.
-- `gemini --list-sessions` lists available sessions.
-
-**Other Useful Flags**
-- `--yolo`: Automatically accepts all tool calls (use with caution).
-- `--sandbox`: Runs in a sandbox environment.
-- `--prompt-interactive` (`-i`): Execute a prompt and continue interactively.
+The SSH config is already set up. When the user says "check the bots", "ssh bots", or refers to the server/scanner in production, **always run commands on the server via `ssh bots`**, not locally.

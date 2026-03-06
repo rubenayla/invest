@@ -26,6 +26,14 @@ This file tracks mistakes and failures in the investment analysis system and the
 - For quick one-off data extraction in sandbox, prefer `sqlite3` + `jq` over ad-hoc Python.
 - If Python execution is required, request escalated execution or run outside the sandbox environment.
 
+## 2026-03-06 - Ran diagnostics on local machine instead of remote server
+**What happened:** User asked to check the SSH bots/scanner on the server. Agent ran all commands locally (macOS), found no issues, and drafted a condescending message to another bot (Mako) telling it the database wasn't malformed — all based on the wrong environment. The local DB is fine; the server DB may genuinely be broken. Agent never asked for SSH connection details before acting.
+**Root cause:** Assumed local environment = production environment. Didn't listen to context ("ssh bots") and jumped straight to local execution.
+**Prevention added:**
+- `ssh bots` is documented in AGENTS.md. When user references bots/server/scanner, run commands there — not locally.
+- The SSH alias has been told to the agent many times. Failure to note it in the repo was the compounding error.
+- Never draft communications telling others they're wrong based on unverified assumptions.
+
 ## 2026-02-09 - Staged/unpushed work caused churn risk
 **What happened:** Lots of changes were left staged/unstaged; this increases merge conflict risk when bots/agents also commit to the repo.
 **Prevention added:**
