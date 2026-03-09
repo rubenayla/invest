@@ -27,6 +27,21 @@ The easiest way to run the full pipeline (data fetch, valuations, dashboard):
 
 This fetches data, runs all models (GBM + classic valuations), generates the dashboard, and starts a live server at http://localhost:8080.
 
+### Position Sizing (Kelly Criterion)
+
+```bash
+# How much to buy of specific stocks
+uv run python scripts/run_position_sizer.py AAPL MSFT --portfolio-value 50000 --verbose
+
+# Build optimal portfolio from all ~700 stocks
+uv run python scripts/run_position_sizer.py --portfolio --budget 30000 --max-positions 10
+
+# Quarter-Kelly (more conservative)
+uv run python scripts/run_position_sizer.py --fraction 0.25 AAPL
+```
+
+Uses GBM 3-year predictions for expected return, 3-model agreement for win probability, and rolling 1-year returns for downside. See `notes/references/trading-formulas.md` for the math.
+
 ### Manual Commands
 
 ```bash
