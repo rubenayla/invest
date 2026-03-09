@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
+from datetime import datetime, timedelta
 from pathlib import Path
 
 from invest.config.constants import CONSENSUS_CONFIG
@@ -12,6 +13,14 @@ from invest.valuation.consensus import compute_consensus_from_dicts
 from invest.valuation.db_utils import get_db_connection, get_latest_predictions
 
 from .risk_checks import RiskChecker, RiskReport
+
+# Dual-class share mappings: keep the more liquid class, skip the other.
+# Maps "skip this ticker" -> "canonical ticker" (the one we keep).
+_DUAL_CLASS_SKIP = {
+    "FOXA": "FOX",
+    "GOOGL": "GOOG",
+    "NWSA": "NWS",
+}
 
 
 @dataclass
@@ -146,6 +155,8 @@ class KellyPositionSizer:
 
         # Collect flags
         flags = list(risk.flags)
+        if self._is_stale(ticker):
+            flags.append("stale_data")
         if edge <= 0:
             flags.append("no_edge")
         elif edge < 0.04:
@@ -206,6 +217,9 @@ class KellyPositionSizer:
                 "SELECT DISTINCT ticker FROM valuation_results"
             ).fetchall()
             tickers = [r[0] for r in rows]
+
+        # Remove dual-class duplicates (keep canonical ticker)
+        tickers = [t for t in tickers if t not in _DUAL_CLASS_SKIP]
 
         # Size each
         all_results = []
@@ -393,6 +407,20 @@ class KellyPositionSizer:
 
         # Clamp to [5%, 60%]
         return max(0.05, min(0.60, downside))
+
+    def _is_stale(self, ticker: str, max_age_days: int = 7) -> bool:
+        """Check if model predictions are older than max_age_days."""
+        row = self.conn.execute(
+            "SELECT MAX(timestamp) FROM valuation_results WHERE ticker = ?",
+            (ticker,),
+        ).fetchone()
+        if not row or not row[0]:
+            return True
+        try:
+            ts = datetime.fromisoformat(row[0])
+            return (datetime.now() - ts) > timedelta(days=max_age_days)
+        except (ValueError, TypeError):
+            return True
 
     def _no_data_result(self, ticker: str, reason: str) -> KellyResult:
         return KellyResult(
