@@ -19,7 +19,12 @@ Prioritized by combined signals: scanner score, insider buying, activist stakes 
 - [JD](../companies/JD.md) (JD.com) - 4 funds (Appaloosa, Citadel, DE Shaw, Tiger Global). P/E 9, ROE 12%.
 - [PDD](../companies/PDD.md) (PDD Holdings) - 3 funds. Scanner score 74.2.
 - [REGN](../companies/REGN.md) (Regeneron) - Scanner score 74.2.
-- [AMP](../companies/AMP.md) (Ameriprise) - Scanner score 74.4.
+- [AMP](../companies/AMP.md) (Ameriprise) - Scanner score 74.4. Kelly top 5 (76% f*, +41% upside, 11/11 bullish).
+- [VOW3.DE](../companies/VOW3.DE.md) (Volkswagen) - Kelly #1 pick. +478% upside, low vol (25%). Deep value auto.
+- [FOX](../companies/FOX.md) (Fox Corp) - Kelly top 3. 12/12 models bullish, +54% upside, 25% vol.
+- [IBKR](../companies/IBKR.md) (Interactive Brokers) - Kelly top 4. 10/11 models bullish, +52% upside. Brokerage.
+- [CA.PA](../companies/CA.PA.md) (Carrefour) - Kelly top 6. +138% upside, defensive EU retail, 22% vol.
+- [ENEL.MI](../companies/ENEL.MI.md) (Enel) - Kelly top 7. +24% upside, EU utility, lowest vol (17%).
 - [CAG](../companies/CAG.md) (Conagra Brands) - P/E 10.4, 7.3% dividend, recovering earnings.
 - [NVO](../companies/NVO.md) (Novo Nordisk) - GLP-1 drugs (Ozempic/Wegovy).
 - [META](../companies/META.md) (Meta) - GBM models strongly bullish (+34% to +87%). Traditional DCF says overvalued. Revenue +40%, FCF $54B.
@@ -32,6 +37,7 @@ Prioritized by combined signals: scanner score, insider buying, activist stakes 
 - [HIG](../companies/HIG.md) (Hartford) - Insurance. Scanner score 71.4.
 - [MRVL](../companies/MRVL.md) (Marvell) - AI/Networking silicon, high-risk 2y.
 - [AMD](../companies/AMD.md) - AI accelerators + CPU share gains, high-risk 2y.
+- [CORZ](../companies/CORZ.md) (Core Scientific) - BTC miner→AI pivot value play. $4M/MW vs $7M/MW peers, $8.7B CoreWeave contract. See [BTC miners thesis](../theses/btc-miners-ai-datacenter-thesis.md).
 
 ---
 
