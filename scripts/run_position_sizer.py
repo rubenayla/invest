@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CLI for Kelly Criterion position sizing.
+"""CLI for Kelly Criterion position sizing (GBM 3y models only).
 
 Usage:
     uv run python scripts/run_position_sizer.py AAPL MSFT GOOG
@@ -48,7 +48,7 @@ def parse_args() -> argparse.Namespace:
         "--verbose",
         "-v",
         action="store_true",
-        help="Show model-by-model breakdown",
+        help="Show per-model predicted returns",
     )
     parser.add_argument(
         "--portfolio",
@@ -72,17 +72,16 @@ def parse_args() -> argparse.Namespace:
 
 
 def print_model_breakdown(result: KellyResult) -> None:
-    """Print per-model bull/bear breakdown."""
-    if not result.model_agreement:
+    """Print per-model predicted returns."""
+    if not result.model_predictions:
         return
-    print(f"\n  Model breakdown for {result.ticker}:")
-    bulls = [m for m, v in result.model_agreement.items() if v == "bull"]
-    bears = [m for m, v in result.model_agreement.items() if v == "bear"]
-    print(f"    Bullish ({len(bulls)}): {', '.join(bulls) or 'none'}")
-    print(f"    Bearish ({len(bears)}): {', '.join(bears) or 'none'}")
+    print(f"\n  GBM 3y predictions for {result.ticker} (price: ${result.current_price:.2f}):")
+    for model, ret in sorted(result.model_predictions.items()):
+        direction = "+" if ret > 0 else ""
+        print(f"    {model:<25} {direction}{ret:.1%}")
     if result.risk:
         r = result.risk
-        print(f"    Volatility: {r.volatility_annual:.1%} | VaR(95%): {r.var_95_annual:.1%} | Max DD: {r.max_drawdown_1y:.1%} | Sector: {r.sector}")
+        print(f"    Sector: {r.sector} | Vol: {r.volatility_annual:.1%} | Max DD: {r.max_drawdown_1y:.1%}")
 
 
 def run_portfolio_mode(args: argparse.Namespace) -> None:
@@ -97,9 +96,9 @@ def run_portfolio_mode(args: argparse.Namespace) -> None:
         max_sector_pct=args.max_sector,
     )
 
-    scope = f"from {len(tickers)} tickers" if tickers else "from all stocks in DB"
+    scope = f"from {len(tickers)} tickers" if tickers else "from all GBM-covered stocks"
     print(f"\nBuilding portfolio: ${budget:,.0f} budget | {scope} | max {args.max_positions} positions")
-    print("Scanning stocks for edge...\n")
+    print("Using GBM 3y models only (standard, lite, opportunistic)\n")
 
     results = sizer.build_portfolio(
         budget=budget,
@@ -111,7 +110,6 @@ def run_portfolio_mode(args: argparse.Namespace) -> None:
         print("No stocks with positive edge found.")
         return
 
-    # Print results
     print(HEADER)
     print(SEPARATOR)
 
@@ -129,7 +127,6 @@ def run_portfolio_mode(args: argparse.Namespace) -> None:
     print(SEPARATOR)
     print(f"\n  Positions: {len(results)} | Invested: ${total:,.0f} ({total / budget:.1%}) | Cash: ${budget - total:,.0f} ({(budget - total) / budget:.1%})")
 
-    # Sector breakdown
     if sectors:
         print(f"\n  Sector allocation:")
         for sec, amt in sorted(sectors.items(), key=lambda x: -x[1]):
@@ -151,7 +148,8 @@ def run_ticker_mode(args: argparse.Namespace) -> None:
         max_sector_pct=args.max_sector,
     )
 
-    print(f"\nPortfolio: ${args.portfolio_value:,.0f} | Kelly fraction: {args.fraction} | Max position: {args.max_position:.0%} | Max sector: {args.max_sector:.0%}\n")
+    print(f"\nPortfolio: ${args.portfolio_value:,.0f} | Kelly fraction: {args.fraction} | Max position: {args.max_position:.0%} | Max sector: {args.max_sector:.0%}")
+    print("Using GBM 3y models only\n")
     print(HEADER)
     print(SEPARATOR)
 

@@ -1,21 +1,29 @@
-"""Kelly Criterion position sizing using existing model consensus."""
+"""Kelly Criterion position sizing using GBM 3-year predictions.
+
+Uses only GBM models (standard, lite, opportunistic) at the 3-year horizon.
+These predict actual expected returns, unlike DCF/RIM which estimate theoretical
+fair values. Agreement among the 3 models drives win probability.
+"""
 
 from __future__ import annotations
 
-import math
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from invest.config.constants import CONSENSUS_CONFIG
 from invest.data.stock_data_reader import StockDataReader
-from invest.valuation.consensus import compute_consensus_from_dicts
-from invest.valuation.db_utils import get_db_connection, get_latest_predictions
+from invest.valuation.db_utils import get_db_connection
 
 from .risk_checks import RiskChecker, RiskReport
 
-# Dual-class share mappings: keep the more liquid class, skip the other.
-# Maps "skip this ticker" -> "canonical ticker" (the one we keep).
+# GBM models used for Kelly sizing.
+# gbm_3y: actual hold-to-horizon return (median +12%, 77% bullish — well calibrated)
+# gbm_lite_3y: limited-history variant (median +53%, 100% bullish — overoptimistic)
+# gbm_opportunistic_3y: peak return within window (median +18%, 82% bullish)
+# Use all 3 as committee for agreement signal, but weight gbm_3y as primary.
+_GBM_MODELS = ("gbm_3y", "gbm_lite_3y", "gbm_opportunistic_3y")
+
+# Dual-class share mappings: skip the less liquid class.
 _DUAL_CLASS_SKIP = {
     "FOXA": "FOX",
     "GOOGL": "GOOG",
@@ -27,15 +35,14 @@ _DUAL_CLASS_SKIP = {
 class KellyResult:
     ticker: str
     current_price: float
-    consensus_fair_value: float
-    consensus_margin: float  # ratio: (fv - price) / price
-    win_probability: float  # p
+    expected_return: float  # median predicted return from GBM models
+    win_probability: float  # p — fraction of models predicting positive return
     win_loss_ratio: float  # b = upside / downside
     kelly_fraction: float  # raw f*
     adjusted_fraction: float  # after half-kelly + caps
     dollar_amount: float
     shares_to_buy: int
-    model_agreement: dict[str, str] = field(default_factory=dict)  # model -> bull/bear
+    model_predictions: dict[str, float] = field(default_factory=dict)  # model -> predicted return
     risk: RiskReport | None = None
     flags: list[str] = field(default_factory=list)
 
@@ -46,25 +53,26 @@ class KellyResult:
 
     def summary_line(self) -> str:
         flag_str = ", ".join(self.flags) if self.flags else "ok"
+        models_str = f"{sum(1 for r in self.model_predictions.values() if r > 0)}/{len(self.model_predictions)}"
         return (
-            f"{self.ticker:<6} | ${self.consensus_fair_value:>8.2f} | "
-            f"{self.consensus_margin:>+7.1%} | {self.win_probability:.2f} | "
-            f"{self.win_loss_ratio:.2f} | {self.kelly_fraction:>6.1%} | "
-            f"{self.adjusted_fraction:>6.1%} | {self.shares_to_buy:>6} | "
-            f"${self.dollar_amount:>9,.0f} | {flag_str}"
+            f"{self.ticker:<8} | {self.expected_return:>+7.1%} | "
+            f"{self.win_probability:.2f} | {self.win_loss_ratio:>5.2f} | "
+            f"{self.kelly_fraction:>6.1%} | {self.adjusted_fraction:>6.1%} | "
+            f"{self.shares_to_buy:>6} | ${self.dollar_amount:>9,.0f} | "
+            f"{models_str:>5} | {flag_str}"
         )
 
 
 HEADER = (
-    f"{'TICKER':<6} | {'Fair Val':>9} | {'Upside':>7} | {'p':>4} | "
-    f"{'b':>4} | {'Kelly':>6} | {'Half-K':>6} | {'Shares':>6} | "
-    f"{'$Amount':>10} | Flags"
+    f"{'TICKER':<8} | {'Return':>7} | {'p':>4} | {'b':>5} | "
+    f"{'Kelly':>6} | {'Adj-K':>6} | {'Shares':>6} | "
+    f"{'$Amount':>10} | {'Bulls':>5} | Flags"
 )
 SEPARATOR = "-" * len(HEADER)
 
 
 class KellyPositionSizer:
-    """Compute position sizes using Kelly Criterion on existing model outputs."""
+    """Compute position sizes using Kelly Criterion on GBM 3y predictions."""
 
     def __init__(
         self,
@@ -74,7 +82,6 @@ class KellyPositionSizer:
         max_sector_pct: float = 0.35,
         db_path: Path | None = None,
         current_holdings: dict[str, float] | None = None,
-        use_calibration: bool = True,
     ):
         self.portfolio_value = portfolio_value
         self.fraction = fraction
@@ -85,49 +92,60 @@ class KellyPositionSizer:
         self.risk_checker = RiskChecker(self.reader, self.conn)
         self.current_holdings = current_holdings or {}
 
-        # Load calibration base rate to cap overconfident p estimates
-        self._base_rate = 0.733  # default 1y base rate
-        if use_calibration:
-            try:
-                from .calibration import ModelCalibrator
-
-                cal = ModelCalibrator(db_path).calibrate("1y")
-                if cal.total_snapshots > 100:
-                    self._base_rate = cal.base_rate
-            except Exception:
-                pass  # fall back to default
-
     def size_position(self, ticker: str) -> KellyResult:
         """Compute Kelly-optimal position size for a single ticker."""
-        predictions = get_latest_predictions(self.conn, ticker)
+        # Get GBM 3y predictions only
+        predictions = self._get_gbm_predictions(ticker)
         if not predictions:
-            return self._no_data_result(ticker, "no model predictions found")
+            return self._no_data_result(ticker, "no GBM 3y predictions")
 
-        # Get current price from predictions or DB
-        current_price = self._get_current_price(ticker, predictions)
+        current_price = self._get_current_price(ticker)
         if not current_price or current_price <= 0:
             return self._no_data_result(ticker, "no valid price")
 
-        # Compute consensus
-        consensus = compute_consensus_from_dicts(predictions, current_price)
-        if consensus is None:
-            return self._no_data_result(ticker, "consensus computation failed")
+        # Extract predicted returns from each model
+        model_returns: dict[str, float] = {}
+        for model_name, data in predictions.items():
+            ret = data.get("margin_of_safety")  # this is the predicted return
+            if ret is not None:
+                model_returns[model_name] = ret
 
-        # Model agreement breakdown
-        model_agreement = self._compute_model_agreement(predictions, current_price)
+        if not model_returns:
+            return self._no_data_result(ticker, "no valid return predictions")
 
-        # Win probability from weighted model agreement
-        p = self._compute_win_probability(predictions, current_price)
+        # Use gbm_3y as primary signal (best calibrated: median +12%, 77% bullish).
+        # gbm_lite overestimates (100% bullish), gbm_opportunistic is peak-return.
+        primary_return = model_returns.get("gbm_3y")
+        if primary_return is None:
+            # Fall back to median if gbm_3y missing
+            sorted_returns = sorted(model_returns.values())
+            primary_return = sorted_returns[len(sorted_returns) // 2]
+        expected_return = primary_return
 
-        # Win/loss ratio: upside from consensus, downside from historical VaR
+        # p from agreement: how many models agree on direction + confidence.
+        # Base rate: 77% of stocks go up in gbm_3y.
+        n_bullish = sum(1 for r in model_returns.values() if r > 0)
+        n_models = len(model_returns)
+
+        # Start from base rate, adjust by agreement
+        base_rate = 0.77
+        if expected_return > 0:
+            # Bullish: 3/3 agree → +0.08, 2/3 → +0.02, 1/3 → -0.10
+            agreement_bonus = (n_bullish / n_models - 0.67) * 0.24
+            p = max(0.1, min(0.88, base_rate + agreement_bonus))
+        else:
+            # Bearish: flip — more bears = higher p of loss
+            p = max(0.1, min(0.40, (1 - base_rate) + (n_bullish / n_models - 0.33) * 0.24))
+
+        upside = max(expected_return, 0.0)
+
+        # Historical downside from rolling 1-year returns
         historical_downside = self._compute_historical_downside(ticker)
-
         if historical_downside <= 0:
-            historical_downside = 0.15  # default 15% downside if no history
+            historical_downside = 0.15
 
-        # Cap consensus upside at 100% — anything beyond is likely model noise
-        consensus_upside = max(min(consensus.margin_of_safety, 1.0), 0.0)
-        b = consensus_upside / historical_downside if consensus_upside > 0 else 0.0
+        # b = upside / downside
+        b = upside / historical_downside if upside > 0 else 0.0
 
         # Kelly formula: f* = (p * b - q) / b
         q = 1 - p
@@ -173,15 +191,14 @@ class KellyPositionSizer:
         return KellyResult(
             ticker=ticker,
             current_price=current_price,
-            consensus_fair_value=consensus.fair_value,
-            consensus_margin=consensus.margin_of_safety,
+            expected_return=expected_return,
             win_probability=p,
             win_loss_ratio=b,
             kelly_fraction=kelly_f,
             adjusted_fraction=adjusted_f,
             dollar_amount=dollar_amount,
             shares_to_buy=shares,
-            model_agreement=model_agreement,
+            model_predictions=model_returns,
             risk=risk,
             flags=flags,
         )
@@ -199,26 +216,20 @@ class KellyPositionSizer:
     ) -> list[KellyResult]:
         """Propose a portfolio allocation from all stocks with edge.
 
-        Scans all tickers in valuation_results (or a provided list), ranks
-        by risk-adjusted Kelly score, enforces sector caps, and allocates
-        budget proportionally.
-
-        Args:
-            budget: Amount to invest. Defaults to self.portfolio_value.
-            tickers: Stocks to consider. None = all stocks in DB.
-            max_positions: Maximum number of positions.
-            min_edge: Minimum edge (p*b - q) to include.
+        Scans all tickers with GBM 3y predictions, ranks by Kelly fraction,
+        enforces sector caps, and allocates budget proportionally.
         """
         budget = budget or self.portfolio_value
 
-        # Get all tickers with model predictions
         if tickers is None:
+            placeholders = ",".join("?" * len(_GBM_MODELS))
             rows = self.conn.execute(
-                "SELECT DISTINCT ticker FROM valuation_results"
+                f"SELECT DISTINCT ticker FROM valuation_results WHERE model_name IN ({placeholders})",
+                _GBM_MODELS,
             ).fetchall()
             tickers = [r[0] for r in rows]
 
-        # Remove dual-class duplicates (keep canonical ticker)
+        # Remove dual-class duplicates
         tickers = [t for t in tickers if t not in _DUAL_CLASS_SKIP]
 
         # Size each
@@ -231,9 +242,8 @@ class KellyPositionSizer:
         if not all_results:
             return []
 
-        # Rank by Kelly fraction — volatility is already accounted for
-        # in the downside estimate (rolling 1-year returns)
-        all_results.sort(key=lambda r: r.kelly_fraction, reverse=True)
+        # Rank by edge (p*b - q) — combines probability and magnitude
+        all_results.sort(key=lambda r: r.edge, reverse=True)
 
         # Allocate with sector caps enforced
         allocated: list[KellyResult] = []
@@ -247,17 +257,14 @@ class KellyPositionSizer:
 
             sector = r.risk.sector if r.risk else "Unknown"
 
-            # Check sector cap
             if sector_totals.get(sector, 0) >= sector_cap:
                 continue
 
-            # Compute allocation: proportional to Kelly fraction, capped
-            raw_amount = r.kelly_fraction * budget
+            raw_amount = r.adjusted_fraction * budget
             capped_amount = min(raw_amount, budget * self.max_position_pct)
             capped_amount = min(capped_amount, remaining)
             capped_amount = min(capped_amount, sector_cap - sector_totals.get(sector, 0))
 
-            # Minimum position: at least 0.5% of budget and at least 1 share
             min_amount = budget * 0.005
             if r.current_price > 0 and capped_amount >= max(r.current_price, min_amount):
                 shares = int(capped_amount / r.current_price)
@@ -272,15 +279,14 @@ class KellyPositionSizer:
                 KellyResult(
                     ticker=r.ticker,
                     current_price=r.current_price,
-                    consensus_fair_value=r.consensus_fair_value,
-                    consensus_margin=r.consensus_margin,
+                    expected_return=r.expected_return,
                     win_probability=r.win_probability,
                     win_loss_ratio=r.win_loss_ratio,
                     kelly_fraction=r.kelly_fraction,
                     adjusted_fraction=actual_amount / budget if budget > 0 else 0,
                     dollar_amount=actual_amount,
                     shares_to_buy=shares,
-                    model_agreement=r.model_agreement,
+                    model_predictions=r.model_predictions,
                     risk=r.risk,
                     flags=r.flags,
                 )
@@ -288,95 +294,46 @@ class KellyPositionSizer:
 
         return allocated
 
-    def _get_current_price(self, ticker: str, predictions: dict) -> float | None:
-        """Extract current price from predictions or DB."""
-        for model_data in predictions.values():
-            if isinstance(model_data, dict):
-                price = model_data.get("current_price")
-                if price and price > 0:
-                    return price
-        # Fallback to DB
+    def _get_gbm_predictions(self, ticker: str) -> dict[str, dict]:
+        """Get GBM 3y predictions for a ticker."""
+        placeholders = ",".join("?" * len(_GBM_MODELS))
+        rows = self.conn.execute(
+            f"""SELECT model_name, fair_value, current_price, margin_of_safety, confidence
+               FROM valuation_results
+               WHERE ticker = ? AND model_name IN ({placeholders})""",
+            (ticker, *_GBM_MODELS),
+        ).fetchall()
+
+        predictions = {}
+        for model_name, fv, cp, mos, conf in rows:
+            predictions[model_name] = {
+                "fair_value": fv,
+                "current_price": cp,
+                "margin_of_safety": mos,
+                "confidence": conf,
+            }
+        return predictions
+
+    def _get_current_price(self, ticker: str) -> float | None:
+        """Get current price from DB."""
         row = self.conn.execute(
             "SELECT current_price FROM current_stock_data WHERE ticker = ?",
             (ticker,),
         ).fetchone()
         return row[0] if row else None
 
-    def _compute_model_agreement(
-        self, predictions: dict, current_price: float
-    ) -> dict[str, str]:
-        """Classify each model as bullish or bearish."""
-        agreement = {}
-        for model_name, data in predictions.items():
-            if not isinstance(data, dict):
-                continue
-            fv = data.get("fair_value")
-            if fv is not None and fv > 0:
-                agreement[model_name] = "bull" if fv > current_price else "bear"
-        return agreement
-
-    def _compute_win_probability(
-        self, predictions: dict, current_price: float
-    ) -> float:
-        """Weighted fraction of models predicting upside."""
-        weights = CONSENSUS_CONFIG.MODEL_WEIGHTS
-        default_w = CONSENSUS_CONFIG.DEFAULT_MODEL_WEIGHT
-
-        total_weight = 0.0
-        bullish_weight = 0.0
-
-        for model_name, data in predictions.items():
-            if not isinstance(data, dict):
-                continue
-            fv = data.get("fair_value")
-            if fv is None or fv <= 0:
-                continue
-
-            w = weights.get(model_name, default_w)
-
-            # Boost weight by model confidence if available
-            conf = data.get("confidence")
-            if conf is not None:
-                try:
-                    conf_f = float(conf)
-                    if 0 < conf_f <= 1:
-                        w *= conf_f
-                except (ValueError, TypeError):
-                    pass  # string confidence like 'high' — ignore
-
-            total_weight += w
-            if fv > current_price:
-                bullish_weight += w
-
-        if total_weight == 0:
-            return 0.5  # no signal
-
-        raw_p = bullish_weight / total_weight
-
-        # Calibration: blend with historical base rate to prevent overconfidence.
-        # If all models agree (raw_p=1.0), we still cap at slightly above base rate.
-        # Formula: p = base_rate + (raw_p - 0.5) * scaling
-        # This anchors to the base rate and adjusts by model signal strength.
-        max_p = min(0.95, self._base_rate + 0.15)  # can't exceed base rate + 15%
-        return max(0.1, min(max_p, raw_p))
-
     def _compute_historical_downside(self, ticker: str) -> float:
         """Compute downside using rolling 1-year returns.
 
-        Instead of daily VaR (which penalizes short-term volatility),
-        use actual 1-year rolling returns. This reflects what a long-term
-        holder actually experiences — short-term swings don't matter
-        if the stock recovers over your holding period.
+        Uses 10th percentile of rolling 252-day returns — what a bad year
+        actually looks like for a long-term holder.
         """
         prices = self.reader.get_recent_price_closes(ticker, limit=600)
         closes = prices.get("closes", [])
 
-        # Need at least ~1.5 years of data for meaningful rolling returns
         if len(closes) < 300:
-            # Fall back to simpler estimate with available data
             if len(closes) < 60:
                 return 0.20
-            # Use max drawdown over available period as downside proxy
             peak = closes[0]
             max_dd = 0.0
             for price in closes[1:]:
@@ -386,7 +343,6 @@ class KellyPositionSizer:
                 max_dd = max(max_dd, dd)
             return max(0.05, min(0.60, max_dd))
 
-        # Compute rolling 252-day (1-year) returns
         period = 252
         rolling_returns = [
             (closes[i] - closes[i - period]) / closes[i - period]
@@ -397,22 +353,18 @@ class KellyPositionSizer:
         if not rolling_returns:
             return 0.20
 
-        # 10th percentile of 1-year returns = what a bad year actually looks like
         rolling_returns.sort()
         idx_10pct = max(0, int(len(rolling_returns) * 0.10))
         bad_year_return = rolling_returns[idx_10pct]
-
-        # Downside is the loss in a bad year (positive number)
         downside = abs(min(bad_year_return, 0))
-
-        # Clamp to [5%, 60%]
         return max(0.05, min(0.60, downside))
 
     def _is_stale(self, ticker: str, max_age_days: int = 7) -> bool:
-        """Check if model predictions are older than max_age_days."""
+        """Check if GBM predictions are older than max_age_days."""
+        placeholders = ",".join("?" * len(_GBM_MODELS))
         row = self.conn.execute(
-            "SELECT MAX(timestamp) FROM valuation_results WHERE ticker = ?",
-            (ticker,),
+            f"SELECT MAX(timestamp) FROM valuation_results WHERE ticker = ? AND model_name IN ({placeholders})",
+            (ticker, *_GBM_MODELS),
         ).fetchone()
         if not row or not row[0]:
             return True
@@ -426,8 +378,7 @@ class KellyPositionSizer:
         return KellyResult(
             ticker=ticker,
             current_price=0,
-            consensus_fair_value=0,
-            consensus_margin=0,
+            expected_return=0,
             win_probability=0.5,
             win_loss_ratio=0,
             kelly_fraction=0,
