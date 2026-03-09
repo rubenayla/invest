@@ -10,7 +10,7 @@
 | [MOH](../companies/MOH.md) | Molina Healthcare | ~$7,280 | IBKR + Revolut | Distressed value. Includes proposed +$2,250 buy. |
 | [8002.T](../companies/8002.md) | Marubeni Corp | ~$7,000 | IBKR | Japan trading house. ~€6,460. |
 | [TSLA](../companies/TSLA.md) | Tesla | ~$3,345 | Revolut | AI/Robotaxi option. +40% gain. |
-| [ACGL](../companies/ACGL.md) | Arch Capital | ~$2,420 | IBKR | Insurance. +19% gain. |
+| [ACGL](../companies/ACGL.md) | Arch Capital | ~$2,420 | IBKR | Insurance. +19% gain. BUY MORE? |
 | [GOOG](../companies/GOOGL.md) | Alphabet | ~$2,340 | Revolut | Tech monopoly. +11% gain. |
 | [DIS](../companies/DIS.md) | Disney | ~$2,280 | Revolut | Content turnaround. +20% gain. |
 | [PBR](../companies/PBR.md) | Petrobras | ~$2,230 | IBKR | Brazil oil. +27% gain. |

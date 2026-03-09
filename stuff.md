@@ -1425,3 +1425,23 @@ The existing working GBM models use the **`forward_returns` table**:
 - GLP-1 adoption plateaus below 10M users
 
 ---
+
+## 2026-03-09: Polymarket vs BTC Spot — Why They Diverge (and Why That's Useful)
+
+Polymarket prediction markets for BTC price targets don't perfectly match what BTC options/spot imply. This is rational, not a market failure:
+
+1. **Different question**: Polymarket asks "will BTC *touch* $X before date Y" (path-dependent). BTC could spike to $X for 5 minutes then crash. You'd win the bet but lose money holding BTC. So high probability of touching ≠ high expected return from buying.
+
+2. **Asymmetric risk**: Polymarket bet has bounded downside (your stake). Buying BTC to arb has unlimited downside. Risk-adjusted, the "just buy BTC" arb doesn't always work.
+
+3. **Different participants**: Polymarket bettors are closer to pure probability estimators — no hedging motives, no leverage cascades, no delta-hedging feedback loops. BTC spot/options are distorted by miners hedging, leveraged liquidations, ETF flows, gamma squeezes.
+
+4. **Friction**: Moving capital between Polymarket (USDC/Polygon) and BTC spot has fees, tax, and time costs that prevent perfect arbitrage.
+
+**Key insight**: Because Polymarket strips out structural distortions present in BTC derivatives, it may be a *less biased* (though less liquid) estimator of terminal probabilities. The spread between Polymarket probability and options-implied probability could itself be a signal — if they consistently diverge, it reveals the structural bias in the options market.
+
+**Potential research thread**: Track Polymarket BTC probability vs options-implied probability over time. Persistent divergence = quantifiable distortion premium.
+
+Tool: `uv run python scripts/polymarket_lookup.py "bitcoin"` — fetches current Polymarket BTC contracts.
+
+---

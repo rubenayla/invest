@@ -217,16 +217,9 @@ class KellyPositionSizer:
         if not all_results:
             return []
 
-        # Rank by risk-adjusted score: Kelly fraction penalized by risk flags
-        def _score(r: KellyResult) -> float:
-            score = r.kelly_fraction
-            if "high_volatility" in r.flags:
-                score *= 0.6
-            if "severe_drawdown_history" in r.flags:
-                score *= 0.7
-            return score
-
-        all_results.sort(key=_score, reverse=True)
+        # Rank by Kelly fraction — volatility is already accounted for
+        # in the downside estimate (rolling 1-year returns)
+        all_results.sort(key=lambda r: r.kelly_fraction, reverse=True)
 
         # Allocate with sector caps enforced
         allocated: list[KellyResult] = []
@@ -244,9 +237,8 @@ class KellyPositionSizer:
             if sector_totals.get(sector, 0) >= sector_cap:
                 continue
 
-            # Compute allocation: proportional to score, capped
-            score = _score(r)
-            raw_amount = score * budget  # Kelly fraction * budget
+            # Compute allocation: proportional to Kelly fraction, capped
+            raw_amount = r.kelly_fraction * budget
             capped_amount = min(raw_amount, budget * self.max_position_pct)
             capped_amount = min(capped_amount, remaining)
             capped_amount = min(capped_amount, sector_cap - sector_totals.get(sector, 0))
@@ -355,33 +347,52 @@ class KellyPositionSizer:
         return max(0.1, min(max_p, raw_p))
 
     def _compute_historical_downside(self, ticker: str) -> float:
-        """Compute 1-year downside as VaR(5%) from price history."""
+        """Compute downside using rolling 1-year returns.
+
+        Instead of daily VaR (which penalizes short-term volatility),
+        use actual 1-year rolling returns. This reflects what a long-term
+        holder actually experiences — short-term swings don't matter
+        if the stock recovers over your holding period.
+        """
         prices = self.reader.get_recent_price_closes(ticker, limit=600)
         closes = prices.get("closes", [])
 
-        if len(closes) < 60:
-            return 0.20  # default 20% if insufficient history
+        # Need at least ~1.5 years of data for meaningful rolling returns
+        if len(closes) < 300:
+            # Fall back to simpler estimate with available data
+            if len(closes) < 60:
+                return 0.20
+            # Use max drawdown over available period as downside proxy
+            peak = closes[0]
+            max_dd = 0.0
+            for price in closes[1:]:
+                if price > peak:
+                    peak = price
+                dd = (peak - price) / peak if peak > 0 else 0
+                max_dd = max(max_dd, dd)
+            return max(0.05, min(0.60, max_dd))
 
-        # Daily returns
-        returns = [
-            (closes[i] - closes[i - 1]) / closes[i - 1]
-            for i in range(1, len(closes))
-            if closes[i - 1] > 0
+        # Compute rolling 252-day (1-year) returns
+        period = 252
+        rolling_returns = [
+            (closes[i] - closes[i - period]) / closes[i - period]
+            for i in range(period, len(closes))
+            if closes[i - period] > 0
         ]
 
-        if not returns:
+        if not rolling_returns:
             return 0.20
 
-        # Sort returns, take 5th percentile
-        returns.sort()
-        idx_5pct = max(0, int(len(returns) * 0.05))
-        daily_var_5 = abs(returns[idx_5pct])
+        # 10th percentile of 1-year returns = what a bad year actually looks like
+        rolling_returns.sort()
+        idx_10pct = max(0, int(len(rolling_returns) * 0.10))
+        bad_year_return = rolling_returns[idx_10pct]
 
-        # Annualize: daily VaR * sqrt(252)
-        annual_var = daily_var_5 * math.sqrt(252)
+        # Downside is the loss in a bad year (positive number)
+        downside = abs(min(bad_year_return, 0))
 
-        # Clamp to reasonable range [5%, 80%]
-        return max(0.05, min(0.80, annual_var))
+        # Clamp to [5%, 60%]
+        return max(0.05, min(0.60, downside))
 
     def _no_data_result(self, ticker: str, reason: str) -> KellyResult:
         return KellyResult(
