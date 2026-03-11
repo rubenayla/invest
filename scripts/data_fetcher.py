@@ -18,6 +18,7 @@ import sqlite3
 
 # Import currency converter (dynamically since it's in scripts/)
 import sys
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
@@ -238,12 +239,37 @@ class StockDataCache:
         return set(self.index['stocks'].keys())
 
 
+class TokenBucketRateLimiter:
+    """Thread-safe token bucket rate limiter for Yahoo Finance."""
+
+    def __init__(self, rate: float = 2.0, burst: int = 3):
+        self.rate = rate
+        self.burst = burst
+        self._tokens = float(burst)
+        self._last_refill = time.monotonic()
+        self._lock = threading.Lock()
+
+    def acquire(self) -> None:
+        """Block until a token is available."""
+        while True:
+            with self._lock:
+                now = time.monotonic()
+                elapsed = now - self._last_refill
+                self._tokens = min(self.burst, self._tokens + elapsed * self.rate)
+                self._last_refill = now
+                if self._tokens >= 1.0:
+                    self._tokens -= 1.0
+                    return
+            time.sleep(0.05)
+
+
 class AsyncStockDataFetcher:
     """Fetches stock data using thread pool (simplified)"""
 
     def __init__(self, max_workers: int = 10):
         self.cache = StockDataCache()
         self.max_workers = max_workers
+        self.rate_limiter = TokenBucketRateLimiter(rate=2.0, burst=3)
 
     async def __aenter__(self):
         return self
@@ -266,6 +292,7 @@ class AsyncStockDataFetcher:
                 logger.info(f"Fetching fresh data for {ticker} (attempt {attempt + 1}/{max_retries})")
 
                 # Fetch from yfinance
+                self.rate_limiter.acquire()
                 stock = yf.Ticker(ticker)
 
                 # Get comprehensive data
@@ -278,6 +305,7 @@ class AsyncStockDataFetcher:
                 }
 
                 # Fetch stock info (required for everything else)
+                self.rate_limiter.acquire()
                 info = stock.info
 
                 # Validate that info has real data — yfinance silently returns
@@ -349,6 +377,7 @@ class AsyncStockDataFetcher:
                 # Recent price data (for charts/trends)
                 try:
                     from datetime import timedelta
+                    self.rate_limiter.acquire()
                     hist = stock.history(period='1y')
                     if not hist.empty:
                         # Use calendar-day cutoff, not bar index, to handle
@@ -385,6 +414,7 @@ class AsyncStockDataFetcher:
                         data['financial_statements_currency'] = financial_currency
 
                     # Cash flow statement
+                    self.rate_limiter.acquire()
                     cashflow = stock.cashflow
                     if cashflow is not None and not cashflow.empty:
                         # Reset index and convert timestamps to strings
@@ -397,6 +427,7 @@ class AsyncStockDataFetcher:
                         data['cashflow'] = df.to_dict(orient='records')
 
                     # Balance sheet
+                    self.rate_limiter.acquire()
                     balance_sheet = stock.balance_sheet
                     if balance_sheet is not None and not balance_sheet.empty:
                         df = balance_sheet.reset_index()
@@ -407,6 +438,7 @@ class AsyncStockDataFetcher:
                         data['balance_sheet'] = df.to_dict(orient='records')
 
                     # Income statement
+                    self.rate_limiter.acquire()
                     income_stmt = stock.income_stmt
                     if income_stmt is not None and not income_stmt.empty:
                         df = income_stmt.reset_index()
