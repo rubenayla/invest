@@ -170,9 +170,10 @@ def train_and_predict(train_df, test_df, feature_cols):
         random_state=42,
         n_jobs=-1,
     )
-    # Fill NaN for sklearn
-    X_tr_filled = X_train.fillna(-999)
-    X_te_filled = X_test.fillna(-999)
+    # Fill NaN with column medians for sklearn
+    medians = X_train.median()
+    X_tr_filled = X_train.fillna(medians)
+    X_te_filled = X_test.fillna(medians)
     et_model.fit(X_tr_filled.values, y_train_log)
     et_preds = et_model.predict(X_te_filled.values)
 
