@@ -145,10 +145,10 @@ def train_and_predict(train_df, test_df, feature_cols):
 
     # --- CatBoost ---
     cb_model = CatBoostRegressor(
-        iterations=1000,
-        learning_rate=0.03,
+        iterations=1500,
+        learning_rate=0.02,
         depth=8,
-        l2_leaf_reg=3.0,
+        l2_leaf_reg=5.0,
         subsample=0.8,
         colsample_bylevel=0.7,
         random_seed=42,
