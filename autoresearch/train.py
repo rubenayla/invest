@@ -160,8 +160,8 @@ def train_and_predict(train_df, test_df, feature_cols):
     cb_model.fit(X_train.values, y_train_log)
     cb_preds = cb_model.predict(X_test.values)
 
-    # Blend (equal weight)
-    predictions_log = 0.5 * lgb_preds + 0.5 * cb_preds
+    # Blend (weight CatBoost higher since it was tuned better)
+    predictions_log = 0.4 * lgb_preds + 0.6 * cb_preds
     predictions = np.expm1(predictions_log)
 
     return predictions
