@@ -13,6 +13,7 @@ import time
 import numpy as np
 import pandas as pd
 import lightgbm as lgb
+from catboost import CatBoostRegressor
 from evaluate import load_data, score_predictions, print_results, TIME_BUDGET
 
 # ---------------------------------------------------------------------------
@@ -22,7 +23,6 @@ from evaluate import load_data, score_predictions, print_results, TIME_BUDGET
 def engineer_features(df, feature_cols):
     """Build feature matrix from raw data. Modify freely."""
     X = df[feature_cols].copy()
-    # Coerce all columns to numeric (some are stored as object in DB)
     for col in X.columns:
         X[col] = pd.to_numeric(X[col], errors='coerce')
 
@@ -61,7 +61,6 @@ def engineer_features(df, feature_cols):
     existing_mom = [c for c in mom_cols if c in X.columns]
     if len(existing_mom) >= 2:
         X['momentum_composite'] = X[existing_mom].mean(axis=1)
-        # Short-term vs long-term momentum (reversal signal)
         if 'ret_1m' in X.columns and 'ret_1y' in X.columns:
             X['momentum_reversal'] = X['ret_1m'] - X['ret_1y']
 
@@ -69,7 +68,6 @@ def engineer_features(df, feature_cols):
     val_cols = ['pe_ratio', 'pb_ratio', 'ps_ratio', 'enterprise_to_ebitda']
     existing_val = [c for c in val_cols if c in X.columns]
     if len(existing_val) >= 2:
-        # Lower valuation = higher rank (cheaper)
         for vc in existing_val:
             X[f'{vc}_rank'] = X[vc].rank(pct=True)
         rank_cols = [f'{vc}_rank' for vc in existing_val]
@@ -94,7 +92,7 @@ def engineer_features(df, feature_cols):
     if 'ret_6m' in X.columns and 'vol_60d' in X.columns:
         X['sharpe_6m'] = X['ret_6m'] / (X['vol_60d'] + 1e-6)
 
-    # Distance from 52w high as pct (already there but interaction)
+    # Distance from 52w high as pct (interaction)
     if 'dist_52w_high' in X.columns and 'vol_60d' in X.columns:
         X['dist_high_vol_ratio'] = X['dist_52w_high'] / (X['vol_60d'] + 1e-6)
 
@@ -106,17 +104,17 @@ def engineer_features(df, feature_cols):
 # ---------------------------------------------------------------------------
 
 def train_and_predict(train_df, test_df, feature_cols):
-    """Train model on train_df, return predictions for test_df."""
+    """Train LightGBM + CatBoost ensemble, return blended predictions."""
 
     X_train = engineer_features(train_df, feature_cols)
     X_test = engineer_features(test_df, feature_cols)
     y_train = train_df['peak_return_2y'].values
 
-    # Log-transform target (right-skewed)
+    # Log-transform target
     y_train_log = np.log1p(y_train)
 
-    # LightGBM with tuned params
-    params = {
+    # --- LightGBM ---
+    lgb_params = {
         'objective': 'regression',
         'metric': 'mae',
         'learning_rate': 0.03,
@@ -131,12 +129,27 @@ def train_and_predict(train_df, test_df, feature_cols):
         'n_jobs': -1,
         'seed': 42,
     }
-
     train_data = lgb.Dataset(X_train, label=y_train_log)
-    model = lgb.train(params, train_data, num_boost_round=1000)
-    predictions_log = model.predict(X_test)
+    lgb_model = lgb.train(lgb_params, train_data, num_boost_round=1000)
+    lgb_preds = lgb_model.predict(X_test)
 
-    # Inverse transform (not needed for ranking, but keeps scale sensible)
+    # --- CatBoost ---
+    cb_model = CatBoostRegressor(
+        iterations=1000,
+        learning_rate=0.03,
+        depth=8,
+        l2_leaf_reg=3.0,
+        subsample=0.8,
+        colsample_bylevel=0.7,
+        random_seed=42,
+        verbose=0,
+        loss_function='MAE',
+    )
+    cb_model.fit(X_train.values, y_train_log)
+    cb_preds = cb_model.predict(X_test.values)
+
+    # Blend (equal weight)
+    predictions_log = 0.5 * lgb_preds + 0.5 * cb_preds
     predictions = np.expm1(predictions_log)
 
     return predictions
@@ -147,10 +160,8 @@ def train_and_predict(train_df, test_df, feature_cols):
 # ---------------------------------------------------------------------------
 
 if __name__ == '__main__':
-    # Load data (fixed harness)
     train_df, test_df, feature_cols = load_data()
 
-    # Train and predict (timed)
     print("\nTraining model...")
     t0 = time.time()
     predictions = train_and_predict(train_df, test_df, feature_cols)
@@ -160,6 +171,5 @@ if __name__ == '__main__':
     if training_seconds > TIME_BUDGET:
         print(f"WARNING: exceeded time budget ({TIME_BUDGET}s)")
 
-    # Score (fixed harness)
     results = score_predictions(test_df['peak_return_2y'].values, predictions)
     print_results(results, training_seconds=training_seconds)
