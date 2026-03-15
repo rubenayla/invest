@@ -214,9 +214,7 @@ class HTMLGenerator:
                         <th title="Opportunistic GBM 3-year - Peak return prediction within 3 years (Rank IC 0.64)">GBM Opp 3y</th>
                         <th title="AutoResearch - 5-model ensemble peak 2y return prediction (Spearman 0.54)">AutoRes</th>
                         <!-- NN column disabled: near-zero test correlation (2026-02-21) -->
-                        <th title="Insider activity - Open-market buys (B) and sells (S) with total buy dollar value">Insider</th>
-                        <th title="Activist/passive 5%+ stakes from SEC 13D/13G filings">Activist</th>
-                        <th title="Smart money institutional holders from SEC 13F filings">Smart $</th>
+                        <th title="Signals: insider buys/sells, activist stakes, institutional holders">Signals</th>
                         <th title="Consensus valuation - Average of all successful model results">Consensus</th>
                     </tr>
                 </thead>
@@ -297,12 +295,14 @@ class HTMLGenerator:
         gbm_opp_3y_html = self._format_valuation_cell(valuations.get("gbm_opportunistic_3y", {}), current_price, show_confidence=True)
         autoresearch_html = self._format_valuation_cell(valuations.get("autoresearch", {}), current_price, show_confidence=True)
 
-        # Format insider activity
-        insider_html = self._format_insider_cell(stock_data.get("insider", {}))
-
-        # Format activist and smart money columns
-        activist_html = self._format_activist_cell(stock_data.get("activist", {}), stock_data.get("japan_stakes", {}), ticker)
-        smart_money_html = self._format_smart_money_cell(stock_data.get("holdings", {}))
+        # Format combined signals column
+        signals_html = self._format_signals_cell(
+            stock_data.get("insider", {}),
+            stock_data.get("activist", {}),
+            stock_data.get("japan_stakes", {}),
+            stock_data.get("holdings", {}),
+            ticker,
+        )
 
         # Calculate consensus
         consensus_html = self._format_consensus_cell(valuations, current_price)
@@ -325,9 +325,7 @@ class HTMLGenerator:
             <td>{gbm_opp_1y_html}</td>
             <td>{gbm_opp_3y_html}</td>
             <td>{autoresearch_html}</td>
-            <td>{insider_html}</td>
-            <td>{activist_html}</td>
-            <td>{smart_money_html}</td>
+            <td>{signals_html}</td>
             <td>{consensus_html}</td>
         </tr>'''
 
@@ -702,6 +700,88 @@ class HTMLGenerator:
             bg = "#e2e3e5"
 
         return f'<span style="color: {color}; background: {bg}; padding: 2px 5px; border-radius: 3px; font-size: 11px; font-weight: 600;">{text}</span>'
+
+    def _format_signals_cell(self, insider: Dict, activist: Dict, japan: Dict,
+                              holdings: Dict, ticker: str) -> str:
+        """Format combined signals cell with readable tags."""
+        tags = []
+
+        # Insider buys/sells
+        if insider and insider.get('has_data'):
+            buy_count = insider.get('buy_count', 0)
+            sell_count = insider.get('sell_count', 0)
+            dollars = insider.get('dollar_conviction', 0.0)
+
+            if dollars >= 1_000_000:
+                dollar_str = f" ${dollars / 1_000_000:.1f}M"
+            elif dollars >= 1_000:
+                dollar_str = f" ${dollars / 1_000:.0f}K"
+            else:
+                dollar_str = ""
+
+            if buy_count > 0:
+                label = f"{buy_count} insider buy{'s' if buy_count > 1 else ''}{dollar_str}"
+                tags.append(('green', label))
+            if sell_count > 0:
+                label = f"{sell_count} insider sell{'s' if sell_count > 1 else ''}"
+                tags.append(('red', label))
+
+        # Activist stakes (13D = activist, 13G = passive)
+        if activist and activist.get('has_data'):
+            activist_count = activist.get('activist_count', 0)
+            passive_count = activist.get('passive_count', 0)
+            max_pct = activist.get('max_stake_pct')
+            name = activist.get('recent_activist_name', '')
+
+            if activist_count > 0:
+                pct_str = f" {max_pct:.0f}%" if max_pct else ""
+                name_str = f" {name[:15]}" if name else ""
+                tags.append(('orange', f"activist stake{pct_str}{name_str}"))
+            if passive_count > 0:
+                tags.append(('blue', f"{passive_count} passive stake{'s' if passive_count > 1 else ''}"))
+
+        # Japan large shareholding
+        if japan and japan.get('has_data') and ticker.endswith('.T'):
+            count = japan.get('holder_count', 0)
+            name = japan.get('recent_holder_name', '')
+            if count > 0:
+                name_str = f" {name[:12]}" if name else ""
+                tags.append(('blue', f"JP stake{name_str}"))
+
+        # Smart money
+        if holdings and holdings.get('has_data'):
+            notable = holdings.get('notable_holders', [])
+            new_positions = holdings.get('new_positions', [])
+            holders_count = holdings.get('smart_money_holders', 0)
+
+            if new_positions:
+                tags.append(('green', f"{len(new_positions)} new fund position{'s' if len(new_positions) > 1 else ''}"))
+            elif notable:
+                names = ", ".join(n.split()[0][:10] for n in notable[:2])
+                tags.append(('blue', f"held by {names}"))
+            elif holders_count > 0:
+                tags.append(('blue', f"{holders_count} fund{'s' if holders_count > 1 else ''}"))
+
+        if not tags:
+            return '<span style="color: #999;">\u2014</span>'
+
+        styles = {
+            'green': ('color: #155724; background: #d4edda;'),
+            'red': ('color: #721c24; background: #f8d7da;'),
+            'orange': ('color: #7c4700; background: #ffe0b2;'),
+            'blue': ('color: #1a3a5c; background: #e3f2fd;'),
+        }
+
+        html_parts = []
+        for color, label in tags:
+            style = styles[color]
+            html_parts.append(
+                f'<span style="{style} padding: 1px 5px; border-radius: 3px; '
+                f'font-size: 10px; font-weight: 600; display: inline-block; '
+                f'margin: 1px 0;">{label}</span>'
+            )
+
+        return "<br>".join(html_parts)
 
     def _sort_stocks_for_display(self, stocks_data: Dict) -> List[Tuple[str, Dict]]:
         """Sort stocks for optimal display order."""
