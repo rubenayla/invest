@@ -106,7 +106,7 @@ class HTMLGenerator:
             <ul>
                 <li><strong>Fair Value:</strong> Estimated intrinsic value per share from each model</li>
                 <li><strong>Margin of Safety:</strong> How much upside/downside vs current price</li>
-                <li><strong>Models:</strong> DCF (Cash Flow), Enhanced DCF (Dividends), Growth DCF (Reinvestment-Adjusted), Ratios (Multiples), RIM (Book Value), Multi-Stage DCF (Growth Phases), GBM (Gradient Boosted Machine ranking models - 6 variants: Full 1y/3y, Lite 1y/3y, Opportunistic 1y/3y), AutoResearch (5-model ensemble: LGB DART + CatBoost + KNN + BaggingDT, predicts peak 2y return)</li>
+                <li><strong>Models:</strong> AutoResearch (5-model ensemble predicting peak 2y return), GBM (Gradient Boosted Machine - 4 variants: Full 1y/3y, Opportunistic 1y/3y), DCF (Discounted Cash Flow), RIM (Residual Income Model)</li>
                 <li><strong>Consensus:</strong> Average of all successful models</li>
             </ul>
             <p class="disclaimer">⚠️ This is for educational purposes. Not investment advice. Do your own research.</p>
@@ -200,21 +200,14 @@ class HTMLGenerator:
                         <th title="Stock ticker symbol">Stock</th>
                         <th title="Current market price per share">Price</th>
                         <th title="Analysis completion status">Status</th>
-                        <th title="Discounted Cash Flow - Values future cash flows discounted to present value">DCF</th>
-                        <th title="Enhanced DCF with Dividend Policy - Accounts for dividend vs reinvestment strategies">Enh. DCF</th>
-                        <th title="Growth-Adjusted DCF - Separates maintenance CapEx from growth CapEx, solving traditional DCF bias against reinvestment">Growth DCF</th>
-                        <th title="Simple Ratios - P/E, P/B, and other multiple-based valuations">Ratios</th>
-                        <th title="Residual Income Model - Values excess returns above cost of equity based on book value">RIM</th>
-                        <th title="Multi-Stage DCF - Models different growth phases over time">Multi-DCF</th>
-                        <th title="Gradient Boosted Machine 1-year ranking (LightGBM with 464 features, Rank IC 0.61)">GBM 1y</th>
-                        <th title="Gradient Boosted Machine 3-year ranking (LightGBM with 464 features, Rank IC 0.59)">GBM 3y</th>
-                        <th title="Gradient Boosted Machine Lite 1-year ranking (LightGBM with 247 features, Rank IC 0.59)">GBM Lite 1y</th>
-                        <th title="Gradient Boosted Machine Lite 3-year ranking (LightGBM with 247 features, Rank IC 0.61)">GBM Lite 3y</th>
-                        <th title="Opportunistic GBM 1-year - Peak return prediction within 2 years (Rank IC 0.61)">GBM Opp 1y</th>
-                        <th title="Opportunistic GBM 3-year - Peak return prediction within 3 years (Rank IC 0.64)">GBM Opp 3y</th>
                         <th title="AutoResearch - 5-model ensemble peak 2y return prediction (Spearman 0.54)">AutoRes</th>
-                        <!-- NN column disabled: near-zero test correlation (2026-02-21) -->
                         <th title="Signals: insider buys/sells, activist stakes, institutional holders">Signals</th>
+                        <th title="Opportunistic GBM 1-year - Peak return prediction within 2 years">GBM Opp 1y</th>
+                        <th title="Opportunistic GBM 3-year - Peak return prediction within 3 years">GBM Opp 3y</th>
+                        <th title="Gradient Boosted Machine 1-year return prediction">GBM 1y</th>
+                        <th title="Gradient Boosted Machine 3-year return prediction">GBM 3y</th>
+                        <th title="Discounted Cash Flow - Values future cash flows discounted to present value">DCF</th>
+                        <th title="Residual Income Model - Values excess returns above cost of equity based on book value">RIM</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -236,21 +229,13 @@ class HTMLGenerator:
         failed_models = []
 
         model_names = {
-            "dcf": "DCF",
-            "dcf_enhanced": "Enh.DCF",
-            "growth_dcf": "Growth",
-            "simple_ratios": "Ratios",
-            "rim": "RIM",
-            "multi_stage_dcf": "Multi",
-            "gbm_1y": "GBM1y",
-            "gbm_3y": "GBM3y",
-            "gbm_lite_1y": "GBM-Lite1y",
-            "gbm_lite_3y": "GBM-Lite3y",
+            "autoresearch": "AutoRes",
             "gbm_opportunistic_1y": "GBM-Opp1y",
             "gbm_opportunistic_3y": "GBM-Opp3y",
-            # "multi_horizon_nn": "NN",  # Disabled: near-zero test correlation (2026-02-21)
-            "autoresearch": "AutoRes",
-            "ensemble": "Consensus"
+            "gbm_1y": "GBM1y",
+            "gbm_3y": "GBM3y",
+            "dcf": "DCF",
+            "rim": "RIM",
         }
 
         for model_key, result in valuations.items():
@@ -279,20 +264,13 @@ class HTMLGenerator:
         status_html = self._format_status_cell(new_status, new_message)
 
         # Format valuation columns
-        dcf_html = self._format_valuation_cell(valuations.get("dcf", {}), current_price)
-        enh_dcf_html = self._format_valuation_cell(valuations.get("dcf_enhanced", {}), current_price)
-        growth_dcf_html = self._format_valuation_cell(valuations.get("growth_dcf", {}), current_price)
-        ratios_html = self._format_valuation_cell(valuations.get("simple_ratios", {}), current_price)
-        rim_html = self._format_valuation_cell(valuations.get("rim", {}), current_price)
-        multi_dcf_html = self._format_valuation_cell(valuations.get("multi_stage_dcf", {}), current_price)
-        # Format GBM predictions (6 models)
-        gbm_1y_html = self._format_valuation_cell(valuations.get("gbm_1y", {}), current_price, show_confidence=True)
-        gbm_3y_html = self._format_valuation_cell(valuations.get("gbm_3y", {}), current_price, show_confidence=True)
-        gbm_lite_1y_html = self._format_valuation_cell(valuations.get("gbm_lite_1y", {}), current_price, show_confidence=True)
-        gbm_lite_3y_html = self._format_valuation_cell(valuations.get("gbm_lite_3y", {}), current_price, show_confidence=True)
+        autoresearch_html = self._format_valuation_cell(valuations.get("autoresearch", {}), current_price, show_confidence=True)
         gbm_opp_1y_html = self._format_valuation_cell(valuations.get("gbm_opportunistic_1y", {}), current_price, show_confidence=True)
         gbm_opp_3y_html = self._format_valuation_cell(valuations.get("gbm_opportunistic_3y", {}), current_price, show_confidence=True)
-        autoresearch_html = self._format_valuation_cell(valuations.get("autoresearch", {}), current_price, show_confidence=True)
+        gbm_1y_html = self._format_valuation_cell(valuations.get("gbm_1y", {}), current_price, show_confidence=True)
+        gbm_3y_html = self._format_valuation_cell(valuations.get("gbm_3y", {}), current_price, show_confidence=True)
+        dcf_html = self._format_valuation_cell(valuations.get("dcf", {}), current_price)
+        rim_html = self._format_valuation_cell(valuations.get("rim", {}), current_price)
 
         # Format combined signals column
         signals_html = self._format_signals_cell(
@@ -309,20 +287,14 @@ class HTMLGenerator:
             <td><strong title="{company_name}">{ticker}</strong></td>
             <td>{self._safe_format(current_price, prefix="$")}</td>
             <td>{status_html}</td>
-            <td>{dcf_html}</td>
-            <td>{enh_dcf_html}</td>
-            <td>{growth_dcf_html}</td>
-            <td>{ratios_html}</td>
-            <td>{rim_html}</td>
-            <td>{multi_dcf_html}</td>
-            <td>{gbm_1y_html}</td>
-            <td>{gbm_3y_html}</td>
-            <td>{gbm_lite_1y_html}</td>
-            <td>{gbm_lite_3y_html}</td>
-            <td>{gbm_opp_1y_html}</td>
-            <td>{gbm_opp_3y_html}</td>
             <td>{autoresearch_html}</td>
             <td>{signals_html}</td>
+            <td>{gbm_opp_1y_html}</td>
+            <td>{gbm_opp_3y_html}</td>
+            <td>{gbm_1y_html}</td>
+            <td>{gbm_3y_html}</td>
+            <td>{dcf_html}</td>
+            <td>{rim_html}</td>
         </tr>'''
 
     def _format_status_cell(self, status: str, message: str) -> str:
