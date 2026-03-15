@@ -176,6 +176,16 @@ def train_and_predict(train_df, test_df, feature_cols):
     et_model.fit(X_tr_filled.values, y_train_log)
     et_preds = et_model.predict(X_te_filled.values)
 
+    # --- KNN Regressor (local similarity, diverse from tree methods) ---
+    from sklearn.neighbors import KNeighborsRegressor
+    from sklearn.preprocessing import StandardScaler
+    knn_scaler = StandardScaler()
+    X_tr_knn = knn_scaler.fit_transform(np.nan_to_num(X_tr_filled.values, nan=0.0))
+    X_te_knn = knn_scaler.transform(np.nan_to_num(X_te_filled.values, nan=0.0))
+    knn_model = KNeighborsRegressor(n_neighbors=50, weights='distance', n_jobs=-1)
+    knn_model.fit(X_tr_knn, y_train_log)
+    knn_preds = knn_model.predict(X_te_knn)
+
     # --- HistGradientBoosting (sklearn) ---
     from sklearn.ensemble import HistGradientBoostingRegressor
     hgb_model = HistGradientBoostingRegressor(
@@ -190,13 +200,14 @@ def train_and_predict(train_df, test_df, feature_cols):
     hgb_model.fit(X_tr_filled.values, y_train_log)
     hgb_preds = hgb_model.predict(X_te_filled.values)
 
-    # Rank-based blend of all four
+    # Rank-based blend of all five
     from scipy.stats import rankdata
     r1 = rankdata(lgb_preds)
     r2 = rankdata(cb_preds)
     r3 = rankdata(et_preds)
     r4 = rankdata(hgb_preds)
-    predictions = (r1 + r2 + r3 + r4) / 4.0
+    r5 = rankdata(knn_preds)
+    predictions = (r1 + r2 + r3 + r4 + r5) / 5.0
 
     return predictions
 
