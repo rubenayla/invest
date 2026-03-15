@@ -76,6 +76,7 @@ class HTMLGenerator:
             <div class="header-row">
                 <div class="last-updated">Page rendered: <span id="lastUpdated">{last_updated}</span></div>
                 <div class="header-actions">
+                    <a id="liveServerLink" href="http://127.0.0.1:8050/" class="btn btn-update" style="{'display:none' if server_mode else ''}">Live Server</a>
                     <a href="https://rubenayla.github.io/invest/models/" target="_blank" rel="noopener noreferrer" class="btn btn-docs">Model Docs</a>
                     <button onclick="exportToCSV()" class="btn btn-export">Export CSV</button>
                 </div>
@@ -429,7 +430,7 @@ class HTMLGenerator:
 
         return f'''
         <tr class="stock-row {new_status}">
-            <td><strong title="{company_name}">{ticker}</strong></td>
+            <td><a href="https://finance.yahoo.com/quote/{ticker}" target="_blank" rel="noopener" title="{company_name}" class="ticker-link">{ticker}</a></td>
             <td>{self._safe_format(current_price, prefix="$")}</td>
             <td>{status_html}</td>
             <td>{autoresearch_html}</td>
@@ -1325,10 +1326,15 @@ class HTMLGenerator:
         }
 
         .stock-table td:first-child {
-            color: var(--accent-bright);
             font-weight: 700;
             font-size: 15px;
         }
+        .ticker-link {
+            color: var(--accent-bright);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .ticker-link:hover { text-decoration: underline; }
 
         .stock-row { transition: background 0.1s; }
         .stock-row:nth-child(even) { background: var(--bg-row-alt); }
