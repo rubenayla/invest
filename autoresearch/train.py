@@ -174,6 +174,11 @@ def train_and_predict(train_df, test_df, feature_cols):
     knn_model.fit(X_tr_knn, y_train_log)
     knn_preds = knn_model.predict(X_te_knn)
 
+    # --- KNN 2 (broader neighborhood, k=100) ---
+    knn_model2 = KNeighborsRegressor(n_neighbors=100, weights='distance', n_jobs=-1)
+    knn_model2.fit(X_tr_knn, y_train_log)
+    knn2_preds = knn_model2.predict(X_te_knn)
+
     # --- HistGradientBoosting (sklearn) ---
     from sklearn.ensemble import HistGradientBoostingRegressor
     hgb_model = HistGradientBoostingRegressor(
@@ -188,13 +193,14 @@ def train_and_predict(train_df, test_df, feature_cols):
     hgb_model.fit(X_tr_filled.values, y_train_log)
     hgb_preds = hgb_model.predict(X_te_filled.values)
 
-    # Rank-based blend of four (LGB + CB + KNN + HGB)
+    # Rank-based blend of five (LGB + CB + KNN15 + KNN100 + HGB)
     from scipy.stats import rankdata
     r1 = rankdata(lgb_preds)
     r2 = rankdata(cb_preds)
     r3 = rankdata(knn_preds)
+    r3b = rankdata(knn2_preds)
     r4 = rankdata(hgb_preds)
-    predictions = (r1 + r2 + r3 + r4) / 4.0
+    predictions = (r1 + r2 + r3 + r3b + r4) / 5.0
 
     return predictions
 
