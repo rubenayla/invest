@@ -123,11 +123,12 @@ def train_and_predict(train_df, test_df, feature_cols):
     # Log-transform target
     y_train_log = np.log1p(y_train_w)
 
-    # --- LightGBM ---
+    # --- LightGBM DART ---
     lgb_params = {
         'objective': 'regression',
         'metric': 'mae',
-        'learning_rate': 0.03,
+        'boosting_type': 'dart',
+        'learning_rate': 0.05,
         'num_leaves': 127,
         'max_depth': 10,
         'min_child_samples': 30,
@@ -135,12 +136,13 @@ def train_and_predict(train_df, test_df, feature_cols):
         'colsample_bytree': 0.7,
         'reg_alpha': 0.1,
         'reg_lambda': 1.0,
+        'drop_rate': 0.1,
         'verbose': -1,
         'n_jobs': -1,
         'seed': 42,
     }
     train_data = lgb.Dataset(X_train, label=y_train_log)
-    lgb_model = lgb.train(lgb_params, train_data, num_boost_round=1000)
+    lgb_model = lgb.train(lgb_params, train_data, num_boost_round=500)
     lgb_preds = lgb_model.predict(X_test)
 
     # --- CatBoost ---
