@@ -182,7 +182,7 @@ def train_and_predict(train_df, test_df, feature_cols):
     knn_scaler = StandardScaler()
     X_tr_knn = knn_scaler.fit_transform(np.nan_to_num(X_tr_filled.values, nan=0.0))
     X_te_knn = knn_scaler.transform(np.nan_to_num(X_te_filled.values, nan=0.0))
-    knn_model = KNeighborsRegressor(n_neighbors=50, weights='distance', n_jobs=-1)
+    knn_model = KNeighborsRegressor(n_neighbors=30, weights='distance', n_jobs=-1)
     knn_model.fit(X_tr_knn, y_train_log)
     knn_preds = knn_model.predict(X_te_knn)
 
