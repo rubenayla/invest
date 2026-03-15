@@ -91,6 +91,7 @@ def main() -> int:
     parser.add_argument('--skip-fetch', action='store_true', help='Skip data fetching step')
     parser.add_argument('--skip-gbm', action='store_true', help='Skip GBM predictions')
     parser.add_argument('--skip-nn', action='store_true', help='Skip NN predictions')
+    parser.add_argument('--skip-autoresearch', action='store_true', help='Skip autoresearch predictions')
     parser.add_argument('--skip-classic', action='store_true', help='Skip classic valuations')
     parser.add_argument('--skip-dashboard', action='store_true', help='Skip dashboard generation')
     parser.add_argument('--skip-insider', action='store_true', help='Skip insider data fetching')
@@ -155,6 +156,12 @@ def main() -> int:
     #             ['uv', 'run', 'python', 'scripts/run_multi_horizon_predictions.py'],
     #             'Neural network predictions (multi-horizon)',
     #         )
+
+    if not args.skip_autoresearch:
+        run_cmd(
+            ['uv', 'run', 'python', 'scripts/run_autoresearch_predictions.py'],
+            'AutoResearch predictions (5-model ensemble)',
+        )
 
     if not args.skip_classic:
         run_cmd(
