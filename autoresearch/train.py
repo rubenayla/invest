@@ -160,21 +160,9 @@ def train_and_predict(train_df, test_df, feature_cols):
     cb_model.fit(X_train.values, y_train_log)
     cb_preds = cb_model.predict(X_test.values)
 
-    # --- Extra Trees (bagging model for diversity) ---
-    from sklearn.ensemble import ExtraTreesRegressor
-    et_model = ExtraTreesRegressor(
-        n_estimators=500,
-        max_depth=15,
-        min_samples_leaf=20,
-        max_features=0.7,
-        random_state=42,
-        n_jobs=-1,
-    )
     # Fill NaN for sklearn
     X_tr_filled = X_train.fillna(-999)
     X_te_filled = X_test.fillna(-999)
-    et_model.fit(X_tr_filled.values, y_train_log)
-    et_preds = et_model.predict(X_te_filled.values)
 
     # --- KNN Regressor (local similarity, diverse from tree methods) ---
     from sklearn.neighbors import KNeighborsRegressor
@@ -200,14 +188,13 @@ def train_and_predict(train_df, test_df, feature_cols):
     hgb_model.fit(X_tr_filled.values, y_train_log)
     hgb_preds = hgb_model.predict(X_te_filled.values)
 
-    # Rank-based blend of all five
+    # Rank-based blend of four (LGB + CB + KNN + HGB)
     from scipy.stats import rankdata
     r1 = rankdata(lgb_preds)
     r2 = rankdata(cb_preds)
-    r3 = rankdata(et_preds)
+    r3 = rankdata(knn_preds)
     r4 = rankdata(hgb_preds)
-    r5 = rankdata(knn_preds)
-    predictions = (r1 + r2 + r3 + r4 + r5) / 5.0
+    predictions = (r1 + r2 + r3 + r4) / 4.0
 
     return predictions
 
