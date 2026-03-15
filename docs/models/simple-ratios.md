@@ -1,4 +1,7 @@
-# Simple Ratios (Multiples) Model
+# Simple Ratios (Multiples) Model (Retired)
+
+!!! warning "Retired Model"
+    Simple Ratios has been removed from the dashboard as of March 2026 (broken implementation). This page is kept for reference. See [active models](index.md).
 
 Quick valuation using market multiples - the fastest and most widely used method for ballpark estimates.
 

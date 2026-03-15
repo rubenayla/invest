@@ -8,6 +8,8 @@ This component is responsible for:
 - Providing responsive and interactive UI elements
 """
 
+import html
+import json
 import logging
 import math
 from pathlib import Path
@@ -44,11 +46,14 @@ class HTMLGenerator:
             Complete HTML content
         """
         last_updated = metadata.get("last_updated", "Never") if metadata else "Never"
+        server_mode = metadata.get("server_mode", False) if metadata else False
 
         # Generate main content sections
-        progress_html = self._generate_progress_section(progress_data)
         summary_html = self._generate_summary_section(stocks_data)
         table_html = self._generate_stock_table(stocks_data)
+        health_html = self._generate_health_panel(metadata) if server_mode else ""
+        health_json = json.dumps(metadata.get("health", {})) if metadata else "{}"
+        update_status_json = json.dumps(metadata.get("update_status", {})) if metadata else "{}"
 
         # Create complete HTML document
         html_content = f"""<!DOCTYPE html>
@@ -57,6 +62,9 @@ class HTMLGenerator:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Investment Valuation Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         {self._get_css_styles()}
     </style>
@@ -64,56 +72,65 @@ class HTMLGenerator:
 <body>
     <div class="container">
         <header class="dashboard-header">
-            <h1>🔍 Investment Valuation Dashboard</h1>
-            <p class="subtitle">Multi-model stock analysis with real-time updates</p>
-            <div class="last-updated">Last Updated: <span id="lastUpdated">{last_updated}</span></div>
-            <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;">
-                <a href="https://rubenayla.github.io/invest/models/" target="_blank" rel="noopener noreferrer" style="color: white; text-decoration: none; background: rgba(33,150,243,0.8); padding: 8px 16px; border-radius: 6px; font-weight: 500; transition: background 0.3s;" onmouseover="this.style.background='rgba(33,150,243,1)'" onmouseout="this.style.background='rgba(33,150,243,0.8)'">📚 Model Documentation</a>
-                <button onclick="exportToCSV()" style="color: white; background: rgba(40,167,69,0.8); border: none; padding: 8px 16px; border-radius: 6px; font-weight: 500; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='rgba(40,167,69,1)'" onmouseout="this.style.background='rgba(40,167,69,0.8)'">📥 Export to CSV</button>
+            <h1>Investment Valuation Dashboard</h1>
+            <div class="header-row">
+                <div class="last-updated">Page rendered: <span id="lastUpdated">{last_updated}</span></div>
+                <div class="header-actions">
+                    <a href="https://rubenayla.github.io/invest/models/" target="_blank" rel="noopener noreferrer" class="btn btn-docs">Model Docs</a>
+                    <button onclick="exportToCSV()" class="btn btn-export">Export CSV</button>
+                </div>
             </div>
         </header>
 
-        {progress_html}
+        {health_html}
 
         <div class="controls">
-            <div class="universe-selector">
-                <label for="universe">Select Universe:</label>
-                <select id="universe">
-                    <option value="all_universes">All Universes Combined</option>
-                    <option value="nyse">NYSE - All Listed Companies</option>
-                    <option value="sp500">S&P 500</option>
-                    <option value="russell2000">Russell 2000 Sample</option>
-                    <option value="global_mix">Global Mix (US+International)</option>
-                    <option value="small_cap_focus">Small Cap Focus</option>
-                    <option value="japan_major">Japan Major Stocks</option>
-                    <option value="uk_ftse">UK FTSE 100</option>
-                    <option value="custom">Custom Tickers</option>
-                </select>
-                <input type="text" id="customTickers" placeholder="AAPL,MSFT,GOOGL..." style="display:none;">
+            <div class="controls-left">
+                <div class="universe-selector">
+                    <label for="universe">Universe:</label>
+                    <select id="universe">
+                        <option value="all_universes">All Universes Combined</option>
+                        <option value="nyse">NYSE</option>
+                        <option value="sp500" selected>S&P 500</option>
+                        <option value="russell2000">Russell 2000</option>
+                        <option value="global_mix">Global Mix</option>
+                        <option value="small_cap_focus">Small Cap</option>
+                        <option value="japan_major">Japan Major</option>
+                        <option value="uk_ftse">UK FTSE 100</option>
+                        <option value="custom">Custom Tickers</option>
+                    </select>
+                    <input type="text" id="customTickers" placeholder="AAPL,MSFT,GOOGL..." style="display:none;">
+                </div>
             </div>
-            <button id="updateButton" onclick="updateDashboard()">🔄 Update Data</button>
+            <div class="controls-right">
+                <div id="updateStatus" class="update-status"></div>
+                <button id="updateButton" onclick="triggerUpdate()" class="btn btn-update">Update Data</button>
+                <button id="cancelButton" onclick="cancelUpdate()" class="btn btn-cancel" style="display:none;">Cancel</button>
+                <button id="shutdownButton" onclick="shutdownServer()" class="btn" style="display:none;" title="Stop the dashboard server">Shutdown</button>
+            </div>
+        </div>
+
+        <div id="updateLog" class="update-log" style="display:none;">
+            <div class="update-log-header">
+                <span id="updatePhase">Starting...</span>
+                <button onclick="toggleLog()" class="btn-toggle-log">Toggle Log</button>
+            </div>
+            <pre id="updateLogContent" class="update-log-content"></pre>
         </div>
 
         {summary_html}
 
         <div class="stock-analysis">
-            <h2>📈 Stock Analysis Results</h2>
+            <h2>Stock Analysis Results</h2>
             {table_html}
         </div>
 
-        <footer class="dashboard-footer">
-            <p>💡 <strong>How to read this dashboard:</strong></p>
-            <ul>
-                <li><strong>Fair Value:</strong> Estimated intrinsic value per share from each model</li>
-                <li><strong>Margin of Safety:</strong> How much upside/downside vs current price</li>
-                <li><strong>Models:</strong> AutoResearch (5-model ensemble predicting peak 2y return), GBM (Gradient Boosted Machine - 4 variants: Full 1y/3y, Opportunistic 1y/3y), DCF (Discounted Cash Flow), RIM (Residual Income Model)</li>
-                <li><strong>Consensus:</strong> Average of all successful models</li>
-            </ul>
-            <p class="disclaimer">⚠️ This is for educational purposes. Not investment advice. Do your own research.</p>
-        </footer>
     </div>
 
     <script>
+        const SERVER_MODE = {'true' if server_mode else 'false'};
+        const INITIAL_HEALTH = {health_json};
+        const INITIAL_UPDATE_STATUS = {update_status_json};
         {self._get_javascript()}
     </script>
 </body>
@@ -151,23 +168,153 @@ class HTMLGenerator:
             <div class="progress-text" id="progressText">{progress_text}</div>
         </div>'''
 
+    def _generate_health_panel(self, metadata: Dict) -> str:
+        """Generate the database health status panel."""
+        health = metadata.get("health", {})
+        if not health or not health.get("ok"):
+            return '<div class="health-panel health-error">Database not found or inaccessible</div>'
+
+        stock_data = health.get("stock_data", {})
+        models = health.get("models", {})
+        sec = health.get("sec_data", {})
+        db_size = health.get("db_size_mb", 0)
+
+        # Overall staleness: find the most outdated model
+        max_age = 0
+        most_stale_name = ""
+        display_models = [
+            "autoresearch", "gbm_opportunistic_1y", "gbm_opportunistic_3y",
+            "gbm_1y", "gbm_3y", "dcf", "rim",
+        ]
+        for m in display_models:
+            info = models.get(m, {})
+            age = info.get("age_hours")
+            if age is not None and age > max_age:
+                max_age = age
+                most_stale_name = m
+
+        # Determine overall status
+        if max_age > 168:  # > 1 week
+            overall_cls = "stale-critical"
+            overall_label = f"Data up to {max_age / 24:.0f}d old"
+        elif max_age > 48:
+            overall_cls = "stale-warning"
+            overall_label = f"Data up to {max_age / 24:.0f}d old"
+        elif max_age > 24:
+            overall_cls = "stale-mild"
+            overall_label = f"Data up to {max_age:.0f}h old"
+        else:
+            overall_cls = "stale-fresh"
+            overall_label = "Data is fresh"
+
+        # Build model chips
+        model_chips = []
+        for m in display_models:
+            info = models.get(m, {})
+            age_h = info.get("age_hours")
+            ok = info.get("successful", 0)
+            fail = info.get("failed", 0)
+            label = m.replace("_", " ").replace("gbm ", "GBM ").replace("autoresearch", "AutoRes")
+            if age_h is None:
+                chip_cls = "chip-missing"
+                age_str = "no data"
+            elif age_h > 168:
+                chip_cls = "chip-critical"
+                age_str = f"{age_h / 24:.0f}d"
+            elif age_h > 48:
+                chip_cls = "chip-warning"
+                age_str = f"{age_h / 24:.0f}d"
+            else:
+                chip_cls = "chip-ok"
+                age_str = f"{age_h:.0f}h" if age_h >= 1 else "<1h"
+            fail_str = f" | {fail} err" if fail else ""
+            model_chips.append(
+                f'<span class="health-chip {chip_cls}" title="{m}: {ok} ok, {fail} failed, age {age_str}">'
+                f'{label} <small>{age_str}{fail_str}</small></span>'
+            )
+
+        # SEC chips
+        sec_chips = []
+        for name, info in sec.items():
+            if info.get("exists"):
+                age_h = info.get("age_hours", 0)
+                rows = info.get("rows", 0)
+                if age_h > 168:
+                    chip_cls = "chip-critical"
+                elif age_h > 48:
+                    chip_cls = "chip-warning"
+                else:
+                    chip_cls = "chip-ok"
+                age_str = f"{age_h / 24:.0f}d" if age_h > 24 else f"{age_h:.0f}h"
+                sec_chips.append(
+                    f'<span class="health-chip {chip_cls}" title="{name}: {rows} rows, {age_str} old">'
+                    f'{name.title()} <small>{age_str}</small></span>'
+                )
+            else:
+                sec_chips.append(f'<span class="health-chip chip-missing">{name.title()} <small>missing</small></span>')
+
+        stock_count = stock_data.get("count", 0)
+
+        return f'''
+        <div class="health-panel" id="healthPanel">
+            <div class="health-header">
+                <div class="health-overall {overall_cls}">
+                    <span class="health-dot"></span>
+                    {overall_label}
+                </div>
+                <div class="health-meta">
+                    {stock_count} stocks | {db_size} MB
+                </div>
+            </div>
+            <div class="health-details" id="healthDetails">
+                <div class="health-row">
+                    <span class="health-label">Models</span>
+                    <div class="health-chips">{''.join(model_chips)}</div>
+                </div>
+                <div class="health-row">
+                    <span class="health-label">SEC Data</span>
+                    <div class="health-chips">{''.join(sec_chips)}</div>
+                </div>
+            </div>
+        </div>'''
+
     def _generate_summary_section(self, stocks_data: Dict) -> str:
         """Generate the analysis summary section."""
         total_stocks = len(stocks_data)
-        completed_stocks = len([s for s in stocks_data.values() if s.get("models_completed", 0) > 0])
 
-        # Calculate model success rates
+        # Count stocks that have at least one successful valuation
+        analyzed_stocks = 0
+        for s in stocks_data.values():
+            for v in s.get("valuations", {}).values():
+                if isinstance(v, dict) and v.get("fair_value"):
+                    analyzed_stocks += 1
+                    break
+
+        # Count only dashboard-visible models
+        display_models = [
+            "autoresearch", "gbm_opportunistic_1y", "gbm_opportunistic_3y",
+            "gbm_1y", "gbm_3y", "dcf", "rim",
+        ]
         model_counts = {}
         for stock in stocks_data.values():
             for model in stock.get("valuations", {}):
-                model_counts[model] = model_counts.get(model, 0) + 1
+                if model in display_models:
+                    v = stock["valuations"][model]
+                    if isinstance(v, dict) and v.get("fair_value"):
+                        model_counts[model] = model_counts.get(model, 0) + 1
 
         summary_items = []
         summary_items.append(f"<div class='summary-item'><strong>{total_stocks}</strong><br>Total Stocks</div>")
-        summary_items.append(f"<div class='summary-item'><strong>{completed_stocks}</strong><br>Analyzed</div>")
+        summary_items.append(f"<div class='summary-item'><strong>{analyzed_stocks}</strong><br>Analyzed</div>")
 
-        for model, count in model_counts.items():
-            model_name = model.replace('_', ' ').title()
+        name_map = {
+            "autoresearch": "AutoRes", "gbm_opportunistic_1y": "GBM Opp 1y",
+            "gbm_opportunistic_3y": "GBM Opp 3y", "gbm_1y": "GBM 1y",
+            "gbm_3y": "GBM 3y", "dcf": "DCF", "rim": "RIM",
+        }
+        for model in display_models:
+            count = model_counts.get(model, 0)
+            model_name = name_map.get(model, model)
             summary_items.append(f"<div class='summary-item'><strong>{count}</strong><br>{model_name}</div>")
 
         return f'''
@@ -220,9 +367,7 @@ class HTMLGenerator:
         """Generate a single stock table row."""
         current_price = stock_data.get("current_price", 0)
         valuations = stock_data.get("valuations", {})
-        status = stock_data.get("status", "pending")
-        stock_data.get("status_message", "Unknown")
-        company_name = stock_data.get("company_name", ticker)
+        company_name = html.escape(stock_data.get("company_name", ticker))
 
         # Create meaningful status based on what actually worked
         working_models = []
@@ -283,7 +428,7 @@ class HTMLGenerator:
 
 
         return f'''
-        <tr class="stock-row {status}">
+        <tr class="stock-row {new_status}">
             <td><strong title="{company_name}">{ticker}</strong></td>
             <td>{self._safe_format(current_price, prefix="$")}</td>
             <td>{status_html}</td>
@@ -323,14 +468,14 @@ class HTMLGenerator:
 
         display_name = display_names.get(status, status.replace("_", " ").title())
 
-        return f'<span title="{message}">{icon} {display_name}</span>'
+        return f'<span title="{html.escape(message)}">{icon} {display_name}</span>'
 
     def _format_valuation_cell(self, valuation: Dict, current_price: float = None, show_confidence: bool = False) -> str:
         """Format a valuation cell with fair value, margin, and ratio."""
         if valuation.get("failed", False):
             reason = valuation.get("failure_reason", "Model failed")
-            reason[:30] + "..." if len(reason) > 30 else reason
-            return f'<span title="{reason}">❌</span>'
+            reason = reason[:30] + "..." if len(reason) > 30 else reason
+            return f'<span title="{html.escape(reason)}">❌</span>'
 
         fair_value = valuation.get("fair_value")
         margin = valuation.get("margin_of_safety")
@@ -338,7 +483,7 @@ class HTMLGenerator:
         if fair_value is None or fair_value == 0:
             # Show error message in tooltip if available
             error_msg = valuation.get("error_message") or valuation.get("error", "No valuation available")
-            return f'<span title="{error_msg}">-</span>'
+            return f'<span title="{html.escape(str(error_msg))}">-</span>'
 
         fair_value_str = self._safe_format(fair_value, prefix="$")
         margin_str = self._safe_percent(margin)
@@ -373,12 +518,12 @@ class HTMLGenerator:
                 conf_label = f'{conf_value * 100:.1f}%'
                 # color: high green, medium yellow, low red
                 if conf_value >= 0.75:
-                    conf_style = 'background: #d4edda; color: #155724'
+                    conf_style = 'background: rgba(50,164,103,0.15); color: #72ca9b'
                 elif conf_value >= 0.4:
-                    conf_style = 'background: #fff3cd; color: #856404'
+                    conf_style = 'background: rgba(209,152,11,0.15); color: #f0b726'
                 else:
-                    conf_style = 'background: #f8d7da; color: #721c24'
-                confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">Confidence: {conf_label}</div>'
+                    conf_style = 'background: rgba(205,66,70,0.12); color: #e76a6e'
+                confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 12px; padding: 3px 7px; border-radius: 3px; margin-top: 2px; font-weight: 500; font-family: Geist Mono, monospace;">{conf_label}</div>'
 
         return f'''
         <div class="valuation-cell">
@@ -392,12 +537,11 @@ class HTMLGenerator:
         """Format neural network valuation cell with confidence indicator."""
         if not valuation or not valuation.get('suitable'):
             reason = valuation.get('error', 'No prediction') if valuation else 'No data'
-            reason[:30] + '...' if len(reason) > 30 else reason
-            return f'<span title="{reason}">-</span>'
+            reason = reason[:30] + '...' if len(reason) > 30 else reason
+            return f'<span title="{html.escape(reason)}">-</span>'
 
         fair_value = valuation.get('fair_value')
         margin = valuation.get('margin_of_safety')
-        valuation.get('confidence', 'unknown')
 
         if fair_value is None or fair_value == 0:
             return '-'
@@ -414,11 +558,11 @@ class HTMLGenerator:
         # Confidence badge - show std as percentage instead of categorical label
         # Color based on std thresholds: <5% = green, <15% = yellow, >=15% = red
         if conf_std < 0.05:
-            conf_style = 'background: #d4edda; color: #155724'  # Green
+            conf_style = 'background: rgba(50,164,103,0.15); color: #72ca9b'
         elif conf_std < 0.15:
-            conf_style = 'background: #fff3cd; color: #856404'  # Yellow
+            conf_style = 'background: rgba(209,152,11,0.15); color: #f0b726'
         else:
-            conf_style = 'background: #f8d7da; color: #721c24'  # Red
+            conf_style = 'background: rgba(205,66,70,0.12); color: #e76a6e'
 
         conf_label = f'σ={conf_std:.1%}'  # Show actual std percentage
 
@@ -439,7 +583,7 @@ class HTMLGenerator:
             <div class="fair-value">{fair_value_str}</div>
             <div class="margin {margin_class}">{margin_str}</div>
             {ratio_str}
-            <div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">{conf_label}</div>
+            <div class="confidence-badge" style="{conf_style}; font-size: 12px; padding: 3px 7px; border-radius: 3px; margin-top: 2px; font-weight: 500; font-family: Geist Mono, monospace;">{conf_label}</div>
         </div>'''
 
     def _format_multi_horizon_cells(self, nn_valuation: Dict, current_price: float) -> Tuple[str, str, str, str, str]:
@@ -514,12 +658,12 @@ class HTMLGenerator:
         # Confidence badge based on consensus confidence label
         conf_label = consensus.confidence
         if conf_label == 'high':
-            conf_style = 'background: #d4edda; color: #155724'
+            conf_style = 'background: rgba(50,164,103,0.15); color: #72ca9b'
         elif conf_label == 'medium':
-            conf_style = 'background: #fff3cd; color: #856404'
+            conf_style = 'background: rgba(209,152,11,0.15); color: #f0b726'
         else:
-            conf_style = 'background: #f8d7da; color: #721c24'
-        confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 10px; padding: 2px 4px; border-radius: 3px; margin-top: 2px; font-weight: 600;">{conf_label.title()}</div>'
+            conf_style = 'background: rgba(205,66,70,0.12); color: #e76a6e'
+        confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 12px; padding: 3px 7px; border-radius: 3px; margin-top: 2px; font-weight: 500; font-family: Geist Mono, monospace;">{conf_label.title()}</div>'
 
         return f'''
         <div class="consensus-cell">
@@ -533,7 +677,7 @@ class HTMLGenerator:
     def _format_insider_cell(self, insider: Dict) -> str:
         """Format insider activity cell: '3B/1S $2.1M' with color coding."""
         if not insider or not insider.get('has_data'):
-            return '<span style="color: #999;">-</span>'
+            return '<span style="color: #5f6b7c;">-</span>'
 
         buy_count = insider.get('buy_count', 0)
         sell_count = insider.get('sell_count', 0)
@@ -559,20 +703,20 @@ class HTMLGenerator:
 
         # Color: green for net buying, red for net selling, grey for no activity
         if buy_count > sell_count:
-            color = "#155724"
-            bg = "#d4edda"
+            color = "#34d399"
+            bg = "rgba(50,164,103,0.15)"
         elif sell_count > buy_count:
-            color = "#721c24"
-            bg = "#f8d7da"
+            color = "#e76a6e"
+            bg = "rgba(205,66,70,0.12)"
         else:
-            color = "#383d41"
-            bg = "#e2e3e5"
+            color = "#738091"
+            bg = "rgba(255,255,255,0.06)"
 
         text = f"{activity}"
         if dollar_str:
             text += f" {dollar_str}"
 
-        return f'<span style="color: {color}; background: {bg}; padding: 2px 5px; border-radius: 3px; font-size: 11px; font-weight: 600;">{text}</span>'
+        return f'<span style="color: {color}; background: {bg}; padding: 1px 5px; border-radius: 2px; font-size: 13px; font-weight: 500; font-family: Geist Mono, monospace;">{text}</span>'
 
     def _format_activist_cell(self, activist: Dict, japan: Dict, ticker: str) -> str:
         """Format activist/passive stakes cell. Shows Japan stakes for .T tickers."""
@@ -602,25 +746,25 @@ class HTMLGenerator:
             parts.append(f"{count}JP{name_str}{pct_str}")
 
         if not parts:
-            return '<span style="color: #999;">\u2014</span>'
+            return '<span style="color: #5f6b7c;">\u2014</span>'
 
         text = " | ".join(parts)
 
-        # Color: activist = orange (high signal), passive = blue
+        # Color: activist = amber (high signal), passive = blue
         has_activist = activist and activist.get('activist_count', 0) > 0
         if has_activist:
-            color = "#7c4700"
-            bg = "#ffe0b2"
+            color = "#f0b726"
+            bg = "rgba(209,152,11,0.15)"
         else:
-            color = "#1a3a5c"
-            bg = "#e3f2fd"
+            color = "#8abbff"
+            bg = "rgba(76,144,240,0.12)"
 
-        return f'<span style="color: {color}; background: {bg}; padding: 2px 5px; border-radius: 3px; font-size: 11px; font-weight: 600;">{text}</span>'
+        return f'<span style="color: {color}; background: {bg}; padding: 1px 5px; border-radius: 2px; font-size: 13px; font-weight: 500; font-family: Geist Mono, monospace;">{text}</span>'
 
     def _format_smart_money_cell(self, holdings: Dict) -> str:
         """Format smart money institutional holdings cell."""
         if not holdings or not holdings.get('has_data'):
-            return '<span style="color: #999;">\u2014</span>'
+            return '<span style="color: #5f6b7c;">\u2014</span>'
 
         holders_count = holdings.get('smart_money_holders', 0)
         value = holdings.get('total_smart_money_value_usd', 0)
@@ -658,16 +802,16 @@ class HTMLGenerator:
 
         # Color based on holder count
         if holders_count >= 3:
-            color = "#155724"
-            bg = "#d4edda"
+            color = "#34d399"
+            bg = "rgba(50,164,103,0.15)"
         elif holders_count >= 1:
-            color = "#1a3a5c"
-            bg = "#e3f2fd"
+            color = "#8abbff"
+            bg = "rgba(76,144,240,0.12)"
         else:
-            color = "#383d41"
-            bg = "#e2e3e5"
+            color = "#738091"
+            bg = "rgba(255,255,255,0.06)"
 
-        return f'<span style="color: {color}; background: {bg}; padding: 2px 5px; border-radius: 3px; font-size: 11px; font-weight: 600;">{text}</span>'
+        return f'<span style="color: {color}; background: {bg}; padding: 1px 5px; border-radius: 2px; font-size: 13px; font-weight: 500; font-family: Geist Mono, monospace;">{text}</span>'
 
     def _format_signals_cell(self, insider: Dict, activist: Dict, japan: Dict,
                               holdings: Dict, ticker: str) -> str:
@@ -731,22 +875,22 @@ class HTMLGenerator:
                 tags.append(('blue', f"{holders_count} fund{'s' if holders_count > 1 else ''}"))
 
         if not tags:
-            return '<span style="color: #999;">\u2014</span>'
+            return '<span style="color: #5f6b7c;">\u2014</span>'
 
         styles = {
-            'green': ('color: #155724; background: #d4edda;'),
-            'red': ('color: #721c24; background: #f8d7da;'),
-            'orange': ('color: #7c4700; background: #ffe0b2;'),
-            'blue': ('color: #1a3a5c; background: #e3f2fd;'),
+            'green': 'color: #72ca9b; background: rgba(50,164,103,0.15);',
+            'red': 'color: #f87171; background: rgba(205,66,70,0.12);',
+            'orange': 'color: #fbbf24; background: rgba(209,152,11,0.15);',
+            'blue': 'color: #60a5fa; background: rgba(76,144,240,0.12);',
         }
 
         html_parts = []
         for color, label in tags:
             style = styles[color]
             html_parts.append(
-                f'<span style="{style} padding: 1px 5px; border-radius: 3px; '
-                f'font-size: 10px; font-weight: 600; display: inline-block; '
-                f'margin: 1px 0;">{label}</span>'
+                f'<span style="{style} padding: 1px 5px; border-radius: 2px; '
+                f'font-size: 12px; font-weight: 500; display: inline-block; '
+                f'margin: 2px 0; font-family: Geist Mono, monospace;">{label}</span>'
             )
 
         return "<br>".join(html_parts)
@@ -827,497 +971,679 @@ class HTMLGenerator:
             logger.error(f"Failed to save HTML: {e}")
 
     def _get_css_styles(self) -> str:
-        """Get CSS styles for the dashboard."""
+        """Get CSS styles — Palantir Gotham Tactical (Blueprint dark + cinematic)."""
         return """
+        :root {
+            /* Palantir Blueprint dark palette */
+            --bg-base: #111418;
+            --bg-panel: #1c2127;
+            --bg-elevated: #252a31;
+            --bg-hover: #2f343c;
+            --bg-row-alt: rgba(76,144,240,0.03);
+            --border: rgba(255,255,255,0.15);
+            --border-subtle: rgba(255,255,255,0.08);
+            --border-glow: rgba(76,144,240,0.3);
+            --text-primary: #f6f7f9;
+            --text-secondary: #abb3bf;
+            --text-muted: #738091;
+            --accent: #4c90f0;
+            --accent-bright: #8abbff;
+            --accent-dim: rgba(76,144,240,0.15);
+            --gold: #d1980b;
+            --gold-dim: rgba(209,152,11,0.15);
+            --green: #32a467;
+            --green-bright: #72ca9b;
+            --green-dim: rgba(50,164,103,0.15);
+            --red: #cd4246;
+            --red-bright: #e76a6e;
+            --red-dim: rgba(205,66,70,0.12);
+            --orange: #ec9a3c;
+            --orange-dim: rgba(236,154,60,0.12);
+            --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-mono: 'Geist Mono', 'SF Mono', ui-monospace, monospace;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: var(--font-body);
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--text-primary);
+            background: var(--bg-base);
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
             width: 100%;
             margin: 0;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.95);
+            padding: 16px 20px;
             min-height: 100vh;
         }
 
+        /* ── Header ── */
         .dashboard-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 12px;
+            padding: 20px 24px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            border-top: 2px solid var(--accent);
+            border-radius: 4px;
         }
 
         .dashboard-header h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-            font-size: 2.5em;
+            color: var(--text-primary);
+            font-size: 1.5em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-family: var(--font-mono);
         }
 
-        .subtitle {
-            color: #7f8c8d;
-            font-size: 1.2em;
-            margin-bottom: 10px;
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
         }
 
         .last-updated {
-            color: #95a5a6;
-            font-size: 0.9em;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-family: var(--font-mono);
         }
 
-        .progress-section {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        .header-actions { display: flex; gap: 10px; }
+
+        /* ── Buttons ── */
+        .btn {
+            border: 1px solid var(--border-subtle);
+            padding: 8px 18px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.2s ease;
+            font-family: var(--font-body);
+            background: var(--bg-elevated);
+            color: var(--text-secondary);
+        }
+        .btn:hover { background: var(--bg-hover); border-color: var(--accent); color: var(--accent-bright); }
+        .btn-docs { }
+        .btn-export { }
+        .btn-update {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            font-weight: 700;
+        }
+        .btn-update:hover { background: var(--accent-bright); border-color: var(--accent-bright); color: #111; }
+        .btn-update:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-cancel { background: var(--red-dim); color: var(--red-bright); border-color: rgba(205,66,70,0.3); }
+        .btn-cancel:hover { background: var(--red); color: #fff; }
+        .btn-toggle-log {
+            background: var(--bg-elevated); border: 1px solid var(--border-subtle); padding: 4px 12px;
+            border-radius: 4px; font-size: 12px; cursor: pointer; color: var(--text-muted);
+            font-family: var(--font-body);
         }
 
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: #ecf0f1;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 10px;
+        /* ── Health Panel ── */
+        .health-panel {
+            margin-bottom: 12px;
+            padding: 16px 24px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+        }
+        .health-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .health-overall {
+            display: flex; align-items: center; gap: 10px;
+            font-weight: 600; font-size: 15px;
+            font-family: var(--font-body);
+        }
+        .health-dot {
+            width: 12px; height: 12px; border-radius: 50%;
+            display: inline-block; flex-shrink: 0;
+        }
+        .stale-fresh .health-dot { background: var(--green); box-shadow: 0 0 8px rgba(50,164,103,0.5); }
+        .stale-fresh { color: var(--green-bright); }
+        .stale-mild .health-dot { background: var(--orange); box-shadow: 0 0 8px rgba(236,154,60,0.5); }
+        .stale-mild { color: var(--orange); }
+        .stale-warning .health-dot { background: var(--red); box-shadow: 0 0 8px rgba(205,66,70,0.5); }
+        .stale-warning { color: var(--red-bright); }
+        .stale-critical .health-dot { background: var(--red); animation: pulse 1.5s infinite; box-shadow: 0 0 12px rgba(205,66,70,0.7); }
+        .stale-critical { color: var(--red-bright); }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .health-meta {
+            color: var(--text-muted); font-size: 14px;
+            font-family: var(--font-mono);
+        }
+        .health-details { margin-top: 10px; }
+        .health-row {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 6px;
+        }
+        .health-label {
+            font-size: 13px; font-weight: 600; color: var(--text-muted);
+            min-width: 70px; text-transform: uppercase; letter-spacing: 0.8px;
+            font-family: var(--font-mono);
+        }
+        .health-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+        .health-chip {
+            font-size: 13px; padding: 4px 12px; border-radius: 4px;
+            font-weight: 500; white-space: nowrap;
+            font-family: var(--font-mono);
+        }
+        .health-chip small { font-weight: 400; opacity: 0.7; margin-left: 4px; }
+        .chip-ok { background: var(--green-dim); color: var(--green-bright); }
+        .chip-warning { background: var(--orange-dim); color: var(--orange); }
+        .chip-critical { background: var(--red-dim); color: var(--red-bright); }
+        .chip-missing { background: rgba(255,255,255,0.06); color: var(--text-muted); }
+        .health-error {
+            color: var(--red-bright); font-weight: 600; text-align: center;
+            padding: 20px; background: var(--red-dim); border-radius: 4px;
         }
 
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #3498db, #2ecc71);
-            transition: width 0.3s ease;
-        }
-
-        .progress-text {
-            text-align: center;
-            font-weight: 500;
-            color: #2c3e50;
-        }
-
+        /* ── Controls ── */
         .controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 12px;
+            padding: 14px 24px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
         }
+        .controls-left, .controls-right { display: flex; align-items: center; gap: 12px; }
 
+        .universe-selector label {
+            color: var(--text-muted); font-size: 14px;
+            text-transform: uppercase; letter-spacing: 0.8px;
+            font-family: var(--font-mono); font-weight: 600;
+        }
         .universe-selector select, .universe-selector input {
-            padding: 8px 12px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            margin-left: 10px;
+            padding: 8px 14px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            font-size: 15px;
+            margin-left: 8px;
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            outline: none;
+        }
+        .universe-selector select:focus, .universe-selector input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-dim);
+        }
+        .universe-selector select option { background: var(--bg-elevated); color: var(--text-primary); }
+
+        .update-status {
+            font-size: 13px; font-weight: 600; padding: 6px 14px;
+            border-radius: 4px; display: none;
+            font-family: var(--font-mono);
+        }
+        .update-status.running { display: inline-block; background: var(--accent-dim); color: var(--accent-bright); }
+        .update-status.completed { display: inline-block; background: var(--green-dim); color: var(--green-bright); }
+        .update-status.failed { display: inline-block; background: var(--red-dim); color: var(--red-bright); }
+
+        /* ── Update Log ── */
+        .update-log {
+            margin-bottom: 12px;
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .update-log-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 20px;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 14px; font-weight: 600;
+        }
+        .update-log-content {
+            padding: 12px 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 0;
+            font-family: var(--font-mono);
+            line-height: 1.7;
         }
 
-        #updateButton {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: transform 0.2s;
-        }
-
-        #updateButton:hover {
-            transform: translateY(-2px);
-        }
-
+        /* ── Summary ── */
         .analysis-summary {
-            margin-bottom: 20px;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 12px;
+            padding: 18px 24px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+        }
+        .analysis-summary h2 {
+            font-size: 14px; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 1.5px;
+            font-family: var(--font-mono); font-weight: 600;
+            margin-bottom: 12px;
         }
 
         .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1px;
+            background: var(--border-subtle);
+            border-radius: 4px;
+            overflow: hidden;
         }
 
         .summary-item {
             text-align: center;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 6px;
-            border-left: 4px solid #3498db;
+            padding: 14px 18px;
+            background: var(--bg-base);
+            font-size: 14px;
+            color: var(--text-secondary);
+            flex: 1;
+            min-width: 90px;
+        }
+        .summary-item strong {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            line-height: 1.3;
         }
 
-        .stock-analysis {
-            margin-bottom: 30px;
+        .stock-analysis { margin-bottom: 16px; }
+        .stock-analysis h2 {
+            font-size: 14px; margin-bottom: 10px; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;
+            font-family: var(--font-mono);
         }
 
+        /* ── Table ── */
         .table-container {
             overflow-x: auto;
             overflow-y: auto;
-            height: calc(100vh - 220px);
-            min-height: 180px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            height: calc(100vh - 300px);
+            min-height: 200px;
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
         }
 
         .stock-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .stock-table th {
             position: sticky;
             top: 0;
             z-index: 10;
-            background: #34495e;
-            color: white;
-            padding: 12px 8px;
+            background: var(--bg-panel);
+            color: var(--text-muted);
+            padding: 14px 12px;
             text-align: left;
             cursor: pointer;
             user-select: none;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border-bottom: 2px solid var(--border-glow);
+            font-family: var(--font-mono);
+            transition: color 0.15s;
+            white-space: nowrap;
         }
 
-        .stock-table th:hover {
-            background: #2c3e50;
-        }
+        .stock-table th:hover { color: var(--accent-bright); }
 
-        .stock-table th.sorted,
-        .stock-table th.sort-asc,
-        .stock-table th.sort-desc {
-            background: #2c3e50;
-        }
-
-        .stock-table th.sort-asc::after {
-            content: ' ↑';
-            color: #bdc3c7;
-        }
-
-        .stock-table th.sort-desc::after {
-            content: ' ↓';
-            color: #bdc3c7;
-        }
+        .stock-table th.sort-asc::after { content: ' \\25B2'; font-size: 10px; color: var(--accent); }
+        .stock-table th.sort-desc::after { content: ' \\25BC'; font-size: 10px; color: var(--accent); }
 
         .stock-table td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #ecf0f1;
-        }
-
-        .stock-row:hover {
-            background: #f8f9fa;
-        }
-
-        .stock-row.completed {
-            background: rgba(46, 204, 113, 0.1);
-        }
-
-        .stock-row.analyzing {
-            background: rgba(52, 152, 219, 0.1);
-        }
-
-        .valuation-cell {
-            text-align: center;
-        }
-
-        .fair-value {
-            font-weight: 500;
-            margin-bottom: 2px;
-        }
-
-        .margin {
-            font-size: 12px;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-weight: 500;
-        }
-
-        .ratio {
-            font-size: 11px;
-            color: #6c757d;
-            font-weight: 500;
-            margin-top: 1px;
-        }
-
-        .margin-excellent {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .margin-good {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .margin-neutral {
-            background: #e2e3e5;
-            color: #383d41;
-        }
-
-        .margin-poor {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .consensus-cell {
-            text-align: center;
-            border-left: 3px solid #3498db;
-            padding-left: 8px;
-        }
-
-        .model-count {
-            font-size: 11px;
-            color: #7f8c8d;
-            margin-top: 2px;
-        }
-
-        .dashboard-footer {
-            margin-top: 30px;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .dashboard-footer ul {
-            margin: 10px 0 10px 20px;
-        }
-
-        .disclaimer {
-            margin-top: 15px;
-            padding: 10px;
-            background: #fff3cd;
-            border-radius: 5px;
-            color: #856404;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-subtle);
+            font-family: var(--font-mono);
             font-size: 14px;
         }
 
-        .no-data {
-            text-align: center;
-            padding: 40px;
-            color: #7f8c8d;
-            font-style: italic;
+        .stock-table td:first-child {
+            color: var(--accent-bright);
+            font-weight: 700;
+            font-size: 15px;
         }
 
+        .stock-row { transition: background 0.1s; }
+        .stock-row:nth-child(even) { background: var(--bg-row-alt); }
+        .stock-row:hover { background: rgba(76,144,240,0.08); }
+        .stock-row.completed { }
+        .stock-row.analyzing { background: rgba(76,144,240,0.05); }
+
+        .valuation-cell { text-align: center; }
+        .fair-value {
+            font-weight: 600; margin-bottom: 2px;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 15px;
+        }
+        .margin {
+            font-size: 13px; padding: 2px 7px; border-radius: 3px;
+            font-weight: 600;
+            font-family: var(--font-mono);
+            display: inline-block;
+        }
+        .ratio {
+            font-size: 12px; color: var(--text-muted); font-weight: 400;
+            margin-top: 1px; font-family: var(--font-mono);
+        }
+
+        .margin-excellent { background: var(--green-dim); color: var(--green-bright); }
+        .margin-good { background: var(--gold-dim); color: var(--gold); }
+        .margin-neutral { background: rgba(255,255,255,0.05); color: var(--text-muted); }
+        .margin-poor { background: var(--red-dim); color: var(--red-bright); }
+
+        .consensus-cell {
+            text-align: center;
+            border-left: 2px solid var(--border-glow);
+            padding-left: 10px;
+        }
+        .model-count { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+        .no-data {
+            text-align: center;
+            padding: 60px;
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* ── Selection ── */
+        ::selection { background: rgba(76,144,240,0.3); color: var(--text-primary); }
+
         @media (max-width: 768px) {
-            .container { padding: 10px; }
-            .controls { flex-direction: column; gap: 15px; }
-            .summary-grid { grid-template-columns: repeat(2, 1fr); }
-            .stock-table { font-size: 12px; }
-            .stock-table th, .stock-table td { padding: 6px 4px; }
+            .container { padding: 8px; }
+            .controls { flex-direction: column; gap: 10px; }
+            .header-row { flex-direction: column; gap: 8px; }
+            .summary-grid { flex-direction: column; }
+            .stock-table { font-size: 13px; }
+            .stock-table th, .stock-table td { padding: 8px 6px; }
             .table-container { height: 60vh; min-height: 140px; }
+            .health-row { flex-direction: column; align-items: flex-start; }
         }"""
 
     def _get_javascript(self) -> str:
         """Get JavaScript for dashboard interactivity."""
         return """
-        let isUpdating = false;
+        let pollTimer = null;
+        let logExpanded = true;
 
-        // Simple, reliable table sorting
+        // ── Init ──
         document.addEventListener('DOMContentLoaded', function() {
+            // Table sorting
             const table = document.getElementById('stockTable');
-            if (!table) return;
+            if (table) {
+                table.querySelectorAll('th').forEach((header, i) => {
+                    header.addEventListener('click', () => sortTableByColumn(i));
+                });
+            }
 
-            // Add click handlers to all headers
-            const headers = table.querySelectorAll('th');
-            headers.forEach((header, columnIndex) => {
-                header.style.cursor = 'pointer';
-                header.style.userSelect = 'none';
-                header.addEventListener('click', () => sortTableByColumn(columnIndex));
+            // Universe selector
+            document.getElementById('universe').addEventListener('change', function() {
+                const ci = document.getElementById('customTickers');
+                ci.style.display = this.value === 'custom' ? 'inline-block' : 'none';
             });
+
+            // If server mode, show server controls and start polling
+            if (SERVER_MODE) {
+                document.getElementById('shutdownButton').style.display = 'inline-flex';
+                applyUpdateStatus(INITIAL_UPDATE_STATUS);
+                if (INITIAL_UPDATE_STATUS.status === 'running') {
+                    startPolling();
+                }
+            }
         });
 
+        // ── Update control ──
+        function triggerUpdate() {
+            if (!SERVER_MODE) { alert('Server not running. Start with: uv run python scripts/dashboard_server.py'); return; }
+
+            const universe = document.getElementById('universe').value;
+            const btn = document.getElementById('updateButton');
+            btn.disabled = true;
+            btn.textContent = 'Starting...';
+
+            fetch('/api/update', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ universe })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.ok) {
+                    startPolling();
+                } else if (data.reason === 'already_running') {
+                    startPolling();  // just attach to existing run
+                } else {
+                    btn.disabled = false;
+                    btn.textContent = 'Update Data';
+                    alert('Failed to start: ' + (data.reason || 'unknown'));
+                }
+            })
+            .catch(err => {
+                btn.disabled = false;
+                btn.textContent = 'Update Data';
+                console.error('Update trigger failed:', err);
+            });
+        }
+
+        function cancelUpdate() {
+            fetch('/api/update/cancel', { method: 'POST' })
+            .then(r => r.json())
+            .then(data => {
+                if (data.ok) stopPolling();
+            });
+        }
+
+        function shutdownServer() {
+            if (!confirm('Stop the dashboard server?')) return;
+            fetch('/api/shutdown', { method: 'POST' })
+            .then(() => {
+                document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:#738091;font-family:monospace;font-size:18px;">Server stopped.</div>';
+            })
+            .catch(() => {
+                document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:#738091;font-family:monospace;font-size:18px;">Server stopped.</div>';
+            });
+        }
+
+        function startPolling() {
+            if (pollTimer) return;
+            pollTimer = setInterval(pollStatus, 2000);
+            pollStatus();  // immediate first poll
+        }
+
+        function stopPolling() {
+            if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+        }
+
+        function pollStatus() {
+            fetch('/api/update/status')
+            .then(r => r.json())
+            .then(data => {
+                applyUpdateStatus(data);
+                if (data.status !== 'running') {
+                    stopPolling();
+                    // Reload page to get fresh data after completion
+                    if (data.status === 'completed') {
+                        setTimeout(() => location.reload(), 1000);
+                    }
+                }
+            })
+            .catch(err => console.error('Poll failed:', err));
+        }
+
+        function applyUpdateStatus(s) {
+            const btn = document.getElementById('updateButton');
+            const cancelBtn = document.getElementById('cancelButton');
+            const statusEl = document.getElementById('updateStatus');
+            const logEl = document.getElementById('updateLog');
+            const phaseEl = document.getElementById('updatePhase');
+            const logContent = document.getElementById('updateLogContent');
+
+            // Reset classes
+            statusEl.className = 'update-status';
+
+            if (s.status === 'running') {
+                btn.disabled = true;
+                btn.textContent = 'Updating...';
+                cancelBtn.style.display = 'inline-flex';
+                statusEl.className = 'update-status running';
+                statusEl.textContent = s.phase || 'Running...';
+                logEl.style.display = 'block';
+                phaseEl.textContent = s.phase || 'Processing...';
+                if (s.tail && s.tail.length) {
+                    logContent.textContent = s.tail.join('\\n');
+                    logContent.scrollTop = logContent.scrollHeight;
+                }
+            } else if (s.status === 'completed') {
+                btn.disabled = false;
+                btn.textContent = 'Update Data';
+                cancelBtn.style.display = 'none';
+                statusEl.className = 'update-status completed';
+                statusEl.textContent = 'Completed ' + formatTimeAgo(s.finished_at);
+                logEl.style.display = 'none';
+            } else if (s.status === 'failed') {
+                btn.disabled = false;
+                btn.textContent = 'Update Data';
+                cancelBtn.style.display = 'none';
+                statusEl.className = 'update-status failed';
+                statusEl.textContent = 'Failed: ' + (s.error || 'unknown error');
+                logEl.style.display = 'block';
+                phaseEl.textContent = 'FAILED - ' + (s.error || '');
+                if (s.tail && s.tail.length) {
+                    logContent.textContent = s.tail.join('\\n');
+                    logContent.scrollTop = logContent.scrollHeight;
+                }
+            } else {
+                // idle
+                btn.disabled = false;
+                btn.textContent = 'Update Data';
+                cancelBtn.style.display = 'none';
+                logEl.style.display = 'none';
+            }
+        }
+
+        function toggleLog() {
+            const content = document.getElementById('updateLogContent');
+            logExpanded = !logExpanded;
+            content.style.display = logExpanded ? 'block' : 'none';
+        }
+
+        function formatTimeAgo(iso) {
+            if (!iso) return '';
+            const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+            if (diff < 60) return 'just now';
+            if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+            if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+            return Math.floor(diff/86400) + 'd ago';
+        }
+
+        // ── Table sorting ──
         function sortTableByColumn(columnIndex) {
             const table = document.getElementById('stockTable');
             const tbody = table.querySelector('tbody');
             const rows = Array.from(tbody.querySelectorAll('tr'));
 
-            // Determine sort direction
             const header = table.querySelectorAll('th')[columnIndex];
             const isAscending = !header.classList.contains('sort-asc');
 
-            // Clear all sort classes
-            table.querySelectorAll('th').forEach(h => {
-                h.classList.remove('sort-asc', 'sort-desc');
-            });
-
-            // Add sort class to current header
+            table.querySelectorAll('th').forEach(h => h.classList.remove('sort-asc', 'sort-desc'));
             header.classList.add(isAscending ? 'sort-asc' : 'sort-desc');
 
-            // Sort rows
             rows.sort((rowA, rowB) => {
                 const cellA = rowA.cells[columnIndex];
                 const cellB = rowB.cells[columnIndex];
-
                 if (!cellA || !cellB) return 0;
 
                 let textA = cellA.textContent.trim();
                 let textB = cellB.textContent.trim();
 
-                // Check for empty/placeholder values - always put these last
-                const isEmptyA = textA === '-' || textA === 'N/A' || textA === '';
-                const isEmptyB = textB === '-' || textB === 'N/A' || textB === '';
+                const isEmptyA = textA === '-' || textA === 'N/A' || textA === '' || textA === '\\u2014';
+                const isEmptyB = textB === '-' || textB === 'N/A' || textB === '' || textB === '\\u2014';
+                if (isEmptyA && isEmptyB) return 0;
+                if (isEmptyA) return 1;
+                if (isEmptyB) return -1;
 
-                if (isEmptyA && isEmptyB) return 0;  // Both empty, equal
-                if (isEmptyA) return 1;              // A is empty, put it last
-                if (isEmptyB) return -1;             // B is empty, put it last
-
-                // Extract ratio values from ratio divs if they exist
                 const ratioA = cellA.querySelector('.ratio');
                 const ratioB = cellB.querySelector('.ratio');
                 const marginA = cellA.querySelector('.margin');
                 const marginB = cellB.querySelector('.margin');
 
                 let comparison = 0;
-
                 if (ratioA && ratioB) {
-                    // Both have ratio data - sort by expected value to market price ratio
-                    const ratioValueA = parseFloat(ratioA.textContent.replace(/[x]/g, ''));
-                    const ratioValueB = parseFloat(ratioB.textContent.replace(/[x]/g, ''));
-
-                    if (!isNaN(ratioValueA) && !isNaN(ratioValueB)) {
-                        comparison = ratioValueB - ratioValueA; // Higher ratios first (more undervalued)
-                    } else {
-                        // Fallback to margin percentage if ratio values are invalid
-                        const percentA = parseFloat(marginA?.textContent.replace(/[%+]/g, '') || '0');
-                        const percentB = parseFloat(marginB?.textContent.replace(/[%+]/g, '') || '0');
-                        comparison = percentB - percentA;
+                    const rA = parseFloat(ratioA.textContent.replace(/[x]/g, ''));
+                    const rB = parseFloat(ratioB.textContent.replace(/[x]/g, ''));
+                    if (!isNaN(rA) && !isNaN(rB)) comparison = rB - rA;
+                    else {
+                        const pA = parseFloat(marginA?.textContent.replace(/[%+]/g, '') || '0');
+                        const pB = parseFloat(marginB?.textContent.replace(/[%+]/g, '') || '0');
+                        comparison = pB - pA;
                     }
                 } else if (marginA && marginB) {
-                    // Fallback to margin percentage sorting
-                    const percentA = parseFloat(marginA.textContent.replace(/[%+]/g, ''));
-                    const percentB = parseFloat(marginB.textContent.replace(/[%+]/g, ''));
-                    comparison = percentB - percentA;
+                    const pA = parseFloat(marginA.textContent.replace(/[%+]/g, ''));
+                    const pB = parseFloat(marginB.textContent.replace(/[%+]/g, ''));
+                    comparison = pB - pA;
                 } else if (marginA || marginB) {
-                    // One has percentage, one doesn't - percentage goes first
                     comparison = marginA ? -1 : 1;
                 } else {
-                    // No percentages, sort by dollar values or text
-                    const numA = parseFloat(textA.replace(/[$,%]/g, ''));
-                    const numB = parseFloat(textB.replace(/[$,%]/g, ''));
-
-                    if (!isNaN(numA) && !isNaN(numB)) {
-                        comparison = numB - numA; // Higher values first
-                    } else {
-                        comparison = textA.localeCompare(textB);
-                    }
+                    const nA = parseFloat(textA.replace(/[$,%]/g, ''));
+                    const nB = parseFloat(textB.replace(/[$,%]/g, ''));
+                    if (!isNaN(nA) && !isNaN(nB)) comparison = nB - nA;
+                    else comparison = textA.localeCompare(textB);
                 }
-
                 return isAscending ? comparison : -comparison;
             });
-
-            // Rebuild table
             rows.forEach(row => tbody.appendChild(row));
         }
 
-        function updateDashboard() {
-            if (isUpdating) return;
-
-            const universe = document.getElementById('universe').value;
-            const customTickers = document.getElementById('customTickers').value;
-            const button = document.getElementById('updateButton');
-            const progressSection = document.getElementById('progressSection');
-
-            // Show progress section and disable button
-            if (progressSection) progressSection.style.display = 'block';
-            if (button) {
-                button.disabled = true;
-                button.textContent = '🔄 Updating...';
-            }
-            isUpdating = true;
-
-            const requestData = { universe: universe };
-            if (universe === 'custom' && customTickers) {
-                requestData.tickers = customTickers.split(',').map(t => t.trim().toUpperCase());
-            }
-
-            fetch('/update', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Update started:', data);
-                startProgressPolling();
-            })
-            .catch(error => {
-                console.error('Update failed:', error);
-                resetUpdateButton();
-            });
-        }
-
-        function startProgressPolling() {
-            const pollInterval = setInterval(() => {
-                location.reload();
-            }, 3000);
-
-            setTimeout(() => {
-                clearInterval(pollInterval);
-                resetUpdateButton();
-            }, 600000);
-        }
-
-        function resetUpdateButton() {
-            const button = document.getElementById('updateButton');
-            button.disabled = false;
-            button.textContent = '🔄 Update Data';
-            isUpdating = false;
-        }
-
-        // Universe selector handling
-        document.getElementById('universe').addEventListener('change', function() {
-            const customInput = document.getElementById('customTickers');
-            if (this.value === 'custom') {
-                customInput.style.display = 'inline-block';
-                customInput.required = true;
-            } else {
-                customInput.style.display = 'none';
-                customInput.required = false;
-            }
-        });
-
-        // Export to CSV function
+        // ── Export CSV ──
         function exportToCSV() {
             const table = document.getElementById('stockTable');
-            if (!table) {
-                alert('No table found to export');
-                return;
-            }
+            if (!table) return;
 
             const rows = [];
-
-            // Get headers
             const headers = [];
             table.querySelectorAll('thead th').forEach(th => {
-                headers.push(th.textContent.trim().replace(/[↑↓]/g, ''));
+                headers.push(th.textContent.trim().replace(/[\\u2191\\u2193]/g, ''));
             });
             rows.push(headers);
 
-            // Get all visible rows (respects filtering)
             table.querySelectorAll('tbody tr').forEach(tr => {
                 if (tr.style.display !== 'none') {
                     const row = [];
                     tr.querySelectorAll('td').forEach(td => {
-                        // Clean up cell content
-                        let text = td.textContent.trim();
-                        // Remove extra whitespace
-                        text = text.replace(/\\s+/g, ' ');
-                        // Escape quotes and wrap in quotes if contains comma
+                        let text = td.textContent.trim().replace(/\\s+/g, ' ');
                         if (text.includes(',') || text.includes('"') || text.includes('\\n')) {
                             text = '"' + text.replace(/"/g, '""') + '"';
                         }
@@ -1327,33 +1653,13 @@ class HTMLGenerator:
                 }
             });
 
-            // Create CSV content
-            const csvContent = rows.map(row => row.join(',')).join('\\n');
-
-            // Create blob and download
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const csv = rows.map(r => r.join(',')).join('\\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-
-            // Generate filename with current date
-            const date = new Date().toISOString().split('T')[0];
-            link.setAttribute('href', url);
-            link.setAttribute('download', `dashboard_export_${date}.csv`);
+            link.href = URL.createObjectURL(blob);
+            link.download = `dashboard_export_${new Date().toISOString().split('T')[0]}.csv`;
             link.style.visibility = 'hidden';
-
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-
-            console.log(`Exported ${rows.length - 1} rows to CSV`);
-        }
-
-
-        // Auto-refresh when update is in progress
-        document.addEventListener('DOMContentLoaded', function() {
-            const progressSection = document.getElementById('progressSection');
-            if (progressSection && progressSection.style.display !== 'none') {
-                // If progress is visible, start polling
-                setTimeout(startProgressPolling, 3000);
-            }
-        });"""
+        }"""

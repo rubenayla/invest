@@ -1,4 +1,7 @@
-# Growth-Adjusted DCF
+# Growth-Adjusted DCF (Retired)
+
+!!! warning "Retired Model"
+    Growth DCF has been removed from the dashboard as of March 2026 (85% failure rate). This page is kept for reference. See [active models](index.md).
 
 DCF variant that separates growth CapEx from maintenance CapEx, solving traditional DCF's bias against reinvestment.
 

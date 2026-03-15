@@ -439,7 +439,7 @@ Live performance typically 60-70% of backtest
 
 ## Related Models
 
-- **[GBM Full](gbm-full.md)**: Standard fixed-horizon predictions for long-term ranking
-- **[GBM Lite](gbm-lite.md)**: Simplified version with minimal data requirements
-- **[Simple Ratios](simple-ratios.md)**: Quick valuation screen before tactical trades
-- **[Multi-Stage DCF](multi-stage-dcf.md)**: Validate peak potential with fundamental analysis
+- **[AutoResearch](autoresearch.md)**: 5-model ensemble also predicting peak returns (2-year horizon), using a different feature set and more diverse algorithms
+- **[GBM 1y/3y](gbm-full.md)**: Standard fixed-horizon predictions for long-term ranking
+- **[DCF](dcf.md)**: Validate peak potential with fundamental analysis
+- **[RIM](rim.md)**: Residual income valuation for financials

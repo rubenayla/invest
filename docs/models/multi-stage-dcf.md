@@ -1,4 +1,7 @@
-# Multi-Stage DCF
+# Multi-Stage DCF (Retired)
+
+!!! warning "Retired Model"
+    Multi-Stage DCF has been removed from the dashboard as of March 2026 (85% failure rate). This page is kept for reference. See [active models](index.md).
 
 DCF model that uses different growth rates for different time periods, capturing realistic corporate lifecycle transitions.
 

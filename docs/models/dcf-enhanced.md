@@ -1,4 +1,7 @@
-# Enhanced DCF with Dividend Policy
+# Enhanced DCF with Dividend Policy (Retired)
+
+!!! warning "Retired Model"
+    Enhanced DCF has been removed from the dashboard as of March 2026. This page is kept for reference. See [active models](index.md).
 
 DCF model that explicitly accounts for dividend policy and payout ratios in cash flow projections.
 

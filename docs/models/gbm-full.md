@@ -1,28 +1,28 @@
-# GBM Full Models
+# GBM Models (1y / 3y)
 
-High-performance gradient boosting models with maximum predictive power using 464 engineered features.
+Gradient boosting models predicting fixed-horizon stock returns using 464 engineered features. Displayed on the dashboard as **GBM 1y** and **GBM 3y**.
 
 ## Overview
 
-GBM Full models represent the most sophisticated ranking approach, using comprehensive feature engineering and 8+ quarters of historical data to achieve the highest predictive accuracy.
+The GBM models are the core fixed-horizon ranking models, using comprehensive feature engineering and 8+ quarters of historical data to predict 1-year and 3-year forward returns. They use LightGBM with cross-sectional normalization to learn relative stock attractiveness.
 
 ## Key Features
 
-- **Maximum Accuracy**: Rank IC 0.59-0.61 (best in class)
+- **Strong Accuracy**: Rank IC 0.59-0.61
 - **Rich Feature Set**: 464 features from 21 base metrics
 - **Data Requirements**: 8+ quarters of history
-- **Coverage**: 589/598 stocks (~98%)
+- **Coverage**: ~52% of stocks (those with sufficient history)
 
 ## Available Variants
 
-### GBM Full 1y
+### GBM 1y
 **Predicts 1-year forward returns**
 - Rank IC: 0.59
 - Decile Spread: 75%
 - Top decile average return: 63%
 - Bottom decile average return: -12%
 
-### GBM Full 3y
+### GBM 3y
 **Predicts 3-year forward returns**
 - Rank IC: 0.61
 - Decile Spread: Not specified (but strong)
@@ -96,17 +96,17 @@ params = {
 - No data leakage across folds
 - Preserves temporal ordering
 
-## Performance vs GBM Lite
+## Performance
 
-| Metric | GBM Full 1y | GBM Lite 1y | Advantage |
-|--------|-------------|-------------|-----------|
-| Rank IC | 0.59 | 0.50 | Full +18% |
-| Decile Spread | 75% | 66% | Full +14% |
-| Features | 464 | 59 | Lite -87% |
-| Min Quarters | 8 | 2 | Lite -75% |
-| Coverage | 589 | 589 | Tie |
+| Metric | GBM 1y | GBM 3y |
+|--------|--------|--------|
+| Rank IC | 0.59 | 0.61 |
+| Decile Spread | 75% | Strong |
+| Features | 464 | 464 |
+| Min Quarters | 8 | 8 |
 
-**Insight**: Full model's 464 features provide 15-18% better predictions but require 4x more historical data. Since both cover same stocks, use Full when available.
+!!! note "GBM Lite (retired)"
+    A simplified 59-feature variant (GBM Lite) was previously available with only 2-quarter data requirements. It was removed from the dashboard for producing overoptimistic predictions. See [archived docs](gbm-lite.md).
 
 ## When to Use
 
@@ -116,15 +116,10 @@ params = {
 - **Established companies**: 8+ quarters available
 - **Quantitative strategies**: Systematic portfolio construction
 
-### Consider GBM Lite Instead
-- **Newer listings**: <8 quarters of history
-- **Speed priority**: Faster training/inference
-- **Good enough**: 85% of performance, simpler
-
 ### Consider Other Models
 - **Absolute valuation**: Use DCF/RIM instead of GBM
-- **Quick screen**: Simple Ratios faster
-- **Market timing**: Opportunistic GBM better
+- **Peak return timing**: Use [GBM Opportunistic](gbm-opportunistic.md) or [AutoResearch](autoresearch.md)
+- **Broader coverage**: AutoResearch covers more stocks with fewer data requirements
 
 ## Feature Importance
 
@@ -210,7 +205,7 @@ GBM learns **relative** attractiveness:
 
 ## Related Models
 
-- **[GBM Lite](gbm-lite.md)**: Simplified version with 59 features, 2-quarter minimum
-- **[GBM Opportunistic](gbm-opportunistic.md)**: Peak return prediction variant
+- **[AutoResearch](autoresearch.md)**: 5-model ensemble for peak 2-year return prediction
+- **[GBM Opportunistic](gbm-opportunistic.md)**: Peak return prediction variant (1y and 3y)
 - **[DCF](dcf.md)**: Absolute valuation alternative
-- **[Simple Ratios](simple-ratios.md)**: Quick screening complement
+- **[RIM](rim.md)**: Residual income valuation for financials

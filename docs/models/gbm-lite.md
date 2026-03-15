@@ -1,4 +1,7 @@
-# GBM Lite Models
+# GBM Lite Models (Retired)
+
+!!! warning "Retired Model"
+    GBM Lite has been removed from the dashboard as of March 2026 due to overoptimistic predictions. This page is kept for reference. See [active models](index.md).
 
 Ultra-lightweight gradient boosting models optimized for maximum stock coverage with minimal data requirements.
 

@@ -59,17 +59,17 @@ nav:
     - Troubleshooting: user-guide/troubleshooting.md
   - Valuation Models:
     - Overview: models/index.md
-    - Machine Learning:
-      - GBM Full: models/gbm-full.md
-      - GBM Lite: models/gbm-lite.md
+    - Active Models:
+      - AutoResearch: models/autoresearch.md
+      - GBM 1y / 3y: models/gbm-full.md
       - GBM Opportunistic: models/gbm-opportunistic.md
-    - DCF Variants:
-      - Standard DCF: models/dcf.md
+      - DCF: models/dcf.md
+      - Residual Income (RIM): models/rim.md
+    - Retired Models:
+      - GBM Lite: models/gbm-lite.md
       - Multi-Stage DCF: models/multi-stage-dcf.md
       - Growth DCF: models/growth-dcf.md
       - Enhanced DCF: models/dcf-enhanced.md
-    - Other Models:
-      - Residual Income (RIM): models/rim.md
       - Simple Ratios: models/simple-ratios.md
   - Developer Guide:
     - Architecture: developer-guide/architecture.md
