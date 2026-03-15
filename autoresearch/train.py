@@ -181,7 +181,7 @@ def train_and_predict(train_df, test_df, feature_cols):
     r1 = rankdata(lgb_preds)
     r2 = rankdata(cb_preds)
     r3 = rankdata(et_preds)
-    predictions = 0.30 * r1 + 0.40 * r2 + 0.30 * r3
+    predictions = (r1 + r2 + r3) / 3.0
 
     return predictions
 
