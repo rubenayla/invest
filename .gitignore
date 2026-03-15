@@ -158,3 +158,5 @@ data/sec_edgar/raw/
 tmp.md
 backups/
 .agents/scratch.md
+autoresearch/catboost_info/
+autoresearch/run.log
