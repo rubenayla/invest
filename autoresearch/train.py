@@ -176,12 +176,27 @@ def train_and_predict(train_df, test_df, feature_cols):
     et_model.fit(X_tr_filled.values, y_train_log)
     et_preds = et_model.predict(X_te_filled.values)
 
-    # Rank-based blend of all three
+    # --- HistGradientBoosting (sklearn) ---
+    from sklearn.ensemble import HistGradientBoostingRegressor
+    hgb_model = HistGradientBoostingRegressor(
+        max_iter=500,
+        learning_rate=0.03,
+        max_depth=8,
+        min_samples_leaf=30,
+        l2_regularization=1.0,
+        random_state=42,
+        loss='absolute_error',
+    )
+    hgb_model.fit(X_tr_filled.values, y_train_log)
+    hgb_preds = hgb_model.predict(X_te_filled.values)
+
+    # Rank-based blend of all four
     from scipy.stats import rankdata
     r1 = rankdata(lgb_preds)
     r2 = rankdata(cb_preds)
     r3 = rankdata(et_preds)
-    predictions = (r1 + r2 + r3) / 3.0
+    r4 = rankdata(hgb_preds)
+    predictions = (r1 + r2 + r3 + r4) / 4.0
 
     return predictions
 
