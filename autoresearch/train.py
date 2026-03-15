@@ -96,6 +96,33 @@ def engineer_features(df, feature_cols):
     if 'dist_52w_high' in X.columns and 'vol_60d' in X.columns:
         X['dist_high_vol_ratio'] = X['dist_52w_high'] / (X['vol_60d'] + 1e-6)
 
+    # Macro interaction features
+    if 'vix' in X.columns:
+        vix = X['vix'].values.astype(float)
+        # High VIX = high fear = potential opportunity
+        if 'dist_52w_high' in X.columns:
+            X['vix_x_dist_high'] = vix * X['dist_52w_high'].values
+        if 'ret_6m' in X.columns:
+            X['vix_x_ret6m'] = vix * X['ret_6m'].values
+        if 'pe_ratio' in X.columns:
+            X['vix_x_pe'] = vix * X['pe_ratio'].values
+
+    # Value-momentum interaction
+    if 'valuation_rank_avg' in X.columns and 'momentum_composite' in X.columns:
+        X['value_x_momentum'] = X['valuation_rank_avg'] * X['momentum_composite']
+
+    # Size-value interaction
+    if 'log_market_cap' in X.columns and 'valuation_rank_avg' in X.columns:
+        X['size_x_value'] = X['log_market_cap'] * X['valuation_rank_avg']
+
+    # Earnings yield rank (cross-sectional)
+    if 'earnings_yield' in X.columns:
+        X['earnings_yield_rank'] = X['earnings_yield'].rank(pct=True)
+
+    # FCF yield rank
+    if 'fcf_yield' in X.columns:
+        X['fcf_yield_rank'] = X['fcf_yield'].rank(pct=True)
+
     return X
 
 
@@ -110,9 +137,10 @@ def train_and_predict(train_df, test_df, feature_cols):
     X_test = engineer_features(test_df, feature_cols)
     y_train = train_df['peak_return_2y'].values
 
-    # Winsorize extreme targets (cap at 95th percentile)
-    cap = np.percentile(y_train, 95)
-    y_train_w = np.minimum(y_train, cap)
+    # Winsorize extreme targets (cap at 5th and 95th percentile)
+    cap_hi = np.percentile(y_train, 95)
+    cap_lo = np.percentile(y_train, 5)
+    y_train_w = np.clip(y_train, cap_lo, cap_hi)
 
     # Log-transform target
     y_train_log = np.log1p(y_train_w)
