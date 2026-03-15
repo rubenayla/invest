@@ -179,19 +179,19 @@ def train_and_predict(train_df, test_df, feature_cols):
     knn_model2.fit(X_tr_knn, y_train_log)
     knn2_preds = knn_model2.predict(X_te_knn)
 
-    # --- HistGradientBoosting (sklearn) ---
-    from sklearn.ensemble import HistGradientBoostingRegressor
-    hgb_model = HistGradientBoostingRegressor(
-        max_iter=500,
-        learning_rate=0.03,
-        max_depth=8,
-        min_samples_leaf=30,
-        l2_regularization=1.0,
+    # --- BaggingRegressor (for diversity from boosters) ---
+    from sklearn.ensemble import BaggingRegressor
+    from sklearn.tree import DecisionTreeRegressor
+    bag_model = BaggingRegressor(
+        estimator=DecisionTreeRegressor(max_depth=12, min_samples_leaf=20),
+        n_estimators=500,
+        max_samples=0.8,
+        max_features=0.7,
         random_state=42,
-        loss='absolute_error',
+        n_jobs=-1,
     )
-    hgb_model.fit(X_tr_filled.values, y_train_log)
-    hgb_preds = hgb_model.predict(X_te_filled.values)
+    bag_model.fit(X_tr_filled.values, y_train_log)
+    hgb_preds = bag_model.predict(X_te_filled.values)
 
     # Rank-based blend of five (LGB + CB + KNN15 + KNN100 + HGB)
     from scipy.stats import rankdata
