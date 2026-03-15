@@ -175,7 +175,7 @@ def train_and_predict(train_df, test_df, feature_cols):
     knn_preds = knn_model.predict(X_te_knn)
 
     # --- KNN 2 (broader neighborhood, k=100) ---
-    knn_model2 = KNeighborsRegressor(n_neighbors=100, weights='distance', n_jobs=-1)
+    knn_model2 = KNeighborsRegressor(n_neighbors=100, weights='uniform', n_jobs=-1)
     knn_model2.fit(X_tr_knn, y_train_log)
     knn2_preds = knn_model2.predict(X_te_knn)
 
