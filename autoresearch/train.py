@@ -160,9 +160,28 @@ def train_and_predict(train_df, test_df, feature_cols):
     cb_model.fit(X_train.values, y_train_log)
     cb_preds = cb_model.predict(X_test.values)
 
-    # Blend (weight CatBoost higher since it was tuned better)
-    predictions_log = 0.4 * lgb_preds + 0.6 * cb_preds
-    predictions = np.expm1(predictions_log)
+    # --- Extra Trees (bagging model for diversity) ---
+    from sklearn.ensemble import ExtraTreesRegressor
+    et_model = ExtraTreesRegressor(
+        n_estimators=500,
+        max_depth=15,
+        min_samples_leaf=20,
+        max_features=0.7,
+        random_state=42,
+        n_jobs=-1,
+    )
+    # Fill NaN for sklearn
+    X_tr_filled = X_train.fillna(-999)
+    X_te_filled = X_test.fillna(-999)
+    et_model.fit(X_tr_filled.values, y_train_log)
+    et_preds = et_model.predict(X_te_filled.values)
+
+    # Rank-based blend of all three
+    from scipy.stats import rankdata
+    r1 = rankdata(lgb_preds)
+    r2 = rankdata(cb_preds)
+    r3 = rankdata(et_preds)
+    predictions = 0.35 * r1 + 0.45 * r2 + 0.20 * r3
 
     return predictions
 
