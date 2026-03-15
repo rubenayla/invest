@@ -110,8 +110,12 @@ def train_and_predict(train_df, test_df, feature_cols):
     X_test = engineer_features(test_df, feature_cols)
     y_train = train_df['peak_return_2y'].values
 
+    # Winsorize extreme targets (cap at 95th percentile)
+    cap = np.percentile(y_train, 95)
+    y_train_w = np.minimum(y_train, cap)
+
     # Log-transform target
-    y_train_log = np.log1p(y_train)
+    y_train_log = np.log1p(y_train_w)
 
     # --- LightGBM ---
     lgb_params = {
