@@ -47,6 +47,57 @@ def engineer_features(df, feature_cols):
         bv = pd.to_numeric(X['book_value'], errors='coerce')
         X['earnings_yield'] = eps / (bv.abs() + 1e-6)
 
+    # Debt-related ratios
+    if 'total_debt' in X.columns and 'total_cash' in X.columns:
+        debt = pd.to_numeric(X['total_debt'], errors='coerce')
+        cash = pd.to_numeric(X['total_cash'], errors='coerce')
+        X['net_debt'] = debt - cash
+        if 'market_cap' in X.columns:
+            mc = pd.to_numeric(X['market_cap'], errors='coerce')
+            X['net_debt_to_mcap'] = (debt - cash) / (mc + 1e9)
+
+    # Momentum composite
+    mom_cols = ['ret_1m', 'ret_3m', 'ret_6m', 'ret_1y']
+    existing_mom = [c for c in mom_cols if c in X.columns]
+    if len(existing_mom) >= 2:
+        X['momentum_composite'] = X[existing_mom].mean(axis=1)
+        # Short-term vs long-term momentum (reversal signal)
+        if 'ret_1m' in X.columns and 'ret_1y' in X.columns:
+            X['momentum_reversal'] = X['ret_1m'] - X['ret_1y']
+
+    # Valuation composite (rank-based)
+    val_cols = ['pe_ratio', 'pb_ratio', 'ps_ratio', 'enterprise_to_ebitda']
+    existing_val = [c for c in val_cols if c in X.columns]
+    if len(existing_val) >= 2:
+        # Lower valuation = higher rank (cheaper)
+        for vc in existing_val:
+            X[f'{vc}_rank'] = X[vc].rank(pct=True)
+        rank_cols = [f'{vc}_rank' for vc in existing_val]
+        X['valuation_rank_avg'] = X[rank_cols].mean(axis=1)
+
+    # Quality composite
+    quality_cols = ['return_on_equity', 'return_on_assets', 'profit_margins', 'operating_margins']
+    existing_q = [c for c in quality_cols if c in X.columns]
+    if len(existing_q) >= 2:
+        for qc in existing_q:
+            X[f'{qc}_rank'] = X[qc].rank(pct=True)
+        qrank_cols = [f'{qc}_rank' for qc in existing_q]
+        X['quality_rank_avg'] = X[qrank_cols].mean(axis=1)
+
+    # Growth features
+    if 'revenue_growth' in X.columns and 'earnings_growth' in X.columns:
+        rg = pd.to_numeric(X['revenue_growth'], errors='coerce')
+        eg = pd.to_numeric(X['earnings_growth'], errors='coerce')
+        X['growth_composite'] = (rg + eg) / 2
+
+    # Volatility-adjusted momentum
+    if 'ret_6m' in X.columns and 'vol_60d' in X.columns:
+        X['sharpe_6m'] = X['ret_6m'] / (X['vol_60d'] + 1e-6)
+
+    # Distance from 52w high as pct (already there but interaction)
+    if 'dist_52w_high' in X.columns and 'vol_60d' in X.columns:
+        X['dist_high_vol_ratio'] = X['dist_52w_high'] / (X['vol_60d'] + 1e-6)
+
     return X
 
 
@@ -61,16 +112,19 @@ def train_and_predict(train_df, test_df, feature_cols):
     X_test = engineer_features(test_df, feature_cols)
     y_train = train_df['peak_return_2y'].values
 
-    # LightGBM baseline
+    # Log-transform target (right-skewed)
+    y_train_log = np.log1p(y_train)
+
+    # LightGBM with tuned params
     params = {
         'objective': 'regression',
         'metric': 'mae',
-        'learning_rate': 0.05,
-        'num_leaves': 63,
-        'max_depth': 8,
-        'min_child_samples': 50,
+        'learning_rate': 0.03,
+        'num_leaves': 127,
+        'max_depth': 10,
+        'min_child_samples': 30,
         'subsample': 0.8,
-        'colsample_bytree': 0.8,
+        'colsample_bytree': 0.7,
         'reg_alpha': 0.1,
         'reg_lambda': 1.0,
         'verbose': -1,
@@ -78,9 +132,12 @@ def train_and_predict(train_df, test_df, feature_cols):
         'seed': 42,
     }
 
-    train_data = lgb.Dataset(X_train, label=y_train)
-    model = lgb.train(params, train_data, num_boost_round=500)
-    predictions = model.predict(X_test)
+    train_data = lgb.Dataset(X_train, label=y_train_log)
+    model = lgb.train(params, train_data, num_boost_round=1000)
+    predictions_log = model.predict(X_test)
+
+    # Inverse transform (not needed for ranking, but keeps scale sensible)
+    predictions = np.expm1(predictions_log)
 
     return predictions
 
