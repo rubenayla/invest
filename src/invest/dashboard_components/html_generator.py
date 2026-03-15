@@ -215,7 +215,6 @@ class HTMLGenerator:
                         <th title="AutoResearch - 5-model ensemble peak 2y return prediction (Spearman 0.54)">AutoRes</th>
                         <!-- NN column disabled: near-zero test correlation (2026-02-21) -->
                         <th title="Signals: insider buys/sells, activist stakes, institutional holders">Signals</th>
-                        <th title="Consensus valuation - Average of all successful model results">Consensus</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -304,8 +303,6 @@ class HTMLGenerator:
             ticker,
         )
 
-        # Calculate consensus
-        consensus_html = self._format_consensus_cell(valuations, current_price)
 
         return f'''
         <tr class="stock-row {status}">
@@ -326,7 +323,6 @@ class HTMLGenerator:
             <td>{gbm_opp_3y_html}</td>
             <td>{autoresearch_html}</td>
             <td>{signals_html}</td>
-            <td>{consensus_html}</td>
         </tr>'''
 
     def _format_status_cell(self, status: str, message: str) -> str:
