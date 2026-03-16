@@ -51,6 +51,7 @@ class DCFModel(ValuationModel):
             # Check if we have basic financial data
             cashflow = data.get('cashflow')
             if cashflow is None or cashflow.empty:
+                self._last_suitability_reason = 'Missing cash flow data'
                 return False
 
             # Check for positive free cash flow (DCF is not meaningful with negative FCF)

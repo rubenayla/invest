@@ -87,6 +87,11 @@ class ValuationModel(ABC):
         """
         self.name = name
         self.logger = logging.getLogger(f'{__name__}.{name}')
+        self._last_suitability_reason = ''
+
+    def get_suitability_reason(self) -> str:
+        """Return the reason why is_suitable() last returned False."""
+        return self._last_suitability_reason
 
     @abstractmethod
     def is_suitable(self, ticker: str, data: Dict[str, Any]) -> bool:

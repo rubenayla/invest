@@ -27,18 +27,22 @@ class RIMModel(ValuationModel):
             income = data.get('income')
 
             if balance_sheet is None or balance_sheet.empty:
+                self._last_suitability_reason = 'Missing balance sheet data'
                 return False
             if income is None or income.empty:
+                self._last_suitability_reason = 'Missing income statement data'
                 return False
 
             # Check for positive book equity
             book_equity = self._get_book_equity(data)
             if book_equity is None or book_equity <= 0:
+                self._last_suitability_reason = 'Negative or missing book equity'
                 return False
 
             # Check for reasonable ROE
             roe = self._calculate_roe(data)
             if roe is None or roe <= 0 or roe > 1.0:  # ROE > 100% is unrealistic
+                self._last_suitability_reason = f'ROE unsuitable ({roe:.1%})' if roe is not None else 'Missing ROE'
                 return False
 
             return True
