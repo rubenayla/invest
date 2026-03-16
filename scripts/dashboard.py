@@ -128,12 +128,27 @@ def load_stocks_from_database() -> dict:
                             'timestamp': ts
                         }
         else:
-            # Failed valuation
-            stocks[ticker]['valuations'][model_name] = {
-                'suitable': False,
-                'error': row['error_message'],
-                'reason': row['failure_reason']
-            }
+            # For LLM analysis, load full data even when not "suitable" (WATCH/PASS still have valid analysis)
+            if model_name == 'llm_deep_analysis' and row['fair_value'] and row['details_json']:
+                valuation = {
+                    'suitable': False,
+                    'fair_value': row['fair_value'],
+                    'current_price': row['current_price'],
+                    'upside': row['upside_pct'],
+                    'confidence': row['confidence'],
+                }
+                try:
+                    valuation['details'] = json.loads(row['details_json'])
+                except json.JSONDecodeError:
+                    valuation['details'] = {}
+                stocks[ticker]['valuations'][model_name] = valuation
+            else:
+                # Failed valuation
+                stocks[ticker]['valuations'][model_name] = {
+                    'suitable': False,
+                    'error': row['error_message'],
+                    'reason': row['failure_reason']
+                }
 
     # Override displayed current price with the latest valuation price when available
     for ticker, price_data in latest_price_by_ticker.items():

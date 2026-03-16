@@ -28,7 +28,7 @@ from pathlib import Path
 import uvicorn
 from starlette.applications import Starlette
 from starlette.requests import Request
-from starlette.responses import HTMLResponse, JSONResponse
+from starlette.responses import HTMLResponse, JSONResponse, PlainTextResponse
 from starlette.routing import Route
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -496,6 +496,55 @@ async def api_alarm_triggered(request: Request) -> JSONResponse:
     return JSONResponse({"ok": True, "triggered": [dict(r) for r in rows]})
 
 
+# ── Notes (company .md files) ────────────────────────────────────────────
+
+NOTES_DIR = REPO_ROOT / "notes" / "companies"
+
+
+async def api_notes(request: Request):
+    """Serve a company analysis .md file as rendered HTML."""
+    import re
+
+    ticker = request.path_params["ticker"].upper()
+    # Sanitize: only allow alphanumeric, dots, hyphens (for tickers like BTC-USD, 4578.T)
+    if not re.match(r"^[A-Z0-9._-]+$", ticker):
+        return PlainTextResponse("Invalid ticker", status_code=400)
+
+    md_path = NOTES_DIR / f"{ticker}.md"
+    if not md_path.is_file():
+        return HTMLResponse(
+            f"<html><body style='background:#0d1117;color:#e0e6ed;font-family:system-ui;padding:40px;'>"
+            f"<h2>No analysis notes for {ticker}</h2>"
+            f"<p style='color:#738091;'>Create <code>notes/companies/{ticker}.md</code> to add notes.</p>"
+            f"</body></html>",
+            status_code=404,
+        )
+
+    content = md_path.read_text(encoding="utf-8")
+    # Simple markdown-to-HTML: use Python markdown if available, else serve raw
+    try:
+        import markdown
+
+        body = markdown.markdown(content, extensions=["tables", "fenced_code"])
+    except ImportError:
+        body = f"<pre style='white-space:pre-wrap;'>{content}</pre>"
+
+    html = (
+        f"<html><head><title>{ticker} - Analysis</title>"
+        f"<style>"
+        f"body {{ background:#0d1117; color:#e0e6ed; font-family:system-ui,-apple-system,sans-serif; "
+        f"padding:40px 60px; max-width:900px; margin:0 auto; line-height:1.6; }}"
+        f"h1,h2,h3 {{ color:#58a6ff; }} a {{ color:#58a6ff; }}"
+        f"code {{ background:#161b22; padding:2px 6px; border-radius:3px; font-size:14px; }}"
+        f"pre {{ background:#161b22; padding:16px; border-radius:6px; overflow-x:auto; }}"
+        f"table {{ border-collapse:collapse; width:100%; }} "
+        f"th,td {{ border:1px solid #30363d; padding:8px 12px; text-align:left; }}"
+        f"th {{ background:#161b22; }}"
+        f"</style></head><body>{body}</body></html>"
+    )
+    return HTMLResponse(html)
+
+
 # ── Helpers ──────────────────────────────────────────────────────────────
 
 def _now_iso() -> str:
@@ -528,6 +577,7 @@ app = Starlette(
         Route("/api/alarms", api_alarm_list),
         Route("/api/alarms/triggered", api_alarm_triggered),
         Route("/api/alarms/{alarm_id:int}", api_alarm_delete, methods=["DELETE"]),
+        Route("/api/notes/{ticker}", api_notes),
     ],
 )
 

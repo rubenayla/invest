@@ -382,6 +382,7 @@ class HTMLGenerator:
                         <th title="Current market price per share">Price</th>
                         <th title="Analysis completion status">Status</th>
                         <th title="AutoResearch - 5-model ensemble peak 2y return prediction (Spearman 0.54)">AutoRes</th>
+                        <th title="LLM Deep Analysis - AI research verdict with news, variant perception, and scenario analysis">LLM</th>
                         <th title="Signals: insider buys/sells, activist stakes, institutional holders">Signals</th>
                         <th title="Opportunistic GBM 1-year - Peak return prediction within 2 years">GBM Opp 1y</th>
                         <th title="Opportunistic GBM 3-year - Peak return prediction within 3 years">GBM Opp 3y</th>
@@ -415,6 +416,7 @@ class HTMLGenerator:
             "gbm_3y": "GBM3y",
             "dcf": "DCF",
             "rim": "RIM",
+            "llm_deep_analysis": "LLM",
         }
 
         for model_key, result in valuations.items():
@@ -450,6 +452,7 @@ class HTMLGenerator:
         gbm_3y_html = self._format_valuation_cell(valuations.get("gbm_3y", {}), current_price, show_confidence=True)
         dcf_html = self._format_valuation_cell(valuations.get("dcf", {}), current_price)
         rim_html = self._format_valuation_cell(valuations.get("rim", {}), current_price)
+        llm_html = self._format_llm_cell(valuations.get("llm_deep_analysis", {}), current_price, ticker)
 
         # Format combined signals column
         signals_html = self._format_signals_cell(
@@ -463,10 +466,11 @@ class HTMLGenerator:
 
         return f'''
         <tr class="stock-row {new_status}">
-            <td><a href="https://finance.yahoo.com/quote/{ticker}" target="_blank" rel="noopener" title="{company_name}" class="ticker-link">{ticker}</a> <span class="alarm-bell" data-ticker="{ticker}" onclick="openAlarmModal('{ticker}', {current_price or 0})" title="Set price alarm">&#128276;</span></td>
+            <td class="ticker-cell"><span class="ticker-trigger" data-ticker="{ticker}" data-price="{current_price or 0}" onclick="toggleKebab(event, this)" title="{company_name}">{ticker} &#8942;</span><div class="kebab-menu"><div class="kebab-header">{company_name}</div><a class="kebab-item" href="/api/notes/{ticker}" target="_blank">&#128196; Analysis notes</a><div class="kebab-item" onclick="openAlarmModal('{ticker}', {current_price or 0}); closeAllKebabs();">&#128276; Price alarm</div><a class="kebab-item" href="https://finance.yahoo.com/quote/{ticker}" target="_blank" rel="noopener">&#128200; Yahoo Finance</a></div></td>
             <td>{self._safe_format(current_price, prefix="$")}</td>
             <td>{status_html}</td>
             <td>{autoresearch_html}</td>
+            <td>{llm_html}</td>
             <td>{signals_html}</td>
             <td>{gbm_opp_1y_html}</td>
             <td>{gbm_opp_3y_html}</td>
@@ -566,6 +570,54 @@ class HTMLGenerator:
             {ratio_str}
             {confidence_badge}
         </div>'''
+
+    def _format_llm_cell(self, valuation: Dict, current_price: float = None, ticker: str = "") -> str:
+        """Format LLM deep analysis cell showing verdict, EV%, and entry price. Clickable to open analysis notes."""
+        if not valuation or not valuation.get("fair_value"):
+            return '<span title="No LLM analysis available">-</span>'
+
+        details = valuation.get("details", {})
+        verdict = details.get("verdict", "?")
+        ev_pct = details.get("expected_value_pct", 0)
+        entry_price = details.get("entry_price", "?")
+        quality = details.get("quality_score", "?")
+        conviction = details.get("conviction", "?")
+        variant = details.get("variant_perception", "")
+        scenarios = details.get("scenarios", {})
+
+        # Build tooltip
+        tooltip_parts = [f"Conviction: {conviction}"]
+        tooltip_parts.append(f"Quality: {quality}/25")
+        tooltip_parts.append(f"Entry: ${entry_price}")
+        if variant:
+            tooltip_parts.append(f"Edge: {variant[:80]}")
+        for name, s in scenarios.items():
+            if isinstance(s, dict):
+                tooltip_parts.append(f"{name.title()}: {s.get('prob', 0):.0%} → {s.get('return_pct', 0):+.0f}%")
+        tooltip = " | ".join(tooltip_parts)
+
+        # Verdict badge color
+        if verdict == "BUY":
+            badge_bg = "rgba(50,164,103,0.2)"
+            badge_color = "#72ca9b"
+        elif verdict == "PASS":
+            badge_bg = "rgba(205,66,70,0.15)"
+            badge_color = "#e76a6e"
+        else:  # WATCH
+            badge_bg = "rgba(209,152,11,0.15)"
+            badge_color = "#f0b726"
+
+        # EV% color
+        ev_class = "margin-excellent" if ev_pct > 15 else "margin-good" if ev_pct > 5 else "margin-neutral" if ev_pct > -5 else "margin-poor"
+
+        return f'''
+        <a href="/api/notes/{ticker}" target="_blank" rel="noopener" style="text-decoration:none; display:block;" title="{html.escape(tooltip)}">
+        <div class="valuation-cell" style="cursor:pointer;">
+            <div style="background:{badge_bg}; color:{badge_color}; font-weight:700; font-size:13px; padding:2px 8px; border-radius:3px; display:inline-block; font-family:var(--font-mono);">{verdict}</div>
+            <div class="margin {ev_class}" style="margin-top:3px;">{ev_pct:+.0f}%</div>
+            <div class="ratio">entry ${entry_price}</div>
+        </div>
+        </a>'''
 
     def _format_nn_cell(self, valuation: Dict, current_price: float = None) -> str:
         """Format neural network valuation cell with confidence indicator."""
@@ -1368,6 +1420,16 @@ class HTMLGenerator:
             font-weight: 700;
         }
         .ticker-link:hover { text-decoration: underline; }
+        .ticker-trigger {
+            color: var(--accent-bright);
+            font-weight: 700;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 4px;
+            transition: background 0.12s;
+            user-select: none;
+        }
+        .ticker-trigger:hover { background: var(--bg-hover, rgba(76,144,240,0.12)); }
 
         .stock-row { transition: background 0.1s; }
         .stock-row:nth-child(even) { background: var(--bg-row-alt); }
@@ -1432,7 +1494,33 @@ class HTMLGenerator:
             .health-row { flex-direction: column; align-items: flex-start; }
         }
 
-        /* ── Alarm Bell ── */
+        /* ── Kebab Menu ── */
+        .ticker-cell { position: relative; white-space: nowrap; }
+        .ticker-trigger.has-alarm { text-shadow: 0 0 8px var(--accent-bright); }
+        .kebab-header {
+            padding: 8px 14px 6px; font-size: 12px; color: var(--text-muted, #738091);
+            border-bottom: 1px solid var(--border-subtle, #2a3040);
+            margin-bottom: 2px; font-weight: 400;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            max-width: 260px;
+        }
+        .kebab-menu {
+            display: none; position: absolute; left: 0;
+            background: var(--bg-panel, #1a1f2e); border: 1px solid var(--border, #2a3040);
+            border-radius: 6px; min-width: 180px; z-index: 500;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5); padding: 4px 0;
+        }
+        .kebab-menu.open { display: block; }
+        .kebab-item {
+            display: block; padding: 8px 14px; color: var(--text-primary, #e0e6ed);
+            text-decoration: none; font-size: 13px; cursor: pointer;
+            font-family: var(--font-main, system-ui); font-weight: 400;
+            white-space: nowrap; border: none; background: none; width: 100%;
+            text-align: left;
+        }
+        .kebab-item:hover { background: var(--bg-hover, rgba(76,144,240,0.12)); }
+
+        /* ── Alarm Bell (kept for modal) ── */
         .alarm-bell {
             cursor: pointer; font-size: 13px; opacity: 0.25;
             transition: opacity 0.15s; margin-left: 3px;
@@ -1788,6 +1876,25 @@ class HTMLGenerator:
             document.body.removeChild(link);
         }
 
+        // ── Kebab Menu ──
+        function closeAllKebabs() {
+            document.querySelectorAll('.kebab-menu.open').forEach(m => m.classList.remove('open'));
+        }
+        function toggleKebab(event, trigger) {
+            event.stopPropagation();
+            const menu = trigger.parentElement.querySelector('.kebab-menu');
+            const wasOpen = menu.classList.contains('open');
+            closeAllKebabs();
+            if (!wasOpen) {
+                const rect = trigger.getBoundingClientRect();
+                const td = trigger.parentElement;
+                const tdRect = td.getBoundingClientRect();
+                menu.style.top = (rect.bottom - tdRect.top) + 'px';
+                menu.classList.add('open');
+            }
+        }
+        document.addEventListener('click', closeAllKebabs);
+
         // ── Price Alarms ──
         let _lastTriggeredCheck = new Date().toISOString();
 
@@ -1897,7 +2004,7 @@ class HTMLGenerator:
                 toggle.style.display = active > 0 || (data.alarms && data.alarms.length > 0) ? 'flex' : 'none';
                 // Highlight bell icons for tickers with active alarms
                 const activeTickers = new Set((data.alarms || []).filter(a => a.active).map(a => a.ticker));
-                document.querySelectorAll('.alarm-bell').forEach(el => {
+                document.querySelectorAll('.ticker-trigger').forEach(el => {
                     el.classList.toggle('has-alarm', activeTickers.has(el.dataset.ticker));
                 });
             })

@@ -198,8 +198,6 @@ class HistoricalSnapshotFetcher:
             'priceToBook': 'pb_ratio',
             'priceToSalesTrailing12Months': 'ps_ratio',
             'pegRatio': 'peg_ratio',
-            'priceToBook': 'price_to_book',
-            'priceToSalesTrailing12Months': 'price_to_sales',
             'enterpriseToRevenue': 'enterprise_to_revenue',
             'enterpriseToEbitda': 'enterprise_to_ebitda',
             'profitMargins': 'profit_margins',
@@ -234,6 +232,12 @@ class HistoricalSnapshotFetcher:
             'sharesOutstanding': 'shares_outstanding',
         }
 
+        # Duplicate mappings: same yfinance field -> multiple DB columns
+        DUPLICATE_MAP = {
+            'pb_ratio': 'price_to_book',
+            'ps_ratio': 'price_to_sales',
+        }
+
         # Convert debtToEquity from percentage to ratio if needed
         dte = info.get('debtToEquity')
         if dte is not None and dte > 10:
@@ -244,6 +248,11 @@ class HistoricalSnapshotFetcher:
             val = info.get(info_key)
             if val is not None and isinstance(val, (int, float)):
                 enrichment[col_name] = float(val)
+
+        # Copy duplicate mappings (same value -> multiple columns)
+        for src, dst in DUPLICATE_MAP.items():
+            if src in enrichment:
+                enrichment[dst] = enrichment[src]
 
         if not enrichment:
             return
