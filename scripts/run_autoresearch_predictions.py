@@ -2,7 +2,7 @@
 """
 Run autoresearch ensemble predictions and save to valuation_results.
 
-Uses the 5-model rank ensemble from autoresearch/train.py to predict
+Uses the 5-model rank ensemble from models/autoresearch/train.py to predict
 peak 2-year returns for all stocks with fundamental history.
 
 Usage:
@@ -19,7 +19,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-sys.path.insert(0, str(Path(__file__).parent.parent / 'autoresearch'))
+sys.path.insert(0, str(Path(__file__).parent.parent / 'models' / 'autoresearch'))
 
 from invest.data.stock_data_reader import StockDataReader
 
@@ -153,7 +153,7 @@ PRICE_FEATURE_COLS = [
 
 
 def engineer_features(df, feature_cols):
-    """Feature engineering — same as autoresearch/train.py."""
+    """Feature engineering — same as models/autoresearch/train.py."""
     X = df[feature_cols].copy()
     for col in X.columns:
         X[col] = pd.to_numeric(X[col], errors='coerce')

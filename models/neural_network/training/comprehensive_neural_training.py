@@ -36,7 +36,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('neural_network/training/logs/comprehensive_training.log'),
+        logging.FileHandler('models/neural_network/training/logs/comprehensive_training.log'),
         logging.StreamHandler()
     ]
 )
@@ -55,7 +55,7 @@ class TrainingConfig:
     patience: int = 10  # Early stopping patience
     min_improvement: float = 0.001  # Minimum improvement threshold
     max_total_epochs: int = 300  # Maximum total training epochs
-    cache_file: str = 'neural_network/training/training_data_cache.json'  # Cache location
+    cache_file: str = 'models/neural_network/training/training_data_cache.json'  # Cache location
     use_cache: bool = True  # Use cached data by default
 
 @dataclass

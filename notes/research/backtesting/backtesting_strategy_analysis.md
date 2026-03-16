@@ -63,7 +63,7 @@ Lite GBM 1y:
 ### Architecture
 
 ```
-backtesting/
+models/backtesting/
 ├── run_backtest.py              # Main script
 ├── core/
 │   ├── engine.py                # Backtesting engine
@@ -244,7 +244,7 @@ class HistoricalGBMStrategy:
 - ✅ Realistic performance expectations
 
 **Requirements**:
-- Load GBM model (`neural_network/training/gbm_model_1y.txt`)
+- Load GBM model (`models/neural_network/training/gbm_model_1y.txt`)
 - Query snapshots table for historical data
 - Re-create same feature engineering (lags, rolling windows)
 - Apply cross-sectional normalization per date
@@ -381,7 +381,7 @@ rebalance: monthly
 
 ### Phase 1: Create GBM Strategy Class (Week 1)
 ```python
-# File: backtesting/strategies/gbm_ranking.py
+# File: models/backtesting/strategies/gbm_ranking.py
 
 class GBMRankingStrategy:
     """
@@ -415,7 +415,7 @@ class GBMRankingStrategy:
 
 ### Phase 2: Adapt Data Provider (Week 1-2)
 ```python
-# File: backtesting/data/snapshot_provider.py
+# File: models/backtesting/data/snapshot_provider.py
 
 class SnapshotDataProvider:
     """
@@ -439,7 +439,7 @@ class SnapshotDataProvider:
 
 ### Phase 3: Create Backtest Configs (Week 2)
 ```yaml
-# File: backtesting/configs/gbm_top_decile_backtest.yaml
+# File: models/backtesting/configs/gbm_top_decile_backtest.yaml
 
 name: gbm_top_decile_1y_backtest
 start_date: '2010-01-01'
@@ -464,10 +464,10 @@ benchmark: SPY
 ### Phase 4: Run Backtests & Compare (Week 2-3)
 ```bash
 # Run multiple strategies
-uv run python backtesting/run_backtest.py backtesting/configs/gbm_top_decile_backtest.yaml
-uv run python backtesting/run_backtest.py backtesting/configs/multi_model_consensus_backtest.yaml
-uv run python backtesting/run_backtest.py backtesting/configs/opportunistic_timing_backtest.yaml
-uv run python backtesting/run_backtest.py backtesting/configs/long_term_backtest.yaml  # Baseline
+uv run python models/backtesting/run_backtest.py models/backtesting/configs/gbm_top_decile_backtest.yaml
+uv run python models/backtesting/run_backtest.py models/backtesting/configs/multi_model_consensus_backtest.yaml
+uv run python models/backtesting/run_backtest.py models/backtesting/configs/opportunistic_timing_backtest.yaml
+uv run python models/backtesting/run_backtest.py models/backtesting/configs/long_term_backtest.yaml  # Baseline
 
 # Compare results
 uv run python scripts/compare_backtest_results.py

@@ -128,6 +128,39 @@ class HTMLGenerator:
 
     </div>
 
+    <!-- Alarm Modal -->
+    <div id="alarmModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this)closeAlarmModal()">
+      <div class="modal-content">
+        <h3>Price Alarm: <span id="alarmTicker"></span></h3>
+        <p class="modal-price">Current price: <span id="alarmCurrentPrice"></span></p>
+        <div class="modal-form">
+          <select id="alarmCondition">
+            <option value="below">Below</option>
+            <option value="above">Above</option>
+          </select>
+          <input type="number" id="alarmTargetPrice" step="0.01" placeholder="Target price">
+          <button onclick="createAlarm()" class="btn btn-update">Set Alarm</button>
+        </div>
+        <div id="alarmList" class="alarm-list"></div>
+        <button onclick="closeAlarmModal()" class="btn" style="margin-top:12px;">Close</button>
+      </div>
+    </div>
+
+    <!-- Toast container for alarm notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Alarm panel toggle (fixed button) -->
+    <button id="alarmPanelToggle" class="alarm-panel-toggle" onclick="toggleAlarmPanel()" title="View all alarms" style="display:none;">&#128276; <span id="activeAlarmCount">0</span></button>
+
+    <!-- Alarm list sidebar -->
+    <div id="alarmPanel" class="alarm-panel" style="display:none;">
+      <div class="alarm-panel-header">
+        <h3>Price Alarms</h3>
+        <button onclick="toggleAlarmPanel()" class="btn" style="padding:4px 10px;">X</button>
+      </div>
+      <div id="alarmPanelList" class="alarm-panel-list"></div>
+    </div>
+
     <script>
         const SERVER_MODE = {'true' if server_mode else 'false'};
         const INITIAL_HEALTH = {health_json};
@@ -430,7 +463,7 @@ class HTMLGenerator:
 
         return f'''
         <tr class="stock-row {new_status}">
-            <td><a href="https://finance.yahoo.com/quote/{ticker}" target="_blank" rel="noopener" title="{company_name}" class="ticker-link">{ticker}</a></td>
+            <td><a href="https://finance.yahoo.com/quote/{ticker}" target="_blank" rel="noopener" title="{company_name}" class="ticker-link">{ticker}</a> <span class="alarm-bell" data-ticker="{ticker}" onclick="openAlarmModal('{ticker}', {current_price or 0})" title="Set price alarm">&#128276;</span></td>
             <td>{self._safe_format(current_price, prefix="$")}</td>
             <td>{status_html}</td>
             <td>{autoresearch_html}</td>
@@ -1397,7 +1430,92 @@ class HTMLGenerator:
             .stock-table th, .stock-table td { padding: 8px 6px; }
             .table-container { height: 60vh; min-height: 140px; }
             .health-row { flex-direction: column; align-items: flex-start; }
-        }"""
+        }
+
+        /* ── Alarm Bell ── */
+        .alarm-bell {
+            cursor: pointer; font-size: 13px; opacity: 0.25;
+            transition: opacity 0.15s; margin-left: 3px;
+            vertical-align: middle;
+        }
+        .alarm-bell:hover { opacity: 0.9; }
+        .alarm-bell.has-alarm { opacity: 0.85; filter: saturate(2) brightness(1.4); }
+
+        /* ── Modal ── */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.6); z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: var(--bg-panel, #1a1f2e); border: 1px solid var(--border, #2a3040);
+            border-radius: 8px; padding: 28px 32px; min-width: 380px; max-width: 500px;
+        }
+        .modal-content h3 { font-size: 18px; margin: 0 0 8px; color: var(--text-primary, #e0e6ed); }
+        .modal-price { color: var(--text-muted, #738091); font-family: var(--font-mono, monospace); font-size: 14px; margin: 0 0 16px; }
+        .modal-form { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+        .modal-form select, .modal-form input {
+            padding: 8px 12px; border: 1px solid var(--border, #2a3040);
+            border-radius: 4px; background: var(--bg-elevated, #0d1117); color: var(--text-primary, #e0e6ed);
+            font-size: 14px; font-family: var(--font-mono, monospace);
+        }
+        .modal-form input { width: 120px; }
+
+        /* ── Alarm List (in modal) ── */
+        .alarm-list { max-height: 200px; overflow-y: auto; }
+        .alarm-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 12px; border-bottom: 1px solid var(--border, #2a3040);
+            font-size: 13px; font-family: var(--font-mono, monospace);
+        }
+        .alarm-item .alarm-info { color: var(--text-secondary, #9ba8b9); }
+        .alarm-item .alarm-triggered { color: #3fb950; font-size: 12px; }
+        .alarm-item .alarm-delete { cursor: pointer; color: #f85149; opacity: 0.6; font-size: 15px; }
+        .alarm-item .alarm-delete:hover { opacity: 1; }
+
+        /* ── Toast ── */
+        .toast-container {
+            position: fixed; top: 20px; right: 20px; z-index: 2000;
+            display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+        }
+        .toast {
+            pointer-events: auto;
+            background: var(--bg-panel, #1a1f2e); border: 1px solid #d4a017;
+            border-left: 4px solid #d4a017; border-radius: 4px;
+            padding: 14px 20px; min-width: 300px; max-width: 420px;
+            font-size: 14px; color: var(--text-primary, #e0e6ed);
+            animation: toastIn 0.3s ease, toastOut 0.5s ease 9.5s forwards;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .toast .toast-title { font-weight: 700; color: #d4a017; margin-bottom: 4px; }
+        .toast .toast-body { color: var(--text-secondary, #9ba8b9); font-family: var(--font-mono, monospace); font-size: 13px; }
+        @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes toastOut { to { opacity: 0; transform: translateY(-10px); } }
+
+        /* ── Alarm Panel (sidebar) ── */
+        .alarm-panel-toggle {
+            position: fixed; bottom: 20px; right: 20px; z-index: 900;
+            background: var(--bg-panel, #1a1f2e); border: 1px solid var(--border, #2a3040);
+            border-radius: 50%; width: 48px; height: 48px;
+            cursor: pointer; font-size: 18px; color: #d4a017;
+            display: flex; align-items: center; justify-content: center; gap: 2px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+        }
+        .alarm-panel-toggle span {
+            font-size: 11px; font-weight: 700; font-family: var(--font-mono, monospace);
+            color: var(--text-secondary, #9ba8b9);
+        }
+        .alarm-panel {
+            position: fixed; top: 0; right: 0; width: 380px; height: 100vh;
+            background: var(--bg-panel, #1a1f2e); border-left: 1px solid var(--border, #2a3040);
+            z-index: 950; overflow-y: auto; box-shadow: -4px 0 20px rgba(0,0,0,0.3);
+        }
+        .alarm-panel-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 24px; border-bottom: 1px solid var(--border, #2a3040);
+        }
+        .alarm-panel-header h3 { font-size: 16px; color: var(--text-primary, #e0e6ed); margin: 0; }
+        .alarm-panel-list { padding: 12px; }"""
 
     def _get_javascript(self) -> str:
         """Get JavaScript for dashboard interactivity."""
@@ -1668,4 +1786,148 @@ class HTMLGenerator:
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+
+        // ── Price Alarms ──
+        let _lastTriggeredCheck = new Date().toISOString();
+
+        function openAlarmModal(ticker, currentPrice) {
+            document.getElementById('alarmTicker').textContent = ticker;
+            document.getElementById('alarmCurrentPrice').textContent = '$' + (currentPrice || 0).toFixed(2);
+            document.getElementById('alarmTargetPrice').value = (currentPrice || 0).toFixed(2);
+            document.getElementById('alarmModal').style.display = 'flex';
+            document.getElementById('alarmModal').dataset.ticker = ticker;
+            loadAlarmsForTicker(ticker);
+        }
+
+        function closeAlarmModal() {
+            document.getElementById('alarmModal').style.display = 'none';
+        }
+
+        function createAlarm() {
+            const ticker = document.getElementById('alarmModal').dataset.ticker;
+            const condition = document.getElementById('alarmCondition').value;
+            const targetPrice = parseFloat(document.getElementById('alarmTargetPrice').value);
+            if (!ticker || isNaN(targetPrice) || targetPrice <= 0) { alert('Invalid target price'); return; }
+
+            fetch('/api/alarms', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ ticker, condition, target_price: targetPrice })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.ok) {
+                    loadAlarmsForTicker(ticker);
+                    refreshAlarmBadge();
+                } else {
+                    alert('Failed: ' + (data.error || 'unknown'));
+                }
+            });
+        }
+
+        function loadAlarmsForTicker(ticker) {
+            fetch('/api/alarms?ticker=' + encodeURIComponent(ticker))
+            .then(r => r.json())
+            .then(data => {
+                const list = document.getElementById('alarmList');
+                if (!data.alarms || data.alarms.length === 0) {
+                    list.innerHTML = '<p style="color:var(--text-muted,#738091);font-size:13px;margin:8px 0 0;">No alarms set.</p>';
+                    return;
+                }
+                list.innerHTML = data.alarms.map(a => {
+                    const status = a.triggered_at
+                        ? '<span class="alarm-triggered">Triggered ' + formatTimeAgo(a.triggered_at) + '</span>'
+                        : '<span style="color:#58a6ff">Active</span>';
+                    return '<div class="alarm-item">' +
+                        '<span class="alarm-info">' + a.condition + ' $' + Number(a.target_price).toFixed(2) + ' ' + status + '</span>' +
+                        '<span class="alarm-delete" onclick="deleteAlarm(' + a.id + ',\\'' + ticker + '\\')" title="Delete">&#10005;</span>' +
+                        '</div>';
+                }).join('');
+            });
+        }
+
+        function deleteAlarm(id, ticker) {
+            fetch('/api/alarms/' + id, { method: 'DELETE' })
+            .then(r => r.json())
+            .then(data => {
+                if (data.ok) {
+                    if (ticker) loadAlarmsForTicker(ticker);
+                    refreshAlarmBadge();
+                    loadAlarmPanel();
+                }
+            });
+        }
+
+        function toggleAlarmPanel() {
+            const panel = document.getElementById('alarmPanel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+            if (panel.style.display === 'block') loadAlarmPanel();
+        }
+
+        function loadAlarmPanel() {
+            fetch('/api/alarms')
+            .then(r => r.json())
+            .then(data => {
+                const list = document.getElementById('alarmPanelList');
+                if (!data.alarms || data.alarms.length === 0) {
+                    list.innerHTML = '<p style="color:var(--text-muted,#738091);padding:20px;text-align:center;">No alarms configured.</p>';
+                    return;
+                }
+                list.innerHTML = data.alarms.map(a => {
+                    const status = a.triggered_at
+                        ? '<span class="alarm-triggered">Triggered ' + formatTimeAgo(a.triggered_at) + '</span>'
+                        : '<span style="color:#58a6ff">Active</span>';
+                    return '<div class="alarm-item">' +
+                        '<span class="alarm-info"><strong>' + a.ticker + '</strong> ' + a.condition + ' $' + Number(a.target_price).toFixed(2) + ' ' + status + '</span>' +
+                        '<span class="alarm-delete" onclick="deleteAlarm(' + a.id + ')" title="Delete">&#10005;</span>' +
+                        '</div>';
+                }).join('');
+            });
+        }
+
+        function refreshAlarmBadge() {
+            if (!SERVER_MODE) return;
+            fetch('/api/alarms')
+            .then(r => r.json())
+            .then(data => {
+                const active = (data.alarms || []).filter(a => a.active).length;
+                document.getElementById('activeAlarmCount').textContent = active;
+                const toggle = document.getElementById('alarmPanelToggle');
+                toggle.style.display = active > 0 || (data.alarms && data.alarms.length > 0) ? 'flex' : 'none';
+                // Highlight bell icons for tickers with active alarms
+                const activeTickers = new Set((data.alarms || []).filter(a => a.active).map(a => a.ticker));
+                document.querySelectorAll('.alarm-bell').forEach(el => {
+                    el.classList.toggle('has-alarm', activeTickers.has(el.dataset.ticker));
+                });
+            })
+            .catch(() => {});
+        }
+
+        function checkTriggeredAlarms() {
+            if (!SERVER_MODE) return;
+            fetch('/api/alarms/triggered?since=' + encodeURIComponent(_lastTriggeredCheck))
+            .then(r => r.json())
+            .then(data => {
+                _lastTriggeredCheck = new Date().toISOString();
+                if (data.triggered && data.triggered.length > 0) {
+                    data.triggered.forEach(a => {
+                        const container = document.getElementById('toastContainer');
+                        const toast = document.createElement('div');
+                        toast.className = 'toast';
+                        toast.innerHTML = '<div class="toast-title">&#128276; ' + a.ticker + ' Alarm</div>' +
+                            '<div class="toast-body">Price went ' + a.condition + ' $' + Number(a.target_price).toFixed(2) + '</div>';
+                        container.appendChild(toast);
+                        setTimeout(() => toast.remove(), 10000);
+                    });
+                    refreshAlarmBadge();
+                }
+            })
+            .catch(() => {});
+        }
+
+        // Init alarms on page load
+        if (SERVER_MODE) {
+            refreshAlarmBadge();
+            setInterval(checkTriggeredAlarms, 30000);
         }"""

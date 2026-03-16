@@ -17,7 +17,7 @@
         "-y",
         "@modelcontextprotocol/server-sqlite",
         "--file",
-        "/Users/rubenayla/repos/invest/neural_network/training/stock_data.db"
+        "/Users/rubenayla/repos/invest/models/neural_network/training/stock_data.db"
       ]
     },
     "fetch": {

@@ -40,7 +40,7 @@ powershell -c "irm https://astral.sh/uv/install.ps1 | iex"  # Windows
 uv sync --all-groups
 
 # 4. Run training
-uv run python neural_network/training/comprehensive_neural_training.py
+uv run python models/neural_network/training/comprehensive_neural_training.py
 
 # 5. Package trained models
 tar -czf trained_models.tar.gz *.pt
@@ -138,7 +138,7 @@ COPY . .
 RUN uv sync --all-groups
 
 # Run training
-CMD ["uv", "run", "python", "neural_network/training/comprehensive_neural_training.py"]
+CMD ["uv", "run", "python", "models/neural_network/training/comprehensive_neural_training.py"]
 ```
 
 Build and run:
@@ -199,7 +199,7 @@ export TRAIN_SAMPLES=10000
 export TRAIN_EPOCHS=100
 
 # Run training
-uv run python neural_network/training/comprehensive_neural_training.py
+uv run python models/neural_network/training/comprehensive_neural_training.py
 ```
 
 ---
@@ -330,7 +330,7 @@ ssh -i my-key.pem ubuntu@<instance-ip>
 !tar -xzf invest_training_package.tar.gz
 !pip install uv
 !uv sync
-!uv run python neural_network/training/comprehensive_neural_training.py
+!uv run python models/neural_network/training/comprehensive_neural_training.py
 
 # Download model
 from google.colab import files
@@ -510,7 +510,7 @@ print('✓ Model works')
 set -e
 
 # Train
-uv run python neural_network/training/comprehensive_neural_training.py
+uv run python models/neural_network/training/comprehensive_neural_training.py
 
 # Evaluate
 uv run python scripts/neural_network_evaluator.py

@@ -5,11 +5,11 @@ approximate maximum expected returns in a 2-year forward window.
 
 ## Setup
 
-1. **Agree on a run tag** with the user (e.g. `mar15`). Branch: `autoresearch/<tag>`.
-2. **Create the branch**: `git checkout -b autoresearch/<tag>` from current HEAD.
+1. **Agree on a run tag** with the user (e.g. `mar15`). Branch: `models/autoresearch/<tag>`.
+2. **Create the branch**: `git checkout -b models/autoresearch/<tag>` from current HEAD.
 3. **Read the in-scope files**:
-   - `autoresearch/evaluate.py` — fixed harness: data loading, target computation, scoring. **Do not modify.**
-   - `autoresearch/train.py` — the file you modify. Model, features, training loop.
+   - `models/autoresearch/evaluate.py` — fixed harness: data loading, target computation, scoring. **Do not modify.**
+   - `models/autoresearch/train.py` — the file you modify. Model, features, training loop.
 4. **Run baseline**: `cd autoresearch && uv run python train.py > run.log 2>&1`
 5. **Initialize results.tsv** with the header + baseline result.
 6. **Confirm and go.**
@@ -27,7 +27,7 @@ approximate maximum expected returns in a 2-year forward window.
 
 ## What you CAN do
 
-- Modify `autoresearch/train.py` — **this is the only file you edit.** Everything is fair game:
+- Modify `models/autoresearch/train.py` — **this is the only file you edit.** Everything is fair game:
   - Model choice (LightGBM, CatBoost, neural nets, ensembles, linear models, anything)
   - Feature engineering (lags, rolling stats, cross-sectional ranks, interactions, embeddings)
   - Hyperparameter tuning
@@ -96,7 +96,7 @@ LOOP FOREVER:
 
 1. Look at the git state and results so far.
 2. Think of a hypothesis — what change might improve Spearman correlation?
-3. Modify `autoresearch/train.py` with the idea.
+3. Modify `models/autoresearch/train.py` with the idea.
 4. `git commit` the change.
 5. Run: `cd /Users/rubenayla/repos/invest/autoresearch && uv run python train.py > run.log 2>&1`
 6. Extract: `grep "^spearman:\|^training_seconds:" run.log`

@@ -4,7 +4,7 @@ This folder contains the repo's runnable entrypoints (things we intentionally ke
 
 ## Core Entry Points
 - `scripts/update_all.py` / `scripts/update_all.sh`: end-to-end pipeline
-- `scripts/systematic_analysis.py`: run an analysis config from `analysis/configs/*.yaml`
+- `scripts/systematic_analysis.py`: run an analysis config from `dashboard/configs/*.yaml`
 - `scripts/data_fetcher.py`: fetch/cache market + fundamentals into the local cache/SQLite
 - `scripts/offline_analyzer.py`: analyze cached data and optionally update the dashboard
 - `scripts/run_all_predictions.py`: orchestrate prediction jobs

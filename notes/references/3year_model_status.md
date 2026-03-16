@@ -7,27 +7,27 @@
 ## ✅ COMPLETED STEPS
 
 ### 1. Data Cache Creation (✅ COMPLETE)
-- **Modified**: `neural_network/training/create_multi_horizon_cache.py`
+- **Modified**: `models/neural_network/training/create_multi_horizon_cache.py`
   - Added `'3y': 756` to horizons dictionary (756 trading days = 3 years)
   - Updated `max_forward_needed = 756` to require 3 years of future data
 - **Status**: ✅ COMPLETE
   - Created 3,364 training samples from 104 tickers
-  - Database: `neural_network/training/stock_data.db` (3.9GB)
+  - Database: `models/neural_network/training/stock_data.db` (3.9GB)
 
 ### 2. Model Training (✅ COMPLETE)
-- **Modified**: `neural_network/training/train_single_horizon.py`
+- **Modified**: `models/neural_network/training/train_single_horizon.py`
   - Added `--target-horizon` command-line argument
   - Updated trainer to use horizon-specific model filenames (`best_model_{horizon}.pt`)
   - Now supports: `1m`, `3m`, `6m`, `1y`, `2y`, `3y`
 - **Training Results**:
-  - Model saved: `neural_network/training/best_model_3y.pt`
+  - Model saved: `models/neural_network/training/best_model_3y.pt`
   - Early stopping at epoch 16
   - Best validation loss: 0.1304
   - Training samples: 3,364
 
 ### 3. Predictions Generated (✅ COMPLETE)
 - **Created**: `scripts/run_multi_horizon_predictions.py`
-  - Loads `neural_network/training/best_model_3y.pt`
+  - Loads `models/neural_network/training/best_model_3y.pt`
   - Saves predictions with model name: `'nn_3y'`
   - Updates `details` with `'expected_return_3y'` and `'horizon': '3y'`
 - **Prediction Results**:
@@ -80,7 +80,7 @@ The neural network requires 4+ historical snapshots with complete valuation data
 ## 🎯 SUCCESS CRITERIA ACHIEVED
 
 When complete, you should have:
-- ✅ `best_model_3y.pt` file in `neural_network/training/` (27.3 MB)
+- ✅ `best_model_3y.pt` file in `models/neural_network/training/` (27.3 MB)
 - ✅ Predictions in database with `model_name='nn_3y'` (83 stocks)
 - ✅ Dashboard showing "NN 3y" column with confidence badges
 - ✅ Predictions showing expected 3-year returns with confidence intervals
@@ -126,15 +126,15 @@ When complete, you should have:
 ## 🔍 TROUBLESHOOTING
 
 ### If training fails with "no samples found":
-- Check data creation log: `cat neural_network/training/create_3y_cache.log`
+- Check data creation log: `cat models/neural_network/training/create_3y_cache.log`
 - Verify database has forward_returns for horizon='3y':
   ```sql
   SELECT COUNT(*) FROM forward_returns WHERE horizon='3y';
   ```
 
 ### If predictions fail with "model not found":
-- Verify model file exists: `ls -lh neural_network/training/best_model_3y.pt`
-- Check training log for errors: `cat neural_network/training/training_3y.log`
+- Verify model file exists: `ls -lh models/neural_network/training/best_model_3y.pt`
+- Check training log for errors: `cat models/neural_network/training/training_3y.log`
 
 ### If dashboard doesn't show 3y column:
 - Verify predictions saved: `SELECT COUNT(*) FROM valuation_results WHERE model_name='nn_3y';`
@@ -144,8 +144,8 @@ When complete, you should have:
 ## 📁 FILES MODIFIED/CREATED
 
 ### Modified Files
-1. `neural_network/training/create_multi_horizon_cache.py` - Added 3y horizon
-2. `neural_network/training/train_single_horizon.py` - Added --target-horizon arg
+1. `models/neural_network/training/create_multi_horizon_cache.py` - Added 3y horizon
+2. `models/neural_network/training/train_single_horizon.py` - Added --target-horizon arg
 
 ### Created Files
 1. `scripts/run_multi_horizon_predictions.py` - multi-horizon prediction script (includes 3y)
@@ -157,7 +157,7 @@ When complete, you should have:
 ## 🎯 SUCCESS CRITERIA
 
 When complete, you should have:
-- ✅ `best_model_3y.pt` file in `neural_network/training/`
+- ✅ `best_model_3y.pt` file in `models/neural_network/training/`
 - ✅ Predictions in database with `model_name='nn_3y'`
 - ✅ Dashboard showing "NN 3y" column with confidence badges
 - ✅ Predictions for 50+ stocks (depending on data availability)

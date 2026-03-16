@@ -36,7 +36,7 @@ strategy_type: gbm_ranking
 
 strategy:
   # Model configuration
-  model_path: 'neural_network/training/gbm_model_1y.txt'
+  model_path: 'models/neural_network/training/gbm_model_1y.txt'
   model_type: 'full'  # Requires 12+ quarters of history
 
   # Selection: Top decile (top 10%)

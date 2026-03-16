@@ -5,7 +5,7 @@ Consolidate all data storage into a single SQLite database, using JSON files onl
 
 ## Current State
 
-### Existing Database: `neural_network/training/stock_data.db` (1.2GB)
+### Existing Database: `models/neural_network/training/stock_data.db` (1.2GB)
 - **assets**: 103 stocks
 - **snapshots**: 3,367 historical snapshots (up to 2022-11-30)
 - **forward_returns**: Training labels for ML

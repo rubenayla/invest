@@ -1,6 +1,6 @@
 ---
-name: position-sizer
-description: Calculate Kelly Criterion position sizes or build optimal portfolios. Use when user says "size", "kelly", "how much to buy", "position size", "how many shares", "build portfolio", or "allocate".
+name: size
+description: Kelly Criterion position sizing. Use when user says "size", "kelly", "how much to buy", "position size", "how many shares", "build portfolio", or "allocate".
 argument-hint: "TICKER [...] [--portfolio --budget N] [--portfolio-value N] [--fraction 0.5] [--verbose]"
 ---
 

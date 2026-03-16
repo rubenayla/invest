@@ -4,7 +4,7 @@ Quick reference for working with the production LSTM/Transformer model.
 
 ## Current Production Model
 
-**File:** `neural_network/training/best_model.pt` (11MB)
+**File:** `models/neural_network/training/best_model.pt` (11MB)
 
 **Performance:**
 - MAE: 23.05%
@@ -31,7 +31,7 @@ import torch
 from invest.valuation.lstm_transformer_model import LSTMTransformerNetwork
 
 # Load model
-model_path = Path('neural_network/training/best_model.pt')
+model_path = Path('models/neural_network/training/best_model.pt')
 checkpoint = torch.load(model_path, map_location='cpu')
 
 model = LSTMTransformerNetwork(
@@ -71,7 +71,7 @@ All training is done locally on Mac - no need for GPU or cloud instances.
 ### 1. Validate Data Quality
 
 ```bash
-cd neural_network/training
+cd models/neural_network/training
 uv run python validate_data_quality.py
 ```
 
@@ -84,7 +84,7 @@ Expected output:
 ### 2. (Optional) Refresh Data
 
 ```bash
-cd neural_network/training
+cd models/neural_network/training
 uv run python create_multi_horizon_cache.py
 ```
 
@@ -98,7 +98,7 @@ This fetches fresh fundamental data from yfinance and populates:
 ### 3. Train Model
 
 ```bash
-cd neural_network/training
+cd models/neural_network/training
 uv run python train_single_horizon.py --epochs 100 --batch-size 32 --learning-rate 0.001
 ```
 
@@ -111,7 +111,7 @@ Output:
 ### 4. Evaluate
 
 ```bash
-cd neural_network/training
+cd models/neural_network/training
 uv run python evaluate_model.py
 ```
 
@@ -186,7 +186,7 @@ Multi-factor confidence scoring:
 ### Recommended Settings
 
 ```python
-# In neural_network/training/comprehensive_neural_training.py
+# In models/neural_network/training/comprehensive_neural_training.py
 
 TrainingConfig(
     start_year=2015,          # ← Changed from 2004
@@ -334,7 +334,7 @@ model = models['v1' if random.random() < 0.5 else 'v2']
 ./scripts/package_for_training.sh
 
 # Train locally
-uv run python neural_network/training/comprehensive_neural_training.py
+uv run python models/neural_network/training/comprehensive_neural_training.py
 
 # Evaluate model
 uv run python scripts/neural_network_evaluator.py

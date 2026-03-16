@@ -24,13 +24,13 @@ def pytest_collection_modifyitems(config, items):
 
     # Check for trained models
     gbm_models_exist = any([
-        (project_root / 'neural_network/training/gbm_model_1y.txt').exists(),
-        (project_root / 'neural_network/training/gbm_model_3y.txt').exists(),
-        (project_root / 'neural_network/training/gbm_lite_model_1y.txt').exists(),
-        (project_root / 'neural_network/training/gbm_opportunistic_model_1y.txt').exists(),
+        (project_root / 'models/neural_network/training/gbm_model_1y.txt').exists(),
+        (project_root / 'models/neural_network/training/gbm_model_3y.txt').exists(),
+        (project_root / 'models/neural_network/training/gbm_lite_model_1y.txt').exists(),
+        (project_root / 'models/neural_network/training/gbm_opportunistic_model_1y.txt').exists(),
     ])
 
-    nn_models_exist = (project_root / 'neural_network/training/best_model.pt').exists()
+    nn_models_exist = (project_root / 'models/neural_network/training/best_model.pt').exists()
     models_exist = gbm_models_exist or nn_models_exist
 
     # Check for database with historical data
@@ -53,7 +53,7 @@ def pytest_collection_modifyitems(config, items):
 
     # Build skip reasons
     skip_models = pytest.mark.skip(
-        reason="Trained models not found. Train models first with scripts in neural_network/training/"
+        reason="Trained models not found. Train models first with scripts in models/neural_network/training/"
     )
     skip_data = pytest.mark.skip(
         reason="Historical data not found. Run: uv run python scripts/populate_fundamental_history.py"

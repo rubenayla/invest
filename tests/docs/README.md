@@ -10,15 +10,15 @@ The test suite uses pytest markers to automatically skip tests that require reso
 Tests that need trained models (GBM, neural networks). These tests will be **automatically skipped** if models don't exist.
 
 **Models checked:**
-- `neural_network/training/gbm_model_1y.txt`
-- `neural_network/training/gbm_model_3y.txt`
-- `neural_network/training/gbm_lite_model_1y.txt`
-- `neural_network/training/gbm_opportunistic_model_1y.txt`
-- `neural_network/training/best_model.pt`
+- `models/neural_network/training/gbm_model_1y.txt`
+- `models/neural_network/training/gbm_model_3y.txt`
+- `models/neural_network/training/gbm_lite_model_1y.txt`
+- `models/neural_network/training/gbm_opportunistic_model_1y.txt`
+- `models/neural_network/training/best_model.pt`
 
 **Skip message:**
 ```
-Trained models not found. Train models first with scripts in neural_network/training/
+Trained models not found. Train models first with scripts in models/neural_network/training/
 ```
 
 ### `@pytest.mark.requires_data`
@@ -103,7 +103,7 @@ def test_gbm_predictions():
     import lightgbm as lgb
 
     # This won't run if models don't exist
-    model = lgb.Booster(model_file='neural_network/training/gbm_model_1y.txt')
+    model = lgb.Booster(model_file='models/neural_network/training/gbm_model_1y.txt')
     assert model is not None
 ```
 
@@ -167,8 +167,8 @@ open htmlcov/index.html
 ### Tests are skipped but I have the models
 **Check model paths:**
 ```bash
-ls -la neural_network/training/*.txt
-ls -la neural_network/training/*.pt
+ls -la models/neural_network/training/*.txt
+ls -la models/neural_network/training/*.pt
 ```
 
 Models must be in the exact locations checked by `conftest.py`.
@@ -201,7 +201,7 @@ uv run pytest -m "not slow"
 uv run pytest
 
 # 3. If models missing, train them
-cd neural_network/training
+cd models/neural_network/training
 uv run python train_gbm_stock_ranker.py
 
 # 4. Run model tests

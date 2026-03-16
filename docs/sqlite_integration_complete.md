@@ -6,7 +6,7 @@ All data is now stored in SQLite database as the primary source, with JSON files
 
 ## Database Location
 
-`neural_network/training/stock_data.db` (1.2GB)
+`models/neural_network/training/stock_data.db` (1.2GB)
 
 ## Tables
 

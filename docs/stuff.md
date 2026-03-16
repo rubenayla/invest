@@ -211,7 +211,7 @@ Dividends? RIM tracks book value changes so it naturally includes dividends. Sim
 This explains why growth investing outperformed value investing in the 2010s - traditional valuation methods systematically undervalued companies that reinvest efficiently!
 
 # to run all backtests
-for config in backtesting/configs/valuation_comparison_*.yaml; do echo "Running $config..."; uv run python backtesting/run_backtest.py "$config"; echo ""; done
+for config in models/backtesting/configs/valuation_comparison_*.yaml; do echo "Running $config..."; uv run python models/backtesting/run_backtest.py "$config"; echo ""; done
 
 # 
 > Our code now doesn't ignore the reinvesting efficiency?

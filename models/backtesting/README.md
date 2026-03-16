@@ -16,7 +16,7 @@ This framework rigorously evaluates investment strategies by:
 
 ```bash
 # From project root
-uv run python backtesting/run_backtest.py backtesting/configs/test_backtest.yaml
+uv run python models/backtesting/run_backtest.py models/backtesting/configs/test_backtest.yaml
 ```
 
 ### 2. View Results
@@ -29,7 +29,7 @@ The backtest will output:
 
 ### 3. Customize Your Test
 
-Edit configuration files in `backtesting/configs/` or create your own:
+Edit configuration files in `models/backtesting/configs/` or create your own:
 
 ```yaml
 # Example: configs/my_backtest.yaml
@@ -56,7 +56,7 @@ strategy:
 ## Directory Structure
 
 ```
-backtesting/
+models/backtesting/
 ├── core/
 │   ├── engine.py       # Main backtesting engine
 │   ├── portfolio.py    # Portfolio management with realistic trading
@@ -177,7 +177,7 @@ Benchmark Comparison (SPY):
 Test if your screening criteria would have generated alpha historically:
 ```bash
 # Test your screening weights
-uv run python backtesting/run_backtest.py configs/sp500_backtest.yaml
+uv run python models/backtesting/run_backtest.py configs/sp500_backtest.yaml
 ```
 
 ### 2. Parameter Optimization
@@ -243,7 +243,7 @@ Test multiple configurations:
 
 ```python
 import glob
-for config_file in glob.glob("backtesting/configs/*.yaml"):
+for config_file in glob.glob("models/backtesting/configs/*.yaml"):
     results = run_backtest(config_file)
     print(f"{config_file}: {results.get_summary()}")
 ```
@@ -256,7 +256,7 @@ from invest.analysis.pipeline import AnalysisPipeline
 from invest.config.loader import load_analysis_config
 
 # Use existing screening configuration
-main_config = load_analysis_config("analysis/configs/sp500_top100.yaml") 
+main_config = load_analysis_config("dashboard/configs/sp500_top100.yaml") 
 # Adapt for backtesting...
 ```
 
@@ -281,7 +281,7 @@ main_config = load_analysis_config("analysis/configs/sp500_top100.yaml")
 - Check logs for detailed error messages
 - Verify YAML configuration syntax
 - Test with smaller universes first
-- Review the example configurations in `backtesting/configs/`
+- Review the example configurations in `models/backtesting/configs/`
 
 ---
 

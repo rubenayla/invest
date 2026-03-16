@@ -71,7 +71,7 @@ from invest.valuation.model_registry import ModelRegistry
 registry = ModelRegistry()
 model = registry.get_model('neural_network')
 
-# Requires a trained model file to be present in neural_network/models/
+# Requires a trained model file to be present in models/neural_network/models/
 # Otherwise raises ValuationError
 result = model.value_company('AAPL')
 print(f'Fair Value: ${result.fair_value:.2f}')

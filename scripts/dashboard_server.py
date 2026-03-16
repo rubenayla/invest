@@ -169,6 +169,89 @@ class UpdateManager:
 update_manager = UpdateManager()
 
 
+# ── Alarm checker ────────────────────────────────────────────────────────
+
+def _ensure_alarm_table():
+    """Create the price_alarms table if it doesn't exist."""
+    conn = sqlite3.connect(str(DB_PATH))
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS price_alarms (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ticker TEXT NOT NULL,
+            condition TEXT NOT NULL CHECK(condition IN ('above', 'below')),
+            target_price REAL NOT NULL,
+            created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
+            triggered_at TEXT,
+            active INTEGER NOT NULL DEFAULT 1
+        )
+    """)
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_price_alarms_active ON price_alarms(active, ticker)")
+    conn.commit()
+    conn.close()
+
+
+class AlarmChecker:
+    """Periodically checks active alarms against current prices."""
+
+    def __init__(self):
+        self._thread: threading.Thread | None = None
+
+    def start(self):
+        self._thread = threading.Thread(target=self._run, daemon=True)
+        self._thread.start()
+
+    def _run(self):
+        while True:
+            try:
+                self._check_alarms()
+            except Exception as e:
+                logger.error("Alarm check failed: %s", e)
+            time.sleep(60)
+
+    def _check_alarms(self):
+        conn = sqlite3.connect(str(DB_PATH))
+        conn.row_factory = sqlite3.Row
+
+        alarms = conn.execute(
+            "SELECT id, ticker, condition, target_price FROM price_alarms WHERE active = 1"
+        ).fetchall()
+
+        if not alarms:
+            conn.close()
+            return
+
+        tickers = list({r["ticker"] for r in alarms})
+        placeholders = ",".join("?" * len(tickers))
+        prices = conn.execute(
+            f"SELECT ticker, current_price FROM current_stock_data WHERE ticker IN ({placeholders})",
+            tickers,
+        ).fetchall()
+        price_map = {r["ticker"]: r["current_price"] for r in prices if r["current_price"]}
+
+        now = _now_iso()
+        triggered_ids = []
+        for alarm in alarms:
+            price = price_map.get(alarm["ticker"])
+            if price is None:
+                continue
+            if alarm["condition"] == "above" and price >= alarm["target_price"]:
+                triggered_ids.append(alarm["id"])
+            elif alarm["condition"] == "below" and price <= alarm["target_price"]:
+                triggered_ids.append(alarm["id"])
+
+        if triggered_ids:
+            ph = ",".join("?" * len(triggered_ids))
+            conn.execute(
+                f"UPDATE price_alarms SET triggered_at = ?, active = 0 WHERE id IN ({ph})",
+                [now, *triggered_ids],
+            )
+            conn.commit()
+        conn.close()
+
+
+alarm_checker = AlarmChecker()
+
+
 # ── Database health queries ──────────────────────────────────────────────
 
 def get_db_health() -> dict:
@@ -342,6 +425,77 @@ async def api_shutdown(request: Request) -> JSONResponse:
     return JSONResponse({"ok": True})
 
 
+# ── Alarm API ────────────────────────────────────────────────────────────
+
+async def api_alarm_create(request: Request) -> JSONResponse:
+    """Create a new price alarm."""
+    body = await request.json()
+    ticker = body.get("ticker", "").upper().strip()
+    condition = body.get("condition")
+    target_price = body.get("target_price")
+
+    if not ticker or condition not in ("above", "below") or not isinstance(target_price, (int, float)):
+        return JSONResponse({"ok": False, "error": "Invalid parameters"}, status_code=400)
+
+    conn = sqlite3.connect(str(DB_PATH))
+    conn.execute(
+        "INSERT INTO price_alarms (ticker, condition, target_price) VALUES (?, ?, ?)",
+        (ticker, condition, target_price),
+    )
+    conn.commit()
+    alarm_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+    conn.close()
+    return JSONResponse({"ok": True, "id": alarm_id})
+
+
+async def api_alarm_list(request: Request) -> JSONResponse:
+    """List alarms, optionally filtered by ticker."""
+    ticker = request.query_params.get("ticker")
+    conn = sqlite3.connect(str(DB_PATH))
+    conn.row_factory = sqlite3.Row
+    if ticker:
+        rows = conn.execute(
+            "SELECT * FROM price_alarms WHERE ticker = ? ORDER BY active DESC, created_at DESC",
+            (ticker.upper(),),
+        ).fetchall()
+    else:
+        rows = conn.execute(
+            "SELECT * FROM price_alarms ORDER BY active DESC, created_at DESC"
+        ).fetchall()
+    conn.close()
+    return JSONResponse({"ok": True, "alarms": [dict(r) for r in rows]})
+
+
+async def api_alarm_delete(request: Request) -> JSONResponse:
+    """Delete an alarm by id."""
+    alarm_id = request.path_params["alarm_id"]
+    conn = sqlite3.connect(str(DB_PATH))
+    conn.execute("DELETE FROM price_alarms WHERE id = ?", (alarm_id,))
+    conn.commit()
+    conn.close()
+    return JSONResponse({"ok": True})
+
+
+async def api_alarm_triggered(request: Request) -> JSONResponse:
+    """Return alarms triggered since a given timestamp."""
+    since = request.query_params.get("since")
+    conn = sqlite3.connect(str(DB_PATH))
+    conn.row_factory = sqlite3.Row
+    if since:
+        rows = conn.execute(
+            "SELECT * FROM price_alarms WHERE triggered_at IS NOT NULL AND triggered_at > ? "
+            "ORDER BY triggered_at DESC",
+            (since,),
+        ).fetchall()
+    else:
+        rows = conn.execute(
+            "SELECT * FROM price_alarms WHERE triggered_at IS NOT NULL AND active = 0 "
+            "ORDER BY triggered_at DESC LIMIT 20"
+        ).fetchall()
+    conn.close()
+    return JSONResponse({"ok": True, "triggered": [dict(r) for r in rows]})
+
+
 # ── Helpers ──────────────────────────────────────────────────────────────
 
 def _now_iso() -> str:
@@ -370,6 +524,10 @@ app = Starlette(
         Route("/api/update/status", api_update_status),
         Route("/api/update/cancel", api_update_cancel, methods=["POST"]),
         Route("/api/shutdown", api_shutdown, methods=["POST"]),
+        Route("/api/alarms", api_alarm_create, methods=["POST"]),
+        Route("/api/alarms", api_alarm_list),
+        Route("/api/alarms/triggered", api_alarm_triggered),
+        Route("/api/alarms/{alarm_id:int}", api_alarm_delete, methods=["DELETE"]),
     ],
 )
 
@@ -387,9 +545,15 @@ def main():
     print(f"  DB size: {DB_PATH.stat().st_size / (1024*1024):.1f} MB")
     print(f"  Auto-shutdown after {AUTO_SHUTDOWN_SECONDS // 3600}h idle\n")
 
+    # Ensure alarm table exists
+    _ensure_alarm_table()
+
     # Start idle watchdog
     watchdog = threading.Thread(target=_auto_shutdown_watchdog, daemon=True)
     watchdog.start()
+
+    # Start alarm checker (polls every 60s)
+    alarm_checker.start()
 
     global _server_ref
     config = uvicorn.Config(app, host=args.host, port=args.port, log_level="info")

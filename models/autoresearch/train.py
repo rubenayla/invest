@@ -10,6 +10,7 @@ The only constraint: use load_data() for data, score_predictions() for scoring.
 """
 
 import time
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import lightgbm as lgb
@@ -156,6 +157,7 @@ def train_and_predict(train_df, test_df, feature_cols):
         random_seed=42,
         verbose=0,
         loss_function='MAE',
+        train_dir=str(Path(__file__).resolve().parent / 'catboost_info'),
     )
     cb_model.fit(X_train.values, y_train_log)
     cb_preds = cb_model.predict(X_test.values)

@@ -40,15 +40,15 @@ def systematic_screen(
         # Load configuration
         if criteria == "default":
             config_path = (
-                Path(__file__).parent.parent.parent.parent / "configs" / "default_analysis.yaml"
+                Path(__file__).parent.parent.parent.parent / "dashboard" / "configs" / "default_analysis.yaml"
             )
         else:
             config_path = (
-                Path(__file__).parent.parent.parent.parent / "configs" / f"{criteria}.yaml"
+                Path(__file__).parent.parent.parent.parent / "dashboard" / "configs" / f"{criteria}.yaml"
             )
             if not config_path.exists():
                 # Try without .yaml extension
-                config_path = Path(__file__).parent.parent.parent.parent / "configs" / criteria
+                config_path = Path(__file__).parent.parent.parent.parent / "dashboard" / "configs" / criteria
 
         if not config_path.exists():
             raise FileNotFoundError(f"Configuration '{criteria}' not found")
@@ -150,7 +150,7 @@ def get_screening_configs() -> Dict[str, Any]:
     try:
         configs_info = {
             "available_configs": [],
-            "config_directory": str(Path(__file__).parent.parent.parent.parent / "configs"),
+            "config_directory": str(Path(__file__).parent.parent.parent.parent / "dashboard" / "configs"),
         }
 
         # List available configurations

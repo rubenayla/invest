@@ -87,9 +87,9 @@
 ## Files Ready to Use
 
 All committed:
-- `backtesting/data/snapshot_provider.py` ✅
-- `backtesting/strategies/gbm_ranking.py` ✅ **FIXED**
-- `backtesting/configs/*.yaml` (6 strategies including smoke test) ✅
+- `models/backtesting/data/snapshot_provider.py` ✅
+- `models/backtesting/strategies/gbm_ranking.py` ✅ **FIXED**
+- `models/backtesting/configs/*.yaml` (6 strategies including smoke test) ✅
 - `scripts/run_all_backtests.py` ✅
 - `notes/backtesting_strategy_analysis.md` ✅
 - `BACKTEST_README.md` ✅

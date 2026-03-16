@@ -140,7 +140,7 @@ All documentation preserved and up-to-date.
 ## How It's Used
 
 ### 1. GBM Model Training
-**Scripts**: `neural_network/training/train_gbm_stock_ranker.py`
+**Scripts**: `models/neural_network/training/train_gbm_stock_ranker.py`
 
 Queries `fundamental_history` table for:
 - Fundamental features (ROE, margins, ratios)
@@ -153,7 +153,7 @@ Queries `fundamental_history` table for:
 Loads latest fundamental data from `fundamental_history` to make predictions.
 
 ### 3. Neural Network Training
-**Scripts**: `neural_network/training/train_single_horizon.py`
+**Scripts**: `models/neural_network/training/train_single_horizon.py`
 
 Uses fundamental features as inputs for LSTM/Transformer model.
 

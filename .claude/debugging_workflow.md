@@ -53,7 +53,7 @@ Systematic approach to debug dashboard issues, working backwards from user-visib
 ## Level 5: Neural Network Training
 **Check:** Are trained model files (.pth) present?
 - Search: `find . -name "*.pth" -o -name "*.pt"`
-- Expected locations: neural_network/models/, models/, checkpoints/
+- Expected locations: models/neural_network/models/, models/, checkpoints/
 
 **If no models → Train the model**
 

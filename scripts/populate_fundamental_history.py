@@ -128,81 +128,47 @@ class HistoricalSnapshotFetcher:
         # Default fallback
         return 20.0  # Historical median
 
-    def fetch_historical_snapshots(
-        self,
-        ticker: str,
-        start_year: int = 2004,
-        interval_months: int = 6
-    ) -> List[Dict]:
+    def fetch_historical_snapshots(self, ticker: str) -> List[Dict]:
         """
-        Fetch historical fundamental data at regular intervals.
+        Fetch historical fundamental data from quarterly statements + current info.
 
-        Parameters
-        ----------
-        ticker : str
-            Stock ticker symbol
-        start_year : int
-            Year to start fetching from
-        interval_months : int
-            Months between snapshots (default 6)
-
-        Returns
-        -------
-        List[Dict]
-            List of snapshot data dictionaries
+        Creates snapshots from quarterly financial statements (historical) and
+        enriches the latest snapshot with current stock.info data (ratios, market
+        data, etc.) that yfinance only provides for the current period.
         """
         self.rate_limit()
 
         try:
             stock = yf.Ticker(ticker)
 
-            # Get current info for sector/industry
+            # Get current info (has ratios, market data, etc.)
             try:
-                info = stock.info
-                sector = info.get('sector', 'Unknown')
-                info.get('industry', 'Unknown')
+                info = stock.info or {}
             except Exception as e:
-                logger.warning(f'{ticker}: Could not fetch current info - {e}')
-                sector = 'Unknown'
+                logger.warning(f'{ticker}: Could not fetch info - {e}')
+                info = {}
 
-            # Get historical data
+            sector = info.get('sector', 'Unknown')
+
+            # Get quarterly data
             snapshots = []
-            current_date = datetime.now()
-            snapshot_date = datetime(start_year, 1, 1)
-
-            while snapshot_date < current_date:
-                # Try to get fundamentals for this date
-                # yfinance doesn't have direct historical fundamentals API,
-                # so we'll use quarterly financials and match dates
-
-                snapshot_date += timedelta(days=30 * interval_months)
-
-                # For now, we'll just note that this approach has limitations
-                # and we may need to use the current info repeated over time
-                # or fetch from another data source
-
-            # Alternative: Use available quarterly data
             try:
-                # Get quarterly financials
                 quarterly_financials = stock.quarterly_financials
                 quarterly_balance_sheet = stock.quarterly_balance_sheet
                 quarterly_cashflow = stock.quarterly_cashflow
 
                 if quarterly_financials is not None and not quarterly_financials.empty:
-                    # Get available dates
                     available_dates = quarterly_financials.columns
 
                     for date in available_dates:
-                        # Extract data for this date
                         snapshot = self._extract_snapshot_from_quarterly(
                             ticker=ticker,
                             snapshot_date=date,
                             financials=quarterly_financials,
                             balance_sheet=quarterly_balance_sheet,
                             cashflow=quarterly_cashflow,
-                            sector=sector
+                            sector=sector,
                         )
-
                         if snapshot:
                             snapshots.append(snapshot)
 
@@ -213,11 +179,92 @@ class HistoricalSnapshotFetcher:
             except Exception as e:
                 logger.warning(f'{ticker}: Error fetching quarterly data - {e}')
 
+            # Enrich the latest snapshot (or create one) with stock.info data
+            if info.get('currentPrice'):
+                self._enrich_latest_snapshot(snapshots, info, ticker)
+
             return snapshots
 
         except Exception as e:
             logger.error(f'{ticker}: Failed to fetch data - {e}')
             return []
+
+    def _enrich_latest_snapshot(self, snapshots: List[Dict], info: Dict, ticker: str):
+        """Enrich the latest snapshot with current stock.info data."""
+        # Map yfinance info keys -> fundamental_history column names
+        INFO_MAP = {
+            'marketCap': 'market_cap',
+            'trailingPE': 'pe_ratio',
+            'priceToBook': 'pb_ratio',
+            'priceToSalesTrailing12Months': 'ps_ratio',
+            'pegRatio': 'peg_ratio',
+            'priceToBook': 'price_to_book',
+            'priceToSalesTrailing12Months': 'price_to_sales',
+            'enterpriseToRevenue': 'enterprise_to_revenue',
+            'enterpriseToEbitda': 'enterprise_to_ebitda',
+            'profitMargins': 'profit_margins',
+            'operatingMargins': 'operating_margins',
+            'grossMargins': 'gross_margins',
+            'ebitdaMargins': 'ebitda_margins',
+            'returnOnAssets': 'return_on_assets',
+            'returnOnEquity': 'return_on_equity',
+            'revenueGrowth': 'revenue_growth',
+            'earningsGrowth': 'earnings_growth',
+            'earningsQuarterlyGrowth': 'earnings_quarterly_growth',
+            'revenuePerShare': 'revenue_per_share',
+            'totalCash': 'total_cash',
+            'totalDebt': 'total_debt',
+            'debtToEquity': 'debt_to_equity',
+            'currentRatio': 'current_ratio',
+            'quickRatio': 'quick_ratio',
+            'operatingCashflow': 'operating_cashflow',
+            'freeCashflow': 'free_cashflow',
+            'trailingEps': 'trailing_eps',
+            'forwardEps': 'forward_eps',
+            'bookValue': 'book_value',
+            'dividendRate': 'dividend_rate',
+            'dividendYield': 'dividend_yield',
+            'payoutRatio': 'payout_ratio',
+            'beta': 'beta',
+            'fiftyDayAverage': 'fifty_day_average',
+            'twoHundredDayAverage': 'two_hundred_day_average',
+            'fiftyTwoWeekHigh': 'fifty_two_week_high',
+            'fiftyTwoWeekLow': 'fifty_two_week_low',
+            'volume': 'volume',
+            'sharesOutstanding': 'shares_outstanding',
+        }
+
+        # Convert debtToEquity from percentage to ratio if needed
+        dte = info.get('debtToEquity')
+        if dte is not None and dte > 10:
+            info['debtToEquity'] = dte / 100.0
+
+        enrichment = {}
+        for info_key, col_name in INFO_MAP.items():
+            val = info.get(info_key)
+            if val is not None and isinstance(val, (int, float)):
+                enrichment[col_name] = float(val)
+
+        if not enrichment:
+            return
+
+        if snapshots:
+            # Enrich the latest (most recent date) snapshot
+            snapshots.sort(key=lambda s: s['snapshot_date'], reverse=True)
+            for key, val in enrichment.items():
+                # Only fill if missing
+                if snapshots[0].get(key) is None:
+                    snapshots[0][key] = val
+        else:
+            # No quarterly data at all — create a snapshot from info alone
+            today = datetime.now().strftime('%Y-%m-%d')
+            snapshot = {
+                'ticker': ticker,
+                'snapshot_date': today,
+                'vix': self.get_vix_for_date(today),
+                **enrichment,
+            }
+            snapshots.append(snapshot)
 
     def _extract_snapshot_from_quarterly(
         self,
@@ -226,98 +273,125 @@ class HistoricalSnapshotFetcher:
         financials: pd.DataFrame,
         balance_sheet: pd.DataFrame,
         cashflow: pd.DataFrame,
-        sector: str
+        sector: str,
     ) -> Optional[Dict]:
         """Extract snapshot data from quarterly financials."""
         try:
-            # Get data for this date
             date_str = snapshot_date.strftime('%Y-%m-%d')
 
-            # Extract key metrics
             snapshot = {
                 'ticker': ticker,
                 'snapshot_date': date_str,
                 'sector': sector,
-                'vix': self.get_vix_for_date(date_str)
+                'vix': self.get_vix_for_date(date_str),
             }
 
-            # From financials
-            if snapshot_date in financials.columns:
+            # From financials (income statement)
+            if financials is not None and snapshot_date in financials.columns:
                 fin = financials[snapshot_date]
-                snapshot['total_revenue'] = fin.get('Total Revenue', None)
-                snapshot['operating_income'] = fin.get('Operating Income', None)
-                snapshot['net_income'] = fin.get('Net Income', None)
-                snapshot['ebitda'] = fin.get('EBITDA', None)
+                snapshot['total_revenue'] = self._safe_float(fin.get('Total Revenue'))
+                snapshot['operating_income'] = self._safe_float(fin.get('Operating Income'))
+                snapshot['net_income'] = self._safe_float(fin.get('Net Income'))
+                snapshot['ebitda'] = self._safe_float(fin.get('EBITDA'))
 
             # From balance sheet
-            if snapshot_date in balance_sheet.columns:
+            if balance_sheet is not None and snapshot_date in balance_sheet.columns:
                 bs = balance_sheet[snapshot_date]
-                snapshot['total_assets'] = bs.get('Total Assets', None)
-                snapshot['total_debt'] = bs.get('Total Debt', None)
-                snapshot['total_equity'] = bs.get('Stockholders Equity', None)
-                snapshot['cash'] = bs.get('Cash And Cash Equivalents', None)
-                snapshot['current_assets'] = bs.get('Current Assets', None)
-                snapshot['current_liabilities'] = bs.get('Current Liabilities', None)
+                snapshot['total_assets'] = self._safe_float(bs.get('Total Assets'))
+                snapshot['total_debt'] = self._safe_float(bs.get('Total Debt'))
+                snapshot['total_equity'] = self._safe_float(bs.get('Stockholders Equity'))
+                snapshot['total_cash'] = self._safe_float(bs.get('Cash And Cash Equivalents'))
+                snapshot['current_assets'] = self._safe_float(bs.get('Current Assets'))
+                snapshot['current_liabilities'] = self._safe_float(bs.get('Current Liabilities'))
 
             # From cashflow
-            if snapshot_date in cashflow.columns:
+            if cashflow is not None and snapshot_date in cashflow.columns:
                 cf = cashflow[snapshot_date]
-                snapshot['operating_cashflow'] = cf.get('Operating Cash Flow', None)
-                snapshot['free_cashflow'] = cf.get('Free Cash Flow', None)
-                snapshot['capex'] = cf.get('Capital Expenditure', None)
+                snapshot['operating_cashflow'] = self._safe_float(cf.get('Operating Cash Flow'))
+                snapshot['free_cashflow'] = self._safe_float(cf.get('Free Cash Flow'))
 
-            # Calculate derived metrics if we have the data
-            if snapshot.get('total_revenue') and snapshot.get('net_income'):
-                snapshot['profit_margins'] = float(snapshot['net_income']) / float(snapshot['total_revenue'])
+            # Calculate derived metrics
+            rev = snapshot.get('total_revenue')
+            ni = snapshot.get('net_income')
+            oi = snapshot.get('operating_income')
+            eq = snapshot.get('total_equity')
+            td = snapshot.get('total_debt')
+            ca = snapshot.get('current_assets')
+            cl = snapshot.get('current_liabilities')
 
-            if snapshot.get('total_revenue') and snapshot.get('operating_income'):
-                snapshot['operating_margins'] = float(snapshot['operating_income']) / float(snapshot['total_revenue'])
-
-            if snapshot.get('net_income') and snapshot.get('total_equity'):
-                snapshot['return_on_equity'] = float(snapshot['net_income']) / float(snapshot['total_equity'])
-
-            if snapshot.get('total_debt') and snapshot.get('total_equity'):
-                snapshot['debt_to_equity'] = float(snapshot['total_debt']) / float(snapshot['total_equity'])
-
-            if snapshot.get('current_assets') and snapshot.get('current_liabilities'):
-                snapshot['current_ratio'] = float(snapshot['current_assets']) / float(snapshot['current_liabilities'])
+            if rev and ni:
+                snapshot['profit_margins'] = ni / rev
+            if rev and oi:
+                snapshot['operating_margins'] = oi / rev
+            if rev and snapshot.get('ebitda'):
+                snapshot['ebitda_margins'] = snapshot['ebitda'] / rev
+            if ni and eq and eq != 0:
+                snapshot['return_on_equity'] = ni / eq
+            if ni and snapshot.get('total_assets') and snapshot['total_assets'] != 0:
+                snapshot['return_on_assets'] = ni / snapshot['total_assets']
+            if td is not None and eq and eq != 0:
+                snapshot['debt_to_equity'] = td / eq
+            if ca and cl and cl != 0:
+                snapshot['current_ratio'] = ca / cl
 
             return snapshot
 
         except Exception as e:
-            logger.warning(f'{ticker} ({date_str}): Error extracting snapshot - {e}')
+            logger.warning(f'{ticker} ({snapshot_date}): Error extracting snapshot - {e}')
             return None
 
+    @staticmethod
+    def _safe_float(val) -> Optional[float]:
+        """Safely convert a value to float, returning None on failure."""
+        if val is None:
+            return None
+        try:
+            import math
+            f = float(val)
+            return f if not math.isnan(f) else None
+        except (ValueError, TypeError):
+            return None
+
+    # All columns in fundamental_history that we populate
+    SNAPSHOT_COLUMNS = [
+        'asset_id', 'snapshot_date',
+        'volume', 'market_cap', 'shares_outstanding',
+        'pe_ratio', 'pb_ratio', 'ps_ratio', 'peg_ratio',
+        'price_to_book', 'price_to_sales',
+        'enterprise_to_revenue', 'enterprise_to_ebitda',
+        'profit_margins', 'operating_margins', 'gross_margins', 'ebitda_margins',
+        'return_on_assets', 'return_on_equity',
+        'revenue_growth', 'earnings_growth', 'earnings_quarterly_growth',
+        'revenue_per_share',
+        'total_cash', 'total_debt', 'debt_to_equity',
+        'current_ratio', 'quick_ratio',
+        'operating_cashflow', 'free_cashflow',
+        'trailing_eps', 'forward_eps', 'book_value',
+        'dividend_rate', 'dividend_yield', 'payout_ratio',
+        'beta',
+        'fifty_day_average', 'two_hundred_day_average',
+        'fifty_two_week_high', 'fifty_two_week_low',
+        'vix',
+    ]
+
     def save_snapshots(self, asset_id: int, snapshots: List[Dict]):
-        """Save snapshots to database."""
+        """Save snapshots to database, inserting all available columns."""
+        cols = self.SNAPSHOT_COLUMNS
+        placeholders = ', '.join(['?'] * len(cols))
+        col_names = ', '.join(cols)
+
         for snapshot in snapshots:
             try:
-                self.cursor.execute('''
-                    INSERT INTO fundamental_history (
-                        asset_id, snapshot_date, market_cap, pe_ratio, pb_ratio,
-                        profit_margins, operating_margins, return_on_equity,
-                        revenue_growth, earnings_growth, debt_to_equity,
-                        current_ratio, free_cashflow, beta, vix
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ''', (
-                    asset_id,
-                    snapshot['snapshot_date'],
-                    snapshot.get('market_cap'),
-                    snapshot.get('pe_ratio'),
-                    snapshot.get('pb_ratio'),
-                    snapshot.get('profit_margins'),
-                    snapshot.get('operating_margins'),
-                    snapshot.get('return_on_equity'),
-                    snapshot.get('revenue_growth'),
-                    snapshot.get('earnings_growth'),
-                    snapshot.get('debt_to_equity'),
-                    snapshot.get('current_ratio'),
-                    snapshot.get('free_cashflow'),
-                    snapshot.get('beta', 1.0),
-                    snapshot.get('vix')
-                ))
+                values = [asset_id, snapshot['snapshot_date']]
+                # Fill remaining columns from snapshot dict (skip asset_id, snapshot_date)
+                for col in cols[2:]:
+                    values.append(snapshot.get(col))
+
+                self.cursor.execute(
+                    f'INSERT INTO fundamental_history ({col_names}) VALUES ({placeholders})',
+                    values,
+                )
             except sqlite3.IntegrityError:
-                # Snapshot already exists
                 pass
             except Exception as e:
                 logger.warning(f'Error saving snapshot: {e}')
@@ -335,7 +409,6 @@ class HistoricalSnapshotFetcher:
         snapshots = self.fetch_historical_snapshots(ticker)
 
         if snapshots:
-            # Save to database
             self.save_snapshots(asset_id, snapshots)
             logger.info(f'{ticker}: Saved {len(snapshots)} snapshots')
             return len(snapshots)
@@ -350,28 +423,87 @@ class HistoricalSnapshotFetcher:
 
 def main():
     """Main execution function."""
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Populate historical fundamental snapshots')
+    parser.add_argument('--refresh', action='store_true',
+                        help='Re-fetch tickers that have sparse/empty data (not just missing ones)')
+    parser.add_argument('--tickers', type=str, default=None,
+                        help='Comma-separated list of specific tickers to process')
+    args = parser.parse_args()
+
     logger.info('=' * 60)
     logger.info('Populating Historical Snapshots')
     logger.info('=' * 60)
 
     fetcher = HistoricalSnapshotFetcher()
 
-    # Get stocks without snapshots
-    stocks = fetcher.get_stocks_without_snapshots()
-    logger.info(f'Found {len(stocks)} stocks without historical snapshots')
+    if args.tickers:
+        # Process specific tickers
+        ticker_list = [t.strip().upper() for t in args.tickers.split(',')]
+        stocks = []
+        for t in ticker_list:
+            row = fetcher.cursor.execute(
+                'SELECT ticker, current_price, sector, industry FROM current_stock_data WHERE ticker = ?',
+                (t,)
+            ).fetchone()
+            if row:
+                stocks.append(row)
+            else:
+                logger.warning(f'{t}: Not found in current_stock_data')
+    elif args.refresh:
+        # Get tickers with sparse data (few non-null fields in latest snapshot)
+        stocks = fetcher.cursor.execute('''
+            SELECT c.ticker, c.current_price, c.sector, c.industry
+            FROM current_stock_data c
+            WHERE c.current_price IS NOT NULL
+            AND (
+                -- Not in assets at all
+                c.ticker NOT IN (SELECT DISTINCT symbol FROM assets)
+                OR
+                -- In assets but latest snapshot has mostly nulls
+                c.ticker IN (
+                    SELECT a.symbol FROM assets a
+                    JOIN fundamental_history f ON f.asset_id = a.id
+                    GROUP BY a.symbol
+                    HAVING SUM(CASE WHEN f.pe_ratio IS NOT NULL
+                                      OR f.trailing_eps IS NOT NULL
+                                      OR f.market_cap IS NOT NULL
+                               THEN 1 ELSE 0 END) = 0
+                )
+            )
+            ORDER BY c.ticker
+        ''').fetchall()
+    else:
+        stocks = fetcher.get_stocks_without_snapshots()
+
+    logger.info(f'Found {len(stocks)} stocks to process')
 
     if not stocks:
-        logger.info('All stocks already have snapshots!')
+        logger.info('Nothing to do!')
+        fetcher.close()
         return 0
 
-    # Process each stock
+    # For --refresh, delete existing empty snapshots before re-fetching
+    if args.refresh:
+        for (ticker, *_) in stocks:
+            asset = fetcher.cursor.execute(
+                'SELECT id FROM assets WHERE symbol = ?', (ticker,)
+            ).fetchone()
+            if asset:
+                fetcher.cursor.execute(
+                    'DELETE FROM fundamental_history WHERE asset_id = ?', (asset[0],)
+                )
+        fetcher.conn.commit()
+        logger.info(f'Cleared existing empty snapshots for {len(stocks)} tickers')
+
     total_snapshots = 0
     successful_stocks = 0
     failed_stocks = 0
 
     for i, (ticker, price, sector, industry) in enumerate(stocks, 1):
         try:
-            logger.info(f'\n[{i}/{len(stocks)}] Processing {ticker}...')
+            logger.info(f'[{i}/{len(stocks)}] Processing {ticker}...')
             count = fetcher.process_stock(ticker, sector, industry)
 
             if count > 0:
@@ -380,25 +512,15 @@ def main():
             else:
                 failed_stocks += 1
 
-            # Progress update every 10 stocks
             if i % 10 == 0:
-                logger.info(f'\nProgress: {i}/{len(stocks)} stocks processed')
-                logger.info(f'  Successful: {successful_stocks}')
-                logger.info(f'  Failed: {failed_stocks}')
-                logger.info(f'  Total snapshots: {total_snapshots}')
+                logger.info(f'Progress: {i}/{len(stocks)} | OK: {successful_stocks} | Fail: {failed_stocks} | Snapshots: {total_snapshots}')
 
         except Exception as e:
             logger.error(f'{ticker}: Unexpected error - {e}')
             failed_stocks += 1
 
-    # Summary
-    logger.info('\n' + '=' * 60)
-    logger.info('Historical Snapshot Population Complete!')
     logger.info('=' * 60)
-    logger.info(f'Total stocks processed: {len(stocks)}')
-    logger.info(f'Successful: {successful_stocks}')
-    logger.info(f'Failed: {failed_stocks}')
-    logger.info(f'Total snapshots created: {total_snapshots}')
+    logger.info(f'Done! Processed: {len(stocks)} | OK: {successful_stocks} | Failed: {failed_stocks} | Snapshots: {total_snapshots}')
     logger.info('=' * 60)
 
     fetcher.close()

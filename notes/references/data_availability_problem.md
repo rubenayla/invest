@@ -138,7 +138,7 @@ Now NNs use the SAME fundamental data as traditional DCF/RIM models.
 ## FILES MODIFIED
 
 ### Training Scripts
-- `neural_network/training/train_single_horizon.py`
+- `models/neural_network/training/train_single_horizon.py`
   - Updated to extract 8 fundamental features in temporal sequence
   - Updated to extract 14 fundamental features in static vector
 

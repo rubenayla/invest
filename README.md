@@ -20,12 +20,15 @@ This framework is designed to be:
 The easiest way to run the full pipeline (data fetch, valuations, dashboard):
 
 ```
-/update                        # Full S&P 500 pipeline
-/update --skip-fetch           # Re-run models on existing data
-/update --universe europe      # Different universe
+/update_db                     # Refresh prices, run models, launch dashboard
+/update_db --skip-fetch        # Re-run models on existing data
+/update_db --universe europe   # Different universe
+/brief                         # Portfolio intelligence — sell signals, buy opportunities
+/research TICKER               # Deep dive one company — news, scenarios, verdict
+/size TICKER                   # Kelly criterion position sizing
 ```
 
-This fetches data, runs all models (GBM + classic valuations), generates the dashboard, and starts a live server at http://localhost:8080.
+`/update_db` fetches data, runs all models (GBM + classic valuations), generates the dashboard, and starts a live server at http://localhost:8080.
 
 ### Position Sizing (Kelly Criterion)
 
@@ -52,13 +55,13 @@ uv sync
 uv run systematic-invest
 
 # Use specific configuration
-uv run systematic-invest analysis/configs/aggressive_growth.yaml
+uv run systematic-invest dashboard/configs/aggressive_growth.yaml
 
 # International markets (Warren Buffett's Japanese favorites)
-uv run python scripts/systematic_analysis.py analysis/configs/japan_buffett_favorites.yaml --save-csv
+uv run python scripts/systematic_analysis.py dashboard/configs/japan_buffett_favorites.yaml --save-csv
 
 # Alternative: Direct script execution (also requires uv run)
-uv run python scripts/systematic_analysis.py analysis/configs/sp500_top100.yaml --save-csv
+uv run python scripts/systematic_analysis.py dashboard/configs/sp500_top100.yaml --save-csv
 
 # List available configurations
 uv run systematic-invest --list-configs
@@ -116,10 +119,10 @@ To analyze ALL S&P 500 stocks (takes 10-15 minutes):
 
 ```bash
 # Run full S&P 500 analysis with CSV output
-uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py dashboard/configs/sp500_full.yaml --save-csv
 
 # Run quietly in background (no progress output)
-uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv --quiet &
+uv run python scripts/systematic_analysis.py dashboard/configs/sp500_full.yaml --save-csv --quiet &
 
 # Check progress (if running in background)
 tail -f sp500_full_screen_*_report.txt
@@ -149,26 +152,44 @@ The framework includes several pre-built strategies:
 
 All configurations can be customized to match your investment criteria.
 
+## Deep Company Analysis
+
+For individual stock deep dives (beyond the scanner), use the analysis methodology:
+
+```
+/research TICKER                                # Run via Claude command
+.claude/commands/research.md                    # The methodology
+notes/companies/TICKER.md                       # Output: one file per company
+notes/portfolio/watchlist.yaml                   # Ranked candidates with entry prices
+```
+
+The methodology covers: news/situation research, variant perception (Steinhardt), financial verification, business quality scoring, model triangulation, inflection point detection, scenario analysis, and setup/timing assessment.
+
 ## Project Structure
 
 ```
-src/invest/
-├── analysis/           # Analysis pipeline and sector context
-├── config/            # Configuration schema and loaders
-├── data/              # Data providers (Yahoo Finance)
-├── reports/           # Report templates and formatters
-├── screening/         # Quality, value, growth, risk screening
-├── dcf.py            # DCF valuation model
-└── rim.py            # Residual Income Model
+src/invest/              # Python package (analysis, data, valuation, screening)
+scripts/                 # Runnable scripts (fetchers, predictors, dashboard)
+tests/                   # Tests
 
-analysis/configs/               # Analysis configurations
-├── default_analysis.yaml
-├── aggressive_growth.yaml
-└── sector_benchmarks.yaml
+models/                  # ML model code
+├── autoresearch/        #   5-model ensemble predicting peak 2yr returns
+├── neural_network/      #   LSTM/Transformer + GBM training & models
+└── backtesting/         #   Strategy backtesting framework
 
-scripts/
-├── systematic_analysis.py     # Main CLI
-└── dashboard.py               # Static HTML dashboard generator
+data/                    # SQLite database + raw data
+dashboard/               # HTML dashboard + scanner YAML configs
+docs/                    # MkDocs documentation site
+infra/                   # Infrastructure (Grafana)
+logs/                    # Runtime logs
+
+notes/                   # Human knowledge & analysis
+├── companies/           #   TICKER.md deep analyses
+├── portfolio/           #   Holdings, watchlist, macro context
+├── journal/             #   Transaction history
+├── theses/              #   Sector/macro investment theses
+├── references/          #   Formulas, model docs, data docs, methodology
+└── research/            #   Sector research, backtesting notes
 ```
 
 ## Output Formats
@@ -208,10 +229,10 @@ For historical context and notes, see `stuff.md`.
 uv run python scripts/systematic_analysis.py
 
 # Full S&P 500 analysis with CSV output
-uv run python scripts/systematic_analysis.py analysis/configs/sp500_full.yaml --save-csv
+uv run python scripts/systematic_analysis.py dashboard/configs/sp500_full.yaml --save-csv
 
 # Custom configuration with multiple output formats
-uv run python scripts/systematic_analysis.py analysis/configs/my_strategy.yaml --save-csv --save-json
+uv run python scripts/systematic_analysis.py dashboard/configs/my_strategy.yaml --save-csv --save-json
 ```
 
 ## Extending the Framework

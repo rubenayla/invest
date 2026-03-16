@@ -11,14 +11,14 @@ All models trained with `random_state=42, feature_fraction_seed=42, bagging_seed
 ### Full GBM Models (464 features, requires 12 quarters of history)
 
 **1. Full GBM 1-year (gbm_1y)**
-- Model: `neural_network/training/gbm_model_1y.txt`
+- Model: `models/neural_network/training/gbm_model_1y.txt`
 - Prediction Script: `scripts/run_gbm_predictions.py --variant standard --horizon 1y`
 - Performance: Rank IC **0.6146**, Decile Spread 80.4%
 - Training Time: ~25 minutes
 - Database Column: `model_name = 'gbm_1y'`
 
 **2. Full GBM 3-year (gbm_3y)**
-- Model: `neural_network/training/gbm_model_3y.txt`
+- Model: `models/neural_network/training/gbm_model_3y.txt`
 - Prediction Script: `scripts/run_gbm_predictions.py --variant standard --horizon 3y`
 - Performance: Rank IC 0.5926, Decile Spread 175.8%
 - Training Time: ~19 minutes
@@ -27,7 +27,7 @@ All models trained with `random_state=42, feature_fraction_seed=42, bagging_seed
 ### Lite GBM Models (247 features, requires 4 quarters of history)
 
 **3. Lite GBM 1-year (gbm_lite_1y)**
-- Model: `neural_network/training/gbm_lite_model_1y.txt`
+- Model: `models/neural_network/training/gbm_lite_model_1y.txt`
 - Prediction Script: `scripts/run_gbm_predictions.py --variant lite --horizon 1y`
 - Performance: Rank IC 0.5865, Decile Spread 77.2%
 - Training Time: ~19 minutes
@@ -35,7 +35,7 @@ All models trained with `random_state=42, feature_fraction_seed=42, bagging_seed
 - Coverage: Fills gaps for stocks with 4-11 quarters of data
 
 **4. Lite GBM 3-year (gbm_lite_3y)**
-- Model: `neural_network/training/gbm_lite_model_3y.txt`
+- Model: `models/neural_network/training/gbm_lite_model_3y.txt`
 - Prediction Script: `scripts/run_gbm_predictions.py --variant lite --horizon 3y`
 - Performance: Rank IC **0.6076**, Decile Spread 185.0%
 - Training Time: ~19 minutes
@@ -150,7 +150,7 @@ uv run python scripts/run_gbm_predictions.py --variant lite --horizon 3y  # 4-11
 ### Retraining Models
 
 ```bash
-cd /Users/rubenayla/repos/invest/neural_network/training
+cd /Users/rubenayla/repos/invest/models/neural_network/training
 
 # Full models (464 features)
 DYLD_LIBRARY_PATH=/opt/homebrew/opt/libomp/lib:$DYLD_LIBRARY_PATH uv run python train_gbm_stock_ranker.py --target-horizon 1y
@@ -164,8 +164,8 @@ DYLD_LIBRARY_PATH=/opt/homebrew/opt/libomp/lib:$DYLD_LIBRARY_PATH uv run python 
 ## Files Modified/Created
 
 ### Training Scripts (Modified)
-- `neural_network/training/train_gbm_stock_ranker.py` - Added random seeds
-- `neural_network/training/train_gbm_lite_stock_ranker.py` - Added random seeds
+- `models/neural_network/training/train_gbm_stock_ranker.py` - Added random seeds
+- `models/neural_network/training/train_gbm_lite_stock_ranker.py` - Added random seeds
 
 ### Prediction Scripts (Created)
 - Consolidated into `scripts/run_gbm_predictions.py` (variant + horizon flags)

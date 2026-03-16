@@ -21,27 +21,27 @@ logger = logging.getLogger(__name__)
 BACKTEST_CONFIGS = [
     {
         'name': 'SPY Benchmark',
-        'config': 'backtesting/configs/spy_benchmark.yaml',
+        'config': 'models/backtesting/configs/spy_benchmark.yaml',
         'description': 'Buy-and-hold S&P 500 (baseline)'
     },
     {
         'name': 'GBM Top Decile 1y',
-        'config': 'backtesting/configs/gbm_top_decile_1y.yaml',
+        'config': 'models/backtesting/configs/gbm_top_decile_1y.yaml',
         'description': 'Full GBM 1y model, top 10%, equal weight'
     },
     {
         'name': 'GBM Lite Top Quintile',
-        'config': 'backtesting/configs/gbm_lite_top_quintile.yaml',
+        'config': 'models/backtesting/configs/gbm_lite_top_quintile.yaml',
         'description': 'Lite GBM 1y model, top 20%, equal weight'
     },
     {
         'name': 'GBM Opportunistic 3y',
-        'config': 'backtesting/configs/gbm_opportunistic_3y.yaml',
+        'config': 'models/backtesting/configs/gbm_opportunistic_3y.yaml',
         'description': 'Opportunistic 3y model (Rank IC 0.64), prediction-weighted'
     },
     {
         'name': 'GBM Risk-Managed',
-        'config': 'backtesting/configs/gbm_risk_managed.yaml',
+        'config': 'models/backtesting/configs/gbm_risk_managed.yaml',
         'description': 'Lite GBM with inverse volatility weighting, monthly rebal'
     },
 ]
@@ -65,9 +65,9 @@ def run_backtest(config_path: str) -> dict:
 
     cmd = [
         'uv', 'run', 'python',
-        'backtesting/run_backtest.py',
+        'models/backtesting/run_backtest.py',
         config_path,
-        '--output-dir', 'backtesting/reports'
+        '--output-dir', 'models/backtesting/reports'
     ]
 
     try:
@@ -184,7 +184,7 @@ Look for highest percentage of positive years
 
 ## Next Steps
 
-1. Review detailed reports in `backtesting/reports/`
+1. Review detailed reports in `models/backtesting/reports/`
 2. Analyze portfolio composition over time
 3. Check transaction costs and turnover
 4. Validate assumptions and data quality
@@ -205,9 +205,9 @@ def main():
 
     # Check if model files exist
     models_to_check = [
-        repo_root / 'neural_network' / 'training' / 'gbm_model_1y.txt',
-        repo_root / 'neural_network' / 'training' / 'gbm_lite_model_1y.txt',
-        repo_root / 'neural_network' / 'training' / 'gbm_opportunistic_model_3y.txt',
+        repo_root / 'models' / 'neural_network' / 'training' / 'gbm_model_1y.txt',
+        repo_root / 'models' / 'neural_network' / 'training' / 'gbm_lite_model_1y.txt',
+        repo_root / 'models' / 'neural_network' / 'training' / 'gbm_opportunistic_model_3y.txt',
     ]
 
     missing_models = [m for m in models_to_check if not m.exists()]
@@ -238,7 +238,7 @@ def main():
     logger.info('PARSING RESULTS')
     logger.info('='*60)
 
-    report_dir = repo_root / 'backtesting' / 'reports'
+    report_dir = repo_root / 'models' / 'backtesting' / 'reports'
     results_df = parse_backtest_results(report_dir)
 
     logger.info(f'\nFound {len(results_df)} result files')

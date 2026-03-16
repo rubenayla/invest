@@ -53,7 +53,7 @@ uv sync --all-groups
 
 ```bash
 # Default training (2015-2024, 5000 samples)
-uv run python neural_network/training/comprehensive_neural_training.py
+uv run python models/neural_network/training/comprehensive_neural_training.py
 
 # Monitor progress
 tail -f comprehensive_training.log
@@ -82,7 +82,7 @@ tar -czf trained_models_$(date +%Y%m%d).tar.gz *.pt comprehensive_training.log
 - Run `uv sync --all-groups` again
 
 **Out of memory**
-- Reduce target_samples in neural_network/training/comprehensive_neural_training.py
+- Reduce target_samples in models/neural_network/training/comprehensive_neural_training.py
 - Or increase system RAM/swap
 
 **Training too slow**
@@ -102,7 +102,7 @@ This package contains everything needed to train neural network valuation models
 ## Quick Start
 
 1. **Install dependencies**: \`uv sync --all-groups\`
-2. **Run training**: \`uv run python neural_network/training/comprehensive_neural_training.py\`
+2. **Run training**: \`uv run python models/neural_network/training/comprehensive_neural_training.py\`
 3. **Package models**: \`tar -czf trained_models.tar.gz *.pt\`
 
 See **TRAINING_SETUP.md** for detailed instructions.

@@ -44,7 +44,7 @@ def main():
     )
     parser.add_argument(
         '--output-dir',
-        default='backtesting/reports',
+        default='models/backtesting/reports',
         help='Directory for output reports'
     )
     parser.add_argument(

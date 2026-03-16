@@ -34,7 +34,7 @@ benchmark: SPY
 strategy_type: gbm_ranking
 
 strategy:
-  model_path: 'neural_network/training/gbm_lite_model_1y.txt'
+  model_path: 'models/neural_network/training/gbm_lite_model_1y.txt'
   model_type: 'lite'
 
   # Top 20% - broader selection for diversification

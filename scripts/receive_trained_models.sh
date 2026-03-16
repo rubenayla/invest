@@ -130,3 +130,4 @@ echo "Next steps:"
 echo "  1. Compare with old model: uv run python scripts/model_comparison.py"
 echo "  2. Evaluate performance: uv run python scripts/neural_network_evaluator.py"
 echo "  3. Update model registry if better: Edit src/invest/valuation/model_registry.py"
+

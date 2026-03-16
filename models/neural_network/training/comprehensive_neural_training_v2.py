@@ -74,7 +74,7 @@ class TrainingConfig:
     max_total_epochs: int = 300
 
     # Cache configuration
-    cache_file: str = 'neural_network/training/training_data_cache.json'
+    cache_file: str = 'models/neural_network/training/training_data_cache.json'
     use_cache: bool = True
 
     # Sampling parameters
@@ -136,7 +136,7 @@ TRAINING_UNIVERSE = LARGE_CAP_UNIVERSE + ADDITIONAL_UNIVERSE
 # LOGGING SETUP
 # ============================================================================
 
-def setup_logging(log_file: str = 'neural_network/training/logs/comprehensive_training.log') -> logging.Logger:
+def setup_logging(log_file: str = 'models/neural_network/training/logs/comprehensive_training.log') -> logging.Logger:
     """Setup logging configuration with file and console output.
 
     Args:

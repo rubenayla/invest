@@ -117,7 +117,7 @@ upper = mean + 2*std
 ## Training Configuration
 
 ```bash
-uv run python neural_network/training/train_single_horizon.py \
+uv run python models/neural_network/training/train_single_horizon.py \
     --epochs 100 \
     --batch-size 32 \
     --learning-rate 0.001
@@ -200,14 +200,14 @@ PredictionResult(
 ### Core Implementation
 - `src/invest/valuation/lstm_transformer_model.py` - Main model architecture
 - `src/invest/valuation/feature_extraction.py` - Feature extraction utilities
-- `neural_network/training/train_single_horizon.py` - Training script
+- `models/neural_network/training/train_single_horizon.py` - Training script
 
 ### Database
-- `neural_network/training/stock_data.db` - Historical snapshots and returns
+- `models/neural_network/training/stock_data.db` - Historical snapshots and returns
 - Tables: `snapshots`, `price_history`, `forward_returns`, `assets`
 
 ### Trained Models
-- `neural_network/training/best_model.pt` - Best model checkpoint
+- `models/neural_network/training/best_model.pt` - Best model checkpoint
 
 ## Future Improvements
 

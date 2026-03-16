@@ -231,7 +231,7 @@ def run_comparison():
     }
 
     # Load trained neural network if available
-    trained_nn_path = Path('neural_network/models/trained_nn_2year.pt')
+    trained_nn_path = Path('models/neural_network/models/trained_nn_2year.pt')
     if trained_nn_path.exists():
         models_to_test['neural_network'] = NeuralNetworkValuationModel(model_path=trained_nn_path)
         print('✓ Using trained neural network model')

@@ -26,8 +26,8 @@ coverage.xml
 htmlcov/
 
 # Backtesting reports (generated)
-backtesting/reports/*.csv
-backtesting/reports/*.html
+models/backtesting/reports/*.csv
+models/backtesting/reports/*.html
 
 # MkDocs build output
 site/
@@ -100,7 +100,7 @@ watchlist_analysis.csv
 comprehensive_training.log
 local_training.log
 training_run.log
-neural_network/training/training_data_cache.json
+models/neural_network/training/training_data_cache.json
 
 # Neural network training artifacts
 *_training.log
@@ -111,18 +111,18 @@ cache_*.log
 incremental_*.log
 data_collection_*.log
 comprehensive_training_results_*.json
-neural_network/training/*_backup.json
-neural_network/training/*_old.json
-neural_network/training/cache_generation.log
-neural_network/training/multi_horizon_training.log
+models/neural_network/training/*_backup.json
+models/neural_network/training/*_old.json
+models/neural_network/training/cache_generation.log
+models/neural_network/training/multi_horizon_training.log
 
 # Multi-horizon training artifacts
-neural_network/training/training_*.log
-neural_network/training/multi_horizon_training_*.log
-neural_network/training/training_data_cache_multi_horizon.json
-neural_network/training/cache_backup_*.json
-neural_network/training/backups/
-neural_network/training/verify_cache_features.py
+models/neural_network/training/training_*.log
+models/neural_network/training/multi_horizon_training_*.log
+models/neural_network/training/training_data_cache_multi_horizon.json
+models/neural_network/training/cache_backup_*.json
+models/neural_network/training/backups/
+models/neural_network/training/verify_cache_features.py
 src/invest/valuation/multi_horizon_nn.py
 tests/test_multi_horizon_demo.py
 scripts/demo_multi_horizon_predictions.py
@@ -131,8 +131,8 @@ scripts/demo_multi_horizon_predictions.py
 old_artifacts/
 
 # Neural network models directory (trained models)
-neural_network/invest_training_package/
-neural_network/*.tar.gz
+models/neural_network/invest_training_package/
+models/neural_network/*.tar.gz
 
 # SQLite databases and backups
 *.db
@@ -158,5 +158,7 @@ data/sec_edgar/raw/
 tmp.md
 backups/
 .agents/scratch.md
-autoresearch/catboost_info/
-autoresearch/run.log
+models/autoresearch/catboost_info/
+models/autoresearch/run.log
+catboost_info/
+run.log

@@ -1,21 +1,45 @@
 watchlist:
-  # Top priorities
-  priority:
-    - ticker: PTON
-      name: Peloton Interactive, Inc.
-      notes: Turnaround; improving cash flow
-    - ticker: SMFG
-      name: Sumitomo Mitsui Financial Group
-      notes: Improving fundamentals; rate-sensitive
-
-  # Scanner top picks (2026-02-01 preview)
-  scanner_top:
-    - ticker: CF
-      name: CF Industries Holdings
-      notes: Scanner top pick (score 80.8)
+  # Deep-analyzed candidates (2026-03-16, autoresearch + methodology)
+  # Ranked by expected value from scenario analysis
+  analyzed:
+    - ticker: PFE
+      name: Pfizer Inc.
+      verdict: WATCH
+      expected_return: "+17.5%"
+      notes: "Highest EV but dividend unsustainable (>100% payout), 3.7x net debt/EBITDA from Seagen. Buy at $22-23."
+    - ticker: PRU
+      name: Prudential Financial
+      verdict: WATCH
+      expected_return: "+13.5%"
+      notes: "P/B 1.0x, 5.9% yield, but forward EPS $15 vs trailing $9 is aggressive. Buy at $90 (book value)."
+    - ticker: GOOGL
+      name: Alphabet Inc.
+      verdict: WATCH
+      expected_return: "+11.5%"
+      notes: "Quality 21/25, models bullish, but $91B capex explosion + Search disruption + antitrust. Add below $270."
+    - ticker: ACGL
+      name: Arch Capital Group
+      verdict: WATCH
+      expected_return: "+8%"
+      notes: "Fortress balance sheet (D/E 0.11, 18% FCF yield) but insurance cycle normalizing. Buy at $80-85."
+    - ticker: ABT
+      name: Abbott Laboratories
+      verdict: WATCH
+      expected_return: "+7.6%"
+      notes: "Quality 18/25, flat revenue (0.5% CAGR), NEC litigation tail risk. Buy at $95-100."
     - ticker: SYF
       name: Synchrony Financial
-      notes: Scanner top pick (score 78.3)
+      verdict: WATCH (Low)
+      expected_return: "+5.7%"
+      notes: "Quality 14/25, provisions rising again ($1.9B→$3.5B), subprime-heavy. Buy below $50."
+    - ticker: CF
+      name: CF Industries Holdings
+      verdict: WATCH
+      expected_return: null
+      notes: "Cyclical value trap risk. Earnings normalizing from 2022 peak. Buy at $70-75."
+
+  # Previous scanner top picks (2026-02-01, may be stale)
+  scanner_top:
     - ticker: AMP
       name: Ameriprise Financial
       notes: Scanner top pick (score 74.4)

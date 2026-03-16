@@ -16,7 +16,7 @@ This neural network system predicts future stock returns based on fundamental fi
 ## Directory Structure
 
 ```
-neural_network/
+models/neural_network/
 ├── models/              # Trained model files (*.pt)
 ├── training/           # Training scripts and results
 │   ├── comprehensive_neural_training.py
@@ -33,7 +33,7 @@ neural_network/
 
 The training script automatically caches collected historical data to avoid re-downloading on subsequent runs:
 
-- **Cache location**: `neural_network/training/training_data_cache.json`
+- **Cache location**: `models/neural_network/training/training_data_cache.json`
 - **Auto-saves**: After collecting training data
 - **Auto-loads**: On next run if config matches (start_year, end_year, target_samples)
 - **Disable**: Set `use_cache=False` in `TrainingConfig`
@@ -43,14 +43,14 @@ This dramatically speeds up training iterations - **data collection can take hou
 ### Local Training (Mac)
 ```bash
 cd ~/repos/invest
-uv run python neural_network/training/comprehensive_neural_training.py
+uv run python models/neural_network/training/comprehensive_neural_training.py
 ```
 
 ### GPU Training (Windows WSL)
 From Mac:
 ```bash
 # Start training remotely
-ssh ruben@192.168.1.117 'wsl bash -c "cd ~/repos/invest && setsid bash ./neural_network/training/start_gpu_training.sh > training.log 2>&1 < /dev/null &"'
+ssh ruben@192.168.1.117 'wsl bash -c "cd ~/repos/invest && setsid bash ./models/neural_network/training/start_gpu_training.sh > training.log 2>&1 < /dev/null &"'
 
 # Check progress
 ssh ruben@192.168.1.117 'wsl cat ~/repos/invest/comprehensive_training.log'

@@ -152,7 +152,7 @@ Tests are marked with these categories:
 **Auto-skip behavior**: Tests marked with `requires_models` or `requires_data` will automatically be skipped if the resources don't exist. You'll see a helpful message:
 
 ```
-SKIPPED [1] tests/test_gbm_models.py:15: Trained models not found. Train models first with scripts in neural_network/training/
+SKIPPED [1] tests/test_gbm_models.py:15: Trained models not found. Train models first with scripts in models/neural_network/training/
 ```
 
 ---

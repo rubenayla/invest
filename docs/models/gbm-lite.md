@@ -175,8 +175,8 @@ print(f"Top 20% stocks: {len(top_stocks)}")
 ## References
 
 - [GBM Full Models](gbm-full.md) - For comparison with full-featured version
-- [Training Script](https://github.com/rubenayla/invest/blob/main/neural_network/training/train_gbm_lite_stock_ranker.py)
-- [Feature Configuration](https://github.com/rubenayla/invest/blob/main/neural_network/training/gbm_lite_feature_config.py)
+- [Training Script](https://github.com/rubenayla/invest/blob/main/models/neural_network/training/train_gbm_lite_stock_ranker.py)
+- [Feature Configuration](https://github.com/rubenayla/invest/blob/main/models/neural_network/training/gbm_lite_feature_config.py)
 - [Prediction Script](https://github.com/rubenayla/invest/blob/main/scripts/run_gbm_predictions.py)
 
 ## Academic Background

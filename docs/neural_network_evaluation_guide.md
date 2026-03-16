@@ -19,7 +19,7 @@ The neural network valuation model has been enhanced with:
 
 ```bash
 # Train with 20 years of data (2004-2024)
-uv run python neural_network/training/comprehensive_neural_training.py
+uv run python models/neural_network/training/comprehensive_neural_training.py
 
 # Monitor progress in another terminal
 uv run python scripts/training_monitor.py

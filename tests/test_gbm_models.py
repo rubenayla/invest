@@ -16,7 +16,7 @@ def test_gbm_model_exists():
     import lightgbm as lgb
 
     project_root = Path(__file__).parent.parent
-    model_path = project_root / 'neural_network/training/gbm_model_1y.txt'
+    model_path = project_root / 'models/neural_network/training/gbm_model_1y.txt'
 
     # This test will be skipped if model doesn't exist
     model = lgb.Booster(model_file=str(model_path))

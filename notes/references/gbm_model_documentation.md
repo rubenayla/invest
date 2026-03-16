@@ -125,7 +125,7 @@ Top/bottom both get high confidence because the model is confident about extreme
 
 ### Training
 ```bash
-cd /Users/rubenayla/repos/invest/neural_network/training
+cd /Users/rubenayla/repos/invest/models/neural_network/training
 export DYLD_LIBRARY_PATH=/opt/homebrew/opt/libomp/lib:$DYLD_LIBRARY_PATH
 uv run python train_gbm_stock_ranker.py --target-horizon 1y
 ```

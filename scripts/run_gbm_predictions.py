@@ -25,7 +25,7 @@ import pandas as pd
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
-sys.path.insert(0, str(Path(__file__).parent.parent / 'neural_network/training'))
+sys.path.insert(0, str(Path(__file__).parent.parent / 'models' / 'neural_network' / 'training'))
 
 from invest.data.stock_data_reader import StockDataReader
 
@@ -454,7 +454,7 @@ Examples:
 
     # Paths
     project_root = Path(__file__).parent.parent
-    model_path = project_root / 'neural_network/models/gbm' / metadata['model_file']
+    model_path = project_root / 'models' / 'neural_network' / 'models' / 'gbm' / metadata['model_file']
     db_path = project_root / 'data/stock_data.db'
 
     # Load variant-specific config

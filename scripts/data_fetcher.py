@@ -674,7 +674,9 @@ Data fetching complete:
         'failed_tickers': [ticker for ticker, data in results.items() if 'error' in data]
     }
 
-    summary_file = Path(f'data_fetch_summary_{args.universe}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json')
+    logs_dir = Path(__file__).resolve().parent.parent / 'logs'
+    logs_dir.mkdir(exist_ok=True)
+    summary_file = logs_dir / f'data_fetch_summary_{args.universe}_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
     with open(summary_file, 'w') as f:
         json.dump(summary, f, indent=2)
 

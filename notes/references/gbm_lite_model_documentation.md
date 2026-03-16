@@ -96,13 +96,13 @@ GBM Lite was created to extend coverage to these stocks while maintaining predic
 ## Files Created
 
 ### Configuration
-- `neural_network/training/gbm_lite_feature_config.py`
+- `models/neural_network/training/gbm_lite_feature_config.py`
   - Defines reduced feature set
   - Exports MIN_QUARTERS_REQUIRED = 4
   - Mirrors full GBM config structure
 
 ### Training
-- `neural_network/training/train_gbm_lite_stock_ranker.py`
+- `models/neural_network/training/train_gbm_lite_stock_ranker.py`
   - Trains GBM Lite model
   - Uses same training protocol as full GBM
   - Saves to `gbm_lite_model_1y.txt`
@@ -114,13 +114,13 @@ GBM Lite was created to extend coverage to these stocks while maintaining predic
   - Saves results with model_name='gbm_lite_1y'
 
 ### Model File
-- `neural_network/training/gbm_lite_model_1y.txt` (117 iterations, early stopped)
+- `models/neural_network/training/gbm_lite_model_1y.txt` (117 iterations, early stopped)
 
 ## Usage
 
 ### Train Model
 ```bash
-cd neural_network/training
+cd models/neural_network/training
 DYLD_LIBRARY_PATH=/opt/homebrew/opt/libomp/lib:$DYLD_LIBRARY_PATH \
   uv run python train_gbm_lite_stock_ranker.py --target-horizon 1y
 ```

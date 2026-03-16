@@ -44,8 +44,8 @@ Excluded sectors vulnerable to disruption:
 
 This used to be a one-off script. The maintained implementation is now:
 
-- Thresholds: `analysis/configs/watchlist_analysis.yaml`
-- Scoring: `analysis/configs/scanner_config.yaml` and `src/invest/scanner/scoring_engine.py`
+- Thresholds: `dashboard/configs/watchlist_analysis.yaml`
+- Scoring: `dashboard/configs/scanner_config.yaml` and `src/invest/scanner/scoring_engine.py`
 - Filters: `src/invest/screening/value.py`, `src/invest/screening/quality.py`, `src/invest/screening/growth.py`, `src/invest/screening/risk.py`
 
 ## Notes

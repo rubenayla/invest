@@ -4,7 +4,7 @@ Learn how to customize the analysis framework by creating and modifying configur
 
 ## Configuration Structure
 
-All analysis parameters are defined in YAML configuration files stored in the `analysis/configs/` directory. Each configuration defines:
+All analysis parameters are defined in YAML configuration files stored in the `dashboard/configs/` directory. Each configuration defines:
 
 - **Stock universe** - Which stocks to analyze
 - **Screening criteria** - Quality, value, growth, and risk thresholds
@@ -152,7 +152,7 @@ The framework includes several ready-to-use configurations:
 
 ### Conservative Value Strategy
 ```yaml
-# analysis/configs/conservative_value.yaml
+# dashboard/configs/conservative_value.yaml
 quality:
   min_roic: 0.15      # High quality requirement
   min_roe: 0.18
@@ -165,7 +165,7 @@ value:
 
 ### Aggressive Growth Strategy
 ```yaml
-# analysis/configs/aggressive_growth.yaml
+# dashboard/configs/aggressive_growth.yaml
 growth:
   min_revenue_growth: 0.15  # High growth requirement
   min_earnings_growth: 0.20
@@ -177,7 +177,7 @@ value:
 
 ### S&P 500 Full Analysis
 ```yaml
-# analysis/configs/sp500_full.yaml
+# dashboard/configs/sp500_full.yaml
 universe:
   pre_screening_universe: "sp500"
   
@@ -190,7 +190,7 @@ max_results: 503      # Include all S&P 500 stocks
 
 Start with a similar strategy:
 ```bash
-cp analysis/configs/sp500_full.yaml analysis/configs/my_strategy.yaml
+cp dashboard/configs/sp500_full.yaml dashboard/configs/my_strategy.yaml
 ```
 
 ### 2. Modify Parameters
@@ -216,7 +216,7 @@ custom_filters:
 ### 3. Test Configuration
 
 ```bash
-uv run python scripts/systematic_analysis.py analysis/configs/my_strategy.yaml --save-csv
+uv run python scripts/systematic_analysis.py dashboard/configs/my_strategy.yaml --save-csv
 ```
 
 ## Advanced Configuration

@@ -91,7 +91,7 @@ Dense(5 outputs) ← 1m, 3m, 6m, 1y, 2y predictions
 
 ### SQLite Database Architecture
 
-**Location**: `neural_network/training/stock_data.db` (1.2GB)
+**Location**: `models/neural_network/training/stock_data.db` (1.2GB)
 
 #### Main Table: `current_stock_data`
 
@@ -259,16 +259,16 @@ data['financials'] = {
 
 ```bash
 # Collect training data from database
-uv run python neural_network/training/collect_training_data.py
+uv run python models/neural_network/training/collect_training_data.py
 
 # Train multi-horizon model
-uv run python neural_network/training/train_multi_horizon.py \
+uv run python models/neural_network/training/train_multi_horizon.py \
     --epochs 100 \
     --batch-size 32 \
     --learning-rate 0.001
 
 # Evaluate on test set
-uv run python neural_network/training/evaluate_model.py
+uv run python models/neural_network/training/evaluate_model.py
 ```
 
 ### Loss Function
@@ -432,7 +432,7 @@ info = {**data.get('info', {}), **(data.get('financials') or {})}
 **Solution**:
 ```bash
 # Retrain with more data
-uv run python neural_network/training/train_multi_horizon.py \
+uv run python models/neural_network/training/train_multi_horizon.py \
     --min-samples 10000 \
     --epochs 200
 ```

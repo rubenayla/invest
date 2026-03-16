@@ -135,8 +135,8 @@ uv run python scripts/run_autoresearch_predictions.py
 
 ### Source Files
 
-- Training/evaluation framework: `autoresearch/evaluate.py` (fixed, read-only)
-- Model implementation: `autoresearch/train.py`
+- Training/evaluation framework: `models/autoresearch/evaluate.py` (fixed, read-only)
+- Model implementation: `models/autoresearch/train.py`
 - Production prediction script: `scripts/run_autoresearch_predictions.py`
 
 ## Known Limitations

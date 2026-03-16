@@ -36,10 +36,10 @@ The `.claude/` folder contains **ONLY persistent project knowledge**:
 - `logs/` - All log files
 - `docs/` - Extended documentation
 - `dashboard/` - Dashboard HTML/JS/CSS
-- `neural_network/` - Neural network code
-- `backtesting/` - Backtesting code
+- `models/` - ML models (neural_network/, backtesting/, autoresearch/)
+
+- `infra/` - Infrastructure configs (grafana/)
 - `config/` - Configuration files
-- `configs/` - Legacy configs (evaluate for removal)
 - `notes/` - Development notes
 - `reports/` - Generated reports
 - `old_artifacts/` - Archived old code
@@ -57,7 +57,7 @@ The `.claude/` folder contains **ONLY persistent project knowledge**:
 - Log files (`*.log`) → Move to `logs/`
 - Cache files (`*.pkl`, `*.cache`) → Move to `data/` or appropriate subdirectory
 - Temporary scripts (`temp_*.py`, `test_*.py`) → Move to `/tmp/` or delete after use
-- Model files (`*.pth`, `*.pt`) → Move to `neural_network/models/`
+- Model files (`*.pth`, `*.pt`) → Move to `models/neural_network/models/`
 - Data files (`*.csv`, `*.json` with data) → Move to `data/`
 - Debugging files → Move to `.claude/` if needed for memory, otherwise delete
 
