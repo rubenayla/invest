@@ -284,8 +284,8 @@ class AsyncStockDataFetcher:
         for attempt in range(max_retries):
             try:
                 if attempt > 0:
-                    # Exponential backoff: 5s, 10s, 20s, 30s, 30s, 30s (capped)
-                    wait_time = min(5 * (2 ** (attempt - 1)), 30)
+                    # Exponential backoff: 10s, 30s, 60s, 120s, 120s (capped)
+                    wait_time = min(10 * (3 ** (attempt - 1)), 120)
                     logger.info(f"{ticker}: Retry {attempt}/{max_retries} after {wait_time}s wait")
                     time.sleep(wait_time)
 
