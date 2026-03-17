@@ -104,7 +104,8 @@ def add_price_features(fund_df, price_df):
                 feats[name] = (price_now / closes[idx - lb]) - 1.0 if idx >= lb else np.nan
 
             start = max(0, idx - 60)
-            daily_rets = np.diff(closes[start:idx + 1]) / closes[start:idx]
+            window = closes[start:idx + 1]
+            daily_rets = np.diff(window) / window[:-1]
             feats['vol_60d'] = np.std(daily_rets) * np.sqrt(252) if len(daily_rets) > 5 else np.nan
 
             if idx >= 252:
