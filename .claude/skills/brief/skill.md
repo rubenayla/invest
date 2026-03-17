@@ -108,14 +108,29 @@ For each holding in `notes/portfolio/portfolio.md`, run parallel subagents to an
 
 2. **Cross-reference with watchlist** (`notes/portfolio/watchlist.md`): highlight stocks that appear in both the watchlist AND the top AutoResearch picks.
 
-3. **For the top 3-5 opportunities**, launch subagents (parallel) to:
-   - Read the company notes file if it exists (`notes/companies/TICKER.md`)
-   - Check model agreement (how many of the 7 dashboard models are bullish?)
-   - Check insider/activist signals from the dashboard health data
-   - Read any past transaction journal entries for this ticker (`notes/journal/transactions/`)
-   - Consider the portfolio context: does this add diversification or increase concentration?
+3. **Check which top picks need fresh LLM analysis.** Query existing analyses:
+   ```bash
+   uv run python -c "
+   import sqlite3
+   conn = sqlite3.connect('data/stock_data.db')
+   rows = conn.execute('''
+       SELECT ticker, timestamp, json_extract(details_json, '$.verdict') as verdict
+       FROM valuation_results WHERE model_name = 'llm_deep_analysis'
+   ''').fetchall()
+   for r in rows:
+       print(f'{r[0]:8s} {r[2]:6s} {r[1]}')
+   conn.close()
+   "
+   ```
+   Skip tickers that have an LLM analysis less than 7 days old. Also skip speculative/illiquid tickers (market cap < $5B, ADV < 1M).
 
-4. Each subagent returns: **ticker, one-line thesis, model agreement (X/7 bullish), AutoResearch upside, key risk, suggested action (BUY/WATCH/PASS)**.
+4. **For the top 5-8 opportunities without fresh analysis**, launch parallel subagents. Each subagent MUST follow the FULL methodology in `.claude/commands/research.md` — all 9 steps including web search, variant perception, scenario analysis, and DB write. Pass this prompt to each agent:
+
+   > "You are an investment analyst. Read and follow the FULL methodology in `/path/to/invest/.claude/commands/research.md` to produce a deep company analysis for **TICKER**. Follow ALL steps 0-9. Save to `notes/companies/TICKER.md`. Today is {DATE}. Be honest and critical."
+
+5. For tickers that already have a fresh LLM analysis, just read the existing `notes/companies/TICKER.md` and summarize the verdict.
+
+6. Each stock in the brief should show: **ticker, verdict (BUY/WATCH/PASS), expected value %, entry price, one-line variant perception, next catalyst**.
 
 ## Phase 4: The Brief
 

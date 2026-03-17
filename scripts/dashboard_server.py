@@ -384,7 +384,7 @@ async def index(request: Request) -> HTMLResponse:
         "update_status": update_manager.status_dict,
     }
     html = generator.generate_dashboard_html(stocks_data, progress_data, metadata)
-    return HTMLResponse(html)
+    return HTMLResponse(html, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
 async def api_health(request: Request) -> JSONResponse:

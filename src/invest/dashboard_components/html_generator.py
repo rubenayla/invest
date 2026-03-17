@@ -213,9 +213,8 @@ class HTMLGenerator:
         sec = health.get("sec_data", {})
         db_size = health.get("db_size_mb", 0)
 
-        # Overall staleness: find the most outdated model
-        max_age = 0
-        most_stale_name = ""
+        # Overall staleness: worst of models AND price data
+        max_model_age = 0
         display_models = [
             "autoresearch", "gbm_opportunistic_1y", "gbm_opportunistic_3y",
             "gbm_1y", "gbm_3y", "dcf", "rim",
@@ -223,14 +222,17 @@ class HTMLGenerator:
         for m in display_models:
             info = models.get(m, {})
             age = info.get("age_hours")
-            if age is not None and age > max_age:
-                max_age = age
-                most_stale_name = m
+            if age is not None and age > max_model_age:
+                max_model_age = age
+
+        price_age = stock_data.get("age_hours") or 0
+        max_age = max(max_model_age, price_age)
 
         # Determine overall status
         if max_age > 168:  # > 1 week
             overall_cls = "stale-critical"
-            overall_label = f"Data up to {max_age / 24:.0f}d old"
+            stale_source = "prices" if price_age > max_model_age else "models"
+            overall_label = f"Some {stale_source} up to {max_age / 24:.0f}d old"
         elif max_age > 48:
             overall_cls = "stale-warning"
             overall_label = f"Data up to {max_age / 24:.0f}d old"
@@ -402,6 +404,26 @@ class HTMLGenerator:
         """Generate a single stock table row."""
         current_price = stock_data.get("current_price", 0)
         valuations = stock_data.get("valuations", {})
+        fetch_ts = stock_data.get("fetch_timestamp", "")
+        # Format timestamp for display
+        if fetch_ts:
+            try:
+                from datetime import datetime, timezone
+                ts = datetime.fromisoformat(fetch_ts)
+                age_h = (datetime.now(timezone.utc) - ts.replace(tzinfo=timezone.utc)).total_seconds() / 3600
+                if age_h < 24:
+                    updated_str = f'{age_h:.0f}h ago'
+                elif age_h < 720:
+                    updated_str = f'{age_h / 24:.0f}d ago'
+                else:
+                    updated_str = f'{age_h / 720:.0f}mo ago'
+                updated_color = '#e76a6e' if age_h > 168 else '#738091'  # Red if >7 days
+            except Exception:
+                updated_str = '?'
+                updated_color = '#738091'
+        else:
+            updated_str = 'never'
+            updated_color = '#e76a6e'
         company_name = html.escape(stock_data.get("company_name", ticker))
 
         # Create meaningful status based on what actually worked
@@ -466,7 +488,7 @@ class HTMLGenerator:
 
         return f'''
         <tr class="stock-row {new_status}">
-            <td class="ticker-cell"><span class="ticker-trigger" data-ticker="{ticker}" data-price="{current_price or 0}" onclick="toggleKebab(event, this)" title="{company_name}">{ticker} &#8942;</span><div class="kebab-menu"><div class="kebab-header">{company_name}</div><a class="kebab-item" href="/api/notes/{ticker}" target="_blank">&#128196; Analysis notes</a><div class="kebab-item" onclick="openAlarmModal('{ticker}', {current_price or 0}); closeAllKebabs();">&#128276; Price alarm</div><a class="kebab-item" href="https://finance.yahoo.com/quote/{ticker}" target="_blank" rel="noopener">&#128200; Yahoo Finance</a></div></td>
+            <td class="ticker-cell"><span class="ticker-trigger" data-ticker="{ticker}" data-price="{current_price or 0}" onclick="toggleKebab(event, this)" title="{company_name}">{ticker} &#8942;</span><div class="kebab-menu"><div class="kebab-label">{company_name}</div><div class="kebab-label" style="color:{updated_color}; padding-top:0;">Updated: {updated_str}</div><div class="kebab-sep"></div><a class="kebab-item" href="/api/notes/{ticker}" target="_blank">&#128196; Analysis notes</a><div class="kebab-item" onclick="openAlarmModal('{ticker}', {current_price or 0}); closeAllKebabs();">&#128276; Price alarm</div><a class="kebab-item" href="https://finance.yahoo.com/quote/{ticker}" target="_blank" rel="noopener">&#128200; Yahoo Finance</a></div></td>
             <td>{self._safe_format(current_price, prefix="$")}</td>
             <td>{status_html}</td>
             <td>{autoresearch_html}</td>
@@ -1494,31 +1516,37 @@ class HTMLGenerator:
             .health-row { flex-direction: column; align-items: flex-start; }
         }
 
-        /* ── Kebab Menu ── */
+        /* ── Kebab Menu (Linear/shadcn pattern) ── */
         .ticker-cell { position: relative; white-space: nowrap; }
         .ticker-trigger.has-alarm { text-shadow: 0 0 8px var(--accent-bright); }
-        .kebab-header {
-            padding: 8px 14px 6px; font-size: 12px; color: var(--text-muted, #738091);
-            border-bottom: 1px solid var(--border-subtle, #2a3040);
-            margin-bottom: 2px; font-weight: 400;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            max-width: 260px;
-        }
         .kebab-menu {
             display: none; position: absolute; left: 0;
-            background: var(--bg-panel, #1a1f2e); border: 1px solid var(--border, #2a3040);
-            border-radius: 6px; min-width: 180px; z-index: 500;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5); padding: 4px 0;
+            background: #1e2433; border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px; min-width: 200px; z-index: 500;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6); padding: 4px;
         }
         .kebab-menu.open { display: block; }
+        /* Section label — metadata, non-interactive */
+        .kebab-label {
+            padding: 6px 10px; font-size: 11px; font-weight: 500;
+            color: rgba(255,255,255,0.4);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            max-width: 240px; cursor: default; user-select: none;
+        }
+        /* Separator between metadata and actions */
+        .kebab-sep {
+            height: 1px; background: rgba(255,255,255,0.08);
+            margin: 4px -4px;
+        }
+        /* Action item — interactive */
         .kebab-item {
-            display: block; padding: 8px 14px; color: var(--text-primary, #e0e6ed);
+            display: block; padding: 7px 10px; color: rgba(255,255,255,0.88);
             text-decoration: none; font-size: 13px; cursor: pointer;
             font-family: var(--font-main, system-ui); font-weight: 400;
             white-space: nowrap; border: none; background: none; width: 100%;
-            text-align: left;
+            text-align: left; border-radius: 4px;
         }
-        .kebab-item:hover { background: var(--bg-hover, rgba(76,144,240,0.12)); }
+        .kebab-item:hover { background: rgba(255,255,255,0.08); }
 
         /* ── Alarm Bell (kept for modal) ── */
         .alarm-bell {
