@@ -1,7 +1,6 @@
 https://gexanalyzer.streamlit.app/
 
 # TODO
-- [ ] Verify stock prices actually update after /update and the "Updated: Xh ago" timestamp in the dashboard kebab menu is correct for all stocks (especially non-S&P: SQM, 8002.T, PBR, SONY, PTON)
 
 # 🎯 Priority Watchlist - March 2026
 1. **Synchrony Financial (SYF)** - Deep value play (+150% to +300% upside). Strongest fundamental pick.

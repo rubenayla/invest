@@ -275,12 +275,21 @@ def get_db_health() -> dict:
             "SELECT COUNT(*) as cnt FROM current_stock_data "
             "WHERE current_price IS NOT NULL AND fetch_timestamp < datetime('now', '-7 days')"
         ).fetchone()
+        # p80 age: 80th percentile fetch_timestamp (ignores the ~20% oldest outliers)
+        p80_row = conn.execute(
+            "SELECT fetch_timestamp FROM current_stock_data "
+            "WHERE current_price IS NOT NULL AND fetch_timestamp IS NOT NULL "
+            "ORDER BY fetch_timestamp ASC "
+            "LIMIT 1 OFFSET (SELECT CAST(COUNT(*) * 0.2 AS INTEGER) "
+            "FROM current_stock_data WHERE current_price IS NOT NULL AND fetch_timestamp IS NOT NULL)"
+        ).fetchone()
         health["stock_data"] = {
             "count": row["cnt"],
             "oldest": row["oldest"],
             "newest": row["newest"],
             "age_hours": _hours_ago(row["oldest"], now),
             "newest_age_hours": _hours_ago(row["newest"], now),
+            "p80_age_hours": _hours_ago(p80_row["fetch_timestamp"], now) if p80_row else None,
             "stale_count": stale_row["cnt"],
         }
     except Exception as exc:

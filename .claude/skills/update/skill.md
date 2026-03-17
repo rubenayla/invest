@@ -35,35 +35,44 @@ Fetch latest stock data, run all ML models, regenerate dashboard, start live ser
 
    The default universe is `sp500`. Common alternatives: `international`, `japan`, `tech`, `growth`, `europe`, `spain`, `all`, `cached`.
 
-3. **Refresh portfolio tickers** that may not be in the universe (international, non-index stocks):
+3. **Refresh ALL stale stocks in the database** (catches everything the universe missed):
    ```bash
    uv run python -c "
-   import yfinance as yf
-   import sqlite3
+   import yfinance as yf, sqlite3
    from datetime import datetime, timezone
 
    db = sqlite3.connect('data/stock_data.db')
 
-   # Portfolio tickers that may not be in standard universes
-   portfolio_tickers = ['SQM', '8002.T', 'PBR', 'SONY', 'PTON']
+   # Find all stocks with stale prices (>24h old)
+   rows = db.execute('''
+       SELECT ticker, fetch_timestamp FROM current_stock_data
+       WHERE current_price IS NOT NULL
+       AND (fetch_timestamp IS NULL OR fetch_timestamp < datetime('now', '-1 day'))
+       ORDER BY fetch_timestamp ASC
+   ''').fetchall()
+   print(f'Found {len(rows)} stale stocks to refresh')
 
-   # Find stale ones (>24h old)
-   for ticker in portfolio_tickers:
-       row = db.execute('SELECT fetch_timestamp FROM current_stock_data WHERE ticker = ?', (ticker,)).fetchone()
-       if row and row[0]:
-           ts = datetime.fromisoformat(row[0])
-           age_h = (datetime.now(timezone.utc) - ts.replace(tzinfo=timezone.utc)).total_seconds() / 3600
-           if age_h < 24:
-               continue
-       t = yf.Ticker(ticker)
-       price = t.info.get('currentPrice') or t.info.get('regularMarketPrice')
-       if price:
-           db.execute('UPDATE current_stock_data SET current_price = ?, fetch_timestamp = ? WHERE ticker = ?',
-                      (price, datetime.now().isoformat(), ticker))
-           db.execute('UPDATE valuation_results SET current_price = ? WHERE ticker = ?', (price, ticker))
-           print(f'{ticker}: updated to \${price}')
+   updated = 0
+   errors = 0
+   for ticker, ts in rows:
+       try:
+           t = yf.Ticker(ticker)
+           price = t.info.get('currentPrice') or t.info.get('regularMarketPrice')
+           if price:
+               db.execute('UPDATE current_stock_data SET current_price = ?, fetch_timestamp = ? WHERE ticker = ?',
+                          (price, datetime.now().isoformat(), ticker))
+               db.execute('UPDATE valuation_results SET current_price = ? WHERE ticker = ?', (price, ticker))
+               updated += 1
+               if updated % 20 == 0:
+                   print(f'  ... {updated}/{len(rows)} updated')
+                   db.commit()
+       except Exception as e:
+           errors += 1
+           if errors <= 5:
+               print(f'  {ticker}: error - {e}')
    db.commit()
    db.close()
+   print(f'Done: {updated} refreshed, {errors} errors, out of {len(rows)} stale')
    "
    ```
 

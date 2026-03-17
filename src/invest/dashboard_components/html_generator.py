@@ -225,14 +225,16 @@ class HTMLGenerator:
             if age is not None and age > max_model_age:
                 max_model_age = age
 
-        price_age = stock_data.get("age_hours") or 0
+        # Use p80 age (80th percentile) for prices to ignore stale scanner outliers
+        price_age = stock_data.get("p80_age_hours") or stock_data.get("age_hours") or 0
         max_age = max(max_model_age, price_age)
         stale_source = "prices" if price_age > max_model_age else "models"
+        stale_count = stock_data.get("stale_count", 0)
 
-        # Overall status: whichever is oldest wins
+        # Overall status based on p80 age (representative of the bulk of data)
         if max_age > 168:
             overall_cls = "stale-critical"
-            overall_label = f"Some {stale_source} up to {max_age / 24:.0f}d old"
+            overall_label = f"Most {stale_source} over {max_age / 24:.0f}d old"
         elif max_age > 48:
             overall_cls = "stale-warning"
             overall_label = f"Some {stale_source} up to {max_age / 24:.0f}d old"
@@ -241,7 +243,10 @@ class HTMLGenerator:
             overall_label = f"Data up to {max_age:.0f}h old"
         else:
             overall_cls = "stale-fresh"
-            overall_label = "Data is fresh"
+            if stale_count:
+                overall_label = f"Data is fresh ({stale_count} stale outliers)"
+            else:
+                overall_label = "Data is fresh"
 
         # Build model chips
         model_chips = []
