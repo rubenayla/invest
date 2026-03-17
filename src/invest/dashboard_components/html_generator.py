@@ -227,15 +227,15 @@ class HTMLGenerator:
 
         price_age = stock_data.get("age_hours") or 0
         max_age = max(max_model_age, price_age)
+        stale_source = "prices" if price_age > max_model_age else "models"
 
-        # Determine overall status
-        if max_age > 168:  # > 1 week
+        # Overall status: whichever is oldest wins
+        if max_age > 168:
             overall_cls = "stale-critical"
-            stale_source = "prices" if price_age > max_model_age else "models"
             overall_label = f"Some {stale_source} up to {max_age / 24:.0f}d old"
         elif max_age > 48:
             overall_cls = "stale-warning"
-            overall_label = f"Data up to {max_age / 24:.0f}d old"
+            overall_label = f"Some {stale_source} up to {max_age / 24:.0f}d old"
         elif max_age > 24:
             overall_cls = "stale-mild"
             overall_label = f"Data up to {max_age:.0f}h old"

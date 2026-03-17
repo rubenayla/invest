@@ -265,11 +265,15 @@ def get_db_health() -> dict:
 
     health: dict = {"ok": True, "generated_at": _now_iso()}
 
-    # ── Stock data freshness ──
+    # ── Stock data freshness (use fetch_timestamp, count stale) ──
     try:
         row = conn.execute(
-            "SELECT COUNT(*) as cnt, MIN(last_updated) as oldest, MAX(last_updated) as newest "
+            "SELECT COUNT(*) as cnt, MIN(fetch_timestamp) as oldest, MAX(fetch_timestamp) as newest "
             "FROM current_stock_data WHERE current_price IS NOT NULL"
+        ).fetchone()
+        stale_row = conn.execute(
+            "SELECT COUNT(*) as cnt FROM current_stock_data "
+            "WHERE current_price IS NOT NULL AND fetch_timestamp < datetime('now', '-7 days')"
         ).fetchone()
         health["stock_data"] = {
             "count": row["cnt"],
@@ -277,6 +281,7 @@ def get_db_health() -> dict:
             "newest": row["newest"],
             "age_hours": _hours_ago(row["oldest"], now),
             "newest_age_hours": _hours_ago(row["newest"], now),
+            "stale_count": stale_row["cnt"],
         }
     except Exception as exc:
         health["stock_data"] = {"error": str(exc)}
