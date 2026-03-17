@@ -277,6 +277,10 @@ class ScoringEngine:
 
         # P/E Ratio: 30 max, 15 target, 8 exceptional (inverse - lower is better)
         pe = data.get('financials', {}).get('trailingPE')
+        try:
+            pe = float(pe) if pe is not None else None
+        except (ValueError, TypeError):
+            pe = None
         if pe is not None and pe > 0:
             pe_score = self.normalize(pe, 8, 15, 30, inverse=True)
             scores.append(pe_score)
@@ -284,6 +288,10 @@ class ScoringEngine:
 
         # P/B Ratio: 5 max, 2.5 target, 1 exceptional (inverse)
         pb = data.get('financials', {}).get('priceToBook')
+        try:
+            pb = float(pb) if pb is not None else None
+        except (ValueError, TypeError):
+            pb = None
         if pb is not None and pb > 0:
             pb_score = self.normalize(pb, 1, 2.5, 5, inverse=True)
             scores.append(pb_score)
@@ -317,6 +325,10 @@ class ScoringEngine:
 
         # Debt/Equity as risk indicator: 2 max (risky), 0.5 target, 0 ideal
         debt_equity = data.get('financials', {}).get('debtToEquity')
+        try:
+            debt_equity = float(debt_equity) if debt_equity is not None else None
+        except (ValueError, TypeError):
+            debt_equity = None
         if debt_equity is not None:
             # Inverse: lower debt = higher score (less risky)
             de_risk_score = self.normalize(debt_equity, 0, 0.5, 2.0, inverse=True)
@@ -325,6 +337,10 @@ class ScoringEngine:
 
         # Current ratio as liquidity safety: 0.5 min (risky), 1.5 target, 3.0 safe
         current_ratio = data.get('financials', {}).get('currentRatio')
+        try:
+            current_ratio = float(current_ratio) if current_ratio is not None else None
+        except (ValueError, TypeError):
+            current_ratio = None
         if current_ratio is not None:
             cr_score = self.normalize(current_ratio, 0.5, 1.5, 3.0)
             scores.append(cr_score)
