@@ -2,23 +2,61 @@
 
 > Watchlist: [watchlist.md](watchlist.md)
 
-~$43,800 total. Source: IBKR & Revolut (FX corrected). Last updated 2026-03-18.
-~$2,300 cash on Revolut (from DIS sale) — to redeploy into AVGO on IBKR.
+~$46,100 total across IBKR + Revolut + Binance. Last updated 2026-03-18.
 
-| Ticker | Company | Value | Source | Notes |
-| :--- | :--- | ---: | :--- | :--- |
-| [SQM](../companies/SQM.md) | Soc. Quimica y Minera | ~$8,735 | Revolut | Lithium. +61% gain. |
-| [MOH](../companies/MOH.md) | Molina Healthcare | ~$7,280 | IBKR + Revolut | Distressed value. Includes proposed +$2,250 buy. |
-| [8002.T](../companies/8002.md) | Marubeni Corp | ~$7,000 | IBKR | Japan trading house. ~€6,460. |
-| [TSLA](../companies/TSLA.md) | Tesla | ~$3,345 | Revolut | AI/Robotaxi option. +40% gain. |
-| [ACGL](../companies/ACGL.md) | Arch Capital | ~$2,420 | IBKR | Insurance. +19% gain. BUY MORE? |
-| [GOOG](../companies/GOOGL.md) | Alphabet | ~$2,340 | Revolut | Tech monopoly. +11% gain. |
-| ~~DIS~~ | ~~Disney~~ | ~~SOLD~~ | ~~Revolut~~ | Sold 2026-03-18 @ $100.02. +9.7% gain. Proceeds to AVGO. |
-| [PBR](../companies/PBR.md) | Petrobras | ~$2,230 | IBKR | Brazil oil. +27% gain. |
-| [PTON](../companies/PTON.md) | Peloton | ~$2,090 | Revolut + IBKR | 200 shares + 300 limit @$4.18 pending. Turnaround bet. |
-| [SONY](../companies/SONY.md) | Sony Group | ~$1,750 | IBKR | Tech value / sensors. |
-| [CVX](../companies/CVX.md) | Chevron | ~$1,440 | IBKR | US oil major. +31% gain. |
-| [STLD](../companies/STLD.md) | Steel Dynamics | ~$1,375 | Revolut | Infrastructure/steel. +50% gain. |
-| BTC | Bitcoin | ~$790 | Binance | Macro hedge. |
+## IBKR (~$24,100 + pending AVGO order)
 
-Top 3 (SQM, MOH, 8002) = ~52% of portfolio. Heavy inflation-hedge bias (lithium, trading houses, oil). Japan ~20% (8002 + SONY). MOH is the defensive ballast.
+| Ticker | Company | Value | P&L % | Notes |
+| :--- | :--- | ---: | ---: | :--- |
+| [8002.T](../companies/8002.md) | Marubeni Corp | ~$7,300 (1.1M JPY) | +154.7% | Japan trading house. Top performer. |
+| [MOH](../companies/MOH.md) | Molina Healthcare | $4,316 | -13.2% | Distressed value. Largest USD position. |
+| [PBR](../companies/PBR.md) | Petrobras | $2,940 | +67.4% | Brazil oil. |
+| [AVGO](../companies/AVGO.md) | Broadcom | $2,560 | 0% | AI custom silicon + VMware. NEW — bought 2026-03-18 @ ~$320. |
+| [GOOG](../companies/GOOGL.md) | Alphabet | $2,460 | +2.5% | Tech monopoly. Also ~$2,087 on Revolut. |
+| [ACGL](../companies/ACGL.md) | Arch Capital | $2,266 | +11.5% | Insurance. Weakest model support — sell candidate. |
+| [PTON](../companies/PTON.md) | Peloton | $2,060 | -1.8% | Turnaround bet. Also some on Revolut. |
+| [SONY](../companies/SONY.md) | Sony Group (6758.T) | ~$2,150 (325K JPY) | -6.1% | Tech value / sensors. |
+| [CVX](../companies/CVX.md) | Chevron | $1,585 | +43.6% | US oil major. |
+| Cash | | €276 | | |
+
+## Revolut (~$19,700 + ~$2,300 cash from DIS sale)
+
+| Ticker | Company | Value (EUR) | P&L % | Notes |
+| :--- | :--- | ---: | ---: | :--- |
+| [SQM](../companies/SQM.md) | Soc. Quimica y Minera | €4,209 | +99.7% | Lithium. 63.54 shares. Largest Revolut position. |
+| [TSLA](../companies/TSLA.md) | Tesla | €3,056 | +35.3% | AI/Robotaxi option. 8.9 shares. |
+| [GOOG](../companies/GOOGL.md) | Alphabet | €2,087 | +4.5% | 7.92 shares. Also $2,460 on IBKR. |
+| [PTON](../companies/PTON.md) | Peloton | €1,182 | -35.1% | 350 shares. Also $2,060 on IBKR. |
+| [STLD](../companies/STLD.md) | Steel Dynamics | €1,119 | +29.1% | Infrastructure/steel. 7.5 shares. |
+| [MOH](../companies/MOH.md) | Molina Healthcare | €1,103 | -15.2% | 8.54 shares. Also $4,316 on IBKR. |
+| BRK.B? | (partially visible) | ~€885 | ? | |
+| ~~DIS~~ | ~~Disney~~ | ~~SOLD~~ | | Sold 2026-03-18 @ $100.02. Proceeds → AVGO on IBKR. |
+| Cash | | ~€2,100 | | From DIS sale. Migrating to IBKR. |
+
+## Binance
+
+| Ticker | Value | Notes |
+| :--- | ---: | :--- |
+| BTC | ~$790 | Macro hedge. |
+
+## Combined positions (IBKR + Revolut)
+
+| Ticker | Total Value | % of Portfolio |
+| :--- | ---: | ---: |
+| 8002.T (Marubeni) | ~$7,300 | 16% |
+| MOH | ~$5,500 | 12% |
+| SQM | ~$4,600 | 10% |
+| GOOG | ~$4,750 | 10% |
+| TSLA | ~$3,350 | 7% |
+| PTON | ~$3,350 | 7% |
+| PBR | ~$2,940 | 6% |
+| AVGO | ~$2,560 | 6% |
+| ACGL | ~$2,266 | 5% |
+| SONY | ~$2,150 | 5% |
+| CVX | ~$1,585 | 3% |
+| STLD | ~$1,225 | 3% |
+| BRK.B? | ~$970 | 2% |
+| BTC | ~$790 | 2% |
+| Cash | ~$2,600 | 6% |
+
+Top 3 (8002, MOH, GOOG) = ~38% of portfolio. More diversified than before. Japan ~21% (8002 + SONY). Transitioning Revolut → IBKR over time.

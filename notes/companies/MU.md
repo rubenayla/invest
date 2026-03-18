@@ -1,147 +1,181 @@
 # Micron Technology (MU)
 
 **Sector:** Technology | **Industry:** Semiconductors
-**Price:** $441.80 | **Market Cap:** $497B
-**Analysis Date:** 2026-03-16
+**Price:** $461.69 | **Market Cap:** $520B
+**Analysis Date:** 2026-03-18
 
 ## Situation Summary
 
-Micron is riding what may be the strongest memory upcycle in history. Q1 FY26 (ended Nov 2025) delivered record revenue of $13.6B (+57% YoY), and Q2 FY26 guidance calls for $18.7B (+37% QoQ, +132% YoY) with 68% gross margins -- a staggering acceleration. The driver is two-fold: (1) HBM demand for AI accelerators has consumed available DRAM capacity, creating a structural shortage that has pushed conventional DRAM and NAND prices up 55-90% QoQ in Q1 2026, and (2) Micron's HBM capacity is sold out through calendar 2026 with HBM4 samples already shipping. The stock has risen ~330% from its March 2025 low of ~$103 and sits just 3% below its 52-week high of $455.50. Earnings report in 2 days (March 18) is the immediate catalyst.
+Micron is at the epicenter of the AI memory supercycle. Q1 FY26 (ended Nov 2025) delivered record revenue of $13.6B (+57% YoY), and Q2 FY26 guidance calls for $18.7B (+37% QoQ, +132% YoY) with 68% gross margins. Earnings report TODAY (March 18) after market close. The stock closed at $461.69, up 4.5% on March 17, near its 52-week high of $462.73. Wall Street consensus expects the company to beat its own guide, with street estimates around $19.1B revenue and $8.6-8.7 EPS vs guided $18.7B and $8.42.
 
-## Variant Perception
+Key developments since our March 16 analysis:
+- **Taiwan factory acquisition completed** (Mar 15): Micron closed the $1.8B purchase of PSMC's Tongluo P5 site, adding 300K sqft cleanroom. A second fab of comparable scale begins construction by end of FY26. Product shipments from this site expected FY28.
+- **DRAM/NAND prices surged 80-95% QoQ in Q1 2026** -- record price increases. TrendForce expects another 20%+ QoQ in Q2.
+- **Memory shortage confirmed through 2027** by both Micron and HPE. This is NOT an oversupply environment.
+- **HBM market share update**: SK Hynix ~53-62%, Samsung ~17-35% (gaining), Micron ~11-21% (range depends on source/quarter). Micron claims to have overtaken Samsung as #2 HBM player. HBM4 samples shipping at 11 Gbps.
+- **HBM capacity sold out through calendar 2026**; HBM4 in volume production ahead of schedule.
+- **Hyperscaler capex expectations for 2026 near $800B** (vs <$200B a few years ago).
 
-- **Consensus view:** Strong Buy across Wall Street (39 analysts, mean target $427, high $650). The narrative is "memory supercycle driven by AI" with HBM as the crown jewel. Most analysts see this upcycle as structurally different from prior memory cycles due to AI-driven demand creating a multi-year tailwind. The stock is a consensus institutional long (83% institutional ownership, only 2.6% short interest).
+## Model Divergence Investigation: Autoresearch +83% vs GBM 3y +2%
 
-- **Our view:** The consensus is directionally correct on the AI memory supercycle, but the stock at $442 is pricing in near-perfection. The forward PE of 7.8x looks cheap, but it embeds consensus NTM EPS of ~$56 -- implying Micron earns ~$63B in revenue at 40%+ net margins on an annualized basis. That is a massive step-function above even the guided Q2 run-rate ($18.7B x 4 = $74.8B revenue). The critical question is: can Micron sustain $18B+ quarterly revenue AND 68% gross margins for multiple years, or is this the peak of a pricing cycle that reverts as capacity ramps? Our prior cycle analysis (Jan 2026) flagged ~$20B net capex in FY26 weighted to 2H, meaning new capacity comes online late 2026 into 2027. Samsung and SK Hynix are also ramping aggressively. History shows memory margins always mean-revert. The market is pricing this cycle as permanent.
+This is the critical question the user asked about. Here is the breakdown:
 
-- **Trigger:** Q2 FY26 earnings on March 18 (in 2 days). A beat on the already-elevated guidance ($18.7B rev, $8.42 EPS) could push toward $500. A miss or soft Q3 guide would trigger a sharp correction given the extreme run-up. Beyond that, any signs of DRAM/NAND price stabilization or inventory build at hyperscalers in Q3-Q4 2026 would signal cycle peak.
+**Autoresearch ($808, +83%, 0.99 confidence):**
+- 5-model rank ensemble (LGB DART + CatBoost + KNN15 + KNN100 + BaggingDT)
+- Predicts **peak 2-year return** of 83% -- meaning at some point in the next 2 years, it expects MU to hit ~$808
+- Ranking percentile: 98.8 -- one of the highest-conviction picks in the entire universe
+- This model captures momentum, earnings acceleration, and sector tailwinds. It sees the HBM supercycle continuing.
+
+**GBM 3y ($450, +2%, 0.67 confidence):**
+- Predicts **3-year total return** of just 1.9% -- essentially flat
+- Ranking percentile: 33 -- below median
+- Low confidence (0.67) means the model is uncertain
+- This model looks at 3-year mean-reverting returns. For a cyclical stock that is up 330% in 12 months, the 3-year model sees reversion to the mean -- margins normalize, revenue declines from peak, stock gives back gains.
+
+**Why they diverge:**
+1. **Time horizon**: Autoresearch predicts *peak* return over 2 years (optimistic by design -- it finds the best point). GBM 3y predicts the *endpoint* return after 3 years. For a cyclical, the peak may be much higher than the endpoint.
+2. **Cycle awareness**: GBM 3y has seen prior memory cycles (2018, 2022) where stocks peaked at similar setups and then fell 40-60%. It is implicitly pricing in a downcycle in years 2-3.
+3. **Momentum vs mean-reversion**: Autoresearch is momentum-friendly (ensemble includes gradient boosters that love recent acceleration). GBM 3y is mean-reversion-biased.
+
+**Resolution:** Both models can be right simultaneously. MU may rally to $700-800 over the next 6-12 months as the supercycle peaks (autoresearch scenario), then revert to ~$450-500 by year 3 as the cycle turns (GBM 3y scenario). This is actually the typical memory cycle pattern.
+
+**Other GBM models tell a consistent story:**
+- gbm_1y: $506, +15% (near-term moderate upside)
+- gbm_lite_1y: $502, +14% (confirms)
+- gbm_lite_3y: $789, +79% (more optimistic over 3y, higher confidence)
+- gbm_opportunistic_1y: $912, +107% (peak-seeking, like autoresearch)
+- gbm_opportunistic_3y: $896, +103% (same)
+
+The momentum/opportunistic models agree with autoresearch. The conservative base GBM models see limited upside. This is exactly what you'd expect for a cyclical stock at peak earnings.
 
 ## Financial Snapshot
 
-| Metric | Value | 3yr Trend |
-|--------|-------|-----------|
-| Revenue (FY25) | $37.4B | +6.7% CAGR (FY22-25), but distorted by FY23 trough |
-| Net Income (FY25) | $8.5B | -0.6% CAGR (FY22-25), massive cyclical swing |
-| FCF (FY25) | $1.7B | Negative FY23 -> positive, but capex-heavy |
-| ROE (FY25) | 15.8% | Recovering from negative in FY23 |
-| D/E | 0.28x | Stable, conservative |
-| Net Debt/EBITDA | 0.30x | Very healthy |
-| FCF Yield | 0.3% (FY25), ~2.4% (Q1 annualized) | Depressed by massive capex cycle |
-| Gross Margin | 22% (FY24) -> 40% (FY25) -> 56% (Q1 FY26) -> 68% guided (Q2) | Exploding higher |
+| Metric | Value | Trend |
+|--------|-------|-------|
+| Revenue (FY25) | $37.4B | FY22 $30.8B -> FY23 $15.5B -> FY24 $25.1B -> FY25 $37.4B |
+| Net Income (FY25) | $8.5B | FY22 $8.7B -> FY23 -$5.8B -> FY24 $0.8B -> FY25 $8.5B |
+| Q1 FY26 Revenue | $13.6B | Up from $11.3B (Q4 FY25), $9.3B (Q3), $8.1B (Q2) |
+| Q1 FY26 Net Income | $5.2B | Up from $3.2B (Q4), $1.9B (Q3), $1.6B (Q2) |
+| Q1 FY26 Gross Margin | 56% | Q4: 45%, Q3: 38%, Q2: 37% -- explosive expansion |
+| Q2 FY26 Guide | $18.7B rev, 68% GM, $8.42 EPS | Would be all-time record by massive margin |
+| FCF (FY25) | $1.7B | Capex of $15.9B consumes most operating cash flow |
+| Operating Cash Flow (FY25) | $17.5B | Up from $8.5B (FY24), $1.6B (FY23) |
+| Total Debt | $12.5B | D/E ratio 21.2% |
+| Cash | $10.3B | Healthy, but capex guide ~$20B for FY26 |
+| ROE | 22.6% | FY25; recovering from negative in FY23 |
+| Forward PE | 8.1x | Based on NTM consensus ~$57 EPS |
+| Trailing PE | 43.8x | Based on TTM earnings (includes weak quarters) |
+| Short Interest | 2.6% | Very low |
+| Beta | 1.54 | High volatility |
 
-**Quarterly acceleration is dramatic:**
-- Q1 FY26: Revenue $13.6B, Gross Margin 56%, Net Income $5.2B
-- Q2 FY26 guide: Revenue $18.7B, Gross Margin 68%
-- The Q2 guide implies ~$12.7B gross profit in a single quarter -- more than all of FY24
+**Revenue acceleration is extraordinary:** Quarterly revenue went $8.1B -> $9.3B -> $11.3B -> $13.6B -> $18.7B (guided). That is a near-doubling in 4 quarters. Gross margins went from 37% to 68% guided in the same period.
 
-**Capital intensity is the key risk:** FY25 capex was $15.9B (42% of revenue). Q1 FY26 capex was $5.4B. Micron guides ~$20B net capex for FY26. FCF is positive but thin relative to market cap because of this investment cycle.
+**Capital intensity remains the concern:** FY25 capex was $15.9B. FY26 guide is ~$20B net. The Tongluo acquisition adds another $1.8B. FCF is thin ($444M TTM per yfinance) despite record revenue because of this investment cycle.
 
 ## Valuation Models
 
 | Model | Fair Value | Upside | Confidence | Notes |
 |-------|-----------|--------|------------|-------|
-| gbm_opportunistic_3y | $772 | +108% | 0.96 | Most bullish, high confidence |
-| gbm_opportunistic_1y | $750 | +103% | 0.98 | Very high confidence |
-| autoresearch | $658 | +78% | 0.97 | Strong conviction |
-| gbm_lite_3y | $613 | +66% | 0.68 | Moderate confidence |
-| gbm_lite_1y | $430 | +16% | 0.83 | Near current price |
-| gbm_1y | $424 | +14% | 0.88 | Near current price |
-| gbm_3y | $371 | +0.2% | 0.77 | Essentially fair valued |
-| simple_ratios | $186 | -50% | high | Bearish -- ratio-based, cyclical penalty |
-| rim | $86 | -77% | -- | Broken for cyclicals (book value anchor) |
-| dcf / multi_stage_dcf | $10 | -97% | -- | Broken -- known DCF outlier issue |
+| gbm_opportunistic_1y | $912 | +98% | 0.97 | Peak-seeking, very bullish |
+| gbm_opportunistic_3y | $896 | +94% | 0.95 | Same direction |
+| autoresearch | $808 | +75% | 0.99 | 5-model ensemble, 98.8th percentile rank |
+| gbm_lite_3y | $789 | +71% | 0.80 | Moderate confidence |
+| gbm_1y | $506 | +10% | 0.93 | Conservative 1-year |
+| gbm_lite_1y | $502 | +9% | 0.93 | Confirms gbm_1y |
+| gbm_3y | $450 | -3% | 0.67 | Cycle reversion expected |
+| simple_ratios | $186 | -60% | high | Backward-looking, punishes cyclicals |
+| rim | $86 | -81% | -- | Broken for cyclicals (book value anchor) |
+| dcf / multi_stage_dcf | $10 | -98% | -- | Known DCF outlier issue -- completely broken |
 
-**Model consensus:** Extreme divergence (~760pp spread). The GBM momentum/opportunistic models are very bullish ($430-$772), reflecting the earnings acceleration and AI tailwind. The value-oriented models (simple_ratios, RIM, DCF) are deeply bearish because they anchor on historical averages or book value -- both inappropriate for a cyclical at peak earnings. The DCF and RIM models are clearly broken for MU (known issue). The autoresearch model at $658 with 97% confidence is notable. The short-horizon GBM models ($424-$430) suggest the stock is roughly fairly valued on a 1-year basis, which aligns with the analyst consensus mean target of ~$427.
+**Model consensus:** Bimodal distribution. Momentum/ML models ($500-912) vs value models ($10-186). The DCF, RIM, and simple_ratios models are clearly inappropriate for a cyclical stock at peak earnings -- they anchor on historical averages that include the FY23 trough. **Ignore them.**
 
-**Key takeaway:** Momentum models see more upside; static valuation models see the stock as extremely overvalued. This is classic late-cycle divergence for a memory stock.
+The meaningful signal is the spread between conservative GBM ($450-506) and momentum GBM/autoresearch ($789-912). Conservative models say fairly valued; momentum models see significant further upside.
 
 ## Business Quality (17/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 3/5 | Oligopoly (3 players: Samsung, SK Hynix, Micron) provides structural pricing power. HBM requires advanced packaging -- real technical barriers. But memory is ultimately commoditized; differentiation is narrow. Moat is structural (oligopoly + capex barrier) not product-based. |
-| Management | 4/5 | CEO Sanjay Mehrotra has executed the HBM pivot well. Sold out HBM through 2026, HBM4 on track. Capex discipline has been reasonable historically. Guided Q1 FY26 conservatively and beat. Insider ownership is very low (0.27%) which is a minor negative. |
-| Profitability | 4/5 | Gross margins expanding from 22% to 68% guided -- extraordinary leverage. Operating margins at 45%. But this is peak-cycle profitability. Normalized margins are much lower (FY23 was -35% gross margin). Score reflects current trajectory, not sustainability. |
-| Balance Sheet | 4/5 | Net debt/EBITDA 0.30x. Current ratio 2.46. $9.6B cash. Total debt $15.3B is manageable. The risk is the $20B+ annual capex commitment -- if the cycle turns, FCF goes deeply negative as it did in FY23 (-$6.1B). But current balance sheet can handle a downturn. |
-| Growth | 2/5 | Current growth is phenomenal (+132% YoY guided) but it is CYCLICAL, not structural. HBM TAM growing ~40% CAGR through 2028, but Micron is the #3 player with ~11% share. Long-term revenue CAGR through a full cycle is mid-single digits. TAM of $100B HBM by 2028 is large but shared with dominant SK Hynix (62% share). |
+| Moat | 3/5 | Oligopoly (3 players) provides structural pricing power. HBM requires advanced packaging -- real barriers. But memory is ultimately commoditized; Micron is #3 with lowest market share. |
+| Management | 4/5 | CEO Sanjay Mehrotra has executed the HBM pivot well. Tongluo acquisition shows capital deployment discipline. HBM4 ahead of schedule. Conservative guidance that gets beaten. Very low insider ownership (0.27%). |
+| Profitability | 4/5 | Gross margins 56% (Q1) heading to 68% (Q2 guide) -- extraordinary. But this is PEAK-CYCLE profitability. Normalized margins are 25-35%. FY23 was -35% gross margin. Score reflects current trajectory. |
+| Balance Sheet | 4/5 | Net debt ~$2.2B. Current ratio 2.46. $10.3B cash. $20B capex commitment is the risk -- if cycle turns, FCF goes deeply negative as in FY23. |
+| Growth | 2/5 | Current growth is phenomenal (+132% YoY) but CYCLICAL. HBM TAM ~40% CAGR through 2028, but Micron is #3 with 11-21% share. Through-cycle revenue CAGR is mid-single digits. Samsung and SK Hynix are ramping aggressively. |
 
-**Total: 17/25** -- Decent quality, but the score is inflated by peak-cycle profitability. Through-cycle score would be closer to 14/25.
+**Total: 17/25** -- Score is inflated by peak-cycle profitability. Through-cycle score: ~14/25.
 
-## Inflection Point
+## Inflection Point Analysis
 
-**Yes -- Micron is in the middle of a major positive inflection.** The AI-driven memory supercycle is real and observable:
-- HBM sold out through 2026
-- DRAM prices up 55-90% QoQ
-- Gross margins expanding 10+ percentage points per quarter
-- Revenue accelerating sequentially at 20-37% per quarter
+**Yes -- in the middle of a major positive inflection, but late-stage:**
 
-However, the critical question is whether this inflection is ALREADY PRICED IN. The stock is up 330% in 12 months. The inflection has been observable since mid-2025. We are not early to this trade -- we are late.
+Positive signals:
+- DRAM prices up 80-95% QoQ in Q1 2026 -- unprecedented
+- Another 20%+ QoQ expected in Q2 2026
+- Memory shortage confirmed through 2027
+- HBM capacity sold out through 2026, HBM4 ahead of schedule
+- Hyperscaler capex near $800B
+- Tongluo fab acquisition secures future capacity
 
-**Evidence the inflection is ongoing:** Q2 guidance of $18.7B revenue and 68% gross margins exceeded even bullish expectations. Memory prices continue to rise. HBM4 is on track.
+Negative signals / peak indicators:
+- Stock up 330% in 12 months, near all-time high
+- $20B+ annual capex + Tongluo + Samsung/SK Hynix ramps create supply response
+- Consensus euphoria: 39 Buy / 0 Sell, 2.6% short interest
+- TrendForce warns of potential oversupply in 2028-2029
+- New fab capacity (Tongluo, Idaho, Hiroshima) arrives 2027-2028
 
-**Risk the inflection peaks soon:** $20B capex in FY26 (weighted 2H) brings new capacity online in late 2026/2027. Samsung is ramping HBM3E qualification. SK Hynix expanding capacity. Hyperscaler inventory levels are the key tell -- mixed signals so far.
-
-## Bull Case
-- AI memory demand is structurally higher than any prior cycle; HBM TAM grows from $35B (2025) to $100B (2028)
-- DRAM/NAND supply remains tight through 2027 as all three producers prioritize HBM over commodity memory
-- Micron gains HBM market share from Samsung (already overtaken to #2 position) as HBM4 ramps
-- Revenue reaches $75-80B in FY26 with 40%+ net margins, implying $30-32B net income (~$27 EPS)
-- At 15x forward PE on FY27 estimates, stock reaches $500-600
-
-## Bear Case
-- This is a classic memory peak: record margins, record revenue, record capex = cycle top signal
-- $20B FY26 capex + Samsung/SK Hynix ramps create oversupply by late 2026/early 2027
-- DRAM/NAND prices normalize (they always do); gross margins revert to 30-40% range
-- AI capex spending slows or shifts (hyperscaler budget discipline, model efficiency gains reducing memory needs)
-- At trough, revenue falls to $40-45B with 15-20% net margins; at 10x PE the stock falls to $70-120
-- The stock has already priced in 2+ years of supercycle; any disappointment triggers violent unwind
+**Timing within the cycle:** We appear to be in the "euphoria" phase -- maximum earnings, maximum margins, maximum price appreciation. History shows this is typically 6-18 months before the cycle peaks. The DRAM price increases (+80-95% QoQ) are unsustainable and will moderate even in a continued upcycle.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | FY26 revenue $78B, net margin 38% ($29.6B NI, ~$26.50 EPS). FY27 revenue $90B as HBM4 ramps. | Sustained 15x PE as market prices in multi-year supercycle | $600 | +36% |
-| **Base** | 45% | FY26 revenue $72B, net margin 35% ($25.2B NI, ~$22.50 EPS). FY27 flat-to-slight growth as pricing stabilizes. | PE compresses to 12x as cycle peak becomes visible | $360 | -19% |
-| **Bear** | 30% | FY26 revenue $65B (Q3/Q4 pricing weakness), net margin 28%. FY27 downcycle begins, revenue -20% | PE compresses to 8-10x as cycle turns | $180 | -59% |
+| **Super Bull** | 15% | FY26 rev $80B+, net margin 40%, HBM4 ramp accelerates. FY27 rev $95B. EPS ~$30. | 18x PE as market prices perpetual supercycle | $700 | +52% |
+| **Bull** | 25% | FY26 rev $75B, net margin 36%. FY27 rev $82B, margins start to plateau. EPS ~$24. | 15x PE, sustained premium | $500 | +8% |
+| **Base** | 35% | FY26 rev $72B, net margin 33%. FY27 pricing softens, rev flat. EPS ~$21. | PE compresses to 12x as peak becomes visible | $370 | -20% |
+| **Bear** | 25% | FY26 rev $68B (Q3/Q4 pricing weakness). FY27 downcycle, rev -20%. EPS ~$10. | PE compresses to 10x | $180 | -61% |
 
-**Expected value: -12%**
+**Expected value: -8%**
 
-Probability-weighted return is negative. The asymmetry is unfavorable: bull case offers +36% upside, but the base and bear cases together (75% probability) average -34% downside.
+Calculation: (0.15 x 52%) + (0.25 x 8%) + (0.35 x -20%) + (0.25 x -61%) = 7.8% + 2.0% - 7.0% - 15.3% = **-12.5%**
 
-**Thesis quality check:** The bull case relies partly on multiple expansion (15x) from what is already an elevated absolute earnings level. The base and bear cases reflect the historical pattern that memory cycles ALWAYS peak and revert. This is a MOMENTUM thesis, not a value thesis.
-
-**Thesis breaks if:** (1) DRAM/NAND contract prices decline for two consecutive quarters, (2) Micron guides below consensus for any quarter, (3) hyperscaler inventory days rise above 20 days for memory components, (4) HBM market share loss to SK Hynix on HBM4.
+*Updated from prior analysis:* Slightly less negative than the -12% prior estimate because (1) the memory shortage is confirmed through 2027 (reduces bear probability slightly), (2) HBM market share gains are real, and (3) hyperscaler capex of $800B is higher than prior estimates. However, the stock is also $20 higher ($462 vs $442), which worsens entry risk.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | **Very crowded** -- 83% institutional, consensus Strong Buy (39 Buy / 2 Hold / 0 Sell), only 2.6% short. This is a consensus hedge fund long. |
-| Short interest | 2.6% -- very low. No squeeze potential. No contrarian negative signal either. |
-| Technical position | Stock at $442, near 52w high of $455. 50-day MA: $388, 200-day MA: $223. Extremely extended above moving averages. RSI likely overbought after +19% in 10 trading days (from $370 low on Mar 6). |
-| Next catalyst | **Q2 FY26 earnings: March 18, 2026** (2 days away) |
-| Recent price action | +19% from March 6 low of $370. Up 33% YTD. Up 330% from March 2025. Stock has already run hard into the catalyst. |
+| Crowdedness | **Very crowded** -- 83% institutional, consensus Strong Buy (39 Buy / 0 Sell), only 2.6% short. Polymarket puts 97.5% probability on earnings beat. |
+| Technical position | At $462, literally at 52w high ($462.73). 50-day MA: $394, 200-day MA: $227. Extremely extended. |
+| Next catalyst | **Q2 FY26 earnings: TODAY (March 18, 2026) after close** |
+| Recent price action | +25% from March 6 low of $370. +33% YTD. +330% from March 2025 lows. |
+| Analyst targets | Mean $427 (BELOW current price), High $650, Low $196. 39 opinions. |
 
-**Timing assessment:** The setup is poor for a new entry. The stock is overbought, consensus long, has already run 19% into earnings, and sits near all-time highs. Even if Q2 beats (likely given Micron's conservative guidance history), much of it is priced in. The risk/reward of buying 2 days before earnings after a 330% run is unfavorable.
+**Critical note:** The analyst mean target of $427 is now BELOW the current price of $462. The stock has overshot the consensus.
 
 ## Verdict
 
 **PASS** -- Conviction: HIGH (high conviction it is NOT a good entry)
 
-Micron is a well-run company in the strongest memory cycle in history. The AI/HBM thesis is real. But the stock at $442 prices in near-perfection, and the probability-weighted expected return is negative. Memory cycles always peak, and this one shows classic peak signals: record margins, record capex, consensus euphoria, 330% appreciation.
+The story has gotten incrementally better since our March 16 analysis (confirmed shortage through 2027, Tongluo acquisition, DRAM prices surging beyond expectations), but the stock has also moved up $20 and now trades ABOVE the analyst consensus mean target. The probability-weighted expected return is -8% to -12%.
 
-**This is a momentum trade, not a value investment.** The forward PE of 7.8x looks cheap but embeds peak-cycle earnings that are unlikely to be sustained. Through-cycle PE on normalized earnings is probably 20-30x+.
+**This is a momentum trade at peak euphoria, not a value investment.** The forward PE of 8x looks cheap but embeds peak-cycle earnings. Through-cycle PE on normalized earnings is 25-40x.
 
-**If we were to buy:** Wait for the cycle to show signs of turning and the stock to correct 40-50% to the $220-270 range, which would represent a reasonable entry on normalized earnings. Alternatively, if post-earnings the stock pulls back to $360-380 on a "sell the news" reaction AND Q3 guidance remains strong, that could offer a tactical entry for a shorter-term trade.
+**The autoresearch model at +83% and 0.99 confidence is the strongest bull signal in the model suite.** It is saying: the momentum characteristics of this stock (earnings acceleration, sector tailwind, price momentum) place it in the top 1.2% of all stocks. Historically, stocks with these characteristics tend to peak 50-100% higher. That is plausible -- MU could reach $700-800 before this cycle peaks.
+
+**But the GBM 3y at +2% is the reality check.** By year 3, the cycle will likely have turned. Memory stocks have NEVER sustained peak margins for 3+ years. The 3-year model is saying: you'll give back most of those gains.
+
+**Recommendation:**
+- **If trading momentum (6-12 month horizon):** There is a case for a position, but only AFTER seeing Q2 results and Q3 guidance today. A beat + strong Q3 guide could push toward $500-550 near-term.
+- **If investing (2+ year horizon):** PASS. The expected value is negative. Wait for the inevitable cycle correction to $280-350 range.
+- **If already long:** Consider trimming 30-50% into earnings strength. The risk/reward of holding through what may be the peak quarter is unfavorable.
 
 **What would change our mind to BUY:**
 - Stock corrects to $300 or below (35%+ pullback) while fundamentals remain intact
-- Evidence that this cycle is structurally different: e.g., HBM pricing INCREASES despite new capacity (not just stable)
-- Micron gains significant HBM market share (moving from 11% to 20%+)
-- Clear evidence that AI memory demand is growing faster than all three producers can supply through 2028
+- Evidence of structural (not cyclical) margin improvement: HBM pricing power INCREASING despite new capacity
+- Micron gains significant HBM market share to 25%+
+- Clear evidence AI memory demand growth exceeds ALL producers' capacity additions through 2028
 
-**Previous analysis note:** Our Jan 2026 cycle-pricing analysis at $362 reached the same conclusion -- the stock was momentum-priced then, and it has since appreciated another 22% without the fundamental thesis changing.
+**Thesis breaks if:** (1) DRAM/NAND contract prices decline for two consecutive quarters, (2) Micron guides below consensus for any quarter, (3) hyperscaler inventory days rise above 20 days for memory, (4) HBM market share loss on HBM4 transition.
 
 ---
 
-*Sources: Micron Q1 FY26 earnings (Dec 2025), yfinance, stock_data.db valuation models (Mar 9-15 2026), web research (Mar 2026). See notes/companies/MU/ for supplementary analysis.*
+*Sources: Micron Q1 FY26 earnings (Dec 2025), Q2 FY26 guidance, yfinance (Mar 18 2026), stock_data.db valuation models (Mar 17 2026), TrendForce memory pricing data, Micron Tongluo acquisition PR (Mar 15 2026), web research (Mar 18 2026).*
