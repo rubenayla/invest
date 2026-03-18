@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CLI for Kelly Criterion position sizing (GBM 3y models only).
+"""CLI for Kelly Criterion position sizing (trusted models: GBM 3y + autoresearch).
 
 Usage:
     uv run python scripts/run_position_sizer.py AAPL MSFT GOOG
@@ -75,7 +75,7 @@ def print_model_breakdown(result: KellyResult) -> None:
     """Print per-model predicted returns."""
     if not result.model_predictions:
         return
-    print(f"\n  GBM 3y predictions for {result.ticker} (price: ${result.current_price:.2f}):")
+    print(f"\n  Trusted model predictions for {result.ticker} (price: ${result.current_price:.2f}):")
     for model, ret in sorted(result.model_predictions.items()):
         direction = "+" if ret > 0 else ""
         print(f"    {model:<25} {direction}{ret:.1%}")
@@ -96,9 +96,9 @@ def run_portfolio_mode(args: argparse.Namespace) -> None:
         max_sector_pct=args.max_sector,
     )
 
-    scope = f"from {len(tickers)} tickers" if tickers else "from all GBM-covered stocks"
+    scope = f"from {len(tickers)} tickers" if tickers else "from all model-covered stocks"
     print(f"\nBuilding portfolio: ${budget:,.0f} budget | {scope} | max {args.max_positions} positions")
-    print("Using GBM 3y models only (standard, lite, opportunistic)\n")
+    print("Using trusted models (GBM 3y + autoresearch)\n")
 
     results = sizer.build_portfolio(
         budget=budget,
@@ -149,7 +149,7 @@ def run_ticker_mode(args: argparse.Namespace) -> None:
     )
 
     print(f"\nPortfolio: ${args.portfolio_value:,.0f} | Kelly fraction: {args.fraction} | Max position: {args.max_position:.0%} | Max sector: {args.max_sector:.0%}")
-    print("Using GBM 3y models only\n")
+    print("Using trusted models (GBM 3y + autoresearch)\n")
     print(HEADER)
     print(SEPARATOR)
 

@@ -395,6 +395,7 @@ class HTMLGenerator:
             <table class="stock-table results-table" id="stockTable">
                 <thead>
                     <tr>
+                        <th title="Rank in current sort order">#</th>
                         <th title="Stock ticker symbol">Stock</th>
                         <th title="Current market price per share">Price</th>
                         <th title="Analysis completion status">Status</th>
@@ -503,7 +504,8 @@ class HTMLGenerator:
 
         return f'''
         <tr class="stock-row {new_status}">
-            <td class="ticker-cell"><span class="ticker-trigger" data-ticker="{ticker}" data-price="{current_price or 0}" onclick="toggleKebab(event, this)" title="{company_name}">{ticker} &#8942;</span><div class="kebab-menu"><div class="kebab-label">{company_name}</div><div class="kebab-label" style="color:{updated_color}; padding-top:0;">Updated: {updated_str}</div><div class="kebab-sep"></div><a class="kebab-item" href="/api/notes/{ticker}" target="_blank">&#128196; Analysis notes</a><div class="kebab-item" onclick="openAlarmModal('{ticker}', {current_price or 0}); closeAllKebabs();">&#128276; Price alarm</div><a class="kebab-item" href="https://finance.yahoo.com/quote/{ticker}" target="_blank" rel="noopener">&#128200; Yahoo Finance</a></div></td>
+            <td class="rank-cell"></td>
+            <td class="ticker-cell"><span class="ticker-trigger" data-ticker="{ticker}" data-price="{current_price or 0}" onclick="toggleKebab(event, this)" title="{company_name}">{ticker} &#8942;</span><div class="kebab-menu"><div class="kebab-label">{company_name}</div><div class="kebab-label" style="color:{updated_color}; padding-top:0;">Updated: {updated_str}</div><div class="kebab-sep"></div><a class="kebab-item" href="#" onclick="openNotes('{ticker}'); return false;">&#128196; Analysis notes</a><div class="kebab-item" onclick="openAlarmModal('{ticker}', {current_price or 0}); closeAllKebabs();">&#128276; Price alarm</div><a class="kebab-item" href="https://finance.yahoo.com/quote/{ticker}" target="_blank" rel="noopener">&#128200; Yahoo Finance</a></div></td>
             <td>{self._safe_format(current_price, prefix="$")}</td>
             <td>{status_html}</td>
             <td>{autoresearch_html}</td>
@@ -648,7 +650,7 @@ class HTMLGenerator:
         ev_class = "margin-excellent" if ev_pct > 15 else "margin-good" if ev_pct > 5 else "margin-neutral" if ev_pct > -5 else "margin-poor"
 
         return f'''
-        <a href="/api/notes/{ticker}" target="_blank" rel="noopener" style="text-decoration:none; display:block;" title="{html.escape(tooltip)}">
+        <a href="#" onclick="openNotes('{ticker}'); return false;" rel="noopener" style="text-decoration:none; display:block;" title="{html.escape(tooltip)}">
         <div class="valuation-cell" style="cursor:pointer;">
             <div style="background:{badge_bg}; color:{badge_color}; font-weight:700; font-size:13px; padding:2px 8px; border-radius:3px; display:inline-block; font-family:var(--font-mono);">{verdict}</div>
             <div class="margin {ev_class}" style="margin-top:3px;">{ev_pct:+.0f}%</div>
@@ -1570,6 +1572,7 @@ class HTMLGenerator:
         }
 
         /* ── Kebab Menu (Linear/shadcn pattern) ── */
+        .rank-cell { color: var(--text-dim, #738091); font-size: 0.8em; text-align: right; padding-right: 4px; min-width: 28px; }
         .ticker-cell { position: relative; white-space: nowrap; }
         .ticker-trigger.has-alarm { text-shadow: 0 0 8px var(--accent-bright); }
         .kebab-menu {
@@ -1692,6 +1695,14 @@ class HTMLGenerator:
         let pollTimer = null;
         let logExpanded = true;
 
+        function openNotes(ticker) {
+            if (SERVER_MODE) {
+                window.open('/api/notes/' + ticker, '_blank');
+            } else {
+                window.open('../notes/companies/' + ticker + '.md', '_blank');
+            }
+        }
+
         // ── Init ──
         document.addEventListener('DOMContentLoaded', function() {
             // Table sorting
@@ -1701,6 +1712,8 @@ class HTMLGenerator:
                     header.addEventListener('click', () => sortTableByColumn(i));
                 });
             }
+
+            updateRankNumbers();
 
             // Universe selector
             document.getElementById('universe').addEventListener('change', function() {
@@ -1918,6 +1931,19 @@ class HTMLGenerator:
                 return isAscending ? comparison : -comparison;
             });
             rows.forEach(row => tbody.appendChild(row));
+            updateRankNumbers();
+        }
+
+        function updateRankNumbers() {
+            const tbody = document.getElementById('stockTable')?.querySelector('tbody');
+            if (!tbody) return;
+            let rank = 1;
+            tbody.querySelectorAll('tr').forEach(row => {
+                if (row.style.display !== 'none') {
+                    const cell = row.querySelector('.rank-cell');
+                    if (cell) cell.textContent = rank++;
+                }
+            });
         }
 
         // ── Export CSV ──

@@ -2,7 +2,8 @@
 
 > Watchlist: [watchlist.md](watchlist.md)
 
-~$43,800 total. Source: IBKR & Revolut (FX corrected). Last updated 2026-02-18.
+~$43,800 total. Source: IBKR & Revolut (FX corrected). Last updated 2026-03-18.
+~$2,300 cash on Revolut (from DIS sale) — to redeploy into AVGO on IBKR.
 
 | Ticker | Company | Value | Source | Notes |
 | :--- | :--- | ---: | :--- | :--- |
@@ -12,7 +13,7 @@
 | [TSLA](../companies/TSLA.md) | Tesla | ~$3,345 | Revolut | AI/Robotaxi option. +40% gain. |
 | [ACGL](../companies/ACGL.md) | Arch Capital | ~$2,420 | IBKR | Insurance. +19% gain. BUY MORE? |
 | [GOOG](../companies/GOOGL.md) | Alphabet | ~$2,340 | Revolut | Tech monopoly. +11% gain. |
-| [DIS](../companies/DIS.md) | Disney | ~$2,280 | Revolut | Content turnaround. +20% gain. |
+| ~~DIS~~ | ~~Disney~~ | ~~SOLD~~ | ~~Revolut~~ | Sold 2026-03-18 @ $100.02. +9.7% gain. Proceeds to AVGO. |
 | [PBR](../companies/PBR.md) | Petrobras | ~$2,230 | IBKR | Brazil oil. +27% gain. |
 | [PTON](../companies/PTON.md) | Peloton | ~$2,090 | Revolut + IBKR | 200 shares + 300 limit @$4.18 pending. Turnaround bet. |
 | [SONY](../companies/SONY.md) | Sony Group | ~$1,750 | IBKR | Tech value / sensors. |

@@ -1,8 +1,9 @@
-"""Kelly Criterion position sizing using GBM 3-year predictions.
+"""Kelly Criterion position sizing using trusted prediction models.
 
-Uses only GBM models (standard, lite, opportunistic) at the 3-year horizon.
-These predict actual expected returns, unlike DCF/RIM which estimate theoretical
-fair values. Agreement among the 3 models drives win probability.
+Uses GBM models (standard, lite, opportunistic) at the 3-year horizon plus
+the autoresearch model. These predict actual expected returns, unlike DCF/RIM
+which estimate theoretical fair values. Agreement among models drives win
+probability.
 """
 
 from __future__ import annotations
@@ -16,12 +17,13 @@ from invest.valuation.db_utils import get_db_connection
 
 from .risk_checks import RiskChecker, RiskReport
 
-# GBM models used for Kelly sizing.
+# Trusted models for Kelly sizing.
 # gbm_3y: actual hold-to-horizon return (median +12%, 77% bullish — well calibrated)
 # gbm_lite_3y: limited-history variant (median +53%, 100% bullish — overoptimistic)
 # gbm_opportunistic_3y: peak return within window (median +18%, 82% bullish)
-# Use all 3 as committee for agreement signal, but weight gbm_3y as primary.
-_GBM_MODELS = ("gbm_3y", "gbm_lite_3y", "gbm_opportunistic_3y")
+# autoresearch: LLM-driven fair value model (~700 stocks, high confidence, well calibrated)
+# Use all 4 as committee for agreement signal, but weight gbm_3y as primary.
+_TRUSTED_MODELS = ("gbm_3y", "gbm_lite_3y", "gbm_opportunistic_3y", "autoresearch")
 
 # Dual-class share mappings: skip the less liquid class.
 _DUAL_CLASS_SKIP = {
@@ -95,9 +97,9 @@ class KellyPositionSizer:
     def size_position(self, ticker: str) -> KellyResult:
         """Compute Kelly-optimal position size for a single ticker."""
         # Get GBM 3y predictions only
-        predictions = self._get_gbm_predictions(ticker)
+        predictions = self._get_trusted_predictions(ticker)
         if not predictions:
-            return self._no_data_result(ticker, "no GBM 3y predictions")
+            return self._no_data_result(ticker, "no trusted model predictions")
 
         current_price = self._get_current_price(ticker)
         if not current_price or current_price <= 0:
@@ -113,29 +115,35 @@ class KellyPositionSizer:
         if not model_returns:
             return self._no_data_result(ticker, "no valid return predictions")
 
-        # Use gbm_3y as primary signal (best calibrated: median +12%, 77% bullish).
-        # gbm_lite overestimates (100% bullish), gbm_opportunistic is peak-return.
-        primary_return = model_returns.get("gbm_3y")
-        if primary_return is None:
-            # Fall back to median if gbm_3y missing
-            sorted_returns = sorted(model_returns.values())
-            primary_return = sorted_returns[len(sorted_returns) // 2]
-        expected_return = primary_return
+        # Confidence-weighted expected return across trusted models.
+        # Models with confidence scores get weighted by confidence;
+        # GBM models without explicit confidence default to 0.80.
+        _DEFAULT_CONFIDENCE = 0.80
+        weighted_sum = 0.0
+        weight_total = 0.0
+        for model_name, ret in model_returns.items():
+            conf = predictions.get(model_name, {}).get("confidence") or _DEFAULT_CONFIDENCE
+            # Cap upside at 100% to prevent DCF-style outlier inflation
+            capped_ret = min(ret, 1.0)
+            weighted_sum += capped_ret * conf
+            weight_total += conf
+        expected_return = weighted_sum / weight_total if weight_total > 0 else 0.0
 
         # p from agreement: how many models agree on direction + confidence.
         # Base rate: 77% of stocks go up in gbm_3y.
         n_bullish = sum(1 for r in model_returns.values() if r > 0)
         n_models = len(model_returns)
 
-        # Start from base rate, adjust by agreement
+        # Start from base rate, adjust by model agreement fraction
         base_rate = 0.77
+        bull_frac = n_bullish / n_models
         if expected_return > 0:
-            # Bullish: 3/3 agree → +0.08, 2/3 → +0.02, 1/3 → -0.10
-            agreement_bonus = (n_bullish / n_models - 0.67) * 0.24
+            # Scale: all agree → +0.08, 75% → +0.02, 50% → -0.04, 25% → -0.10
+            agreement_bonus = (bull_frac - 0.67) * 0.24
             p = max(0.1, min(0.88, base_rate + agreement_bonus))
         else:
-            # Bearish: flip — more bears = higher p of loss
-            p = max(0.1, min(0.40, (1 - base_rate) + (n_bullish / n_models - 0.33) * 0.24))
+            # Bearish: more bears = higher p of loss
+            p = max(0.1, min(0.40, (1 - base_rate) + (bull_frac - 0.33) * 0.24))
 
         upside = max(expected_return, 0.0)
 
@@ -222,10 +230,10 @@ class KellyPositionSizer:
         budget = budget or self.portfolio_value
 
         if tickers is None:
-            placeholders = ",".join("?" * len(_GBM_MODELS))
+            placeholders = ",".join("?" * len(_TRUSTED_MODELS))
             rows = self.conn.execute(
                 f"SELECT DISTINCT ticker FROM valuation_results WHERE model_name IN ({placeholders})",
-                _GBM_MODELS,
+                _TRUSTED_MODELS,
             ).fetchall()
             tickers = [r[0] for r in rows]
 
@@ -294,14 +302,14 @@ class KellyPositionSizer:
 
         return allocated
 
-    def _get_gbm_predictions(self, ticker: str) -> dict[str, dict]:
-        """Get GBM 3y predictions for a ticker."""
-        placeholders = ",".join("?" * len(_GBM_MODELS))
+    def _get_trusted_predictions(self, ticker: str) -> dict[str, dict]:
+        """Get trusted model predictions for a ticker."""
+        placeholders = ",".join("?" * len(_TRUSTED_MODELS))
         rows = self.conn.execute(
             f"""SELECT model_name, fair_value, current_price, margin_of_safety, confidence
                FROM valuation_results
                WHERE ticker = ? AND model_name IN ({placeholders})""",
-            (ticker, *_GBM_MODELS),
+            (ticker, *_TRUSTED_MODELS),
         ).fetchall()
 
         predictions = {}
@@ -360,11 +368,11 @@ class KellyPositionSizer:
         return max(0.05, min(0.60, downside))
 
     def _is_stale(self, ticker: str, max_age_days: int = 7) -> bool:
-        """Check if GBM predictions are older than max_age_days."""
-        placeholders = ",".join("?" * len(_GBM_MODELS))
+        """Check if trusted model predictions are older than max_age_days."""
+        placeholders = ",".join("?" * len(_TRUSTED_MODELS))
         row = self.conn.execute(
             f"SELECT MAX(timestamp) FROM valuation_results WHERE ticker = ? AND model_name IN ({placeholders})",
-            (ticker, *_GBM_MODELS),
+            (ticker, *_TRUSTED_MODELS),
         ).fetchone()
         if not row or not row[0]:
             return True

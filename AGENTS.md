@@ -12,23 +12,29 @@
 
 ## INVESTMENT ANALYSIS PROTOCOL (STRICT MANDATE)
 
-**When analyzing a stock for investment, you MUST follow this "Triangulation" workflow:**
+**When analyzing a stock for investment, you MUST run `/research TICKER`.** This is non-negotiable. The research skill:
+- Searches recent news and sector context
+- Queries ALL valuation models from the DB
+- Pulls live financials from yfinance (verify trends before claiming them)
+- Scores business quality, checks for inflection points
+- Builds a scenario table with expected value
+- **Saves analysis to `notes/companies/TICKER.md`** (overwrites old version — git has history)
+- **Saves `llm_deep_analysis` to `valuation_results` DB** (dashboard and Kelly sizer use this)
 
-1.  **CHECK EXISTING MODELS FIRST:**
-    *   Query the `valuation_results` table in `data/stock_data.db`.
-    *   Look for **ALL** model types: `dcf`, `gbm_opportunistic_1y`, `multi_horizon_nn`.
-    *   *Do not just run a fresh DCF script and ignore the rest.*
+If the user asks "should I buy X?", "what about X?", or any investment question about a specific stock — run `/research X` FIRST, then answer. Do not give investment opinions based on stale notes or memory alone.
 
-2.  **THE "COMPLAINT" RULE:**
+**After running /research, also apply these rules:**
+
+1.  **THE "COMPLAINT" RULE:**
     *   **Compare the models.** If DCF says "Overvalued" but GBM says "Rocket Ship" (e.g., Marubeni), you **MUST** point this out.
     *   **Critique the models.** If a model looks broken (e.g., negative value for a profitable company), **complain to the user**. Say: *"The DCF model is failing here because..."*
     *   **Value Divergence:** Use the divergence as a signal. High divergence = High Volatility/Momentum play. Low divergence = High Conviction Value play.
 
-3.  **FRESHNESS CHECK:**
+2.  **FRESHNESS CHECK:**
     *   Before citing a number, check the `timestamp` in the database or the `Data Date` in the script.
     *   If data is >30 days old for a volatile stock, **refetch it**.
 
-4.  **MACRO CONTEXT:**
+3.  **MACRO CONTEXT:**
     *   Always check the "Story" (News/Buffett/Sector trends) to explain *why* the numbers might be "wrong" (e.g., "The model hates it, but Buffett loves it").
 
 ---

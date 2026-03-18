@@ -35,6 +35,13 @@ Phase 3: Consumers (independent, need Phase 2)
   - run_opportunity_scan.py → scanner scores
 ```
 
+## Kelly Position Sizer (`src/invest/sizing/kelly.py`)
+
+Trusted models (`_TRUSTED_MODELS`): `gbm_3y`, `gbm_lite_3y`, `gbm_opportunistic_3y`, `autoresearch`.
+- Expected return is **confidence-weighted** across all trusted models (upside capped at 100%)
+- `autoresearch` has high confidence (~0.99) and covers ~700 stocks — it's a first-class signal, not optional
+- DCF, RIM, simple_ratios are **excluded** — known biases on asset-light/acquisition-heavy companies
+
 ## Scoring Engine
 
 `ScoringEngine.score_stock()` → 5 components weighted into overall score:

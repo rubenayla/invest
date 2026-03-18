@@ -586,12 +586,13 @@ async def api_notes(request: Request):
         f"<html><head><title>{ticker} - Analysis</title>"
         f"<style>"
         f"body {{ background:#0d1117; color:#e0e6ed; font-family:system-ui,-apple-system,sans-serif; "
-        f"padding:40px 60px; max-width:900px; margin:0 auto; line-height:1.6; }}"
-        f"h1,h2,h3 {{ color:#58a6ff; }} a {{ color:#58a6ff; }}"
-        f"code {{ background:#161b22; padding:2px 6px; border-radius:3px; font-size:14px; }}"
-        f"pre {{ background:#161b22; padding:16px; border-radius:6px; overflow-x:auto; }}"
-        f"table {{ border-collapse:collapse; width:100%; }} "
-        f"th,td {{ border:1px solid #30363d; padding:8px 12px; text-align:left; }}"
+        f"font-size:18px; padding:48px 72px; max-width:960px; margin:0 auto; line-height:1.7; }}"
+        f"h1 {{ color:#58a6ff; font-size:2em; }} h2 {{ color:#58a6ff; font-size:1.5em; }} h3 {{ color:#58a6ff; font-size:1.25em; }}"
+        f"a {{ color:#58a6ff; }}"
+        f"code {{ background:#161b22; padding:2px 6px; border-radius:3px; font-size:0.9em; }}"
+        f"pre {{ background:#161b22; padding:16px; border-radius:6px; overflow-x:auto; font-size:0.85em; }}"
+        f"table {{ border-collapse:collapse; width:100%; font-size:0.95em; }} "
+        f"th,td {{ border:1px solid #30363d; padding:10px 14px; text-align:left; }}"
         f"th {{ background:#161b22; }}"
         f"</style></head><body>{body}</body></html>"
     )
@@ -639,12 +640,13 @@ app = Starlette(
 def main():
     parser = argparse.ArgumentParser(description="Live investment dashboard server")
     parser.add_argument("--port", type=int, default=8050, help="Port (default: 8050)")
-    parser.add_argument("--host", default="::", help="Host (default: :: — listens on both IPv4 and IPv6)")
+    parser.add_argument("--host", default="::", help="Host (default: :: — IPv6, also accepts IPv4 on most systems)")
     args = parser.parse_args()
 
     LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    print(f"\n  Dashboard server starting at http://{args.host}:{args.port}")
+    display_host = "127.0.0.1" if args.host in ("0.0.0.0", "::") else args.host
+    print(f"\n  Dashboard server starting at http://{display_host}:{args.port}")
     print(f"  Database: {DB_PATH}")
     print(f"  DB size: {DB_PATH.stat().st_size / (1024*1024):.1f} MB")
     print(f"  Auto-shutdown after {AUTO_SHUTDOWN_SECONDS // 3600}h idle\n")
