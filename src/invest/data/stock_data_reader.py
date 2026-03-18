@@ -120,8 +120,8 @@ class StockDataReader:
                 'bookValue': row['book_value'],
                 'revenuePerShare': row['revenue_per_share'],
                 'priceToSalesTrailing12Months': row['price_to_sales_ttm'],
-                '_exchange_rate_used': row['exchange_rate_used'],
-                '_original_currency': row['original_currency'],
+                '_exchange_rate_used': dict(row).get('exchange_rate_used'),
+                '_original_currency': dict(row).get('original_currency'),
             },
             'price_data': {
                 'current_price': row['current_price'],
