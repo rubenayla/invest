@@ -510,6 +510,45 @@ async def api_alarm_triggered(request: Request) -> JSONResponse:
     return JSONResponse({"ok": True, "triggered": [dict(r) for r in rows]})
 
 
+# ── Insider history API ──────────────────────────────────────────────────
+
+
+async def api_insider_history(request: Request) -> JSONResponse:
+    """Return monthly insider buy/sell counts for a ticker (SVG chart data)."""
+    ticker = request.path_params["ticker"].upper()
+    conn = sqlite3.connect(str(DB_PATH))
+    try:
+        rows = conn.execute("""
+            SELECT strftime('%Y-%m', transaction_date) AS month,
+                   transaction_type,
+                   COUNT(*) AS cnt
+            FROM insider_transactions
+            WHERE ticker = ? AND is_open_market = 1
+            GROUP BY month, transaction_type
+            ORDER BY month
+        """, (ticker,)).fetchall()
+    except sqlite3.OperationalError:
+        return JSONResponse({"ok": True, "ticker": ticker, "months": []})
+    finally:
+        conn.close()
+
+    # Build month → {buys, sells} map
+    month_map: dict[str, dict] = {}
+    for month, tx_type, cnt in rows:
+        if month not in month_map:
+            month_map[month] = {"month": month, "buys": 0, "sells": 0}
+        if tx_type == "P":
+            month_map[month]["buys"] = cnt
+        elif tx_type == "S":
+            month_map[month]["sells"] = cnt
+
+    return JSONResponse({
+        "ok": True,
+        "ticker": ticker,
+        "months": list(month_map.values()),
+    })
+
+
 # ── Notes (company .md files) ────────────────────────────────────────────
 
 NOTES_DIR = REPO_ROOT / "notes" / "companies"
@@ -591,6 +630,7 @@ app = Starlette(
         Route("/api/alarms", api_alarm_list),
         Route("/api/alarms/triggered", api_alarm_triggered),
         Route("/api/alarms/{alarm_id:int}", api_alarm_delete, methods=["DELETE"]),
+        Route("/api/insider/{ticker}", api_insider_history),
         Route("/api/notes/{ticker}", api_notes),
     ],
 )
@@ -599,7 +639,7 @@ app = Starlette(
 def main():
     parser = argparse.ArgumentParser(description="Live investment dashboard server")
     parser.add_argument("--port", type=int, default=8050, help="Port (default: 8050)")
-    parser.add_argument("--host", default="127.0.0.1", help="Host (default: 127.0.0.1)")
+    parser.add_argument("--host", default="::", help="Host (default: :: — listens on both IPv4 and IPv6)")
     args = parser.parse_args()
 
     LOG_PATH.parent.mkdir(parents=True, exist_ok=True)

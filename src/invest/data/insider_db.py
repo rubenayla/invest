@@ -117,6 +117,8 @@ def compute_insider_signal(conn: sqlite3.Connection, ticker: str,
         "dollar_conviction": 0.0,
         "buy_count": 0,
         "sell_count": 0,
+        "sell_trend": None,  # ratio vs historical avg (0.5 = half normal selling)
+        "buy_trend": None,
     }
 
     # Check table exists
@@ -175,6 +177,11 @@ def compute_insider_signal(conn: sqlite3.Connection, ticker: str,
         except ValueError:
             pass
 
+    # Compute sell/buy trend vs historical baseline
+    sell_trend, buy_trend = _compute_activity_trends(
+        conn, ticker, lookback_days
+    )
+
     return {
         "has_data": True,
         "net_buy_pct": round(net_buy_pct, 2),
@@ -183,7 +190,85 @@ def compute_insider_signal(conn: sqlite3.Connection, ticker: str,
         "dollar_conviction": round(buy_dollars, 2),
         "buy_count": buy_count,
         "sell_count": sell_count,
+        "sell_trend": sell_trend,
+        "buy_trend": buy_trend,
     }
+
+
+def _compute_activity_trends(
+    conn: sqlite3.Connection, ticker: str, lookback_days: int
+) -> tuple:
+    """
+    Compare recent sell/buy counts to the historical average rate.
+
+    Returns (sell_trend, buy_trend) where each is a ratio vs historical avg.
+    e.g. 0.5 = half the normal rate, 2.0 = double the normal rate.
+    None if insufficient historical data to compute a baseline.
+    """
+    now = datetime.utcnow()
+    recent_cutoff = (now - timedelta(days=lookback_days)).strftime("%Y-%m-%d")
+
+    # Get the full date range of data for this ticker
+    row = conn.execute("""
+        SELECT MIN(transaction_date), COUNT(*) FROM insider_transactions
+        WHERE ticker = ? AND is_open_market = 1
+    """, (ticker,)).fetchone()
+
+    if not row or not row[0] or row[1] < 3:
+        return None, None
+
+    earliest_date_str = row[0]
+    try:
+        earliest_date = datetime.strptime(earliest_date_str, "%Y-%m-%d")
+    except ValueError:
+        return None, None
+
+    total_history_days = (now - earliest_date).days
+    # Need at least 1.5x the lookback period to have a meaningful baseline
+    if total_history_days < lookback_days * 1.5:
+        return None, None
+
+    # Count sells and buys in recent period vs all prior history
+    counts = conn.execute("""
+        SELECT
+            transaction_type,
+            CASE WHEN transaction_date >= ? THEN 'recent' ELSE 'prior' END AS period,
+            COUNT(*) as cnt
+        FROM insider_transactions
+        WHERE ticker = ? AND is_open_market = 1
+        GROUP BY transaction_type, period
+    """, (recent_cutoff, ticker)).fetchall()
+
+    recent_sells = 0
+    recent_buys = 0
+    prior_sells = 0
+    prior_buys = 0
+    for tx_type, period, cnt in counts:
+        if period == "recent":
+            if tx_type == "S":
+                recent_sells = cnt
+            elif tx_type == "P":
+                recent_buys = cnt
+        else:
+            if tx_type == "S":
+                prior_sells = cnt
+            elif tx_type == "P":
+                prior_buys = cnt
+
+    prior_days = max((now - earliest_date).days - lookback_days, 1)
+
+    # Normalize to per-period rate and compute ratio
+    sell_trend = None
+    if prior_sells > 0:
+        prior_sell_rate = prior_sells / prior_days * lookback_days
+        sell_trend = round(recent_sells / prior_sell_rate, 2) if prior_sell_rate > 0 else None
+
+    buy_trend = None
+    if prior_buys > 0:
+        prior_buy_rate = prior_buys / prior_days * lookback_days
+        buy_trend = round(recent_buys / prior_buy_rate, 2) if prior_buy_rate > 0 else None
+
+    return sell_trend, buy_trend
 
 
 def _compute_cluster_score(buy_events: List[Dict[str, Any]]) -> int:

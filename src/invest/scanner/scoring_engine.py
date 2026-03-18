@@ -485,11 +485,25 @@ class ScoringEngine:
         scores.append(dollar_score)
         details['dollar_conviction'] = {'value': dollars, 'score': dollar_score}
 
+        # Sell trend: selling below historical norm is bullish
+        sell_trend = insider.get('sell_trend')
+        if sell_trend is not None and sell_count > 0:
+            # sell_trend 0.5 = half normal selling → score ~80
+            # sell_trend 1.0 = normal → score ~50
+            # sell_trend 2.0 = double normal → score ~20
+            sell_trend_score = self.normalize(sell_trend, 0.0, 0.7, 1.5, inverse=True)
+            scores.append(sell_trend_score)
+            details['sell_trend'] = {'value': sell_trend, 'score': sell_trend_score}
+
         final = sum(scores) / len(scores) if scores else 50.0
 
-        # Cap at 25 if only sells exist (no buys)
+        # Cap at 25 if only sells exist (no buys) AND selling is at/above normal
         if buy_count == 0 and sell_count > 0:
-            final = min(final, 25.0)
+            if sell_trend is None or sell_trend >= 0.7:
+                final = min(final, 25.0)
+            else:
+                # Selling well below normal — still mildly bearish but not capped as hard
+                final = min(final, 45.0)
 
         details['buy_count'] = buy_count
         details['sell_count'] = sell_count

@@ -146,6 +146,16 @@ class HTMLGenerator:
       </div>
     </div>
 
+    <!-- Insider Chart Modal -->
+    <div id="insiderModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this)closeInsiderModal()">
+      <div class="modal-content" style="min-width:520px; max-width:620px;">
+        <h3 style="margin:0 0 4px;">Insider Activity: <span id="insiderModalTicker"></span></h3>
+        <p id="insiderModalSubtitle" style="color:#738091; font-size:13px; margin:0 0 16px; font-family:Geist Mono,monospace;"></p>
+        <div id="insiderChartContainer" style="width:100%; overflow-x:auto;"></div>
+        <button onclick="closeInsiderModal()" class="btn" style="margin-top:16px;">Close</button>
+      </div>
+    </div>
+
     <!-- Toast container for alarm notifications -->
     <div id="toastContainer" class="toast-container"></div>
 
@@ -788,13 +798,19 @@ class HTMLGenerator:
         </div>'''
 
     def _format_insider_cell(self, insider: Dict) -> str:
-        """Format insider activity cell: '3B/1S $2.1M' with color coding."""
+        """Format insider activity cell with trend indicators.
+
+        Shows counts + trend vs historical baseline, e.g.:
+        '3B/12S ↓40%' = 12 sells but 40% below normal (bullish)
+        """
         if not insider or not insider.get('has_data'):
             return '<span style="color: #5f6b7c;">-</span>'
 
         buy_count = insider.get('buy_count', 0)
         sell_count = insider.get('sell_count', 0)
         dollars = insider.get('dollar_conviction', 0.0)
+        sell_trend = insider.get('sell_trend')
+        buy_trend = insider.get('buy_trend')
 
         parts = []
         if buy_count > 0:
@@ -814,13 +830,34 @@ class HTMLGenerator:
         else:
             dollar_str = ""
 
-        # Color: green for net buying, red for net selling, grey for no activity
+        # Trend annotation: show how current activity compares to historical norm
+        trend_str = ""
+        if sell_trend is not None and sell_count > 0:
+            pct_change = int((sell_trend - 1.0) * 100)
+            if pct_change <= -20:
+                trend_str = f" S↓{abs(pct_change)}%"  # selling below normal (bullish)
+            elif pct_change >= 20:
+                trend_str = f" S↑{pct_change}%"  # selling above normal (bearish)
+        if buy_trend is not None and buy_count > 0:
+            pct_change = int((buy_trend - 1.0) * 100)
+            if pct_change >= 50:
+                trend_str += f" B↑{pct_change}%"  # buying above normal (bullish)
+            elif pct_change <= -50:
+                trend_str += f" B↓{abs(pct_change)}%"  # buying below normal (bearish)
+
+        # Color logic: factor in sell trend
+        # Low selling relative to normal is bullish even if sell_count > buy_count
         if buy_count > sell_count:
             color = "#34d399"
             bg = "rgba(50,164,103,0.15)"
         elif sell_count > buy_count:
-            color = "#e76a6e"
-            bg = "rgba(205,66,70,0.12)"
+            if sell_trend is not None and sell_trend < 0.7:
+                # Selling well below normal — muted, not alarming
+                color = "#a0aec0"
+                bg = "rgba(160,174,192,0.10)"
+            else:
+                color = "#e76a6e"
+                bg = "rgba(205,66,70,0.12)"
         else:
             color = "#738091"
             bg = "rgba(255,255,255,0.06)"
@@ -828,6 +865,8 @@ class HTMLGenerator:
         text = f"{activity}"
         if dollar_str:
             text += f" {dollar_str}"
+        if trend_str:
+            text += trend_str
 
         return f'<span style="color: {color}; background: {bg}; padding: 1px 5px; border-radius: 2px; font-size: 13px; font-weight: 500; font-family: Geist Mono, monospace;">{text}</span>'
 
@@ -929,13 +968,14 @@ class HTMLGenerator:
     def _format_signals_cell(self, insider: Dict, activist: Dict, japan: Dict,
                               holdings: Dict, ticker: str) -> str:
         """Format combined signals cell with readable tags."""
-        tags = []
+        tags = []  # (color, label, clickable_ticker_or_None)
 
-        # Insider buys/sells
+        # Insider buys/sells (clickable → opens chart)
         if insider and insider.get('has_data'):
             buy_count = insider.get('buy_count', 0)
             sell_count = insider.get('sell_count', 0)
             dollars = insider.get('dollar_conviction', 0.0)
+            sell_trend = insider.get('sell_trend')
 
             if dollars >= 1_000_000:
                 dollar_str = f" ${dollars / 1_000_000:.1f}M"
@@ -944,12 +984,22 @@ class HTMLGenerator:
             else:
                 dollar_str = ""
 
+            # Sell trend annotation
+            trend_hint = ""
+            if sell_trend is not None and sell_count > 0:
+                pct = int((sell_trend - 1.0) * 100)
+                if pct <= -20:
+                    trend_hint = f" ({abs(pct)}% below avg)"
+                elif pct >= 20:
+                    trend_hint = f" ({pct}% above avg)"
+
             if buy_count > 0:
                 label = f"{buy_count} insider buy{'s' if buy_count > 1 else ''}{dollar_str}"
-                tags.append(('green', label))
+                tags.append(('green', label, ticker))
             if sell_count > 0:
-                label = f"{sell_count} insider sell{'s' if sell_count > 1 else ''}"
-                tags.append(('red', label))
+                label = f"{sell_count} insider sell{'s' if sell_count > 1 else ''}{trend_hint}"
+                sell_color = 'grey' if (sell_trend is not None and sell_trend < 0.7) else 'red'
+                tags.append((sell_color, label, ticker))
 
         # Activist stakes (13D = activist, 13G = passive)
         if activist and activist.get('has_data'):
@@ -961,9 +1011,9 @@ class HTMLGenerator:
             if activist_count > 0:
                 pct_str = f" {max_pct:.0f}%" if max_pct else ""
                 name_str = f" {name[:15]}" if name else ""
-                tags.append(('orange', f"activist stake{pct_str}{name_str}"))
+                tags.append(('orange', f"activist stake{pct_str}{name_str}", None))
             if passive_count > 0:
-                tags.append(('blue', f"{passive_count} passive stake{'s' if passive_count > 1 else ''}"))
+                tags.append(('blue', f"{passive_count} passive stake{'s' if passive_count > 1 else ''}", None))
 
         # Japan large shareholding
         if japan and japan.get('has_data') and ticker.endswith('.T'):
@@ -971,7 +1021,7 @@ class HTMLGenerator:
             name = japan.get('recent_holder_name', '')
             if count > 0:
                 name_str = f" {name[:12]}" if name else ""
-                tags.append(('blue', f"JP stake{name_str}"))
+                tags.append(('blue', f"JP stake{name_str}", None))
 
         # Smart money
         if holdings and holdings.get('has_data'):
@@ -980,12 +1030,12 @@ class HTMLGenerator:
             holders_count = holdings.get('smart_money_holders', 0)
 
             if new_positions:
-                tags.append(('green', f"{len(new_positions)} new fund position{'s' if len(new_positions) > 1 else ''}"))
+                tags.append(('green', f"{len(new_positions)} new fund position{'s' if len(new_positions) > 1 else ''}", None))
             elif notable:
                 names = ", ".join(n.split()[0][:10] for n in notable[:2])
-                tags.append(('blue', f"held by {names}"))
+                tags.append(('blue', f"held by {names}", None))
             elif holders_count > 0:
-                tags.append(('blue', f"{holders_count} fund{'s' if holders_count > 1 else ''}"))
+                tags.append(('blue', f"{holders_count} fund{'s' if holders_count > 1 else ''}", None))
 
         if not tags:
             return '<span style="color: #5f6b7c;">\u2014</span>'
@@ -993,18 +1043,16 @@ class HTMLGenerator:
         styles = {
             'green': 'color: #72ca9b; background: rgba(50,164,103,0.15);',
             'red': 'color: #f87171; background: rgba(205,66,70,0.12);',
+            'grey': 'color: #a0aec0; background: rgba(160,174,192,0.10);',
             'orange': 'color: #fbbf24; background: rgba(209,152,11,0.15);',
             'blue': 'color: #60a5fa; background: rgba(76,144,240,0.12);',
         }
 
         html_parts = []
-        for color, label in tags:
-            style = styles[color]
-            html_parts.append(
-                f'<span style="{style} padding: 1px 5px; border-radius: 2px; '
-                f'font-size: 12px; font-weight: 500; display: inline-block; '
-                f'margin: 2px 0; font-family: Geist Mono, monospace;">{label}</span>'
-            )
+        for color, label, click_ticker in tags:
+            style = styles.get(color, styles['blue'])
+            click_attr = f' onclick="openInsiderChart(\'{click_ticker}\')" style="{style} padding: 1px 5px; border-radius: 2px; font-size: 12px; font-weight: 500; display: inline-block; margin: 2px 0; font-family: Geist Mono, monospace; cursor: pointer;"' if click_ticker else f' style="{style} padding: 1px 5px; border-radius: 2px; font-size: 12px; font-weight: 500; display: inline-block; margin: 2px 0; font-family: Geist Mono, monospace;"'
+            html_parts.append(f'<span{click_attr}>{label}</span>')
 
         return "<br>".join(html_parts)
 
@@ -2070,4 +2118,117 @@ class HTMLGenerator:
         if (SERVER_MODE) {
             refreshAlarmBadge();
             setInterval(checkTriggeredAlarms, 30000);
+        }
+
+        // ── Insider Chart Modal ─────────────────────────────────────────
+        function openInsiderChart(ticker) {
+            document.getElementById('insiderModalTicker').textContent = ticker;
+            document.getElementById('insiderModal').style.display = 'flex';
+            document.getElementById('insiderChartContainer').innerHTML =
+                '<p style="color:#738091; font-size:13px;">Loading...</p>';
+            document.getElementById('insiderModalSubtitle').textContent = '';
+
+            fetch('/api/insider/' + ticker)
+                .then(r => r.json())
+                .then(data => {
+                    if (!data.months || data.months.length === 0) {
+                        document.getElementById('insiderChartContainer').innerHTML =
+                            '<p style="color:#738091;">No insider transaction data available.</p>';
+                        return;
+                    }
+                    renderInsiderChart(data.months, ticker);
+                })
+                .catch(() => {
+                    document.getElementById('insiderChartContainer').innerHTML =
+                        '<p style="color:#f87171;">Failed to load data.</p>';
+                });
+        }
+
+        function closeInsiderModal() {
+            document.getElementById('insiderModal').style.display = 'none';
+        }
+
+        function renderInsiderChart(months, ticker) {
+            const W = 500, H = 220, padL = 36, padR = 12, padT = 16, padB = 44;
+            const chartW = W - padL - padR;
+            const chartH = H - padT - padB;
+            const n = months.length;
+            if (n === 0) return;
+
+            const maxVal = Math.max(1, ...months.map(m => Math.max(m.buys, m.sells)));
+            const barGroupW = Math.min(40, chartW / n);
+            const barW = Math.max(4, (barGroupW - 4) / 2);
+            const totalW = barGroupW * n;
+
+            // Compute averages
+            const avgSells = months.reduce((s, m) => s + m.sells, 0) / n;
+            const avgBuys = months.reduce((s, m) => s + m.buys, 0) / n;
+
+            // Subtitle
+            const recent = months[months.length - 1];
+            const recentLabel = recent.month;
+            document.getElementById('insiderModalSubtitle').textContent =
+                'Monthly transactions (' + months[0].month + ' to ' + recentLabel +
+                ') \u2022 Avg: ' + avgSells.toFixed(1) + ' sells, ' + avgBuys.toFixed(1) + ' buys/mo';
+
+            let svg = '<svg width="' + Math.max(W, totalW + padL + padR) + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg">';
+
+            // Grid lines
+            const steps = 4;
+            for (let i = 0; i <= steps; i++) {
+                const y = padT + chartH - (chartH * i / steps);
+                const val = Math.round(maxVal * i / steps);
+                svg += '<line x1="' + padL + '" y1="' + y + '" x2="' + (padL + Math.max(chartW, totalW)) +
+                       '" y2="' + y + '" stroke="#2a3040" stroke-width="1"/>';
+                svg += '<text x="' + (padL - 4) + '" y="' + (y + 4) +
+                       '" fill="#738091" font-size="11" text-anchor="end" font-family="Geist Mono,monospace">' + val + '</text>';
+            }
+
+            // Average sell line
+            if (avgSells > 0) {
+                const avgY = padT + chartH - (avgSells / maxVal * chartH);
+                svg += '<line x1="' + padL + '" y1="' + avgY + '" x2="' + (padL + Math.max(chartW, totalW)) +
+                       '" y2="' + avgY + '" stroke="#e76a6e" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>';
+                svg += '<text x="' + (padL + Math.max(chartW, totalW) + 2) + '" y="' + (avgY + 3) +
+                       '" fill="#e76a6e" font-size="10" opacity="0.6" font-family="Geist Mono,monospace">avg S</text>';
+            }
+
+            // Bars
+            months.forEach((m, i) => {
+                const x = padL + i * barGroupW + 2;
+
+                // Sell bar (red)
+                if (m.sells > 0) {
+                    const h = m.sells / maxVal * chartH;
+                    svg += '<rect x="' + x + '" y="' + (padT + chartH - h) +
+                           '" width="' + barW + '" height="' + h +
+                           '" fill="#e76a6e" rx="1" opacity="0.85"/>';
+                }
+                // Buy bar (green)
+                if (m.buys > 0) {
+                    const h = m.buys / maxVal * chartH;
+                    svg += '<rect x="' + (x + barW + 1) + '" y="' + (padT + chartH - h) +
+                           '" width="' + barW + '" height="' + h +
+                           '" fill="#34d399" rx="1" opacity="0.85"/>';
+                }
+
+                // X-axis label (show every label if few months, else every other)
+                const showLabel = n <= 12 || i % 2 === 0 || i === n - 1;
+                if (showLabel) {
+                    const parts = m.month.split('-');
+                    const lbl = parts[1] + '/' + parts[0].slice(2);
+                    svg += '<text x="' + (x + barGroupW / 2) + '" y="' + (H - padB + 14) +
+                           '" fill="#738091" font-size="10" text-anchor="middle" font-family="Geist Mono,monospace"' +
+                           ' transform="rotate(-35,' + (x + barGroupW / 2) + ',' + (H - padB + 14) + ')">' + lbl + '</text>';
+                }
+            });
+
+            // Legend
+            svg += '<rect x="' + padL + '" y="' + (H - 12) + '" width="10" height="8" fill="#e76a6e" rx="1"/>';
+            svg += '<text x="' + (padL + 13) + '" y="' + (H - 5) + '" fill="#a0aec0" font-size="10" font-family="Geist Mono,monospace">Sells</text>';
+            svg += '<rect x="' + (padL + 50) + '" y="' + (H - 12) + '" width="10" height="8" fill="#34d399" rx="1"/>';
+            svg += '<text x="' + (padL + 63) + '" y="' + (H - 5) + '" fill="#a0aec0" font-size="10" font-family="Geist Mono,monospace">Buys</text>';
+
+            svg += '</svg>';
+            document.getElementById('insiderChartContainer').innerHTML = svg;
         }"""
