@@ -57,6 +57,8 @@ class IndexManager:
                 'sp500': 7,      # days - S&P changes rarely
                 'ftse100': 30,   # monthly updates
                 'dax': 30,       # quarterly reviews
+                'sp400': 30,     # S&P MidCap 400
+                'sp600': 30,     # S&P SmallCap 600
                 'nikkei225': 90, # less frequent changes
                 'asx200': 90
             }
@@ -161,6 +163,50 @@ class IndexManager:
         # Final fallback
         logger.warning("All S&P 500 sources failed, using expanded fallback list")
         return self._get_expanded_fallback_list()
+
+    def _fetch_sp400_tickers(self) -> List[str]:
+        """Fetch S&P MidCap 400 tickers from Wikipedia."""
+        import requests
+        import pandas as pd
+        from io import StringIO
+
+        try:
+            resp = requests.get(
+                'https://en.wikipedia.org/wiki/List_of_S%26P_400_companies',
+                headers={'User-Agent': 'Mozilla/5.0'},
+                timeout=15,
+            )
+            resp.raise_for_status()
+            tables = pd.read_html(StringIO(resp.text))
+            tickers = tables[0]['Symbol'].tolist()
+            if len(tickers) >= 350:
+                logger.info(f"Fetched {len(tickers)} S&P 400 tickers from Wikipedia")
+                return tickers
+        except Exception as e:
+            logger.warning(f"S&P 400 Wikipedia fetch failed: {e}")
+        return []
+
+    def _fetch_sp600_tickers(self) -> List[str]:
+        """Fetch S&P SmallCap 600 tickers from Wikipedia."""
+        import requests
+        import pandas as pd
+        from io import StringIO
+
+        try:
+            resp = requests.get(
+                'https://en.wikipedia.org/wiki/List_of_S%26P_600_companies',
+                headers={'User-Agent': 'Mozilla/5.0'},
+                timeout=15,
+            )
+            resp.raise_for_status()
+            tables = pd.read_html(StringIO(resp.text))
+            tickers = tables[0]['Symbol'].tolist()
+            if len(tickers) >= 500:
+                logger.info(f"Fetched {len(tickers)} S&P 600 tickers from Wikipedia")
+                return tickers
+        except Exception as e:
+            logger.warning(f"S&P 600 Wikipedia fetch failed: {e}")
+        return []
 
     def _get_major_us_stocks(self) -> List[str]:
         """Get comprehensive list of major US stocks from multiple exchanges."""
@@ -322,6 +368,10 @@ class IndexManager:
                 new_tickers = self._fetch_nikkei225_tickers()
             elif index_name == 'asx200':
                 new_tickers = self._fetch_asx200_tickers()
+            elif index_name == 'sp400':
+                new_tickers = self._fetch_sp400_tickers()
+            elif index_name == 'sp600':
+                new_tickers = self._fetch_sp600_tickers()
             else:
                 logger.warning(f"No fetcher implemented for {index_name}")
                 new_tickers = []
@@ -372,7 +422,7 @@ class IndexManager:
         all_tickers = set()
 
         # Define available indices
-        available_indices = ['sp500', 'ftse100', 'dax', 'nikkei225', 'asx200']
+        available_indices = ['sp500', 'sp400', 'sp600', 'ftse100', 'dax', 'nikkei225', 'asx200']
 
         for index_name in available_indices:
             tickers = self.get_index_tickers(index_name)

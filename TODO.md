@@ -10,6 +10,11 @@ https://gexanalyzer.streamlit.app/
 5. **Sumitomo Corporation (8053.T)** - Solid Sogo Shosha pick (+26.5% upside). Diversified "Buffett-style" hold.
 6. **Molina Healthcare (MOH)** - Solid defensive value pick.
 
+# 📋 Stocks to Look At — 2026-03-19
+- **ADBE** (Adobe) — EV +46%, Q21/25. 9x fwd PE at 10yr low, 42% FCF margin. Fills software gap in portfolio.
+- **DECK** (Deckers/HOKA) — EV +30%, Q22/25. 15x PE for 33% EPS CAGR, uncorrelated to current holdings.
+- **GILD** (Gilead) — EV +15% total, Q20/25. Beta 0.37 defensive anchor, lenacapavir growth story.
+
 ---
 
 ⏺ Oof. Here's the picture:

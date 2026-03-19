@@ -4,6 +4,12 @@
 
 Prioritized by combined signals: scanner score, insider buying, activist stakes (13D/13G), smart money holdings (13F). Last updated 2026-02-24.
 
+- [PINS](../companies/PINS.md) (Pinterest) - **BUY**. 10x FCF, 80% gross margins, Elliott activist $1B buyback. Down 53% from highs. EV +36%. Entry $18-19.
+- [CRM](../companies/CRM.md) (Salesforce) - **BUY**. 13x fwd PE, Agentforce +200% YoY, $50B buyback, 7.9% FCF yield. Quality 20/25. EV +22%. Entry $190-200.
+- [BSX](../companies/BSX.md) (Boston Scientific) - **BUY**. Down 35% from highs, 20x fwd PE, FARAPULSE moat, $20B rev +20% YoY. Quality 20/25. EV +20%. Scale in $68-73.
+- [8053.T](../companies/8053.T.md) (Sumitomo Corp) - **BUY**. Cheapest sogo shosha (11.9x PE vs 22x peers), Buffett 9.3%, SCSK digital deal. EV +7.6%.
+- [TDOC](../companies/TDOC.md) (Teladoc) - WATCH. 0.38x P/S, 14% FCF yield. BetterHelp insurance pivot unproven. EV +28%.
+- [ISRG](../companies/ISRG.md) (Intuitive Surgical) - WATCH. Elite quality (22/25), but 42x fwd PE. Buy at $420-440. EV +23%.
 - [GL](../companies/GL.md) (Globe Life) - P/E 10, ROE 21%. 5 smart money funds (Pershing Square, Third Point, Bridgewater, Citadel, DE Shaw). Scanner score 72.5.
 - [CF](../companies/CF.md) (CF Industries) - 6 smart money funds. Scanner top pick (score 80.8). Fertilizer/nitrogen.
 - [PFE](../companies/PFE.md) (Pfizer) - 6x activist 13D filings (10% stake, likely Starboard Value). P/E ~10, pharma defensive.
