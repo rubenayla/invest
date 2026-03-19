@@ -106,7 +106,8 @@ class HTMLGenerator:
             </div>
             <div class="controls-right">
                 <div id="updateStatus" class="update-status"></div>
-                <button id="updateButton" onclick="triggerUpdate()" class="btn btn-update">Update Data</button>
+                <button id="updateButton" onclick="triggerUpdate()" class="btn btn-update" title="Full refresh: prices, financials, statements (cashflow/balance sheet/income), insider trades, activist stakes, institutional holdings. ~30 min for S&amp;P 500. Use weekly.">Update Data</button>
+                <button id="liteUpdateButton" onclick="triggerUpdate(true)" class="btn btn-lite-update" title="Fast refresh: prices &amp; key metrics only. Preserves existing financial statements. ~12 min for S&amp;P 500. Use daily.">Lite Update</button>
                 <button id="cancelButton" onclick="cancelUpdate()" class="btn btn-cancel" style="display:none;">Cancel</button>
                 <button id="shutdownButton" onclick="shutdownServer()" class="btn" style="display:none;" title="Stop the dashboard server">Shutdown</button>
             </div>
@@ -1249,6 +1250,15 @@ class HTMLGenerator:
         }
         .btn-update:hover { background: var(--accent-bright); border-color: var(--accent-bright); color: #111; }
         .btn-update:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-lite-update {
+            background: transparent;
+            color: var(--accent);
+            border-color: var(--accent);
+            font-weight: 600;
+            font-size: 0.82em;
+        }
+        .btn-lite-update:hover { background: var(--accent); color: #fff; }
+        .btn-lite-update:disabled { opacity: 0.4; cursor: not-allowed; }
         .btn-cancel { background: var(--red-dim); color: var(--red-bright); border-color: rgba(205,66,70,0.3); }
         .btn-cancel:hover { background: var(--red); color: #fff; }
         .btn-toggle-log {
@@ -1735,18 +1745,20 @@ class HTMLGenerator:
         });
 
         // ── Update control ──
-        function triggerUpdate() {
+        function triggerUpdate(lite) {
             if (!SERVER_MODE) { alert('Server not running. Start with: uv run python scripts/dashboard_server.py'); return; }
 
             const universe = document.getElementById('universe').value;
             const btn = document.getElementById('updateButton');
+            const liteBtn = document.getElementById('liteUpdateButton');
             btn.disabled = true;
-            btn.textContent = 'Starting...';
+            liteBtn.disabled = true;
+            btn.textContent = lite ? 'Lite...' : 'Starting...';
 
             fetch('/api/update', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ universe })
+                body: JSON.stringify({ universe, lite: !!lite })
             })
             .then(r => r.json())
             .then(data => {
@@ -1756,12 +1768,14 @@ class HTMLGenerator:
                     startPolling();  // just attach to existing run
                 } else {
                     btn.disabled = false;
+                    liteBtn.disabled = false;
                     btn.textContent = 'Update Data';
                     alert('Failed to start: ' + (data.reason || 'unknown'));
                 }
             })
             .catch(err => {
                 btn.disabled = false;
+                liteBtn.disabled = false;
                 btn.textContent = 'Update Data';
                 console.error('Update trigger failed:', err);
             });
@@ -1814,6 +1828,7 @@ class HTMLGenerator:
 
         function applyUpdateStatus(s) {
             const btn = document.getElementById('updateButton');
+            const liteBtn = document.getElementById('liteUpdateButton');
             const cancelBtn = document.getElementById('cancelButton');
             const statusEl = document.getElementById('updateStatus');
             const logEl = document.getElementById('updateLog');
@@ -1825,6 +1840,7 @@ class HTMLGenerator:
 
             if (s.status === 'running') {
                 btn.disabled = true;
+                liteBtn.disabled = true;
                 btn.textContent = 'Updating...';
                 cancelBtn.style.display = 'inline-flex';
                 statusEl.className = 'update-status running';
@@ -1837,6 +1853,7 @@ class HTMLGenerator:
                 }
             } else if (s.status === 'completed') {
                 btn.disabled = false;
+                liteBtn.disabled = false;
                 btn.textContent = 'Update Data';
                 cancelBtn.style.display = 'none';
                 statusEl.className = 'update-status completed';
@@ -1844,6 +1861,7 @@ class HTMLGenerator:
                 logEl.style.display = 'none';
             } else if (s.status === 'failed') {
                 btn.disabled = false;
+                liteBtn.disabled = false;
                 btn.textContent = 'Update Data';
                 cancelBtn.style.display = 'none';
                 statusEl.className = 'update-status failed';
@@ -1857,6 +1875,7 @@ class HTMLGenerator:
             } else {
                 // idle
                 btn.disabled = false;
+                liteBtn.disabled = false;
                 btn.textContent = 'Update Data';
                 cancelBtn.style.display = 'none';
                 logEl.style.display = 'none';

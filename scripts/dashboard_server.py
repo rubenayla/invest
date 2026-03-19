@@ -413,8 +413,10 @@ async def api_update_start(request: Request) -> JSONResponse:
         body = await request.json()
     except Exception:
         pass
-    universe = body.get("universe", "sp500")
+    universe = body.get("universe", "all")
     extra_args = body.get("extra_args", [])
+    if body.get("lite", False) and "--lite-fetch" not in extra_args:
+        extra_args.append("--lite-fetch")
     result = update_manager.start(universe=universe, extra_args=extra_args)
     return JSONResponse(result)
 

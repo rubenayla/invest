@@ -112,6 +112,116 @@ class StockDataCache:
                 return json.load(f)
         return None
 
+    def save_to_sqlite_lite(self, ticker: str, data: Dict):
+        """Save only price/metric fields to SQLite, preserving existing financial statements."""
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+
+            info = data.get('info', {})
+            financials = data.get('financials', {})
+            price_data = data.get('price_data', {})
+
+            # Check if ticker already exists
+            exists = cursor.execute(
+                'SELECT 1 FROM current_stock_data WHERE ticker = ?', (ticker,)
+            ).fetchone()
+
+            if exists:
+                # UPDATE only price-related columns, keep financial statements intact
+                cursor.execute('''
+                    UPDATE current_stock_data SET
+                        current_price = ?, market_cap = ?,
+                        sector = COALESCE(?, sector), industry = COALESCE(?, industry),
+                        long_name = COALESCE(?, long_name), short_name = COALESCE(?, short_name),
+                        currency = COALESCE(?, currency), financial_currency = COALESCE(?, financial_currency),
+                        exchange = COALESCE(?, exchange), country = COALESCE(?, country),
+                        trailing_pe = ?, forward_pe = ?, price_to_book = ?,
+                        return_on_equity = ?, debt_to_equity = ?, current_ratio = ?,
+                        revenue_growth = ?, earnings_growth = ?,
+                        operating_margins = ?, profit_margins = ?,
+                        total_revenue = ?, total_cash = ?, total_debt = ?, shares_outstanding = ?,
+                        trailing_eps = ?, book_value = ?, revenue_per_share = ?, price_to_sales_ttm = ?,
+                        price_52w_high = ?, price_52w_low = ?, avg_volume = ?, price_trend_30d = ?,
+                        fetch_timestamp = ?, last_updated = ?
+                    WHERE ticker = ?
+                ''', (
+                    info.get('currentPrice'), info.get('marketCap'),
+                    info.get('sector'), info.get('industry'),
+                    info.get('longName'), info.get('shortName'),
+                    info.get('currency'), info.get('financialCurrency'),
+                    info.get('exchange'), info.get('country'),
+                    financials.get('trailingPE'), financials.get('forwardPE'), financials.get('priceToBook'),
+                    financials.get('returnOnEquity'), financials.get('debtToEquity'), financials.get('currentRatio'),
+                    financials.get('revenueGrowth'), financials.get('earningsGrowth'),
+                    financials.get('operatingMargins'), financials.get('profitMargins'),
+                    financials.get('totalRevenue'), financials.get('totalCash'),
+                    financials.get('totalDebt'), financials.get('sharesOutstanding'),
+                    financials.get('trailingEps'), financials.get('bookValue'),
+                    financials.get('revenuePerShare'), financials.get('priceToSalesTrailing12Months'),
+                    price_data.get('price_52w_high'), price_data.get('price_52w_low'),
+                    price_data.get('avg_volume'), price_data.get('price_trend_30d'),
+                    data.get('fetch_timestamp', datetime.now().isoformat()),
+                    datetime.now().isoformat(),
+                    ticker,
+                ))
+            else:
+                # New ticker — full insert (no statements to preserve)
+                self._insert_full_row(cursor, ticker, data)
+
+            conn.commit()
+            conn.close()
+        except Exception as e:
+            logger.warning(f'{ticker}: Failed to save lite data to SQLite: {e}')
+
+    def _insert_full_row(self, cursor, ticker: str, data: Dict):
+        """Insert a complete row into current_stock_data."""
+        info = data.get('info', {})
+        financials = data.get('financials', {})
+        price_data = data.get('price_data', {})
+
+        cursor.execute('''
+            INSERT OR REPLACE INTO current_stock_data (
+                ticker,
+                current_price, market_cap, sector, industry, long_name, short_name,
+                currency, financial_currency, exchange, country,
+                trailing_pe, forward_pe, price_to_book, return_on_equity, debt_to_equity,
+                current_ratio, revenue_growth, earnings_growth, operating_margins, profit_margins,
+                total_revenue, total_cash, total_debt, shares_outstanding,
+                trailing_eps, book_value, revenue_per_share, price_to_sales_ttm,
+                price_52w_high, price_52w_low, avg_volume, price_trend_30d,
+                cashflow_json, balance_sheet_json, income_json,
+                fetch_timestamp, last_updated,
+                exchange_rate_used, original_currency
+            ) VALUES (
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?, ?, ?, ?,
+                ?, ?
+            )
+        ''', (
+            ticker,
+            info.get('currentPrice'), info.get('marketCap'), info.get('sector'),
+            info.get('industry'), info.get('longName'), info.get('shortName'),
+            info.get('currency'), info.get('financialCurrency'), info.get('exchange'), info.get('country'),
+            financials.get('trailingPE'), financials.get('forwardPE'), financials.get('priceToBook'),
+            financials.get('returnOnEquity'), financials.get('debtToEquity'), financials.get('currentRatio'),
+            financials.get('revenueGrowth'), financials.get('earningsGrowth'), financials.get('operatingMargins'),
+            financials.get('profitMargins'), financials.get('totalRevenue'), financials.get('totalCash'),
+            financials.get('totalDebt'), financials.get('sharesOutstanding'), financials.get('trailingEps'),
+            financials.get('bookValue'), financials.get('revenuePerShare'), financials.get('priceToSalesTrailing12Months'),
+            price_data.get('price_52w_high'), price_data.get('price_52w_low'),
+            price_data.get('avg_volume'), price_data.get('price_trend_30d'),
+            json.dumps(data.get('cashflow', [])),
+            json.dumps(data.get('balance_sheet', [])),
+            json.dumps(data.get('income', [])),
+            data.get('fetch_timestamp', datetime.now().isoformat()),
+            datetime.now().isoformat(),
+            financials.get('_exchange_rate_used'),
+            financials.get('_original_currency')
+        ))
+
     def save_to_sqlite(self, ticker: str, data: Dict):
         """Save stock data to SQLite database"""
         try:
@@ -266,10 +376,11 @@ class TokenBucketRateLimiter:
 class AsyncStockDataFetcher:
     """Fetches stock data using thread pool (simplified)"""
 
-    def __init__(self, max_workers: int = 10):
+    def __init__(self, max_workers: int = 10, lite: bool = False):
         self.cache = StockDataCache()
         self.max_workers = max_workers
         self.rate_limiter = TokenBucketRateLimiter(rate=2.0, burst=3)
+        self.lite = lite
 
     async def __aenter__(self):
         return self
@@ -399,68 +510,84 @@ class AsyncStockDataFetcher:
                     logger.warning(f"Could not fetch price data for {ticker}: {e}")
 
                 # Raw financial statements (for DCF/RIM valuation models)
-                # NOTE: These raw statements are stored WITHOUT currency conversion.
-                # For ADRs reporting in non-USD (e.g., JPY, EUR), values are in the
-                # original financialCurrency. We store the currency alongside so
-                # downstream consumers can detect and handle this. Automatic
-                # conversion is too risky here — see convert_financial_statements_to_usd
-                # below for the converted path.
-                try:
-                    import pandas as pd
+                # Skipped in lite mode — statements change quarterly, not daily.
+                if not self.lite:
+                    # NOTE: These raw statements are stored WITHOUT currency conversion.
+                    # For ADRs reporting in non-USD (e.g., JPY, EUR), values are in the
+                    # original financialCurrency. We store the currency alongside so
+                    # downstream consumers can detect and handle this. Automatic
+                    # conversion is too risky here — see convert_financial_statements_to_usd
+                    # below for the converted path.
+                    try:
+                        import pandas as pd
 
-                    # Store financialCurrency so JSON consumers know the unit
-                    financial_currency = info.get('financialCurrency')
-                    if financial_currency:
-                        data['financial_statements_currency'] = financial_currency
+                        # Store financialCurrency so JSON consumers know the unit
+                        financial_currency = info.get('financialCurrency')
+                        if financial_currency:
+                            data['financial_statements_currency'] = financial_currency
 
-                    # Cash flow statement
-                    self.rate_limiter.acquire()
-                    cashflow = stock.cashflow
-                    if cashflow is not None and not cashflow.empty:
-                        # Reset index and convert timestamps to strings
-                        df = cashflow.reset_index()
-                        df.columns = df.columns.astype(str)  # Convert column names to strings
-                        # Convert timestamp values to strings
-                        for col in df.columns:
-                            if pd.api.types.is_datetime64_any_dtype(df[col]):
-                                df[col] = df[col].astype(str)
-                        data['cashflow'] = df.to_dict(orient='records')
+                        # Cash flow statement
+                        self.rate_limiter.acquire()
+                        cashflow = stock.cashflow
+                        if cashflow is not None and not cashflow.empty:
+                            # Reset index and convert timestamps to strings
+                            df = cashflow.reset_index()
+                            df.columns = df.columns.astype(str)  # Convert column names to strings
+                            # Convert timestamp values to strings
+                            for col in df.columns:
+                                if pd.api.types.is_datetime64_any_dtype(df[col]):
+                                    df[col] = df[col].astype(str)
+                            data['cashflow'] = df.to_dict(orient='records')
 
-                    # Balance sheet
-                    self.rate_limiter.acquire()
-                    balance_sheet = stock.balance_sheet
-                    if balance_sheet is not None and not balance_sheet.empty:
-                        df = balance_sheet.reset_index()
-                        df.columns = df.columns.astype(str)
-                        for col in df.columns:
-                            if pd.api.types.is_datetime64_any_dtype(df[col]):
-                                df[col] = df[col].astype(str)
-                        data['balance_sheet'] = df.to_dict(orient='records')
+                        # Balance sheet
+                        self.rate_limiter.acquire()
+                        balance_sheet = stock.balance_sheet
+                        if balance_sheet is not None and not balance_sheet.empty:
+                            df = balance_sheet.reset_index()
+                            df.columns = df.columns.astype(str)
+                            for col in df.columns:
+                                if pd.api.types.is_datetime64_any_dtype(df[col]):
+                                    df[col] = df[col].astype(str)
+                            data['balance_sheet'] = df.to_dict(orient='records')
 
-                    # Income statement
-                    self.rate_limiter.acquire()
-                    income_stmt = stock.income_stmt
-                    if income_stmt is not None and not income_stmt.empty:
-                        df = income_stmt.reset_index()
-                        df.columns = df.columns.astype(str)
-                        for col in df.columns:
-                            if pd.api.types.is_datetime64_any_dtype(df[col]):
-                                df[col] = df[col].astype(str)
-                        data['income'] = df.to_dict(orient='records')
+                        # Income statement
+                        self.rate_limiter.acquire()
+                        income_stmt = stock.income_stmt
+                        if income_stmt is not None and not income_stmt.empty:
+                            df = income_stmt.reset_index()
+                            df.columns = df.columns.astype(str)
+                            for col in df.columns:
+                                if pd.api.types.is_datetime64_any_dtype(df[col]):
+                                    df[col] = df[col].astype(str)
+                            data['income'] = df.to_dict(orient='records')
 
-                    logger.info(f"Fetched financial statements for {ticker}")
-                except Exception as e:
-                    logger.warning(f"Could not fetch financial statements for {ticker}: {e}")
+                        logger.info(f"Fetched financial statements for {ticker}")
+                    except Exception as e:
+                        logger.warning(f"Could not fetch financial statements for {ticker}: {e}")
 
-                # Convert financial statements if currency conversion was applied
-                if data['financials'].get('_currency_converted'):
-                    financial_currency = data['financials'].get('_original_currency')
-                    exchange_rate = data['financials'].get('_exchange_rate_used')
-                    if financial_currency and exchange_rate:
-                        data = convert_financial_statements_to_usd(data, financial_currency, exchange_rate)
+                    # Convert financial statements if currency conversion was applied
+                    if data['financials'].get('_currency_converted'):
+                        financial_currency = data['financials'].get('_original_currency')
+                        exchange_rate = data['financials'].get('_exchange_rate_used')
+                        if financial_currency and exchange_rate:
+                            data = convert_financial_statements_to_usd(data, financial_currency, exchange_rate)
 
-                # Cache the data
-                self.cache.save_stock_data(ticker, data)
+                # Cache the data (lite mode preserves existing financial statements in DB)
+                if self.lite:
+                    self.cache.save_to_sqlite_lite(ticker, data)
+                    # Update cache index so get_update_order() knows this ticker was refreshed
+                    self.cache.index['stocks'][ticker] = {
+                        'last_updated': datetime.now().isoformat(),
+                        'file_size': self.cache.index.get('stocks', {}).get(ticker, {}).get('file_size', 0),
+                        'has_financials': True,
+                        'has_info': True,
+                        'has_cashflow': self.cache.index.get('stocks', {}).get(ticker, {}).get('has_cashflow', False),
+                        'has_balance_sheet': self.cache.index.get('stocks', {}).get(ticker, {}).get('has_balance_sheet', False),
+                        'has_income': self.cache.index.get('stocks', {}).get(ticker, {}).get('has_income', False),
+                    }
+                    self.cache.save_index()
+                else:
+                    self.cache.save_stock_data(ticker, data)
 
                 # Success - return data
                 return data
@@ -576,6 +703,12 @@ def get_universe_tickers(universe: str) -> List[str]:
         # Map universe names to index manager methods
         if universe == 'sp500':
             tickers = index_manager.get_index_tickers('sp500')
+        elif universe == 'sp1500':
+            sp500 = index_manager.get_index_tickers('sp500')
+            sp400 = index_manager.get_index_tickers('sp400')
+            sp600 = index_manager.get_index_tickers('sp600')
+            tickers = list(dict.fromkeys(sp500 + sp400 + sp600))
+            source_desc = f"S&P 1500 (500={len(sp500)}, 400={len(sp400)}, 600={len(sp600)})"
         elif universe == 'international':
             # Combine multiple international indices
             tickers = []
@@ -629,6 +762,7 @@ async def main():
     parser = argparse.ArgumentParser(description='Fetch stock data asynchronously')
     parser.add_argument('--universe', default='sp500', help='Stock universe to fetch')
     parser.add_argument('--max-concurrent', type=int, default=10, help='Max concurrent requests')
+    parser.add_argument('--lite', action='store_true', help='Lite mode: prices + metrics only, skip financial statements')
 
     args = parser.parse_args()
 
@@ -645,7 +779,10 @@ async def main():
     # Fetch data
     start_time = time.time()
 
-    async with AsyncStockDataFetcher(max_workers=args.max_concurrent) as fetcher:
+    if args.lite:
+        logger.info("LITE MODE: skipping financial statements (cashflow, balance sheet, income)")
+
+    async with AsyncStockDataFetcher(max_workers=args.max_concurrent, lite=args.lite) as fetcher:
         results = await fetcher.fetch_multiple_stocks(tickers, args.max_concurrent)
 
     # Report results

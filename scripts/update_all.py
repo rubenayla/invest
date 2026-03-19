@@ -86,7 +86,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description='Update data, run predictions, and regenerate the dashboard',
     )
-    parser.add_argument('--universe', default='sp500', help='Universe for data fetcher')
+    parser.add_argument('--universe', default='all', help='Universe for data fetcher (default: all)')
     parser.add_argument('--max-concurrent', type=int, default=10, help='Max concurrent fetches')
     parser.add_argument('--skip-fetch', action='store_true', help='Skip data fetching step')
     parser.add_argument('--skip-gbm', action='store_true', help='Skip GBM predictions')
@@ -99,17 +99,26 @@ def main() -> int:
     parser.add_argument('--skip-holdings', action='store_true', help='Skip institutional holdings (13F)')
     parser.add_argument('--skip-edinet', action='store_true', help='Skip EDINET Japan data')
     parser.add_argument('--skip-scanner', action='store_true', help='Skip opportunity scanner')
+    parser.add_argument('--lite-fetch', action='store_true',
+                        help='Lite mode: fetch prices+metrics only (no statements/insider/activist/holdings/edinet)')
     args = parser.parse_args()
 
+    # Lite mode implies skipping heavy data sources
+    if args.lite_fetch:
+        args.skip_insider = True
+        args.skip_activist = True
+        args.skip_holdings = True
+        args.skip_edinet = True
+
     if not args.skip_fetch:
-        run_cmd(
-            [
-                'uv', 'run', 'python', 'scripts/data_fetcher.py',
-                '--universe', args.universe,
-                '--max-concurrent', str(args.max_concurrent),
-            ],
-            f'Fetching data ({args.universe})',
-        )
+        fetch_cmd = [
+            'uv', 'run', 'python', 'scripts/data_fetcher.py',
+            '--universe', args.universe,
+            '--max-concurrent', str(args.max_concurrent),
+        ]
+        if args.lite_fetch:
+            fetch_cmd.append('--lite')
+        run_cmd(fetch_cmd, f'Fetching data ({args.universe}){"  [LITE]" if args.lite_fetch else ""}')
 
     # --- Phase 1b: Insider data (reads SEC EDGAR, writes insider_transactions) ---
     if not args.skip_insider:
