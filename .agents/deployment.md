@@ -1,9 +1,18 @@
-# Deployment — Partle Server (Hetzner)
+# Deployment — Hetzner Server
 
-## Architecture Split
+## Architecture
 
-- **Partle (Hetzner)**: hosts DB (source of truth), fetches data (Yahoo + SEC), serves dashboard at `invest.rubenayla.xyz`
-- **Mac**: pulls DB, runs heavy ML models (GBM, autoresearch, neural nets), pushes predictions back
+- **Hetzner server**: hosts PostgreSQL (source of truth), fetches data (Yahoo + SEC), serves dashboard at `invest.rubenayla.xyz`
+- **Mac**: connects to same Postgres via SSH tunnel, runs heavy ML models (GBM, autoresearch, neural nets)
+- **No file syncing** — both read/write the same Postgres database
+
+## Database
+
+- **PostgreSQL** on Hetzner: `invest` database, `invest` user
+- Server connects directly: `postgresql://invest:invest_2026@localhost:5432/invest`
+- Mac connects via SSH tunnel: `postgresql://invest:invest_2026@localhost:5433/invest`
+- Config: `~/.invest_db_url` on both machines, or `DB_URL` env var
+- SSH tunnel: `ssh -N hetzner-db` (configured in `~/.ssh/config`, forwards 5433→5432)
 
 ## Server Details
 
@@ -21,13 +30,14 @@
 - **invest-dashboard.service**: runs `dashboard_server.py --no-auto-shutdown` at Nice=19
 - **Cron**: nightly data fetch at 22:00 UTC (Mon-Fri), data-only (no ML)
 
-## Sync Workflow
+## Workflow
 
 ```
-1. Partle cron fetches data nightly (Yahoo + SEC)
-2. Mac pulls DB:     ./scripts/sync_from_server.sh
-3. Mac runs models:  uv run python scripts/update_all.py --skip-fetch --skip-insider --skip-activist --skip-holdings --skip-edinet
-4. Mac pushes back:  ./scripts/sync_to_server.sh
+1. Hetzner cron fetches data nightly (Yahoo + SEC) → writes to Postgres
+2. Mac runs models (with SSH tunnel open):
+   ssh -N hetzner-db &
+   uv run python scripts/update_all.py --skip-fetch --skip-insider --skip-activist --skip-holdings --skip-edinet
+3. Dashboard auto-refreshes from Postgres on each page load
 ```
 
 ## Key Commands
@@ -46,7 +56,10 @@ ssh hetzner "sudo systemctl restart invest-dashboard"
 ssh hetzner "tail -50 ~/invest/logs/cron_update.log"
 
 # Manual data update on server
-ssh hetzner "cd /srv/invest && nice -n 19 uv run python scripts/update_all.py --skip-gbm --skip-nn --skip-autoresearch --skip-classic --skip-scanner --skip-dashboard"
+ssh hetzner "cd /srv/invest && nice -n 19 ~/.local/bin/uv run python scripts/update_all.py --skip-gbm --skip-nn --skip-autoresearch --skip-classic --skip-scanner --skip-dashboard"
+
+# Open SSH tunnel for local Postgres access
+ssh -N hetzner-db &
 ```
 
 ## Nginx Config
@@ -55,7 +68,8 @@ Located at `/etc/nginx/sites-enabled/invest.rubenayla.xyz`. Uses same SSL cert a
 
 ## Important Notes
 
-- `Nice=19` on all invest processes — Partle game gets CPU priority
+- `Nice=19` on all invest processes — Partle app gets CPU priority
 - `--no-auto-shutdown` flag disables the 2h idle timeout for systemd
 - Dashboard regenerates HTML from DB on each request (no static files to sync)
 - The "Live Server" button uses relative URL `/` (works behind nginx)
+- DB_URL is set in the systemd service file and in `~/.invest_db_url`

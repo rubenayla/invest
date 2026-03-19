@@ -2,19 +2,17 @@
 
 ## Data Systems
 
-Two SQLite databases, two access patterns:
+Single PostgreSQL database (`invest`) on Hetzner, accessed via:
+- Server (direct): `localhost:5432`
+- Mac (SSH tunnel): `localhost:5433` via `ssh -N hetzner-db`
 
-1. **`data/stock_data.db`** — main stock data
-   - `assets`, `fundamental_history`, `price_history` — time-series for ML models
-   - `current_stock_data` — single snapshot per stock for valuations/dashboard
-   - `valuation_results` — all model outputs (DCF, GBM, RIM, etc.)
-   - Access: `StockDataReader` (single entry point for all stock data)
-
-2. **`data/sec_edgar/*.db`** — SEC filing data (separate DBs per domain)
-   - `insider_transactions.db` — Form 4 insider trades
-   - `activist_stakes.db` — 13D/13G (5%+ ownership)
-   - `fund_holdings.db` — 13F institutional holdings + `cusip_to_ticker` map
-   - Access: each has a `*_db.py` module with `compute_*_signal()` functions
+Tables:
+- `assets`, `fundamental_history`, `price_history` — time-series for ML models
+- `current_stock_data` — single snapshot per stock for valuations/dashboard
+- `valuation_results` — all model outputs (DCF, GBM, RIM, etc.)
+- `insider_transactions`, `activist_stakes`, `fund_holdings` — SEC data
+- Access: `StockDataReader` (main entry point), `*_db.py` modules for SEC signals
+- Connection: `from invest.data.db import get_connection`
 
 ## Pipeline: `scripts/update_all.py`
 
@@ -57,8 +55,9 @@ All fetchers share: `_sec_get()` for HTTP, `TokenBucketRateLimiter` (10 req/s), 
 
 ## Deployment
 
-- **Partle server** (Hetzner): hosts DB, fetches data, serves dashboard at `invest.rubenayla.xyz`
-- **Mac**: pulls DB, runs heavy ML models (GBM, autoresearch), pushes predictions back
+- **Hetzner server**: hosts PostgreSQL (source of truth), fetches data, serves dashboard at `invest.rubenayla.xyz`
+- **Mac**: connects to same Postgres via SSH tunnel, runs heavy ML models (GBM, autoresearch)
+- No file syncing — both machines read/write the same database
 - See `.agents/deployment.md` for full details
 
 ## Key Conventions
