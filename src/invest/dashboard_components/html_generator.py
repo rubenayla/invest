@@ -56,7 +56,8 @@ class HTMLGenerator:
         update_status_json = json.dumps(metadata.get("update_status", {})) if metadata else "{}"
 
         # Create complete HTML document
-        html_content = f"""<!DOCTYPE html>
+        html_content = f"""<!-- Start server: uv run python scripts/dashboard_server.py -->
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -76,7 +77,7 @@ class HTMLGenerator:
             <div class="header-row">
                 <div class="last-updated">Page rendered: <span id="lastUpdated">{last_updated}</span></div>
                 <div class="header-actions">
-                    <a id="liveServerLink" href="http://127.0.0.1:8050/" class="btn btn-update" style="{'display:none' if server_mode else ''}">Live Server</a>
+                    <a id="liveServerLink" href="http://[::1]:8050/" class="btn btn-update" style="{'display:none' if server_mode else ''}">Live Server</a>
                     <a href="https://rubenayla.github.io/invest/models/" target="_blank" rel="noopener noreferrer" class="btn btn-docs">Model Docs</a>
                     <button onclick="exportToCSV()" class="btn btn-export">Export CSV</button>
                 </div>
@@ -983,6 +984,8 @@ class HTMLGenerator:
                 dollar_str = f" ${dollars / 1_000_000:.1f}M"
             elif dollars >= 1_000:
                 dollar_str = f" ${dollars / 1_000:.0f}K"
+            elif dollars > 0:
+                dollar_str = f" ${dollars:.0f}"
             else:
                 dollar_str = ""
 

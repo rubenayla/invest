@@ -645,7 +645,7 @@ def main():
 
     LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    display_host = "127.0.0.1" if args.host in ("0.0.0.0", "::") else args.host
+    display_host = "[::1]" if args.host == "::" else ("127.0.0.1" if args.host == "0.0.0.0" else args.host)
     print(f"\n  Dashboard server starting at http://{display_host}:{args.port}")
     print(f"  Database: {DB_PATH}")
     print(f"  DB size: {DB_PATH.stat().st_size / (1024*1024):.1f} MB")
