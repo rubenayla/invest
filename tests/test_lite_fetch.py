@@ -1,8 +1,11 @@
-"""Tests for lite fetch mode — prices+metrics only, preserving financial statements."""
+"""Tests for lite fetch mode — prices+metrics only, preserving financial statements.
+
+These tests require a PostgreSQL connection (via SSH tunnel or direct).
+They are automatically skipped in CI where no database is available.
+"""
 
 import json
 import os
-import sqlite3
 import sys
 import time
 from datetime import datetime
@@ -14,44 +17,27 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from scripts.data_fetcher import AsyncStockDataFetcher, StockDataCache
 
+# Classes that test DB operations are marked requires_data and skip in CI
+
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _create_schema(conn: sqlite3.Connection):
-    """Create the current_stock_data table matching production schema."""
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS current_stock_data (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            ticker TEXT NOT NULL UNIQUE,
-            current_price REAL, market_cap REAL,
-            sector TEXT, industry TEXT, long_name TEXT, short_name TEXT,
-            currency TEXT, financial_currency TEXT, exchange TEXT, country TEXT,
-            trailing_pe REAL, forward_pe REAL, price_to_book REAL,
-            return_on_equity REAL, debt_to_equity REAL, current_ratio REAL,
-            revenue_growth REAL, earnings_growth REAL,
-            operating_margins REAL, profit_margins REAL,
-            total_revenue REAL, total_cash REAL, total_debt REAL, shares_outstanding REAL,
-            trailing_eps REAL, book_value REAL, revenue_per_share REAL, price_to_sales_ttm REAL,
-            price_52w_high REAL, price_52w_low REAL, avg_volume REAL, price_trend_30d REAL,
-            cashflow_json TEXT, balance_sheet_json TEXT, income_json TEXT,
-            fetch_timestamp TEXT, last_updated TEXT,
-            exchange_rate_used REAL, original_currency TEXT
-        )
-    """)
-    conn.commit()
+from invest.data.db import get_connection
 
 
-def _insert_full_row(conn: sqlite3.Connection, ticker: str, price: float,
+def _insert_full_row(ticker: str, price: float,
                      cashflow: str = '[{"item": "cf"}]',
                      balance_sheet: str = '[{"item": "bs"}]',
                      income: str = '[{"item": "inc"}]',
                      sector: str = 'Technology',
                      market_cap: float = 1e12):
-    """Insert a complete row with financial statements."""
-    conn.execute("""
-        INSERT OR REPLACE INTO current_stock_data (
+    """Insert a complete row with financial statements via Postgres."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        INSERT INTO current_stock_data (
             ticker, current_price, market_cap, sector, industry, long_name,
             currency, financial_currency, exchange, country,
             trailing_pe, forward_pe, price_to_book,
@@ -61,27 +47,58 @@ def _insert_full_row(conn: sqlite3.Connection, ticker: str, price: float,
             cashflow_json, balance_sheet_json, income_json,
             fetch_timestamp, last_updated
         ) VALUES (
-            ?, ?, ?, ?, 'Consumer Electronics', 'Apple Inc.',
+            %s, %s, %s, %s, 'Consumer Electronics', 'Apple Inc.',
             'USD', 'USD', 'NASDAQ', 'USA',
             28.5, 25.0, 40.0,
             1.48, 1.96, 0.30, 0.25,
             380000000000, 6.5, 4.0,
             200.0, 120.0, 50000000, 5.2,
-            ?, ?, ?,
-            ?, ?
+            %s, %s, %s,
+            %s, %s
         )
+        ON CONFLICT (ticker) DO UPDATE SET
+            current_price = EXCLUDED.current_price,
+            market_cap = EXCLUDED.market_cap,
+            sector = EXCLUDED.sector,
+            cashflow_json = EXCLUDED.cashflow_json,
+            balance_sheet_json = EXCLUDED.balance_sheet_json,
+            income_json = EXCLUDED.income_json,
+            fetch_timestamp = EXCLUDED.fetch_timestamp,
+            last_updated = EXCLUDED.last_updated
     """, (ticker, price, market_cap, sector, cashflow, balance_sheet, income,
           datetime.now().isoformat(), datetime.now().isoformat()))
     conn.commit()
+    conn.close()
+
+
+def _get_row(ticker: str):
+    """Get a row from current_stock_data."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT current_price, trailing_pe, sector, market_cap, '
+        'cashflow_json, balance_sheet_json, income_json, '
+        'price_52w_high, price_52w_low '
+        'FROM current_stock_data WHERE ticker = %s', (ticker,)
+    )
+    row = cursor.fetchone()
+    conn.close()
+    return row
+
+
+def _cleanup_test_tickers(*tickers):
+    """Remove test tickers from the database."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    for t in tickers:
+        cursor.execute('DELETE FROM current_stock_data WHERE ticker = %s', (t,))
+    conn.commit()
+    conn.close()
 
 
 def _make_cache(tmp_path) -> StockDataCache:
-    """Create a StockDataCache pointing at a tmp dir with proper schema."""
-    db_path = tmp_path / 'stock_data.db'
-    conn = sqlite3.connect(str(db_path))
-    _create_schema(conn)
-    conn.close()
-    cache = StockDataCache(str(tmp_path / 'cache'), db_path=str(db_path))
+    """Create a StockDataCache pointing at a tmp dir."""
+    cache = StockDataCache(str(tmp_path / 'cache'))
     return cache
 
 
@@ -89,6 +106,7 @@ def _make_cache(tmp_path) -> StockDataCache:
 # StockDataCache.save_to_sqlite_lite
 # ---------------------------------------------------------------------------
 
+@pytest.mark.requires_data
 class TestSaveToSqliteLite:
     """Test that lite saves update prices without clobbering statements."""
 
@@ -225,6 +243,7 @@ class TestSaveToSqliteLite:
 # AsyncStockDataFetcher with lite=True
 # ---------------------------------------------------------------------------
 
+@pytest.mark.requires_data
 class TestFetcherLiteMode:
     """Test that the fetcher in lite mode skips financial statements."""
 
@@ -372,6 +391,7 @@ class TestFetcherLiteMode:
 # Resume-on-interrupt (get_update_order after lite update)
 # ---------------------------------------------------------------------------
 
+@pytest.mark.requires_data
 class TestResumeOnInterrupt:
     """Test that interrupted lite updates resume correctly."""
 
@@ -534,6 +554,7 @@ class TestDashboardServerLiteApi:
 # Edge cases / regression
 # ---------------------------------------------------------------------------
 
+@pytest.mark.requires_data
 class TestEdgeCases:
     """Edge cases and regression tests."""
 

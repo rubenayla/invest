@@ -33,22 +33,16 @@ def pytest_collection_modifyitems(config, items):
     nn_models_exist = (project_root / 'models/neural_network/training/best_model.pt').exists()
     models_exist = gbm_models_exist or nn_models_exist
 
-    # Check for database with historical data
-    db_path = project_root / 'data/stock_data.db'
-    db_exists = db_path.exists()
-
-    if db_exists:
-        import sqlite3
-        try:
-            conn = sqlite3.connect(str(db_path))
-            cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM fundamental_history")
-            history_count = cursor.fetchone()[0]
-            conn.close()
-            has_historical_data = history_count > 1000  # At least 1000 records
-        except Exception:
-            has_historical_data = False
-    else:
+    # Check for PostgreSQL database connectivity
+    try:
+        from invest.data.db import get_connection
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) FROM fundamental_history")
+        history_count = cursor.fetchone()[0]
+        conn.close()
+        has_historical_data = history_count > 1000
+    except Exception:
         has_historical_data = False
 
     # Build skip reasons

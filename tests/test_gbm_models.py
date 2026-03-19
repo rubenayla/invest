@@ -46,20 +46,11 @@ def test_gbm_prediction_script_can_run():
 @pytest.mark.requires_data
 def test_fundamental_history_table_exists():
     """Test that fundamental_history table exists with data."""
-    import sqlite3
-    from pathlib import Path
+    from invest.data.db import get_connection
 
-    project_root = Path(__file__).parent.parent
-    db_path = project_root / 'data/stock_data.db'
-
-    conn = sqlite3.connect(str(db_path))
+    conn = get_connection()
     cursor = conn.cursor()
 
-    # Check table exists
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='fundamental_history'")
-    assert cursor.fetchone() is not None
-
-    # Check has data
     cursor.execute("SELECT COUNT(*) FROM fundamental_history")
     count = cursor.fetchone()[0]
     assert count > 1000, f"Expected >1000 records, got {count}"
@@ -70,29 +61,17 @@ def test_fundamental_history_table_exists():
 @pytest.mark.requires_data
 def test_database_schema():
     """Test database schema - requires populated database."""
-    import sqlite3
-    from pathlib import Path
+    from invest.data.db import get_connection
 
-    project_root = Path(__file__).parent.parent
-    db_path = project_root / 'data/stock_data.db'
-
-    if not db_path.exists():
-        pytest.skip("Database not found")
-
-    conn = sqlite3.connect(str(db_path))
+    conn = get_connection()
     cursor = conn.cursor()
 
-    # Check valuation_results table exists
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='valuation_results'")
-    result = cursor.fetchone()
-
-    if result is None:
-        conn.close()
-        pytest.skip("valuation_results table not found - database not populated")
-
-    # Check it has the right columns
-    cursor.execute("PRAGMA table_info(valuation_results)")
-    columns = {row[1] for row in cursor.fetchall()}
+    # Check valuation_results table has the right columns
+    cursor.execute(
+        "SELECT column_name FROM information_schema.columns "
+        "WHERE table_name = 'valuation_results'"
+    )
+    columns = {row[0] for row in cursor.fetchall()}
 
     expected_columns = {'ticker', 'model_name', 'fair_value', 'timestamp'}
     assert expected_columns.issubset(columns)
