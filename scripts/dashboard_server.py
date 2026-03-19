@@ -108,7 +108,12 @@ class UpdateManager:
             cmd = [
                 "uv", "run", "python", "scripts/update_all.py",
                 "--universe", universe,
-                "--skip-dashboard",   # we regenerate via the server
+                "--skip-dashboard",       # we regenerate via the server
+                "--skip-gbm",             # ML models run on Mac, not server
+                "--skip-nn",
+                "--skip-autoresearch",
+                "--skip-classic",
+                "--skip-scanner",
             ]
             if extra_args:
                 cmd.extend(extra_args)

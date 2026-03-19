@@ -106,8 +106,8 @@ class HTMLGenerator:
             </div>
             <div class="controls-right">
                 <div id="updateStatus" class="update-status"></div>
-                <button id="updateButton" onclick="triggerUpdate()" class="btn btn-update" title="Full refresh: prices, financials, statements (cashflow/balance sheet/income), insider trades, activist stakes, institutional holdings. ~30 min for S&amp;P 500. Use weekly.">Update Data</button>
-                <button id="liteUpdateButton" onclick="triggerUpdate(true)" class="btn btn-lite-update" title="Fast refresh: prices &amp; key metrics only. Preserves existing financial statements. ~12 min for S&amp;P 500. Use daily.">Lite Update</button>
+                <button id="updateButton" onclick="triggerUpdate()" class="btn btn-update" title="Full refresh: prices, financials, statements, insider trades, activist stakes, institutional holdings. Data only — ML models run locally on Mac.">Update Data</button>
+                <button id="liteUpdateButton" onclick="triggerUpdate(true)" class="btn btn-lite-update" title="Fast refresh: prices &amp; key metrics only. Preserves existing financial statements.">Lite Update</button>
                 <button id="cancelButton" onclick="cancelUpdate()" class="btn btn-cancel" style="display:none;">Cancel</button>
                 <button id="shutdownButton" onclick="shutdownServer()" class="btn" style="display:none;" title="Stop the dashboard server">Shutdown</button>
             </div>
@@ -327,6 +327,10 @@ class HTMLGenerator:
                 <div class="health-row">
                     <span class="health-label">SEC Data</span>
                     <div class="health-chips">{''.join(sec_chips)}</div>
+                </div>
+                <div class="health-row" style="margin-top:6px; font-size:0.82em; color:#738091;">
+                    Update buttons fetch data only. To refresh ML models, run on Mac:
+                    <code style="background:#161b22; padding:1px 5px; border-radius:3px; font-size:0.95em;">ssh -N hetzner-db & uv run python scripts/update_all.py --skip-fetch</code>
                 </div>
             </div>
         </div>'''
