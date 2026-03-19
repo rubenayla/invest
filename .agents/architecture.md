@@ -55,6 +55,12 @@ Trusted models (`_TRUSTED_MODELS`): `gbm_3y`, `gbm_lite_3y`, `gbm_opportunistic_
 
 All fetchers share: `_sec_get()` for HTTP, `TokenBucketRateLimiter` (10 req/s), `ThreadPoolExecutor` for concurrency, per-worker DB connections, `*_fetch_log` tables for incremental updates.
 
+## Deployment
+
+- **Partle server** (Hetzner): hosts DB, fetches data, serves dashboard at `invest.rubenayla.xyz`
+- **Mac**: pulls DB, runs heavy ML models (GBM, autoresearch), pushes predictions back
+- See `.agents/deployment.md` for full details
+
 ## Key Conventions
 
 - Database is source of truth (not scripts)

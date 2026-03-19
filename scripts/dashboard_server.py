@@ -643,7 +643,12 @@ def main():
     parser = argparse.ArgumentParser(description="Live investment dashboard server")
     parser.add_argument("--port", type=int, default=8050, help="Port (default: 8050)")
     parser.add_argument("--host", default="::", help="Host (default: :: — IPv6, also accepts IPv4 on most systems)")
+    parser.add_argument("--no-auto-shutdown", action="store_true", help="Disable idle auto-shutdown (for systemd service)")
     args = parser.parse_args()
+
+    if args.no_auto_shutdown:
+        global AUTO_SHUTDOWN_SECONDS
+        AUTO_SHUTDOWN_SECONDS = 0
 
     LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
 
@@ -651,14 +656,18 @@ def main():
     print(f"\n  Dashboard server starting at http://{display_host}:{args.port}")
     print(f"  Database: {DB_PATH}")
     print(f"  DB size: {DB_PATH.stat().st_size / (1024*1024):.1f} MB")
-    print(f"  Auto-shutdown after {AUTO_SHUTDOWN_SECONDS // 3600}h idle\n")
+    if AUTO_SHUTDOWN_SECONDS > 0:
+        print(f"  Auto-shutdown after {AUTO_SHUTDOWN_SECONDS // 3600}h idle\n")
+    else:
+        print(f"  Auto-shutdown disabled\n")
 
     # Ensure alarm table exists
     _ensure_alarm_table()
 
-    # Start idle watchdog
-    watchdog = threading.Thread(target=_auto_shutdown_watchdog, daemon=True)
-    watchdog.start()
+    # Start idle watchdog (unless disabled)
+    if AUTO_SHUTDOWN_SECONDS > 0:
+        watchdog = threading.Thread(target=_auto_shutdown_watchdog, daemon=True)
+        watchdog.start()
 
     # Start alarm checker (polls every 60s)
     alarm_checker.start()
