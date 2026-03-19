@@ -15,7 +15,6 @@ import argparse
 import importlib
 import json
 import logging
-import sqlite3
 import sys
 from pathlib import Path
 
@@ -24,9 +23,11 @@ import numpy as np
 import pandas as pd
 
 # Add project root to path
+sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'models' / 'neural_network' / 'training'))
 
+from invest.data.db import get_connection, get_engine
 from invest.data.stock_data_reader import StockDataReader
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -117,7 +118,7 @@ def load_and_engineer_features(
     training_module
 ) -> pd.DataFrame:
     """Load data and engineer features exactly like training."""
-    conn = sqlite3.connect(db_path)
+    engine = get_engine()
 
     # Build query for all required columns
     history_cols = (
@@ -135,22 +136,23 @@ def load_and_engineer_features(
         FROM fundamental_history fh
         JOIN assets a ON fh.asset_id = a.id
         WHERE fh.vix IS NOT NULL
-        AND fh.snapshot_date >= date('now', '-3 years')
+        AND fh.snapshot_date >= CURRENT_DATE - INTERVAL '3 years'
         ORDER BY a.symbol, fh.snapshot_date
     '''
 
-    df = pd.read_sql(query, conn)
+    df = pd.read_sql(query, engine)
     df['snapshot_date'] = pd.to_datetime(df['snapshot_date'])
 
     logger.info(f'Loaded {len(df)} snapshots for feature engineering')
 
-    # Convert all numeric columns to float (SQLite sometimes returns as object)
+    # Convert all numeric columns to float
     for col in (feature_config.FUNDAMENTAL_FEATURES +
                 feature_config.MARKET_FEATURES +
                 feature_config.CASHFLOW_FEATURES):
         df[col] = pd.to_numeric(df[col], errors='coerce')
 
     # Add price features
+    conn = get_connection()
     df = add_price_features(df, conn, feature_config.PRICE_FEATURES)
     conn.close()
 
@@ -211,7 +213,7 @@ def add_price_features(df: pd.DataFrame, conn, price_features: list) -> pd.DataF
         JOIN price_history ph ON a.symbol = ph.ticker
         ORDER BY fh.id, ph.date
     '''
-    price_df = pd.read_sql(price_query, conn)
+    price_df = pd.read_sql(price_query, get_engine())
     price_df['date'] = pd.to_datetime(price_df['date'])
 
     logger.info(f'Loaded {len(price_df)} price history records')
@@ -341,18 +343,18 @@ def save_to_database(
     metadata: dict
 ):
     """Save predictions to valuation_results table."""
-    conn = sqlite3.connect(db_path)
+    conn = get_connection()
     cursor = conn.cursor()
 
     model_name = metadata['model_name']
     horizon = metadata['horizon']
 
     # Delete existing predictions
-    cursor.execute(f"DELETE FROM valuation_results WHERE model_name = '{model_name}'")
+    cursor.execute("DELETE FROM valuation_results WHERE model_name = %s", (model_name,))
     logger.info(f'Deleted {cursor.rowcount} existing {model_name} predictions')
 
     # Initialize StockDataReader for current price lookup
-    reader = StockDataReader(db_path)
+    reader = StockDataReader()
 
     # Insert new predictions
     inserted = 0
@@ -400,7 +402,7 @@ def save_to_database(
             INSERT INTO valuation_results
             (ticker, model_name, fair_value, current_price, margin_of_safety,
              upside_pct, suitable, confidence, details_json)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
         ''', (
             ticker,
             model_name,
@@ -455,7 +457,7 @@ Examples:
     # Paths
     project_root = Path(__file__).parent.parent
     model_path = project_root / 'models' / 'neural_network' / 'models' / 'gbm' / metadata['model_file']
-    db_path = project_root / 'data/stock_data.db'
+    db_path = None  # No longer used; connections come from get_connection()
 
     # Load variant-specific config
     training_module, feature_config = load_variant_config(args.variant)
@@ -464,7 +466,7 @@ Examples:
     model = load_gbm_model(str(model_path))
 
     # Load data and engineer features
-    df = load_and_engineer_features(str(db_path), feature_config, training_module)
+    df = load_and_engineer_features(db_path, feature_config, training_module)
 
     # Prepare features
     X, feature_cols, df_norm = prepare_features(df, feature_config, training_module)
@@ -492,7 +494,7 @@ Examples:
         logger.info(f'  {df.iloc[idx]["ticker"]}: {predictions[idx]:.2%}')
 
     # Save to database
-    save_to_database(df, predictions, confidences, str(db_path), metadata)
+    save_to_database(df, predictions, confidences, db_path, metadata)
 
     logger.info(f'{metadata["description"]} complete!')
 

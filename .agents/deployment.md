@@ -7,7 +7,7 @@
 
 ## Server Details
 
-- Host: `partle` (SSH alias) — `91.98.68.236`
+- Host: `hetzner` (SSH alias) — `91.98.68.236`
 - User: `deploy`
 - OS: Ubuntu 24.04 LTS
 - Specs: 2 vCPU, 4GB RAM
@@ -34,19 +34,19 @@
 
 ```bash
 # Check dashboard status
-ssh partle "sudo systemctl status invest-dashboard"
+ssh hetzner "sudo systemctl status invest-dashboard"
 
 # View dashboard logs
-ssh partle "sudo journalctl -u invest-dashboard -f"
+ssh hetzner "sudo journalctl -u invest-dashboard -f"
 
 # Restart dashboard
-ssh partle "sudo systemctl restart invest-dashboard"
+ssh hetzner "sudo systemctl restart invest-dashboard"
 
 # View cron logs
-ssh partle "tail -50 ~/invest/logs/cron_update.log"
+ssh hetzner "tail -50 ~/invest/logs/cron_update.log"
 
 # Manual data update on server
-ssh partle "cd /srv/invest && nice -n 19 uv run python scripts/update_all.py --skip-gbm --skip-nn --skip-autoresearch --skip-classic --skip-scanner --skip-dashboard"
+ssh hetzner "cd /srv/invest && nice -n 19 uv run python scripts/update_all.py --skip-gbm --skip-nn --skip-autoresearch --skip-classic --skip-scanner --skip-dashboard"
 ```
 
 ## Nginx Config

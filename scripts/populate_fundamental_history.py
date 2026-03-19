@@ -7,7 +7,6 @@ and populates the assets/snapshots tables so neural networks can make prediction
 """
 
 import logging
-import sqlite3
 import sys
 import time
 from datetime import datetime, timedelta
@@ -21,6 +20,8 @@ import yfinance as yf
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root / 'src'))
 
+from invest.data.db import get_connection
+
 # Setup logging
 logging.basicConfig(
     level=logging.INFO,
@@ -32,9 +33,8 @@ logger = logging.getLogger(__name__)
 class HistoricalSnapshotFetcher:
     """Fetches historical fundamental data and populates snapshots table."""
 
-    def __init__(self, db_path: str = 'data/stock_data.db'):
-        self.db_path = Path(project_root) / db_path
-        self.conn = sqlite3.connect(self.db_path)
+    def __init__(self, db_path: str = None):
+        self.conn = get_connection()
         self.cursor = self.conn.cursor()
 
         # Rate limiting
@@ -54,15 +54,17 @@ class HistoricalSnapshotFetcher:
         WHERE ticker NOT IN (SELECT DISTINCT symbol FROM assets)
         ORDER BY ticker
         '''
-        return self.cursor.execute(query).fetchall()
+        self.cursor.execute(query)
+        return self.cursor.fetchall()
 
     def get_or_create_asset(self, ticker: str, sector: str = None, industry: str = None) -> int:
         """Get asset_id or create new asset entry."""
         # Check if asset exists
-        result = self.cursor.execute(
-            'SELECT id FROM assets WHERE symbol = ?',
+        self.cursor.execute(
+            'SELECT id FROM assets WHERE symbol = %s',
             (ticker,)
-        ).fetchone()
+        )
+        result = self.cursor.fetchone()
 
         if result:
             return result[0]
@@ -70,11 +72,13 @@ class HistoricalSnapshotFetcher:
         # Create new asset
         self.cursor.execute('''
             INSERT INTO assets (symbol, asset_type, sector, industry)
-            VALUES (?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s)
+            RETURNING id
         ''', (ticker, 'stock', sector or 'Unknown', industry or 'Unknown'))
 
+        asset_id = self.cursor.fetchone()[0]
         self.conn.commit()
-        return self.cursor.lastrowid
+        return asset_id
 
     def rate_limit(self):
         """Simple rate limiting to avoid overwhelming yfinance."""
@@ -386,7 +390,7 @@ class HistoricalSnapshotFetcher:
     def save_snapshots(self, asset_id: int, snapshots: List[Dict]):
         """Save snapshots to database, inserting all available columns."""
         cols = self.SNAPSHOT_COLUMNS
-        placeholders = ', '.join(['?'] * len(cols))
+        placeholders = ', '.join(['%s'] * len(cols))
         col_names = ', '.join(cols)
 
         for snapshot in snapshots:
@@ -397,12 +401,11 @@ class HistoricalSnapshotFetcher:
                     values.append(snapshot.get(col))
 
                 self.cursor.execute(
-                    f'INSERT INTO fundamental_history ({col_names}) VALUES ({placeholders})',
+                    f'INSERT INTO fundamental_history ({col_names}) VALUES ({placeholders}) ON CONFLICT DO NOTHING',
                     values,
                 )
-            except sqlite3.IntegrityError:
-                pass
             except Exception as e:
+                self.conn.rollback()
                 logger.warning(f'Error saving snapshot: {e}')
 
         self.conn.commit()
@@ -452,17 +455,18 @@ def main():
         ticker_list = [t.strip().upper() for t in args.tickers.split(',')]
         stocks = []
         for t in ticker_list:
-            row = fetcher.cursor.execute(
-                'SELECT ticker, current_price, sector, industry FROM current_stock_data WHERE ticker = ?',
+            fetcher.cursor.execute(
+                'SELECT ticker, current_price, sector, industry FROM current_stock_data WHERE ticker = %s',
                 (t,)
-            ).fetchone()
+            )
+            row = fetcher.cursor.fetchone()
             if row:
                 stocks.append(row)
             else:
                 logger.warning(f'{t}: Not found in current_stock_data')
     elif args.refresh:
         # Get tickers with sparse data (few non-null fields in latest snapshot)
-        stocks = fetcher.cursor.execute('''
+        fetcher.cursor.execute('''
             SELECT c.ticker, c.current_price, c.sector, c.industry
             FROM current_stock_data c
             WHERE c.current_price IS NOT NULL
@@ -482,7 +486,8 @@ def main():
                 )
             )
             ORDER BY c.ticker
-        ''').fetchall()
+        ''')
+        stocks = fetcher.cursor.fetchall()
     else:
         stocks = fetcher.get_stocks_without_snapshots()
 
@@ -496,12 +501,13 @@ def main():
     # For --refresh, delete existing empty snapshots before re-fetching
     if args.refresh:
         for (ticker, *_) in stocks:
-            asset = fetcher.cursor.execute(
-                'SELECT id FROM assets WHERE symbol = ?', (ticker,)
-            ).fetchone()
+            fetcher.cursor.execute(
+                'SELECT id FROM assets WHERE symbol = %s', (ticker,)
+            )
+            asset = fetcher.cursor.fetchone()
             if asset:
                 fetcher.cursor.execute(
-                    'DELETE FROM fundamental_history WHERE asset_id = ?', (asset[0],)
+                    'DELETE FROM fundamental_history WHERE asset_id = %s', (asset[0],)
                 )
         fetcher.conn.commit()
         logger.info(f'Cleared existing empty snapshots for {len(stocks)} tickers')

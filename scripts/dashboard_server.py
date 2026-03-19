@@ -17,7 +17,6 @@ import json
 import logging
 import os
 import signal
-import sqlite3
 import subprocess
 import sys
 import threading
@@ -32,10 +31,11 @@ from starlette.responses import HTMLResponse, JSONResponse, PlainTextResponse
 from starlette.routing import Route
 
 REPO_ROOT = Path(__file__).parent.parent
-DB_PATH = REPO_ROOT / "data" / "stock_data.db"
 LOG_PATH = REPO_ROOT / "logs" / "update_server.log"
 
 sys.path.insert(0, str(REPO_ROOT / "src"))
+
+from invest.data.db import get_connection
 
 logger = logging.getLogger("dashboard_server")
 
@@ -173,19 +173,20 @@ update_manager = UpdateManager()
 
 def _ensure_alarm_table():
     """Create the price_alarms table if it doesn't exist."""
-    conn = sqlite3.connect(str(DB_PATH))
-    conn.execute("""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS price_alarms (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             ticker TEXT NOT NULL,
             condition TEXT NOT NULL CHECK(condition IN ('above', 'below')),
             target_price REAL NOT NULL,
-            created_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%SZ', 'now')),
+            created_at TEXT NOT NULL DEFAULT (TO_CHAR(NOW() AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"')),
             triggered_at TEXT,
             active INTEGER NOT NULL DEFAULT 1
         )
     """)
-    conn.execute("CREATE INDEX IF NOT EXISTS idx_price_alarms_active ON price_alarms(active, ticker)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_price_alarms_active ON price_alarms(active, ticker)")
     conn.commit()
     conn.close()
 
@@ -209,23 +210,25 @@ class AlarmChecker:
             time.sleep(60)
 
     def _check_alarms(self):
-        conn = sqlite3.connect(str(DB_PATH))
-        conn.row_factory = sqlite3.Row
+        conn = get_connection(dict_cursor=True)
+        cursor = conn.cursor()
 
-        alarms = conn.execute(
+        cursor.execute(
             "SELECT id, ticker, condition, target_price FROM price_alarms WHERE active = 1"
-        ).fetchall()
+        )
+        alarms = cursor.fetchall()
 
         if not alarms:
             conn.close()
             return
 
         tickers = list({r["ticker"] for r in alarms})
-        placeholders = ",".join("?" * len(tickers))
-        prices = conn.execute(
+        placeholders = ",".join("%s" for _ in tickers)
+        cursor.execute(
             f"SELECT ticker, current_price FROM current_stock_data WHERE ticker IN ({placeholders})",
             tickers,
-        ).fetchall()
+        )
+        prices = cursor.fetchall()
         price_map = {r["ticker"]: r["current_price"] for r in prices if r["current_price"]}
 
         now = _now_iso()
@@ -240,9 +243,9 @@ class AlarmChecker:
                 triggered_ids.append(alarm["id"])
 
         if triggered_ids:
-            ph = ",".join("?" * len(triggered_ids))
-            conn.execute(
-                f"UPDATE price_alarms SET triggered_at = ?, active = 0 WHERE id IN ({ph})",
+            ph = ",".join("%s" for _ in triggered_ids)
+            cursor.execute(
+                f"UPDATE price_alarms SET triggered_at = %s, active = 0 WHERE id IN ({ph})",
                 [now, *triggered_ids],
             )
             conn.commit()
@@ -256,33 +259,33 @@ alarm_checker = AlarmChecker()
 
 def get_db_health() -> dict:
     """Query database for freshness and health metrics."""
-    if not DB_PATH.exists():
-        return {"ok": False, "error": "Database file not found"}
-
-    conn = sqlite3.connect(str(DB_PATH))
-    conn.row_factory = sqlite3.Row
+    conn = get_connection(dict_cursor=True)
+    cursor = conn.cursor()
     now = datetime.now(timezone.utc)
 
     health: dict = {"ok": True, "generated_at": _now_iso()}
 
     # ── Stock data freshness (use fetch_timestamp, count stale) ──
     try:
-        row = conn.execute(
+        cursor.execute(
             "SELECT COUNT(*) as cnt, MIN(fetch_timestamp) as oldest, MAX(fetch_timestamp) as newest "
             "FROM current_stock_data WHERE current_price IS NOT NULL"
-        ).fetchone()
-        stale_row = conn.execute(
+        )
+        row = cursor.fetchone()
+        cursor.execute(
             "SELECT COUNT(*) as cnt FROM current_stock_data "
-            "WHERE current_price IS NOT NULL AND fetch_timestamp < datetime('now', '-7 days')"
-        ).fetchone()
+            "WHERE current_price IS NOT NULL AND fetch_timestamp < NOW() - INTERVAL '7 days'"
+        )
+        stale_row = cursor.fetchone()
         # p80 age: 80th percentile fetch_timestamp (ignores the ~20% oldest outliers)
-        p80_row = conn.execute(
+        cursor.execute(
             "SELECT fetch_timestamp FROM current_stock_data "
             "WHERE current_price IS NOT NULL AND fetch_timestamp IS NOT NULL "
             "ORDER BY fetch_timestamp ASC "
             "LIMIT 1 OFFSET (SELECT CAST(COUNT(*) * 0.2 AS INTEGER) "
             "FROM current_stock_data WHERE current_price IS NOT NULL AND fetch_timestamp IS NOT NULL)"
-        ).fetchone()
+        )
+        p80_row = cursor.fetchone()
         health["stock_data"] = {
             "count": row["cnt"],
             "oldest": row["oldest"],
@@ -294,16 +297,18 @@ def get_db_health() -> dict:
         }
     except Exception as exc:
         health["stock_data"] = {"error": str(exc)}
+        conn.rollback()
 
     # ── Per-model valuation freshness ──
     try:
-        rows = conn.execute(
+        cursor.execute(
             "SELECT model_name, COUNT(*) as cnt, "
             "SUM(CASE WHEN suitable = 1 THEN 1 ELSE 0 END) as ok_cnt, "
             "SUM(CASE WHEN suitable = 0 THEN 1 ELSE 0 END) as fail_cnt, "
             "MIN(timestamp) as oldest, MAX(timestamp) as newest "
             "FROM valuation_results GROUP BY model_name"
-        ).fetchall()
+        )
+        rows = cursor.fetchall()
         models = {}
         for r in rows:
             models[r["model_name"]] = {
@@ -318,54 +323,46 @@ def get_db_health() -> dict:
         health["models"] = models
     except Exception as exc:
         health["models"] = {"error": str(exc)}
+        conn.rollback()
 
-    # ── SEC data freshness ──
-    sec_dbs = {
-        "insider": REPO_ROOT / "data" / "sec_edgar" / "insider_transactions.db",
-        "activist": REPO_ROOT / "data" / "sec_edgar" / "activist_stakes.db",
-        "holdings": REPO_ROOT / "data" / "sec_edgar" / "fund_holdings.db",
+    # ── SEC data freshness (now in main Postgres DB) ──
+    sec_tables = {
+        "insider": "insider_transactions",
+        "activist": "activist_stakes",
+        "holdings": "fund_holdings",
     }
     sec_health = {}
-    for name, path in sec_dbs.items():
-        if path.exists():
-            try:
-                sec_conn = sqlite3.connect(str(path))
-                # Get file mod time as proxy for freshness
-                mtime = datetime.fromtimestamp(path.stat().st_mtime, tz=timezone.utc)
-                age_h = (now - mtime).total_seconds() / 3600
-                # Try to get row count from main table
-                tables = [r[0] for r in sec_conn.execute(
-                    "SELECT name FROM sqlite_master WHERE type='table'"
-                ).fetchall()]
-                count = 0
-                if tables:
-                    count = sec_conn.execute(f"SELECT COUNT(*) FROM [{tables[0]}]").fetchone()[0]
-                sec_conn.close()
-                sec_health[name] = {
-                    "exists": True,
-                    "rows": count,
-                    "last_modified": mtime.isoformat(),
-                    "age_hours": round(age_h, 1),
-                }
-            except Exception as exc:
-                sec_health[name] = {"exists": True, "error": str(exc)}
-        else:
-            sec_health[name] = {"exists": False}
+    for name, table in sec_tables.items():
+        try:
+            cursor.execute(f"SELECT COUNT(*) as cnt FROM {table}")
+            count = cursor.fetchone()["cnt"]
+            sec_health[name] = {"exists": True, "rows": count}
+        except Exception as exc:
+            sec_health[name] = {"exists": False, "error": str(exc)}
+            conn.rollback()
     health["sec_data"] = sec_health
 
-    # ── Database file size ──
-    health["db_size_mb"] = round(DB_PATH.stat().st_size / (1024 * 1024), 1)
+    # ── Database size (PostgreSQL) ──
+    try:
+        cursor.execute("SELECT pg_database_size('invest')")
+        size_bytes = cursor.fetchone()["pg_database_size"]
+        health["db_size_mb"] = round(size_bytes / (1024 * 1024), 1)
+    except Exception as exc:
+        health["db_size_mb"] = None
+        conn.rollback()
 
     # ── Recent errors (last 20 failed valuations) ──
     try:
-        rows = conn.execute(
+        cursor.execute(
             "SELECT ticker, model_name, error_message, failure_reason, timestamp "
             "FROM valuation_results WHERE suitable = 0 AND error_message IS NOT NULL "
             "ORDER BY timestamp DESC LIMIT 20"
-        ).fetchall()
+        )
+        rows = cursor.fetchall()
         health["recent_errors"] = [dict(r) for r in rows]
     except Exception as exc:
         health["recent_errors"] = {"error": str(exc)}
+        conn.rollback()
 
     conn.close()
     return health
@@ -453,13 +450,14 @@ async def api_alarm_create(request: Request) -> JSONResponse:
     if not ticker or condition not in ("above", "below") or not isinstance(target_price, (int, float)):
         return JSONResponse({"ok": False, "error": "Invalid parameters"}, status_code=400)
 
-    conn = sqlite3.connect(str(DB_PATH))
-    conn.execute(
-        "INSERT INTO price_alarms (ticker, condition, target_price) VALUES (?, ?, ?)",
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO price_alarms (ticker, condition, target_price) VALUES (%s, %s, %s) RETURNING id",
         (ticker, condition, target_price),
     )
+    alarm_id = cursor.fetchone()[0]
     conn.commit()
-    alarm_id = conn.execute("SELECT last_insert_rowid()").fetchone()[0]
     conn.close()
     return JSONResponse({"ok": True, "id": alarm_id})
 
@@ -467,17 +465,18 @@ async def api_alarm_create(request: Request) -> JSONResponse:
 async def api_alarm_list(request: Request) -> JSONResponse:
     """List alarms, optionally filtered by ticker."""
     ticker = request.query_params.get("ticker")
-    conn = sqlite3.connect(str(DB_PATH))
-    conn.row_factory = sqlite3.Row
+    conn = get_connection(dict_cursor=True)
+    cursor = conn.cursor()
     if ticker:
-        rows = conn.execute(
-            "SELECT * FROM price_alarms WHERE ticker = ? ORDER BY active DESC, created_at DESC",
+        cursor.execute(
+            "SELECT * FROM price_alarms WHERE ticker = %s ORDER BY active DESC, created_at DESC",
             (ticker.upper(),),
-        ).fetchall()
+        )
     else:
-        rows = conn.execute(
+        cursor.execute(
             "SELECT * FROM price_alarms ORDER BY active DESC, created_at DESC"
-        ).fetchall()
+        )
+    rows = cursor.fetchall()
     conn.close()
     return JSONResponse({"ok": True, "alarms": [dict(r) for r in rows]})
 
@@ -485,8 +484,9 @@ async def api_alarm_list(request: Request) -> JSONResponse:
 async def api_alarm_delete(request: Request) -> JSONResponse:
     """Delete an alarm by id."""
     alarm_id = request.path_params["alarm_id"]
-    conn = sqlite3.connect(str(DB_PATH))
-    conn.execute("DELETE FROM price_alarms WHERE id = ?", (alarm_id,))
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM price_alarms WHERE id = %s", (alarm_id,))
     conn.commit()
     conn.close()
     return JSONResponse({"ok": True})
@@ -495,19 +495,20 @@ async def api_alarm_delete(request: Request) -> JSONResponse:
 async def api_alarm_triggered(request: Request) -> JSONResponse:
     """Return alarms triggered since a given timestamp."""
     since = request.query_params.get("since")
-    conn = sqlite3.connect(str(DB_PATH))
-    conn.row_factory = sqlite3.Row
+    conn = get_connection(dict_cursor=True)
+    cursor = conn.cursor()
     if since:
-        rows = conn.execute(
-            "SELECT * FROM price_alarms WHERE triggered_at IS NOT NULL AND triggered_at > ? "
+        cursor.execute(
+            "SELECT * FROM price_alarms WHERE triggered_at IS NOT NULL AND triggered_at > %s "
             "ORDER BY triggered_at DESC",
             (since,),
-        ).fetchall()
+        )
     else:
-        rows = conn.execute(
+        cursor.execute(
             "SELECT * FROM price_alarms WHERE triggered_at IS NOT NULL AND active = 0 "
             "ORDER BY triggered_at DESC LIMIT 20"
-        ).fetchall()
+        )
+    rows = cursor.fetchall()
     conn.close()
     return JSONResponse({"ok": True, "triggered": [dict(r) for r in rows]})
 
@@ -518,18 +519,21 @@ async def api_alarm_triggered(request: Request) -> JSONResponse:
 async def api_insider_history(request: Request) -> JSONResponse:
     """Return monthly insider buy/sell counts for a ticker (SVG chart data)."""
     ticker = request.path_params["ticker"].upper()
-    conn = sqlite3.connect(str(DB_PATH))
+    conn = get_connection()
+    cursor = conn.cursor()
     try:
-        rows = conn.execute("""
-            SELECT strftime('%Y-%m', transaction_date) AS month,
+        cursor.execute("""
+            SELECT TO_CHAR(transaction_date, 'YYYY-MM') AS month,
                    transaction_type,
                    COUNT(*) AS cnt
             FROM insider_transactions
-            WHERE ticker = ? AND is_open_market = 1
+            WHERE ticker = %s AND is_open_market = 1
             GROUP BY month, transaction_type
             ORDER BY month
-        """, (ticker,)).fetchall()
-    except sqlite3.OperationalError:
+        """, (ticker,))
+        rows = cursor.fetchall()
+    except Exception:
+        conn.rollback()
         return JSONResponse({"ok": True, "ticker": ticker, "months": []})
     finally:
         conn.close()
@@ -611,7 +615,10 @@ def _hours_ago(timestamp_str: str | None, now: datetime) -> float | None:
     if not timestamp_str:
         return None
     try:
-        ts = datetime.fromisoformat(timestamp_str)
+        if isinstance(timestamp_str, datetime):
+            ts = timestamp_str
+        else:
+            ts = datetime.fromisoformat(timestamp_str)
         if ts.tzinfo is None:
             ts = ts.replace(tzinfo=timezone.utc)
         return round((now - ts).total_seconds() / 3600, 1)
@@ -654,8 +661,7 @@ def main():
 
     display_host = "[::1]" if args.host == "::" else ("127.0.0.1" if args.host == "0.0.0.0" else args.host)
     print(f"\n  Dashboard server starting at http://{display_host}:{args.port}")
-    print(f"  Database: {DB_PATH}")
-    print(f"  DB size: {DB_PATH.stat().st_size / (1024*1024):.1f} MB")
+    print(f"  Database: PostgreSQL (invest)")
     if AUTO_SHUTDOWN_SECONDS > 0:
         print(f"  Auto-shutdown after {AUTO_SHUTDOWN_SECONDS // 3600}h idle\n")
     else:

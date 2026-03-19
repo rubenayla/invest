@@ -6,7 +6,8 @@ Stores Form 4 insider transactions and computes aggregate insider signals
 """
 
 import logging
-import sqlite3
+import psycopg2
+import psycopg2.extras
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
@@ -17,11 +18,12 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
 DEFAULT_DB_PATH = PROJECT_ROOT / "data" / "stock_data.db"
 
 
-def ensure_schema(conn: sqlite3.Connection) -> None:
+def ensure_schema(conn) -> None:
     """Create insider tables if they don't exist."""
-    conn.executescript("""
+    cur = conn.cursor()
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS insider_transactions (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             ticker TEXT NOT NULL,
             cik TEXT NOT NULL,
             accession_number TEXT NOT NULL,
@@ -35,35 +37,41 @@ def ensure_schema(conn: sqlite3.Connection) -> None:
             shares_owned_after REAL,
             is_open_market INTEGER DEFAULT 0,
             UNIQUE(accession_number, reporter_name, transaction_date, shares)
-        );
-
+        )
+    """)
+    cur.execute("""
         CREATE INDEX IF NOT EXISTS idx_insider_ticker
-            ON insider_transactions(ticker);
+            ON insider_transactions(ticker)
+    """)
+    cur.execute("""
         CREATE INDEX IF NOT EXISTS idx_insider_ticker_date
-            ON insider_transactions(ticker, transaction_date);
-
+            ON insider_transactions(ticker, transaction_date)
+    """)
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS insider_fetch_log (
             ticker TEXT PRIMARY KEY,
             cik TEXT NOT NULL,
             fetched_at TEXT NOT NULL,
             form4_count INTEGER DEFAULT 0,
             status TEXT DEFAULT 'ok'
-        );
+        )
     """)
+    conn.commit()
 
 
-def insert_transactions(conn: sqlite3.Connection,
-                        transactions: List[Dict[str, Any]]) -> int:
+def insert_transactions(conn, transactions: List[Dict[str, Any]]) -> int:
     """Insert transactions, ignoring duplicates. Returns count inserted."""
     inserted = 0
+    cur = conn.cursor()
     for txn in transactions:
         try:
-            conn.execute("""
-                INSERT OR IGNORE INTO insider_transactions
+            cur.execute("""
+                INSERT INTO insider_transactions
                 (ticker, cik, accession_number, filing_date, transaction_date,
                  reporter_name, reporter_title, transaction_type, shares,
                  price_per_share, shares_owned_after, is_open_market)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT DO NOTHING
             """, (
                 txn["ticker"], txn["cik"], txn["accession_number"],
                 txn["filing_date"], txn["transaction_date"],
@@ -72,36 +80,45 @@ def insert_transactions(conn: sqlite3.Connection,
                 txn.get("price_per_share"), txn.get("shares_owned_after"),
                 txn.get("is_open_market", 0),
             ))
-            inserted += conn.total_changes  # approximate
-        except sqlite3.IntegrityError:
-            pass
+            inserted += cur.rowcount
+        except Exception:
+            conn.rollback()
     conn.commit()
     return inserted
 
 
-def log_fetch(conn: sqlite3.Connection, ticker: str, cik: str,
+def log_fetch(conn, ticker: str, cik: str,
               form4_count: int, status: str = "ok") -> None:
     """Record that we fetched insider data for a ticker."""
-    conn.execute("""
-        INSERT OR REPLACE INTO insider_fetch_log (ticker, cik, fetched_at, form4_count, status)
-        VALUES (?, ?, ?, ?, ?)
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO insider_fetch_log (ticker, cik, fetched_at, form4_count, status)
+        VALUES (%s, %s, %s, %s, %s)
+        ON CONFLICT (ticker) DO UPDATE SET
+            cik = EXCLUDED.cik,
+            fetched_at = EXCLUDED.fetched_at,
+            form4_count = EXCLUDED.form4_count,
+            status = EXCLUDED.status
     """, (ticker, cik, datetime.utcnow().isoformat(), form4_count, status))
     conn.commit()
 
 
-def get_known_accessions(conn: sqlite3.Connection, ticker: str) -> Set[str]:
+def get_known_accessions(conn, ticker: str) -> Set[str]:
     """Get set of accession numbers already stored for a ticker."""
     try:
-        rows = conn.execute(
-            "SELECT DISTINCT accession_number FROM insider_transactions WHERE ticker = ?",
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT DISTINCT accession_number FROM insider_transactions WHERE ticker = %s",
             (ticker,)
-        ).fetchall()
+        )
+        rows = cur.fetchall()
         return {r[0] for r in rows}
-    except sqlite3.OperationalError:
+    except Exception:
+        conn.rollback()
         return set()
 
 
-def compute_insider_signal(conn: sqlite3.Connection, ticker: str,
+def compute_insider_signal(conn, ticker: str,
                            lookback_days: int = 180) -> Dict[str, Any]:
     """
     Compute aggregate insider activity signal for a ticker.
@@ -123,19 +140,23 @@ def compute_insider_signal(conn: sqlite3.Connection, ticker: str,
 
     # Check table exists
     try:
-        conn.execute("SELECT 1 FROM insider_transactions LIMIT 1")
-    except sqlite3.OperationalError:
+        cur = conn.cursor()
+        cur.execute("SELECT 1 FROM insider_transactions LIMIT 1")
+    except Exception:
+        conn.rollback()
         return no_data
 
     cutoff = (datetime.utcnow() - timedelta(days=lookback_days)).strftime("%Y-%m-%d")
 
-    rows = conn.execute("""
+    cur = conn.cursor()
+    cur.execute("""
         SELECT transaction_type, shares, price_per_share, transaction_date,
                reporter_name, is_open_market
         FROM insider_transactions
-        WHERE ticker = ? AND transaction_date >= ? AND is_open_market = 1
+        WHERE ticker = %s AND transaction_date >= %s AND is_open_market = 1
         ORDER BY transaction_date DESC
-    """, (ticker, cutoff)).fetchall()
+    """, (ticker, cutoff))
+    rows = cur.fetchall()
 
     if not rows:
         return no_data
@@ -195,9 +216,7 @@ def compute_insider_signal(conn: sqlite3.Connection, ticker: str,
     }
 
 
-def _compute_activity_trends(
-    conn: sqlite3.Connection, ticker: str, lookback_days: int
-) -> tuple:
+def _compute_activity_trends(conn, ticker: str, lookback_days: int) -> tuple:
     """
     Compare recent sell/buy counts to the historical average rate.
 
@@ -209,10 +228,12 @@ def _compute_activity_trends(
     recent_cutoff = (now - timedelta(days=lookback_days)).strftime("%Y-%m-%d")
 
     # Get the full date range of data for this ticker
-    row = conn.execute("""
+    cur = conn.cursor()
+    cur.execute("""
         SELECT MIN(transaction_date), COUNT(*) FROM insider_transactions
-        WHERE ticker = ? AND is_open_market = 1
-    """, (ticker,)).fetchone()
+        WHERE ticker = %s AND is_open_market = 1
+    """, (ticker,))
+    row = cur.fetchone()
 
     if not row or not row[0] or row[1] < 3:
         return None, None
@@ -229,15 +250,16 @@ def _compute_activity_trends(
         return None, None
 
     # Count sells and buys in recent period vs all prior history
-    counts = conn.execute("""
+    cur.execute("""
         SELECT
             transaction_type,
-            CASE WHEN transaction_date >= ? THEN 'recent' ELSE 'prior' END AS period,
+            CASE WHEN transaction_date >= %s THEN 'recent' ELSE 'prior' END AS period,
             COUNT(*) as cnt
         FROM insider_transactions
-        WHERE ticker = ? AND is_open_market = 1
+        WHERE ticker = %s AND is_open_market = 1
         GROUP BY transaction_type, period
-    """, (recent_cutoff, ticker)).fetchall()
+    """, (recent_cutoff, ticker))
+    counts = cur.fetchall()
 
     recent_sells = 0
     recent_buys = 0

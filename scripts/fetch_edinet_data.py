@@ -15,7 +15,6 @@ from __future__ import annotations
 import argparse
 import logging
 import os
-import sqlite3
 import sys
 import time
 from pathlib import Path
@@ -24,6 +23,7 @@ REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from invest.config.logging_config import setup_logging
+from invest.data.db import get_connection
 from invest.data.edinet_fetcher import (
     fetch_japan_stakes_for_ticker,
     load_edinet_map,
@@ -35,8 +35,6 @@ from invest.data.edinet_db import (
 )
 
 logger = logging.getLogger(__name__)
-
-DB_PATH = REPO_ROOT / "data" / "stock_data.db"
 
 
 def main() -> int:
@@ -74,7 +72,7 @@ def main() -> int:
     from datetime import datetime, timedelta
     since_date = (datetime.utcnow() - timedelta(days=args.lookback_days)).strftime("%Y-%m-%d")
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     ensure_schema(conn)
 
     start_time = time.time()

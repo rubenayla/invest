@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Fetch and store macro risk-free rates in SQLite.
+Fetch and store macro risk-free rates in PostgreSQL.
 
 Usage
 -----
@@ -8,12 +8,16 @@ uv run python scripts/update_macro_rates.py
 """
 
 import argparse
-import sqlite3
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Dict
 
 import yfinance as yf
+
+sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
+
+from invest.data.db import get_connection
 
 
 RATE_SERIES: Dict[str, Dict[str, str]] = {
@@ -28,9 +32,10 @@ RATE_SERIES: Dict[str, Dict[str, str]] = {
 }
 
 
-def ensure_macro_rates_table(conn: sqlite3.Connection) -> None:
+def ensure_macro_rates_table(conn) -> None:
     """Create macro_rates table if needed."""
-    conn.execute(
+    cursor = conn.cursor()
+    cursor.execute(
         '''
         CREATE TABLE IF NOT EXISTS macro_rates (
             rate_name TEXT NOT NULL,
@@ -42,7 +47,7 @@ def ensure_macro_rates_table(conn: sqlite3.Connection) -> None:
         )
         '''
     )
-    conn.execute(
+    cursor.execute(
         '''
         CREATE INDEX IF NOT EXISTS idx_macro_rates_rate_date
         ON macro_rates(rate_name, date DESC)
@@ -90,7 +95,7 @@ def fetch_series(symbol: str, period: str) -> list[tuple[str, float]]:
 
 
 def save_series(
-    conn: sqlite3.Connection,
+    conn,
     rate_name: str,
     rows: list[tuple[str, float]],
     source: str,
@@ -100,7 +105,7 @@ def save_series(
 
     Parameters
     ----------
-    conn : sqlite3.Connection
+    conn
         DB connection.
     rate_name : str
         Rate name key.
@@ -117,28 +122,30 @@ def save_series(
     if not rows:
         return 0
 
-    payload = [(rate_name, date_value[0], date_value[1], source, datetime.now().isoformat()) for date_value in rows]
-    conn.executemany(
-        '''
-        INSERT OR REPLACE INTO macro_rates (rate_name, date, value, source, fetched_at)
-        VALUES (?, ?, ?, ?, ?)
-        ''',
-        payload,
-    )
+    cursor = conn.cursor()
+    for date_value in rows:
+        cursor.execute(
+            '''
+            INSERT INTO macro_rates (rate_name, date, value, source, fetched_at)
+            VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT (rate_name, date) DO UPDATE SET
+                value = EXCLUDED.value,
+                source = EXCLUDED.source,
+                fetched_at = EXCLUDED.fetched_at
+            ''',
+            (rate_name, date_value[0], date_value[1], source, datetime.now().isoformat()),
+        )
     conn.commit()
-    return len(payload)
+    return len(rows)
 
 
 def main() -> int:
     """Entry point."""
-    parser = argparse.ArgumentParser(description='Update macro risk-free rates in SQLite')
-    parser.add_argument('--db-path', default='data/stock_data.db', help='Path to SQLite database')
+    parser = argparse.ArgumentParser(description='Update macro risk-free rates in PostgreSQL')
     parser.add_argument('--period', default='5y', help='yfinance period (e.g., 1y, 5y, 10y)')
     args = parser.parse_args()
 
-    project_root = Path(__file__).parent.parent
-    db_path = (project_root / args.db_path).resolve()
-    conn = sqlite3.connect(db_path)
+    conn = get_connection()
 
     ensure_macro_rates_table(conn)
 

@@ -5,14 +5,12 @@ Adjusts the notification threshold to maintain an average of ~1 notification per
 The scoring formula never changes - only "how good does an opportunity need to be today?"
 """
 
-import sqlite3
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional, List, Tuple
 
-# Default database path
-DEFAULT_DB_PATH = Path(__file__).parent.parent.parent.parent / 'data' / 'stock_data.db'
+from invest.data.db import get_connection
 
 
 @dataclass
@@ -52,20 +50,19 @@ class ThresholdManager:
         Parameters
         ----------
         db_path : Path, optional
-            Path to SQLite database
+            Ignored (kept for backward compatibility). Connections come from get_connection().
         """
-        self.db_path = db_path or DEFAULT_DB_PATH
         self._ensure_tables()
 
     def _ensure_tables(self) -> None:
         """Create scanner tables if they don't exist."""
-        conn = sqlite3.connect(self.db_path)
+        conn = get_connection()
         cursor = conn.cursor()
 
         # Threshold history table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS scanner_threshold_history (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 date TEXT NOT NULL,
                 threshold REAL NOT NULL,
                 best_score REAL,
@@ -80,7 +77,7 @@ class ThresholdManager:
         # Score history table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS scanner_score_history (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 date TEXT NOT NULL,
                 ticker TEXT NOT NULL,
                 opportunity_score REAL NOT NULL,
@@ -117,7 +114,7 @@ class ThresholdManager:
 
         If no history exists, starts at midpoint between MIN and MAX.
         """
-        conn = sqlite3.connect(self.db_path)
+        conn = get_connection()
         cursor = conn.cursor()
 
         cursor.execute('''
@@ -147,14 +144,14 @@ class ThresholdManager:
         float
             Notifications per week
         """
-        conn = sqlite3.connect(self.db_path)
+        conn = get_connection()
         cursor = conn.cursor()
 
         cutoff_date = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d')
 
         cursor.execute('''
             SELECT COUNT(*) FROM scanner_threshold_history
-            WHERE date >= ? AND notification_sent = 1
+            WHERE date >= %s AND notification_sent = 1
         ''', (cutoff_date,))
 
         count = cursor.fetchone()[0]
@@ -165,7 +162,7 @@ class ThresholdManager:
 
     def get_days_since_last_notification(self) -> int:
         """Get number of days since last notification was sent."""
-        conn = sqlite3.connect(self.db_path)
+        conn = get_connection()
         cursor = conn.cursor()
 
         cursor.execute('''
@@ -266,13 +263,19 @@ class ThresholdManager:
         notified_ticker : str, optional
             Ticker that was notified (if any)
         """
-        conn = sqlite3.connect(self.db_path)
+        conn = get_connection()
         cursor = conn.cursor()
 
         cursor.execute('''
-            INSERT OR REPLACE INTO scanner_threshold_history
+            INSERT INTO scanner_threshold_history
             (date, threshold, best_score, stocks_above, notification_sent, notified_ticker)
-            VALUES (?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            ON CONFLICT (date) DO UPDATE SET
+                threshold = EXCLUDED.threshold,
+                best_score = EXCLUDED.best_score,
+                stocks_above = EXCLUDED.stocks_above,
+                notification_sent = EXCLUDED.notification_sent,
+                notified_ticker = EXCLUDED.notified_ticker
         ''', (
             date,
             threshold,
@@ -300,15 +303,23 @@ class ThresholdManager:
         scores : list
             List of (ticker, opportunity, quality, value, growth, risk, catalyst) tuples
         """
-        conn = sqlite3.connect(self.db_path)
+        conn = get_connection()
         cursor = conn.cursor()
 
-        cursor.executemany('''
-            INSERT OR REPLACE INTO scanner_score_history
-            (date, ticker, opportunity_score, quality_score, value_score,
-             growth_score, risk_score, catalyst_score)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', [(date, *s) for s in scores])
+        for s in scores:
+            cursor.execute('''
+                INSERT INTO scanner_score_history
+                (date, ticker, opportunity_score, quality_score, value_score,
+                 growth_score, risk_score, catalyst_score)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (date, ticker) DO UPDATE SET
+                    opportunity_score = EXCLUDED.opportunity_score,
+                    quality_score = EXCLUDED.quality_score,
+                    value_score = EXCLUDED.value_score,
+                    growth_score = EXCLUDED.growth_score,
+                    risk_score = EXCLUDED.risk_score,
+                    catalyst_score = EXCLUDED.catalyst_score
+            ''', (date, *s))
 
         conn.commit()
         conn.close()
@@ -327,8 +338,7 @@ class ThresholdManager:
         list
             List of history records
         """
-        conn = sqlite3.connect(self.db_path)
-        conn.row_factory = sqlite3.Row
+        conn = get_connection(dict_cursor=True)
         cursor = conn.cursor()
 
         cutoff_date = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d')
@@ -337,7 +347,7 @@ class ThresholdManager:
             SELECT date, threshold, best_score, stocks_above,
                    notification_sent, notified_ticker
             FROM scanner_threshold_history
-            WHERE date >= ?
+            WHERE date >= %s
             ORDER BY date DESC
         ''', (cutoff_date,))
 
@@ -372,17 +382,16 @@ class ThresholdManager:
         list
             List of score records
         """
-        conn = sqlite3.connect(self.db_path)
-        conn.row_factory = sqlite3.Row
+        conn = get_connection(dict_cursor=True)
         cursor = conn.cursor()
 
         cursor.execute('''
             SELECT ticker, opportunity_score, quality_score, value_score,
                    growth_score, risk_score, catalyst_score
             FROM scanner_score_history
-            WHERE date = ?
+            WHERE date = %s
             ORDER BY opportunity_score DESC
-            LIMIT ?
+            LIMIT %s
         ''', (date, limit))
 
         scores = [dict(row) for row in cursor.fetchall()]

@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import argparse
 import logging
-import sqlite3
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -22,6 +21,7 @@ REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from invest.config.logging_config import setup_logging
+from invest.data.db import get_connection
 from invest.data.insider_fetcher import (
     TokenBucketRateLimiter,
     fetch_insider_data_for_ticker,
@@ -36,8 +36,6 @@ from invest.data.insider_db import (
 
 logger = logging.getLogger(__name__)
 
-DB_PATH = REPO_ROOT / "data" / "stock_data.db"
-
 
 def fetch_one_ticker(
     ticker: str,
@@ -47,7 +45,7 @@ def fetch_one_ticker(
     force_refresh: bool,
 ) -> dict:
     """Fetch insider data for a single ticker. Returns summary dict."""
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     try:
         ensure_schema(conn)
         known = set() if force_refresh else get_known_accessions(conn, ticker)
@@ -102,7 +100,15 @@ def main() -> int:
         if missing:
             logger.warning("No CIK mapping for: %s", ", ".join(missing))
     else:
-        ticker_cik = cik_map
+        # Scope to tickers in our DB universe (not the entire SEC CIK map)
+        from invest.data.stock_data_reader import StockDataReader
+        try:
+            universe = set(StockDataReader().get_all_tickers())
+            ticker_cik = {t: cik_map[t] for t in universe if t in cik_map}
+            logger.info("Scoped to %d tickers in DB universe (of %d in CIK map)",
+                        len(ticker_cik), len(cik_map))
+        except Exception:
+            ticker_cik = cik_map
 
     logger.info("Fetching insider data for %d tickers (lookback=%d days)",
                 len(ticker_cik), args.lookback_days)

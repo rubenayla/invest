@@ -6,7 +6,8 @@ and computes aggregate holdings signals.
 """
 
 import logging
-import sqlite3
+import psycopg2
+import psycopg2.extras
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Set
@@ -17,11 +18,12 @@ PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
 DEFAULT_DB_PATH = PROJECT_ROOT / "data" / "stock_data.db"
 
 
-def ensure_schema(conn: sqlite3.Connection) -> None:
+def ensure_schema(conn) -> None:
     """Create holdings tables if they don't exist."""
-    conn.executescript("""
+    cur = conn.cursor()
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS fund_holdings (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id SERIAL PRIMARY KEY,
             fund_name TEXT NOT NULL,
             fund_cik TEXT NOT NULL,
             filing_date TEXT NOT NULL,
@@ -32,75 +34,90 @@ def ensure_schema(conn: sqlite3.Connection) -> None:
             shares REAL,
             value_usd REAL,
             UNIQUE(fund_cik, filing_date, cusip)
-        );
-
+        )
+    """)
+    cur.execute("""
         CREATE INDEX IF NOT EXISTS idx_holdings_ticker
-            ON fund_holdings(ticker);
+            ON fund_holdings(ticker)
+    """)
+    cur.execute("""
         CREATE INDEX IF NOT EXISTS idx_holdings_fund_quarter
-            ON fund_holdings(fund_cik, quarter);
+            ON fund_holdings(fund_cik, quarter)
+    """)
+    cur.execute("""
         CREATE INDEX IF NOT EXISTS idx_holdings_quarter
-            ON fund_holdings(quarter);
-
+            ON fund_holdings(quarter)
+    """)
+    cur.execute("""
         CREATE TABLE IF NOT EXISTS holdings_fetch_log (
             fund_cik TEXT PRIMARY KEY,
             fund_name TEXT NOT NULL,
             fetched_at TEXT NOT NULL,
             filing_count INTEGER DEFAULT 0,
             status TEXT DEFAULT 'ok'
-        );
+        )
     """)
+    conn.commit()
 
 
-def insert_holdings(conn: sqlite3.Connection, holdings: List[Dict[str, Any]]) -> int:
+def insert_holdings(conn, holdings: List[Dict[str, Any]]) -> int:
     """Insert holdings, ignoring duplicates. Returns count inserted."""
     inserted = 0
+    cur = conn.cursor()
     for h in holdings:
         try:
-            conn.execute("""
-                INSERT OR IGNORE INTO fund_holdings
+            cur.execute("""
+                INSERT INTO fund_holdings
                 (fund_name, fund_cik, filing_date, quarter, cusip,
                  ticker, issuer_name, shares, value_usd)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT DO NOTHING
             """, (
                 h["fund_name"], h["fund_cik"], h["filing_date"],
                 h["quarter"], h["cusip"], h.get("ticker", ""),
                 h.get("issuer_name", ""), h.get("shares"),
                 h.get("value_usd"),
             ))
-            inserted += 1
-        except sqlite3.IntegrityError:
-            pass
+            inserted += cur.rowcount
+        except Exception:
+            conn.rollback()
     conn.commit()
     return inserted
 
 
-def log_fetch(conn: sqlite3.Connection, fund_cik: str, fund_name: str,
+def log_fetch(conn, fund_cik: str, fund_name: str,
               filing_count: int, status: str = "ok") -> None:
     """Record that we fetched holdings for a fund."""
-    conn.execute("""
-        INSERT OR REPLACE INTO holdings_fetch_log
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO holdings_fetch_log
         (fund_cik, fund_name, fetched_at, filing_count, status)
-        VALUES (?, ?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s, %s)
+        ON CONFLICT (fund_cik) DO UPDATE SET
+            fund_name = EXCLUDED.fund_name,
+            fetched_at = EXCLUDED.fetched_at,
+            filing_count = EXCLUDED.filing_count,
+            status = EXCLUDED.status
     """, (fund_cik, fund_name, datetime.utcnow().isoformat(), filing_count, status))
     conn.commit()
 
 
-def get_known_accessions(conn: sqlite3.Connection, fund_cik: str) -> Set[str]:
+def get_known_accessions(conn, fund_cik: str) -> Set[str]:
     """Get set of filing dates already stored for a fund (used as dedup key)."""
     try:
-        rows = conn.execute(
-            "SELECT DISTINCT filing_date FROM fund_holdings WHERE fund_cik = ?",
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT DISTINCT filing_date FROM fund_holdings WHERE fund_cik = %s",
             (fund_cik,),
-        ).fetchall()
+        )
+        rows = cur.fetchall()
         return {r[0] for r in rows}
-    except sqlite3.OperationalError:
+    except Exception:
+        conn.rollback()
         return set()
 
 
-def compute_holdings_signal(
-    conn: sqlite3.Connection,
-    ticker: str,
-) -> Dict[str, Any]:
+def compute_holdings_signal(conn, ticker: str) -> Dict[str, Any]:
     """
     Compute aggregate institutional holdings signal for a ticker.
 
@@ -120,17 +137,21 @@ def compute_holdings_signal(
     }
 
     try:
-        conn.execute("SELECT 1 FROM fund_holdings LIMIT 1")
-    except sqlite3.OperationalError:
+        cur = conn.cursor()
+        cur.execute("SELECT 1 FROM fund_holdings LIMIT 1")
+    except Exception:
+        conn.rollback()
         return no_data
 
     # Get the two most recent quarters for this ticker
-    quarters = conn.execute("""
+    cur = conn.cursor()
+    cur.execute("""
         SELECT DISTINCT quarter FROM fund_holdings
-        WHERE ticker = ? AND ticker != ''
+        WHERE ticker = %s AND ticker != ''
         ORDER BY quarter DESC
         LIMIT 2
-    """, (ticker,)).fetchall()
+    """, (ticker,))
+    quarters = cur.fetchall()
 
     if not quarters:
         return no_data
@@ -139,11 +160,12 @@ def compute_holdings_signal(
     prev_q = quarters[1][0] if len(quarters) > 1 else None
 
     # Latest quarter holdings
-    latest_rows = conn.execute("""
+    cur.execute("""
         SELECT fund_name, fund_cik, shares, value_usd
         FROM fund_holdings
-        WHERE ticker = ? AND quarter = ?
-    """, (ticker, latest_q)).fetchall()
+        WHERE ticker = %s AND quarter = %s
+    """, (ticker, latest_q))
+    latest_rows = cur.fetchall()
 
     if not latest_rows:
         return no_data
@@ -165,11 +187,12 @@ def compute_holdings_signal(
     exited_positions = []
 
     if prev_q:
-        prev_rows = conn.execute("""
+        cur.execute("""
             SELECT fund_name, fund_cik, shares
             FROM fund_holdings
-            WHERE ticker = ? AND quarter = ?
-        """, (ticker, prev_q)).fetchall()
+            WHERE ticker = %s AND quarter = %s
+        """, (ticker, prev_q))
+        prev_rows = cur.fetchall()
 
         prev_holders = {r[0] for r in prev_rows}
         latest_holders = {r[0] for r in latest_rows}

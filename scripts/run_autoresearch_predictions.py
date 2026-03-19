@@ -11,28 +11,28 @@ Usage:
 
 import json
 import logging
-import sqlite3
 import sys
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
+sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'models' / 'autoresearch'))
 
+from invest.data.db import get_connection, get_engine
 from invest.data.stock_data_reader import StockDataReader
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-DB_PATH = str(Path(__file__).parent.parent / 'data' / 'stock_data.db')
 MODEL_NAME = 'autoresearch'
 
 
 def load_training_data():
     """Load all fundamental_history as training data (same as evaluate.py)."""
-    conn = sqlite3.connect(DB_PATH)
+    engine = get_engine()
 
     fund_df = pd.read_sql_query("""
         SELECT f.*, a.symbol as ticker, a.sector, a.industry
@@ -40,7 +40,7 @@ def load_training_data():
         JOIN assets a ON f.asset_id = a.id
         WHERE f.vix IS NOT NULL
         ORDER BY a.symbol, f.snapshot_date
-    """, conn)
+    """, engine)
     fund_df['snapshot_date'] = pd.to_datetime(fund_df['snapshot_date'])
 
     price_df = pd.read_sql_query("""
@@ -48,10 +48,9 @@ def load_training_data():
         FROM price_history
         WHERE close IS NOT NULL
         ORDER BY ticker, date
-    """, conn)
+    """, engine)
     price_df['date'] = pd.to_datetime(price_df['date'])
 
-    conn.close()
     return fund_df, price_df
 
 
@@ -318,13 +317,13 @@ def train_and_predict(train_df, predict_df, feature_cols):
 
 def save_predictions(predict_df, predicted_returns, confidences):
     """Save predictions to valuation_results table."""
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute(f"DELETE FROM valuation_results WHERE model_name = '{MODEL_NAME}'")
+    cursor.execute("DELETE FROM valuation_results WHERE model_name = %s", (MODEL_NAME,))
     logger.info(f'Deleted {cursor.rowcount} existing {MODEL_NAME} predictions')
 
-    reader = StockDataReader(DB_PATH)
+    reader = StockDataReader()
     inserted = 0
     skipped = 0
 
@@ -355,7 +354,7 @@ def save_predictions(predict_df, predicted_returns, confidences):
             INSERT INTO valuation_results
             (ticker, model_name, fair_value, current_price, margin_of_safety,
              upside_pct, suitable, confidence, details_json)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
         ''', (
             ticker, MODEL_NAME, float(fair_value), float(current_price),
             float(margin_of_safety), float(upside_pct), 1,

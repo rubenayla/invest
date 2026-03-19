@@ -6,24 +6,19 @@ database source of truth for all model outputs.
 """
 
 import json
-import sqlite3
 from datetime import datetime
-from pathlib import Path
 from typing import Any, Dict, Optional
 
-# Default database path
-DEFAULT_DB_PATH = Path(__file__).parent.parent.parent.parent / 'data' / 'stock_data.db'
+from invest.data.db import get_connection
 
 
-def get_db_connection(db_path: Path = None) -> sqlite3.Connection:
-    """Get database connection."""
-    if db_path is None:
-        db_path = DEFAULT_DB_PATH
-    return sqlite3.connect(db_path)
+def get_db_connection(db_path=None):
+    """Get database connection. db_path accepted for backward compatibility but ignored."""
+    return get_connection()
 
 
 def save_classic_prediction(
-    conn: sqlite3.Connection,
+    conn,
     model_name: str,
     ticker: str,
     fair_value: float,
@@ -37,60 +32,37 @@ def save_classic_prediction(
     confidence: Optional[float] = None,
     error_message: Optional[str] = None
 ) -> None:
-    """
-    Save classic valuation prediction to database.
-
-    Parameters
-    ----------
-    conn : sqlite3.Connection
-        Database connection
-    model_name : str
-        Model name (e.g., 'dcf', 'rim', 'simple_ratios')
-    ticker : str
-        Stock ticker symbol
-    fair_value : float
-        Calculated fair value per share
-    current_price : float
-        Current stock price
-    margin_of_safety : float, optional
-        Margin of safety percentage
-    upside_pct : float, optional
-        Upside percentage
-    suitable : bool
-        Whether the model is suitable for this stock
-    failure_reason : str, optional
-        Reason for failure if suitable=False
-    details : dict, optional
-        Additional model-specific details
-    prediction_date : datetime, optional
-        Date of prediction (defaults to now)
-    confidence : float, optional
-        Optional confidence score
-    error_message : str, optional
-        Error message for unsuitable predictions
-    """
+    """Save classic valuation prediction to database."""
     if prediction_date is None:
         prediction_date = datetime.now()
 
-    # Calculate margin_of_safety if not provided
     if margin_of_safety is None and current_price and current_price > 0:
         margin_of_safety = (fair_value - current_price) / current_price
 
-    # Calculate upside if not provided
     if upside_pct is None and current_price and current_price > 0:
         upside_pct = ((fair_value / current_price) - 1) * 100
 
-    # Prepare details JSON
     details_json = json.dumps(details) if details else None
 
     cursor = conn.cursor()
     try:
         cursor.execute('''
-            INSERT OR REPLACE INTO valuation_results (
+            INSERT INTO valuation_results (
                 ticker, model_name, timestamp,
                 fair_value, current_price, margin_of_safety, upside_pct,
                 suitable, error_message, failure_reason, details_json, confidence
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (ticker, model_name) DO UPDATE SET
+                timestamp = EXCLUDED.timestamp,
+                fair_value = EXCLUDED.fair_value,
+                current_price = EXCLUDED.current_price,
+                margin_of_safety = EXCLUDED.margin_of_safety,
+                upside_pct = EXCLUDED.upside_pct,
+                suitable = EXCLUDED.suitable,
+                error_message = EXCLUDED.error_message,
+                failure_reason = EXCLUDED.failure_reason,
+                details_json = EXCLUDED.details_json,
+                confidence = EXCLUDED.confidence
         ''', (
             ticker,
             model_name,
@@ -107,11 +79,12 @@ def save_classic_prediction(
         ))
         conn.commit()
     except Exception as e:
+        conn.rollback()
         raise RuntimeError(f'Failed to save prediction for {ticker} ({model_name}): {e}')
 
 
 def save_nn_prediction(
-    conn: sqlite3.Connection,
+    conn,
     model_name: str,
     ticker: str,
     fair_value: float,
@@ -125,38 +98,7 @@ def save_nn_prediction(
     failure_reason: Optional[str] = None,
     prediction_date: Optional[datetime] = None
 ) -> None:
-    """
-    Save neural network prediction to database.
-
-    Parameters
-    ----------
-    conn : sqlite3.Connection
-        Database connection
-    model_name : str
-        Model name (e.g., 'multi_horizon_nn')
-    ticker : str
-        Stock ticker symbol
-    fair_value : float
-        Recommended fair value per share
-    current_price : float
-        Current stock price
-    margin_of_safety : float
-        Margin of safety ratio
-    upside_pct : float
-        Upside percentage
-    confidence : float, optional
-        Confidence score for the recommended prediction
-    details : dict, optional
-        Additional NN prediction details
-    suitable : bool
-        Whether the model is suitable for this stock
-    error_message : str, optional
-        Error message for unsuitable predictions
-    failure_reason : str, optional
-        Reason for failure if suitable=False
-    prediction_date : datetime, optional
-        Date of prediction (defaults to now)
-    """
+    """Save neural network prediction to database."""
     if prediction_date is None:
         prediction_date = datetime.now()
     details_json = json.dumps(details) if details else None
@@ -164,11 +106,22 @@ def save_nn_prediction(
     cursor = conn.cursor()
     try:
         cursor.execute('''
-            INSERT OR REPLACE INTO valuation_results (
+            INSERT INTO valuation_results (
                 ticker, model_name, timestamp,
                 fair_value, current_price, margin_of_safety, upside_pct,
                 suitable, error_message, failure_reason, details_json, confidence
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (ticker, model_name) DO UPDATE SET
+                timestamp = EXCLUDED.timestamp,
+                fair_value = EXCLUDED.fair_value,
+                current_price = EXCLUDED.current_price,
+                margin_of_safety = EXCLUDED.margin_of_safety,
+                upside_pct = EXCLUDED.upside_pct,
+                suitable = EXCLUDED.suitable,
+                error_message = EXCLUDED.error_message,
+                failure_reason = EXCLUDED.failure_reason,
+                details_json = EXCLUDED.details_json,
+                confidence = EXCLUDED.confidence
         ''', (
             ticker,
             model_name,
@@ -185,31 +138,16 @@ def save_nn_prediction(
         ))
         conn.commit()
     except Exception as e:
+        conn.rollback()
         raise RuntimeError(f'Failed to save NN prediction for {ticker} ({model_name}): {e}')
 
 
 def get_latest_predictions(
-    conn: sqlite3.Connection,
+    conn,
     ticker: str,
     model_name: Optional[str] = None
 ) -> Dict[str, Any]:
-    """
-    Get latest predictions for a ticker.
-
-    Parameters
-    ----------
-    conn : sqlite3.Connection
-        Database connection
-    ticker : str
-        Stock ticker symbol
-    model_name : str, optional
-        Specific model name to query (if None, returns all models)
-
-    Returns
-    -------
-    dict
-        Dictionary of predictions by model
-    """
+    """Get latest predictions for a ticker."""
     cursor = conn.cursor()
 
     results = {}
@@ -219,12 +157,12 @@ def get_latest_predictions(
                suitable, error_message, failure_reason, details_json,
                confidence, timestamp
         FROM valuation_results
-        WHERE ticker = ?
+        WHERE ticker = %s
     '''
     params = [ticker]
 
     if model_name:
-        query += ' AND model_name = ?'
+        query += ' AND model_name = %s'
         params.append(model_name)
 
     query += ' ORDER BY timestamp DESC'
@@ -234,6 +172,7 @@ def get_latest_predictions(
         name, fair_value, margin, upside, suitable, error_message, reason, details_json, confidence, timestamp = row
         if name in results:
             continue
+        details = details_json if isinstance(details_json, dict) else (json.loads(details_json) if details_json else {})
         results[name] = {
             'fair_value': fair_value,
             'margin_of_safety': margin,
@@ -242,7 +181,7 @@ def get_latest_predictions(
             'suitable': bool(suitable),
             'error_message': error_message,
             'failure_reason': reason,
-            'details': json.loads(details_json) if details_json else {},
+            'details': details,
             'timestamp': timestamp
         }
 

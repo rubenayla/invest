@@ -14,7 +14,6 @@ import asyncio
 import json
 import logging
 import os
-import sqlite3
 
 # Import currency converter (dynamically since it's in scripts/)
 import sys
@@ -28,9 +27,16 @@ from typing import Dict, List, Optional, Set
 
 import yfinance as yf
 
+# Ensure src/ is on sys.path for invest.data.db imports
+_src_dir = str(PathLib(__file__).parent.parent / 'src')
+if _src_dir not in sys.path:
+    sys.path.insert(0, _src_dir)
+
 if str(PathLib(__file__).parent) not in sys.path:
     sys.path.insert(0, str(PathLib(__file__).parent))
 from currency_converter import convert_financial_statements_to_usd, convert_financials_to_usd
+
+from invest.data.db import get_connection
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -39,15 +45,9 @@ logger = logging.getLogger(__name__)
 class StockDataCache:
     """Manages local stock data cache"""
 
-    def __init__(self, cache_dir: str = 'data/stock_cache', db_path: Optional[str] = None):
+    def __init__(self, cache_dir: str = 'data/stock_cache'):
         self.cache_dir = Path(cache_dir)
         self.cache_dir.mkdir(parents=True, exist_ok=True)
-
-        # Database path
-        if db_path is None:
-            project_root = Path(__file__).parent.parent
-            db_path = project_root / 'data' / 'stock_data.db'
-        self.db_path = Path(db_path)
 
         self.index_file = self.cache_dir / 'cache_index.json'
         self.load_index()
@@ -113,9 +113,10 @@ class StockDataCache:
         return None
 
     def save_to_sqlite_lite(self, ticker: str, data: Dict):
-        """Save only price/metric fields to SQLite, preserving existing financial statements."""
+        """Save only price/metric fields to PostgreSQL, preserving existing financial statements."""
+        conn = None
         try:
-            conn = sqlite3.connect(self.db_path)
+            conn = get_connection()
             cursor = conn.cursor()
 
             info = data.get('info', {})
@@ -123,28 +124,29 @@ class StockDataCache:
             price_data = data.get('price_data', {})
 
             # Check if ticker already exists
-            exists = cursor.execute(
-                'SELECT 1 FROM current_stock_data WHERE ticker = ?', (ticker,)
-            ).fetchone()
+            cursor.execute(
+                'SELECT 1 FROM current_stock_data WHERE ticker = %s', (ticker,)
+            )
+            exists = cursor.fetchone()
 
             if exists:
                 # UPDATE only price-related columns, keep financial statements intact
                 cursor.execute('''
                     UPDATE current_stock_data SET
-                        current_price = ?, market_cap = ?,
-                        sector = COALESCE(?, sector), industry = COALESCE(?, industry),
-                        long_name = COALESCE(?, long_name), short_name = COALESCE(?, short_name),
-                        currency = COALESCE(?, currency), financial_currency = COALESCE(?, financial_currency),
-                        exchange = COALESCE(?, exchange), country = COALESCE(?, country),
-                        trailing_pe = ?, forward_pe = ?, price_to_book = ?,
-                        return_on_equity = ?, debt_to_equity = ?, current_ratio = ?,
-                        revenue_growth = ?, earnings_growth = ?,
-                        operating_margins = ?, profit_margins = ?,
-                        total_revenue = ?, total_cash = ?, total_debt = ?, shares_outstanding = ?,
-                        trailing_eps = ?, book_value = ?, revenue_per_share = ?, price_to_sales_ttm = ?,
-                        price_52w_high = ?, price_52w_low = ?, avg_volume = ?, price_trend_30d = ?,
-                        fetch_timestamp = ?, last_updated = ?
-                    WHERE ticker = ?
+                        current_price = %s, market_cap = %s,
+                        sector = COALESCE(%s, sector), industry = COALESCE(%s, industry),
+                        long_name = COALESCE(%s, long_name), short_name = COALESCE(%s, short_name),
+                        currency = COALESCE(%s, currency), financial_currency = COALESCE(%s, financial_currency),
+                        exchange = COALESCE(%s, exchange), country = COALESCE(%s, country),
+                        trailing_pe = %s, forward_pe = %s, price_to_book = %s,
+                        return_on_equity = %s, debt_to_equity = %s, current_ratio = %s,
+                        revenue_growth = %s, earnings_growth = %s,
+                        operating_margins = %s, profit_margins = %s,
+                        total_revenue = %s, total_cash = %s, total_debt = %s, shares_outstanding = %s,
+                        trailing_eps = %s, book_value = %s, revenue_per_share = %s, price_to_sales_ttm = %s,
+                        price_52w_high = %s, price_52w_low = %s, avg_volume = %s, price_trend_30d = %s,
+                        fetch_timestamp = %s, last_updated = %s
+                    WHERE ticker = %s
                 ''', (
                     info.get('currentPrice'), info.get('marketCap'),
                     info.get('sector'), info.get('industry'),
@@ -170,18 +172,22 @@ class StockDataCache:
                 self._insert_full_row(cursor, ticker, data)
 
             conn.commit()
-            conn.close()
         except Exception as e:
-            logger.warning(f'{ticker}: Failed to save lite data to SQLite: {e}')
+            if conn:
+                conn.rollback()
+            logger.warning(f'{ticker}: Failed to save lite data to PostgreSQL: {e}')
+        finally:
+            if conn:
+                conn.close()
 
     def _insert_full_row(self, cursor, ticker: str, data: Dict):
-        """Insert a complete row into current_stock_data."""
+        """Insert a complete row into current_stock_data (upsert)."""
         info = data.get('info', {})
         financials = data.get('financials', {})
         price_data = data.get('price_data', {})
 
         cursor.execute('''
-            INSERT OR REPLACE INTO current_stock_data (
+            INSERT INTO current_stock_data (
                 ticker,
                 current_price, market_cap, sector, industry, long_name, short_name,
                 currency, financial_currency, exchange, country,
@@ -194,12 +200,52 @@ class StockDataCache:
                 fetch_timestamp, last_updated,
                 exchange_rate_used, original_currency
             ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?, ?, ?, ?,
-                ?, ?
+                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                %s, %s, %s, %s, %s, %s, %s, %s,
+                %s, %s
             )
+            ON CONFLICT (ticker) DO UPDATE SET
+                current_price = EXCLUDED.current_price,
+                market_cap = EXCLUDED.market_cap,
+                sector = EXCLUDED.sector,
+                industry = EXCLUDED.industry,
+                long_name = EXCLUDED.long_name,
+                short_name = EXCLUDED.short_name,
+                currency = EXCLUDED.currency,
+                financial_currency = EXCLUDED.financial_currency,
+                exchange = EXCLUDED.exchange,
+                country = EXCLUDED.country,
+                trailing_pe = EXCLUDED.trailing_pe,
+                forward_pe = EXCLUDED.forward_pe,
+                price_to_book = EXCLUDED.price_to_book,
+                return_on_equity = EXCLUDED.return_on_equity,
+                debt_to_equity = EXCLUDED.debt_to_equity,
+                current_ratio = EXCLUDED.current_ratio,
+                revenue_growth = EXCLUDED.revenue_growth,
+                earnings_growth = EXCLUDED.earnings_growth,
+                operating_margins = EXCLUDED.operating_margins,
+                profit_margins = EXCLUDED.profit_margins,
+                total_revenue = EXCLUDED.total_revenue,
+                total_cash = EXCLUDED.total_cash,
+                total_debt = EXCLUDED.total_debt,
+                shares_outstanding = EXCLUDED.shares_outstanding,
+                trailing_eps = EXCLUDED.trailing_eps,
+                book_value = EXCLUDED.book_value,
+                revenue_per_share = EXCLUDED.revenue_per_share,
+                price_to_sales_ttm = EXCLUDED.price_to_sales_ttm,
+                price_52w_high = EXCLUDED.price_52w_high,
+                price_52w_low = EXCLUDED.price_52w_low,
+                avg_volume = EXCLUDED.avg_volume,
+                price_trend_30d = EXCLUDED.price_trend_30d,
+                cashflow_json = EXCLUDED.cashflow_json,
+                balance_sheet_json = EXCLUDED.balance_sheet_json,
+                income_json = EXCLUDED.income_json,
+                fetch_timestamp = EXCLUDED.fetch_timestamp,
+                last_updated = EXCLUDED.last_updated,
+                exchange_rate_used = EXCLUDED.exchange_rate_used,
+                original_currency = EXCLUDED.original_currency
         ''', (
             ticker,
             info.get('currentPrice'), info.get('marketCap'), info.get('sector'),
@@ -223,64 +269,25 @@ class StockDataCache:
         ))
 
     def save_to_sqlite(self, ticker: str, data: Dict):
-        """Save stock data to SQLite database"""
+        """Save stock data to PostgreSQL database"""
+        conn = None
         try:
-            conn = sqlite3.connect(self.db_path)
+            conn = get_connection()
             cursor = conn.cursor()
 
-            info = data.get('info', {})
-            financials = data.get('financials', {})
-            price_data = data.get('price_data', {})
-
-            cursor.execute('''
-                INSERT OR REPLACE INTO current_stock_data (
-                    ticker,
-                    current_price, market_cap, sector, industry, long_name, short_name,
-                    currency, financial_currency, exchange, country,
-                    trailing_pe, forward_pe, price_to_book, return_on_equity, debt_to_equity,
-                    current_ratio, revenue_growth, earnings_growth, operating_margins, profit_margins,
-                    total_revenue, total_cash, total_debt, shares_outstanding,
-                    trailing_eps, book_value, revenue_per_share, price_to_sales_ttm,
-                    price_52w_high, price_52w_low, avg_volume, price_trend_30d,
-                    cashflow_json, balance_sheet_json, income_json,
-                    fetch_timestamp, last_updated,
-                    exchange_rate_used, original_currency
-                ) VALUES (
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
-                    ?, ?, ?, ?, ?, ?, ?, ?,
-                    ?, ?
-                )
-            ''', (
-                ticker,
-                info.get('currentPrice'), info.get('marketCap'), info.get('sector'),
-                info.get('industry'), info.get('longName'), info.get('shortName'),
-                info.get('currency'), info.get('financialCurrency'), info.get('exchange'), info.get('country'),
-                financials.get('trailingPE'), financials.get('forwardPE'), financials.get('priceToBook'),
-                financials.get('returnOnEquity'), financials.get('debtToEquity'), financials.get('currentRatio'),
-                financials.get('revenueGrowth'), financials.get('earningsGrowth'), financials.get('operatingMargins'),
-                financials.get('profitMargins'), financials.get('totalRevenue'), financials.get('totalCash'),
-                financials.get('totalDebt'), financials.get('sharesOutstanding'), financials.get('trailingEps'),
-                financials.get('bookValue'), financials.get('revenuePerShare'), financials.get('priceToSalesTrailing12Months'),
-                price_data.get('price_52w_high'), price_data.get('price_52w_low'),
-                price_data.get('avg_volume'), price_data.get('price_trend_30d'),
-                json.dumps(data.get('cashflow', [])),
-                json.dumps(data.get('balance_sheet', [])),
-                json.dumps(data.get('income', [])),
-                data.get('fetch_timestamp', datetime.now().isoformat()),
-                datetime.now().isoformat(),
-                financials.get('_exchange_rate_used'),
-                financials.get('_original_currency')
-            ))
+            self._insert_full_row(cursor, ticker, data)
 
             conn.commit()
-            conn.close()
         except Exception as e:
-            logger.warning(f'{ticker}: Failed to save to SQLite: {e}')
+            if conn:
+                conn.rollback()
+            logger.warning(f'{ticker}: Failed to save to PostgreSQL: {e}')
+        finally:
+            if conn:
+                conn.close()
 
     def save_stock_data(self, ticker: str, data: Dict):
-        """Save stock data to both JSON cache and SQLite database"""
+        """Save stock data to both JSON cache and PostgreSQL database"""
         # VALIDATION: Check if data is valid before saving
         if 'error' in data:
             logger.error(f'{ticker}: Skipping save - data fetch failed: {data.get("error")}')
@@ -318,7 +325,7 @@ class StockDataCache:
             'data_source': 'yfinance'
         }
 
-        # Save to SQLite first (source of truth)
+        # Save to PostgreSQL first (source of truth)
         self.save_to_sqlite(ticker, data)
 
         # Save to JSON (best-effort backup). If this fails, SQLite still has
@@ -328,7 +335,7 @@ class StockDataCache:
                 json.dump(data, f, indent=2)
             os.rename(temp_file, cache_file)
         except Exception as e:
-            logger.warning(f'{ticker}: SQLite write succeeded but JSON write failed: {e}')
+            logger.warning(f'{ticker}: PostgreSQL write succeeded but JSON write failed: {e}')
             if temp_file.exists():
                 temp_file.unlink()
 

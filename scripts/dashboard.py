@@ -7,7 +7,7 @@ This is THE ONLY dashboard script you need to run.
 Usage:
     uv run python scripts/dashboard.py
 
-Reads ALL data from SQLite database (single source of truth):
+Reads ALL data from PostgreSQL database (single source of truth):
 - Stock info from current_stock_data table
 - Valuation results from valuation_results table
 
@@ -16,7 +16,6 @@ Output:
 """
 
 import json
-import sqlite3
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -24,6 +23,8 @@ from pathlib import Path
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root / 'src'))
+
+from invest.data.db import get_connection
 
 from invest.dashboard_components.html_generator import HTMLGenerator
 
@@ -49,9 +50,7 @@ def load_stocks_from_database() -> dict:
             ...
         }
     """
-    db_path = project_root / 'data' / 'stock_data.db'
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row  # Access columns by name
+    conn = get_connection(dict_cursor=True)
 
     # Get all stocks with current price
     stocks_query = '''
@@ -61,7 +60,9 @@ def load_stocks_from_database() -> dict:
     '''
     stocks = {}
 
-    for row in conn.execute(stocks_query).fetchall():
+    cursor = conn.cursor()
+    cursor.execute(stocks_query)
+    for row in cursor.fetchall():
         ticker = row['ticker']
         stocks[ticker] = {
             'ticker': ticker,
@@ -84,7 +85,8 @@ def load_stocks_from_database() -> dict:
 
     valuation_count = 0
     latest_price_by_ticker = {}
-    for row in conn.execute(valuations_query).fetchall():
+    cursor.execute(valuations_query)
+    for row in cursor.fetchall():
         ticker = row['ticker']
 
         # Skip if ticker not in stocks (shouldn't happen, but defensive)
@@ -104,12 +106,15 @@ def load_stocks_from_database() -> dict:
                 'confidence': row['confidence']
             }
 
-            # Parse details JSON if present
+            # Parse details JSON if present (JSONB comes back as dict already)
             if row['details_json']:
-                try:
-                    valuation['details'] = json.loads(row['details_json'])
-                except json.JSONDecodeError:
-                    valuation['details'] = {}
+                details = row['details_json']
+                if isinstance(details, str):
+                    try:
+                        details = json.loads(details)
+                    except (json.JSONDecodeError, TypeError):
+                        details = {}
+                valuation['details'] = details
 
             stocks[ticker]['valuations'][model_name] = valuation
             valuation_count += 1
@@ -117,8 +122,10 @@ def load_stocks_from_database() -> dict:
             # Track latest price used in valuations for dashboard price column
             if row['current_price'] is not None and row['timestamp'] is not None:
                 try:
-                    ts = datetime.fromisoformat(row['timestamp'])
-                except ValueError:
+                    ts = row['timestamp']
+                    if isinstance(ts, str):
+                        ts = datetime.fromisoformat(ts)
+                except (ValueError, TypeError):
                     ts = None
 
                 prev = latest_price_by_ticker.get(ticker)
@@ -138,10 +145,13 @@ def load_stocks_from_database() -> dict:
                     'upside': row['upside_pct'],
                     'confidence': row['confidence'],
                 }
-                try:
-                    valuation['details'] = json.loads(row['details_json'])
-                except json.JSONDecodeError:
-                    valuation['details'] = {}
+                details = row['details_json']
+                if isinstance(details, str):
+                    try:
+                        details = json.loads(details)
+                    except (json.JSONDecodeError, TypeError):
+                        details = {}
+                valuation['details'] = details
                 stocks[ticker]['valuations'][model_name] = valuation
             else:
                 # Failed valuation
@@ -181,7 +191,7 @@ def main():
     print('=' * 60)
 
     # Load all data from database (ONLY source)
-    print('\n📂 Loading data from SQLite database...')
+    print('\n📂 Loading data from database...')
     stocks_data = load_stocks_from_database()
 
     # Count predictions by model

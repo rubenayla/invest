@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import argparse
 import logging
-import sqlite3
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -22,6 +21,7 @@ REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from invest.config.logging_config import setup_logging
+from invest.data.db import get_connection
 from invest.data.insider_fetcher import (
     TokenBucketRateLimiter,
     load_cik_map,
@@ -36,8 +36,6 @@ from invest.data.activist_db import (
 
 logger = logging.getLogger(__name__)
 
-DB_PATH = REPO_ROOT / "data" / "stock_data.db"
-
 
 def fetch_one_ticker(
     ticker: str,
@@ -47,7 +45,7 @@ def fetch_one_ticker(
     force_refresh: bool,
 ) -> dict:
     """Fetch activist data for a single ticker. Returns summary dict."""
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     try:
         ensure_schema(conn)
         known = set() if force_refresh else get_known_accessions(conn, ticker)

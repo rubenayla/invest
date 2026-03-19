@@ -9,29 +9,38 @@ uv run python scripts/update_price_history_current.py --limit 50
 """
 
 import argparse
-import sqlite3
+import sys
 import time
 from datetime import datetime
 from pathlib import Path
 
 import yfinance as yf
 
+sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 
-def load_tickers(conn: sqlite3.Connection, limit: int | None = None) -> list[str]:
+from invest.data.db import get_connection
+
+
+def load_tickers(conn, limit: int | None = None) -> list[str]:
     """Load tickers from current_stock_data."""
-    query = 'SELECT ticker FROM current_stock_data WHERE current_price IS NOT NULL ORDER BY ticker'
+    cursor = conn.cursor()
     if limit is not None and limit > 0:
-        query += f' LIMIT {int(limit)}'
-    return [row[0] for row in conn.execute(query).fetchall()]
+        cursor.execute(
+            'SELECT ticker FROM current_stock_data WHERE current_price IS NOT NULL ORDER BY ticker LIMIT %s',
+            (int(limit),),
+        )
+    else:
+        cursor.execute('SELECT ticker FROM current_stock_data WHERE current_price IS NOT NULL ORDER BY ticker')
+    return [row[0] for row in cursor.fetchall()]
 
 
-def upsert_price_history(conn: sqlite3.Connection, ticker: str, period: str) -> int:
+def upsert_price_history(conn, ticker: str, period: str) -> int:
     """
     Fetch and save historical prices for one ticker.
 
     Parameters
     ----------
-    conn : sqlite3.Connection
+    conn
         DB connection.
     ticker : str
         Stock ticker.
@@ -47,9 +56,24 @@ def upsert_price_history(conn: sqlite3.Connection, ticker: str, period: str) -> 
     if history.empty:
         return 0
 
-    rows = []
+    cursor = conn.cursor()
+    count = 0
     for date, row in history.iterrows():
-        rows.append(
+        cursor.execute(
+            '''
+            INSERT INTO price_history (
+                ticker, date, open, high, low, close, volume, dividends, stock_splits, created_at
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (ticker, date) DO UPDATE SET
+                open = EXCLUDED.open,
+                high = EXCLUDED.high,
+                low = EXCLUDED.low,
+                close = EXCLUDED.close,
+                volume = EXCLUDED.volume,
+                dividends = EXCLUDED.dividends,
+                stock_splits = EXCLUDED.stock_splits,
+                created_at = EXCLUDED.created_at
+            ''',
             (
                 ticker,
                 date.strftime('%Y-%m-%d'),
@@ -61,33 +85,23 @@ def upsert_price_history(conn: sqlite3.Connection, ticker: str, period: str) -> 
                 float(row['Dividends']) if row.get('Dividends') is not None else None,
                 float(row['Stock Splits']) if row.get('Stock Splits') is not None else None,
                 datetime.now().isoformat(),
-            )
+            ),
         )
+        count += 1
 
-    conn.executemany(
-        '''
-        INSERT OR REPLACE INTO price_history (
-            ticker, date, open, high, low, close, volume, dividends, stock_splits, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''',
-        rows,
-    )
     conn.commit()
-    return len(rows)
+    return count
 
 
 def main() -> int:
     """Entry point."""
     parser = argparse.ArgumentParser(description='Refresh price_history from yfinance')
-    parser.add_argument('--db-path', default='data/stock_data.db', help='Path to SQLite database')
     parser.add_argument('--period', default='5y', help='yfinance period, e.g. 2y, 5y, 10y')
     parser.add_argument('--limit', type=int, default=None, help='Max tickers to refresh')
     parser.add_argument('--sleep', type=float, default=0.1, help='Delay between ticker requests')
     args = parser.parse_args()
 
-    project_root = Path(__file__).parent.parent
-    db_path = (project_root / args.db_path).resolve()
-    conn = sqlite3.connect(db_path)
+    conn = get_connection()
 
     tickers = load_tickers(conn, limit=args.limit)
     print(f'Refreshing price history for {len(tickers)} tickers (period={args.period})')

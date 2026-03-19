@@ -1,64 +1,45 @@
 """
-SQLite Stock Data Reader
+Stock Data Reader
 
-Provides unified interface to read stock data from SQLite database.
+Provides unified interface to read stock data from PostgreSQL database.
 """
 
 import json
 import logging
-import sqlite3
-from datetime import datetime
-from pathlib import Path
+from datetime import date, datetime
 from typing import Any, Dict, List, Optional
+
+from .db import get_connection
 
 logger = logging.getLogger(__name__)
 
 
 class StockDataReader:
-    """Read stock data from SQLite database."""
+    """Read stock data from PostgreSQL database."""
 
-    def __init__(self, db_path: Optional[Path] = None):
-        """Initialize reader with database path."""
-        if db_path is None:
-            # Default to project database
-            project_root = Path(__file__).parent.parent.parent.parent
-            db_path = project_root / 'data' / 'stock_data.db'
-        self.db_path = Path(db_path)
+    def __init__(self, db_path=None):
+        """Initialize reader. db_path is accepted for backward compatibility but ignored."""
+        pass
+
+    def _conn(self, dict_cursor=False):
+        return get_connection(dict_cursor=dict_cursor)
 
     def get_stock_data(self, ticker: str) -> Optional[Dict[str, Any]]:
-        """
-        Get stock data for a single ticker.
-
-        Returns data in the same format as the JSON cache files for compatibility.
-
-        Parameters
-        ----------
-        ticker : str
-            Stock ticker symbol
-
-        Returns
-        -------
-        Optional[Dict[str, Any]]
-            Stock data dictionary or None if not found
-        """
-        conn = sqlite3.connect(self.db_path)
-        conn.row_factory = sqlite3.Row  # Access columns by name
+        """Get stock data for a single ticker."""
+        conn = self._conn(dict_cursor=True)
         cursor = conn.cursor()
 
-        cursor.execute('''
-            SELECT * FROM current_stock_data WHERE ticker = ?
-        ''', (ticker,))
-
+        cursor.execute('SELECT * FROM current_stock_data WHERE ticker = %s', (ticker,))
         row = cursor.fetchone()
         conn.close()
 
         if not row:
             return None
 
-        # Parse JSON data
-        cashflow_data = json.loads(row['cashflow_json']) if row['cashflow_json'] else []
-        balance_sheet_data = json.loads(row['balance_sheet_json']) if row['balance_sheet_json'] else []
-        income_data = json.loads(row['income_json']) if row['income_json'] else []
+        # JSONB columns come back as Python objects (no json.loads needed)
+        cashflow_data = row['cashflow_json'] if row['cashflow_json'] else []
+        balance_sheet_data = row['balance_sheet_json'] if row['balance_sheet_json'] else []
+        income_data = row['income_json'] if row['income_json'] else []
 
         # Extract most recent cash flow values for valuation models
         free_cashflow = None
@@ -66,17 +47,15 @@ class StockDataReader:
         if cashflow_data and isinstance(cashflow_data, list):
             for item in cashflow_data:
                 if isinstance(item, dict) and 'index' in item:
-                    # Get most recent year (first column after 'index')
                     dates = [k for k in item.keys() if k != 'index']
                     if dates:
-                        recent_date = dates[0]  # Most recent is first
+                        recent_date = dates[0]
                         value = item.get(recent_date)
-                        if item['index'] == 'Free Cash Flow' and value and not (isinstance(value, float) and value != value):  # Check for NaN
+                        if item['index'] == 'Free Cash Flow' and value and not (isinstance(value, float) and value != value):
                             free_cashflow = value
                         elif item['index'] == 'Operating Cash Flow' and value and not (isinstance(value, float) and value != value):
                             operating_cashflow = value
 
-        # Convert to dictionary matching JSON cache format
         data = {
             'ticker': row['ticker'],
             'info': {
@@ -87,10 +66,9 @@ class StockDataReader:
                 'longName': row['long_name'],
                 'shortName': row['short_name'],
                 'currency': row['currency'],
-                'financialCurrency': row['financial_currency'] or 'USD',
+                'financialCurrency': row.get('financial_currency') or 'USD',
                 'exchange': row['exchange'],
                 'country': row['country'],
-                # Critical fields for valuation models (also in financials for compatibility)
                 'sharesOutstanding': row['shares_outstanding'],
                 'totalRevenue': row['total_revenue'],
                 'totalCash': row['total_cash'],
@@ -120,8 +98,8 @@ class StockDataReader:
                 'bookValue': row['book_value'],
                 'revenuePerShare': row['revenue_per_share'],
                 'priceToSalesTrailing12Months': row['price_to_sales_ttm'],
-                '_exchange_rate_used': dict(row).get('exchange_rate_used'),
-                '_original_currency': dict(row).get('original_currency'),
+                '_exchange_rate_used': row.get('exchange_rate_used'),
+                '_original_currency': row.get('original_currency'),
             },
             'price_data': {
                 'current_price': row['current_price'],
@@ -144,80 +122,44 @@ class StockDataReader:
 
     def get_all_tickers(self) -> List[str]:
         """Get list of all tickers in the database."""
-        conn = sqlite3.connect(self.db_path)
+        conn = self._conn()
         cursor = conn.cursor()
-
         cursor.execute('SELECT ticker FROM current_stock_data ORDER BY ticker')
         tickers = [row[0] for row in cursor.fetchall()]
-
         conn.close()
         return tickers
 
     def get_stocks_by_sector(self, sector: str) -> List[str]:
         """Get all tickers in a specific sector."""
-        conn = sqlite3.connect(self.db_path)
+        conn = self._conn()
         cursor = conn.cursor()
-
-        cursor.execute('''
-            SELECT ticker FROM current_stock_data
-            WHERE sector = ?
-            ORDER BY ticker
-        ''', (sector,))
+        cursor.execute(
+            'SELECT ticker FROM current_stock_data WHERE sector = %s ORDER BY ticker',
+            (sector,),
+        )
         tickers = [row[0] for row in cursor.fetchall()]
-
         conn.close()
         return tickers
 
     def get_stock_count(self) -> int:
         """Get total number of stocks in database."""
-        conn = sqlite3.connect(self.db_path)
+        conn = self._conn()
         cursor = conn.cursor()
-
         cursor.execute('SELECT COUNT(*) FROM current_stock_data')
         count = cursor.fetchone()[0]
-
         conn.close()
         return count
 
     def get_fundamental_history(self, ticker: str, metric: str) -> Optional[Dict[str, float]]:
-        """
-        Extract historical values for a fundamental metric from JSON data.
-
-        Reads directly from database JSON fields (income_json, cashflow_json, balance_sheet_json)
-        to provide multi-year historical trends. This prevents errors from relying on single
-        point-in-time growth rates.
-
-        Parameters
-        ----------
-        ticker : str
-            Stock ticker symbol
-        metric : str
-            Metric name to extract. Common metrics:
-            - Income Statement: 'Net Income', 'Total Revenue', 'Operating Income'
-            - Cash Flow: 'Free Cash Flow', 'Operating Cash Flow'
-            - Balance Sheet: 'Total Assets', 'Total Debt', 'Cash And Cash Equivalents'
-
-        Returns
-        -------
-        Optional[Dict[str, float]]
-            Dictionary mapping year (YYYY) to value, sorted newest to oldest.
-            Returns None if ticker not found or metric doesn't exist.
-
-        Examples
-        --------
-        >>> reader = StockDataReader()
-        >>> revenue = reader.get_fundamental_history('CAG', 'Total Revenue')
-        >>> print(revenue)
-        {'2025': 12000000000, '2024': 11500000000, '2023': 11800000000, ...}
-        """
-        conn = sqlite3.connect(self.db_path)
+        """Extract historical values for a fundamental metric from JSON data."""
+        conn = self._conn()
         cursor = conn.cursor()
 
-        cursor.execute('''
-            SELECT income_json, cashflow_json, balance_sheet_json
-            FROM current_stock_data
-            WHERE ticker = ?
-        ''', (ticker,))
+        cursor.execute(
+            'SELECT income_json, cashflow_json, balance_sheet_json '
+            'FROM current_stock_data WHERE ticker = %s',
+            (ticker,),
+        )
 
         row = cursor.fetchone()
         conn.close()
@@ -225,36 +167,29 @@ class StockDataReader:
         if not row:
             return None
 
-        # Parse all JSON sources
-        income_json, cashflow_json, balance_sheet_json = row
+        # JSONB comes back as Python objects already
+        income_data, cashflow_data, balance_sheet_data = row
         data_sources = [
-            json.loads(income_json) if income_json else [],
-            json.loads(cashflow_json) if cashflow_json else [],
-            json.loads(balance_sheet_json) if balance_sheet_json else [],
+            income_data if income_data else [],
+            cashflow_data if cashflow_data else [],
+            balance_sheet_data if balance_sheet_data else [],
         ]
 
         metric_lower = metric.lower()
 
         def _extract_history(item: dict) -> Optional[Dict[str, float]]:
-            """Extract year:value pairs from a matching row."""
             history = {}
             for key, value in item.items():
                 if key == 'index':
                     continue
-
-                # Extract year from date string (e.g., '2025-05-31 00:00:00' -> '2025')
                 year = key[:4] if len(key) >= 4 else key
-
-                # Skip NaN values
                 if value is not None and not (isinstance(value, float) and value != value):
                     history[year] = value
-
-            # Return sorted by year (newest first)
             if history:
                 return dict(sorted(history.items(), reverse=True))
             return None
 
-        # Pass 1: exact match (case-insensitive)
+        # Pass 1: exact match
         for data_list in data_sources:
             if not isinstance(data_list, list):
                 continue
@@ -266,7 +201,7 @@ class StockDataReader:
                     if result:
                         return result
 
-        # Pass 2: partial/substring match as fallback
+        # Pass 2: partial match
         for data_list in data_sources:
             if not isinstance(data_list, list):
                 continue
@@ -282,156 +217,80 @@ class StockDataReader:
         return None
 
     def get_earnings_trend(self, ticker: str) -> Optional[Dict[str, float]]:
-        """
-        Get historical net income trend for a stock.
-
-        Convenience method that extracts net income history from database.
-        Use this to avoid mistakes from relying on single-year growth rates.
-
-        Parameters
-        ----------
-        ticker : str
-            Stock ticker symbol
-
-        Returns
-        -------
-        Optional[Dict[str, float]]
-            Dictionary mapping year to net income, or None if not found
-        """
+        """Get historical net income trend for a stock."""
         return self.get_fundamental_history(ticker, 'Net Income')
 
     def get_revenue_trend(self, ticker: str) -> Optional[Dict[str, float]]:
-        """
-        Get historical revenue trend for a stock.
-
-        Parameters
-        ----------
-        ticker : str
-            Stock ticker symbol
-
-        Returns
-        -------
-        Optional[Dict[str, float]]
-            Dictionary mapping year to revenue, or None if not found
-        """
+        """Get historical revenue trend for a stock."""
         return self.get_fundamental_history(ticker, 'Total Revenue')
 
     def get_cashflow_trend(self, ticker: str) -> Optional[Dict[str, float]]:
-        """
-        Get historical free cash flow trend for a stock.
-
-        Parameters
-        ----------
-        ticker : str
-            Stock ticker symbol
-
-        Returns
-        -------
-        Optional[Dict[str, float]]
-            Dictionary mapping year to free cash flow, or None if not found
-        """
+        """Get historical free cash flow trend for a stock."""
         return self.get_fundamental_history(ticker, 'Free Cash Flow')
 
     def get_recent_price_closes(self, ticker: str, limit: int = 600) -> Dict[str, Any]:
-        """
-        Get most recent close prices for a ticker.
-
-        Parameters
-        ----------
-        ticker : str
-            Stock ticker symbol.
-        limit : int
-            Maximum number of rows to load.
-
-        Returns
-        -------
-        Dict[str, Any]
-            Price payload with `closes`, `dates`, `last_date`, and `price_points`.
-        """
+        """Get most recent close prices for a ticker."""
         empty = {'closes': [], 'dates': [], 'last_date': None, 'price_points': 0}
         try:
-            conn = sqlite3.connect(self.db_path)
-            conn.row_factory = sqlite3.Row
+            conn = self._conn(dict_cursor=True)
             cursor = conn.cursor()
             cursor.execute(
-                '''
-                SELECT date, close
-                FROM price_history
-                WHERE ticker = ? AND close IS NOT NULL
-                ORDER BY date DESC
-                LIMIT ?
-                ''',
+                'SELECT date, close FROM price_history '
+                'WHERE ticker = %s AND close IS NOT NULL '
+                'ORDER BY date DESC LIMIT %s',
                 (ticker, limit),
             )
             rows = cursor.fetchall()
             conn.close()
-        except sqlite3.OperationalError:
-            logger.warning('price_history table not found for %s — returning empty result', ticker)
+        except Exception:
+            logger.warning('price_history query failed for %s — returning empty result', ticker)
             return empty
 
         if not rows:
             return {'closes': [], 'dates': [], 'last_date': None, 'price_points': 0}
 
-        # Reverse to ascending date order for return calculations.
         rows = list(reversed(rows))
         closes = [float(row['close']) for row in rows if row['close'] is not None]
-        dates = [row['date'] for row in rows if row['close'] is not None]
-        last_date = dates[-1] if dates else None
+        dates_list = []
+        for row in rows:
+            if row['close'] is not None:
+                d = row['date']
+                dates_list.append(d.isoformat() if isinstance(d, date) else str(d))
+        last_date = dates_list[-1] if dates_list else None
 
         return {
             'closes': closes,
-            'dates': dates,
+            'dates': dates_list,
             'last_date': last_date,
             'price_points': len(closes),
         }
 
     def get_latest_macro_rate(self, rate_name: str = 'risk_free_rate') -> Optional[Dict[str, Any]]:
-        """
-        Get the most recent macro rate from `macro_rates`.
-
-        Parameters
-        ----------
-        rate_name : str
-            Name of rate series.
-
-        Returns
-        -------
-        Optional[Dict[str, Any]]
-            Latest rate payload or None when unavailable.
-        """
-        conn = sqlite3.connect(self.db_path)
-        conn.row_factory = sqlite3.Row
+        """Get the most recent macro rate from `macro_rates`."""
+        conn = self._conn(dict_cursor=True)
         cursor = conn.cursor()
 
-        table_exists = cursor.execute(
-            '''
-            SELECT 1
-            FROM sqlite_master
-            WHERE type = 'table' AND name = 'macro_rates'
-            '''
-        ).fetchone()
-        if not table_exists:
+        try:
+            cursor.execute(
+                'SELECT rate_name, date, value, source, fetched_at '
+                'FROM macro_rates WHERE rate_name = %s '
+                'ORDER BY date DESC LIMIT 1',
+                (rate_name,),
+            )
+            row = cursor.fetchone()
+        except Exception:
             conn.close()
             return None
 
-        row = cursor.execute(
-            '''
-            SELECT rate_name, date, value, source, fetched_at
-            FROM macro_rates
-            WHERE rate_name = ?
-            ORDER BY date DESC
-            LIMIT 1
-            ''',
-            (rate_name,),
-        ).fetchone()
         conn.close()
 
         if not row:
             return None
 
+        d = row['date']
         return {
             'rate_name': row['rate_name'],
-            'date': row['date'],
+            'date': d.isoformat() if isinstance(d, date) else str(d),
             'value': float(row['value']) if row['value'] is not None else None,
             'source': row['source'],
             'fetched_at': row['fetched_at'],
@@ -444,25 +303,7 @@ class StockDataReader:
         max_price_age_days: int = 30,
         max_rate_age_days: int = 30,
     ) -> Dict[str, Any]:
-        """
-        Get robust market inputs for structural valuation models.
-
-        Parameters
-        ----------
-        ticker : str
-            Stock ticker symbol.
-        min_price_points : int
-            Minimum close prices required by model.
-        max_price_age_days : int
-            Freshness threshold for close-price series.
-        max_rate_age_days : int
-            Freshness threshold for macro rate.
-
-        Returns
-        -------
-        Dict[str, Any]
-            Combined market inputs and quality metadata.
-        """
+        """Get robust market inputs for structural valuation models."""
         prices = self.get_recent_price_closes(ticker, limit=max(min_price_points + 50, 600))
         closes = prices.get('closes', [])
         last_price_date = prices.get('last_date')
@@ -514,17 +355,11 @@ class StockDataReader:
         }
 
     def get_insider_signal(self, ticker: str) -> Dict[str, Any]:
-        """
-        Get insider activity signal for a ticker.
-
-        Returns dict with has_data, net_buy_pct, cluster_score, recency_days,
-        dollar_conviction, buy_count, sell_count.
-        Gracefully returns {'has_data': False} if table doesn't exist.
-        """
+        """Get insider activity signal for a ticker."""
         no_data = {'has_data': False}
         try:
             from .insider_db import compute_insider_signal
-            conn = sqlite3.connect(self.db_path)
+            conn = self._conn()
             try:
                 return compute_insider_signal(conn, ticker)
             finally:
@@ -537,7 +372,7 @@ class StockDataReader:
         no_data = {'has_data': False}
         try:
             from .activist_db import compute_activist_signal
-            conn = sqlite3.connect(self.db_path)
+            conn = self._conn()
             try:
                 return compute_activist_signal(conn, ticker)
             finally:
@@ -550,7 +385,7 @@ class StockDataReader:
         no_data = {'has_data': False}
         try:
             from .holdings_db import compute_holdings_signal
-            conn = sqlite3.connect(self.db_path)
+            conn = self._conn()
             try:
                 return compute_holdings_signal(conn, ticker)
             finally:
@@ -563,7 +398,7 @@ class StockDataReader:
         no_data = {'has_data': False}
         try:
             from .edinet_db import compute_japan_signal
-            conn = sqlite3.connect(self.db_path)
+            conn = self._conn()
             try:
                 return compute_japan_signal(conn, ticker)
             finally:

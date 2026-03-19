@@ -15,7 +15,6 @@ Usage:
 
 import argparse
 import logging
-import sqlite3
 import sys
 from datetime import timedelta
 from pathlib import Path
@@ -25,7 +24,10 @@ import pandas as pd
 import yfinance as yf
 
 # Add project root to path
+sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from invest.data.db import get_connection
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -34,8 +36,8 @@ logger = logging.getLogger(__name__)
 class PriceHistoryPopulator:
     """Populates price_history table for snapshots."""
 
-    def __init__(self, db_path: str):
-        self.db_path = db_path
+    def __init__(self, db_path: str = None):
+        pass  # connections come from get_connection()
 
     def get_snapshots_needing_prices(self, ticker: Optional[str] = None, limit: Optional[int] = None):
         """
@@ -56,12 +58,19 @@ class PriceHistoryPopulator:
             - ticker
             - snapshot_date
         """
-        conn = sqlite3.connect(self.db_path)
+        conn = get_connection()
         cursor = conn.cursor()
 
-        # Build query
-        ticker_filter = f"AND a.symbol = '{ticker}'" if ticker else ''
-        limit_clause = f'LIMIT {limit}' if limit else ''
+        # Build query with parameterized values
+        params = []
+        ticker_filter = ''
+        if ticker:
+            ticker_filter = 'AND a.symbol = %s'
+            params.append(ticker)
+        limit_clause = ''
+        if limit:
+            limit_clause = 'LIMIT %s'
+            params.append(limit)
 
         query = f'''
             SELECT
@@ -74,14 +83,14 @@ class PriceHistoryPopulator:
             AND NOT EXISTS (
                 SELECT 1 FROM price_history ph
                 WHERE ph.ticker = a.symbol
-                AND ph.date = s.snapshot_date
+                AND ph.date = s.snapshot_date::date
             )
             {ticker_filter}
             ORDER BY a.symbol, s.snapshot_date
             {limit_clause}
         '''
 
-        cursor.execute(query)
+        cursor.execute(query, params)
         results = [
             {
                 'snapshot_id': row[0],
@@ -143,17 +152,18 @@ class PriceHistoryPopulator:
             logger.info(f'{ticker}: Found {len(hist)} price records')
 
             # Save to database
-            conn = sqlite3.connect(self.db_path)
+            conn = get_connection()
             cursor = conn.cursor()
 
             inserted = 0
             for date, row in hist.iterrows():
                 try:
                     cursor.execute('''
-                        INSERT OR IGNORE INTO price_history (
+                        INSERT INTO price_history (
                             ticker, date, open, high, low, close,
                             volume, dividends, stock_splits
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                        ON CONFLICT DO NOTHING
                     ''', (
                         ticker,
                         date.strftime('%Y-%m-%d'),
@@ -185,12 +195,10 @@ def main():
     parser = argparse.ArgumentParser(description='Populate price_history for snapshots')
     parser.add_argument('--ticker', help='Populate for specific ticker only')
     parser.add_argument('--limit', type=int, help='Limit number of snapshots to process')
-    parser.add_argument('--db-path', default='data/stock_data.db', help='Path to database')
-
     args = parser.parse_args()
 
     # Initialize populator
-    populator = PriceHistoryPopulator(args.db_path)
+    populator = PriceHistoryPopulator()
 
     # Get snapshots needing prices
     snapshots = populator.get_snapshots_needing_prices(ticker=args.ticker, limit=args.limit)

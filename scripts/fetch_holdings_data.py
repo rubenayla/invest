@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import argparse
 import logging
-import sqlite3
 import sys
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -23,6 +22,7 @@ REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT / "src"))
 
 from invest.config.logging_config import setup_logging
+from invest.data.db import get_connection
 from invest.data.insider_fetcher import TokenBucketRateLimiter
 from invest.data.holdings_fetcher import (
     fetch_holdings_for_fund,
@@ -38,8 +38,6 @@ from invest.data.holdings_db import (
 
 logger = logging.getLogger(__name__)
 
-DB_PATH = REPO_ROOT / "data" / "stock_data.db"
-
 
 def fetch_one_fund(
     fund: dict,
@@ -51,7 +49,7 @@ def fetch_one_fund(
     fund_name = fund["name"]
     fund_cik = fund["cik"]
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_connection()
     try:
         ensure_schema(conn)
 

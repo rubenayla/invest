@@ -4,13 +4,12 @@ Run classic valuation models (DCF, RIM, etc.) on all stocks in database.
 
 This script:
 - Gets stock list from current_stock_data table (database is ONLY source)
-- Loads stock data from SQLite database
+- Loads stock data from PostgreSQL database
 - Runs classic valuation models (DCF, Enhanced DCF, RIM, Simple Ratios, etc.)
 - Saves predictions to valuation_results table
 """
 
 import json
-import sqlite3
 import sys
 from pathlib import Path
 from typing import Optional
@@ -21,6 +20,7 @@ import pandas as pd
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root / 'src'))
 
+from invest.data.db import get_connection
 from invest.data.stock_data_reader import StockDataReader
 from invest.valuation.base import ModelNotSuitableError
 from invest.valuation.model_registry import ModelRegistry
@@ -38,7 +38,7 @@ MODELS_TO_RUN = [
 ]
 
 
-def save_to_database(conn: sqlite3.Connection, ticker: str, model_name: str, result: dict):
+def save_to_database(conn, ticker: str, model_name: str, result: dict):
     """Save valuation result to valuation_results table."""
 
     cursor = conn.cursor()
@@ -52,7 +52,7 @@ def save_to_database(conn: sqlite3.Connection, ticker: str, model_name: str, res
                 ticker, model_name, fair_value, current_price,
                 margin_of_safety, upside_pct, suitable,
                 confidence, details_json
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
         ''', (
             ticker,
             model_name,
@@ -69,7 +69,7 @@ def save_to_database(conn: sqlite3.Connection, ticker: str, model_name: str, res
         cursor.execute('''
             INSERT INTO valuation_results (
                 ticker, model_name, suitable, error_message, failure_reason
-            ) VALUES (?, ?, ?, ?, ?)
+            ) VALUES (%s, %s, %s, %s, %s)
         ''', (
             ticker,
             model_name,
@@ -83,7 +83,7 @@ def save_to_database(conn: sqlite3.Connection, ticker: str, model_name: str, res
 
 def load_stock_data(ticker: str, reader: StockDataReader) -> Optional[dict]:
     """
-    Load stock data from SQLite database and convert to model-compatible format.
+    Load stock data from database and convert to model-compatible format.
 
     Converts JSON-stored financial statements back to pandas DataFrames
     that valuation models expect.
@@ -222,17 +222,18 @@ def main():
     print('=' * 60)
 
     # Initialize stock data reader
-    print('\n📦 Initializing stock data reader (SQLite database)...')
+    print('\n📦 Initializing stock data reader...')
     reader = StockDataReader()
-    db_path = project_root / 'data' / 'stock_data.db'
 
     # Get list of tickers from database
     print('\n📂 Loading tickers from database...')
     registry = ModelRegistry()
-    conn = sqlite3.connect(db_path)
+    conn = get_connection()
     try:
         query = 'SELECT DISTINCT ticker FROM current_stock_data WHERE current_price IS NOT NULL'
-        tickers = [row[0] for row in conn.execute(query).fetchall()]
+        cursor = conn.cursor()
+        cursor.execute(query)
+        tickers = [row[0] for row in cursor.fetchall()]
         print(f'   Found {len(tickers)} tickers with price data')
 
         # Statistics
@@ -242,7 +243,7 @@ def main():
         print('\n🔄 Running valuations...')
 
         for i, ticker in enumerate(tickers):
-            # Load stock data from SQLite
+            # Load stock data from database
             stock_data = load_stock_data(ticker, reader)
 
             if not stock_data:
@@ -306,7 +307,7 @@ def main():
 
     print()
     print(f'Total stocks processed: {len(tickers)}')
-    print('💾 Saved to database: data/stock_data.db (valuation_results table)')
+    print('💾 Saved to database: valuation_results table')
     print('💡 Run dashboard.py to update the dashboard HTML')
 
     return 0
