@@ -303,8 +303,8 @@ def get_db_health() -> dict:
     try:
         cursor.execute(
             "SELECT model_name, COUNT(*) as cnt, "
-            "SUM(CASE WHEN suitable = 1 THEN 1 ELSE 0 END) as ok_cnt, "
-            "SUM(CASE WHEN suitable = 0 THEN 1 ELSE 0 END) as fail_cnt, "
+            "SUM(CASE WHEN suitable THEN 1 ELSE 0 END) as ok_cnt, "
+            "SUM(CASE WHEN NOT suitable THEN 1 ELSE 0 END) as fail_cnt, "
             "MIN(timestamp) as oldest, MAX(timestamp) as newest "
             "FROM valuation_results GROUP BY model_name"
         )
@@ -355,7 +355,7 @@ def get_db_health() -> dict:
     try:
         cursor.execute(
             "SELECT ticker, model_name, error_message, failure_reason, timestamp "
-            "FROM valuation_results WHERE suitable = 0 AND error_message IS NOT NULL "
+            "FROM valuation_results WHERE NOT suitable AND error_message IS NOT NULL "
             "ORDER BY timestamp DESC LIMIT 20"
         )
         rows = cursor.fetchall()
