@@ -2167,52 +2167,75 @@ renderCards();
 
         @media (max-width: 768px) {
             .container { padding: 6px; }
-            .dashboard-header { padding: 14px 12px; }
-            .dashboard-header h1 { font-size: 1.1em; letter-spacing: 1px; }
-            .header-row { flex-direction: column; gap: 6px; align-items: flex-start; }
+
+            /* ── Header: hide title, keep buttons ── */
+            .dashboard-header { padding: 6px 12px; margin-bottom: 4px; }
+            .dashboard-header h1 { display: none; }
+            .last-updated { display: none; }
+            .header-row { flex-direction: row; gap: 6px; align-items: center; }
             .header-actions { flex-wrap: wrap; gap: 6px; }
-            .btn { padding: 6px 12px; font-size: 12px; }
+            .btn { padding: 5px 10px; font-size: 11px; }
 
-            .health-panel { padding: 12px; }
-            .health-header { flex-direction: column; gap: 6px; align-items: flex-start; }
-            .health-row { flex-direction: column; align-items: flex-start; gap: 6px; }
-            .health-chips { gap: 4px; }
-            .health-chip { font-size: 11px; padding: 3px 8px; }
-            .health-info { font-size: 11px; }
+            /* ── Health panel: collapsed by default on mobile ── */
+            .health-panel { padding: 8px 12px; margin-bottom: 6px; }
+            .health-header { flex-direction: row; gap: 8px; align-items: center; cursor: pointer; }
+            .health-details { display: none; margin-top: 6px; }
+            .health-panel.expanded .health-details { display: block; }
+            .health-header::after {
+                content: '\\25BC'; font-size: 10px; color: var(--text-muted);
+                transition: transform 0.2s; margin-left: auto;
+            }
+            .health-panel.expanded .health-header::after { transform: rotate(180deg); }
+            .health-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+            .health-chips { gap: 3px; }
+            .health-chip { font-size: 10px; padding: 2px 6px; }
+            .health-meta { font-size: 11px; }
 
-            .controls { flex-direction: column; gap: 8px; padding: 10px 12px; }
+            /* ── Controls: compact row ── */
+            .controls { flex-direction: column; gap: 4px; padding: 6px 12px; margin-bottom: 4px; }
             .controls-left, .controls-right { flex-wrap: wrap; width: 100%; }
             .controls-right { justify-content: flex-start; }
 
-            .summary-grid { flex-wrap: wrap; gap: 6px; }
-            .summary-item { min-width: auto; padding: 6px 10px; flex: 1 1 70px; }
-            .summary-item h3 { font-size: 18px; }
-            .summary-item p { font-size: 10px; }
-            .stock-analysis { padding: 8px 12px; margin-bottom: 8px; }
+            /* ── Summary: collapsed by default on mobile ── */
+            .stock-analysis { padding: 4px 12px; margin-bottom: 4px; cursor: pointer; }
+            .stock-analysis h2::after {
+                content: '\\25BC'; font-size: 10px; color: var(--text-muted);
+                margin-left: 8px; transition: transform 0.2s;
+            }
+            .summary-grid { display: none; }
+            .stock-analysis.expanded .summary-grid { display: flex; flex-wrap: wrap; gap: 4px; }
+            .stock-analysis.expanded h2::after { transform: rotate(180deg); }
+            .summary-item { min-width: auto; padding: 4px 8px; flex: 1 1 70px; }
+            .summary-item h3 { font-size: 16px; }
+            .summary-item p { font-size: 9px; }
 
-            /* Table: horizontally scrollable with sticky Stock column */
+            /* ── Table: the main event ── */
             .table-container {
-                height: calc(100vh - 200px);
-                height: calc(100dvh - 200px);
-                min-height: 300px;
+                height: calc(100dvh - 60px);
+                min-height: 400px;
                 -webkit-overflow-scrolling: touch;
+                border-radius: 0;
+                border-left: none;
+                border-right: none;
             }
             .stock-table { font-size: 12px; }
-            .stock-table th, .stock-table td { padding: 8px 6px; }
+            .stock-table th { padding: 10px 8px; font-size: 10px; }
+            .stock-table td { padding: 8px 6px; font-size: 12px; }
 
             /* Hide rank column on mobile */
             .rank-cell,
             .stock-table th:first-child { display: none; }
 
-            /* Sticky Stock column (2nd column, now first visible) */
+            /* Sticky Stock column (2nd col = first visible) */
             .ticker-cell,
             .stock-table th:nth-child(2) {
                 position: sticky;
                 left: 0;
                 z-index: 20;
                 background: var(--bg-panel);
-                box-shadow: 2px 0 4px rgba(0,0,0,0.3);
+                box-shadow: 2px 0 6px rgba(0,0,0,0.4);
             }
+            /* Keep bg consistent on alternating/hovered rows */
             .stock-row:nth-child(even) .ticker-cell {
                 background: color-mix(in srgb, var(--bg-panel) 97%, var(--accent) 3%);
             }
@@ -2220,18 +2243,18 @@ renderCards();
                 background: color-mix(in srgb, var(--bg-panel) 92%, var(--accent) 8%);
             }
 
-            /* Kebab menu: larger tap targets */
+            /* ── Kebab menu: larger touch targets ── */
             .kebab-item { padding: 11px 12px; font-size: 14px; }
             .kebab-menu { min-width: 220px; }
             .kebab-label { font-size: 12px; padding: 8px 12px; }
 
-            /* Modal: full-width on mobile */
+            /* ── Modal: full-width ── */
             .modal-content { width: 95vw; max-width: none; margin: 10px; }
 
-            /* Alarm panel: full-width at bottom */
+            /* ── Alarm panel: bottom sheet ── */
             .alarm-panel { width: 100vw; right: 0; bottom: 0; max-height: 50vh; border-radius: 12px 12px 0 0; }
 
-            /* Update log panel */
+            /* ── Update log ── */
             .update-log-panel { font-size: 11px; }
         }
 
@@ -2378,6 +2401,20 @@ renderCards();
             }
 
             updateRankNumbers();
+
+            // Mobile: collapsible health panel and summary
+            if (window.innerWidth <= 768) {
+                const hp = document.getElementById('healthPanel');
+                if (hp) {
+                    hp.querySelector('.health-header').addEventListener('click', () => hp.classList.toggle('expanded'));
+                }
+                document.querySelectorAll('.stock-analysis').forEach(el => {
+                    el.addEventListener('click', e => {
+                        if (e.target.closest('.summary-item')) return;
+                        el.classList.toggle('expanded');
+                    });
+                });
+            }
 
             // Universe selector
             document.getElementById('universe').addEventListener('change', function() {
