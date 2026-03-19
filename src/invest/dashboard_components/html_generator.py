@@ -2227,11 +2227,18 @@ renderCards();
             .stock-table th:first-child { display: none; }
 
             /* Sticky Stock column (2nd col = first visible) */
-            .ticker-cell,
+            .ticker-cell {
+                position: sticky;
+                left: 0;
+                z-index: 5;
+                background: var(--bg-panel);
+                box-shadow: 2px 0 6px rgba(0,0,0,0.4);
+            }
+            /* Header Stock th: sticky both top AND left, above everything */
             .stock-table th:nth-child(2) {
                 position: sticky;
                 left: 0;
-                z-index: 20;
+                z-index: 30;
                 background: var(--bg-panel);
                 box-shadow: 2px 0 6px rgba(0,0,0,0.4);
             }

@@ -7,6 +7,7 @@ Stores Form 4 insider transactions and computes aggregate insider signals
 
 import logging
 import psycopg2
+import psycopg2.extensions
 import psycopg2.extras
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -140,7 +141,7 @@ def compute_insider_signal(conn, ticker: str,
 
     # Check table exists
     try:
-        cur = conn.cursor()
+        cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
         cur.execute("SELECT 1 FROM insider_transactions LIMIT 1")
     except Exception:
         conn.rollback()
@@ -148,7 +149,8 @@ def compute_insider_signal(conn, ticker: str,
 
     cutoff = (datetime.utcnow() - timedelta(days=lookback_days)).strftime("%Y-%m-%d")
 
-    cur = conn.cursor()
+    # Use a plain cursor (not dict) since we unpack by position below
+    cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
     cur.execute("""
         SELECT transaction_type, shares, price_per_share, transaction_date,
                reporter_name, is_open_market
@@ -228,7 +230,8 @@ def _compute_activity_trends(conn, ticker: str, lookback_days: int) -> tuple:
     recent_cutoff = (now - timedelta(days=lookback_days)).strftime("%Y-%m-%d")
 
     # Get the full date range of data for this ticker
-    cur = conn.cursor()
+    # Use a plain cursor (not dict) since we unpack by position below
+    cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
     cur.execute("""
         SELECT MIN(transaction_date), COUNT(*) FROM insider_transactions
         WHERE ticker = %s AND is_open_market = 1
