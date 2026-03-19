@@ -91,32 +91,35 @@ uv run pytest
 
 **If there's a mismatch between database schema and script queries, the DATABASE is correct. Update the scripts.**
 
-**Two data systems:**
+**PostgreSQL** on Hetzner server (`invest` database). Both Mac and server connect to the same DB:
+- Server (direct): `localhost:5432`
+- Mac (SSH tunnel): `localhost:5433` — run `ssh -N hetzner-db &` first
+- Connection config: `~/.invest_db_url` or `DB_URL` env var
+
+**Key tables:**
 
 1. **Historical** (`assets`, `fundamental_history`, `price_history`)
-   - 358 stocks with time-series data
-   - Used by: GBM models, neural networks
+   - Time-series data for GBM models, neural networks
    - Update: `scripts/populate_fundamental_history.py`
    - **Note**: Old scripts may reference `snapshots` table - this was renamed to `fundamental_history`
 
 2. **Current** (`current_stock_data`)
-   - 598 stocks, single snapshot per stock
-   - Used by: DCF, RIM, simple ratios, dashboard
+   - Single snapshot per stock for DCF, RIM, simple ratios, dashboard
    - Update: `scripts/data_fetcher.py`
 
-**Database location**: `data/stock_data.db`
+3. **SEC** (`insider_transactions`, `activist_stakes`, `fund_holdings`)
 
 **Data access**:
 ```python
+from invest.data.db import get_connection          # raw psycopg2 connection
 from invest.data.stock_data_reader import StockDataReader
 reader = StockDataReader()
 data = reader.get_stock_data('AAPL')
 ```
 
-**Check schema first:**
+**Check schema:**
 ```bash
-sqlite3 data/stock_data.db ".tables"
-sqlite3 data/stock_data.db "PRAGMA table_info(fundamental_history);"
+ssh hetzner "PGPASSWORD=invest_2026 psql -U invest -h 127.0.0.1 -d invest -c '\dt'"
 ```
 
 ---
