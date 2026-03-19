@@ -52,8 +52,8 @@ class HTMLGenerator:
         summary_html = self._generate_summary_section(stocks_data)
         table_html = self._generate_stock_table(stocks_data)
         health_html = self._generate_health_panel(metadata) if server_mode else ""
-        health_json = json.dumps(metadata.get("health", {})) if metadata else "{}"
-        update_status_json = json.dumps(metadata.get("update_status", {})) if metadata else "{}"
+        health_json = json.dumps(metadata.get("health", {}), default=str) if metadata else "{}"
+        update_status_json = json.dumps(metadata.get("update_status", {}), default=str) if metadata else "{}"
 
         # Create complete HTML document
         html_content = f"""<!-- Start server: uv run python scripts/dashboard_server.py -->
