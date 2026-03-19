@@ -400,7 +400,7 @@ async def index(request: Request) -> HTMLResponse:
 
 async def api_health(request: Request) -> JSONResponse:
     """Return database health/freshness data."""
-    return JSONResponse(get_db_health())
+    return JSONResponse(_json_safe(get_db_health()))
 
 
 async def api_update_start(request: Request) -> JSONResponse:
@@ -478,7 +478,7 @@ async def api_alarm_list(request: Request) -> JSONResponse:
         )
     rows = cursor.fetchall()
     conn.close()
-    return JSONResponse({"ok": True, "alarms": [dict(r) for r in rows]})
+    return JSONResponse(_json_safe({"ok": True, "alarms": [dict(r) for r in rows]}))
 
 
 async def api_alarm_delete(request: Request) -> JSONResponse:
@@ -510,7 +510,7 @@ async def api_alarm_triggered(request: Request) -> JSONResponse:
         )
     rows = cursor.fetchall()
     conn.close()
-    return JSONResponse({"ok": True, "triggered": [dict(r) for r in rows]})
+    return JSONResponse(_json_safe({"ok": True, "triggered": [dict(r) for r in rows]}))
 
 
 # ── Insider history API ──────────────────────────────────────────────────
@@ -606,6 +606,19 @@ async def api_notes(request: Request):
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────
+
+def _json_safe(obj):
+    """Recursively convert datetime/date objects to ISO strings for JSON serialization."""
+    if isinstance(obj, dict):
+        return {k: _json_safe(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_json_safe(v) for v in obj]
+    if isinstance(obj, datetime):
+        return obj.isoformat(timespec="seconds")
+    if hasattr(obj, 'isoformat'):
+        return obj.isoformat()
+    return obj
+
 
 def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
