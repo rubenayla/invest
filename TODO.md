@@ -302,6 +302,8 @@ If you want, I can graph the issuer charge-off rates together so you can visuall
 
 
 # Todo List
+
+- [ ] **Make repo cloneable & extensible**: Document the model interface, make the pipeline pluggable, write a "how to add a model" guide. Goal: anyone can clone, add a new valuation model, and see it in the dashboard. Includes cleaning up model registry, standardizing input/output contracts, and adding contributor docs.
 - Investigate other projects online to see if there's a promising one for stock analysis and valuation in medium/long term, mainly based on fundamentals. 
 - [ ] Configure Grafana (Fix permissions and setup dashboards)
 
