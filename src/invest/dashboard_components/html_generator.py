@@ -1197,8 +1197,8 @@ class HTMLGenerator:
     </div>
   </div>
   <div class="pill-row" id="sortRow">
-    <button class="pill active" data-sort="margin">Margin</button>
-    <button class="pill" data-sort="gbm">GBM</button>
+    <button class="pill active" data-sort="autores">AutoRes</button>
+    <button class="pill" data-sort="gbm">GBM 3y</button>
     <button class="pill" data-sort="ev">LLM EV</button>
     <button class="pill" data-sort="price">Price</button>
     <button class="pill" data-sort="az">A-Z</button>
@@ -1453,15 +1453,6 @@ body {
 .tag-insider-sell-normal { background: var(--bg-elevated); color: var(--text-muted); }
 .tag-activist { background: var(--orange-dim); color: var(--orange); }
 .tag-fund { background: rgba(76,144,240,0.10); color: var(--accent-bright); }
-.tag-margin {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 4px;
-}
-.tag-margin-pos { background: var(--green-dim); color: var(--green-bright); }
-.tag-margin-neg { background: var(--red-dim); color: var(--red-bright); }
 
 /* ── Empty state ── */
 #emptyState {
@@ -1485,9 +1476,12 @@ body {
     def _get_mobile_javascript(self) -> str:
         return """
 let STOCKS = INITIAL_DATA;
-let currentSort = 'margin';
+let currentSort = 'autores';
 let currentFilter = 'all';
 let lastRefresh = Date.now();
+
+// ── Trusted models only (matches Kelly sizer) ──
+const TRUSTED_GBM = ['gbm_3y', 'gbm_opportunistic_3y'];
 
 // ── Data helpers ──
 
@@ -1495,31 +1489,27 @@ function getLLM(s) { return s.valuations?.llm_deep_analysis?.details || null; }
 function getVerdict(s) { const l = getLLM(s); return l?.verdict || null; }
 function getEV(s) { const l = getLLM(s); return l?.expected_value_pct ?? null; }
 
-function getBestGBMUpside(s) {
-    const models = ['gbm_opportunistic_3y','gbm_opportunistic_1y','gbm_3y','gbm_1y'];
-    let best = null;
-    for (const m of models) {
-        const v = s.valuations?.[m];
-        if (v?.suitable && v.upside != null) {
-            if (best === null || v.upside > best) best = v.upside;
-        }
-    }
-    return best;
+function getAutoRes(s) {
+    const v = s.valuations?.autoresearch;
+    if (!v?.suitable || v.upside == null) return null;
+    return v.upside;
 }
 
-function getBestMargin(s) {
-    const models = ['gbm_opportunistic_3y','gbm_3y','gbm_opportunistic_1y','gbm_1y','autoresearch','dcf','rim'];
-    let best = null;
-    for (const m of models) {
+function getGBM3y(s) {
+    // Prefer gbm_opportunistic_3y, fall back to gbm_3y
+    for (const m of TRUSTED_GBM) {
         const v = s.valuations?.[m];
-        if (v?.suitable && v.margin_of_safety != null) {
-            if (best === null || v.margin_of_safety > best) best = v.margin_of_safety;
-        }
+        if (v?.suitable && v.upside != null) return v.upside;
     }
-    return best;
+    return null;
 }
 
 function hasInsiderBuys(s) { return (s.insider?.buy_count || 0) > 0; }
+
+function fmtPct(v) {
+    const pct = (v * 100).toFixed(0);
+    return (v > 0 ? '+' : '') + pct + '%';
+}
 
 // ── Rendering ──
 
@@ -1527,40 +1517,38 @@ function cardHTML(s, i) {
     const price = s.current_price != null ? '$' + Number(s.current_price).toFixed(2) : '-';
     const verdict = getVerdict(s);
     const ev = getEV(s);
-    const gbm = getBestGBMUpside(s);
-    const margin = getBestMargin(s);
+    const autores = getAutoRes(s);
+    const gbm = getGBM3y(s);
     const ins = s.insider || {};
     const name = (s.company_name || '').substring(0, 28);
 
     let tags = [];
 
-    // Verdict
+    // Verdict (LLM)
     if (verdict) {
         const cls = verdict === 'BUY' ? 'verdict-buy' : verdict === 'PASS' ? 'verdict-pass' : 'verdict-watch';
         tags.push('<span class="verdict-pill ' + cls + '">' + verdict + '</span>');
     }
 
-    // EV%
+    // EV% (from LLM)
     if (ev != null) {
         const cls = ev > 5 ? 'tag-ev-pos' : ev < -5 ? 'tag-ev-neg' : 'tag-ev-neutral';
         tags.push('<span class="metric-tag ' + cls + '">' + (ev > 0 ? '+' : '') + ev.toFixed(0) + '% EV</span>');
     }
 
-    // GBM upside
+    // AutoResearch upside
+    if (autores != null) {
+        const cls = autores > 0 ? 'tag-upside-pos' : 'tag-upside-neg';
+        tags.push('<span class="metric-tag ' + cls + '">' + fmtPct(autores) + ' AR</span>');
+    }
+
+    // GBM 3y upside
     if (gbm != null) {
-        const pct = (gbm * 100).toFixed(0);
         const cls = gbm > 0 ? 'tag-upside-pos' : 'tag-upside-neg';
-        tags.push('<span class="metric-tag ' + cls + '">' + (gbm > 0 ? '+' : '') + pct + '% GBM</span>');
+        tags.push('<span class="metric-tag ' + cls + '">' + fmtPct(gbm) + ' GBM</span>');
     }
 
-    // Best margin
-    if (margin != null) {
-        const pct = (margin * 100).toFixed(0);
-        const cls = margin >= 0 ? 'tag-margin-pos' : 'tag-margin-neg';
-        tags.push('<span class="tag-margin ' + cls + '">' + (margin >= 0 ? '+' : '') + pct + '% MoS</span>');
-    }
-
-    // Insider
+    // Insider signals
     if (ins.has_data) {
         const bc = ins.buy_count || 0;
         const sc = ins.sell_count || 0;
@@ -1596,15 +1584,15 @@ function renderCards() {
     else if (currentFilter === 'watch') arr = arr.filter(s => getVerdict(s) === 'WATCH');
     else if (currentFilter === 'insider') arr = arr.filter(s => hasInsiderBuys(s));
 
-    // Sort
+    // Sort — each pill sorts by a specific model's upside
     const sortFn = {
-        margin: (a,b) => (getBestMargin(b) ?? -999) - (getBestMargin(a) ?? -999),
-        gbm: (a,b) => (getBestGBMUpside(b) ?? -999) - (getBestGBMUpside(a) ?? -999),
+        autores: (a,b) => (getAutoRes(b) ?? -999) - (getAutoRes(a) ?? -999),
+        gbm: (a,b) => (getGBM3y(b) ?? -999) - (getGBM3y(a) ?? -999),
         ev: (a,b) => (getEV(b) ?? -999) - (getEV(a) ?? -999),
         price: (a,b) => (b.current_price ?? 0) - (a.current_price ?? 0),
         az: (a,b) => a.ticker.localeCompare(b.ticker),
     };
-    arr.sort(sortFn[currentSort] || sortFn.margin);
+    arr.sort(sortFn[currentSort] || sortFn.autores);
 
     const container = document.getElementById('cardContainer');
     const empty = document.getElementById('emptyState');
