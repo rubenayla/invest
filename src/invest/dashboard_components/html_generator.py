@@ -2197,14 +2197,14 @@ renderCards();
             .controls-right { justify-content: flex-start; }
 
             /* ── Summary: collapsed by default on mobile ── */
-            .stock-analysis { padding: 4px 12px; margin-bottom: 4px; cursor: pointer; }
-            .stock-analysis h2::after {
+            .analysis-summary { padding: 4px 12px; margin-bottom: 4px; cursor: pointer; }
+            .analysis-summary h2::after {
                 content: '\\25BC'; font-size: 10px; color: var(--text-muted);
                 margin-left: 8px; transition: transform 0.2s;
             }
             .summary-grid { display: none; }
-            .stock-analysis.expanded .summary-grid { display: flex; flex-wrap: wrap; gap: 4px; }
-            .stock-analysis.expanded h2::after { transform: rotate(180deg); }
+            .analysis-summary.expanded .summary-grid { display: flex; flex-wrap: wrap; gap: 4px; }
+            .analysis-summary.expanded h2::after { transform: rotate(180deg); }
             .summary-item { min-width: auto; padding: 4px 8px; flex: 1 1 70px; }
             .summary-item h3 { font-size: 16px; }
             .summary-item p { font-size: 9px; }
@@ -2415,7 +2415,7 @@ renderCards();
                 if (hp) {
                     hp.querySelector('.health-header').addEventListener('click', () => hp.classList.toggle('expanded'));
                 }
-                document.querySelectorAll('.stock-analysis').forEach(el => {
+                document.querySelectorAll('.analysis-summary').forEach(el => {
                     el.addEventListener('click', e => {
                         if (e.target.closest('.summary-item')) return;
                         el.classList.toggle('expanded');

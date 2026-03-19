@@ -570,7 +570,7 @@ async def api_insider_history(request: Request) -> JSONResponse:
     cursor = conn.cursor()
     try:
         cursor.execute("""
-            SELECT TO_CHAR(transaction_date, 'YYYY-MM') AS month,
+            SELECT SUBSTRING(transaction_date FROM 1 FOR 7) AS month,
                    transaction_type,
                    COUNT(*) AS cnt
             FROM insider_transactions
