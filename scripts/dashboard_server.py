@@ -403,6 +403,48 @@ async def index(request: Request) -> HTMLResponse:
     return HTMLResponse(html, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
+async def mobile_index(request: Request) -> HTMLResponse:
+    """Serve the mobile-optimized card-based dashboard."""
+    _touch_activity()
+    from invest.dashboard_components.html_generator import HTMLGenerator
+
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    from dashboard import load_stocks_from_database
+
+    stocks_data = load_stocks_from_database()
+    generator = HTMLGenerator()
+    html = generator.generate_mobile_html(stocks_data)
+    return HTMLResponse(html, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+
+
+async def api_stocks(request: Request) -> JSONResponse:
+    """Return all stock data as JSON for mobile dashboard refresh."""
+    _touch_activity()
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    from dashboard import load_stocks_from_database
+
+    stocks_data = load_stocks_from_database()
+
+    # Slim down for JSON: keep only what the mobile dashboard needs
+    slim = {}
+    for ticker, stock in stocks_data.items():
+        entry = {
+            "ticker": ticker,
+            "company_name": stock.get("company_name", ticker),
+            "current_price": stock.get("current_price"),
+            "valuations": {},
+            "insider": stock.get("insider", {}),
+        }
+        for model, val in stock.get("valuations", {}).items():
+            safe_val = {k: v for k, v in val.items() if k != "details"}
+            if "details" in val and isinstance(val["details"], dict):
+                safe_val["details"] = val["details"]
+            entry["valuations"][model] = safe_val
+        slim[ticker] = entry
+
+    return JSONResponse(_json_safe(slim), headers={"Cache-Control": "no-store"})
+
+
 async def api_health(request: Request) -> JSONResponse:
     """Return database health/freshness data."""
     return JSONResponse(_json_safe(get_db_health()))
@@ -649,6 +691,8 @@ def _hours_ago(timestamp_str: str | None, now: datetime) -> float | None:
 app = Starlette(
     routes=[
         Route("/", index),
+        Route("/m", mobile_index),
+        Route("/api/stocks", api_stocks),
         Route("/api/health", api_health),
         Route("/api/update", api_update_start, methods=["POST"]),
         Route("/api/update/status", api_update_status),
