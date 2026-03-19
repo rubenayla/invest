@@ -2166,14 +2166,73 @@ renderCards();
         ::selection { background: rgba(76,144,240,0.3); color: var(--text-primary); }
 
         @media (max-width: 768px) {
-            .container { padding: 8px; }
-            .controls { flex-direction: column; gap: 10px; }
-            .header-row { flex-direction: column; gap: 8px; }
-            .summary-grid { flex-direction: column; }
-            .stock-table { font-size: 13px; }
+            .container { padding: 6px; }
+            .dashboard-header { padding: 14px 12px; }
+            .dashboard-header h1 { font-size: 1.1em; letter-spacing: 1px; }
+            .header-row { flex-direction: column; gap: 6px; align-items: flex-start; }
+            .header-actions { flex-wrap: wrap; gap: 6px; }
+            .btn { padding: 6px 12px; font-size: 12px; }
+
+            .health-panel { padding: 12px; }
+            .health-header { flex-direction: column; gap: 6px; align-items: flex-start; }
+            .health-row { flex-direction: column; align-items: flex-start; gap: 6px; }
+            .health-chips { gap: 4px; }
+            .health-chip { font-size: 11px; padding: 3px 8px; }
+            .health-info { font-size: 11px; }
+
+            .controls { flex-direction: column; gap: 8px; padding: 10px 12px; }
+            .controls-left, .controls-right { flex-wrap: wrap; width: 100%; }
+            .controls-right { justify-content: flex-start; }
+
+            .summary-grid { flex-wrap: wrap; gap: 6px; }
+            .summary-item { min-width: auto; padding: 6px 10px; flex: 1 1 70px; }
+            .summary-item h3 { font-size: 18px; }
+            .summary-item p { font-size: 10px; }
+            .stock-analysis { padding: 8px 12px; margin-bottom: 8px; }
+
+            /* Table: horizontally scrollable with sticky Stock column */
+            .table-container {
+                height: calc(100vh - 200px);
+                height: calc(100dvh - 200px);
+                min-height: 300px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .stock-table { font-size: 12px; }
             .stock-table th, .stock-table td { padding: 8px 6px; }
-            .table-container { height: 60vh; min-height: 140px; }
-            .health-row { flex-direction: column; align-items: flex-start; }
+
+            /* Hide rank column on mobile */
+            .rank-cell,
+            .stock-table th:first-child { display: none; }
+
+            /* Sticky Stock column (2nd column, now first visible) */
+            .ticker-cell,
+            .stock-table th:nth-child(2) {
+                position: sticky;
+                left: 0;
+                z-index: 20;
+                background: var(--bg-panel);
+                box-shadow: 2px 0 4px rgba(0,0,0,0.3);
+            }
+            .stock-row:nth-child(even) .ticker-cell {
+                background: color-mix(in srgb, var(--bg-panel) 97%, var(--accent) 3%);
+            }
+            .stock-row:hover .ticker-cell {
+                background: color-mix(in srgb, var(--bg-panel) 92%, var(--accent) 8%);
+            }
+
+            /* Kebab menu: larger tap targets */
+            .kebab-item { padding: 11px 12px; font-size: 14px; }
+            .kebab-menu { min-width: 220px; }
+            .kebab-label { font-size: 12px; padding: 8px 12px; }
+
+            /* Modal: full-width on mobile */
+            .modal-content { width: 95vw; max-width: none; margin: 10px; }
+
+            /* Alarm panel: full-width at bottom */
+            .alarm-panel { width: 100vw; right: 0; bottom: 0; max-height: 50vh; border-radius: 12px 12px 0 0; }
+
+            /* Update log panel */
+            .update-log-panel { font-size: 11px; }
         }
 
         /* ── Kebab Menu (Linear/shadcn pattern) ── */
