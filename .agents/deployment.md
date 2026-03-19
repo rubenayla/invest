@@ -11,7 +11,7 @@
 - User: `deploy`
 - OS: Ubuntu 24.04 LTS
 - Specs: 2 vCPU, 4GB RAM
-- Path: `/home/deploy/invest`
+- Path: `/srv/invest` (symlinked from `~/invest`)
 - Dashboard: systemd service `invest-dashboard` on port 8050, behind nginx
 - SSL: Cloudflare Origin CA wildcard (`*.rubenayla.xyz`)
 
@@ -46,7 +46,7 @@ ssh partle "sudo systemctl restart invest-dashboard"
 ssh partle "tail -50 ~/invest/logs/cron_update.log"
 
 # Manual data update on server
-ssh partle "cd ~/invest && nice -n 19 uv run python scripts/update_all.py --skip-gbm --skip-nn --skip-autoresearch --skip-classic --skip-scanner --skip-dashboard"
+ssh partle "cd /srv/invest && nice -n 19 uv run python scripts/update_all.py --skip-gbm --skip-nn --skip-autoresearch --skip-classic --skip-scanner --skip-dashboard"
 ```
 
 ## Nginx Config
