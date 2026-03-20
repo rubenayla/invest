@@ -457,7 +457,7 @@ class HTMLGenerator:
         if fetch_ts:
             try:
                 from datetime import datetime, timezone
-                ts = datetime.fromisoformat(fetch_ts)
+                ts = fetch_ts if isinstance(fetch_ts, datetime) else datetime.fromisoformat(str(fetch_ts))
                 age_h = (datetime.now(timezone.utc) - ts.replace(tzinfo=timezone.utc)).total_seconds() / 3600
                 if age_h < 24:
                     updated_str = f'{age_h:.0f}h ago'
