@@ -109,7 +109,6 @@ class HTMLGenerator:
                 <button id="updateButton" onclick="triggerUpdate()" class="btn btn-update" title="Full refresh: prices, financials, statements, insider trades, activist stakes, institutional holdings. Data only — ML models run locally on Mac.">Update Data</button>
                 <button id="liteUpdateButton" onclick="triggerUpdate(true)" class="btn btn-lite-update" title="Fast refresh: prices &amp; key metrics only. Preserves existing financial statements.">Lite Update</button>
                 <button id="cancelButton" onclick="cancelUpdate()" class="btn btn-cancel" style="display:none;">Cancel</button>
-                <button id="shutdownButton" onclick="shutdownServer()" class="btn" style="display:none;" title="Stop the dashboard server">Shutdown</button>
             </div>
         </div>
 
@@ -655,9 +654,24 @@ class HTMLGenerator:
         # EV% color
         ev_class = "margin-excellent" if ev_pct > 15 else "margin-good" if ev_pct > 5 else "margin-neutral" if ev_pct > -5 else "margin-poor"
 
+        # Risk-adjusted score: EV / |bear_loss| × conviction_weight
+        # This is the primary sort value when clicking the LLM column
+        bear_return = None
+        for name, s in scenarios.items():
+            if isinstance(s, dict) and 'bear' in name.lower():
+                bear_return = s.get('return_pct')
+        conviction_weight = {"HIGH": 1.9, "MEDIUM-HIGH": 1.6, "MEDIUM": 1.3, "LOW": 1.0}.get(
+            str(conviction).upper(), 1.3
+        )
+        if bear_return is not None and bear_return < 0:
+            risk_adj_score = (ev_pct / abs(bear_return)) * conviction_weight
+        else:
+            # Fallback: use EV% alone with conviction weight
+            risk_adj_score = ev_pct * conviction_weight / 100 if ev_pct else 0
+
         return f'''
         <a href="#" onclick="openNotes('{ticker}'); return false;" rel="noopener" style="text-decoration:none; display:block;" title="{html.escape(tooltip)}">
-        <div class="valuation-cell" style="cursor:pointer;">
+        <div class="valuation-cell" data-sort-value="{risk_adj_score:.4f}" style="cursor:pointer;">
             <div style="background:{badge_bg}; color:{badge_color}; font-weight:700; font-size:13px; padding:2px 8px; border-radius:3px; display:inline-block; font-family:var(--font-mono);">{verdict}</div>
             <div class="margin {ev_class}" style="margin-top:3px;">{ev_pct:+.0f}%</div>
             <div class="ratio">entry ${entry_price}</div>
@@ -1199,7 +1213,7 @@ class HTMLGenerator:
   <div class="pill-row" id="sortRow">
     <button class="pill active" data-sort="autores">AutoRes</button>
     <button class="pill" data-sort="gbm">GBM 3y</button>
-    <button class="pill" data-sort="ev">LLM EV</button>
+    <button class="pill" data-sort="ev">LLM Score</button>
     <button class="pill" data-sort="price">Price</button>
     <button class="pill" data-sort="az">A-Z</button>
   </div>
@@ -1488,6 +1502,20 @@ const TRUSTED_GBM = ['gbm_3y', 'gbm_opportunistic_3y'];
 function getLLM(s) { return s.valuations?.llm_deep_analysis?.details || null; }
 function getVerdict(s) { const l = getLLM(s); return l?.verdict || null; }
 function getEV(s) { const l = getLLM(s); return l?.expected_value_pct ?? null; }
+function getRiskAdjScore(s) {
+    const l = getLLM(s);
+    if (!l) return null;
+    const ev = l.expected_value_pct ?? 0;
+    const scenarios = l.scenarios || {};
+    let bearReturn = null;
+    for (const [name, sc] of Object.entries(scenarios)) {
+        if (name.toLowerCase().includes('bear') && sc?.return_pct != null) bearReturn = sc.return_pct;
+    }
+    const convMap = {'HIGH': 1.9, 'MEDIUM-HIGH': 1.6, 'MEDIUM': 1.3, 'LOW': 1.0};
+    const cw = convMap[(l.conviction || '').toUpperCase()] || 1.3;
+    if (bearReturn != null && bearReturn < 0) return (ev / Math.abs(bearReturn)) * cw;
+    return ev * cw / 100;
+}
 
 function getAutoRes(s) {
     const v = s.valuations?.autoresearch;
@@ -1588,7 +1616,7 @@ function renderCards() {
     const sortFn = {
         autores: (a,b) => (getAutoRes(b) ?? -999) - (getAutoRes(a) ?? -999),
         gbm: (a,b) => (getGBM3y(b) ?? -999) - (getGBM3y(a) ?? -999),
-        ev: (a,b) => (getEV(b) ?? -999) - (getEV(a) ?? -999),
+        ev: (a,b) => (getRiskAdjScore(b) ?? -999) - (getRiskAdjScore(a) ?? -999),
         price: (a,b) => (b.current_price ?? 0) - (a.current_price ?? 0),
         az: (a,b) => a.ticker.localeCompare(b.ticker),
     };
@@ -2431,7 +2459,6 @@ renderCards();
 
             // If server mode, show server controls and start polling
             if (SERVER_MODE) {
-                document.getElementById('shutdownButton').style.display = 'inline-flex';
                 applyUpdateStatus(INITIAL_UPDATE_STATUS);
                 if (INITIAL_UPDATE_STATUS.status === 'running') {
                     startPolling();
@@ -2481,17 +2508,6 @@ renderCards();
             .then(r => r.json())
             .then(data => {
                 if (data.ok) stopPolling();
-            });
-        }
-
-        function shutdownServer() {
-            if (!confirm('Stop the dashboard server?')) return;
-            fetch('/api/shutdown', { method: 'POST' })
-            .then(() => {
-                document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:#738091;font-family:monospace;font-size:18px;">Server stopped.</div>';
-            })
-            .catch(() => {
-                document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;color:#738091;font-family:monospace;font-size:18px;">Server stopped.</div>';
             });
         }
 
@@ -2618,13 +2634,20 @@ renderCards();
                 if (isEmptyA) return 1;
                 if (isEmptyB) return -1;
 
+                // Check for data-sort-value (used by LLM column for risk-adjusted score)
+                const sortValA = cellA.querySelector('[data-sort-value]');
+                const sortValB = cellB.querySelector('[data-sort-value]');
                 const ratioA = cellA.querySelector('.ratio');
                 const ratioB = cellB.querySelector('.ratio');
                 const marginA = cellA.querySelector('.margin');
                 const marginB = cellB.querySelector('.margin');
 
                 let comparison = 0;
-                if (ratioA && ratioB) {
+                if (sortValA && sortValB) {
+                    const sA = parseFloat(sortValA.dataset.sortValue);
+                    const sB = parseFloat(sortValB.dataset.sortValue);
+                    if (!isNaN(sA) && !isNaN(sB)) comparison = sB - sA;
+                } else if (ratioA && ratioB) {
                     const rA = parseFloat(ratioA.textContent.replace(/[x]/g, ''));
                     const rB = parseFloat(ratioB.textContent.replace(/[x]/g, ''));
                     if (!isNaN(rA) && !isNaN(rB)) comparison = rB - rA;

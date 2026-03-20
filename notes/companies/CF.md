@@ -1,103 +1,117 @@
 # CF Industries (CF)
 
-**Analysis Date:** 2026-02-01
-**Scanner Score:** 80.8/100 (Top opportunity)
-**Current Price:** $86.75
+**Sector:** Basic Materials | **Industry:** Agricultural Inputs (Nitrogen Fertilizer)
+**Price:** $125.56 | **Market Cap:** $19.6B | **EV:** $23.9B
+**Analysis Date:** 2026-03-20
 
-## Business Overview
+## Situation Summary
 
-CF Industries is a leading North American nitrogen fertilizer producer. Main products:
-- Ammonia
-- Urea
-- UAN (urea ammonium nitrate)
+CF Industries is the top-performing S&P 500 stock in March 2026, driven by the Strait of Hormuz closure following U.S. strikes on Iran (Feb 28). Urea prices surged 32% in a single week (from $516 to $683/mt at NOLA) as ~150 vessels sit stranded outside the Persian Gulf. As a pure-play North American nitrogen producer with low-cost U.S. natural gas feedstock, CF is the prime Western beneficiary of this supply disruption. The stock has nearly doubled from its ~$67 low in 2025, rising 86% year-to-date. Q4 2025 results beat estimates (EPS $2.59 vs $2.47 consensus, revenue $1.87B vs $1.78B expected), and full-year adjusted EBITDA hit $2.89B. The company also reached FID on a $4B blue ammonia JV with JERA/Mitsui in Louisiana (1.4M mt capacity, online 2029).
 
-Primary end market is agriculture (corn, wheat).
+## Variant Perception
 
-## Score Breakdown
+- **Consensus view:** Most analysts rate CF "Hold" (12 of 19) with a mean target of $104 -- well below the current price. The Street views the Hormuz-driven surge as cyclical/temporary, expecting nitrogen prices to normalize as the crisis resolves. Bank of America maintains Underperform, calling the spike non-structural. Mizuho downgraded after the rally.
+- **Our view:** The consensus is likely RIGHT that this is cyclical. The stock has already re-rated massively (+86% YTD) and trades above every analyst target except the highest ($150). However, if the Hormuz disruption persists through spring planting (likely -- no diplomatic resolution is imminent), 2026 earnings could significantly exceed current estimates. The clean energy optionality (blue ammonia JV) provides a structural growth angle the market may be underpricing on a 3-5 year view. The risk/reward at $125 is poor for new money -- the easy money has been made.
+- **Trigger:** Resolution or escalation of Hormuz crisis is the key swing factor. If disruption extends into Q3 2026, nitrogen prices stay elevated and CF could earn $12-15 EPS for the year. If it resolves by May, prices normalize and the stock corrects.
 
-| Component | Score | Notes |
-|-----------|-------|-------|
-| Quality | 87 | ROE 22%, Op margin 34%, Current ratio 2.27 |
-| Value | 93 | P/E 10.5, DCF +74%, RIM +66% |
-| Growth | 79 | Revenue +21% YoY (but off peak) |
-| Risk | 74 | D/E 0.71, cyclical sector |
-| Catalyst | 52 | 16% off 52w high |
+## Financial Snapshot
 
-## Financial History
+| Metric | Value | 3yr Trend |
+|--------|-------|-----------|
+| Revenue | $7.08B (FY2025) | Normalizing from 2022 peak ($11.2B); +19% YoY |
+| Net Income | $1.46B | Stable $1.2-1.5B range (ex-2022 spike) |
+| EBITDA | $3.28B | Recovering: $2.83B -> $3.28B |
+| FCF | $1.80B | Strong: $1.03B -> $1.75B -> $1.80B |
+| ROE | 23.4% | Solid, down from 2022 peak |
+| D/E | 0.47x (46.8%) | Conservative, stable |
+| FCF Yield | 9.2% | Attractive for the sector |
+| Net Debt/EBITDA | 0.50x | Very low leverage |
+| Operating Margins | 35.3% | Expanding from 2024 trough |
+| Dividend Yield | 1.6% | Low payout ratio (22%) |
 
-| Year | Revenue | Net Income | FCF |
-|------|---------|------------|-----|
-| 2021 | $6.5B | $0.9B | $2.4B |
-| **2022** | **$11.2B** | **$3.4B** | **$3.4B** |
-| 2023 | $6.6B | $1.5B | $1.0B |
-| 2024 | $5.9B | $1.2B | $1.8B |
-
-**Key insight:** 2022 was an anomaly driven by Russia-Ukraine war spiking fertilizer prices globally. Earnings have been normalizing since.
+Revenue CAGR (2023-2025): +3.4%. Earnings CAGR (2023-2025): -2.3% (but 2024 was the trough).
+FCF yield of 9.2% is compelling. The balance sheet is fortress-like with only 0.5x net debt/EBITDA.
 
 ## Valuation Models
 
-| Model | Fair Value | Upside |
-|-------|------------|--------|
-| DCF Enhanced | $179 | +107% |
-| DCF | $151 | +74% |
-| RIM | $144 | +66% |
-| Multi-stage DCF | $140 | +61% |
-| Neural Network | $119 | +37% |
-| GBM Lite 3y | $109 | +26% |
-| GBM 3y | $80 | **-8%** |
+| Model | Fair Value | Upside | Confidence | Notes |
+|-------|-----------|--------|------------|-------|
+| RIM | $210.84 | +72% | N/A | Known upward bias for capital-intensive |
+| GBM Lite 3Y | $185.00 | +51% | 0.52 | |
+| Growth DCF | $147.21 | +20% | N/A | At old price ($122) |
+| GBM Lite 1Y | $146.82 | +20% | 0.64 | |
+| GBM Opportunistic 1Y | $145.89 | +19% | 0.68 | |
+| GBM 1Y | $145.77 | +19% | 0.68 | |
+| Autoresearch | $143.21 | +17% | 0.59 | |
+| GBM 3Y | $133.69 | +9% | 0.54 | Most reliable long-term |
+| GBM Opportunistic 3Y | $124.24 | +2% | 0.82 | Highest confidence, near current price |
+| Simple Ratios | $112.07 | -8% | N/A | |
+| DCF | $108.03 | -12% | N/A | |
+| DCF Enhanced | $90.03 | -26% | N/A | |
 
-**Model divergence:** Traditional DCF models very bullish. GBM (gradient boosting) models more skeptical, suggesting mean reversion in earnings.
+**Model consensus:** Models were run at $122.33 (Mar 17). The most reliable model (GBM Opportunistic 3Y, confidence 0.82) shows fair value at $124 -- essentially current price. Short-term momentum models (1Y) see $145-147 (consistent with elevated nitrogen prices). DCF models say the stock is overvalued at current levels. The stock has appreciated past most model fair values. At $125.56, the margin of safety is thin.
 
-## Analyst Consensus
+## Business Quality (19/25)
 
-- Average target: $91.60 (+6%)
-- Low: $78 (-10%) - BofA Underperform
-- High: $110 (+27%)
-- Zacks Rank: #3 Hold, expects +32.8% earnings growth 2025
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Moat | 4/5 | Largest North American nitrogen producer. Low-cost advantage from cheap U.S. natural gas vs global LNG-based competitors. Scale and logistics network create barriers. Not a true monopoly but strong cost moat. |
+| Management | 4/5 | Excellent capital allocation: $1.7B returned to shareholders in 2025, 10.2% share count reduction. Smart JV structure for blue ammonia (risk-sharing with JERA/Mitsui). Conservative balance sheet. |
+| Profitability | 4/5 | 35% operating margins, 21% net margins, 23% ROE. Among the best in agricultural inputs. Margins are commodity-dependent but structural cost advantage provides a floor. |
+| Balance Sheet | 5/5 | Net debt/EBITDA of 0.5x. $2.0B cash. Current ratio 3.4x. Fortress balance sheet that can weather any commodity downturn. |
+| Growth | 2/5 | Limited organic growth -- nitrogen is a mature commodity. Blue ammonia JV (2029 online) is the main growth vector. Revenue growth depends on commodity pricing, not volume. |
+
+## Inflection Point
+
+**Yes -- geopolitical supply shock.** The Hormuz closure is a genuine inflection for near-term earnings, but it is EXOGENOUS and TEMPORARY by nature. This is not a structural business inflection like a new product or turnaround. The blue ammonia JV represents a structural inflection but is years away (2029 production).
+
+The stock has already priced in much of the near-term inflection. The question is duration: if Hormuz stays closed through 2026, the earnings inflection extends. If it resolves in Q2, the stock gives back gains.
 
 ## Bull Case
 
-1. **Structural demand** - Nitrogen linked to food production, population growth
-2. **Cost advantage** - North American natural gas cheaper than international
-3. **Strong operations** - 97% ammonia utilization, 10M tons production
-4. **Clean energy optionality** - Blue ammonia/carbon capture projects ($150-200M annual FCF by 2030)
-5. **Capital returns** - Strong FCF supports buybacks
+- Hormuz disruption extends through 2026; nitrogen prices stay elevated at $650+ urea, driving CF to $12-15 EPS (vs ~$9 in 2025)
+- Blue ammonia JV adds $100M+ annual EBITDA starting 2029, with potential clean energy premium on the stock
+- Continued aggressive buybacks at attractive prices reduce share count by 5-8% annually
+- U.S. nat gas stays cheap while global LNG prices spike, widening CF's cost advantage
+- India/China continue restricting nitrogen exports, tightening global supply structurally
 
 ## Bear Case
 
-1. **Cyclical peak** - 2022 earnings were 3x normal, still normalizing
-2. **Natural gas risk** - Rising domestic gas prices pressure margins
-3. **China dumping** - Elevated urea inventory driving aggressive exports
-4. **Demand pressure** - U.S. corn acreage expected to drop 5% in 2026 (farmers switching to soybeans due to UAN price +30%)
-5. **DCF models may be wrong** - Using current earnings that are still above-trend
+- Hormuz crisis resolves diplomatically by Q2 2026; nitrogen prices revert to $400-450/mt urea; stock corrects 25-30%
+- Stock is already up 86% YTD -- most of the "good news" is priced in at $125
+- 19 analysts average target is $104; we're trading 20% above consensus
+- Yazoo City outage ($200M EBITDA headwind) partially offsets pricing tailwind
+- $4B blue ammonia JV capex commitment creates execution risk; cost overruns possible
+- Nat gas price spike (though unlikely in current U.S. supply environment) would compress margins
 
-## Key Risks
+## Scenario Table
 
-- **Input costs**: Natural gas is primary raw material
-- **Commodity cyclicality**: Fertilizer prices volatile
-- **Trade policy**: Tariffs could affect competitive position
-- **Weather**: Agricultural demand weather-dependent
+| Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
+|----------|------|----------------|-----------------|--------|--------|
+| Bull | 25% | Hormuz persists all 2026; EPS $13-15; urea >$650 | Re-rates to 12-14x forward on sustained earnings power | $170 | +35% |
+| Base | 45% | Hormuz partially resolves Q3; EPS $10-11; urea normalizes to $500-550 | Multiple compresses to 11-12x as crisis premium fades | $120 | -4% |
+| Bear | 30% | Hormuz resolves Q2; EPS $8-9; urea back to $400-450 | De-rates to 10x as earnings normalize | $88 | -30% |
+
+**Expected value: +0.7%** (0.25 x 35% + 0.45 x -4% + 0.30 x -30%)
+
+**Thesis breaks if:** Hormuz crisis resolves quickly AND nitrogen prices collapse below $400/mt urea, pushing EPS below $8. Also breaks if nat gas prices spike >$5/mmbtu, compressing margins.
+
+## Setup & Timing
+
+| Factor | Status |
+|--------|--------|
+| Crowdedness | **Crowded** -- #1 S&P performer in March, 106% institutional ownership, everyone knows the Hormuz trade |
+| Short interest | 8.4% of float -- moderate, some bears but not a squeeze setup |
+| Technical position | **Overbought** -- 28% above 50-day MA ($98), 40% above 200-day MA ($90). Near 52-week high ($137) |
+| Next catalyst | Hormuz diplomatic developments (unpredictable); Q1 2026 earnings (late April) |
+| Recent price action | +86% YTD, +13% on March 13 alone. Parabolic move. |
 
 ## Verdict
 
-**Value trap risk: MEDIUM-HIGH**
+**WATCH** -- Conviction: MEDIUM
 
-The scanner correctly identified CF as statistically cheap, but this appears to be a classic cyclical value trap situation:
-- Low P/E on potentially still-elevated earnings
-- DCF models don't adequately account for cyclicality
-- GBM models (which learn patterns) are skeptical
+CF Industries is a high-quality nitrogen producer (19/25) with a fortress balance sheet and legitimate geopolitical tailwind. However, the stock has already re-rated massively (+86% YTD) and trades above analyst consensus by 20%. The expected value at $125 is approximately flat (+0.7%), meaning the risk/reward for new money is poor. The Hormuz-driven surge is real but likely temporary, and the stock is priced for an extended disruption scenario.
 
-**If you believe:**
-- Nitrogen demand stays strong, prices stabilize → genuinely undervalued
-- Cycle continues normalizing → could have more downside
+**Would upgrade to BUY on:** A 20-25% pullback to $95-100 range (near GBM 3Y fair value of $134 adjusted for price normalization, or analyst consensus of $104). At $95, the FCF yield would be ~12% and the margin of safety would be meaningful. Alternatively, would upgrade if Hormuz disruption shows signs of lasting 12+ months AND the stock hasn't run further.
 
-**Normalized valuation:** If earnings normalize to $800M-1B (vs current $1.2B), fair P/E of 12-15x suggests $60-90 range. Current price near top of that range.
-
-**Action:** WATCH, don't chase. Would consider on pullback to $70-75 range where normalized earnings provide better margin of safety.
-
-## Sources
-
-- [CF Industries Q3 2025 Earnings](https://www.cfindustries.com/newsroom/2025/q3-earnings)
-- [Zacks Industry Outlook](https://finance.yahoo.com/news/zacks-industry-outlook-highlights-nutrien-065900080.html)
-- [CF Industries SWOT Analysis](https://www.investing.com/news/swot-analysis/cf-industries-swot-analysis-nitrogen-producer-faces-headwinds-amid-green-push-93CH-4192231)
-- [CreditSights 2026 Fertilizer Outlook](https://know.creditsights.com/insights/chemicals-2026-outlook-fertilizers/)
+**Would also consider on:** Evidence that blue ammonia economics are better than expected, or structural tightening of global nitrogen supply from China/India export restrictions becoming permanent policy.

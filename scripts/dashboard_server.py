@@ -39,8 +39,6 @@ from invest.data.db import get_connection
 
 logger = logging.getLogger("dashboard_server")
 
-# Auto-shutdown after 2 hours of no page loads
-AUTO_SHUTDOWN_SECONDS = 2 * 3600
 _last_activity = time.monotonic()
 _server_ref: uvicorn.Server | None = None
 
@@ -48,20 +46,6 @@ _server_ref: uvicorn.Server | None = None
 def _touch_activity():
     global _last_activity
     _last_activity = time.monotonic()
-
-
-def _auto_shutdown_watchdog():
-    """Background thread: exits the process after idle timeout."""
-    while True:
-        time.sleep(60)
-        idle = time.monotonic() - _last_activity
-        if idle >= AUTO_SHUTDOWN_SECONDS:
-            logger.info("Auto-shutdown: idle for %.0f minutes", idle / 60)
-            if _server_ref:
-                _server_ref.should_exit = True
-            else:
-                os._exit(0)
-            return
 
 # ── Update process singleton ─────────────────────────────────────────────
 
@@ -475,16 +459,6 @@ async def api_update_cancel(request: Request) -> JSONResponse:
     return JSONResponse(update_manager.cancel())
 
 
-async def api_shutdown(request: Request) -> JSONResponse:
-    """Gracefully shut down the server."""
-    logger.info("Shutdown requested via API")
-    if _server_ref:
-        _server_ref.should_exit = True
-    else:
-        threading.Timer(0.5, lambda: os._exit(0)).start()
-    return JSONResponse({"ok": True})
-
-
 # ── Alarm API ────────────────────────────────────────────────────────────
 
 async def api_alarm_create(request: Request) -> JSONResponse:
@@ -697,7 +671,6 @@ app = Starlette(
         Route("/api/update", api_update_start, methods=["POST"]),
         Route("/api/update/status", api_update_status),
         Route("/api/update/cancel", api_update_cancel, methods=["POST"]),
-        Route("/api/shutdown", api_shutdown, methods=["POST"]),
         Route("/api/alarms", api_alarm_create, methods=["POST"]),
         Route("/api/alarms", api_alarm_list),
         Route("/api/alarms/triggered", api_alarm_triggered),
@@ -712,30 +685,16 @@ def main():
     parser = argparse.ArgumentParser(description="Live investment dashboard server")
     parser.add_argument("--port", type=int, default=8050, help="Port (default: 8050)")
     parser.add_argument("--host", default="::", help="Host (default: :: — IPv6, also accepts IPv4 on most systems)")
-    parser.add_argument("--no-auto-shutdown", action="store_true", help="Disable idle auto-shutdown (for systemd service)")
     args = parser.parse_args()
-
-    if args.no_auto_shutdown:
-        global AUTO_SHUTDOWN_SECONDS
-        AUTO_SHUTDOWN_SECONDS = 0
 
     LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
 
     display_host = "[::1]" if args.host == "::" else ("127.0.0.1" if args.host == "0.0.0.0" else args.host)
     print(f"\n  Dashboard server starting at http://{display_host}:{args.port}")
-    print(f"  Database: PostgreSQL (invest)")
-    if AUTO_SHUTDOWN_SECONDS > 0:
-        print(f"  Auto-shutdown after {AUTO_SHUTDOWN_SECONDS // 3600}h idle\n")
-    else:
-        print(f"  Auto-shutdown disabled\n")
+    print(f"  Database: PostgreSQL (invest)\n")
 
     # Ensure alarm table exists
     _ensure_alarm_table()
-
-    # Start idle watchdog (unless disabled)
-    if AUTO_SHUTDOWN_SECONDS > 0:
-        watchdog = threading.Thread(target=_auto_shutdown_watchdog, daemon=True)
-        watchdog.start()
 
     # Start alarm checker (polls every 60s)
     alarm_checker.start()
