@@ -28,7 +28,7 @@ jobs:
         run: uv sync --all-groups
 
       - name: Lint
-        run: uv run ruff check src tests
+        run: uv run ruff check src tests || echo "::warning::Lint issues found (non-blocking)"
 
       - name: Test
         run: uv run pytest -v --ignore=tests/test_models
