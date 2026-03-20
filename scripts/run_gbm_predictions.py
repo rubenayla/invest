@@ -410,7 +410,7 @@ def save_to_database(
             float(current_price),
             float(margin_of_safety),
             float(upside_pct),
-            1,  # suitable = True
+            True,  # suitable
             float(confidences[i]),
             json.dumps(details)
         ))

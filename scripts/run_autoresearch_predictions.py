@@ -357,7 +357,7 @@ def save_predictions(predict_df, predicted_returns, confidences):
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
         ''', (
             ticker, MODEL_NAME, float(fair_value), float(current_price),
-            float(margin_of_safety), float(upside_pct), 1,
+            float(margin_of_safety), float(upside_pct), True,
             float(confidences[i]), json.dumps(details),
         ))
         inserted += 1

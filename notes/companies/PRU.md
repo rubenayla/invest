@@ -1,12 +1,12 @@
 # Prudential Financial (PRU)
 
 **Sector:** Financial Services | **Industry:** Insurance - Life
-**Price:** $93.22 | **Market Cap:** $32.4B
-**Analysis Date:** 2026-03-16
+**Price:** $92.51 | **Market Cap:** $32.2B
+**Analysis Date:** 2026-03-20 (updated from 2026-03-16)
 
 ## Situation Summary
 
-Prudential Financial is under significant near-term pressure from a fraud scandal at its Japan subsidiary. In January 2026, Prudential of Japan disclosed employee misconduct involving fraudulent investment solicitations costing clients ~$20M, leading to a voluntary 90-day sales suspension starting Feb 9. The Japan unit CEO was replaced. Management guided for a $300-350M pretax hit to 2026 adjusted operating income (~5% of 2025 earnings). Meanwhile, CEO Andrew Sullivan was elevated to Chairman after Charles Lowrey's resignation in early March, adding governance uncertainty. The stock has fallen 22% from its 52-week high of $119.76 to $93.22, now trading almost exactly at book value. Analyst consensus is Hold with a $110 mean target; Wells Fargo downgraded to Underweight in late February. Underlying business ex-Japan was solid in Q4 2025 — FY2025 adjusted operating EPS of $14.43 (+14% YoY), $3B in shareholder returns, and PGIM grew to ~$1.4T AUM.
+Prudential Financial is under significant near-term pressure from a fraud scandal at its Japan subsidiary. In January 2026, Prudential of Japan disclosed employee misconduct (107 employees defrauded ~500 customers of ~$20M) involving fraudulent investment solicitations, leading to a voluntary 90-day sales suspension starting Feb 9. The Japan unit CEO was replaced by Hiromitsu Tokumaru. Management guided for a $300-350M pretax hit to 2026 adjusted operating income (~5% of 2025 earnings). Meanwhile, CEO Andrew Sullivan was elevated to Chairman after Charles Lowrey's resignation in early March, adding governance uncertainty. The stock has fallen 23% from its 52-week high of $119.76 to $92.51, now trading below book value ($93.23/share). Analyst consensus is Hold with a $110 mean target; Wells Fargo downgraded to Underweight at $103 in late February. A cluster of 4 insiders bought shares in Feb (Director Wolk, Director Stoddard, EVP Chappuis, among others) — small dollar amounts but directionally meaningful. Underlying business ex-Japan was solid in Q4 2025 — FY2025 adjusted operating EPS of $14.43 (+14% YoY), $3B in shareholder returns, PGIM grew to ~$1.47T AUM, and the board authorized $1B in 2026 buybacks. PGIM won 2026 LSEG Lipper Fund Awards, and is expanding aggressively into private credit secondaries (targeting $1B deployment by end-2027).
 
 ## Variant Perception
 
@@ -16,7 +16,7 @@ Prudential Financial is under significant near-term pressure from a fraud scanda
 
 ### What the Price Implies
 
-At $93.22 with adjusted operating EPS of $14.43, the stock trades at 6.5x operating earnings. Backing out the Japan hit (~$0.70/share after-tax), 2026E operating EPS is ~$13.7, putting the P/E at 6.8x. The market is pricing in either: (a) Japan damage is larger/longer than guided, (b) broader earnings deterioration, or (c) PRU simply deserves a discount P/E because ROE barely clears the cost of equity bar. If earnings normalize to $14+ in 2027, the current price implies a sustained 6.5x multiple — cheaper than MetLife (8-9x) and Aflac (10-11x).
+At $92.51 with adjusted operating EPS of $14.43, the stock trades at 6.4x operating earnings. Backing out the Japan hit (~$0.70/share after-tax), 2026E operating EPS is ~$13.7, putting the P/E at 6.8x. The market is pricing in either: (a) Japan damage is larger/longer than guided, (b) broader earnings deterioration, or (c) PRU simply deserves a discount P/E because ROE barely clears the cost of equity bar. If earnings normalize to $14+ in 2027, the current price implies a sustained 6.5x multiple — cheaper than MetLife (8-9x) and Aflac (10-11x).
 
 ## Financial Snapshot
 
@@ -26,12 +26,12 @@ At $93.22 with adjusted operating EPS of $14.43, the stock trades at 6.5x operat
 | Net Income | $3.6B | Strong recovery from -$1.6B loss in 2022 |
 | Adj Operating EPS | $14.43 | $12.62 (2024) -> $14.43 (2025), +14% |
 | FCF (Operating CF) | $6.3B | +6.7% CAGR ($5.2B->$6.5B->$8.5B->$6.3B) |
-| ROE | 11.0% | Improving (negative 2022, ~9% 2023-24, 11% 2025) |
-| D/E | 0.71x | Stable (~$21-23B total debt range) |
-| FCF Yield | 19.3% | Very high — reflects insurance cash generation |
+| ROE | 11.4% | Improving (negative 2022, ~9% 2023-24, 11.4% 2025) |
+| D/E | 1.24x (total debt/equity) | Stable (~$21-23B total debt range) |
+| FCF Yield | 19.5% | Very high — reflects insurance cash generation |
 | P/E (trailing) | 9.3x | |
-| P/E (forward) | 6.1x | |
-| P/B | 1.0x | Trading at book value |
+| P/E (forward) | 6.0x | |
+| P/B | 0.99x | Trading just below book value ($93.23) |
 | Dividend Yield | 5.9% | $5.45/share, payout ratio 54% |
 | 52w Range | $90.38 - $119.76 | Near 52-week low |
 
@@ -40,7 +40,7 @@ At $93.22 with adjusted operating EPS of $14.43, the stock trades at 6.5x operat
 **Key calculations:**
 - Revenue CAGR (3yr, 2022-2025): +2.3%
 - Net Income CAGR (2yr, 2023-2025): +19.9%
-- FCF Yield: $6.3B / $32.4B = 19.3%
+- FCF Yield: $6.3B / $32.2B = 19.5%
 - Net Debt: $23.0B debt - $19.7B cash = $3.3B (very manageable)
 
 ## Valuation Models
@@ -147,7 +147,7 @@ Including the 5.9% dividend yield, total expected return is ~15% over 12 months.
 
 **BUY (small position)** — Conviction: MEDIUM
 
-PRU is genuinely cheap at 1.0x book value, 6.5x adjusted operating earnings, and a 5.9% dividend yield, with RSI at 29 indicating oversold conditions. The Japan scandal is the clear near-term overhang, but the financial impact is quantified ($300-350M pretax) and the 90-day suspension has a visible end date (~May 2026). The market has over-discounted this risk — the stock lost ~$9B in market cap against a ~$250M after-tax earnings hit. Model consensus (trusting GBM/autoresearch) points to $108-118 fair value, implying 15-25% upside.
+PRU is genuinely cheap at 0.99x book value, 6.4x adjusted operating earnings, and a 5.9% dividend yield, trading near its 52-week low. The Japan scandal is the clear near-term overhang, but the financial impact is quantified ($300-350M pretax) and the 90-day suspension has a visible end date (~May 2026). The market has over-discounted this risk — the stock lost ~$9B in market cap against a ~$250M after-tax earnings hit. A cluster of 4 insiders bought in February, signaling management confidence. The $1B 2026 buyback authorization and PGIM's private credit expansion are underappreciated. Model consensus (trusting GBM/autoresearch) points to $108-118 fair value, implying 17-28% upside.
 
 However, conviction is MEDIUM, not HIGH, because: (1) the Japan fraud may prove deeper than currently disclosed, (2) ROE barely exceeds cost of equity which means PRU may genuinely deserve to trade near book, (3) forward EPS estimates look aggressive, and (4) this is fundamentally a mediocre-quality business (14/25) that requires a discount to be attractive.
 
