@@ -800,6 +800,7 @@ def main():
     parser = argparse.ArgumentParser(description="Live investment dashboard server")
     parser.add_argument("--port", type=int, default=8050, help="Port (default: 8050)")
     parser.add_argument("--host", default="::", help="Host (default: :: — IPv6, also accepts IPv4 on most systems)")
+    parser.add_argument("--no-auto-shutdown", action="store_true", help="(ignored, kept for systemd compat)")
     args = parser.parse_args()
 
     LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
