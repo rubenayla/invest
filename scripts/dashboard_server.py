@@ -180,6 +180,26 @@ def _ensure_alarm_table():
     conn.close()
 
 
+def _ensure_reminder_table():
+    """Create the reminders table if it doesn't exist."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS reminders (
+            id SERIAL PRIMARY KEY,
+            ticker TEXT,
+            message TEXT NOT NULL,
+            due_date TEXT NOT NULL,
+            created_at TEXT NOT NULL DEFAULT (TO_CHAR(NOW() AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"')),
+            acknowledged_at TEXT,
+            active INTEGER NOT NULL DEFAULT 1
+        )
+    """)
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_reminders_active ON reminders(active, due_date)")
+    conn.commit()
+    conn.close()
+
+
 class AlarmChecker:
     """Periodically checks active alarms against current prices."""
 
@@ -534,6 +554,87 @@ async def api_alarm_triggered(request: Request) -> JSONResponse:
     return JSONResponse(_json_safe({"ok": True, "triggered": [dict(r) for r in rows]}))
 
 
+# ── Reminder API ─────────────────────────────────────────────────────
+
+async def api_reminder_create(request: Request) -> JSONResponse:
+    """Create a new reminder."""
+    body = await request.json()
+    ticker = (body.get("ticker") or "").upper().strip() or None
+    message = (body.get("message") or "").strip()
+    due_date = (body.get("due_date") or "").strip()
+
+    if not message or not due_date:
+        return JSONResponse({"ok": False, "error": "message and due_date required"}, status_code=400)
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO reminders (ticker, message, due_date) VALUES (%s, %s, %s) RETURNING id",
+        (ticker, message, due_date),
+    )
+    reminder_id = cursor.fetchone()[0]
+    conn.commit()
+    conn.close()
+    return JSONResponse({"ok": True, "id": reminder_id})
+
+
+async def api_reminder_list(request: Request) -> JSONResponse:
+    """List reminders, optionally filtered by ticker."""
+    ticker = request.query_params.get("ticker")
+    conn = get_connection(dict_cursor=True)
+    cursor = conn.cursor()
+    if ticker:
+        cursor.execute(
+            "SELECT * FROM reminders WHERE ticker = %s ORDER BY active DESC, due_date ASC",
+            (ticker.upper(),),
+        )
+    else:
+        cursor.execute("SELECT * FROM reminders ORDER BY active DESC, due_date ASC")
+    rows = cursor.fetchall()
+    conn.close()
+    return JSONResponse(_json_safe({"ok": True, "reminders": [dict(r) for r in rows]}))
+
+
+async def api_reminder_due(request: Request) -> JSONResponse:
+    """Return active reminders where due_date <= today."""
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    conn = get_connection(dict_cursor=True)
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT * FROM reminders WHERE active = 1 AND due_date <= %s ORDER BY due_date ASC",
+        (today,),
+    )
+    rows = cursor.fetchall()
+    conn.close()
+    return JSONResponse(_json_safe({"ok": True, "reminders": [dict(r) for r in rows]}))
+
+
+async def api_reminder_acknowledge(request: Request) -> JSONResponse:
+    """Acknowledge (dismiss) a reminder."""
+    reminder_id = request.path_params["reminder_id"]
+    now = _now_iso()
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE reminders SET acknowledged_at = %s, active = 0 WHERE id = %s",
+        (now, reminder_id),
+    )
+    conn.commit()
+    conn.close()
+    return JSONResponse({"ok": True})
+
+
+async def api_reminder_delete(request: Request) -> JSONResponse:
+    """Permanently delete a reminder."""
+    reminder_id = request.path_params["reminder_id"]
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM reminders WHERE id = %s", (reminder_id,))
+    conn.commit()
+    conn.close()
+    return JSONResponse({"ok": True})
+
+
 # ── Insider history API ──────────────────────────────────────────────────
 
 
@@ -611,16 +712,25 @@ async def api_notes(request: Request):
 
     html = (
         f"<html><head><title>{ticker} - Analysis</title>"
+        f"<meta name='viewport' content='width=device-width, initial-scale=1'>"
         f"<style>"
         f"body {{ background:#0d1117; color:#e0e6ed; font-family:system-ui,-apple-system,sans-serif; "
-        f"font-size:18px; padding:48px 72px; max-width:960px; margin:0 auto; line-height:1.7; }}"
-        f"h1 {{ color:#58a6ff; font-size:2em; }} h2 {{ color:#58a6ff; font-size:1.5em; }} h3 {{ color:#58a6ff; font-size:1.25em; }}"
+        f"font-size:20px; padding:56px 80px; max-width:1060px; margin:0 auto; line-height:1.8; }}"
+        f"h1 {{ color:#58a6ff; font-size:2.4em; margin-top:1.6em; margin-bottom:0.6em; font-weight:700; "
+        f"border-bottom:1px solid #21262d; padding-bottom:0.3em; }}"
+        f"h2 {{ color:#58a6ff; font-size:1.7em; margin-top:1.5em; margin-bottom:0.5em; font-weight:600; }}"
+        f"h3 {{ color:#79c0ff; font-size:1.3em; margin-top:1.3em; margin-bottom:0.4em; font-weight:600; }}"
+        f"p {{ margin-bottom:0.9em; }}"
+        f"ul,ol {{ margin-bottom:1em; padding-left:1.5em; }} li {{ margin-bottom:0.35em; }}"
+        f"strong {{ color:#f0f6fc; }}"
         f"a {{ color:#58a6ff; }}"
-        f"code {{ background:#161b22; padding:2px 6px; border-radius:3px; font-size:0.9em; }}"
-        f"pre {{ background:#161b22; padding:16px; border-radius:6px; overflow-x:auto; font-size:0.85em; }}"
-        f"table {{ border-collapse:collapse; width:100%; font-size:0.95em; }} "
-        f"th,td {{ border:1px solid #30363d; padding:10px 14px; text-align:left; }}"
-        f"th {{ background:#161b22; }}"
+        f"code {{ background:#161b22; padding:2px 7px; border-radius:4px; font-size:0.88em; }}"
+        f"pre {{ background:#161b22; padding:18px; border-radius:8px; overflow-x:auto; font-size:0.88em; }}"
+        f"table {{ border-collapse:collapse; width:100%; font-size:1em; margin:1.2em 0; }} "
+        f"th,td {{ border:1px solid #30363d; padding:12px 16px; text-align:left; }}"
+        f"th {{ background:#161b22; font-weight:600; color:#c9d1d9; }}"
+        f"tr:hover {{ background:rgba(88,166,255,0.04); }}"
+        f"@media(max-width:700px){{ body {{ padding:24px 18px; font-size:18px; }} }}"
         f"</style></head><body>{body}</body></html>"
     )
     return HTMLResponse(html)
@@ -675,6 +785,11 @@ app = Starlette(
         Route("/api/alarms", api_alarm_list),
         Route("/api/alarms/triggered", api_alarm_triggered),
         Route("/api/alarms/{alarm_id:int}", api_alarm_delete, methods=["DELETE"]),
+        Route("/api/reminders", api_reminder_create, methods=["POST"]),
+        Route("/api/reminders", api_reminder_list),
+        Route("/api/reminders/due", api_reminder_due),
+        Route("/api/reminders/{reminder_id:int}/acknowledge", api_reminder_acknowledge, methods=["POST"]),
+        Route("/api/reminders/{reminder_id:int}", api_reminder_delete, methods=["DELETE"]),
         Route("/api/insider/{ticker}", api_insider_history),
         Route("/api/notes/{ticker}", api_notes),
     ],
@@ -695,6 +810,7 @@ def main():
 
     # Ensure alarm table exists
     _ensure_alarm_table()
+    _ensure_reminder_table()
 
     # Start alarm checker (polls every 60s)
     alarm_checker.start()
