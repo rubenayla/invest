@@ -124,8 +124,10 @@ class RiskChecker:
         return max_dd
 
     def _get_sector(self, ticker: str) -> str:
-        row = self.conn.execute(
-            "SELECT sector FROM current_stock_data WHERE ticker = ?",
+        cur = self.conn.cursor()
+        cur.execute(
+            "SELECT sector FROM current_stock_data WHERE ticker = %s",
             (ticker,),
-        ).fetchone()
+        )
+        row = cur.fetchone()
         return row[0] if row and row[0] else "Unknown"

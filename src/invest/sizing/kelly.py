@@ -230,12 +230,13 @@ class KellyPositionSizer:
         budget = budget or self.portfolio_value
 
         if tickers is None:
-            placeholders = ",".join("?" * len(_TRUSTED_MODELS))
-            rows = self.conn.execute(
+            placeholders = ",".join(["%s"] * len(_TRUSTED_MODELS))
+            cur = self.conn.cursor()
+            cur.execute(
                 f"SELECT DISTINCT ticker FROM valuation_results WHERE model_name IN ({placeholders})",
                 _TRUSTED_MODELS,
-            ).fetchall()
-            tickers = [r[0] for r in rows]
+            )
+            tickers = [r[0] for r in cur.fetchall()]
 
         # Remove dual-class duplicates
         tickers = [t for t in tickers if t not in _DUAL_CLASS_SKIP]
@@ -304,13 +305,15 @@ class KellyPositionSizer:
 
     def _get_trusted_predictions(self, ticker: str) -> dict[str, dict]:
         """Get trusted model predictions for a ticker."""
-        placeholders = ",".join("?" * len(_TRUSTED_MODELS))
-        rows = self.conn.execute(
+        placeholders = ",".join(["%s"] * len(_TRUSTED_MODELS))
+        cur = self.conn.cursor()
+        cur.execute(
             f"""SELECT model_name, fair_value, current_price, margin_of_safety, confidence
                FROM valuation_results
-               WHERE ticker = ? AND model_name IN ({placeholders})""",
+               WHERE ticker = %s AND model_name IN ({placeholders})""",
             (ticker, *_TRUSTED_MODELS),
-        ).fetchall()
+        )
+        rows = cur.fetchall()
 
         predictions = {}
         for model_name, fv, cp, mos, conf in rows:
@@ -324,10 +327,12 @@ class KellyPositionSizer:
 
     def _get_current_price(self, ticker: str) -> float | None:
         """Get current price from DB."""
-        row = self.conn.execute(
-            "SELECT current_price FROM current_stock_data WHERE ticker = ?",
+        cur = self.conn.cursor()
+        cur.execute(
+            "SELECT current_price FROM current_stock_data WHERE ticker = %s",
             (ticker,),
-        ).fetchone()
+        )
+        row = cur.fetchone()
         return row[0] if row else None
 
     def _compute_historical_downside(self, ticker: str) -> float:
@@ -369,11 +374,13 @@ class KellyPositionSizer:
 
     def _is_stale(self, ticker: str, max_age_days: int = 7) -> bool:
         """Check if trusted model predictions are older than max_age_days."""
-        placeholders = ",".join("?" * len(_TRUSTED_MODELS))
-        row = self.conn.execute(
-            f"SELECT MAX(timestamp) FROM valuation_results WHERE ticker = ? AND model_name IN ({placeholders})",
+        placeholders = ",".join(["%s"] * len(_TRUSTED_MODELS))
+        cur = self.conn.cursor()
+        cur.execute(
+            f"SELECT MAX(timestamp) FROM valuation_results WHERE ticker = %s AND model_name IN ({placeholders})",
             (ticker, *_TRUSTED_MODELS),
-        ).fetchone()
+        )
+        row = cur.fetchone()
         if not row or not row[0]:
             return True
         try:

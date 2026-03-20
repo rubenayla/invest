@@ -209,10 +209,11 @@ class ModelCalibrator:
             FROM forward_returns fr
             JOIN fundamental_history fh ON fr.snapshot_id = fh.id
             JOIN assets a ON fh.asset_id = a.id
-            WHERE fr.horizon = ?
+            WHERE fr.horizon = %s
               AND fr.return_pct IS NOT NULL
         """
-        cursor = self.conn.execute(query, (horizon,))
+        cursor = self.conn.cursor()
+        cursor.execute(query, (horizon,))
         columns = [desc[0] for desc in cursor.description]
         return [dict(zip(columns, row)) for row in cursor.fetchall()]
 
