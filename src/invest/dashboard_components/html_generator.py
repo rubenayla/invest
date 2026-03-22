@@ -78,6 +78,7 @@ class HTMLGenerator:
                 <div class="last-updated">Page rendered: <span id="lastUpdated">{last_updated}</span></div>
                 <div class="header-actions">
                     <a id="liveServerLink" href="/" class="btn btn-update" style="{'display:none' if server_mode else ''}">Live Server</a>
+                    <a href="/feed" class="btn btn-docs">Insights</a>
                     <a href="https://rubenayla.github.io/invest/models/" target="_blank" rel="noopener noreferrer" class="btn btn-docs">Model Docs</a>
                     <button onclick="exportToCSV()" class="btn btn-export">Export CSV</button>
                     <button onclick="openReminderModal()" class="btn btn-update" style="{'display:none' if not server_mode else ''}">Reminders</button>
@@ -3223,3 +3224,317 @@ renderCards();
             svg += '</svg>';
             return svg;
         }"""
+
+    # ── Doomscroll Insights Feed ─────────────────────────────────────────
+
+    def generate_feed_html(self, stocks_data: Dict) -> str:
+        """Generate the doomscroll insights feed page."""
+        insights = self._generate_insights(stocks_data)
+        cards_html = "\n".join(self._render_insight_card(i) for i in insights)
+
+        return f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111418">
+<title>Insights Feed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {{
+    --bg-base: #111418;
+    --bg-panel: #1c2127;
+    --bg-elevated: #252a31;
+    --border: rgba(255,255,255,0.10);
+    --text-primary: #f6f7f9;
+    --text-secondary: #abb3bf;
+    --text-muted: #738091;
+    --accent: #4c90f0;
+    --green: #32a467;
+    --green-bright: #72ca9b;
+    --red: #cd4246;
+    --red-bright: #e76a6e;
+    --orange: #ec9a3c;
+    --gold: #d1980b;
+    --font-body: 'DM Sans', -apple-system, sans-serif;
+    --font-mono: 'Geist Mono', monospace;
+}}
+* {{ box-sizing: border-box; margin: 0; padding: 0; }}
+body {{
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+}}
+.feed-container {{
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 16px 12px 80px;
+}}
+.feed-header {{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+}}
+.feed-header h1 {{
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+}}
+.feed-header a {{
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-family: var(--font-mono);
+}}
+.feed-header a:hover {{ color: var(--accent); }}
+.card {{
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    transition: border-color 0.15s;
+}}
+.card:hover {{ border-color: rgba(255,255,255,0.18); }}
+.card-top {{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}}
+.card-ticker {{
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-primary);
+}}
+.card-name {{
+    font-size: 13px;
+    color: var(--text-muted);
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}}
+.card-badge {{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}}
+.badge-buy {{ background: rgba(50,164,103,0.2); color: var(--green-bright); }}
+.badge-watch {{ background: rgba(209,152,11,0.15); color: var(--gold); }}
+.badge-pass {{ background: rgba(205,66,70,0.15); color: var(--red-bright); }}
+.badge-signal {{ background: rgba(76,144,240,0.15); color: var(--accent); }}
+.badge-macro {{ background: rgba(171,179,191,0.12); color: var(--text-secondary); }}
+.card-body {{
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+}}
+.card-body strong {{ color: var(--text-primary); font-weight: 600; }}
+.card-metrics {{
+    display: flex;
+    gap: 14px;
+    margin-top: 10px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+}}
+.card-metrics .metric-val {{
+    color: var(--text-primary);
+    font-weight: 600;
+}}
+.card-metrics .positive {{ color: var(--green-bright); }}
+.card-metrics .negative {{ color: var(--red-bright); }}
+.card-action {{
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-weight: 500;
+}}
+.section-divider {{
+    text-align: center;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 14px 0 8px;
+    margin-bottom: 2px;
+}}
+</style>
+</head>
+<body>
+<div class="feed-container">
+    <div class="feed-header">
+        <h1>Insights</h1>
+        <a href="/">Dashboard</a>
+    </div>
+    {cards_html}
+</div>
+</body>
+</html>'''
+
+    def _generate_insights(self, stocks_data: Dict) -> List[Dict]:
+        """Generate prioritized insight cards from stock data."""
+        insights: List[Dict] = []
+
+        for ticker, stock in stocks_data.items():
+            name = stock.get("company_name", ticker)
+            price = stock.get("current_price")
+            sector = stock.get("sector", "")
+            valuations = stock.get("valuations", {})
+            insider = stock.get("insider", {})
+            llm = valuations.get("llm_deep_analysis", {})
+            llm_details = llm.get("details", {})
+
+            verdict = llm_details.get("verdict")
+            ev_pct = llm_details.get("expected_value_pct", 0)
+            quality = llm_details.get("quality_score")
+            conviction = llm_details.get("conviction", "")
+            entry_price = llm_details.get("entry_price")
+            variant = llm_details.get("variant_perception", "")
+
+            # --- BUY verdicts with high conviction ---
+            if verdict == "BUY" and str(conviction).upper() in ("HIGH", "MEDIUM-HIGH"):
+                body = f"<strong>BUY \u2014 {conviction} conviction.</strong> "
+                body += variant[:120] if variant else f"EV +{ev_pct:.0f}%, quality {quality}/25."
+                insights.append({
+                    "priority": 100 + (ev_pct or 0),
+                    "type": "buy",
+                    "ticker": ticker,
+                    "name": name,
+                    "body": body,
+                    "metrics": self._build_metrics(price, ev_pct, quality, entry_price),
+                    "action": f"Entry ${entry_price}" if entry_price else None,
+                })
+
+            # --- Insider buying clusters ---
+            buy_count = insider.get("buy_count", 0)
+            dollars = insider.get("dollar_conviction", 0)
+            if buy_count >= 2 and dollars >= 500_000:
+                dollar_str = f"${dollars / 1_000_000:.1f}M" if dollars >= 1_000_000 else f"${dollars / 1_000:.0f}K"
+                sell_part = ""
+                if insider.get("sell_trend"):
+                    sell_part = f" Sell trend: {insider.get('sell_trend', 1.0):.0%} of normal."
+                insights.append({
+                    "priority": 90 + buy_count * 3,
+                    "type": "signal",
+                    "ticker": ticker,
+                    "name": name,
+                    "body": f"<strong>{buy_count} insider buys</strong> totaling {dollar_str} in the last 6 months.{sell_part}",
+                    "metrics": self._build_metrics(price, ev_pct, quality, entry_price),
+                    "action": "Insider conviction signal",
+                })
+
+            # --- Model consensus (many models agree on upside) ---
+            bullish_count = 0
+            total_models = 0
+            upsides = []
+            for model_name, val in valuations.items():
+                if not val.get("fair_value") or model_name == "llm_deep_analysis":
+                    continue
+                total_models += 1
+                upside = val.get("upside_pct", 0)
+                if upside and upside > 10:
+                    bullish_count += 1
+                    upsides.append(upside)
+
+            if bullish_count >= 4 and total_models >= 5:
+                avg_up = sum(upsides) / len(upsides) if upsides else 0
+                insights.append({
+                    "priority": 70 + bullish_count * 2,
+                    "type": "signal",
+                    "ticker": ticker,
+                    "name": name,
+                    "body": f"<strong>{bullish_count}/{total_models} models bullish</strong> (avg +{avg_up:.0f}% upside). Strong quantitative consensus.",
+                    "metrics": self._build_metrics(price, ev_pct, quality, entry_price),
+                    "action": None,
+                })
+
+            # --- WATCH with good EV (opportunities to monitor) ---
+            if verdict == "WATCH" and ev_pct and ev_pct > 15:
+                body = f"<strong>WATCH \u2014 EV +{ev_pct:.0f}%</strong>"
+                if quality:
+                    body += f", quality {quality}/25"
+                body += ". " + (variant[:100] if variant else "Waiting for better entry or catalyst.")
+                insights.append({
+                    "priority": 50 + (ev_pct or 0),
+                    "type": "watch",
+                    "ticker": ticker,
+                    "name": name,
+                    "body": body,
+                    "metrics": self._build_metrics(price, ev_pct, quality, entry_price),
+                    "action": f"Target entry ${entry_price}" if entry_price else None,
+                })
+
+            # --- PASS signals (avoid) ---
+            if verdict == "PASS":
+                body = f"<strong>PASS \u2014 EV {ev_pct:+.0f}%.</strong> "
+                body += variant[:100] if variant else "Negative expected value at current price."
+                insights.append({
+                    "priority": 20,
+                    "type": "pass",
+                    "ticker": ticker,
+                    "name": name,
+                    "body": body,
+                    "metrics": self._build_metrics(price, ev_pct, quality, entry_price),
+                    "action": None,
+                })
+
+        # Sort by priority descending
+        insights.sort(key=lambda x: x["priority"], reverse=True)
+        return insights
+
+    def _build_metrics(self, price, ev_pct, quality, entry_price) -> List[Tuple[str, str, str]]:
+        """Build metrics list for a card. Returns [(label, value, css_class), ...]."""
+        metrics = []
+        if price:
+            metrics.append(("Price", f"${price:.2f}", ""))
+        if ev_pct is not None and ev_pct != 0:
+            cls = "positive" if ev_pct > 0 else "negative"
+            metrics.append(("EV", f"{ev_pct:+.0f}%", cls))
+        if quality:
+            metrics.append(("Quality", f"{quality}/25", ""))
+        if entry_price:
+            metrics.append(("Entry", f"${entry_price}", ""))
+        return metrics
+
+    def _render_insight_card(self, insight: Dict) -> str:
+        """Render a single insight card as HTML."""
+        t = insight["type"]
+        badge_class = {"buy": "badge-buy", "watch": "badge-watch", "pass": "badge-pass",
+                       "signal": "badge-signal", "macro": "badge-macro"}.get(t, "badge-signal")
+        badge_text = t.upper()
+
+        metrics_html = ""
+        if insight.get("metrics"):
+            parts = []
+            for label, val, cls in insight["metrics"]:
+                parts.append(f'{label} <span class="metric-val {cls}">{val}</span>')
+            metrics_html = '<div class="card-metrics">' + "&nbsp;&nbsp;|&nbsp;&nbsp;".join(parts) + '</div>'
+
+        action_html = ""
+        if insight.get("action"):
+            action_html = f'<div class="card-action">{insight["action"]}</div>'
+
+        return f'''<div class="card">
+    <div class="card-top">
+        <span class="card-ticker">{insight["ticker"]}</span>
+        <span class="card-name">{html.escape(insight["name"])}</span>
+        <span class="card-badge {badge_class}">{badge_text}</span>
+    </div>
+    <div class="card-body">{insight["body"]}</div>
+    {metrics_html}
+    {action_html}
+</div>'''

@@ -421,6 +421,20 @@ async def mobile_index(request: Request) -> HTMLResponse:
     return HTMLResponse(html, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
+async def feed_index(request: Request) -> HTMLResponse:
+    """Serve the doomscroll insights feed."""
+    _touch_activity()
+    from invest.dashboard_components.html_generator import HTMLGenerator
+
+    sys.path.insert(0, str(REPO_ROOT / "scripts"))
+    from dashboard import load_stocks_from_database
+
+    stocks_data = load_stocks_from_database()
+    generator = HTMLGenerator()
+    feed_html = generator.generate_feed_html(stocks_data)
+    return HTMLResponse(feed_html, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
+
+
 async def api_stocks(request: Request) -> JSONResponse:
     """Return all stock data as JSON for mobile dashboard refresh."""
     _touch_activity()
@@ -780,6 +794,7 @@ app = Starlette(
     routes=[
         Route("/", index),
         Route("/m", mobile_index),
+        Route("/feed", feed_index),
         Route("/api/stocks", api_stocks),
         Route("/api/health", api_health),
         Route("/api/update", api_update_start, methods=["POST"]),
