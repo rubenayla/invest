@@ -40,3 +40,21 @@ This file tracks mistakes and failures in the investment analysis system and the
 - Added `.githooks/pre-push` to block pushing with staged/unstaged changes.
 - Added `scripts/finish.sh` to run relevant tests, then commit and push in one step.
 - Added `scripts/setup-githooks.sh` and a "Shipped" checkbox in `.agents/definition_of_done.md`.
+
+## 2026-03-20 - Removed CLI flag breaks Hetzner systemd service
+**What happened:** A prior commit removed `--no-auto-shutdown` from `dashboard_server.py`'s argparser, but the systemd unit file on Hetzner still passes it. Service crashed with `unrecognized arguments` on restart.
+**Root cause:** No check that CLI flags used by production deployment are preserved when refactoring.
+**Prevention added:**
+- Re-added `--no-auto-shutdown` as accepted (no-op) flag. When removing CLI flags, always check the systemd service file on Hetzner (`/etc/systemd/system/invest-dashboard.service`).
+
+## 2026-03-22 - Deploy didn't restart server, old code served
+**What happened:** Pushed new feed page code but Hetzner kept serving the old version. The CI deploy does `git pull` but Python caches imported modules — the dashboard server process kept running with the old `html_generator.py` in memory.
+**Root cause:** Deploy pipeline does `git pull` but doesn't restart the systemd service, so stale Python bytecode/modules stay loaded.
+**Prevention added:**
+- Had to manually `ssh hetzner "sudo systemctl restart invest-dashboard"`. Should add `sudo systemctl restart invest-dashboard` to the CI deploy step after `git pull`.
+
+## 2026-03-22 - f-string brace escaping in non-f-string methods
+**What happened:** When writing the feed's `_generate_insights` method, used `{{}}` (f-string escaping) for dict literals and `{{var}}` for f-string expressions inside regular Python methods that were NOT inside an f-string. Caused `TypeError: unhashable type: 'dict'` at runtime.
+**Root cause:** The methods were written conceptually as "part of the HTML template" but are actually standalone class methods. The `{{` escaping was cargo-culted from the f-string HTML template above.
+**Prevention added:**
+- When writing methods that generate content for f-string templates, remember: only the template string itself needs `{{`/`}}` escaping. Helper methods called BY the template are regular Python — use normal `{}`/`{}` syntax.
