@@ -3259,14 +3259,14 @@ renderCards();
 }}
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
 body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webkit-font-smoothing: antialiased; }}
-.feed {{ max-width: 580px; margin: 0 auto; padding: 20px 14px 100px; }}
-.feed-nav {{ display: flex; justify-content: space-between; align-items: center; padding: 8px 0 18px; }}
-.feed-nav h1 {{ font-size: 18px; font-weight: 700; }}
-.feed-nav a {{ color: var(--t3); text-decoration: none; font: 500 12px var(--mono); }}
+.feed {{ max-width: 620px; margin: 0 auto; padding: 20px 16px 100px; }}
+.feed-nav {{ display: flex; justify-content: space-between; align-items: center; padding: 10px 0 20px; }}
+.feed-nav h1 {{ font-size: 22px; font-weight: 700; }}
+.feed-nav a {{ color: var(--t3); text-decoration: none; font: 500 14px var(--mono); }}
 .feed-nav a:hover {{ color: var(--blue); }}
 
 .post {{ background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
-         padding: 16px 18px; margin-bottom: 8px; border-left: 3px solid transparent;
+         padding: 20px 22px; margin-bottom: 10px; border-left: 3px solid transparent;
          transition: border-color 0.15s, transform 0.1s; }}
 .post:hover {{ border-color: var(--border-hover); }}
 .post-thesis  {{ border-left-color: var(--blue); }}
@@ -3277,10 +3277,10 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .post-verdict {{ border-left-color: var(--green); }}
 .post-intro   {{ border-left-color: var(--t3); }}
 
-.post-head {{ display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }}
-.post-ticker {{ font: 700 15px var(--mono); color: var(--t1); }}
-.post-co {{ font-size: 13px; color: var(--t3); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
-.post-tag {{ font: 700 10px/1 var(--mono); padding: 3px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }}
+.post-head {{ display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }}
+.post-ticker {{ font: 700 18px var(--mono); color: var(--t1); }}
+.post-co {{ font-size: 14px; color: var(--t3); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
+.post-tag {{ font: 700 11px/1 var(--mono); padding: 4px 9px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }}
 .tag-thesis  {{ background: var(--blue-bg);  color: var(--blue); }}
 .tag-bull    {{ background: var(--green-bg); color: var(--green); }}
 .tag-bear    {{ background: var(--red-bg);   color: var(--red); }}
@@ -3289,14 +3289,14 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .tag-verdict {{ background: var(--green-bg); color: var(--green); }}
 .tag-intro   {{ background: rgba(171,179,191,0.08); color: var(--t3); }}
 
-.post-body {{ font-size: 14px; line-height: 1.6; color: var(--t2); }}
+.post-body {{ font-size: 16px; line-height: 1.65; color: var(--t2); }}
 .post-body b, .post-body strong {{ color: var(--t1); font-weight: 600; }}
 .post-body .num {{ font-family: var(--mono); font-weight: 600; }}
 .post-body .pos {{ color: var(--green); }}
 .post-body .neg {{ color: var(--red); }}
 
-.pills {{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }}
-.pill {{ font: 500 11px var(--mono); padding: 3px 8px; border-radius: 5px;
+.pills {{ display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }}
+.pill {{ font: 500 12px var(--mono); padding: 4px 10px; border-radius: 6px;
          background: var(--elevated); color: var(--t2); }}
 .pill .v {{ color: var(--t1); font-weight: 600; }}
 .pill .pos {{ color: var(--green); font-weight: 600; }}
