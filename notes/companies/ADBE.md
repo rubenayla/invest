@@ -109,9 +109,15 @@ No models currently in the database for ADBE. Cross-referencing with analyst tar
 
 ## Verdict
 
-**BUY** -- Conviction: HIGH
+**WATCH** -- Conviction: MEDIUM
 
-Adobe is a world-class software franchise trading at a generational valuation. At 9.4x forward PE with 89% gross margins, 42% FCF margins, and 12% revenue growth, the market is pricing in AI destruction that the financial data flatly contradicts. AI-first ARR tripling YoY shows Adobe is a beneficiary of the AI transition, not a victim. The $9.9B FCF machine + $11B+ annual buyback at depressed valuations creates a powerful floor. Three near-term catalysts (CEO appointment, Q2 earnings, CMA resolution) all within 6 months. Maximum pessimism sentiment creates the entry opportunity.
+Adobe is a high-quality software franchise at a historically cheap valuation (~14x fwd PE, 42% FCF margins, 12% revenue growth). The AI disruption fear is likely overdone at this price — AI-first ARR is tripling and the business is still growing. However, critical red flags prevent a BUY:
 
-**Entry:** Current price ($248) is attractive. Scale in: 50% now, 25% more if it retests $241 52w low, final 25% post-CEO announcement or on Q2 earnings dip.
-**Thesis-break signal:** Revenue growth below 7% for 2 quarters, AI ARR growth below 50% YoY, or stock breaks below $200 (implying market sees structural impairment).
+1. **Zero insider buying** — at "10-year low" valuations, no executive is putting their own money in. CFO sold $485K recently. When insiders don't buy the dip, listen.
+2. **CEO departing** — Narayen is leaving after 18 years. Leadership transitions at this scale introduce significant execution risk.
+3. **AI disruption is real** — Canva ($3.3B ARR), Midjourney, and video gen tools are eating the low end. The question is how far up-market the disruption goes.
+
+The $9.9B FCF + $11B buyback creates a floor, but without insider conviction or a proven new CEO, there's no urgency catalyst.
+
+**Would upgrade to BUY if:** (1) New CEO shows strong AI-first vision, (2) insiders start buying, or (3) stock drops below $200 where FCF yield alone justifies entry.
+**Thesis-break signal:** Revenue growth below 7% for 2 quarters, AI ARR growth below 50% YoY, or major enterprise customer churn emerges.
