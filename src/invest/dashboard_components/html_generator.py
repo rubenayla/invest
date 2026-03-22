@@ -3455,12 +3455,13 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
             if bull:
                 items = self._bullet_items(bull, 2)
                 if items:
-                    body = " ".join(items)
+                    # Ensure each item ends with a period
+                    items = [i.rstrip(".") + "." for i in items]
                     posts.append({
                         "priority": 180 if verdict == "BUY" else 80,
                         "type": "bull", "tag": "Bull case",
                         "ticker": ticker, "name": name,
-                        "body": body, "pills": [],
+                        "body": " ".join(items), "pills": [],
                     })
 
             # --- BEAR CASE / RISKS ---
@@ -3468,12 +3469,12 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
             if bear:
                 items = self._bullet_items(bear, 2)
                 if items:
-                    body = " ".join(items)
+                    items = [i.rstrip(".") + "." for i in items]
                     posts.append({
                         "priority": 170 if verdict == "BUY" else 75,
                         "type": "bear", "tag": "Key risk",
                         "ticker": ticker, "name": name,
-                        "body": body, "pills": [],
+                        "body": " ".join(items), "pills": [],
                     })
 
             # --- KEY NUMBERS ---
@@ -3500,17 +3501,19 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
                         "body": observations, "pills": pills,
                     })
 
-            # --- INSIDER SIGNAL ---
+            # --- INSIDER SIGNAL (top 10 by dollar volume, show dollar amount as hero) ---
             buy_count = insider.get("buy_count", 0)
             dollars = insider.get("dollar_conviction", 0)
             if buy_count >= 2 and dollars >= 100_000:
                 dollar_str = f"${dollars / 1_000_000:.1f}M" if dollars >= 1_000_000 else f"${dollars / 1_000:.0f}K"
-                body = f"{buy_count} insider purchases totaling {dollar_str} in the past 6 months."
+                body = f"{buy_count} open-market purchases over the past 6 months."
                 if insider.get("sell_trend") and insider["sell_trend"] < 0.8:
-                    body += f" Selling is {insider['sell_trend']:.0%} of normal \u2014 they're holding."
-                hero = (f"{buy_count}", "insider buys", "pos")
+                    body += f" Meanwhile, selling is just {insider['sell_trend']:.0%} of its historical average."
+                elif insider.get("sell_trend") and insider["sell_trend"] > 1.5:
+                    body += f" But selling is {insider['sell_trend']:.0%} of normal \u2014 mixed signal."
+                hero = (dollar_str, "insider buying", "pos")
                 posts.append({
-                    "priority": 195,
+                    "priority": 190 + min(dollars / 100_000, 50),  # rank by dollar conviction
                     "type": "signal", "tag": "Insider signal",
                     "ticker": ticker, "name": name,
                     "hero": hero, "body": body, "pills": [],
@@ -3537,6 +3540,12 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
                     "ticker": ticker, "name": name,
                     "hero": hero, "body": verdict_text, "pills": pills,
                 })
+
+        # Cap signals to top 10 by priority (avoid 30+ insider cards)
+        signal_posts = [p for p in posts if p["type"] == "signal"]
+        signal_posts.sort(key=lambda p: p["priority"], reverse=True)
+        signal_cut = set(id(p) for p in signal_posts[10:])
+        posts = [p for p in posts if id(p) not in signal_cut]
 
         # Sort by priority, then interleave by ticker to avoid clustering
         posts.sort(key=lambda p: p["priority"], reverse=True)
