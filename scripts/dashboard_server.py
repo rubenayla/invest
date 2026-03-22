@@ -647,7 +647,8 @@ async def api_insider_history(request: Request) -> JSONResponse:
         cursor.execute("""
             SELECT SUBSTRING(transaction_date FROM 1 FOR 7) AS month,
                    transaction_type,
-                   COUNT(*) AS cnt
+                   COUNT(*) AS cnt,
+                   COALESCE(SUM(ABS(shares) * price_per_share), 0) AS volume
             FROM insider_transactions
             WHERE ticker = %s AND is_open_market = 1
             GROUP BY month, transaction_type
@@ -660,15 +661,18 @@ async def api_insider_history(request: Request) -> JSONResponse:
     finally:
         conn.close()
 
-    # Build month → {buys, sells} map
+    # Build month → {buys, sells, buy_vol, sell_vol} map
     month_map: dict[str, dict] = {}
-    for month, tx_type, cnt in rows:
+    for month, tx_type, cnt, volume in rows:
         if month not in month_map:
-            month_map[month] = {"month": month, "buys": 0, "sells": 0}
+            month_map[month] = {"month": month, "buys": 0, "sells": 0,
+                                "buy_vol": 0, "sell_vol": 0}
         if tx_type == "P":
             month_map[month]["buys"] = cnt
+            month_map[month]["buy_vol"] = round(float(volume))
         elif tx_type == "S":
             month_map[month]["sells"] = cnt
+            month_map[month]["sell_vol"] = round(float(volume))
 
     return JSONResponse({
         "ok": True,

@@ -161,7 +161,11 @@ class HTMLGenerator:
     <div id="insiderModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this)closeInsiderModal()">
       <div class="modal-content" style="min-width:520px; max-width:620px;">
         <h3 style="margin:0 0 4px;">Insider Activity: <span id="insiderModalTicker"></span></h3>
-        <p id="insiderModalSubtitle" style="color:#738091; font-size:13px; margin:0 0 16px; font-family:Geist Mono,monospace;"></p>
+        <p id="insiderModalSubtitle" style="color:#738091; font-size:13px; margin:0 0 8px; font-family:Geist Mono,monospace;"></p>
+        <div style="display:flex; gap:4px; margin-bottom:10px;">
+          <button id="insiderTabCount" class="btn btn-sm" style="font-size:12px; padding:3px 10px;" onclick="switchInsiderTab('count')">Transactions</button>
+          <button id="insiderTabVolume" class="btn btn-sm" style="font-size:12px; padding:3px 10px;" onclick="switchInsiderTab('volume')">$ Volume</button>
+        </div>
         <div id="insiderChartContainer" style="width:100%; overflow-x:auto;"></div>
         <button onclick="closeInsiderModal()" class="btn" style="margin-top:16px;">Close</button>
       </div>
@@ -3110,7 +3114,9 @@ renderCards();
                             '<p style="color:#738091;">No insider transaction data available.</p>';
                         return;
                     }
-                    renderInsiderChart(data.months, ticker);
+                    window._insiderData = data.months;
+                    window._insiderTicker = ticker;
+                    switchInsiderTab('count');
                 })
                 .catch(() => {
                     document.getElementById('insiderChartContainer').innerHTML =
@@ -3122,28 +3128,52 @@ renderCards();
             document.getElementById('insiderModal').style.display = 'none';
         }
 
-        function renderInsiderChart(months, ticker) {
-            const W = 500, H = 220, padL = 36, padR = 12, padT = 16, padB = 44;
+        function switchInsiderTab(mode) {
+            window._insiderTab = mode;
+            const btnCount = document.getElementById('insiderTabCount');
+            const btnVol = document.getElementById('insiderTabVolume');
+            btnCount.style.background = mode === 'count' ? '#3b82f6' : '';
+            btnCount.style.color = mode === 'count' ? '#fff' : '';
+            btnVol.style.background = mode === 'volume' ? '#3b82f6' : '';
+            btnVol.style.color = mode === 'volume' ? '#fff' : '';
+            renderInsiderChart(window._insiderData, window._insiderTicker, mode);
+        }
+
+        function fmtDollar(v) {
+            if (v >= 1e9) return '$' + (v / 1e9).toFixed(1) + 'B';
+            if (v >= 1e6) return '$' + (v / 1e6).toFixed(1) + 'M';
+            if (v >= 1e3) return '$' + (v / 1e3).toFixed(0) + 'K';
+            return '$' + v;
+        }
+
+        function renderInsiderChart(months, ticker, mode) {
+            mode = mode || 'count';
+            const isVol = mode === 'volume';
+            const W = 500, H = 220, padL = isVol ? 52 : 36, padR = 12, padT = 16, padB = 44;
             const chartW = W - padL - padR;
             const chartH = H - padT - padB;
             const n = months.length;
             if (n === 0) return;
 
-            const maxVal = Math.max(1, ...months.map(m => Math.max(m.buys, m.sells)));
+            const getSell = m => isVol ? (m.sell_vol || 0) : m.sells;
+            const getBuy = m => isVol ? (m.buy_vol || 0) : m.buys;
+            const maxVal = Math.max(1, ...months.map(m => Math.max(getSell(m), getBuy(m))));
             const barGroupW = Math.min(40, chartW / n);
             const barW = Math.max(4, (barGroupW - 4) / 2);
             const totalW = barGroupW * n;
 
             // Compute averages
-            const avgSells = months.reduce((s, m) => s + m.sells, 0) / n;
-            const avgBuys = months.reduce((s, m) => s + m.buys, 0) / n;
+            const avgSells = months.reduce((s, m) => s + getSell(m), 0) / n;
+            const avgBuys = months.reduce((s, m) => s + getBuy(m), 0) / n;
 
             // Subtitle
             const recent = months[months.length - 1];
-            const recentLabel = recent.month;
+            const label = isVol ? 'Monthly $ volume' : 'Monthly transactions';
+            const avgS = isVol ? fmtDollar(avgSells) : avgSells.toFixed(1);
+            const avgB = isVol ? fmtDollar(avgBuys) : avgBuys.toFixed(1);
             document.getElementById('insiderModalSubtitle').textContent =
-                'Monthly transactions (' + months[0].month + ' to ' + recentLabel +
-                ') \u2022 Avg: ' + avgSells.toFixed(1) + ' sells, ' + avgBuys.toFixed(1) + ' buys/mo';
+                label + ' (' + months[0].month + ' to ' + recent.month +
+                ') \u2022 Avg: ' + avgS + ' sells, ' + avgB + ' buys/mo';
 
             let svg = '<svg width="' + Math.max(W, totalW + padL + padR) + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg">';
 
@@ -3151,11 +3181,12 @@ renderCards();
             const steps = 4;
             for (let i = 0; i <= steps; i++) {
                 const y = padT + chartH - (chartH * i / steps);
-                const val = Math.round(maxVal * i / steps);
+                const val = maxVal * i / steps;
+                const lbl = isVol ? fmtDollar(val) : Math.round(val);
                 svg += '<line x1="' + padL + '" y1="' + y + '" x2="' + (padL + Math.max(chartW, totalW)) +
                        '" y2="' + y + '" stroke="#2a3040" stroke-width="1"/>';
                 svg += '<text x="' + (padL - 4) + '" y="' + (y + 4) +
-                       '" fill="#738091" font-size="11" text-anchor="end" font-family="Geist Mono,monospace">' + val + '</text>';
+                       '" fill="#738091" font-size="10" text-anchor="end" font-family="Geist Mono,monospace">' + lbl + '</text>';
             }
 
             // Average sell line
@@ -3164,29 +3195,30 @@ renderCards();
                 svg += '<line x1="' + padL + '" y1="' + avgY + '" x2="' + (padL + Math.max(chartW, totalW)) +
                        '" y2="' + avgY + '" stroke="#e76a6e" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>';
                 svg += '<text x="' + (padL + Math.max(chartW, totalW) + 2) + '" y="' + (avgY + 3) +
-                       '" fill="#e76a6e" font-size="10" opacity="0.6" font-family="Geist Mono,monospace">avg S</text>';
+                       '" fill="#e76a6e" font-size="10" opacity="0.6" font-family="Geist Mono,monospace">avg</text>';
             }
 
             // Bars
             months.forEach((m, i) => {
                 const x = padL + i * barGroupW + 2;
+                const sv = getSell(m), bv = getBuy(m);
 
                 // Sell bar (red)
-                if (m.sells > 0) {
-                    const h = m.sells / maxVal * chartH;
+                if (sv > 0) {
+                    const h = sv / maxVal * chartH;
                     svg += '<rect x="' + x + '" y="' + (padT + chartH - h) +
                            '" width="' + barW + '" height="' + h +
                            '" fill="#e76a6e" rx="1" opacity="0.85"/>';
                 }
                 // Buy bar (green)
-                if (m.buys > 0) {
-                    const h = m.buys / maxVal * chartH;
+                if (bv > 0) {
+                    const h = bv / maxVal * chartH;
                     svg += '<rect x="' + (x + barW + 1) + '" y="' + (padT + chartH - h) +
                            '" width="' + barW + '" height="' + h +
                            '" fill="#34d399" rx="1" opacity="0.85"/>';
                 }
 
-                // X-axis label (show every label if few months, else every other)
+                // X-axis label
                 const showLabel = n <= 12 || i % 2 === 0 || i === n - 1;
                 if (showLabel) {
                     const parts = m.month.split('-');
