@@ -4,6 +4,7 @@
 
 Prioritized by combined signals: scanner score, insider buying, activist stakes (13D/13G), smart money holdings (13F). Last updated 2026-02-24.
 
+- [NOW](../companies/NOW.md) (ServiceNow) - **BUY**. ~27x fwd PE (non-GAAP), 34%+ FCF margins, 20%+ grower. Quality 22/25. CEO bought $3M at $105, 5 execs cancelled selling plans. AI orchestration moat, $7.75B Armis deal. Down 48% from highs. EV +22%. Entry $110-125.
 - [PINS](../companies/PINS.md) (Pinterest) - **BUY**. 10x FCF, 80% gross margins, Elliott activist $1B buyback. Down 53% from highs. EV +36%. Entry $18-19.
 - [CRM](../companies/CRM.md) (Salesforce) - **BUY**. 13x fwd PE, Agentforce +200% YoY, $50B buyback, 7.9% FCF yield. Quality 20/25. EV +22%. Entry $190-200.
 - [BSX](../companies/BSX.md) (Boston Scientific) - **BUY**. Down 35% from highs, 20x fwd PE, FARAPULSE moat, $20B rev +20% YoY. Quality 20/25. EV +20%. Scale in $68-73.
