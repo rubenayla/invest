@@ -3772,19 +3772,23 @@ document.querySelectorAll('.thread-head').forEach(h => {{
             # Build key metrics for collapsed state
             metrics_html = ""
             metric_parts = []
+            seen_labels = set()
             for p in thread_posts:
                 if p["type"] == "verdict" and p.get("pills"):
                     for label, val, cls in p["pills"]:
+                        if label in seen_labels:
+                            continue
+                        seen_labels.add(label)
                         mv_cls = "pos" if cls == "pos" else ("neg" if cls == "neg" else "gold" if "Quality" in label else "")
                         metric_parts.append(f'<span class="thread-metric">{label} <span class="mv {mv_cls}">{val}</span></span>')
                     break
-            # Also grab FCF yield or PE from numbers post
+            # Also grab Entry from numbers post if not already present
             for p in thread_posts:
                 if p["type"] == "numbers" and p.get("pills"):
                     for label, val, cls in p["pills"]:
-                        if label == "Entry":
-                            mv_cls = ""
-                            metric_parts.append(f'<span class="thread-metric">{label} <span class="mv {mv_cls}">{val}</span></span>')
+                        if label == "Entry" and label not in seen_labels:
+                            seen_labels.add(label)
+                            metric_parts.append(f'<span class="thread-metric">{label} <span class="mv">{val}</span></span>')
                     break
             if metric_parts:
                 metrics_html = '<div class="thread-metrics">' + "".join(metric_parts[:4]) + '</div>'
