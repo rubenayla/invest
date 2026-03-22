@@ -3428,11 +3428,11 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
             quality = llm_details.get("quality_score")
             entry_price = llm_details.get("entry_price")
 
-            # Try to read the .md file for rich content
+            # Only include stocks with rich .md analysis files
             md_file = notes_path / f"{ticker}.md"
             sections = self._parse_md_sections(str(md_file))
-            if not sections and not verdict:
-                continue  # Skip stocks with no analysis
+            if not sections:
+                continue  # Skip stocks without .md — no rich content for the feed
 
             # --- INTRO: What the company does ---
             situation = sections.get("Situation Summary", "")
@@ -3598,20 +3598,21 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
     def _render_feed_with_sections(self, posts: List[Dict]) -> str:
         """Render posts grouped into sections with headers."""
         # Group: verdicts first, then signals, then thesis/intro, then bull/bear
+        # (section_name, predicate, max_items)
         section_order = [
-            ("Top Picks", lambda p: p["type"] == "verdict" and p.get("tag") in ("BUY",)),
-            ("Signals", lambda p: p["type"] == "signal"),
-            ("On the Radar", lambda p: p["type"] == "verdict" and p.get("tag") in ("WATCH",)),
-            ("Deep Dives", lambda p: p["type"] in ("thesis", "intro", "numbers")),
-            ("Bull Cases", lambda p: p["type"] == "bull"),
-            ("Key Risks", lambda p: p["type"] == "bear"),
-            ("Avoid", lambda p: p["type"] == "verdict" and p.get("tag") in ("PASS",)),
+            ("Top Picks", lambda p: p["type"] == "verdict" and p.get("tag") in ("BUY",), 10),
+            ("Signals", lambda p: p["type"] == "signal", 8),
+            ("On the Radar", lambda p: p["type"] == "verdict" and p.get("tag") in ("WATCH",), 6),
+            ("Deep Dives", lambda p: p["type"] in ("thesis", "intro", "numbers"), 12),
+            ("Bull Cases", lambda p: p["type"] == "bull", 8),
+            ("Key Risks", lambda p: p["type"] == "bear", 8),
+            ("Avoid", lambda p: p["type"] == "verdict" and p.get("tag") in ("PASS",), 5),
         ]
         used = set()
         parts = []
         featured_count = 0
-        for section_name, pred in section_order:
-            section_posts = [p for i, p in enumerate(posts) if pred(p) and i not in used]
+        for section_name, pred, max_items in section_order:
+            section_posts = [p for i, p in enumerate(posts) if pred(p) and i not in used][:max_items]
             if not section_posts:
                 continue
             parts.append(f'<div class="section-sep"><span>{section_name}</span></div>')
@@ -3623,10 +3624,6 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
                 if is_featured:
                     featured_count += 1
                 parts.append(self._render_feed_post(p, featured=is_featured))
-        # Any remaining
-        for i, p in enumerate(posts):
-            if i not in used:
-                parts.append(self._render_feed_post(p))
         return "\n".join(parts)
 
     def _render_feed_post(self, post: Dict, featured: bool = False) -> str:
