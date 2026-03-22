@@ -431,7 +431,8 @@ async def feed_index(request: Request) -> HTMLResponse:
 
     stocks_data = load_stocks_from_database()
     generator = HTMLGenerator()
-    feed_html = generator.generate_feed_html(stocks_data)
+    notes_dir = str(REPO_ROOT / "notes" / "companies")
+    feed_html = generator.generate_feed_html(stocks_data, notes_dir=notes_dir)
     return HTMLResponse(feed_html, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 

@@ -3227,10 +3227,13 @@ renderCards();
 
     # ── Doomscroll Insights Feed ─────────────────────────────────────────
 
-    def generate_feed_html(self, stocks_data: Dict) -> str:
-        """Generate the doomscroll insights feed page."""
-        insights = self._generate_insights(stocks_data)
-        cards_html = "\n".join(self._render_insight_card(i) for i in insights)
+    def generate_feed_html(self, stocks_data: Dict, notes_dir: str = None) -> str:
+        """Generate the doomscroll insights feed — bite-sized investing posts."""
+        import re
+        if notes_dir is None:
+            notes_dir = str(Path(__file__).parent.parent.parent.parent / "notes" / "companies")
+        posts = self._generate_feed_posts(stocks_data, notes_dir)
+        cards_html = "\n".join(self._render_feed_post(p) for p in posts)
 
         return f'''<!DOCTYPE html>
 <html lang="en">
@@ -3238,146 +3241,75 @@ renderCards();
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#111418">
-<title>Insights Feed</title>
+<title>Feed</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {{
-    --bg-base: #111418;
-    --bg-panel: #1c2127;
-    --bg-elevated: #252a31;
-    --border: rgba(255,255,255,0.10);
-    --text-primary: #f6f7f9;
-    --text-secondary: #abb3bf;
-    --text-muted: #738091;
-    --accent: #4c90f0;
-    --green: #32a467;
-    --green-bright: #72ca9b;
-    --red: #cd4246;
-    --red-bright: #e76a6e;
-    --orange: #ec9a3c;
-    --gold: #d1980b;
-    --font-body: 'DM Sans', -apple-system, sans-serif;
-    --font-mono: 'Geist Mono', monospace;
+    --bg: #111418; --panel: #1c2127; --elevated: #252a31;
+    --border: rgba(255,255,255,0.08); --border-hover: rgba(255,255,255,0.15);
+    --t1: #f6f7f9; --t2: #abb3bf; --t3: #738091;
+    --blue: #4c90f0; --green: #72ca9b; --red: #e76a6e; --gold: #f0b726; --cyan: #63e2c6;
+    --green-bg: rgba(50,164,103,0.12); --red-bg: rgba(205,66,70,0.10);
+    --gold-bg: rgba(209,152,11,0.10); --blue-bg: rgba(76,144,240,0.10);
+    --cyan-bg: rgba(99,226,198,0.08);
+    --sans: 'DM Sans', -apple-system, sans-serif;
+    --mono: 'Geist Mono', monospace;
 }}
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-body {{
-    background: var(--bg-base);
-    color: var(--text-primary);
-    font-family: var(--font-body);
-    -webkit-font-smoothing: antialiased;
-}}
-.feed-container {{
-    max-width: 540px;
-    margin: 0 auto;
-    padding: 16px 12px 80px;
-}}
-.feed-header {{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 0 20px;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 16px;
-}}
-.feed-header h1 {{
-    font-size: 20px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-}}
-.feed-header a {{
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 13px;
-    font-family: var(--font-mono);
-}}
-.feed-header a:hover {{ color: var(--accent); }}
-.card {{
-    background: var(--bg-panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 18px;
-    margin-bottom: 10px;
-    transition: border-color 0.15s;
-}}
-.card:hover {{ border-color: rgba(255,255,255,0.18); }}
-.card-top {{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-}}
-.card-ticker {{
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: 15px;
-    color: var(--text-primary);
-}}
-.card-name {{
-    font-size: 13px;
-    color: var(--text-muted);
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}}
-.card-badge {{
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 4px;
-    flex-shrink: 0;
-}}
-.badge-buy {{ background: rgba(50,164,103,0.2); color: var(--green-bright); }}
-.badge-watch {{ background: rgba(209,152,11,0.15); color: var(--gold); }}
-.badge-pass {{ background: rgba(205,66,70,0.15); color: var(--red-bright); }}
-.badge-signal {{ background: rgba(76,144,240,0.15); color: var(--accent); }}
-.badge-macro {{ background: rgba(171,179,191,0.12); color: var(--text-secondary); }}
-.card-body {{
-    font-size: 14px;
-    line-height: 1.55;
-    color: var(--text-secondary);
-}}
-.card-body strong {{ color: var(--text-primary); font-weight: 600; }}
-.card-metrics {{
-    display: flex;
-    gap: 14px;
-    margin-top: 10px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--text-muted);
-}}
-.card-metrics .metric-val {{
-    color: var(--text-primary);
-    font-weight: 600;
-}}
-.card-metrics .positive {{ color: var(--green-bright); }}
-.card-metrics .negative {{ color: var(--red-bright); }}
-.card-action {{
-    margin-top: 10px;
-    font-size: 12px;
-    color: var(--accent);
-    font-family: var(--font-mono);
-    font-weight: 500;
-}}
-.section-divider {{
-    text-align: center;
-    color: var(--text-muted);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding: 14px 0 8px;
-    margin-bottom: 2px;
-}}
+body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webkit-font-smoothing: antialiased; }}
+.feed {{ max-width: 580px; margin: 0 auto; padding: 20px 14px 100px; }}
+.feed-nav {{ display: flex; justify-content: space-between; align-items: center; padding: 8px 0 18px; }}
+.feed-nav h1 {{ font-size: 18px; font-weight: 700; }}
+.feed-nav a {{ color: var(--t3); text-decoration: none; font: 500 12px var(--mono); }}
+.feed-nav a:hover {{ color: var(--blue); }}
+
+.post {{ background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+         padding: 16px 18px; margin-bottom: 8px; border-left: 3px solid transparent;
+         transition: border-color 0.15s, transform 0.1s; }}
+.post:hover {{ border-color: var(--border-hover); }}
+.post-thesis  {{ border-left-color: var(--blue); }}
+.post-bull    {{ border-left-color: var(--green); }}
+.post-bear    {{ border-left-color: var(--red); }}
+.post-numbers {{ border-left-color: var(--cyan); }}
+.post-signal  {{ border-left-color: var(--gold); }}
+.post-verdict {{ border-left-color: var(--green); }}
+.post-intro   {{ border-left-color: var(--t3); }}
+
+.post-head {{ display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }}
+.post-ticker {{ font: 700 15px var(--mono); color: var(--t1); }}
+.post-co {{ font-size: 13px; color: var(--t3); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
+.post-tag {{ font: 700 10px/1 var(--mono); padding: 3px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }}
+.tag-thesis  {{ background: var(--blue-bg);  color: var(--blue); }}
+.tag-bull    {{ background: var(--green-bg); color: var(--green); }}
+.tag-bear    {{ background: var(--red-bg);   color: var(--red); }}
+.tag-numbers {{ background: var(--cyan-bg);  color: var(--cyan); }}
+.tag-signal  {{ background: var(--gold-bg);  color: var(--gold); }}
+.tag-verdict {{ background: var(--green-bg); color: var(--green); }}
+.tag-intro   {{ background: rgba(171,179,191,0.08); color: var(--t3); }}
+
+.post-body {{ font-size: 14px; line-height: 1.6; color: var(--t2); }}
+.post-body b, .post-body strong {{ color: var(--t1); font-weight: 600; }}
+.post-body .num {{ font-family: var(--mono); font-weight: 600; }}
+.post-body .pos {{ color: var(--green); }}
+.post-body .neg {{ color: var(--red); }}
+
+.pills {{ display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }}
+.pill {{ font: 500 11px var(--mono); padding: 3px 8px; border-radius: 5px;
+         background: var(--elevated); color: var(--t2); }}
+.pill .v {{ color: var(--t1); font-weight: 600; }}
+.pill .pos {{ color: var(--green); font-weight: 600; }}
+.pill .neg {{ color: var(--red); font-weight: 600; }}
+
+.section-label {{ font: 600 11px var(--mono); text-transform: uppercase; letter-spacing: 1.5px;
+                  color: var(--t3); padding: 18px 0 6px; }}
 </style>
 </head>
 <body>
-<div class="feed-container">
-    <div class="feed-header">
-        <h1>Insights</h1>
+<div class="feed">
+    <div class="feed-nav">
+        <h1>Feed</h1>
         <a href="/">Dashboard</a>
     </div>
     {cards_html}
@@ -3385,156 +3317,259 @@ body {{
 </body>
 </html>'''
 
-    def _generate_insights(self, stocks_data: Dict) -> List[Dict]:
-        """Generate prioritized insight cards from stock data."""
-        insights: List[Dict] = []
+    def _parse_md_sections(self, filepath: str) -> Dict[str, str]:
+        """Parse a company .md file into section name -> content dict."""
+        import re
+        try:
+            text = Path(filepath).read_text(encoding="utf-8")
+        except (FileNotFoundError, OSError):
+            return {}
+        sections = {}
+        current = None
+        lines = []
+        for line in text.split("\n"):
+            m = re.match(r"^##\s+(.+)", line)
+            if m:
+                if current:
+                    sections[current] = "\n".join(lines).strip()
+                current = m.group(1).strip()
+                lines = []
+            elif current:
+                lines.append(line)
+        if current:
+            sections[current] = "\n".join(lines).strip()
+        # Also grab the header line (# Title)
+        header_match = re.match(r"^#\s+(.+)", text.split("\n")[0]) if text else None
+        if header_match:
+            # Get sector/industry from the ** lines
+            for line in text.split("\n")[1:6]:
+                if line.startswith("**Sector"):
+                    sections["_header"] = line
+                    break
+        return sections
+
+    def _first_sentences(self, text: str, n: int = 2) -> str:
+        """Extract first n sentences from text, cleaning markdown."""
+        import re
+        # Remove markdown links, bold markers, pipe tables, bullet prefixes
+        clean = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
+        clean = re.sub(r'\*\*([^*]+)\*\*', r'\1', clean)
+        clean = re.sub(r'\|[^\n]+\|', '', clean)
+        clean = re.sub(r'^[-*]\s+', '', clean, flags=re.MULTILINE)
+        clean = re.sub(r'\n+', ' ', clean).strip()
+        # Split on sentence boundaries
+        parts = re.split(r'(?<=[.!?])\s+', clean)
+        result = " ".join(parts[:n]).strip()
+        return result if result else clean[:200]
+
+    def _bullet_items(self, text: str, n: int = 3) -> List[str]:
+        """Extract first n bullet points from markdown text."""
+        import re
+        items = []
+        for line in text.split("\n"):
+            m = re.match(r'^[-*]\s+(.+)', line)
+            if m:
+                # Clean markdown formatting
+                item = re.sub(r'\*\*([^*]+)\*\*', r'\1', m.group(1))
+                items.append(item.strip())
+                if len(items) >= n:
+                    break
+        return items
+
+    def _num(self, val: str, positive: bool = True) -> str:
+        """Wrap a number in styled span."""
+        cls = "pos" if positive else "neg"
+        return f'<span class="num {cls}">{html.escape(val)}</span>'
+
+    def _generate_feed_posts(self, stocks_data: Dict, notes_dir: str) -> List[Dict]:
+        """Generate bite-sized feed posts from stock data + .md analysis files."""
+        posts = []
+        notes_path = Path(notes_dir)
 
         for ticker, stock in stocks_data.items():
             name = stock.get("company_name", ticker)
             price = stock.get("current_price")
-            sector = stock.get("sector", "")
             valuations = stock.get("valuations", {})
             insider = stock.get("insider", {})
             llm = valuations.get("llm_deep_analysis", {})
             llm_details = llm.get("details", {})
-
             verdict = llm_details.get("verdict")
-            ev_pct = llm_details.get("expected_value_pct", 0)
+            ev_pct = llm_details.get("expected_value_pct")
             quality = llm_details.get("quality_score")
-            conviction = llm_details.get("conviction", "")
             entry_price = llm_details.get("entry_price")
-            variant = llm_details.get("variant_perception", "")
 
-            # --- BUY verdicts with high conviction ---
-            if verdict == "BUY" and str(conviction).upper() in ("HIGH", "MEDIUM-HIGH"):
-                body = f"<strong>BUY \u2014 {conviction} conviction.</strong> "
-                body += variant[:120] if variant else f"EV +{ev_pct:.0f}%, quality {quality}/25."
-                insights.append({
-                    "priority": 100 + (ev_pct or 0),
-                    "type": "buy",
-                    "ticker": ticker,
-                    "name": name,
-                    "body": body,
-                    "metrics": self._build_metrics(price, ev_pct, quality, entry_price),
-                    "action": f"Entry ${entry_price}" if entry_price else None,
+            # Try to read the .md file for rich content
+            md_file = notes_path / f"{ticker}.md"
+            sections = self._parse_md_sections(str(md_file))
+            if not sections and not verdict:
+                continue  # Skip stocks with no analysis
+
+            # --- INTRO: What the company does ---
+            situation = sections.get("Situation Summary", "")
+            if situation:
+                intro = self._first_sentences(situation, 2)
+                pills = []
+                if price:
+                    pills.append(("Price", f"${price:.2f}", ""))
+                if ev_pct:
+                    pills.append(("EV", f"{ev_pct:+.0f}%", "pos" if ev_pct > 0 else "neg"))
+                if quality:
+                    pills.append(("Quality", f"{quality}/25", ""))
+                posts.append({
+                    "priority": 200 if verdict == "BUY" else 100 if verdict == "WATCH" else 50,
+                    "type": "intro", "tag": "What they do",
+                    "ticker": ticker, "name": name,
+                    "body": intro, "pills": pills,
                 })
 
-            # --- Insider buying clusters ---
+            # --- THESIS: Why it's interesting (variant perception) ---
+            variant_section = sections.get("Variant Perception", "")
+            if variant_section:
+                # Extract "Our view" specifically
+                our_view = ""
+                for line in variant_section.split("\n"):
+                    if "Our view" in line or "our view" in line:
+                        our_view = line.lstrip("- ").replace("**Our view:**", "").replace("**Our view:** ", "").strip()
+                        break
+                if our_view:
+                    thesis = self._first_sentences(our_view, 3)
+                    posts.append({
+                        "priority": 190 if verdict == "BUY" else 90,
+                        "type": "thesis", "tag": "The Edge",
+                        "ticker": ticker, "name": name,
+                        "body": thesis, "pills": [],
+                    })
+
+            # --- BULL CASE ---
+            bull = sections.get("Bull Case", "")
+            if bull:
+                items = self._bullet_items(bull, 2)
+                if items:
+                    body = " ".join(items)
+                    posts.append({
+                        "priority": 180 if verdict == "BUY" else 80,
+                        "type": "bull", "tag": "Bull case",
+                        "ticker": ticker, "name": name,
+                        "body": body, "pills": [],
+                    })
+
+            # --- BEAR CASE / RISKS ---
+            bear = sections.get("Bear Case", "")
+            if bear:
+                items = self._bullet_items(bear, 2)
+                if items:
+                    body = " ".join(items)
+                    posts.append({
+                        "priority": 170 if verdict == "BUY" else 75,
+                        "type": "bear", "tag": "Key risk",
+                        "ticker": ticker, "name": name,
+                        "body": body, "pills": [],
+                    })
+
+            # --- KEY NUMBERS ---
+            financials = sections.get("Financial Snapshot", "")
+            if financials and price:
+                # Extract interesting numbers from the table
+                pills = []
+                if price:
+                    pills.append(("Price", f"${price:.2f}", ""))
+                if ev_pct:
+                    pills.append(("EV", f"{ev_pct:+.0f}%", "pos" if ev_pct > 0 else "neg"))
+                if entry_price:
+                    pills.append(("Entry", f"${entry_price}", ""))
+                observations = ""
+                for line in financials.split("\n"):
+                    if line.startswith("- ") or line.startswith("* "):
+                        observations = line.lstrip("-* ").strip()
+                        break
+                if observations:
+                    posts.append({
+                        "priority": 160 if verdict == "BUY" else 70,
+                        "type": "numbers", "tag": "By the numbers",
+                        "ticker": ticker, "name": name,
+                        "body": observations, "pills": pills,
+                    })
+
+            # --- INSIDER SIGNAL ---
             buy_count = insider.get("buy_count", 0)
             dollars = insider.get("dollar_conviction", 0)
-            if buy_count >= 2 and dollars >= 500_000:
+            if buy_count >= 2 and dollars >= 100_000:
                 dollar_str = f"${dollars / 1_000_000:.1f}M" if dollars >= 1_000_000 else f"${dollars / 1_000:.0f}K"
-                sell_part = ""
-                if insider.get("sell_trend"):
-                    sell_part = f" Sell trend: {insider.get('sell_trend', 1.0):.0%} of normal."
-                insights.append({
-                    "priority": 90 + buy_count * 3,
-                    "type": "signal",
-                    "ticker": ticker,
-                    "name": name,
-                    "body": f"<strong>{buy_count} insider buys</strong> totaling {dollar_str} in the last 6 months.{sell_part}",
-                    "metrics": self._build_metrics(price, ev_pct, quality, entry_price),
-                    "action": "Insider conviction signal",
+                body = f"<strong>{buy_count} insider purchases</strong> totaling {dollar_str} in the past 6 months."
+                if insider.get("sell_trend") and insider["sell_trend"] < 0.8:
+                    body += f" Meanwhile, insider selling is {insider['sell_trend']:.0%} of its historical average \u2014 they're holding."
+                posts.append({
+                    "priority": 195,
+                    "type": "signal", "tag": "Insider signal",
+                    "ticker": ticker, "name": name,
+                    "body": body, "pills": [],
                 })
 
-            # --- Model consensus (many models agree on upside) ---
-            bullish_count = 0
-            total_models = 0
-            upsides = []
-            for model_name, val in valuations.items():
-                if not val.get("fair_value") or model_name == "llm_deep_analysis":
-                    continue
-                total_models += 1
-                upside = val.get("upside_pct", 0)
-                if upside and upside > 10:
-                    bullish_count += 1
-                    upsides.append(upside)
-
-            if bullish_count >= 4 and total_models >= 5:
-                avg_up = sum(upsides) / len(upsides) if upsides else 0
-                insights.append({
-                    "priority": 70 + bullish_count * 2,
-                    "type": "signal",
-                    "ticker": ticker,
-                    "name": name,
-                    "body": f"<strong>{bullish_count}/{total_models} models bullish</strong> (avg +{avg_up:.0f}% upside). Strong quantitative consensus.",
-                    "metrics": self._build_metrics(price, ev_pct, quality, entry_price),
-                    "action": None,
-                })
-
-            # --- WATCH with good EV (opportunities to monitor) ---
-            if verdict == "WATCH" and ev_pct and ev_pct > 15:
-                body = f"<strong>WATCH \u2014 EV +{ev_pct:.0f}%</strong>"
+            # --- VERDICT ---
+            verdict_section = sections.get("Verdict", "")
+            if verdict_section and verdict:
+                verdict_text = self._first_sentences(verdict_section.split("\n", 1)[-1] if "\n" in verdict_section else verdict_section, 2)
+                pills = []
+                if ev_pct:
+                    pills.append(("EV", f"{ev_pct:+.0f}%", "pos" if ev_pct > 0 else "neg"))
+                if entry_price:
+                    pills.append(("Entry", f"${entry_price}", ""))
                 if quality:
-                    body += f", quality {quality}/25"
-                body += ". " + (variant[:100] if variant else "Waiting for better entry or catalyst.")
-                insights.append({
-                    "priority": 50 + (ev_pct or 0),
-                    "type": "watch",
-                    "ticker": ticker,
-                    "name": name,
-                    "body": body,
-                    "metrics": self._build_metrics(price, ev_pct, quality, entry_price),
-                    "action": f"Target entry ${entry_price}" if entry_price else None,
+                    pills.append(("Quality", f"{quality}/25", ""))
+                posts.append({
+                    "priority": 210 if verdict == "BUY" else 95 if verdict == "WATCH" else 30,
+                    "type": "verdict", "tag": verdict,
+                    "ticker": ticker, "name": name,
+                    "body": verdict_text, "pills": pills,
                 })
 
-            # --- PASS signals (avoid) ---
-            if verdict == "PASS":
-                body = f"<strong>PASS \u2014 EV {ev_pct:+.0f}%.</strong> "
-                body += variant[:100] if variant else "Negative expected value at current price."
-                insights.append({
-                    "priority": 20,
-                    "type": "pass",
-                    "ticker": ticker,
-                    "name": name,
-                    "body": body,
-                    "metrics": self._build_metrics(price, ev_pct, quality, entry_price),
-                    "action": None,
-                })
+        # Sort by priority, then interleave by ticker to avoid clustering
+        posts.sort(key=lambda p: p["priority"], reverse=True)
 
-        # Sort by priority descending
-        insights.sort(key=lambda x: x["priority"], reverse=True)
-        return insights
+        # Interleave: avoid showing 5 posts about the same ticker in a row
+        result = []
+        seen_recent: dict = {}  # ticker -> count of posts in last N
+        remaining = list(posts)
+        while remaining:
+            placed = False
+            for i, post in enumerate(remaining):
+                t = post["ticker"]
+                recent_count = seen_recent.get(t, 0)
+                if recent_count < 2 or len(remaining) <= 5:
+                    result.append(post)
+                    remaining.pop(i)
+                    # Update recent tracking
+                    seen_recent[t] = recent_count + 1
+                    # Decay: reduce counts for all tickers
+                    if len(result) % 3 == 0:
+                        seen_recent = {k: max(0, v - 1) for k, v in seen_recent.items()}
+                    placed = True
+                    break
+            if not placed:
+                # Fallback: just append the next one
+                result.append(remaining.pop(0))
 
-    def _build_metrics(self, price, ev_pct, quality, entry_price) -> List[Tuple[str, str, str]]:
-        """Build metrics list for a card. Returns [(label, value, css_class), ...]."""
-        metrics = []
-        if price:
-            metrics.append(("Price", f"${price:.2f}", ""))
-        if ev_pct is not None and ev_pct != 0:
-            cls = "positive" if ev_pct > 0 else "negative"
-            metrics.append(("EV", f"{ev_pct:+.0f}%", cls))
-        if quality:
-            metrics.append(("Quality", f"{quality}/25", ""))
-        if entry_price:
-            metrics.append(("Entry", f"${entry_price}", ""))
-        return metrics
+        return result
 
-    def _render_insight_card(self, insight: Dict) -> str:
-        """Render a single insight card as HTML."""
-        t = insight["type"]
-        badge_class = {"buy": "badge-buy", "watch": "badge-watch", "pass": "badge-pass",
-                       "signal": "badge-signal", "macro": "badge-macro"}.get(t, "badge-signal")
-        badge_text = t.upper()
+    def _render_feed_post(self, post: Dict) -> str:
+        """Render a single feed post as HTML."""
+        ptype = post["type"]
+        tag_class = f"tag-{ptype}"
+        post_class = f"post-{ptype}"
 
-        metrics_html = ""
-        if insight.get("metrics"):
-            parts = []
-            for label, val, cls in insight["metrics"]:
-                parts.append(f'{label} <span class="metric-val {cls}">{val}</span>')
-            metrics_html = '<div class="card-metrics">' + "&nbsp;&nbsp;|&nbsp;&nbsp;".join(parts) + '</div>'
+        pills_html = ""
+        if post.get("pills"):
+            pill_parts = []
+            for label, val, cls in post["pills"]:
+                pill_parts.append(f'<span class="pill">{label} <span class="v {cls}">{val}</span></span>')
+            pills_html = '<div class="pills">' + "".join(pill_parts) + '</div>'
 
-        action_html = ""
-        if insight.get("action"):
-            action_html = f'<div class="card-action">{insight["action"]}</div>'
-
-        return f'''<div class="card">
-    <div class="card-top">
-        <span class="card-ticker">{insight["ticker"]}</span>
-        <span class="card-name">{html.escape(insight["name"])}</span>
-        <span class="card-badge {badge_class}">{badge_text}</span>
+        return f'''<div class="post {post_class}">
+    <div class="post-head">
+        <span class="post-ticker">{post["ticker"]}</span>
+        <span class="post-co">{html.escape(post["name"])}</span>
+        <span class="post-tag {tag_class}">{html.escape(post["tag"])}</span>
     </div>
-    <div class="card-body">{insight["body"]}</div>
-    {metrics_html}
-    {action_html}
+    <div class="post-body">{post["body"]}</div>
+    {pills_html}
 </div>'''
