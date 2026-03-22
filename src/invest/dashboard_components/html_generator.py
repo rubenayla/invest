@@ -3290,9 +3290,25 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
                 text-decoration: none; padding: 8px 0 4px; border-top: 1px solid var(--border); margin-top: 8px; }}
 .thread-more:hover {{ color: var(--t1); }}
 /* Collapsed preview — one-line thesis */
-.thread-preview {{ font-size: 13px; line-height: 1.5; color: var(--t3); margin-top: 10px;
+.thread-preview {{ font-size: 14px; line-height: 1.55; color: var(--t2); margin-top: 10px;
                    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }}
 .thread.open .thread-preview {{ display: none; }}
+
+/* Inline heat bar — visual conviction meter next to EV% */
+.thread-heat-bar {{ display: flex; align-items: center; gap: 6px; margin-left: 2px; }}
+.heat-track {{ width: 48px; height: 6px; background: var(--elevated); border-radius: 3px; overflow: hidden; flex-shrink: 0; }}
+.heat-fill {{ height: 100%; border-radius: 3px; transition: width 0.4s ease; }}
+.heat-fill.heat-green {{ background: linear-gradient(90deg, rgba(114,202,155,0.7), var(--green)); }}
+.heat-fill.heat-red {{ background: linear-gradient(90deg, rgba(231,106,110,0.7), var(--red)); }}
+
+/* Key metric pills shown in collapsed state */
+.thread-metrics {{ display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }}
+.thread.open .thread-metrics {{ display: none; }}
+.thread-metric {{ font: 600 11px var(--mono); padding: 3px 8px; border-radius: 4px; background: var(--elevated); color: var(--t2); }}
+.thread-metric .mv {{ font-weight: 700; }}
+.thread-metric .mv.pos {{ color: var(--green); }}
+.thread-metric .mv.neg {{ color: var(--red); }}
+.thread-metric .mv.gold {{ color: var(--gold); }}
 
 /* Featured top picks — visual hierarchy */
 .thread.featured {{
@@ -3305,7 +3321,7 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 }}
 .thread.featured .thread-ticker {{ font-size: 26px; }}
 .thread.featured .thread-ev {{ font-size: 24px; }}
-.thread.featured .thread-preview {{ font-size: 14px; -webkit-line-clamp: 3; color: var(--t2); }}
+.thread.featured .thread-preview {{ font-size: 15px; -webkit-line-clamp: 3; color: var(--t2); }}
 .thread.featured .thread-head {{ gap: 12px; }}
 
 /* Rank badge for top picks */
@@ -3746,17 +3762,46 @@ document.querySelectorAll('.thread-head').forEach(h => {{
             thread_cls = "thread featured" if is_featured else "thread"
             rank_html = f'<span class="thread-rank">{i + 1}</span>' if is_featured else ''
 
+            # Build heat bar HTML
+            heat_bar_html = ""
+            if ev_numeric != 0:
+                fill_pct = min(abs(ev_numeric) / 50.0 * 100, 100)
+                heat_cls = "heat-green" if ev_numeric > 0 else "heat-red"
+                heat_bar_html = f'<span class="thread-heat-bar"><span class="heat-track"><span class="heat-fill {heat_cls}" style="width:{fill_pct:.0f}%"></span></span></span>'
+
+            # Build key metrics for collapsed state
+            metrics_html = ""
+            metric_parts = []
+            for p in thread_posts:
+                if p["type"] == "verdict" and p.get("pills"):
+                    for label, val, cls in p["pills"]:
+                        mv_cls = "pos" if cls == "pos" else ("neg" if cls == "neg" else "gold" if "Quality" in label else "")
+                        metric_parts.append(f'<span class="thread-metric">{label} <span class="mv {mv_cls}">{val}</span></span>')
+                    break
+            # Also grab FCF yield or PE from numbers post
+            for p in thread_posts:
+                if p["type"] == "numbers" and p.get("pills"):
+                    for label, val, cls in p["pills"]:
+                        if label == "Entry":
+                            mv_cls = ""
+                            metric_parts.append(f'<span class="thread-metric">{label} <span class="mv {mv_cls}">{val}</span></span>')
+                    break
+            if metric_parts:
+                metrics_html = '<div class="thread-metrics">' + "".join(metric_parts[:4]) + '</div>'
+
             # Thread header
             parts.append(f'''<div class="{thread_cls}" {heat_style}>
     <div class="thread-head">
         {rank_html}
         <span class="thread-ticker">{ticker}</span>
         {ev_html}
+        {heat_bar_html}
         {f'<span class="post-tag {tag_cls}">{verdict_tag}</span>' if verdict_tag else ''}
         <span class="thread-name">{html.escape(name)}</span>
         <span class="thread-chevron">&#9662;</span>
     </div>
     {f'<div class="thread-preview">{html.escape(preview_text)}</div>' if preview_text else ''}
+    {metrics_html}
     <div class="thread-body">''')
 
             # Thread posts (connected by line)
