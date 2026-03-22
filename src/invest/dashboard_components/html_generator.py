@@ -3608,17 +3608,28 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
             ("Key Risks", lambda p: p["type"] == "bear", 8),
             ("Avoid", lambda p: p["type"] == "verdict" and p.get("tag") in ("PASS",), 5),
         ]
-        used = set()
+        used = set()       # tracks used post indices
+        seen_tickers = set()  # tracks tickers already shown (for dedup across sections)
         parts = []
         featured_count = 0
         for section_name, pred, max_items in section_order:
-            section_posts = [p for i, p in enumerate(posts) if pred(p) and i not in used][:max_items]
-            if not section_posts:
+            # For Deep Dives / Bull Cases / Key Risks: skip tickers already in Top Picks / On the Radar
+            dedup = section_name in ("Deep Dives", "Bull Cases", "Key Risks")
+            candidates = []
+            for i, p in enumerate(posts):
+                if i in used or not pred(p):
+                    continue
+                if dedup and p["ticker"] in seen_tickers:
+                    continue
+                candidates.append((i, p))
+                if len(candidates) >= max_items:
+                    break
+            if not candidates:
                 continue
             parts.append(f'<div class="section-sep"><span>{section_name}</span></div>')
-            for p in section_posts:
-                idx = posts.index(p)
+            for idx, p in candidates:
                 used.add(idx)
+                seen_tickers.add(p["ticker"])
                 # Mark top 3 BUY verdicts as featured
                 is_featured = (section_name == "Top Picks" and featured_count < 3)
                 if is_featured:
