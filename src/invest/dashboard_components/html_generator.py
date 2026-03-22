@@ -3296,6 +3296,26 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .hero-val.neg {{ color: var(--red); }}
 .hero-label {{ font: 500 13px var(--mono); color: var(--t3); }}
 
+/* Featured card — top picks get visual prominence */
+.post.featured {{
+    background: linear-gradient(135deg, rgba(50,164,103,0.08) 0%, var(--panel) 50%, rgba(76,144,240,0.06) 100%);
+    border: 1px solid rgba(114,202,155,0.20);
+    border-left: 4px solid var(--green);
+    padding: 24px 26px;
+}}
+.post.featured .post-ticker {{ font-size: 22px; }}
+.post.featured .hero-val {{ font-size: 36px; }}
+.post.featured .post-body {{ font-size: 16px; }}
+
+/* Confidence bar — visual quality indicator */
+.conf-bar {{ display: flex; align-items: center; gap: 8px; margin-top: 14px; }}
+.conf-track {{ flex: 1; height: 4px; background: var(--elevated); border-radius: 2px; overflow: hidden; }}
+.conf-fill {{ height: 100%; border-radius: 2px; transition: width 0.3s; }}
+.conf-fill.high {{ background: var(--green); }}
+.conf-fill.mid {{ background: var(--gold); }}
+.conf-fill.low {{ background: var(--red); }}
+.conf-label {{ font: 500 11px var(--mono); color: var(--t3); white-space: nowrap; }}
+
 .post-body {{ font-size: 15px; line-height: 1.6; color: var(--t2); }}
 .post-body b, .post-body strong {{ color: var(--t1); font-weight: 600; }}
 .post-body .hl {{ color: var(--t1); font-family: var(--mono); font-weight: 600; }}
@@ -3589,6 +3609,7 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
         ]
         used = set()
         parts = []
+        featured_count = 0
         for section_name, pred in section_order:
             section_posts = [p for i, p in enumerate(posts) if pred(p) and i not in used]
             if not section_posts:
@@ -3597,18 +3618,24 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
             for p in section_posts:
                 idx = posts.index(p)
                 used.add(idx)
-                parts.append(self._render_feed_post(p))
+                # Mark top 3 BUY verdicts as featured
+                is_featured = (section_name == "Top Picks" and featured_count < 3)
+                if is_featured:
+                    featured_count += 1
+                parts.append(self._render_feed_post(p, featured=is_featured))
         # Any remaining
         for i, p in enumerate(posts):
             if i not in used:
                 parts.append(self._render_feed_post(p))
         return "\n".join(parts)
 
-    def _render_feed_post(self, post: Dict) -> str:
+    def _render_feed_post(self, post: Dict, featured: bool = False) -> str:
         """Render a single feed post as HTML."""
         ptype = post["type"]
         tag_class = f"tag-{ptype}"
         post_class = f"post-{ptype}"
+        if featured:
+            post_class += " featured"
 
         hero_html = ""
         if post.get("hero"):
@@ -3622,6 +3649,25 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
                 pill_parts.append(f'<span class="pill">{label} <span class="v {cls}">{val}</span></span>')
             pills_html = '<div class="pills">' + "".join(pill_parts) + '</div>'
 
+        # Confidence bar for featured cards with quality scores
+        conf_html = ""
+        if featured and post.get("pills"):
+            for label, val, _cls in post["pills"]:
+                if label == "Quality":
+                    try:
+                        score = int(val.split("/")[0])
+                        max_score = int(val.split("/")[1])
+                        pct = int(score / max_score * 100)
+                        tier = "high" if pct >= 72 else "mid" if pct >= 56 else "low"
+                        conf_html = f'''<div class="conf-bar">
+        <span class="conf-label">Conviction</span>
+        <div class="conf-track"><div class="conf-fill {tier}" style="width: {pct}%"></div></div>
+        <span class="conf-label">{score}/{max_score}</span>
+    </div>'''
+                    except (ValueError, IndexError):
+                        pass
+                    break
+
         return f'''<div class="post {post_class}">
     <div class="post-head">
         <span class="post-ticker">{post["ticker"]}</span>
@@ -3631,4 +3677,5 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
     {hero_html}
     <div class="post-body">{post["body"]}</div>
     {pills_html}
+    {conf_html}
 </div>'''
