@@ -1,7 +1,15 @@
-name: Deploy to Hetzner
+name: CI
 
 on:
   push:
+    branches: [main, develop]
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - 'notes/**'
+      - '.agents/**'
+      - '.github/workflows/docs.yml'
+  pull_request:
     branches: [main]
     paths-ignore:
       - 'docs/**'
@@ -28,10 +36,20 @@ jobs:
         run: uv sync --all-groups
 
       - name: Lint
-        run: uv run ruff check src tests || echo "::warning::Lint issues found (non-blocking)"
+        run: |
+          uv run ruff check src tests || echo "::warning::Lint issues found (non-blocking)"
+          uv run ruff format --check src tests || echo "::warning::Format issues found (non-blocking)"
 
       - name: Test
-        run: uv run pytest -v --ignore=tests/test_models
+        run: uv run pytest -v
+
+      - name: Upload coverage
+        if: always()
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          fail_ci_if_error: false
 
   deploy:
     needs: test

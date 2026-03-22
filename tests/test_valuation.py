@@ -177,6 +177,7 @@ class TestDCFModel:
         # Should either handle gracefully or return reasonable error
         assert result is None or result["fair_value_per_share"] > 0
 
+    @pytest.mark.slow
     def test_margin_of_safety_calculation(self):
         """Test margin of safety calculation."""
         # Test undervalued stock
@@ -214,6 +215,7 @@ class TestDCFModel:
             pass
 
 
+@pytest.mark.slow
 class TestDCFModel_Advanced:
     """Advanced DCF model testing."""
 
@@ -331,6 +333,7 @@ class TestRIMModel:
         assert expected_residual_income_low < 0  # Should be negative
 
 
+@pytest.mark.slow
 class TestValuationIntegration:
     """Integration tests for valuation models."""
 

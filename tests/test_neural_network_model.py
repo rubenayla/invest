@@ -258,6 +258,7 @@ class TestNeuralNetworkValuationModel:
         with pytest.raises(ValuationError, match="not trained/loaded"):
             model._calculate_valuation('TEST', complete_data)
 
+    @pytest.mark.slow
     def test_training_workflow(self, model, complete_data):
         """Test the training workflow."""
         # Create training data

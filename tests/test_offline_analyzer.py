@@ -12,6 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from scripts.offline_analyzer import DashboardIntegration, OfflineValuationEngine
 
 
+@pytest.mark.slow
 class TestOfflineValuationEngine:
     """Test the offline valuation analysis engine."""
 
