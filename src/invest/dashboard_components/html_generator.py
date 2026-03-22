@@ -3265,22 +3265,33 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .feed-nav a {{ color: var(--t3); text-decoration: none; font: 500 14px var(--mono); }}
 .feed-nav a:hover {{ color: var(--blue); }}
 
-.post-link {{ text-decoration: none; color: inherit; display: block; }}
-.post {{ background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
-         padding: 20px 22px; margin-bottom: 10px; border-left: 4px solid transparent;
-         transition: border-color 0.15s, background 0.15s; cursor: pointer; }}
-.post:hover {{ border-color: var(--border-hover); }}
-.post-thesis  {{ border-left-color: var(--blue); }}
-.post-bull    {{ border-left-color: var(--green); }}
-.post-bear    {{ border-left-color: var(--red); }}
-.post-numbers {{ border-left-color: var(--cyan); }}
-.post-signal  {{ border-left-color: var(--gold); }}
-.post-verdict {{ border-left-color: var(--green); }}
-.post-intro   {{ border-left-color: var(--t3); }}
+/* Thread container */
+.thread {{ background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+           padding: 22px 24px 14px; margin-bottom: 14px; }}
+.thread-head {{ display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }}
+.thread-ticker {{ font: 700 22px var(--mono); color: var(--t1); }}
+.thread-name {{ font-size: 14px; color: var(--t3); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
+.thread-more {{ display: block; text-align: right; font: 500 13px var(--mono); color: var(--blue);
+                text-decoration: none; padding: 8px 0 4px; border-top: 1px solid var(--border); margin-top: 8px; }}
+.thread-more:hover {{ color: var(--t1); }}
 
-.post-head {{ display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }}
-.post-ticker {{ font: 700 18px var(--mono); color: var(--t1); }}
-.post-co {{ font-size: 14px; color: var(--t3); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
+/* Thread post (connected timeline) */
+.tp {{ display: flex; gap: 14px; position: relative; padding-bottom: 16px; }}
+.tp::before {{ content: ''; position: absolute; left: 5px; top: 14px; bottom: 0; width: 1px; background: var(--border); }}
+.tp.tp-last::before {{ display: none; }}
+.tp-dot {{ width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; margin-top: 3px;
+           background: var(--t3); border: 2px solid var(--panel); }}
+.tp-dot.tag-verdict {{ background: var(--green); }}
+.tp-dot.tag-thesis  {{ background: var(--blue); }}
+.tp-dot.tag-bull    {{ background: var(--green); }}
+.tp-dot.tag-bear    {{ background: var(--red); }}
+.tp-dot.tag-numbers {{ background: var(--cyan); }}
+.tp-dot.tag-signal  {{ background: var(--gold); }}
+.tp-dot.tag-intro   {{ background: var(--t3); }}
+.tp-content {{ flex: 1; min-width: 0; }}
+.tp-tag {{ font: 700 10px/1 var(--mono); padding: 2px 7px; border-radius: 3px; text-transform: uppercase;
+           letter-spacing: 0.5px; display: inline-block; margin-bottom: 6px; }}
+
 .post-tag {{ font: 700 11px/1 var(--mono); padding: 4px 9px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }}
 .tag-thesis  {{ background: var(--blue-bg);  color: var(--blue); }}
 .tag-bull    {{ background: var(--green-bg); color: var(--green); }}
@@ -3597,54 +3608,68 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
         return result
 
     def _render_feed_with_sections(self, posts: List[Dict]) -> str:
-        """Render posts grouped into sections with headers."""
-        # Group: verdicts first, then signals, then thesis/intro, then bull/bear
-        # (section_name, predicate, max_items)
-        section_order = [
-            ("Top Picks", lambda p: p["type"] == "verdict" and p.get("tag") in ("BUY",), 10),
-            ("Signals", lambda p: p["type"] == "signal", 8),
-            ("On the Radar", lambda p: p["type"] == "verdict" and p.get("tag") in ("WATCH",), 6),
-            ("Deep Dives", lambda p: p["type"] in ("thesis", "intro", "numbers"), 12),
-            ("Bull Cases", lambda p: p["type"] == "bull", 8),
-            ("Key Risks", lambda p: p["type"] == "bear", 8),
-            ("Avoid", lambda p: p["type"] == "verdict" and p.get("tag") in ("PASS",), 5),
-        ]
-        used = set()       # tracks used post indices
-        seen_tickers = set()  # tracks tickers already shown (for dedup across sections)
+        """Render posts grouped as company threads — each company is a mini-story."""
+        from collections import OrderedDict
+
+        # Group posts by ticker
+        by_ticker: dict = OrderedDict()
+        for p in posts:
+            t = p["ticker"]
+            if t not in by_ticker:
+                by_ticker[t] = []
+            by_ticker[t].append(p)
+
+        # Sort tickers by best verdict priority (BUY first, then WATCH, then PASS/none)
+        def ticker_priority(ticker_posts):
+            best = 0
+            for p in ticker_posts:
+                best = max(best, p["priority"])
+            return best
+
+        sorted_tickers = sorted(by_ticker.keys(), key=lambda t: ticker_priority(by_ticker[t]), reverse=True)
+
+        # Order posts within each thread: verdict → intro → thesis → numbers → bull → bear → signal
+        type_order = {"verdict": 0, "intro": 1, "thesis": 2, "numbers": 3, "bull": 4, "bear": 5, "signal": 6}
+
         parts = []
-        featured_count = 0
-        for section_name, pred, max_items in section_order:
-            # For Deep Dives / Bull Cases / Key Risks: skip tickers already in Top Picks / On the Radar
-            dedup = section_name in ("Deep Dives", "Bull Cases", "Key Risks")
-            candidates = []
-            for i, p in enumerate(posts):
-                if i in used or not pred(p):
-                    continue
-                if dedup and p["ticker"] in seen_tickers:
-                    continue
-                candidates.append((i, p))
-                if len(candidates) >= max_items:
+        max_threads = 20  # Cap total threads
+
+        for i, ticker in enumerate(sorted_tickers[:max_threads]):
+            thread_posts = sorted(by_ticker[ticker], key=lambda p: type_order.get(p["type"], 99))
+            name = thread_posts[0]["name"]
+            # Get verdict tag if any
+            verdict_tag = ""
+            for p in thread_posts:
+                if p["type"] == "verdict":
+                    verdict_tag = p.get("tag", "")
                     break
-            if not candidates:
-                continue
-            parts.append(f'<div class="section-sep"><span>{section_name}</span></div>')
-            for idx, p in candidates:
-                used.add(idx)
-                seen_tickers.add(p["ticker"])
-                # Mark top 3 BUY verdicts as featured
-                is_featured = (section_name == "Top Picks" and featured_count < 3)
-                if is_featured:
-                    featured_count += 1
-                parts.append(self._render_feed_post(p, featured=is_featured))
+
+            tag_cls = {"BUY": "tag-verdict", "WATCH": "tag-numbers", "PASS": "tag-bear"}.get(verdict_tag, "tag-intro")
+
+            # Thread header
+            parts.append(f'''<div class="thread">
+    <div class="thread-head">
+        <span class="thread-ticker">{ticker}</span>
+        <span class="thread-name">{html.escape(name)}</span>
+        {f'<span class="post-tag {tag_cls}">{verdict_tag}</span>' if verdict_tag else ''}
+    </div>''')
+
+            # Thread posts (connected by line)
+            for j, p in enumerate(thread_posts):
+                is_last = (j == len(thread_posts) - 1)
+                parts.append(self._render_thread_post(p, is_last=is_last))
+
+            # Thread footer — link to full analysis
+            parts.append(f'''    <a href="/api/notes/{ticker}" class="thread-more">Read full analysis &rarr;</a>
+</div>''')
+
         return "\n".join(parts)
 
-    def _render_feed_post(self, post: Dict, featured: bool = False) -> str:
-        """Render a single feed post as HTML."""
+    def _render_thread_post(self, post: Dict, is_last: bool = False) -> str:
+        """Render a single post within a company thread."""
         ptype = post["type"]
         tag_class = f"tag-{ptype}"
-        post_class = f"post-{ptype}"
-        if featured:
-            post_class += " featured"
+        line_class = "" if not is_last else "tp-last"
 
         hero_html = ""
         if post.get("hero"):
@@ -3658,36 +3683,12 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
                 pill_parts.append(f'<span class="pill">{label} <span class="v {cls}">{val}</span></span>')
             pills_html = '<div class="pills">' + "".join(pill_parts) + '</div>'
 
-        # Confidence bar for featured cards with quality scores
-        conf_html = ""
-        if featured and post.get("pills"):
-            for label, val, _cls in post["pills"]:
-                if label == "Quality":
-                    try:
-                        score = int(val.split("/")[0])
-                        max_score = int(val.split("/")[1])
-                        pct = int(score / max_score * 100)
-                        tier = "high" if pct >= 72 else "mid" if pct >= 56 else "low"
-                        conf_html = f'''<div class="conf-bar">
-        <span class="conf-label">Conviction</span>
-        <div class="conf-track"><div class="conf-fill {tier}" style="width: {pct}%"></div></div>
-        <span class="conf-label">{score}/{max_score}</span>
+        return f'''    <div class="tp {line_class}">
+        <div class="tp-dot {tag_class}"></div>
+        <div class="tp-content">
+            <span class="tp-tag {tag_class}">{html.escape(post["tag"])}</span>
+            {hero_html}
+            <div class="post-body">{post["body"]}</div>
+            {pills_html}
+        </div>
     </div>'''
-                    except (ValueError, IndexError):
-                        pass
-                    break
-
-        ticker = post["ticker"]
-        return f'''<a href="/api/notes/{ticker}" class="post-link">
-<div class="post {post_class}">
-    <div class="post-head">
-        <span class="post-ticker">{ticker}</span>
-        <span class="post-co">{html.escape(post["name"])}</span>
-        <span class="post-tag {tag_class}">{html.escape(post["tag"])}</span>
-    </div>
-    {hero_html}
-    <div class="post-body">{post["body"]}</div>
-    {pills_html}
-    {conf_html}
-</div>
-</a>'''
