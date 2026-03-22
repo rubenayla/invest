@@ -3267,7 +3267,7 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 
 /* Thread container */
 .thread {{ background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
-           padding: 22px 24px 14px; margin-bottom: 14px; transition: border-color 0.2s; }}
+           padding: 22px 24px 14px; margin-bottom: 14px; transition: border-color 0.2s, box-shadow 0.2s; }}
 .thread:hover {{ border-color: var(--border-hover); }}
 .thread-head {{ display: flex; align-items: center; gap: 10px; margin-bottom: 0; cursor: pointer; user-select: none; }}
 .thread.open .thread-head {{ margin-bottom: 16px; }}
@@ -3287,6 +3287,25 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .thread-preview {{ font-size: 13px; line-height: 1.5; color: var(--t3); margin-top: 10px;
                    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }}
 .thread.open .thread-preview {{ display: none; }}
+
+/* Featured top picks — visual hierarchy */
+.thread.featured {{
+    background: linear-gradient(135deg, rgba(50,164,103,0.06) 0%, var(--panel) 40%, rgba(76,144,240,0.04) 100%);
+    border: 1px solid rgba(114,202,155,0.18);
+    box-shadow: 0 0 24px rgba(50,164,103,0.06), inset 0 1px 0 rgba(255,255,255,0.03);
+    padding: 26px 28px 16px;
+    margin-bottom: 18px;
+}}
+.thread.featured .thread-ticker {{ font-size: 26px; }}
+.thread.featured .thread-ev {{ font-size: 24px; }}
+.thread.featured .thread-preview {{ font-size: 14px; -webkit-line-clamp: 3; color: var(--t2); }}
+.thread.featured .thread-head {{ gap: 12px; }}
+
+/* Rank badge for top picks */
+.thread-rank {{ display: inline-flex; align-items: center; justify-content: center;
+                width: 22px; height: 22px; border-radius: 50%; font: 700 11px var(--mono);
+                background: rgba(114,202,155,0.15); color: var(--green); flex-shrink: 0; }}
+.thread:not(.featured) .thread-rank {{ display: none; }}
 
 /* Thread post (connected timeline) */
 .tp {{ display: flex; gap: 14px; position: relative; padding-bottom: 16px; }}
@@ -3664,6 +3683,7 @@ document.querySelectorAll('.thread-head').forEach(h => {{
 
         parts = []
         max_threads = 20  # Cap total threads
+        featured_count = 3  # Top N picks get visual prominence
 
         for i, ticker in enumerate(sorted_tickers[:max_threads]):
             thread_posts = sorted(by_ticker[ticker], key=lambda p: type_order.get(p["type"], 99))
@@ -3695,9 +3715,14 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                     preview_text = raw[:180].rstrip() + ("..." if len(raw) > 180 else "")
                     break
 
+            is_featured = i < featured_count and verdict_tag == "BUY"
+            thread_cls = "thread featured" if is_featured else "thread"
+            rank_html = f'<span class="thread-rank">{i + 1}</span>' if is_featured else ''
+
             # Thread header
-            parts.append(f'''<div class="thread">
+            parts.append(f'''<div class="{thread_cls}">
     <div class="thread-head">
+        {rank_html}
         <span class="thread-ticker">{ticker}</span>
         {ev_html}
         {f'<span class="post-tag {tag_cls}">{verdict_tag}</span>' if verdict_tag else ''}
