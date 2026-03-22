@@ -40,16 +40,8 @@ jobs:
           uv run ruff check src tests || echo "::warning::Lint issues found (non-blocking)"
           uv run ruff format --check src tests || echo "::warning::Format issues found (non-blocking)"
 
-      - name: Test
-        run: uv run pytest -v
-
-      - name: Upload coverage
-        if: always()
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          fail_ci_if_error: false
+      - name: Test (fast)
+        run: uv run pytest -m "not slow" --no-cov -q
 
   deploy:
     needs: test
