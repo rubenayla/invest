@@ -3265,9 +3265,10 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .feed-nav a {{ color: var(--t3); text-decoration: none; font: 500 14px var(--mono); }}
 .feed-nav a:hover {{ color: var(--blue); }}
 
+.post-link {{ text-decoration: none; color: inherit; display: block; }}
 .post {{ background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
          padding: 20px 22px; margin-bottom: 10px; border-left: 4px solid transparent;
-         transition: border-color 0.15s; }}
+         transition: border-color 0.15s, background 0.15s; cursor: pointer; }}
 .post:hover {{ border-color: var(--border-hover); }}
 .post-thesis  {{ border-left-color: var(--blue); }}
 .post-bull    {{ border-left-color: var(--green); }}
@@ -3676,9 +3677,11 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
                         pass
                     break
 
-        return f'''<div class="post {post_class}">
+        ticker = post["ticker"]
+        return f'''<a href="/api/notes/{ticker}" class="post-link">
+<div class="post {post_class}">
     <div class="post-head">
-        <span class="post-ticker">{post["ticker"]}</span>
+        <span class="post-ticker">{ticker}</span>
         <span class="post-co">{html.escape(post["name"])}</span>
         <span class="post-tag {tag_class}">{html.escape(post["tag"])}</span>
     </div>
@@ -3686,4 +3689,5 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
     <div class="post-body">{post["body"]}</div>
     {pills_html}
     {conf_html}
-</div>'''
+</div>
+</a>'''
