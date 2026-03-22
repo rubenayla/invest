@@ -3271,6 +3271,9 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .thread-head {{ display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }}
 .thread-ticker {{ font: 700 22px var(--mono); color: var(--t1); }}
 .thread-name {{ font-size: 14px; color: var(--t3); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
+.thread-ev {{ font: 700 18px var(--mono); }}
+.thread-ev.pos {{ color: var(--green); }}
+.thread-ev.neg {{ color: var(--red); }}
 .thread-more {{ display: block; text-align: right; font: 500 13px var(--mono); color: var(--blue);
                 text-decoration: none; padding: 8px 0 4px; border-top: 1px solid var(--border); margin-top: 8px; }}
 .thread-more:hover {{ color: var(--t1); }}
@@ -3646,12 +3649,21 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 
             tag_cls = {"BUY": "tag-verdict", "WATCH": "tag-numbers", "PASS": "tag-bear"}.get(verdict_tag, "tag-intro")
 
+            # Get EV% for the header
+            ev_html = ""
+            for p in thread_posts:
+                if p["type"] == "verdict" and p.get("hero"):
+                    val, label, cls = p["hero"]
+                    ev_html = f'<span class="thread-ev {cls}">{val}</span>'
+                    break
+
             # Thread header
             parts.append(f'''<div class="thread">
     <div class="thread-head">
         <span class="thread-ticker">{ticker}</span>
-        <span class="thread-name">{html.escape(name)}</span>
+        {ev_html}
         {f'<span class="post-tag {tag_cls}">{verdict_tag}</span>' if verdict_tag else ''}
+        <span class="thread-name">{html.escape(name)}</span>
     </div>''')
 
             # Thread posts (connected by line)
