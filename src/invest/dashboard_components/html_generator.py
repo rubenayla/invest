@@ -3267,16 +3267,26 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 
 /* Thread container */
 .thread {{ background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
-           padding: 22px 24px 14px; margin-bottom: 14px; }}
-.thread-head {{ display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }}
+           padding: 22px 24px 14px; margin-bottom: 14px; transition: border-color 0.2s; }}
+.thread:hover {{ border-color: var(--border-hover); }}
+.thread-head {{ display: flex; align-items: center; gap: 10px; margin-bottom: 0; cursor: pointer; user-select: none; }}
+.thread.open .thread-head {{ margin-bottom: 16px; }}
 .thread-ticker {{ font: 700 22px var(--mono); color: var(--t1); }}
 .thread-name {{ font-size: 14px; color: var(--t3); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
 .thread-ev {{ font: 700 18px var(--mono); }}
 .thread-ev.pos {{ color: var(--green); }}
 .thread-ev.neg {{ color: var(--red); }}
+.thread-chevron {{ color: var(--t3); font-size: 18px; transition: transform 0.25s ease; flex-shrink: 0; margin-left: auto; }}
+.thread.open .thread-chevron {{ transform: rotate(180deg); }}
+.thread-body {{ display: none; }}
+.thread.open .thread-body {{ display: block; }}
 .thread-more {{ display: block; text-align: right; font: 500 13px var(--mono); color: var(--blue);
                 text-decoration: none; padding: 8px 0 4px; border-top: 1px solid var(--border); margin-top: 8px; }}
 .thread-more:hover {{ color: var(--t1); }}
+/* Collapsed preview — one-line thesis */
+.thread-preview {{ font-size: 13px; line-height: 1.5; color: var(--t3); margin-top: 10px;
+                   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }}
+.thread.open .thread-preview {{ display: none; }}
 
 /* Thread post (connected timeline) */
 .tp {{ display: flex; gap: 14px; position: relative; padding-bottom: 16px; }}
@@ -3355,6 +3365,13 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
     </div>
     {cards_html}
 </div>
+<script>
+document.querySelectorAll('.thread-head').forEach(h => {{
+    h.addEventListener('click', () => {{
+        h.closest('.thread').classList.toggle('open');
+    }});
+}});
+</script>
 </body>
 </html>'''
 
@@ -3668,6 +3685,16 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
                     ev_html = f'<span class="thread-ev {cls}">{val}</span>'
                     break
 
+            # Get preview text from verdict body
+            preview_text = ""
+            for p in thread_posts:
+                if p["type"] == "verdict" and p.get("body"):
+                    # Strip HTML tags for preview
+                    import re as _re
+                    raw = _re.sub(r'<[^>]+>', '', p["body"])
+                    preview_text = raw[:180].rstrip() + ("..." if len(raw) > 180 else "")
+                    break
+
             # Thread header
             parts.append(f'''<div class="thread">
     <div class="thread-head">
@@ -3675,7 +3702,10 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
         {ev_html}
         {f'<span class="post-tag {tag_cls}">{verdict_tag}</span>' if verdict_tag else ''}
         <span class="thread-name">{html.escape(name)}</span>
-    </div>''')
+        <span class="thread-chevron">&#9662;</span>
+    </div>
+    {f'<div class="thread-preview">{html.escape(preview_text)}</div>' if preview_text else ''}
+    <div class="thread-body">''')
 
             # Thread posts (connected by line)
             for j, p in enumerate(thread_posts):
@@ -3684,6 +3714,7 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 
             # Thread footer — link to full analysis
             parts.append(f'''    <a href="/api/notes/{ticker}" class="thread-more">Read full analysis &rarr;</a>
+    </div>
 </div>''')
 
         return "\n".join(parts)
