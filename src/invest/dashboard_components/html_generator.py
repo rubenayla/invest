@@ -3233,7 +3233,7 @@ renderCards();
         if notes_dir is None:
             notes_dir = str(Path(__file__).parent.parent.parent.parent / "notes" / "companies")
         posts = self._generate_feed_posts(stocks_data, notes_dir)
-        cards_html = "\n".join(self._render_feed_post(p) for p in posts)
+        cards_html = self._render_feed_with_sections(posts)
 
         return f'''<!DOCTYPE html>
 <html lang="en">
@@ -3266,8 +3266,8 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .feed-nav a:hover {{ color: var(--blue); }}
 
 .post {{ background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
-         padding: 20px 22px; margin-bottom: 10px; border-left: 3px solid transparent;
-         transition: border-color 0.15s, transform 0.1s; }}
+         padding: 20px 22px; margin-bottom: 10px; border-left: 4px solid transparent;
+         transition: border-color 0.15s; }}
 .post:hover {{ border-color: var(--border-hover); }}
 .post-thesis  {{ border-left-color: var(--blue); }}
 .post-bull    {{ border-left-color: var(--green); }}
@@ -3277,7 +3277,7 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .post-verdict {{ border-left-color: var(--green); }}
 .post-intro   {{ border-left-color: var(--t3); }}
 
-.post-head {{ display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }}
+.post-head {{ display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }}
 .post-ticker {{ font: 700 18px var(--mono); color: var(--t1); }}
 .post-co {{ font-size: 14px; color: var(--t3); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
 .post-tag {{ font: 700 11px/1 var(--mono); padding: 4px 9px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }}
@@ -3289,11 +3289,16 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .tag-verdict {{ background: var(--green-bg); color: var(--green); }}
 .tag-intro   {{ background: rgba(171,179,191,0.08); color: var(--t3); }}
 
-.post-body {{ font-size: 16px; line-height: 1.65; color: var(--t2); }}
+/* Hero stat — big prominent number */
+.post-hero {{ display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }}
+.hero-val {{ font: 700 28px var(--mono); }}
+.hero-val.pos {{ color: var(--green); }}
+.hero-val.neg {{ color: var(--red); }}
+.hero-label {{ font: 500 13px var(--mono); color: var(--t3); }}
+
+.post-body {{ font-size: 15px; line-height: 1.6; color: var(--t2); }}
 .post-body b, .post-body strong {{ color: var(--t1); font-weight: 600; }}
-.post-body .num {{ font-family: var(--mono); font-weight: 600; }}
-.post-body .pos {{ color: var(--green); }}
-.post-body .neg {{ color: var(--red); }}
+.post-body .hl {{ color: var(--t1); font-family: var(--mono); font-weight: 600; }}
 
 .pills {{ display: flex; flex-wrap: wrap; gap: 7px; margin-top: 12px; }}
 .pill {{ font: 500 12px var(--mono); padding: 4px 10px; border-radius: 6px;
@@ -3302,8 +3307,9 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .pill .pos {{ color: var(--green); font-weight: 600; }}
 .pill .neg {{ color: var(--red); font-weight: 600; }}
 
-.section-label {{ font: 600 11px var(--mono); text-transform: uppercase; letter-spacing: 1.5px;
-                  color: var(--t3); padding: 18px 0 6px; }}
+.section-sep {{ display: flex; align-items: center; gap: 12px; padding: 22px 0 10px; }}
+.section-sep span {{ font: 700 12px var(--mono); text-transform: uppercase; letter-spacing: 2px; color: var(--t3); white-space: nowrap; }}
+.section-sep::after {{ content: ''; flex: 1; height: 1px; background: var(--border); }}
 </style>
 </head>
 <body>
@@ -3348,8 +3354,8 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
                     break
         return sections
 
-    def _first_sentences(self, text: str, n: int = 2) -> str:
-        """Extract first n sentences from text, cleaning markdown."""
+    def _first_sentences(self, text: str, n: int = 2, max_chars: int = 250) -> str:
+        """Extract first n sentences from text, cleaning markdown. Keeps it punchy."""
         import re
         # Remove markdown links, bold markers, pipe tables, bullet prefixes
         clean = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
@@ -3357,10 +3363,14 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
         clean = re.sub(r'\|[^\n]+\|', '', clean)
         clean = re.sub(r'^[-*]\s+', '', clean, flags=re.MULTILINE)
         clean = re.sub(r'\n+', ' ', clean).strip()
+        clean = re.sub(r'\s+', ' ', clean)
         # Split on sentence boundaries
         parts = re.split(r'(?<=[.!?])\s+', clean)
         result = " ".join(parts[:n]).strip()
-        return result if result else clean[:200]
+        # Truncate if still too long
+        if len(result) > max_chars:
+            result = result[:max_chars].rsplit(' ', 1)[0] + "\u2026"
+        return result if result else clean[:max_chars]
 
     def _bullet_items(self, text: str, n: int = 3) -> List[str]:
         """Extract first n bullet points from markdown text."""
@@ -3407,7 +3417,7 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
             # --- INTRO: What the company does ---
             situation = sections.get("Situation Summary", "")
             if situation:
-                intro = self._first_sentences(situation, 2)
+                intro = self._first_sentences(situation, 2, 200)
                 pills = []
                 if price:
                     pills.append(("Price", f"${price:.2f}", ""))
@@ -3432,7 +3442,7 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
                         our_view = line.lstrip("- ").replace("**Our view:**", "").replace("**Our view:** ", "").strip()
                         break
                 if our_view:
-                    thesis = self._first_sentences(our_view, 3)
+                    thesis = self._first_sentences(our_view, 2, 220)
                     posts.append({
                         "priority": 190 if verdict == "BUY" else 90,
                         "type": "thesis", "tag": "The Edge",
@@ -3495,32 +3505,37 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
             dollars = insider.get("dollar_conviction", 0)
             if buy_count >= 2 and dollars >= 100_000:
                 dollar_str = f"${dollars / 1_000_000:.1f}M" if dollars >= 1_000_000 else f"${dollars / 1_000:.0f}K"
-                body = f"<strong>{buy_count} insider purchases</strong> totaling {dollar_str} in the past 6 months."
+                body = f"{buy_count} insider purchases totaling {dollar_str} in the past 6 months."
                 if insider.get("sell_trend") and insider["sell_trend"] < 0.8:
-                    body += f" Meanwhile, insider selling is {insider['sell_trend']:.0%} of its historical average \u2014 they're holding."
+                    body += f" Selling is {insider['sell_trend']:.0%} of normal \u2014 they're holding."
+                hero = (f"{buy_count}", "insider buys", "pos")
                 posts.append({
                     "priority": 195,
                     "type": "signal", "tag": "Insider signal",
                     "ticker": ticker, "name": name,
-                    "body": body, "pills": [],
+                    "hero": hero, "body": body, "pills": [],
                 })
 
             # --- VERDICT ---
             verdict_section = sections.get("Verdict", "")
             if verdict_section and verdict:
-                verdict_text = self._first_sentences(verdict_section.split("\n", 1)[-1] if "\n" in verdict_section else verdict_section, 2)
+                # Skip the first line if it's the verdict label
+                lines = verdict_section.split("\n")
+                text_start = 1 if lines and lines[0].startswith("**") else 0
+                verdict_text = self._first_sentences("\n".join(lines[text_start:]), 2, 200)
                 pills = []
-                if ev_pct:
-                    pills.append(("EV", f"{ev_pct:+.0f}%", "pos" if ev_pct > 0 else "neg"))
                 if entry_price:
                     pills.append(("Entry", f"${entry_price}", ""))
                 if quality:
                     pills.append(("Quality", f"{quality}/25", ""))
+                hero = None
+                if ev_pct:
+                    hero = (f"{ev_pct:+.0f}%", "expected value", "pos" if ev_pct > 0 else "neg")
                 posts.append({
                     "priority": 210 if verdict == "BUY" else 95 if verdict == "WATCH" else 30,
                     "type": "verdict", "tag": verdict,
                     "ticker": ticker, "name": name,
-                    "body": verdict_text, "pills": pills,
+                    "hero": hero, "body": verdict_text, "pills": pills,
                 })
 
         # Sort by priority, then interleave by ticker to avoid clustering
@@ -3551,11 +3566,45 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 
         return result
 
+    def _render_feed_with_sections(self, posts: List[Dict]) -> str:
+        """Render posts grouped into sections with headers."""
+        # Group: verdicts first, then signals, then thesis/intro, then bull/bear
+        section_order = [
+            ("Top Picks", lambda p: p["type"] == "verdict" and p.get("tag") in ("BUY",)),
+            ("Signals", lambda p: p["type"] == "signal"),
+            ("On the Radar", lambda p: p["type"] == "verdict" and p.get("tag") in ("WATCH",)),
+            ("Deep Dives", lambda p: p["type"] in ("thesis", "intro", "numbers")),
+            ("Bull Cases", lambda p: p["type"] == "bull"),
+            ("Key Risks", lambda p: p["type"] == "bear"),
+            ("Avoid", lambda p: p["type"] == "verdict" and p.get("tag") in ("PASS",)),
+        ]
+        used = set()
+        parts = []
+        for section_name, pred in section_order:
+            section_posts = [p for i, p in enumerate(posts) if pred(p) and i not in used]
+            if not section_posts:
+                continue
+            parts.append(f'<div class="section-sep"><span>{section_name}</span></div>')
+            for p in section_posts:
+                idx = posts.index(p)
+                used.add(idx)
+                parts.append(self._render_feed_post(p))
+        # Any remaining
+        for i, p in enumerate(posts):
+            if i not in used:
+                parts.append(self._render_feed_post(p))
+        return "\n".join(parts)
+
     def _render_feed_post(self, post: Dict) -> str:
         """Render a single feed post as HTML."""
         ptype = post["type"]
         tag_class = f"tag-{ptype}"
         post_class = f"post-{ptype}"
+
+        hero_html = ""
+        if post.get("hero"):
+            val, label, cls = post["hero"]
+            hero_html = f'<div class="post-hero"><span class="hero-val {cls}">{val}</span><span class="hero-label">{label}</span></div>'
 
         pills_html = ""
         if post.get("pills"):
@@ -3570,6 +3619,7 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
         <span class="post-co">{html.escape(post["name"])}</span>
         <span class="post-tag {tag_class}">{html.escape(post["tag"])}</span>
     </div>
+    {hero_html}
     <div class="post-body">{post["body"]}</div>
     {pills_html}
 </div>'''
