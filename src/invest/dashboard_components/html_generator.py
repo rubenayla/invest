@@ -3267,8 +3267,14 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 
 /* Thread container */
 .thread {{ background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
-           padding: 22px 24px 14px; margin-bottom: 14px; transition: border-color 0.2s, box-shadow 0.2s; }}
+           padding: 22px 24px 14px; margin-bottom: 14px; transition: border-color 0.2s, box-shadow 0.2s;
+           border-left: 3px solid var(--thread-heat, var(--border)); position: relative;
+           overflow: hidden; }}
+.thread::before {{ content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 60px;
+                   background: linear-gradient(90deg, var(--thread-glow, transparent), transparent);
+                   pointer-events: none; opacity: 0.5; }}
 .thread:hover {{ border-color: var(--border-hover); }}
+.thread:hover::before {{ opacity: 0.8; }}
 .thread-head {{ display: flex; align-items: center; gap: 10px; margin-bottom: 0; cursor: pointer; user-select: none; }}
 .thread.open .thread-head {{ margin-bottom: 16px; }}
 .thread-ticker {{ font: 700 22px var(--mono); color: var(--t1); }}
@@ -3292,7 +3298,8 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .thread.featured {{
     background: linear-gradient(135deg, rgba(50,164,103,0.06) 0%, var(--panel) 40%, rgba(76,144,240,0.04) 100%);
     border: 1px solid rgba(114,202,155,0.18);
-    box-shadow: 0 0 24px rgba(50,164,103,0.06), inset 0 1px 0 rgba(255,255,255,0.03);
+    border-left: 4px solid rgba(114,202,155,0.9);
+    box-shadow: 0 0 24px rgba(50,164,103,0.08), inset 0 1px 0 rgba(255,255,255,0.03);
     padding: 26px 28px 16px;
     margin-bottom: 18px;
 }}
@@ -3699,11 +3706,31 @@ document.querySelectorAll('.thread-head').forEach(h => {{
 
             # Get EV% for the header
             ev_html = ""
+            ev_numeric = 0
             for p in thread_posts:
                 if p["type"] == "verdict" and p.get("hero"):
                     val, label, cls = p["hero"]
                     ev_html = f'<span class="thread-ev {cls}">{val}</span>'
+                    try:
+                        ev_numeric = float(val.replace("%", "").replace("+", ""))
+                    except (ValueError, TypeError):
+                        pass
                     break
+
+            # Heat style — left border color intensity maps to upside magnitude
+            if ev_numeric > 0:
+                # Map 0-50% to low-high intensity green glow
+                intensity = min(ev_numeric / 50.0, 1.0)
+                alpha_border = 0.3 + intensity * 0.7  # 0.3 to 1.0
+                alpha_glow = intensity * 0.15  # 0 to 0.15
+                heat_style = f'style="--thread-heat: rgba(114,202,155,{alpha_border:.2f}); --thread-glow: rgba(50,164,103,{alpha_glow:.2f});"'
+            elif ev_numeric < 0:
+                intensity = min(abs(ev_numeric) / 30.0, 1.0)
+                alpha_border = 0.3 + intensity * 0.7
+                alpha_glow = intensity * 0.12
+                heat_style = f'style="--thread-heat: rgba(231,106,110,{alpha_border:.2f}); --thread-glow: rgba(205,66,70,{alpha_glow:.2f});"'
+            else:
+                heat_style = ''
 
             # Get preview text from verdict body
             preview_text = ""
@@ -3720,7 +3747,7 @@ document.querySelectorAll('.thread-head').forEach(h => {{
             rank_html = f'<span class="thread-rank">{i + 1}</span>' if is_featured else ''
 
             # Thread header
-            parts.append(f'''<div class="{thread_cls}">
+            parts.append(f'''<div class="{thread_cls}" {heat_style}>
     <div class="thread-head">
         {rank_html}
         <span class="thread-ticker">{ticker}</span>
