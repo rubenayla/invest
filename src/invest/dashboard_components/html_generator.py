@@ -3622,14 +3622,25 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
                 by_ticker[t] = []
             by_ticker[t].append(p)
 
-        # Sort tickers by best verdict priority (BUY first, then WATCH, then PASS/none)
-        def ticker_priority(ticker_posts):
-            best = 0
-            for p in ticker_posts:
-                best = max(best, p["priority"])
-            return best
+        # Sort tickers: verdict tier first (BUY > WATCH > PASS > none), then EV% within tier
+        verdict_rank = {"BUY": 3, "WATCH": 2, "PASS": 1}
 
-        sorted_tickers = sorted(by_ticker.keys(), key=lambda t: ticker_priority(by_ticker[t]), reverse=True)
+        def ticker_sort_key(ticker):
+            posts_for_t = by_ticker[ticker]
+            tier = 0
+            ev = 0
+            for p in posts_for_t:
+                if p["type"] == "verdict":
+                    tier = verdict_rank.get(p.get("tag", ""), 0)
+                    if p.get("hero"):
+                        try:
+                            ev = float(p["hero"][0].replace("%", "").replace("+", ""))
+                        except (ValueError, TypeError):
+                            pass
+                    break
+            return (tier, ev)
+
+        sorted_tickers = sorted(by_ticker.keys(), key=ticker_sort_key, reverse=True)
 
         # Order posts within each thread: verdict → intro → thesis → numbers → bull → bear → signal
         type_order = {"verdict": 0, "intro": 1, "thesis": 2, "numbers": 3, "bull": 4, "bear": 5, "signal": 6}
