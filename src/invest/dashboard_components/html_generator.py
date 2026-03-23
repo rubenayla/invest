@@ -3875,10 +3875,10 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                     preview_tease = rest[:200].rstrip() + ("..." if len(rest) > 200 else "")
 
             is_featured = i < featured_count and verdict_tag == "BUY"
-            # Auto-expand only the #1 pick for immediate depth;
-            # #2-3 stay featured but collapsed so multiple sparks are visible above the fold
-            is_auto_open = is_featured and i == 0
-            thread_cls = "thread featured open" if is_auto_open else ("thread featured" if is_featured else "thread")
+            # All threads start collapsed — maximizes above-the-fold density
+            # so users see 3-4 spark numbers at once (slot machine effect).
+            # Featured cards are visually prominent but collapsed for scan speed.
+            thread_cls = "thread featured" if is_featured else "thread"
             rank_html = f'<span class="thread-rank">{i + 1}</span>' if is_featured else ''
 
             # Build heat bar HTML
