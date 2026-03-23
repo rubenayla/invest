@@ -3330,6 +3330,20 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .heat-fill.heat-green {{ background: linear-gradient(90deg, rgba(114,202,155,0.7), var(--green)); }}
 .heat-fill.heat-red {{ background: linear-gradient(90deg, rgba(231,106,110,0.7), var(--red)); }}
 
+/* Price vs Entry — deal-hunting indicator */
+.thread-entry-gauge {{ display: flex; align-items: center; gap: 8px; margin-top: 10px; }}
+.entry-label {{ font: 500 10px var(--mono); color: var(--t3); text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }}
+.entry-bar-wrap {{ flex: 1; position: relative; height: 16px; display: flex; align-items: center; }}
+.entry-bar-track {{ width: 100%; height: 4px; background: var(--elevated); border-radius: 2px; position: relative; }}
+.entry-bar-marker {{ position: absolute; top: 50%; width: 1px; height: 12px; background: var(--t3);
+                     transform: translateY(-50%); opacity: 0.5; }}
+.entry-bar-fill {{ position: absolute; left: 0; top: 0; height: 100%; border-radius: 2px; }}
+.entry-bar-fill.at-discount {{ background: linear-gradient(90deg, rgba(114,202,155,0.4), var(--green)); }}
+.entry-bar-fill.at-premium {{ background: linear-gradient(90deg, rgba(231,106,110,0.4), var(--red)); }}
+.entry-delta {{ font: 700 12px var(--mono); white-space: nowrap; }}
+.entry-delta.discount {{ color: var(--green); }}
+.entry-delta.premium {{ color: var(--red); }}
+
 /* Key metric pills shown in collapsed state */
 .thread-metrics {{ display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }}
 /* thread-metrics hidden via .thread-collapsed parent */
@@ -3846,6 +3860,52 @@ document.querySelectorAll('.thread.featured').forEach(t => t.classList.add('open
             if metric_parts:
                 metrics_html = '<div class="thread-metrics">' + "".join(metric_parts[:4]) + '</div>'
 
+            # Build price-vs-entry gauge for collapsed state
+            entry_gauge_html = ""
+            current_price = None
+            entry_price_val = None
+            # Extract price from intro/numbers pills, entry from verdict/numbers pills
+            for p in thread_posts:
+                for label, val, cls in (p.get("pills") or []):
+                    if label == "Price":
+                        try:
+                            current_price = float(val.replace("$", "").replace(",", ""))
+                        except (ValueError, TypeError):
+                            pass
+                    if label == "Entry":
+                        try:
+                            entry_price_val = float(val.replace("$", "").replace(",", ""))
+                        except (ValueError, TypeError):
+                            pass
+            if current_price and entry_price_val and entry_price_val > 0:
+                pct_diff = (current_price - entry_price_val) / entry_price_val * 100
+                if pct_diff <= 0:
+                    # At or below entry — green, showing discount
+                    delta_str = f"{pct_diff:.1f}%"
+                    delta_cls = "discount"
+                    fill_cls = "at-discount"
+                    # Bar fills from right to left — how deep the discount is
+                    # 0% discount = 50% fill (at entry), -20% = 30%, capped
+                    fill_pct = max(10, min(50 + pct_diff, 50))
+                    marker_pos = 50  # entry point marker always at midpoint
+                else:
+                    # Above entry — red, showing premium
+                    delta_str = f"+{pct_diff:.1f}%"
+                    delta_cls = "premium"
+                    fill_cls = "at-premium"
+                    fill_pct = min(50 + pct_diff, 90)
+                    marker_pos = 50
+                entry_gauge_html = f'''<div class="thread-entry-gauge">
+                    <span class="entry-label">vs entry</span>
+                    <div class="entry-bar-wrap">
+                        <div class="entry-bar-track">
+                            <div class="entry-bar-fill {fill_cls}" style="width:{fill_pct:.0f}%"></div>
+                            <div class="entry-bar-marker" style="left:{marker_pos}%"></div>
+                        </div>
+                    </div>
+                    <span class="entry-delta {delta_cls}">{delta_str}</span>
+                </div>'''
+
             # Build spark HTML — big EV% number on the right
             spark_html = ""
             if ev_numeric != 0:
@@ -3872,6 +3932,7 @@ document.querySelectorAll('.thread.featured').forEach(t => t.classList.add('open
             {f'<div class="thread-hook">{html.escape(preview_hook)}</div>' if preview_hook else ''}
             {f'<div class="thread-tease">{html.escape(preview_tease)}</div>' if preview_tease else ''}
             {metrics_html}
+            {entry_gauge_html}
             {f'<div class="thread-post-count">{len(thread_posts)} insights inside</div>' if len(thread_posts) > 2 else ''}
         </div>
         {spark_html}
