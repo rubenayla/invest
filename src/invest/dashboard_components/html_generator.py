@@ -3803,27 +3803,39 @@ document.querySelectorAll('.thread.featured').forEach(t => t.classList.add('open
             else:
                 heat_style = ''
 
-            # Get preview: split into hook (first sentence) + tease (rest)
+            # Get preview: hook (thesis/edge) + tease (verdict)
+            # Thesis text is the variant perception — inherently curiosity-inducing
+            # ("The market is mispricing X because...") vs verdict which is dry summary.
+            # Use thesis as hook to drive clicks, verdict as supporting tease.
+            import re as _re
             preview_hook = ""
             preview_tease = ""
+            verdict_text = ""
+            thesis_text = ""
             for p in thread_posts:
-                if p["type"] == "verdict" and p.get("body"):
-                    import re as _re
-                    raw = _re.sub(r'<[^>]+>', '', p["body"])
-                    # Split on first sentence boundary
-                    sent_split = _re.split(r'(?<=[.!?])\s+', raw, maxsplit=1)
-                    preview_hook = sent_split[0].strip()
-                    if len(sent_split) > 1:
-                        rest = sent_split[1].strip()
-                        preview_tease = rest[:120].rstrip() + ("..." if len(rest) > 120 else "")
-                    break
-            # Fallback: try thesis/edge post for the hook if verdict has no body
-            if not preview_hook:
-                for p in thread_posts:
-                    if p["type"] == "thesis" and p.get("body"):
-                        raw = _re.sub(r'<[^>]+>', '', p["body"])
-                        preview_hook = raw[:140].rstrip() + ("..." if len(raw) > 140 else "")
-                        break
+                if p["type"] == "verdict" and p.get("body") and not verdict_text:
+                    verdict_text = _re.sub(r'<[^>]+>', '', p["body"])
+                if p["type"] == "thesis" and p.get("body") and not thesis_text:
+                    thesis_text = _re.sub(r'<[^>]+>', '', p["body"])
+            if thesis_text:
+                # Thesis as hook — truncate to one punchy line
+                sent_split = _re.split(r'(?<=[.!?])\s+', thesis_text, maxsplit=1)
+                preview_hook = sent_split[0].strip()
+                if len(preview_hook) > 140:
+                    preview_hook = preview_hook[:137].rstrip() + "..."
+                # Verdict first sentence as tease — the "what" after the "why"
+                if verdict_text:
+                    v_split = _re.split(r'(?<=[.!?])\s+', verdict_text, maxsplit=1)
+                    preview_tease = v_split[0].strip()
+                    if len(preview_tease) > 120:
+                        preview_tease = preview_tease[:117].rstrip() + "..."
+            elif verdict_text:
+                # No thesis — fall back to verdict as hook
+                sent_split = _re.split(r'(?<=[.!?])\s+', verdict_text, maxsplit=1)
+                preview_hook = sent_split[0].strip()
+                if len(sent_split) > 1:
+                    rest = sent_split[1].strip()
+                    preview_tease = rest[:120].rstrip() + ("..." if len(rest) > 120 else "")
 
             is_featured = i < featured_count and verdict_tag == "BUY"
             thread_cls = "thread featured open" if is_featured else "thread"
