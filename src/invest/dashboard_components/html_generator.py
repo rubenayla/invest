@@ -3474,7 +3474,7 @@ document.querySelectorAll('.thread-head').forEach(h => {{
         h.closest('.thread').classList.toggle('open');
     }});
 }});
-// Featured threads start collapsed for doomscroll density — tap to expand
+// Only #1 pick auto-expands; rest stay collapsed for doomscroll density
 </script>
 </body>
 </html>'''
@@ -3875,7 +3875,10 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                     preview_tease = rest[:200].rstrip() + ("..." if len(rest) > 200 else "")
 
             is_featured = i < featured_count and verdict_tag == "BUY"
-            thread_cls = "thread featured" if is_featured else "thread"
+            # Auto-expand only the #1 pick for immediate depth;
+            # #2-3 stay featured but collapsed so multiple sparks are visible above the fold
+            is_auto_open = is_featured and i == 0
+            thread_cls = "thread featured open" if is_auto_open else ("thread featured" if is_featured else "thread")
             rank_html = f'<span class="thread-rank">{i + 1}</span>' if is_featured else ''
 
             # Build heat bar HTML
