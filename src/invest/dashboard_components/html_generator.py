@@ -3571,16 +3571,31 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                 continue  # Skip stocks without .md — no rich content for the feed
 
             # --- INTRO: What the company does ---
-            situation = sections.get("Situation Summary", "")
-            if situation:
-                intro = self._first_sentences(situation, 2, 200)
+            # Try Business Quality moat line first (describes the actual business),
+            # fall back to Situation Summary if not available
+            intro = ""
+            bq = sections.get("Business Quality", "") or ""
+            for line in bq.split("\n"):
+                if "Moat" in line and "|" in line:
+                    parts = line.split("|")
+                    if len(parts) >= 4:
+                        moat_desc = parts[3].strip()
+                        if moat_desc:
+                            intro = self._first_sentences(moat_desc, 2, 280)
+                    break
+            if not intro:
+                situation = sections.get("Situation Summary", "")
+                if situation:
+                    intro = self._first_sentences(situation, 3, 280)
+            if intro:
                 pills = []
                 if price:
                     pills.append(("Price", f"${price:.2f}", ""))
                 if ev_pct:
                     pills.append(("EV", f"{ev_pct:+.0f}%", "pos" if ev_pct > 0 else "neg"))
                 if quality:
-                    pills.append(("Quality", f"{quality}/25", ""))
+                    q_str = str(quality)
+                    pills.append(("Quality", q_str if "/25" in q_str else f"{q_str}/25", ""))
                 posts.append({
                     "priority": 200 if verdict == "BUY" else 100 if verdict == "WATCH" else 50,
                     "type": "intro", "tag": "What they do",
@@ -3598,7 +3613,7 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                         our_view = line.lstrip("- ").replace("**Our view:**", "").replace("**Our view:** ", "").strip()
                         break
                 if our_view:
-                    thesis = self._first_sentences(our_view, 2, 220)
+                    thesis = self._first_sentences(our_view, 3, 300)
                     posts.append({
                         "priority": 190 if verdict == "BUY" else 90,
                         "type": "thesis", "tag": "The Edge",
@@ -3681,12 +3696,13 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                 # Skip the first line if it's the verdict label
                 lines = verdict_section.split("\n")
                 text_start = 1 if lines and lines[0].startswith("**") else 0
-                verdict_text = self._first_sentences("\n".join(lines[text_start:]), 2, 200)
+                verdict_text = self._first_sentences("\n".join(lines[text_start:]), 3, 300)
                 pills = []
                 if entry_price:
                     pills.append(("Entry", f"${entry_price}", ""))
                 if quality:
-                    pills.append(("Quality", f"{quality}/25", ""))
+                    q_str = str(quality)
+                    pills.append(("Quality", q_str if "/25" in q_str else f"{q_str}/25", ""))
                 hero = None
                 if ev_pct:
                     hero = (f"{ev_pct:+.0f}%", "expected value", "pos" if ev_pct > 0 else "neg")
