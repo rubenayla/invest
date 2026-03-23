@@ -3981,10 +3981,23 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                     tease_words = _sig_words(preview_tease)
                     if hook_words and tease_words:
                         overlap = len(hook_words & tease_words) / min(len(hook_words), len(tease_words))
-                        if overlap > 0.4 and s2:
-                            preview_tease = s2
-                            if len(preview_tease) > 200:
-                                preview_tease = preview_tease[:197].rstrip() + "..."
+                        if overlap > 0.4:
+                            # Current tease overlaps hook — try the next sentence
+                            s3 = v_split[2].strip() if len(v_split) > 2 else ""
+                            if not s3:
+                                # v_split was capped at maxsplit=2; split further
+                                remainder = _re.split(r'(?<=[.!?])\s+', verdict_text)
+                                # Find first sentence that doesn't overlap with hook
+                                for candidate in remainder[1:]:
+                                    cand_words = _sig_words(candidate.strip())
+                                    if cand_words and hook_words:
+                                        cand_overlap = len(hook_words & cand_words) / min(len(hook_words), len(cand_words))
+                                        if cand_overlap <= 0.4:
+                                            s3 = candidate.strip()
+                                            break
+                            if s3:
+                                preview_tease = s3
+                            # else keep current tease — better than nothing
                     if len(preview_tease) > 200:
                         preview_tease = preview_tease[:197].rstrip() + "..."
             elif verdict_text:
