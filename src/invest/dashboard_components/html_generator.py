@@ -3433,6 +3433,7 @@ document.querySelectorAll('.thread-head').forEach(h => {{
         h.closest('.thread').classList.toggle('open');
     }});
 }});
+document.querySelectorAll('.thread.featured').forEach(t => t.classList.add('open'));
 </script>
 </body>
 </html>'''
@@ -3790,7 +3791,7 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                     break
 
             is_featured = i < featured_count and verdict_tag == "BUY"
-            thread_cls = "thread featured" if is_featured else "thread"
+            thread_cls = "thread featured open" if is_featured else "thread"
             rank_html = f'<span class="thread-rank">{i + 1}</span>' if is_featured else ''
 
             # Build heat bar HTML
