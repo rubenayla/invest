@@ -3560,6 +3560,7 @@ document.querySelectorAll('.thread-head').forEach(h => {{
         # Remove markdown links, bold markers, pipe tables, bullet prefixes
         clean = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)
         clean = re.sub(r'\*\*([^*]+)\*\*', r'\1', clean)
+        clean = re.sub(r'\*([^*]+)\*', r'\1', clean)  # italic *text*
         clean = re.sub(r'\|[^\n]+\|', '', clean)
         clean = re.sub(r'^[-*]\s+', '', clean, flags=re.MULTILINE)
         clean = re.sub(r'\n+', ' ', clean).strip()
@@ -3581,6 +3582,7 @@ document.querySelectorAll('.thread-head').forEach(h => {{
             if m:
                 # Clean markdown formatting
                 item = re.sub(r'\*\*([^*]+)\*\*', r'\1', m.group(1))
+                item = re.sub(r'\*([^*]+)\*', r'\1', item)  # italic *text*
                 items.append(item.strip())
                 if len(items) >= n:
                     break
