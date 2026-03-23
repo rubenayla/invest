@@ -3297,7 +3297,7 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 
 /* Preview text — hook + tease pattern */
 .thread-hook {{ font-size: 14.5px; line-height: 1.45; color: var(--t1); font-weight: 600;
-               display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }}
+               display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }}
 .thread-tease {{ font-size: 13px; line-height: 1.5; color: var(--t3); margin-top: 4px;
                 display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }}
 .thread-post-count {{ font: 500 11px var(--mono); color: var(--t3); margin-top: 6px;
@@ -3818,11 +3818,26 @@ document.querySelectorAll('.thread.featured').forEach(t => t.classList.add('open
                 if p["type"] == "thesis" and p.get("body") and not thesis_text:
                     thesis_text = _re.sub(r'<[^>]+>', '', p["body"])
             if thesis_text:
-                # Thesis as hook — truncate to one punchy line
-                sent_split = _re.split(r'(?<=[.!?])\s+', thesis_text, maxsplit=1)
+                # Thesis as hook — strip generic "The market is..." openings
+                # to surface the unique insight immediately (otherwise every
+                # collapsed card looks identical at a glance).
+                hook_text = thesis_text.strip()
+                # Strip common boilerplate prefixes that kill scannability
+                for prefix in [
+                    "The market is over-",      # -> "penalizing..."
+                    "The market is under",       # -> "estimating..."
+                    "The market is ",            # -> "pricing X as if..."
+                    "The consensus is ",         # -> "directionally correct but..."
+                ]:
+                    if hook_text.startswith(prefix):
+                        remainder = hook_text[len(prefix):]
+                        # Capitalize the first letter after stripping
+                        hook_text = remainder[0].upper() + remainder[1:] if remainder else hook_text
+                        break
+                sent_split = _re.split(r'(?<=[.!?])\s+', hook_text, maxsplit=1)
                 preview_hook = sent_split[0].strip()
-                if len(preview_hook) > 140:
-                    preview_hook = preview_hook[:137].rstrip() + "..."
+                if len(preview_hook) > 160:
+                    preview_hook = preview_hook[:157].rstrip() + "..."
                 # Verdict first sentence as tease — the "what" after the "why"
                 if verdict_text:
                     v_split = _re.split(r'(?<=[.!?])\s+', verdict_text, maxsplit=1)
