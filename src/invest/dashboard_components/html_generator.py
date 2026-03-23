@@ -3273,13 +3273,13 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .thread::before {{ content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 60px;
                    background: linear-gradient(90deg, var(--thread-glow, transparent), transparent);
                    pointer-events: none; opacity: 0.5; }}
-.thread:hover {{ border-color: var(--border-hover); }}
+.thread:hover {{ border-color: var(--border-hover); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }}
 .thread:hover::before {{ opacity: 0.8; }}
 .thread-head {{ display: flex; align-items: center; gap: 10px; margin-bottom: 0; cursor: pointer; user-select: none; }}
 .thread.open .thread-head {{ margin-bottom: 16px; }}
 .thread-ticker {{ font: 700 22px var(--mono); color: var(--t1); }}
 .thread-name {{ font-size: 14px; color: var(--t3); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
-.thread-ev {{ font: 700 18px var(--mono); }}
+.thread-ev {{ font: 700 18px var(--mono); display: none; }}
 .thread-ev.pos {{ color: var(--green); }}
 .thread-ev.neg {{ color: var(--red); }}
 .thread-chevron {{ color: var(--t3); font-size: 18px; transition: transform 0.25s ease; flex-shrink: 0; margin-left: auto; }}
@@ -3289,10 +3289,30 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .thread-more {{ display: block; text-align: right; font: 500 13px var(--mono); color: var(--blue);
                 text-decoration: none; padding: 8px 0 4px; border-top: 1px solid var(--border); margin-top: 8px; }}
 .thread-more:hover {{ color: var(--t1); }}
-/* Collapsed preview — one-line thesis */
-.thread-preview {{ font-size: 14px; line-height: 1.55; color: var(--t2); margin-top: 10px;
+
+/* Collapsed layout — two-column: text left, big EV% spark right */
+.thread-collapsed {{ display: flex; gap: 16px; margin-top: 10px; }}
+.thread.open .thread-collapsed {{ display: none; }}
+.thread-left {{ flex: 1; min-width: 0; }}
+
+/* Preview text */
+.thread-preview {{ font-size: 14px; line-height: 1.55; color: var(--t2);
                    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }}
-.thread.open .thread-preview {{ display: none; }}
+
+/* Big EV spark — the dopamine hit */
+.thread-spark {{ display: flex; flex-direction: column; align-items: center; justify-content: center;
+                 flex-shrink: 0; min-width: 80px; padding: 8px 12px; border-radius: 10px;
+                 background: var(--spark-bg, var(--elevated)); position: relative; overflow: hidden; }}
+.thread-spark::before {{ content: ''; position: absolute; inset: 0;
+                         background: radial-gradient(circle at center, var(--spark-glow, transparent), transparent 70%);
+                         opacity: 0.5; pointer-events: none; }}
+.spark-val {{ font: 800 28px var(--mono); letter-spacing: -1px; position: relative; z-index: 1; }}
+.spark-val.pos {{ color: var(--green); }}
+.spark-val.neg {{ color: var(--red); }}
+.spark-label {{ font: 500 10px var(--mono); color: var(--t3); text-transform: uppercase; letter-spacing: 0.5px;
+                margin-top: 2px; position: relative; z-index: 1; }}
+.thread.featured .spark-val {{ font-size: 34px; }}
+.thread.featured .thread-spark {{ min-width: 96px; padding: 10px 16px; }}
 
 /* Inline heat bar — visual conviction meter next to EV% */
 .thread-heat-bar {{ display: flex; align-items: center; gap: 6px; margin-left: 2px; }}
@@ -3303,7 +3323,7 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 
 /* Key metric pills shown in collapsed state */
 .thread-metrics {{ display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }}
-.thread.open .thread-metrics {{ display: none; }}
+/* thread-metrics hidden via .thread-collapsed parent */
 .thread-metric {{ font: 600 11px var(--mono); padding: 3px 8px; border-radius: 4px; background: var(--elevated); color: var(--t2); }}
 .thread-metric .mv {{ font-weight: 700; }}
 .thread-metric .mv.pos {{ color: var(--green); }}
@@ -3734,17 +3754,28 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                     break
 
             # Heat style — left border color intensity maps to upside magnitude
+            # Also set spark background/glow CSS vars
             if ev_numeric > 0:
                 # Map 0-50% to low-high intensity green glow
                 intensity = min(ev_numeric / 50.0, 1.0)
                 alpha_border = 0.3 + intensity * 0.7  # 0.3 to 1.0
                 alpha_glow = intensity * 0.15  # 0 to 0.15
-                heat_style = f'style="--thread-heat: rgba(114,202,155,{alpha_border:.2f}); --thread-glow: rgba(50,164,103,{alpha_glow:.2f});"'
+                spark_bg_alpha = 0.06 + intensity * 0.10  # subtle to medium green bg
+                spark_glow_alpha = 0.15 + intensity * 0.25
+                heat_style = (f'style="--thread-heat: rgba(114,202,155,{alpha_border:.2f}); '
+                              f'--thread-glow: rgba(50,164,103,{alpha_glow:.2f}); '
+                              f'--spark-bg: rgba(50,164,103,{spark_bg_alpha:.2f}); '
+                              f'--spark-glow: rgba(114,202,155,{spark_glow_alpha:.2f});"')
             elif ev_numeric < 0:
                 intensity = min(abs(ev_numeric) / 30.0, 1.0)
                 alpha_border = 0.3 + intensity * 0.7
                 alpha_glow = intensity * 0.12
-                heat_style = f'style="--thread-heat: rgba(231,106,110,{alpha_border:.2f}); --thread-glow: rgba(205,66,70,{alpha_glow:.2f});"'
+                spark_bg_alpha = 0.06 + intensity * 0.10
+                spark_glow_alpha = 0.15 + intensity * 0.25
+                heat_style = (f'style="--thread-heat: rgba(231,106,110,{alpha_border:.2f}); '
+                              f'--thread-glow: rgba(205,66,70,{alpha_glow:.2f}); '
+                              f'--spark-bg: rgba(205,66,70,{spark_bg_alpha:.2f}); '
+                              f'--spark-glow: rgba(231,106,110,{spark_glow_alpha:.2f});"')
             else:
                 heat_style = ''
 
@@ -3793,6 +3824,16 @@ document.querySelectorAll('.thread-head').forEach(h => {{
             if metric_parts:
                 metrics_html = '<div class="thread-metrics">' + "".join(metric_parts[:4]) + '</div>'
 
+            # Build spark HTML — big EV% number on the right
+            spark_html = ""
+            if ev_numeric != 0:
+                ev_val_str = f"{ev_numeric:+.0f}%"
+                spark_cls = "pos" if ev_numeric > 0 else "neg"
+                spark_html = f'''<div class="thread-spark">
+                    <span class="spark-val {spark_cls}">{ev_val_str}</span>
+                    <span class="spark-label">upside</span>
+                </div>'''
+
             # Thread header
             parts.append(f'''<div class="{thread_cls}" {heat_style}>
     <div class="thread-head">
@@ -3804,8 +3845,13 @@ document.querySelectorAll('.thread-head').forEach(h => {{
         <span class="thread-name">{html.escape(name)}</span>
         <span class="thread-chevron">&#9662;</span>
     </div>
-    {f'<div class="thread-preview">{html.escape(preview_text)}</div>' if preview_text else ''}
-    {metrics_html}
+    <div class="thread-collapsed">
+        <div class="thread-left">
+            {f'<div class="thread-preview">{html.escape(preview_text)}</div>' if preview_text else ''}
+            {metrics_html}
+        </div>
+        {spark_html}
+    </div>
     <div class="thread-body">''')
 
             # Thread posts (connected by line)
