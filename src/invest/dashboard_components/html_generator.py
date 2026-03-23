@@ -3295,7 +3295,16 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .thread.open .thread-collapsed {{ display: none; }}
 .thread-left {{ flex: 1; min-width: 0; }}
 
-/* Preview text */
+/* Preview text — hook + tease pattern */
+.thread-hook {{ font-size: 14.5px; line-height: 1.45; color: var(--t1); font-weight: 600;
+               display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }}
+.thread-tease {{ font-size: 13px; line-height: 1.5; color: var(--t3); margin-top: 4px;
+                display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }}
+.thread-post-count {{ font: 500 11px var(--mono); color: var(--t3); margin-top: 6px;
+                     display: flex; align-items: center; gap: 5px; }}
+.thread-post-count::before {{ content: ''; display: inline-block; width: 4px; height: 4px;
+                             border-radius: 50%; background: var(--blue); opacity: 0.7; }}
+/* Legacy compat */
 .thread-preview {{ font-size: 14px; line-height: 1.55; color: var(--t2);
                    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }}
 
@@ -3780,15 +3789,27 @@ document.querySelectorAll('.thread.featured').forEach(t => t.classList.add('open
             else:
                 heat_style = ''
 
-            # Get preview text from verdict body
-            preview_text = ""
+            # Get preview: split into hook (first sentence) + tease (rest)
+            preview_hook = ""
+            preview_tease = ""
             for p in thread_posts:
                 if p["type"] == "verdict" and p.get("body"):
-                    # Strip HTML tags for preview
                     import re as _re
                     raw = _re.sub(r'<[^>]+>', '', p["body"])
-                    preview_text = raw[:180].rstrip() + ("..." if len(raw) > 180 else "")
+                    # Split on first sentence boundary
+                    sent_split = _re.split(r'(?<=[.!?])\s+', raw, maxsplit=1)
+                    preview_hook = sent_split[0].strip()
+                    if len(sent_split) > 1:
+                        rest = sent_split[1].strip()
+                        preview_tease = rest[:120].rstrip() + ("..." if len(rest) > 120 else "")
                     break
+            # Fallback: try thesis/edge post for the hook if verdict has no body
+            if not preview_hook:
+                for p in thread_posts:
+                    if p["type"] == "thesis" and p.get("body"):
+                        raw = _re.sub(r'<[^>]+>', '', p["body"])
+                        preview_hook = raw[:140].rstrip() + ("..." if len(raw) > 140 else "")
+                        break
 
             is_featured = i < featured_count and verdict_tag == "BUY"
             thread_cls = "thread featured open" if is_featured else "thread"
@@ -3848,8 +3869,10 @@ document.querySelectorAll('.thread.featured').forEach(t => t.classList.add('open
     </div>
     <div class="thread-collapsed">
         <div class="thread-left">
-            {f'<div class="thread-preview">{html.escape(preview_text)}</div>' if preview_text else ''}
+            {f'<div class="thread-hook">{html.escape(preview_hook)}</div>' if preview_hook else ''}
+            {f'<div class="thread-tease">{html.escape(preview_tease)}</div>' if preview_tease else ''}
             {metrics_html}
+            {f'<div class="thread-post-count">{len(thread_posts)} insights inside</div>' if len(thread_posts) > 2 else ''}
         </div>
         {spark_html}
     </div>
