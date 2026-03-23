@@ -682,8 +682,8 @@ class HTMLGenerator:
         # EV% color
         ev_class = "margin-excellent" if ev_pct > 15 else "margin-good" if ev_pct > 5 else "margin-neutral" if ev_pct > -5 else "margin-poor"
 
-        # Risk-adjusted score: EV / |bear_loss| × conviction_weight
-        # This is the primary sort value when clicking the LLM column
+        # Risk-adjusted score: verdict_tier + (EV / |bear_loss| × conviction_weight)
+        # Verdict tier ensures BUY > WATCH > PASS regardless of EV%
         bear_return = None
         for name, s in scenarios.items():
             if isinstance(s, dict) and 'bear' in name.lower():
@@ -692,10 +692,11 @@ class HTMLGenerator:
             str(conviction).upper(), 1.3
         )
         if bear_return is not None and bear_return < 0:
-            risk_adj_score = (ev_pct / abs(bear_return)) * conviction_weight
+            raw_score = (ev_pct / abs(bear_return)) * conviction_weight
         else:
-            # Fallback: use EV% alone with conviction weight
-            risk_adj_score = ev_pct * conviction_weight / 100 if ev_pct else 0
+            raw_score = ev_pct * conviction_weight / 100 if ev_pct else 0
+        verdict_tier = {"BUY": 100, "WATCH": 0, "PASS": -100}.get(verdict, -50)
+        risk_adj_score = verdict_tier + raw_score
 
         return f'''
         <a href="#" onclick="openNotes('{ticker}'); return false;" rel="noopener" style="text-decoration:none; display:block;" title="{html.escape(tooltip)}">
@@ -3878,8 +3879,31 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                         break
                 sent_split = _re.split(r'(?<=[.!?])\s+', hook_text, maxsplit=1)
                 preview_hook = sent_split[0].strip()
-                if len(preview_hook) > 160:
-                    preview_hook = preview_hook[:157].rstrip() + "..."
+                # If first sentence is too long for 2-line clamp, cut at a
+                # natural clause boundary (colon, semicolon, em-dash, or
+                # comma before a conjunction) so the collapsed card reads as
+                # a complete thought, not a broken fragment.
+                if len(preview_hook) > 100:
+                    # Try clause-level breaks first (strongest pause points)
+                    best_cut = -1
+                    for delim_pat in [
+                        r'[.:;]\s',           # colon/semicolon/period + space
+                        r'\s[—–]\s',          # em/en-dash surrounded by spaces
+                        r',\s+(?:but|and|while|which|where|so|yet)\s',  # comma before conjunction
+                    ]:
+                        for m in _re.finditer(delim_pat, preview_hook):
+                            pos = m.start() + 1  # include the delimiter char
+                            if 40 <= pos <= 120:
+                                best_cut = pos
+                        if best_cut > 0:
+                            break
+                    if best_cut > 0:
+                        preview_hook = preview_hook[:best_cut].rstrip(' ,')
+                        # Add ellipsis only if we actually cut content
+                        if best_cut < len(sent_split[0].strip()):
+                            preview_hook += "\u2026"
+                    elif len(preview_hook) > 130:
+                        preview_hook = preview_hook[:127].rstrip() + "\u2026"
                 # Verdict first sentence as tease — the "what" after the "why"
                 if verdict_text:
                     v_split = _re.split(r'(?<=[.!?])\s+', verdict_text, maxsplit=1)
