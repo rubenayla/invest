@@ -3316,7 +3316,7 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 .thread-hook {{ font-size: 14.5px; line-height: 1.45; color: var(--t1); font-weight: 600;
                display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }}
 .thread-tease {{ font-size: 13px; line-height: 1.5; color: var(--t3); margin-top: 4px;
-                display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }}
+                display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }}
 .thread-post-count {{ font: 500 11px var(--mono); color: var(--t3); margin-top: 6px;
                      display: flex; align-items: center; gap: 5px; }}
 .thread-post-count::before {{ content: ''; display: inline-block; width: 4px; height: 4px;
@@ -3859,15 +3859,15 @@ document.querySelectorAll('.thread.featured').forEach(t => t.classList.add('open
                 if verdict_text:
                     v_split = _re.split(r'(?<=[.!?])\s+', verdict_text, maxsplit=1)
                     preview_tease = v_split[0].strip()
-                    if len(preview_tease) > 120:
-                        preview_tease = preview_tease[:117].rstrip() + "..."
+                    if len(preview_tease) > 200:
+                        preview_tease = preview_tease[:197].rstrip() + "..."
             elif verdict_text:
                 # No thesis — fall back to verdict as hook
                 sent_split = _re.split(r'(?<=[.!?])\s+', verdict_text, maxsplit=1)
                 preview_hook = sent_split[0].strip()
                 if len(sent_split) > 1:
                     rest = sent_split[1].strip()
-                    preview_tease = rest[:120].rstrip() + ("..." if len(rest) > 120 else "")
+                    preview_tease = rest[:200].rstrip() + ("..." if len(rest) > 200 else "")
 
             is_featured = i < featured_count and verdict_tag == "BUY"
             thread_cls = "thread featured open" if is_featured else "thread"
