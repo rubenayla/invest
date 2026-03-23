@@ -3138,87 +3138,81 @@ renderCards();
                 months[0].month + ' to ' + recent.month + ' \u2022 Open-market transactions only';
 
             const container = document.getElementById('insiderChartContainer');
-            container.innerHTML = renderMirroredChart(months);
+            container.innerHTML = renderDualBarChart(months);
         }
 
-        function renderMirroredChart(months) {
-            // Mirrored bar chart: buys go UP (green), sells go DOWN (red)
-            // Bar width encodes $ volume relative to the largest transaction
-            const W = 520, H = 280, padL = 52, padR = 16, padT = 20, padB = 42;
+        function renderDualBarChart(months) {
+            // Two bars per month side by side: count (left axis) + $ volume (right axis)
+            const W = 540, H = 240, padL = 36, padR = 52, padT = 24, padB = 42;
             const chartW = W - padL - padR;
+            const chartH = H - padT - padB;
             const n = months.length;
-            const midY = padT + (H - padT - padB) / 2;  // zero axis
-            const halfH = (H - padT - padB) / 2;
 
-            // Find max count for scaling height
-            const maxCount = Math.max(1, ...months.map(m => Math.max(m.buys, m.sells)));
-            // Find max volume for scaling bar width
-            const maxVol = Math.max(1, ...months.map(m => Math.max(m.buy_vol || 0, m.sell_vol || 0)));
+            // Net count = buys - sells (positive = net buying)
+            const netCounts = months.map(m => m.buys - m.sells);
+            const netVols = months.map(m => (m.buy_vol || 0) - (m.sell_vol || 0));
+            const maxCount = Math.max(1, ...netCounts.map(Math.abs));
+            const maxVol = Math.max(1, ...netVols.map(Math.abs));
 
-            const barGroupW = Math.min(44, chartW / n);
-            const maxBarW = barGroupW - 6;
-            const minBarW = 6;
+            const barGroupW = Math.min(50, chartW / n);
+            const barW = Math.max(4, (barGroupW - 6) / 2);
             const totalW = barGroupW * n;
             const fullW = Math.max(W, totalW + padL + padR);
+            const midY = padT + chartH / 2;
+            const halfH = chartH / 2;
 
             let svg = '<svg width="' + fullW + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg">';
 
-            // Grid lines (above and below zero)
-            const steps = 3;
+            // Grid lines
+            const steps = 2;
             for (let i = 1; i <= steps; i++) {
                 const frac = i / steps;
-                // Above zero (buys)
+                // Above zero
                 const yUp = midY - halfH * frac;
                 svg += '<line x1="' + padL + '" y1="' + yUp + '" x2="' + (padL + Math.max(chartW, totalW)) +
                        '" y2="' + yUp + '" stroke="#2a3040" stroke-width="1"/>';
-                const lblUp = Math.round(maxCount * frac);
                 svg += '<text x="' + (padL - 4) + '" y="' + (yUp + 4) +
-                       '" fill="#738091" font-size="9" text-anchor="end" font-family="Geist Mono,monospace">' + lblUp + '</text>';
-                // Below zero (sells)
+                       '" fill="#738091" font-size="9" text-anchor="end" font-family="Geist Mono,monospace">+' + Math.round(maxCount * frac) + '</text>';
+                svg += '<text x="' + (padL + Math.max(chartW, totalW) + 4) + '" y="' + (yUp + 4) +
+                       '" fill="#738091" font-size="9" font-family="Geist Mono,monospace">' + fmtDollar(maxVol * frac) + '</text>';
+                // Below zero
                 const yDn = midY + halfH * frac;
                 svg += '<line x1="' + padL + '" y1="' + yDn + '" x2="' + (padL + Math.max(chartW, totalW)) +
                        '" y2="' + yDn + '" stroke="#2a3040" stroke-width="1"/>';
                 svg += '<text x="' + (padL - 4) + '" y="' + (yDn + 4) +
-                       '" fill="#738091" font-size="9" text-anchor="end" font-family="Geist Mono,monospace">' + lblUp + '</text>';
+                       '" fill="#738091" font-size="9" text-anchor="end" font-family="Geist Mono,monospace">-' + Math.round(maxCount * frac) + '</text>';
+                svg += '<text x="' + (padL + Math.max(chartW, totalW) + 4) + '" y="' + (yDn + 4) +
+                       '" fill="#738091" font-size="9" font-family="Geist Mono,monospace">-' + fmtDollar(maxVol * frac) + '</text>';
             }
 
-            // Zero axis (bold)
+            // Zero axis
             svg += '<line x1="' + padL + '" y1="' + midY + '" x2="' + (padL + Math.max(chartW, totalW)) +
                    '" y2="' + midY + '" stroke="#4a5568" stroke-width="1.5"/>';
+            svg += '<text x="' + (padL - 4) + '" y="' + (midY + 4) +
+                   '" fill="#738091" font-size="9" text-anchor="end" font-family="Geist Mono,monospace">0</text>';
 
             // Bars
             months.forEach((m, i) => {
-                const cx = padL + i * barGroupW + barGroupW / 2;
-                const buyVol = m.buy_vol || 0;
-                const sellVol = m.sell_vol || 0;
+                const x = padL + i * barGroupW + 3;
+                const nc = netCounts[i];
+                const nv = netVols[i];
 
-                // Buy bar (goes UP from zero)
-                if (m.buys > 0) {
-                    const h = (m.buys / maxCount) * halfH;
-                    const bw = Math.max(minBarW, (buyVol / maxVol) * maxBarW);
-                    svg += '<rect x="' + (cx - bw / 2) + '" y="' + (midY - h) +
-                           '" width="' + bw + '" height="' + h +
-                           '" fill="#34d399" rx="2" opacity="0.85"/>';
-                    // Volume label on tall bars
-                    if (buyVol >= 500000) {
-                        svg += '<text x="' + cx + '" y="' + (midY - h - 3) +
-                               '" fill="#34d399" font-size="8" text-anchor="middle" font-family="Geist Mono,monospace">' +
-                               fmtDollar(buyVol) + '</text>';
-                    }
+                // Count bar (left, blue-ish teal)
+                if (nc !== 0) {
+                    const h = Math.abs(nc) / maxCount * halfH;
+                    const y = nc > 0 ? midY - h : midY;
+                    const fill = nc > 0 ? '#34d399' : '#e76a6e';
+                    svg += '<rect x="' + x + '" y="' + y + '" width="' + barW + '" height="' + h +
+                           '" fill="' + fill + '" rx="1.5" opacity="0.9"/>';
                 }
 
-                // Sell bar (goes DOWN from zero)
-                if (m.sells > 0) {
-                    const h = (m.sells / maxCount) * halfH;
-                    const bw = Math.max(minBarW, (sellVol / maxVol) * maxBarW);
-                    svg += '<rect x="' + (cx - bw / 2) + '" y="' + midY +
-                           '" width="' + bw + '" height="' + h +
-                           '" fill="#e76a6e" rx="2" opacity="0.85"/>';
-                    if (sellVol >= 500000) {
-                        svg += '<text x="' + cx + '" y="' + (midY + h + 10) +
-                               '" fill="#e76a6e" font-size="8" text-anchor="middle" font-family="Geist Mono,monospace">' +
-                               fmtDollar(sellVol) + '</text>';
-                    }
+                // Volume bar (right, lighter shade)
+                if (nv !== 0) {
+                    const h = Math.abs(nv) / maxVol * halfH;
+                    const y = nv > 0 ? midY - h : midY;
+                    const fill = nv > 0 ? '#63e2c6' : '#f0a0a0';
+                    svg += '<rect x="' + (x + barW + 2) + '" y="' + y + '" width="' + barW + '" height="' + h +
+                           '" fill="' + fill + '" rx="1.5" opacity="0.7"/>';
                 }
 
                 // X-axis labels
@@ -3226,19 +3220,23 @@ renderCards();
                 if (showLabel) {
                     const parts = m.month.split('-');
                     const lbl = parts[1] + '/' + parts[0].slice(2);
-                    svg += '<text x="' + cx + '" y="' + (H - padB + 14) +
+                    svg += '<text x="' + (x + barW) + '" y="' + (H - padB + 14) +
                            '" fill="#738091" font-size="9" text-anchor="middle" font-family="Geist Mono,monospace"' +
-                           ' transform="rotate(-35,' + cx + ',' + (H - padB + 14) + ')">' + lbl + '</text>';
+                           ' transform="rotate(-35,' + (x + barW) + ',' + (H - padB + 14) + ')">' + lbl + '</text>';
                 }
             });
 
-            // Labels
-            svg += '<text x="' + (padL + 2) + '" y="' + (padT + 4) + '" fill="#34d399" font-size="10" font-family="Geist Mono,monospace" opacity="0.7">Buys \u2191</text>';
-            svg += '<text x="' + (padL + 2) + '" y="' + (H - padB - 2) + '" fill="#e76a6e" font-size="10" font-family="Geist Mono,monospace" opacity="0.7">Sells \u2193</text>';
+            // Legend
+            svg += '<rect x="' + padL + '" y="' + (H - 14) + '" width="8" height="8" fill="#34d399" rx="1"/>';
+            svg += '<text x="' + (padL + 11) + '" y="' + (H - 7) + '" fill="#a0aec0" font-size="9" font-family="Geist Mono,monospace">Net count</text>';
+            svg += '<rect x="' + (padL + 80) + '" y="' + (H - 14) + '" width="8" height="8" fill="#63e2c6" rx="1" opacity="0.7"/>';
+            svg += '<text x="' + (padL + 91) + '" y="' + (H - 7) + '" fill="#a0aec0" font-size="9" font-family="Geist Mono,monospace">Net $ volume</text>';
+            svg += '<text x="' + (padL + Math.max(chartW, totalW) + 4) + '" y="' + (midY + 4) +
+                   '" fill="#738091" font-size="9" font-family="Geist Mono,monospace">$0</text>';
 
-            // Legend (bar width = $ volume)
-            svg += '<text x="' + (padL + Math.max(chartW, totalW) - 2) + '" y="' + (padT + 4) +
-                   '" fill="#738091" font-size="9" text-anchor="end" font-family="Geist Mono,monospace" opacity="0.6">bar width = $ volume</text>';
+            // Axis labels
+            svg += '<text x="' + (padL - 4) + '" y="12" fill="#738091" font-size="9" text-anchor="end" font-family="Geist Mono,monospace" opacity="0.6"># txns</text>';
+            svg += '<text x="' + (padL + Math.max(chartW, totalW) + 4) + '" y="12" fill="#738091" font-size="9" font-family="Geist Mono,monospace" opacity="0.6">$ vol</text>';
 
             svg += '</svg>';
             return svg;
