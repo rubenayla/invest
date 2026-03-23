@@ -3328,10 +3328,11 @@ body {{ background: var(--bg); color: var(--t1); font-family: var(--sans); -webk
 /* Big EV spark — the dopamine hit */
 .thread-spark {{ display: flex; flex-direction: column; align-items: center; justify-content: center;
                  flex-shrink: 0; min-width: 80px; padding: 8px 12px; border-radius: 10px;
-                 background: var(--spark-bg, var(--elevated)); position: relative; overflow: hidden; }}
+                 background: var(--spark-bg, var(--elevated)); position: relative; overflow: hidden;
+                 border: 1px solid var(--spark-border, var(--border)); }}
 .thread-spark::before {{ content: ''; position: absolute; inset: 0;
                          background: radial-gradient(circle at center, var(--spark-glow, transparent), transparent 70%);
-                         opacity: 0.5; pointer-events: none; }}
+                         opacity: 0.8; pointer-events: none; }}
 .spark-val {{ font: 800 28px var(--mono); letter-spacing: -1px; position: relative; z-index: 1; }}
 .spark-val.pos {{ color: var(--green); }}
 .spark-val.neg {{ color: var(--red); }}
@@ -3801,22 +3802,26 @@ document.querySelectorAll('.thread.featured').forEach(t => t.classList.add('open
                 intensity = min(ev_numeric / 50.0, 1.0)
                 alpha_border = 0.3 + intensity * 0.7  # 0.3 to 1.0
                 alpha_glow = intensity * 0.15  # 0 to 0.15
-                spark_bg_alpha = 0.06 + intensity * 0.10  # subtle to medium green bg
-                spark_glow_alpha = 0.15 + intensity * 0.25
+                spark_bg_alpha = 0.10 + intensity * 0.14  # visible green tint
+                spark_glow_alpha = 0.25 + intensity * 0.35
+                spark_border_alpha = 0.15 + intensity * 0.25
                 heat_style = (f'style="--thread-heat: rgba(114,202,155,{alpha_border:.2f}); '
                               f'--thread-glow: rgba(50,164,103,{alpha_glow:.2f}); '
                               f'--spark-bg: rgba(50,164,103,{spark_bg_alpha:.2f}); '
-                              f'--spark-glow: rgba(114,202,155,{spark_glow_alpha:.2f});"')
+                              f'--spark-glow: rgba(114,202,155,{spark_glow_alpha:.2f}); '
+                              f'--spark-border: rgba(114,202,155,{spark_border_alpha:.2f});"')
             elif ev_numeric < 0:
                 intensity = min(abs(ev_numeric) / 30.0, 1.0)
                 alpha_border = 0.3 + intensity * 0.7
                 alpha_glow = intensity * 0.12
-                spark_bg_alpha = 0.06 + intensity * 0.10
-                spark_glow_alpha = 0.15 + intensity * 0.25
+                spark_bg_alpha = 0.10 + intensity * 0.14
+                spark_glow_alpha = 0.25 + intensity * 0.35
+                spark_border_alpha = 0.15 + intensity * 0.25
                 heat_style = (f'style="--thread-heat: rgba(231,106,110,{alpha_border:.2f}); '
                               f'--thread-glow: rgba(205,66,70,{alpha_glow:.2f}); '
                               f'--spark-bg: rgba(205,66,70,{spark_bg_alpha:.2f}); '
-                              f'--spark-glow: rgba(231,106,110,{spark_glow_alpha:.2f});"')
+                              f'--spark-glow: rgba(231,106,110,{spark_glow_alpha:.2f}); '
+                              f'--spark-border: rgba(231,106,110,{spark_border_alpha:.2f});"')
             else:
                 heat_style = ''
 
