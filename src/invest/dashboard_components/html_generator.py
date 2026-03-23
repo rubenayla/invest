@@ -3966,6 +3966,25 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                         preview_tease = s2
                     else:
                         preview_tease = s1
+
+                    # Detect when tease paraphrases the hook (kills info density).
+                    # Compare significant words — if >40% overlap, prefer S2 or skip.
+                    _stop = {'the','a','an','is','are','was','were','be','been','being',
+                             'that','this','it','its','of','in','to','for','on','at',
+                             'by','with','and','or','but','not','from','as','has','have',
+                             'had','will','would','could','should','may','might','can',
+                             'do','does','did','than','so','if','then','into','about'}
+                    def _sig_words(t):
+                        return set(w.lower().strip('.,;:!?"\'-()') for w in t.split()
+                                   if len(w) > 2) - _stop
+                    hook_words = _sig_words(preview_hook)
+                    tease_words = _sig_words(preview_tease)
+                    if hook_words and tease_words:
+                        overlap = len(hook_words & tease_words) / min(len(hook_words), len(tease_words))
+                        if overlap > 0.4 and s2:
+                            preview_tease = s2
+                            if len(preview_tease) > 200:
+                                preview_tease = preview_tease[:197].rstrip() + "..."
                     if len(preview_tease) > 200:
                         preview_tease = preview_tease[:197].rstrip() + "..."
             elif verdict_text:
