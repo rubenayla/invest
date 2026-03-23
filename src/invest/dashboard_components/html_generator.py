@@ -3510,7 +3510,7 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                     break
         return sections
 
-    def _first_sentences(self, text: str, n: int = 2, max_chars: int = 250) -> str:
+    def _first_sentences(self, text: str, n: int = 3, max_chars: int = 400) -> str:
         """Extract first n sentences from text, cleaning markdown. Keeps it punchy."""
         import re
         # Remove markdown links, bold markers, pipe tables, bullet prefixes
@@ -3574,19 +3574,23 @@ document.querySelectorAll('.thread-head').forEach(h => {{
             # Try Business Quality moat line first (describes the actual business),
             # fall back to Situation Summary if not available
             intro = ""
-            bq = sections.get("Business Quality", "") or ""
+            bq = ""
+            for key in sections:
+                if key.startswith("Business Quality"):
+                    bq = sections[key]
+                    break
             for line in bq.split("\n"):
                 if "Moat" in line and "|" in line:
                     parts = line.split("|")
                     if len(parts) >= 4:
                         moat_desc = parts[3].strip()
                         if moat_desc:
-                            intro = self._first_sentences(moat_desc, 2, 280)
+                            intro = self._first_sentences(moat_desc, 3, 400)
                     break
             if not intro:
                 situation = sections.get("Situation Summary", "")
                 if situation:
-                    intro = self._first_sentences(situation, 3, 280)
+                    intro = self._first_sentences(situation, 3, 400)
             if intro:
                 pills = []
                 if price:
@@ -3613,7 +3617,7 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                         our_view = line.lstrip("- ").replace("**Our view:**", "").replace("**Our view:** ", "").strip()
                         break
                 if our_view:
-                    thesis = self._first_sentences(our_view, 3, 300)
+                    thesis = self._first_sentences(our_view, 3, 400)
                     posts.append({
                         "priority": 190 if verdict == "BUY" else 90,
                         "type": "thesis", "tag": "The Edge",
@@ -3696,7 +3700,7 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                 # Skip the first line if it's the verdict label
                 lines = verdict_section.split("\n")
                 text_start = 1 if lines and lines[0].startswith("**") else 0
-                verdict_text = self._first_sentences("\n".join(lines[text_start:]), 3, 300)
+                verdict_text = self._first_sentences("\n".join(lines[text_start:]), 3, 400)
                 pills = []
                 if entry_price:
                     pills.append(("Entry", f"${entry_price}", ""))
