@@ -36,7 +36,7 @@ Reverse-engineer what the current price implies about future earnings/growth. Co
 
 ## STEP 2: Gather Model Data (Database)
 
-Query `data/stock_data.db` for ALL valuation models:
+Query the PostgreSQL database for ALL valuation models (use `invest.data.db.get_connection()`):
 
 ```sql
 SELECT model_name, fair_value, current_price, upside_pct, confidence, timestamp
@@ -275,10 +275,12 @@ Run this Python script with the actual values from your analysis:
 
 ```python
 uv run python -c "
-import sqlite3, json
+import json
 from datetime import datetime
+from invest.data.db import get_connection
 
-db = sqlite3.connect('data/stock_data.db')
+conn = get_connection()
+cur = conn.cursor()
 
 # Map conviction to confidence score
 conviction_map = {'HIGH': 0.9, 'MEDIUM': 0.7, 'LOW': 0.5}
@@ -303,7 +305,7 @@ variant_perception = '{ONE_LINE_VARIANT_PERCEPTION}'
 
 fair_value = current_price * (1 + expected_value_pct / 100)
 confidence = conviction_map.get(conviction, 0.5)
-suitable = 1 if verdict == 'BUY' else 0
+suitable = verdict == 'BUY'
 
 details = {
     'verdict': verdict,
@@ -316,13 +318,17 @@ details = {
     'scenarios': {'bull': bull, 'base': base, 'bear': bear},
 }
 
-db.execute('''INSERT OR REPLACE INTO valuation_results
+cur.execute('''INSERT INTO valuation_results
     (ticker, model_name, timestamp, fair_value, current_price, upside_pct, suitable, confidence, details_json)
-    VALUES (?, 'llm_deep_analysis', ?, ?, ?, ?, ?, ?, ?)''',
+    VALUES (%s, 'llm_deep_analysis', %s, %s, %s, %s, %s, %s, %s)
+    ON CONFLICT (ticker, model_name) DO UPDATE SET
+    timestamp=EXCLUDED.timestamp, fair_value=EXCLUDED.fair_value, current_price=EXCLUDED.current_price,
+    upside_pct=EXCLUDED.upside_pct, suitable=EXCLUDED.suitable, confidence=EXCLUDED.confidence,
+    details_json=EXCLUDED.details_json''',
     (ticker, datetime.now().isoformat(), fair_value, current_price,
      expected_value_pct, suitable, confidence, json.dumps(details)))
-db.commit()
-db.close()
+conn.commit()
+conn.close()
 print(f'Saved {ticker} llm_deep_analysis: verdict={verdict}, EV={expected_value_pct}%, confidence={confidence}')
 "
 ```

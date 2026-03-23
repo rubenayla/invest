@@ -1,12 +1,12 @@
 # Peloton Interactive Inc. (PTON)
 
 **Sector:** Consumer Cyclical | **Industry:** Leisure / Connected Fitness
-**Price:** $4.06 | **Market Cap:** $1.73B | **EV:** $2.49B
-**Analysis Date:** 2026-03-20
+**Price:** $3.84 | **Market Cap:** $1.63B | **EV:** $2.40B
+**Analysis Date:** 2026-03-23
 
 ## Situation Summary
 
-Peloton is deep in a turnaround after its post-COVID collapse, trading near its all-time low at $4.06 (52-week range $3.65-$9.20). Q2 FY2026 (Feb 5) was a mixed bag: revenue missed at $657M (-3% YoY) with subscriber churn rising to 1.9%, but adjusted EBITDA beat at $81M (+39% YoY) and FCF guidance was raised. CFO Liz Coddington is departing (effective March 27), creating near-term uncertainty. The stock dropped 28% post-earnings. The biggest catalyst is the just-announced Peloton Commercial Series (March 16), the first gym-grade connected equipment leveraging the Precor acquisition, shipping late 2026 in six countries. The term loan prepayment penalty expires May 2026, enabling a potential refinancing that could save ~$29M/year in interest. Revenue guidance was cut by $71M for the year to $2.40-2.44B while EBITDA guidance was raised to $450-500M -- classic "shrinking to profitability."
+Peloton is deep in a turnaround after its post-COVID collapse, trading near its all-time low at $3.84 (52-week range $3.65-$9.20). Q2 FY2026 (Feb 5) was a mixed bag: revenue missed at $657M (-3% YoY) with subscriber churn rising to 1.9%, but adjusted EBITDA beat at $81M (+39% YoY) and FCF guidance was raised. CFO Liz Coddington departed effective March 27, 2026; no replacement named yet. Sarah Robb O'Hagan was appointed Chief Content & Member Development Officer on March 17. The Peloton Commercial Series (announced March 16) is the first gym-grade connected equipment leveraging the Precor acquisition, shipping late 2026 in six countries -- the stock spiked 7% on the announcement but has since given it back. The term loan prepayment penalty expires May 2026, enabling a potential refinancing that could save ~$29M/year in interest. Revenue guidance was cut by $71M for the year to $2.40-2.44B while EBITDA guidance was raised to $450-500M -- classic "shrinking to profitability."
 
 ## Variant Perception
 
@@ -26,14 +26,15 @@ Peloton is deep in a turnaround after its post-COVID collapse, trading near its 
 | EBITDA (Adj) | ~$475M (FY2026E) | Massive expansion from ~$4M in FY2024 |
 | Gross Margin | 51.7% | Improving: 19.5% -> 33% -> 44.7% -> 50.9% |
 | D/E | Negative equity | Stockholders' equity: -$414M |
-| FCF Yield | 18.8% | |
+| FCF Yield | 19.9% | |
 | Net Debt/Adj EBITDA | ~1.6x (FY2026E) | Rapidly deleveraging |
 
 **Key computed metrics:**
-- EV/Adj EBITDA (FY2026E): 5.3x -- well below turnaround comps (6-10x) and sector median (10.4x)
-- P/S (TTM): 0.71x -- extremely cheap for a subscription business
+- EV/Adj EBITDA (FY2026E): 5.1x -- well below turnaround comps (6-10x) and sector median (10.4x)
+- P/S (TTM): 0.67x -- extremely cheap for a subscription business
 - Cash: $1.18B vs Total Debt: $1.95B -> Net Debt: ~$767M
-- Forward P/E: 33.8x (first time calculable -- approaching GAAP profitability)
+- Forward P/E: 32x (first time calculable -- approaching GAAP profitability)
+- FCF Yield: 19.9% (FCF $324M / Mkt Cap $1.63B)
 
 ## Valuation Models
 
@@ -101,12 +102,12 @@ Evidence the inflection is NOT yet complete:
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | Revenue stabilizes + Commercial Series traction + refi saves $29M/yr. FY2027E EBITDA $550M | Re-rates to 8x as "turnaround proven" | $8.50 | +109% |
-| **Base** | 45% | Revenue -2% but cost discipline holds. FY2026 EBITDA $475M. Refi achieved at modest improvement | Stays at 5-6x (turnaround discount) | $5.25 | +29% |
-| **Bear** | 25% | Revenue -5-8%, churn accelerates, Commercial Series disappoints. EBITDA compresses to $375M | De-rates to 4x on execution failure | $2.50 | -38% |
-| **Worst** | 5% | Turnaround fails, -15% revenue, debt restructuring risk | 2-3x distressed multiple | $1.00 | -75% |
+| **Bull** | 25% | Revenue stabilizes + Commercial Series traction + refi saves $29M/yr. FY2027E EBITDA $550M | Re-rates to 8x as "turnaround proven" | $8.50 | +121% |
+| **Base** | 45% | Revenue -2% but cost discipline holds. FY2026 EBITDA $475M. Refi achieved at modest improvement | Stays at 5-6x (turnaround discount) | $5.25 | +37% |
+| **Bear** | 25% | Revenue -5-8%, churn accelerates, Commercial Series disappoints. EBITDA compresses to $375M | De-rates to 4x on execution failure | $2.50 | -35% |
+| **Worst** | 5% | Turnaround fails, -15% revenue, debt restructuring risk | 2-3x distressed multiple | $1.00 | -74% |
 
-**Expected value: +25%** (0.25 x 109% + 0.45 x 29% + 0.25 x -38% + 0.05 x -75%)
+**Expected value: +34%** (0.25 x 121% + 0.45 x 37% + 0.25 x -35% + 0.05 x -74%)
 
 **Thesis breaks if:** Monthly subscriber churn exceeds 2.5% for two consecutive quarters, OR revenue declines more than 8% YoY with no sign of stabilization, OR term loan refinancing fails/comes at worse terms.
 
@@ -114,23 +115,23 @@ Evidence the inflection is NOT yet complete:
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Uncrowded -- stock down 56% from 52-week high, near all-time lows |
+| Crowdedness | Uncrowded -- stock down 58% from 52-week high, near all-time lows |
 | Short interest | 16.7% of float -- high, squeeze potential if fundamentals improve |
-| Technical position | Near 52-week low ($3.65). Current $4.06. Oversold territory |
+| Technical position | Near 52-week low ($3.65). Current $3.84. Deeply oversold |
 | Insider ownership | 1.2% -- very low skin in the game |
 | Institutional ownership | 91.3% -- heavily institutional |
 | Next catalyst | **Term loan refi (May/Jun 2026)**, Q3 earnings **(May 13, 2026)** |
-| Recent price action | Down 28% since Q2 earnings (Feb 5). Down 56% from 52W high of $9.20 |
+| Recent price action | Down 33% since Q2 earnings (Feb 5). Down 58% from 52W high of $9.20. Below 50d ($4.86) and 200d ($6.59) MAs |
 | Beta | 2.51 -- very volatile, amplifies market moves |
 
 ## Verdict
 
 **BUY** -- Conviction: **MEDIUM**
 
-The risk/reward is favorable at $4.06 with an expected value of +25%. PTON trades at 5.3x EV/Adj EBITDA for a business generating $324M in FCF (18.8% yield) with two near-term catalysts: term loan refinancing (May/June) and Q3 earnings showing potential revenue inflection (May 13). The variant perception is that the market prices in permanent decline, but revenue is roughly at the pre-COVID trendline and the Commercial Series opens a large new growth channel. The turnaround is real on the cost side (EBITDA went from $4M to ~$475M in two years), and the question is solely about revenue stabilization. At sub-$4, you're getting paid to wait for the answer.
+The risk/reward is favorable at $3.84 with an expected value of +34%. PTON trades at 5.1x EV/Adj EBITDA for a business generating $324M in FCF (19.9% yield) with two near-term catalysts: term loan refinancing (May/June) and Q3 earnings showing potential revenue inflection (May 13). The variant perception is that the market prices in permanent decline, but revenue is roughly at the pre-COVID trendline and the Commercial Series opens a large new growth channel. The turnaround is real on the cost side (EBITDA went from $4M to ~$475M in two years), and the question is solely about revenue stabilization. At sub-$4, you're getting paid to wait for the answer. CFO departure is a headwind but manageable -- the cost playbook is already in motion.
 
-**Entry:** Current price ($4.06) for a starter position. Add at $3.50-3.80 if support breaks. Add aggressively below $3.00 (3x EBITDA with cash covering most debt).
-**Position size:** Small/speculative (this is a turnaround -- size for a -50% drawdown being tolerable). User has ~$3,350 combined -- this is appropriately sized as a speculative bet.
+**Entry:** Current price ($3.84) is attractive -- only 5% above the 52-week low of $3.65. Scale in now, add at $3.50 if support breaks. Add aggressively below $3.00 (3x EBITDA with cash covering most debt).
+**Position size:** Small/speculative (this is a turnaround -- size for a -50% drawdown being tolerable).
 **Thesis break:** Exit if churn exceeds 2.5% for 2 quarters, revenue declines >8% YoY, or refi fails. Hard reassessment below $2.50.
 
 ---
@@ -244,8 +245,8 @@ Announced March 16, 2026. First gym-grade connected bike and treadmill combining
 
 ## Notes
 
-- Analysis date: 2026-03-20
-- Previous deep dive: 2026-02-18
+- Analysis date: 2026-03-23
+- Previous deep dive: 2026-03-20
 - Data sources: Q2 FY2026 earnings, yfinance, SEC filings, web research
 - Fiscal year ends June 30
 - FY2026 = July 2025 - June 2026

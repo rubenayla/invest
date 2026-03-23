@@ -211,10 +211,6 @@ class KellyPositionSizer:
             flags=flags,
         )
 
-    def size_multiple(self, tickers: list[str]) -> list[KellyResult]:
-        """Size positions for multiple tickers."""
-        return [self.size_position(t) for t in tickers]
-
     def build_portfolio(
         self,
         budget: float | None = None,

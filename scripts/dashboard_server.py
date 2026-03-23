@@ -654,11 +654,16 @@ async def api_reminder_delete(request: Request) -> JSONResponse:
 
 
 async def api_insider_history(request: Request) -> JSONResponse:
-    """Return monthly insider buy/sell counts for a ticker (SVG chart data)."""
+    """Return monthly insider buy/sell counts for a ticker (SVG chart data).
+
+    Distinguishes compensation sells (same-day option exercise + sell by same
+    person) from discretionary open-market sells.
+    """
     ticker = request.path_params["ticker"].upper()
     conn = get_connection()
     cursor = conn.cursor()
     try:
+        # Get open-market transactions
         cursor.execute("""
             SELECT SUBSTRING(transaction_date FROM 1 FOR 7) AS month,
                    transaction_type,
@@ -670,24 +675,54 @@ async def api_insider_history(request: Request) -> JSONResponse:
             ORDER BY month
         """, (ticker,))
         rows = cursor.fetchall()
+
+        # Find compensation sells: sells by people who also exercised options
+        # on the same day (M + S pair = vesting + tax withholding sell)
+        cursor.execute("""
+            SELECT SUBSTRING(s.transaction_date FROM 1 FOR 7) AS month,
+                   COUNT(*) AS cnt,
+                   COALESCE(SUM(ABS(s.shares) * s.price_per_share), 0) AS volume
+            FROM insider_transactions s
+            WHERE s.ticker = %s AND s.transaction_type = 'S' AND s.is_open_market = 1
+              AND EXISTS (
+                  SELECT 1 FROM insider_transactions m
+                  WHERE m.ticker = s.ticker
+                    AND m.reporter_name = s.reporter_name
+                    AND m.transaction_date = s.transaction_date
+                    AND m.transaction_type = 'M'
+              )
+            GROUP BY month
+            ORDER BY month
+        """, (ticker,))
+        comp_rows = cursor.fetchall()
     except Exception:
         conn.rollback()
         return JSONResponse({"ok": True, "ticker": ticker, "months": []})
     finally:
         conn.close()
 
-    # Build month → {buys, sells, buy_vol, sell_vol} map
+    # Build compensation sell lookup: month → (count, volume)
+    comp_map: dict[str, tuple[int, float]] = {}
+    for month, cnt, volume in comp_rows:
+        comp_map[month] = (cnt, round(float(volume)))
+
+    # Build month → {buys, sells, buy_vol, sell_vol, comp_sells, comp_sell_vol} map
     month_map: dict[str, dict] = {}
     for month, tx_type, cnt, volume in rows:
         if month not in month_map:
             month_map[month] = {"month": month, "buys": 0, "sells": 0,
-                                "buy_vol": 0, "sell_vol": 0}
+                                "buy_vol": 0, "sell_vol": 0,
+                                "comp_sells": 0, "comp_sell_vol": 0}
         if tx_type == "P":
             month_map[month]["buys"] = cnt
             month_map[month]["buy_vol"] = round(float(volume))
         elif tx_type == "S":
             month_map[month]["sells"] = cnt
             month_map[month]["sell_vol"] = round(float(volume))
+            # Tag compensation portion
+            if month in comp_map:
+                month_map[month]["comp_sells"] = comp_map[month][0]
+                month_map[month]["comp_sell_vol"] = comp_map[month][1]
 
     return JSONResponse({
         "ok": True,

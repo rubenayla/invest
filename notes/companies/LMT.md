@@ -1,8 +1,8 @@
 # Lockheed Martin Corporation (LMT)
 
 **Sector:** Industrials | **Industry:** Aerospace & Defense
-**Price:** $642 | **Market Cap:** $148B
-**Analysis Date:** 2026-03-19
+**Price:** $627 | **Market Cap:** $145B
+**Analysis Date:** 2026-03-22
 
 ## Situation Summary
 

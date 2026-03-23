@@ -11,6 +11,7 @@ Macro-level investment theses and sector/commodity analyses. Unlike individual s
 | [Argentina ETF](argentina-thesis.md) | Researched | Speculative Bullish | 2026-01-31 |
 | [AI Disruption "Hit List"](ai-disruption-thesis.md) | Researched | Actionable — Selective Shorts + Avoid | 2026-02-25 |
 | [BTC Miners as AI Datacenter Infrastructure](btc-miners-ai-datacenter-thesis.md) | Researched | Cautiously Bullish — Stock Selection Critical | 2026-03-07 |
+| [AI + Proteomics](ai-proteomics-thesis.md) | Researched | Pass — Interesting Theme, No Actionable Edge | 2026-03-20 |
 
 ## Thesis Structure
 

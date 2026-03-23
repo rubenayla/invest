@@ -1,8 +1,8 @@
 # Carvana Co. (CVNA)
 
 **Sector:** Consumer Cyclical | **Industry:** Auto & Truck Dealerships
-**Price:** $294.18 | **Market Cap:** $64.5B | **EV:** $45.5B
-**Analysis Date:** 2026-03-20
+**Price:** $299.60 | **Market Cap:** $65.7B | **EV:** $43.7B
+**Analysis Date:** 2026-03-23 (updated from 2026-03-20)
 
 ## Situation Summary
 
@@ -33,12 +33,20 @@ Carvana has completed one of the most remarkable corporate turnarounds in recent
 
 | Model | Fair Value | Upside | Confidence |
 |-------|-----------|--------|------------|
-| No database models available | — | — | — |
-| Analyst Mean Target | $428.50 | +46% | 22 analysts |
-| Analyst Low | $300.00 | +2% | |
-| Analyst High | $519.00 | +76% | |
+| gbm_opportunistic_3y | $800 | +175% | 0.98 |
+| gbm_3y | $793 | +172% | 1.00 |
+| gbm_lite_3y | $754 | +159% | 0.98 |
+| gbm_opportunistic_1y | $713 | +145% | 0.99 |
+| autoresearch | $409 | +40% | 0.90 |
+| rim | $439 | +43% | — |
+| gbm_lite_1y | $421 | +45% | 0.96 |
+| gbm_1y | $392 | +35% | 0.98 |
+| simple_ratios | $137 | -55% | — |
+| multi_stage_dcf | $50 | -84% | — |
+| dcf_enhanced | $43 | -86% | — |
+| Analyst Mean Target | $428.50 | +43% | 22 analysts |
 
-**Model consensus:** No proprietary models in the database. Analyst consensus is solidly bullish with a wide range ($300-$519), reflecting genuine uncertainty about the durability of the turnaround at scale.
+**Model consensus:** Strong bullish tilt. GBM models (most reliable) unanimously bullish with 35-175% upside. Autoresearch and RIM agree at +40-43%. DCF models are deeply bearish ($43-$137) but these are known to be unreliable for high-growth, asset-light businesses with recent profitability inflections — they anchor on historical earnings that don't reflect the company's current trajectory. Trust the GBM and autoresearch signals here. The 1-year GBM models cluster around $390-420, aligning closely with the analyst mean of $428.
 
 ## Business Quality (18/25)
 
@@ -79,12 +87,12 @@ This is classic Phase 2 of a turnaround: the company has proven it can be profit
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| Bull | 25% | Revenue $28B+ by 2027, OpIncome $2.8B, normalized EPS ~$10 | Re-rates to 35x fwd on sustained growth | $450 | +53% |
-| Base | 50% | Revenue $25B by 2027, OpIncome $2.2B, normalized EPS ~$8 | Holds 28x fwd | $350 | +19% |
-| Bear | 25% | Revenue growth slows to 15%, GPU compression, EPS ~$5 | De-rates to 20x on growth disappointment | $180 | -39% |
+| Bull | 25% | Revenue $28B+ by 2027, OpIncome $2.8B, normalized EPS ~$10 | Re-rates to 35x fwd on sustained growth | $450 | +50% |
+| Base | 50% | Revenue $25B by 2027, OpIncome $2.2B, normalized EPS ~$8 | Holds 28x fwd | $350 | +17% |
+| Bear | 25% | Revenue growth slows to 15%, GPU compression, EPS ~$5 | De-rates to 20x on growth disappointment | $180 | -40% |
 
-**Expected value: +13%**
-(25% x 53%) + (50% x 19%) + (25% x -39%) = 13.3% + 9.5% - 9.8% = +13.0%
+**Expected value: +11%**
+(25% x 50%) + (50% x 17%) + (25% x -40%) = 12.5% + 8.5% - 10.0% = +11.0%
 
 **Thesis breaks if:** GPU falls below $5,500 for two consecutive quarters AND volume growth decelerates below 20% YoY — this would signal the scale/profitability tradeoff is structurally negative, not just a growing pain.
 
@@ -92,9 +100,9 @@ This is classic Phase 2 of a turnaround: the company has proven it can be profit
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Moderately crowded — institutional ownership 66.6%, popular retail name, but not peak consensus after 40% drawdown |
+| Crowdedness | Moderately crowded — institutional ownership ~105% (float), popular retail name, but not peak consensus after 38% drawdown |
 | Short interest | 10.6% — elevated, provides squeeze fuel on positive catalysts |
-| Technical position | Oversold — trading at $294 vs 50-day MA of $382 (23% below), 40% off ATH of $487, but above 52-week low of $148 |
+| Technical position | Oversold — trading at $300 vs 50-day MA of $376 (20% below), 38% off ATH of $487, above 52-week low of $148 |
 | Next catalyst | Q1 2026 earnings (late April/early May); stock split effective May 7 |
 | Recent price action | Down 40% from Jan ATH; $1.23B equity raise in Feb added supply; currently stabilizing in $280-310 range |
 
@@ -102,7 +110,7 @@ This is classic Phase 2 of a turnaround: the company has proven it can be profit
 
 **WATCH** — Conviction: MEDIUM
 
-Carvana is a genuinely great business going through a real inflection, and the 40% pullback from ATH creates a much more attractive entry than two months ago. However, the expected value of +13% is modest for a beta-3.7 stock — you need to believe in the bull case to justify the risk. The forward PE of ~28x on potentially declining 2026 EPS (due to the tax benefit normalization) means you're paying for execution on the volume ramp. The thesis is sound, but the risk-reward is not compelling enough for a HIGH conviction buy at this price.
+Carvana is a genuinely great business going through a real inflection, and the 38% pullback from ATH creates a much more attractive entry than two months ago. However, the expected value of +11% is modest for a beta-3.7 stock — you need to believe in the bull case to justify the risk. The forward PE of ~28x on potentially declining 2026 EPS (due to the tax benefit normalization) means you're paying for execution on the volume ramp. GBM models are strongly bullish (all 6 models positive) and analyst consensus is +43%, but DCF models flag extreme overvaluation. The thesis is sound, but the risk-reward is not compelling enough for a HIGH conviction buy at this price.
 
 **Would upgrade to BUY on:**
 1. Price below $250 (bringing EV closer to 15% FCF yield on 2027E numbers)

@@ -1,12 +1,12 @@
 # First Solar, Inc. (FSLR)
 
 **Sector:** Technology | **Industry:** Solar
-**Price:** $199.65 | **Market Cap:** $21.4B
-**Analysis Date:** 2026-03-20
+**Price:** $192.82 | **Market Cap:** $20.7B
+**Analysis Date:** 2026-03-22
 
 ## Situation Summary
 
-First Solar is the only vertically integrated, US-based thin-film solar manufacturer at scale, giving it a unique moat under IRA domestic content rules and tariff protections. The stock has pulled back ~30% from its 52-week high of $286 amid flat 2026 revenue guidance ($4.9B-$5.2B vs Street's $6B), policy uncertainty under Trump, and $125-135M in tariff charges. However, the 45X manufacturing tax credit survived the "One Big Beautiful Bill" largely intact with phase-out not starting until 2030, removing a key overhang. The company delivered strong 2025 results ($5.2B revenue, $14.21 EPS) and is turning FCF-positive ($1.2B in 2025) as the heavy capex cycle for US factory buildout winds down. Q1 2026 earnings are expected around April 23-28.
+First Solar is the only vertically integrated, US-based thin-film solar manufacturer at scale, giving it a unique moat under IRA domestic content rules and tariff protections. The stock has pulled back ~33% from its 52-week high of $286 amid flat 2026 revenue guidance ($4.9B-$5.2B vs Street's $6B), policy uncertainty under Trump, and $125-135M in tariff charges. However, the 45X manufacturing tax credit survived the "One Big Beautiful Bill" largely intact with phase-out not starting until 2030, removing a key overhang. The company delivered strong 2025 results ($5.2B revenue, $14.21 EPS) and is turning FCF-positive ($1.2B in 2025) as the heavy capex cycle for US factory buildout winds down. Q1 2026 earnings are expected around April 23-28.
 
 ## Variant Perception
 
@@ -39,10 +39,11 @@ First Solar is the only vertically integrated, US-based thin-film solar manufact
 No existing models in database for FSLR. This is the initial deep analysis.
 
 **Implied valuation math:**
-- At 14x trailing P/E on $14.21 EPS = $199 (fairly valued on trailing)
-- Forward P/E of 7.9x implies market expects ~$25 EPS in 2026 -- company guidance of $2.6-2.8B EBITDA supports this
+- At 13.6x trailing P/E on $14.21 EPS = $193 (fairly valued on trailing)
+- Forward P/E of 7.7x implies market expects ~$25 EPS in 2026 -- company guidance of $2.6-2.8B EBITDA supports this
 - If FSLR deserves 15-18x forward earnings (reasonable for a differentiated manufacturer with policy tailwinds), fair value = $375-$450
 - Even at a conservative 12x forward on $22 EPS = $264
+- Analyst consensus target: $255.87 (range $150-$347)
 
 **Model consensus:** Market is applying a deep discount for policy uncertainty that appears overdone given 45X credit preservation.
 
@@ -100,16 +101,16 @@ Additionally, the South Carolina finishing facility (opening H2 2026) will reduc
 |--------|--------|
 | Crowdedness | Moderate -- 92% institutional, but not a hedge fund hotel; clean energy funds are natural holders |
 | Short interest | 9.3% -- elevated, potential squeeze catalyst |
-| Technical position | 30% below 52w high ($286); below 50-day ($224) and 200-day ($217) averages; oversold territory |
-| Next catalyst | Q1 2026 earnings, ~April 23-28 |
-| Recent price action | Weak -- trading below key moving averages; may need to stabilize before entry |
+| Technical position | 33% below 52w high ($286); below 50-day ($222) and 200-day ($217) averages; oversold territory |
+| Next catalyst | Q1 2026 earnings, April 23 (after close) |
+| Recent price action | Weak -- dropped further to $193, trading well below key moving averages; deep oversold |
 
 ## Verdict
 
 **BUY** -- Conviction: HIGH
 
-First Solar at $200 offers a rare combination: a dominant US manufacturer with a policy-protected moat, transitioning to massive FCF generation, trading at 8x forward earnings with 9.3% short interest in oversold territory. The market is pricing in policy destruction that has already been legislatively resolved (45X safe until 2030). The FCF inflection from capex wind-down is the key insight the market is slow to price. Expected value of +45% with a favorable risk/reward skew.
+First Solar at $193 offers a rare combination: a dominant US manufacturer with a policy-protected moat, transitioning to massive FCF generation, trading at 8x forward earnings with 9.3% short interest in oversold territory. The market is pricing in policy destruction that has already been legislatively resolved (45X safe until 2030). The FCF inflection from capex wind-down is the key insight the market is slow to price. Expected value of +45% with a favorable risk/reward skew.
 
-**Entry:** Scale in at current levels ($195-205); add aggressively below $180 if market volatility provides opportunity
+**Entry:** Scale in at current levels ($185-200); add aggressively below $175 if market volatility provides opportunity
 **Position size:** Full position warranted given quality score (19/25) and conviction
 **Thesis-break:** Exit below $140 or if 45X credit repeal legislation advances; reassess if Q1 earnings miss guidance

@@ -4,6 +4,10 @@
 
 Prioritized by combined signals: scanner score, insider buying, activist stakes (13D/13G), smart money holdings (13F). Last updated 2026-02-24.
 
+- [FSLR](../companies/FSLR.md) (First Solar) - **BUY**. 7.7x fwd PE, 32.6% op margins, net cash $2.1B, FCF inflection as capex winds down. Quality 19/25. Only US thin-film solar manufacturer — tariff beneficiary. 45X credits safe til 2030. EV +45%. Entry $185-200, add below $175.
+- [ETN](../companies/ETN.md) (Eaton Corp) - WATCH. 22.8x fwd PE, 21.5% ROE, grid/electrification/data center power. Quality 21/25. Great business but consensus-priced at 34x trailing. EV +4.5%. Buy at $300-310.
+- [CEG](../companies/CEG.md) (Constellation Energy) - WATCH. 20.5x fwd PE, largest US power producer (55-60 GW post-Calpine). Nuclear + AI power demand. Quality 19/25. EV +7.3%. Mar 31 guidance call is key. Buy at $250-260.
+- [LMT](../companies/LMT.md) (Lockheed Martin) - WATCH. 19.6x fwd PE, $194B record backlog, 2.15% dividend. Quality 19/25. Iran war beneficiary but already up 39% YTD. EV -3.6%. Buy at $540-560.
 - [DECK](../companies/DECK.md) (Deckers/HOKA) - **BUY**. 14.3x PE, 58% gross margins, $1.6B net cash, $1B/yr buybacks (7% mkt cap). Quality 22/25. HOKA international white space. Down 50% from highs. EV +35%. Entry $100-110.
 - [ADBE](../companies/ADBE.md) (Adobe) - WATCH. ~14x fwd PE, 42% FCF margins, 9.7% FCF yield, near net-cash. Quality 21/25. BUT: zero insider buying at "10yr lows," CEO departing, AI disruption risk real (Canva, Midjourney). No urgency catalyst. EV +28%. Revisit if insiders buy or new CEO impresses.
 - [NOW](../companies/NOW.md) (ServiceNow) - **BUY**. ~27x fwd PE (non-GAAP), 34%+ FCF margins, 20%+ grower. Quality 22/25. CEO bought $3M at $105, 5 execs cancelled selling plans. AI orchestration moat, $7.75B Armis deal. Down 48% from highs. EV +22%. Entry $110-125.

@@ -134,38 +134,57 @@ def run_portfolio_mode(args: argparse.Namespace) -> None:
 
 
 def run_ticker_mode(args: argparse.Namespace) -> None:
-    """Size specific tickers."""
+    """Size specific tickers using portfolio-aware allocation."""
     if not args.tickers:
         print("Error: provide tickers or use --portfolio mode")
         sys.exit(1)
 
     tickers = [t.upper() for t in args.tickers]
+    budget = args.budget or args.portfolio_value
 
     sizer = KellyPositionSizer(
-        portfolio_value=args.portfolio_value,
+        portfolio_value=budget,
         fraction=args.fraction,
         max_position_pct=args.max_position,
         max_sector_pct=args.max_sector,
     )
 
-    print(f"\nPortfolio: ${args.portfolio_value:,.0f} | Kelly fraction: {args.fraction} | Max position: {args.max_position:.0%} | Max sector: {args.max_sector:.0%}")
+    print(f"\nBudget: ${budget:,.0f} | Kelly fraction: {args.fraction} | Max position: {args.max_position:.0%} | Max sector: {args.max_sector:.0%}")
     print("Using trusted models (GBM 3y + autoresearch)\n")
-    print(HEADER)
-    print(SEPARATOR)
 
-    results = sizer.size_multiple(tickers)
+    results = sizer.build_portfolio(
+        budget=budget,
+        tickers=tickers,
+        max_positions=len(tickers),
+    )
 
-    total_allocated = 0.0
-    for r in results:
-        print(r.summary_line())
-        total_allocated += r.dollar_amount
-        if args.verbose:
-            print_model_breakdown(r)
+    # Also check for tickers with no edge that didn't make it into results
+    result_tickers = {r.ticker for r in results}
+    no_edge = [t for t in tickers if t not in result_tickers]
 
-    print(SEPARATOR)
-    print(f"Total allocation: ${total_allocated:,.0f} ({total_allocated / args.portfolio_value:.1%} of portfolio)")
+    if results:
+        print(HEADER)
+        print(SEPARATOR)
 
-    no_edge = [r.ticker for r in results if "no_edge" in r.flags]
+        total = 0.0
+        sectors: dict[str, float] = {}
+        for r in results:
+            print(r.summary_line())
+            total += r.dollar_amount
+            if r.risk:
+                sec = r.risk.sector
+                sectors[sec] = sectors.get(sec, 0) + r.dollar_amount
+            if args.verbose:
+                print_model_breakdown(r)
+
+        print(SEPARATOR)
+        print(f"\n  Invested: ${total:,.0f} ({total / budget:.1%}) | Cash: ${budget - total:,.0f} ({(budget - total) / budget:.1%})")
+
+        if sectors and len(results) > 1:
+            print(f"\n  Sector allocation:")
+            for sec, amt in sorted(sectors.items(), key=lambda x: -x[1]):
+                print(f"    {sec:<30} ${amt:>8,.0f}  ({amt / budget:>5.1%})")
+
     if no_edge:
         print(f"\nNo edge (Kelly says don't trade): {', '.join(no_edge)}")
 

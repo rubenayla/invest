@@ -1,8 +1,8 @@
 # Moderna, Inc. (MRNA)
 
 **Sector:** Healthcare | **Industry:** Biotechnology
-**Price:** $52.37 | **Market Cap:** $20.7B
-**Analysis Date:** 2026-03-20
+**Price:** $51.28 | **Market Cap:** $20.3B
+**Analysis Date:** 2026-03-23
 
 ## Situation Summary
 

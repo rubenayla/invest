@@ -1,6 +1,7 @@
 # Claude Memory and Instructions
 
 ## .agents/ structure
+- `tasks.md`: Shared kanban board (TODO / In Progress / Done). Read in full. Claim tasks before starting, skip if already claimed. See global CLAUDE.md for concurrency protocol.
 - `error_log.md`: Append-only log. Don't read on startup, search when debugging.
 - `solutions.md`: Curated fixes for recurring issues. Keep under 100 lines.
 - `architecture.md`: Key design decisions. Keep under 100 lines.

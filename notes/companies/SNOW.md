@@ -1,8 +1,8 @@
 # Snowflake Inc. (SNOW)
 
 **Sector:** Technology | **Industry:** Software - Application
-**Price:** $175.40 | **Market Cap:** $60.0B
-**Analysis Date:** 2026-03-20
+**Price:** $174.20 | **Market Cap:** $59.6B
+**Analysis Date:** 2026-03-23
 
 ## Situation Summary
 
@@ -33,11 +33,24 @@ Snowflake just reported a strong Q4 FY2026 (ended Jan 31, 2026) beating estimate
 
 ## Valuation Models
 
-No prior models exist in the database for SNOW. This is the first deep analysis.
+| Model | Fair Value | Upside | Confidence |
+|-------|-----------|--------|------------|
+| gbm_lite_3y | $373 | +114% | 0.94 |
+| gbm_opportunistic_1y | $347 | +99% | 0.96 |
+| gbm_3y | $299 | +72% | 0.95 |
+| autoresearch | $245 | +41% | 0.94 |
+| gbm_lite_1y | $243 | +39% | 0.94 |
+| gbm_opportunistic_3y | $233 | +34% | 0.72 |
+| gbm_1y | $223 | +28% | 0.86 |
+| simple_ratios | $43 | -76% | N/A |
+| multi_stage_dcf | $26 | -85% | N/A |
+| dcf_enhanced | $21 | -88% | N/A |
+
+**Model consensus:** All GBM and autoresearch models (the most reliable) are strongly bullish, with fair values ranging from $223 to $373. DCF/ratio-based models produce unrealistically low values -- this is a known bias: DCF models systematically undervalue high-SBC, pre-GAAP-profitability companies by discounting negative GAAP earnings. The GBM models correctly capture FCF-generation ability and growth trajectory. **Weighted consensus (GBM/autoresearch only): ~$280, implying ~60% upside.**
 
 **Relative valuation:**
 - Forward P/S: 10.3x (vs. Databricks implied ~25x at $134B/$5.4B ARR)
-- Price/FCF: 67.9x (declining rapidly as FCF scales)
+- Price/FCF: 67x (declining rapidly as FCF scales)
 - Analyst target range: $176 (low) to $500 (high), mean $240
 
 **Implied expectations at current price:**
@@ -90,7 +103,7 @@ Observable evidence: FCF margins expanding, RPO accelerating, record deal sizes,
 | Bear | 25% | Revenue growth decelerates to 22%, macro weakness hits consumption, FCF margin flat at 24% | De-rates to 35x FCF on growth deceleration fears | $130 | -26% |
 
 **Expected value: +7%**
-(0.25 x 37%) + (0.50 x 8%) + (0.25 x -26%) = 9.25% + 4.0% - 6.5% = **+6.8%**
+(0.25 x 37%) + (0.50 x 9%) + (0.25 x -25%) = 9.25% + 4.5% - 6.25% = **+7.5%**
 
 **Thesis breaks if:** Revenue growth decelerates below 22% for two consecutive quarters, indicating structural share loss to Databricks/hyperscalers rather than cyclical consumption softness. Also breaks if NRR drops below 115%.
 
@@ -101,18 +114,18 @@ Observable evidence: FCF margins expanding, RPO accelerating, record deal sizes,
 | Crowdedness | **Moderately crowded** -- 78% institutional ownership, consensus "strong buy" (91% buy ratings). This is a well-known name. However, at $175 many momentum investors have exited (down 37% from 52w high). |
 | Short interest | 4.3% -- modest, not a squeeze candidate but not heavily shorted either |
 | Technical position | **Oversold territory** -- trading below both 50-day ($188) and 200-day ($217) moving averages. 37% below 52-week high. Near 52-week low territory. |
-| Next catalyst | Q1 FY2027 earnings (late May 2026); Databricks IPO (H1 2026) |
-| Recent price action | Stock dropped from $280 to $175 (-37%) over past months. Has not bounced meaningfully yet -- no evidence of bottom formation. |
+| Next catalyst | **Q1 FY2027 earnings May 27, 2026** (~2 months); Databricks IPO (H1 2026) |
+| Recent price action | Stock dropped from $281 to $174 (-38%) over past months. RSI(14) at 48.7 -- neutral. Trading below 50d ($185) and 200d ($217) MAs. No clear bottom yet. |
 
 ## Verdict
 
 **WATCH** -- Conviction: MEDIUM
 
-Snowflake is a high-quality business (19/25) at a genuine AI/profitability inflection, trading at its cheapest valuation since IPO. However, the expected value of +7% is insufficient to justify a full position given the risks. The consensus is already bullish (91% buy), which limits the variant perception edge -- the RPO/revenue gap thesis is plausible but not a deeply contrarian view. The stock is technically weak with no clear bottom yet.
+Snowflake is a high-quality business (19/25) at a genuine AI/profitability inflection, trading at its cheapest valuation since IPO. The GBM models (most reliable) all point to significant upside (~60% weighted consensus), but the scenario-table EV of +7.5% reflects the real risk that consensus growth expectations may not materialize. The consensus is already bullish (91% buy ratings, 46 analysts), which limits the variant perception edge -- the RPO/revenue gap thesis is plausible but not a deeply contrarian view. The stock is technically weak with no clear bottom yet.
 
 **Would upgrade to BUY on:**
-1. **Price below $150** -- would push EV to ~15% and provide genuine margin of safety against the bear case
-2. **Q1 FY2027 earnings beat** with revenue re-acceleration above 30% -- would confirm the RPO thesis and likely trigger re-rating
+1. **Price below $150** -- would push scenario EV to ~20% and provide genuine margin of safety against the bear case
+2. **Q1 FY2027 earnings beat** (May 27) with revenue re-acceleration above 30% -- would confirm the RPO thesis and likely trigger re-rating
 3. **Databricks IPO pricing** that reveals inferior margins -- would force direct valuation comparison favorable to Snowflake
 
 **Entry plan if triggered:** Scale in at $145-155 range (if price-driven) or after Q1 earnings beat. Half position initially, add on confirmation. Thesis-break stop at $115 (below bear case target, implies permanent growth impairment).
