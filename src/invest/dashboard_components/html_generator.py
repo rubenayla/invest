@@ -3135,25 +3135,30 @@ renderCards();
             const n = months.length;
             if (n === 0) return;
             const recent = months[n - 1];
-            document.getElementById('insiderModalSubtitle').textContent =
-                months[0].month + ' to ' + recent.month + ' \u2022 Open-market transactions only';
+            const hasComp = months.some(m => m.comp_sells > 0);
+            let subtitle = months[0].month + ' to ' + recent.month + ' \u2022 Open-market transactions only';
+            if (hasComp) subtitle += ' \u2022 Faded = compensation sells (option exercise + tax withholding)';
+            document.getElementById('insiderModalSubtitle').textContent = subtitle;
 
             const container = document.getElementById('insiderChartContainer');
             container.innerHTML = renderDualBarChart(months);
         }
 
         function renderDualBarChart(months) {
-            // Two bars per month side by side: count (left axis) + $ volume (right axis)
+            // Stacked bars: buys up (green), sells down split into discretionary (red) + compensation (faded)
+            // Left pair = transaction count, Right pair = $ volume
             const W = 540, H = 240, padL = 36, padR = 52, padT = 24, padB = 42;
             const chartW = W - padL - padR;
             const chartH = H - padT - padB;
             const n = months.length;
 
-            // Net count = buys - sells (positive = net buying)
-            const netCounts = months.map(m => m.buys - m.sells);
-            const netVols = months.map(m => (m.buy_vol || 0) - (m.sell_vol || 0));
-            const maxCount = Math.max(1, ...netCounts.map(Math.abs));
-            const maxVol = Math.max(1, ...netVols.map(Math.abs));
+            // Max values for scaling (buys go up, sells go down — not netted)
+            const maxBuyCount = Math.max(1, ...months.map(m => m.buys));
+            const maxSellCount = Math.max(1, ...months.map(m => m.sells));
+            const maxCount = Math.max(maxBuyCount, maxSellCount);
+            const maxBuyVol = Math.max(1, ...months.map(m => m.buy_vol || 0));
+            const maxSellVol = Math.max(1, ...months.map(m => m.sell_vol || 0));
+            const maxVol = Math.max(maxBuyVol, maxSellVol);
 
             const barGroupW = Math.min(50, chartW / n);
             const barW = Math.max(4, (barGroupW - 6) / 2);
@@ -3164,56 +3169,94 @@ renderCards();
 
             let svg = '<svg width="' + fullW + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg">';
 
+            // Legend
+            const hasComp = months.some(m => (m.comp_sells || 0) > 0);
+            const legY = 10;
+            svg += '<rect x="' + padL + '" y="' + (legY-4) + '" width="8" height="8" fill="#34d399" rx="1"/>';
+            svg += '<text x="' + (padL+11) + '" y="' + (legY+4) + '" fill="#738091" font-size="9" font-family="Geist Mono,monospace">Buys</text>';
+            svg += '<rect x="' + (padL+42) + '" y="' + (legY-4) + '" width="8" height="8" fill="#e76a6e" rx="1"/>';
+            svg += '<text x="' + (padL+53) + '" y="' + (legY+4) + '" fill="#738091" font-size="9" font-family="Geist Mono,monospace">Sells</text>';
+            if (hasComp) {
+                svg += '<rect x="' + (padL+88) + '" y="' + (legY-4) + '" width="8" height="8" fill="#e76a6e" rx="1" opacity="0.3"/>';
+                svg += '<text x="' + (padL+99) + '" y="' + (legY+4) + '" fill="#738091" font-size="9" font-family="Geist Mono,monospace">Comp (vesting)</text>';
+            }
+
             // Grid lines
             const steps = 2;
             for (let i = 1; i <= steps; i++) {
                 const frac = i / steps;
-                // Above zero
                 const yUp = midY - halfH * frac;
                 svg += '<line x1="' + padL + '" y1="' + yUp + '" x2="' + (padL + Math.max(chartW, totalW)) +
                        '" y2="' + yUp + '" stroke="#2a3040" stroke-width="1"/>';
                 svg += '<text x="' + (padL - 4) + '" y="' + (yUp + 4) +
-                       '" fill="#738091" font-size="9" text-anchor="end" font-family="Geist Mono,monospace">+' + Math.round(maxCount * frac) + '</text>';
+                       '" fill="#738091" font-size="9" text-anchor="end" font-family="Geist Mono,monospace">' + Math.round(maxCount * frac) + '</text>';
                 svg += '<text x="' + (padL + Math.max(chartW, totalW) + 4) + '" y="' + (yUp + 4) +
                        '" fill="#738091" font-size="9" font-family="Geist Mono,monospace">' + fmtDollar(maxVol * frac) + '</text>';
-                // Below zero
                 const yDn = midY + halfH * frac;
                 svg += '<line x1="' + padL + '" y1="' + yDn + '" x2="' + (padL + Math.max(chartW, totalW)) +
                        '" y2="' + yDn + '" stroke="#2a3040" stroke-width="1"/>';
                 svg += '<text x="' + (padL - 4) + '" y="' + (yDn + 4) +
-                       '" fill="#738091" font-size="9" text-anchor="end" font-family="Geist Mono,monospace">-' + Math.round(maxCount * frac) + '</text>';
+                       '" fill="#738091" font-size="9" text-anchor="end" font-family="Geist Mono,monospace">' + Math.round(maxCount * frac) + '</text>';
                 svg += '<text x="' + (padL + Math.max(chartW, totalW) + 4) + '" y="' + (yDn + 4) +
-                       '" fill="#738091" font-size="9" font-family="Geist Mono,monospace">-' + fmtDollar(maxVol * frac) + '</text>';
+                       '" fill="#738091" font-size="9" font-family="Geist Mono,monospace">' + fmtDollar(maxVol * frac) + '</text>';
             }
 
             // Zero axis
             svg += '<line x1="' + padL + '" y1="' + midY + '" x2="' + (padL + Math.max(chartW, totalW)) +
                    '" y2="' + midY + '" stroke="#4a5568" stroke-width="1.5"/>';
-            svg += '<text x="' + (padL - 4) + '" y="' + (midY + 4) +
-                   '" fill="#738091" font-size="9" text-anchor="end" font-family="Geist Mono,monospace">0</text>';
 
-            // Bars
+            // Bars — stacked: buys go UP, sells go DOWN with comp portion faded
             months.forEach((m, i) => {
                 const x = padL + i * barGroupW + 3;
-                const nc = netCounts[i];
-                const nv = netVols[i];
+                const compSells = m.comp_sells || 0;
+                const discSells = m.sells - compSells;
+                const compVol = m.comp_sell_vol || 0;
+                const discVol = (m.sell_vol || 0) - compVol;
 
-                // Count bar (left, blue-ish teal)
-                if (nc !== 0) {
-                    const h = Math.abs(nc) / maxCount * halfH;
-                    const y = nc > 0 ? midY - h : midY;
-                    const fill = nc > 0 ? '#34d399' : '#e76a6e';
-                    svg += '<rect x="' + x + '" y="' + y + '" width="' + barW + '" height="' + h +
-                           '" fill="' + fill + '" rx="1.5" opacity="0.9"/>';
+                // COUNT bars (left)
+                // Buys (green, going up)
+                if (m.buys > 0) {
+                    const h = m.buys / maxCount * halfH;
+                    svg += '<rect x="' + x + '" y="' + (midY - h) + '" width="' + barW + '" height="' + h +
+                           '" fill="#34d399" rx="1.5" opacity="0.9"/>';
+                }
+                // Discretionary sells (solid red, going down)
+                if (discSells > 0) {
+                    const h = discSells / maxCount * halfH;
+                    svg += '<rect x="' + x + '" y="' + midY + '" width="' + barW + '" height="' + h +
+                           '" fill="#e76a6e" rx="1.5" opacity="0.9"/>';
+                    // Compensation sells stacked below (faded red)
+                    if (compSells > 0) {
+                        const ch = compSells / maxCount * halfH;
+                        svg += '<rect x="' + x + '" y="' + (midY + h) + '" width="' + barW + '" height="' + ch +
+                               '" fill="#e76a6e" rx="1.5" opacity="0.3"/>';
+                    }
+                } else if (compSells > 0) {
+                    // Only compensation sells, no discretionary
+                    const ch = compSells / maxCount * halfH;
+                    svg += '<rect x="' + x + '" y="' + midY + '" width="' + barW + '" height="' + ch +
+                           '" fill="#e76a6e" rx="1.5" opacity="0.3"/>';
                 }
 
-                // Volume bar (right, lighter shade)
-                if (nv !== 0) {
-                    const h = Math.abs(nv) / maxVol * halfH;
-                    const y = nv > 0 ? midY - h : midY;
-                    const fill = nv > 0 ? '#63e2c6' : '#f0a0a0';
-                    svg += '<rect x="' + (x + barW + 2) + '" y="' + y + '" width="' + barW + '" height="' + h +
-                           '" fill="' + fill + '" rx="1.5" opacity="0.7"/>';
+                // VOLUME bars (right)
+                if ((m.buy_vol || 0) > 0) {
+                    const h = m.buy_vol / maxVol * halfH;
+                    svg += '<rect x="' + (x + barW + 2) + '" y="' + (midY - h) + '" width="' + barW + '" height="' + h +
+                           '" fill="#63e2c6" rx="1.5" opacity="0.7"/>';
+                }
+                if (discVol > 0) {
+                    const h = discVol / maxVol * halfH;
+                    svg += '<rect x="' + (x + barW + 2) + '" y="' + midY + '" width="' + barW + '" height="' + h +
+                           '" fill="#f0a0a0" rx="1.5" opacity="0.7"/>';
+                    if (compVol > 0) {
+                        const ch = compVol / maxVol * halfH;
+                        svg += '<rect x="' + (x + barW + 2) + '" y="' + (midY + h) + '" width="' + barW + '" height="' + ch +
+                               '" fill="#f0a0a0" rx="1.5" opacity="0.25"/>';
+                    }
+                } else if (compVol > 0) {
+                    const ch = compVol / maxVol * halfH;
+                    svg += '<rect x="' + (x + barW + 2) + '" y="' + midY + '" width="' + barW + '" height="' + ch +
+                           '" fill="#f0a0a0" rx="1.5" opacity="0.25"/>';
                 }
 
                 // X-axis labels
@@ -3905,9 +3948,24 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                     elif len(preview_hook) > 130:
                         preview_hook = preview_hook[:127].rstrip() + "\u2026"
                 # Verdict first sentence as tease — the "what" after the "why"
+                # Problem: verdict S1 is almost always boilerplate like
+                # "TICKER is a high-quality X trading at Y" — every card
+                # looks identical at a glance. Skip to S2 when S1 is generic.
                 if verdict_text:
-                    v_split = _re.split(r'(?<=[.!?])\s+', verdict_text, maxsplit=1)
-                    preview_tease = v_split[0].strip()
+                    v_split = _re.split(r'(?<=[.!?])\s+', verdict_text, maxsplit=2)
+                    s1 = v_split[0].strip()
+                    s2 = v_split[1].strip() if len(v_split) > 1 else ""
+                    # Detect boilerplate openers: "[Name] is/offers/at..."
+                    is_boilerplate = bool(_re.match(
+                        r'^.{1,40}\s+(?:is|offers|at)\s+(?:a\s+)?'
+                        r'(?:high-quality|rare|dominant|best-in-class|mediocre|'
+                        r'genuinely|compelling|generational|quality)',
+                        s1, _re.IGNORECASE
+                    ))
+                    if is_boilerplate and s2:
+                        preview_tease = s2
+                    else:
+                        preview_tease = s1
                     if len(preview_tease) > 200:
                         preview_tease = preview_tease[:197].rstrip() + "..."
             elif verdict_text:
