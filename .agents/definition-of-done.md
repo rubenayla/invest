@@ -6,7 +6,7 @@ Before considering a task complete, verify the following:
 - [ ] **Tested:** `uv run pytest` passes for affected modules.
 - [ ] **Documented:** New scripts or major changes are reflected in `docs/` or `README.md`.
 - [ ] **Clean:** No `debug_*.py` or temporary files left in the root.
-- [ ] **Logged:** If a new failure mode was discovered, it is added to `.agents/error_log.md`.
+- [ ] **Logged:** If a new failure mode was discovered, it is added to `.agents/error-log.md`.
 - [ ] **Trend Checked:** (For analysis) Trends verified via `yfinance` income statement before claiming "decline".
 - [ ] **Shipped:** Changes are committed and pushed (or explicitly deferred) and `git status` is clean.
 

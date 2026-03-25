@@ -16,8 +16,8 @@ This file tracks mistakes and failures in the investment analysis system and the
 ## 2026-02-08 - Initial Workflow Setup
 **What happened:** System lacked a structured way to track recurring errors and ensure quality before completion.
 **Prevention added:**
-- Created `error_log.md` (this file).
-- Created `definition_of_done.md`.
+- Created `error-log.md` (this file).
+- Created `definition-of-done.md`.
 - Updated `AGENTS.md` to enforce usage of these files.
 
 ## 2026-02-09 - `uv run` not usable in sandbox
@@ -39,7 +39,7 @@ This file tracks mistakes and failures in the investment analysis system and the
 **Prevention added:**
 - Added `.githooks/pre-push` to block pushing with staged/unstaged changes.
 - Added `scripts/finish.sh` to run relevant tests, then commit and push in one step.
-- Added `scripts/setup-githooks.sh` and a "Shipped" checkbox in `.agents/definition_of_done.md`.
+- Added `scripts/setup-githooks.sh` and a "Shipped" checkbox in `.agents/definition-of-done.md`.
 
 ## 2026-03-20 - Removed CLI flag breaks Hetzner systemd service
 **What happened:** A prior commit removed `--no-auto-shutdown` from `dashboard_server.py`'s argparser, but the systemd unit file on Hetzner still passes it. Service crashed with `unrecognized arguments` on restart.
