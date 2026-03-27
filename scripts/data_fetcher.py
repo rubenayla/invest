@@ -13,6 +13,7 @@ import argparse
 import asyncio
 import json
 import logging
+import math
 import os
 
 # Import currency converter (dynamically since it's in scripts/)
@@ -41,6 +42,19 @@ from invest.data.db import get_connection
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+def _clean_json(obj) -> str:
+    """Serialize to JSON, replacing NaN/Infinity with null (Postgres rejects them)."""
+    def _sanitize(v):
+        if isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
+            return None
+        if isinstance(v, dict):
+            return {k: _sanitize(val) for k, val in v.items()}
+        if isinstance(v, list):
+            return [_sanitize(item) for item in v]
+        return v
+    return json.dumps(_sanitize(obj))
+
 
 class StockDataCache:
     """Manages local stock data cache"""
@@ -259,9 +273,9 @@ class StockDataCache:
             financials.get('bookValue'), financials.get('revenuePerShare'), financials.get('priceToSalesTrailing12Months'),
             price_data.get('price_52w_high'), price_data.get('price_52w_low'),
             price_data.get('avg_volume'), price_data.get('price_trend_30d'),
-            json.dumps(data.get('cashflow', [])),
-            json.dumps(data.get('balance_sheet', [])),
-            json.dumps(data.get('income', [])),
+            _clean_json(data.get('cashflow', [])),
+            _clean_json(data.get('balance_sheet', [])),
+            _clean_json(data.get('income', [])),
             data.get('fetch_timestamp', datetime.now().isoformat()),
             datetime.now().isoformat(),
             financials.get('_exchange_rate_used'),

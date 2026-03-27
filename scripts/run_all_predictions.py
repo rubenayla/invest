@@ -112,7 +112,7 @@ def run_gbm_models() -> dict:
 
     for variant, horizon in variants:
         cmd = [
-            'uv', 'run', 'python', 'scripts/run_gbm_predictions.py',
+            sys.executable,'scripts/run_gbm_predictions.py',
             '--variant', variant,
             '--horizon', horizon
         ]
@@ -129,7 +129,7 @@ def run_classic_models() -> dict:
     """Run classic valuation models."""
     print_header('💰 Running Classic Valuation Models')
 
-    cmd = ['uv', 'run', 'python', 'scripts/run_classic_valuations.py']
+    cmd = [sys.executable,'scripts/run_classic_valuations.py']
     success, elapsed = run_command(cmd, 'Classic valuations (DCF, RIM, etc.)')
 
     return {'classic': success}
@@ -139,7 +139,7 @@ def generate_dashboard() -> dict:
     """Generate dashboard."""
     print_header('📈 Generating Dashboard')
 
-    cmd = ['uv', 'run', 'python', 'scripts/dashboard.py']
+    cmd = [sys.executable,'scripts/dashboard.py']
     success, elapsed = run_command(cmd, 'Dashboard generation')
 
     return {'dashboard': success}

@@ -72,7 +72,7 @@ def run_gbm_predictions() -> None:
     for variant, horizon in variants:
         run_cmd(
             [
-                'uv', 'run', 'python', 'scripts/run_gbm_predictions.py',
+                sys.executable,'scripts/run_gbm_predictions.py',
                 '--variant', variant,
                 '--horizon', horizon,
             ],
@@ -112,7 +112,7 @@ def main() -> int:
 
     if not args.skip_fetch:
         fetch_cmd = [
-            'uv', 'run', 'python', 'scripts/data_fetcher.py',
+            sys.executable,'scripts/data_fetcher.py',
             '--universe', args.universe,
             '--max-concurrent', str(args.max_concurrent),
         ]
@@ -123,21 +123,21 @@ def main() -> int:
     # --- Phase 1b: Insider data (reads SEC EDGAR, writes insider_transactions) ---
     if not args.skip_insider:
         run_cmd(
-            ['uv', 'run', 'python', 'scripts/fetch_insider_data.py'],
+            [sys.executable,'scripts/fetch_insider_data.py'],
             'Fetching insider data (SEC Form 4)',
         )
 
     # --- Phase 1c: Activist stakes (SEC 13D/13G) ---
     if not args.skip_activist:
         run_cmd(
-            ['uv', 'run', 'python', 'scripts/fetch_activist_data.py'],
+            [sys.executable,'scripts/fetch_activist_data.py'],
             'Fetching activist stakes (SEC 13D/13G)',
         )
 
     # --- Phase 1d: Institutional holdings (SEC 13F) ---
     if not args.skip_holdings:
         run_cmd(
-            ['uv', 'run', 'python', 'scripts/fetch_holdings_data.py'],
+            [sys.executable,'scripts/fetch_holdings_data.py'],
             'Fetching institutional holdings (SEC 13F)',
         )
 
@@ -146,7 +146,7 @@ def main() -> int:
         import os
         if os.environ.get('EDINET_API_KEY'):
             run_cmd(
-                ['uv', 'run', 'python', 'scripts/fetch_edinet_data.py'],
+                [sys.executable,'scripts/fetch_edinet_data.py'],
                 'Fetching EDINET Japan large shareholding reports',
             )
         else:
@@ -162,19 +162,19 @@ def main() -> int:
     # if not args.skip_nn:
     #     if ensure_dashboard_data():
     #         run_cmd(
-    #             ['uv', 'run', 'python', 'scripts/run_multi_horizon_predictions.py'],
+    #             [sys.executable,'scripts/run_multi_horizon_predictions.py'],
     #             'Neural network predictions (multi-horizon)',
     #         )
 
     if not args.skip_autoresearch:
         run_cmd(
-            ['uv', 'run', 'python', 'scripts/run_autoresearch_predictions.py'],
+            [sys.executable,'scripts/run_autoresearch_predictions.py'],
             'AutoResearch predictions (5-model ensemble)',
         )
 
     if not args.skip_classic:
         run_cmd(
-            ['uv', 'run', 'python', 'scripts/run_classic_valuations.py'],
+            [sys.executable,'scripts/run_classic_valuations.py'],
             'Classic valuations',
         )
 
@@ -184,13 +184,13 @@ def main() -> int:
     # Neither depends on the other; order between them doesn't matter.
     if not args.skip_dashboard:
         run_cmd(
-            ['uv', 'run', 'python', 'scripts/dashboard.py'],
+            [sys.executable,'scripts/dashboard.py'],
             'Dashboard generation',
         )
 
     if not args.skip_scanner:
         run_cmd(
-            ['uv', 'run', 'python', 'scripts/run_opportunity_scan.py'],
+            [sys.executable,'scripts/run_opportunity_scan.py'],
             'Opportunity scanner',
         )
 

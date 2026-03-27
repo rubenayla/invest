@@ -66,3 +66,26 @@ This file tracks mistakes and failures in the investment analysis system and the
 - After running batch research in worktrees, always verify DB entries exist: `SELECT ticker FROM valuation_results WHERE model_name = 'llm_deep_analysis' AND ticker IN (...)`.
 - The `/research` skill Step 9 should use `invest.data.db.get_connection()` (PostgreSQL) instead of `sqlite3.connect()`. TODO: update the skill template.
 - When launching worktree agents that need DB access, ensure SSH tunnel is running first and consider whether worktree isolation is actually needed (research agents only write to DB + notes files, not code).
+
+## 2026-03-27 - Cron update silently failing for 2.5 weeks (uv not on PATH)
+**What happened:** `update_all.py` used `['uv', 'run', 'python', ...]` in subprocess calls. Cron's minimal PATH doesn't include `~/.local/bin`, so every subprocess failed with `FileNotFoundError: 'uv'`. Last successful price data was 2026-03-09. The outer crontab invocation used the full path to uv, but the child processes spawned by the script did not.
+**Root cause:** Scripts assumed `uv` is always on PATH. Cron doesn't load `.bashrc`/`.profile`.
+**Prevention added:**
+- Replaced `['uv', 'run', 'python', ...]` with `[sys.executable, ...]` in `update_all.py` and `run_all_predictions.py`. Since these scripts already run under `uv run python`, `sys.executable` is the correct Python.
+- Added `PATH=` line to server crontab as belt-and-suspenders.
+- Test `test_update_all.py::TestNoHardcodedUv` scans orchestrator scripts for bare `'uv'` subprocess calls.
+
+## 2026-03-27 - NaN in financial JSON rejected by Postgres
+**What happened:** yfinance returns `NaN`/`Infinity` in financial statements. Python's `json.dumps` serializes these as literal `NaN`/`Infinity` tokens, which are not valid JSON. Postgres rejected every INSERT for tickers with missing financial data.
+**Root cause:** `data_fetcher.py` called `json.dumps()` directly on dicts containing float NaN values. The migration script (`migrate_data_to_postgres.py`) already had NaN cleaning, but the live fetcher didn't.
+**Prevention added:**
+- Added `_clean_json()` helper in `data_fetcher.py` that recursively replaces NaN/Infinity with None before serializing.
+- Test `test_update_all.py::TestCleanJson` verifies NaN, Infinity, -Infinity are replaced with null and output is valid JSON.
+
+## 2026-03-27 - Kelly position sizer fed available cash instead of total portfolio value
+**What happened:** When sizing a FSLR position, ran `run_position_sizer.py FSLR --budget 7766` using only the available cash ($7,766) instead of the total portfolio value (~$46,000). Kelly's 15% max cap applied to $7.7K = $1,140, which is only 2.5% of the real portfolio. The correct sizing was $6,837 (15% of $46K). This would have led to a significantly undersized position — a missed-opportunity cost on a high-conviction pick.
+**Root cause:** Confused "cash available to deploy" with "portfolio value for sizing purposes." Kelly sizes positions as a percentage of total capital, not just available cash.
+**Prevention added:**
+- **Always use total portfolio value as the `--budget` parameter for Kelly sizing**, not just available cash. The budget represents the full capital base that position limits (15% max) are calculated against.
+- Available cash only determines whether you *can* fill the recommended size, not the size itself.
+- This error can directly cost money (undersized winners, oversized losers). Double-check the budget input on every sizing call.
