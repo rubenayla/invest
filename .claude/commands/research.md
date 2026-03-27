@@ -5,6 +5,29 @@ Saves to `notes/companies/TICKER.md` and `valuation_results` DB (model: `llm_dee
 
 ---
 
+## STEP -1: Refresh Stock Data
+
+**Before starting research, update the stock's price and fundamental data in the database.**
+
+```bash
+uv run python -c "
+import sys; sys.path.insert(0, '.')
+from scripts.data_fetcher import AsyncStockDataFetcher, StockDataCache
+fetcher = AsyncStockDataFetcher()
+data = fetcher.fetch_stock_data_sync('{TICKER}')
+if data and data.get('info', {}).get('currentPrice'):
+    cache = StockDataCache()
+    cache.save_stock_data('{TICKER}', data)
+    print(f'Updated {data[\"info\"].get(\"longName\", \"{TICKER}\")}: \${data[\"info\"][\"currentPrice\"]}')
+else:
+    print('Warning: could not fetch data, proceeding with existing DB data')
+"
+```
+
+If this fails (SSL error, rate limit), proceed anyway — the analysis can use existing DB data + live yfinance queries in Step 3.
+
+---
+
 ## STEP 0: Research the Situation (NEWS & NARRATIVE)
 
 **This step comes FIRST. Before touching any numbers, understand what's actually happening.**

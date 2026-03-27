@@ -2,6 +2,10 @@ https://gexanalyzer.streamlit.app/
 
 # TODO
 
+## Pending Orders
+- [ ] **FSLR limit buy** — 29 shares @ $175 GTC (~$5,075). Place after ACGL sell fills (~$2,200) + existing $2,900 cash. ~11% of portfolio.
+- [ ] **ACGL limit sell** — modified existing order to ~$94 limit sell. Once filled, use proceeds for FSLR above.
+
 # 🎯 Priority Watchlist - March 2026
 1. **Synchrony Financial (SYF)** - Deep value play (+150% to +300% upside). Strongest fundamental pick.
 2. **Alphabet (GOOGL)** - AI infrastructure leader with TPU advantage. Fairly valued but high strategic moat.
@@ -302,6 +306,15 @@ If you want, I can graph the issuer charge-off rates together so you can visuall
 
 
 # Todo List
+
+- [ ] **Bloomberg Terminal at URJC** — Visit Vicálvaro campus library to use the Bloomberg Lab (4 terminals + 8 laptops, 2h slots). [Info](https://www.urjc.es/todas-las-noticias-de-actualidad/10653-inaugurado-el-blomberg-lab-en-el-campus-de-madrid) | [Training](https://eventos.urjc.es/137548/detail/formacion-bloomberg-en-la-fcee.html)
+  - [ ] Book a slot and check if data export to USB/email is allowed
+  - [ ] Pull `FA` (financials) + `RV` (relative valuation) + `ANR` (analyst targets) for current holdings
+  - [ ] Export consensus EPS forecasts & cost of equity estimates for RIM model via `BDH`/`BDP` Excel functions
+  - [ ] Run `EQS` equity screener with filters matching GBM model features
+  - [ ] Check `CL1 Comdty` (crude oil) and macro data (`ECFC`) for thesis work
+  - [ ] Look up Japanese trading companies (8002 JT, 8053 JT, 8316 JT, etc.)
+  - [ ] Start the 4 free Bloomberg certification courses (BMC)
 
 - [ ] **Make repo cloneable & extensible**: Document the model interface, make the pipeline pluggable, write a "how to add a model" guide. Goal: anyone can clone, add a new valuation model, and see it in the dashboard. Includes cleaning up model registry, standardizing input/output contracts, and adding contributor docs.
 - Investigate other projects online to see if there's a promising one for stock analysis and valuation in medium/long term, mainly based on fundamentals. 

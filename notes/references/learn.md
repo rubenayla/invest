@@ -3,9 +3,9 @@
 ## Income Statement --- Revenue, Income, Profit, Expenses, Net Income, EBIT, EBITDA, Free Cash Flow, Equity, Enterprise Value
 > - **Revenue** (all money in) = Turnover
 > - `- Expenses` = COGS = Cost Of Goods Sold. Linked to production
-> - = **Gross Profit** Profit ignoring investment and R&D expenses -- Related to Gross Margin = Gross profit / Revenue
+> - = **Gross Profit** Revenue minus the direct cost of making the product. Operating expenses (R&D, SG&A) haven't been subtracted yet — Related to Gross Margin = Gross profit / Revenue
 > - `- Operating expenses` = OpEx -- marketing, R&D expenses, depreciation/amortization of assets, land rent --- Whole business expenses, unlinked to production
-> - = Operating **Income** = EBIT -- Related to Operating Margin = Operating Income / Revenue
+> - = Operating **Income** ≈ EBIT (usually the same, but EBIT can include non-operating items like gains on asset sales) -- Related to Operating Margin = Operating Income / Revenue
 > - `- Other non-operating expenses` Interests, Investments, Taxes
 > - = Net **Earnings**, Net Income, Net Profit - Related to Profit Margin = Net Earnings / Revenue
 >     - Beware, net income may be low or negative and the company go well, if they're investing for growth!
@@ -29,12 +29,10 @@
     - Excludes Goodwill from the book value to actually reflect the tangible assets of the company. If 1 it means you liquidate the company and get about the same amount of money as the market cap.
 - P/G ratio = Price / Gross Profit ~= 91
 - EPS = Earnings Per Share = Earnings / Shares
-- FCF = Free Cash Flow = net income adding depreciation, amortization, capex, working capital, interests etc = net income * (1 - reinvestment rate)
-    - How much did the cash balance vary from year to year. Money left for investors and creditors (after investments).
-- CARG = Compound Annual Growth Rate, Rate of Return ROR required to grow from beginning balance to ending balance
-- FCF = Free Cash Flow
-    - = Profit from operations - Capital expenditures
-    - = EBI - Investments (capital expenditures, capex)
+- FCF = Free Cash Flow = Operating Cash Flow - Capital Expenditures
+    - How much cash the business generates after reinvesting in itself. Money left for dividends, buybacks, debt paydown, or acquisitions.
+    - Note: Operating Cash Flow already starts from net income and adds back non-cash charges (depreciation, stock comp) and working capital changes. FCF then subtracts CapEx.
+- CAGR = Compound Annual Growth Rate, Rate of Return ROR required to grow from beginning balance to ending balance
 - OFCF = Operating Free Cash Flow
     - = EBITDA - Taxes - Capital expenditures
     - Cash Flow of core business, ignoring financing and investing.
@@ -49,7 +47,7 @@
     - "How much pure cash a business generates from its core operations, before any financing or accounting tricks."
 
 Debt to Equity
-Current ratio = Assets / Liabilities
+Current ratio = Current Assets / Current Liabilities (short-term only, measures ability to pay near-term obligations)
 
 Macro economic parameter: STOCK / Gross Domestic Product (.75 historical average)
 
