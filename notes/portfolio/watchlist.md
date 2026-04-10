@@ -53,6 +53,15 @@ Prioritized by combined signals: scanner score, insider buying, activist stakes 
 - [AMD](../companies/AMD.md) - AI accelerators + CPU share gains, high-risk 2y.
 - [CORZ](../companies/CORZ.md) (Core Scientific) - BTC miner→AI pivot value play. $4M/MW vs $7M/MW peers, $8.7B CoreWeave contract. See [BTC miners thesis](../theses/btc-miners-ai-datacenter-thesis.md).
 
+### Starship beneficiaries (2026-04-05)
+- [RKLB](../companies/RKLB.md) (Rocket Lab) - WATCH. Best pure-play space co outside SpaceX, 18/25 quality, 64x P/S. Space Systems pivot (67% rev) benefits from cheap launch. EV -19%. Buy $38-45.
+- [LIN](../companies/LIN.md) (Linde) - WATCH. Industrial gas oligopoly, 21/25 quality, 28.5x fwd PE near ATH. Starbase LOX plant immaterial to $34B rev. EV +6%. Buy $425-450.
+- [ASTS](../companies/ASTS.md) (AST SpaceMobile) - WATCH. Biggest public Starship beneficiary (massive sats), 500x P/S on $71M rev. EV +5%. Buy $55-70.
+- [APD](../companies/APD.md) (Air Products) - WATCH. Activist turnaround, 19/25 quality, capex peak behind. NEOM green H2 mid-2027. EV +4%. Buy $260-270.
+- [RDW](../companies/RDW.md) (Redwire) - WATCH. Only public in-space mfg, but 5% gross margins, 3x dilution. EV +6%. Buy $6-7.
+- [PL](../companies/PL.md) (Planet Labs) - PASS. Great earth imaging biz, up 1000% in 12mo, 40x rev. EV -25%. Watch $18-22, buy $12-15.
+- [LUNR](../companies/LUNR.md) (Intuitive Machines) - PASS. Lunar landers, both landings failed, never profitable. EV -16%. Watch $14-16.
+
 ---
 
 - [FPH](../companies/FPH.md) (Five Point Holdings) - 11/11 models bullish, avg +107.6% upside
@@ -60,7 +69,7 @@ Prioritized by combined signals: scanner score, insider buying, activist stakes 
 - [HAL](../companies/HAL.md) (Halliburton) - 11/12 models bullish, avg +40.5% upside
 - [UPS](../companies/UPS.md) (United Parcel Service) - 13/14 models bullish, avg +36.8% upside
 - [BMY](../companies/BMY.md) (Bristol-Myers Squibb)
-- [CSU](../companies/CSU.md) (Constellation Software) - Software acquirer
+- [CSU.TO](../companies/CSU.TO.md) (Constellation Software) - **BUY**. 18.8x FCF, cheapest in a decade, 28.5% FCF CAGR. AI panic overdone (65-75% of VMS moated). Quality 22/25. EV +38%. Scale in at CAD $2,360.
 - [QCOM](../companies/QCOM.md) (Qualcomm)
 - [ASML](../companies/ASML.md) (ASML Holding) - 5 smart money funds incl. Lone Pine (new Q4)
 - [ORCL](../companies/ORCL.md) (Oracle)
