@@ -28,17 +28,42 @@ If this fails (SSL error, rate limit), proceed anyway — the analysis can use e
 
 ---
 
-## STEP 0: Research the Situation (NEWS & NARRATIVE)
+## STEP 0: Research the Situation (PRIMARY SOURCES FIRST, THEN NARRATIVE)
 
-**This step comes FIRST. Before touching any numbers, understand what's actually happening.**
+**This step comes FIRST. Before touching any numbers, understand what's actually happening — from the company itself, not from reporters.**
 
-Use web search to find:
-1. **Recent news** (last 30-90 days): earnings surprises, guidance changes, management turnover, M&A, lawsuits, regulatory actions, activist investors
+### STEP 0a (MANDATORY): Read the Primary Source
+
+If the company reported earnings in the last 90 days, you MUST fetch and read the actual materials before writing anything:
+1. **Earnings press release** from `investor.<company>.com` (or IR equivalent) — WebFetch this page.
+2. **Earnings call transcript or prepared remarks** — look for "Q&A" and "prepared remarks."
+3. Latest **10-Q or 10-K** segment disclosures if available (geographic + product segment revenue breakdowns).
+
+From these primary sources, extract and write down:
+- **Every quantified headwind** management disclosed (basis points, dollar amounts, percentage impacts). List them ranked by size.
+- **Segment and geographic revenue breakdowns** and which specific segments/regions moved.
+- **Margin commentary** — gross margin, operating margin changes YoY and QoQ, with the reasons management gave.
+- **Customer concentration** — any large customer losses, renewals pushed, or federal/government exposure.
+- **Guidance changes** — what was raised, what was cut, what was held. Decompose by segment if disclosed.
+
+**RULE: If you cannot fetch the IR page (tool failure, paywall), explicitly say so in the output and flag the analysis as "news-summary-only" with LOWER confidence.**
+
+### STEP 0b: Map the News Narrative
+
+Now use web search to find:
+1. **Recent news** (last 30–90 days): earnings surprises, guidance changes, management turnover, M&A, lawsuits, regulatory actions, activist investors.
 2. **The market narrative**: What does Wall Street currently believe about this stock? Is it a "consensus long" or contrarian?
 3. **Sector context**: How is the industry doing? Tariffs, regulation, interest rate sensitivity, competitive shifts?
-4. **Upcoming events**: Next earnings date, FDA decisions, contract renewals, product launches, analyst days — anything dateable in the next 6 months
+4. **Upcoming events**: Next earnings date, FDA decisions, contract renewals, product launches, analyst days — anything dateable in the next 6 months.
 
-**Output a 3-5 sentence "Situation Summary"** — what's the story right now?
+### STEP 0c: Cross-Check (MANDATORY)
+
+Compare what management disclosed vs. what the news is leading with:
+- Does the news headline risk match the **largest** headwind management disclosed, or a smaller one?
+- If there's a mismatch (e.g. news says "Iran war" but CFO cited federal shutdown as the bigger issue), your analysis must reflect management's size ordering, not the media's framing.
+- Write down at least one risk that is **NOT in the news headlines but is in the primary source**. If you cannot find one, your STEP 0a reading was too shallow — go back and reread.
+
+**Output a 3-5 sentence "Situation Summary"** — what's the story right now, as told by the company itself, with the news narrative as context.
 
 ---
 
@@ -69,7 +94,8 @@ ORDER BY upside_pct DESC;
 ```
 
 Record: which models are bullish vs bearish. Note extreme divergences (>50pp spread).
-Flag stale data (>30 days old). Known biases: DCF overvalues cyclicals at peak earnings, RIM undervalues asset-light companies. GBM and autoresearch are most reliable for return predictions.
+**CRITICAL: Check `timestamp` for each model.** If a model is >7 days old, compare its `current_price` to today's live price. If they diverge >5%, the model's upside % is INVALID — recalculate using the model's fair_value vs today's price, and note the discrepancy in the output.
+Known biases: DCF overvalues cyclicals at peak earnings, RIM undervalues asset-light companies. GBM and autoresearch are most reliable for return predictions.
 
 ---
 
@@ -209,7 +235,7 @@ Template:
 # {Company Name} ({TICKER})
 
 **Sector:** {sector} | **Industry:** {industry}
-**Price:** ${price} | **Market Cap:** ${cap}
+**Price:** ${price} ({YYYY-MM-DD}) | **Market Cap:** ${cap}
 **Analysis Date:** {YYYY-MM-DD}
 
 ## Situation Summary
@@ -233,9 +259,11 @@ Template:
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence |
-|-------|-----------|--------|------------|
-| ... | ... | ... | ... |
+| Model | Fair Value | Upside | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| ... | ... | ... | ... | YYYY-MM-DD |
+
+*Models older than 7 days may use stale prices — compare model's current_price to today's price before trusting upside %.*
 
 **Model consensus:** {summary — which models agree/disagree and why}
 
@@ -256,7 +284,8 @@ Template:
 {3-5 bullets — specific, not generic}
 
 ## Bear Case
-{3-5 bullets — what actually kills the thesis}
+{3-5 bullets — what actually kills the thesis.
+**At least one bullet must be a risk the company disclosed but news headlines under-covered** (from STEP 0a primary-source reading). If every bear bullet matches the top news narrative, the research is shallow and the verdict should be downgraded or delayed.}
 
 ## Scenario Table
 

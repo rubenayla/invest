@@ -1,3 +1,4 @@
+<!-- consult selectively — grep, never read in full -->
 # Error Log - Invest System
 
 This file tracks mistakes and failures in the investment analysis system and the mechanisms added to prevent recurrence.
@@ -13,7 +14,60 @@ This file tracks mistakes and failures in the investment analysis system and the
 
 ---
 
-## 2026-02-08 - Initial Workflow Setup
+## 2026-04-23 - Recommended BUY on NOW based on news summaries, missed two material risks
+**What happened:** Ran `/research NOW` the evening of 2026-04-22 after earnings. Issued BUY verdict (MEDIUM-HIGH conviction, +28.5% EV) citing "Iran war deal-timing conservatism" as the main headwind. The next day, deeper research revealed two material risks I never mentioned:
+1. **US federal government orders crashed 72% to ~$48M** in Q1 due to partial government shutdown halting contract awards. Federal is a large, high-margin segment — bigger and less bounded than the Middle East issue.
+2. **Non-GAAP subscription gross margin fell 84.5% → 82.5% YoY** due to AI infrastructure costs (GPU/inference). FY26 guide: 82%. This is structural margin compression, not timing.
+
+I cited Iran war as the headline risk because the news aggregators (CNBC, Benzinga, Bloomberg headline) led with it — but the CFO disclosed Middle East was only a **75 bps headwind** vs. the federal collapse and margin compression which are substantially more damaging to the thesis. User made a real-money decision in part on my analysis.
+
+**Root cause:** The `/research` skill's STEP 0 (news & narrative) does not mandate reading the **primary sources** — the company's earnings press release on IR site, the 10-Q segment/geographic disclosures, and the earnings call transcript. News summaries cherry-pick the punchiest narrative (war) and bury segment-level damage (federal orders, margins). Without reading the primary source, the "bear case" I wrote was reporter-framed, not management-framed.
+
+**Prevention added:**
+- `.claude/commands/research.md` STEP 0 updated to REQUIRE fetching the latest earnings press release from `investor.<company>.com` (or IR equivalent) AND reading it before writing any verdict. Specifically: segment revenue breakdown, geographic breakdown, margin commentary, customer concentration, and all "headwinds"/"one-time items" cited by management.
+- New explicit rule: the Bear Case section must list **at least one risk NOT in the news headlines** — forcing primary-source engagement. If every bear bullet matches the top news story, flag as "shallow research" and reject the verdict.
+- Added: before issuing BUY/WATCH verdict, enumerate ALL quantified headwinds management disclosed with basis-point/dollar sizing, then verify the public narrative matches their size ordering. Discrepancy = investigate further.
+
+---
+
+## 2026-04-13 - Multiple sloppy reasoning errors during macro/timing analysis
+**What happened:** During a session investigating prediction markets and "should we buy now or wait," made four conceptual errors in a row, all of which could lead to bad investment decisions if uncaught. User caught each one.
+
+1. **Markdown table column shift.** Wrote a 4-column header but supplied only 3 columns of data per row. Table rendered with shifted/missing values. Always count headers vs cells before sending. Preview multi-column tables mentally (header N == cells N) before output.
+
+2. **Wrong-direction Polymarket query.** User asked "probability Iran war goes bad *again*" (resumption/escalation). Pulled "conflict ends by X" markets — opposite framing. A YES on "ends by April 30" measures de-escalation, not resumption. Always restate the user's question in market-terms before grabbing data: "user wants P(escalation), markets I have measure P(de-escalation). Mismatch — search for different markets or invert."
+
+3. **Buy-now vs wait EV math: missing the lower-entry payoff.** Originally claimed "EV of waiting ≈ -1 to -2%" by counting only opportunity cost (missed drift) and ignoring that buying lower means more shares per dollar → higher terminal value. Correct formula: `wait/buy_now = (1 + cash_yield × t) × P_now / E[P_wait]`. The Pₜ at any future date cancels (both paths hold same asset), so holding horizon is irrelevant — only entry-price ratio + cash yield matter. Always derive the ratio of terminal values explicitly; never compare returns of one path to opportunity cost of another without closing the trade.
+
+4. **Conflated two definitions of "drawdown."** Gave probability-of-dip table where "P(10% dip in 24mo) = 75%" — this is the probability of a drawdown from any peak during the period (definition A). For a buying-opportunity decision, what matters is P(price ≤ 10% below *today's price* at some point) (definition B), which is much lower (~30-35% over 24mo, because market drift means future prices skew higher than today). When discussing "dip from current price," always use definition B and verify the probability is consistent with positive drift.
+
+**Why this matters:** Each error was directionally wrong. Sloppy framing → wrong probability → wrong sizing → real money lost. Quantitative claims need explicit definitions, formulas, and sanity checks before going to user.
+
+**Prevention added:**
+- This entry serves as a checklist for any future market-timing / probability / EV analysis: (a) match user's question to the data direction, (b) state definitions explicitly, (c) write formulas before plugging numbers, (d) sanity-check probabilities against drift assumptions, (e) verify table shape (headers == columns) before sending.
+- When unsure between two definitions of a probability, compute both and label them clearly rather than picking one silently.
+
+---
+
+## 2026-04-13 - DCF model produced -70 to -97% upside on healthy SaaS growers
+**What happened:** Investigating ServiceNow (NOW), the DCF model said fair value $20.52 vs market $88 (-77%). The model used `info['earningsGrowth']` (3.4% — single-quarter GAAP, distorted by SBC) instead of the actual 3-year revenue CAGR (22.4%). Same bug affected AVGO, GOOGL, MSFT, TSLA — any growth company with noisy GAAP earnings or M&A activity. Sample data showed 54% of sp500 names had yfinance `info['revenueGrowth']` differ from computed 3yr CAGR by >5pp; max divergence 220pp on BBT. The model also silently fell back through `earningsGrowth → revenueGrowth → 5% default`, hiding the noise.
+**Prevention added:**
+- `src/invest/valuation/dcf_model.py:_estimate_growth_rate()` now computes growth from the income statement's `Total Revenue` row (3-year CAGR), with no fallback to noisy yfinance fields. Insufficient history → `ModelNotSuitableError` (model is skipped, not faked).
+- Added `_calculate_revenue_cagr()` helper on `DCFModel`. `is_suitable()` and `_validate_inputs()` updated to require `income` data + ≥3 years of revenue.
+- All three DCF subclasses (`DCFModel`, `EnhancedDCFModel`, `MultiStageDCFModel`) inherit the fix automatically.
+- Result for NOW: fair value $103.65 (DCF) / $131.35 (enhanced) / $72.16 (multi-stage) — in a reasonable ballpark instead of $20-26.
+- **Subtle bug along the way:** initial implementation assumed income statement columns were reverse-chronological (latest first). Actual repo convention is chronological (oldest first); confirmed by inspecting `data['income'].columns` for NOW. Fixed by swapping `iloc[0]`/`iloc[-1]` mapping.
+- Out of scope (separate follow-ups): same noisy-yfinance bug exists in `tech_model.py:99-100,184` and `ratios_model.py:231-236`. WACC currently assumes 100% equity financing.
+
+---
+
+## 2026-04-13 - update_all.py crashed because SSH tunnel to Hetzner Postgres was not open
+**What happened:** User ran `/update`. The data-fetch phase (~25 min) completed, then GBM predictions died with `psycopg2.OperationalError: connection to server at "localhost", port 5433 failed: Connection refused`. Because `subprocess.run(check=True)` in `run_cmd()` aborts on first failure, the entire downstream pipeline (AutoResearch, classic valuations, dashboard regen, opportunity scanner) was skipped. Root cause: model scripts read from Postgres on Hetzner via an SSH tunnel on port 5433, and no tunnel was running on the Mac. AGENTS.md mentioned the tunnel but the command was wrong (`ssh -N hetzner-db &` instead of `ssh -fN -L 5433:localhost:5432 hetzner-db`) and there was no automation.
+**Prevention added:**
+- `scripts/update_all.py` now calls `ensure_db_tunnel()` at startup, which probes `localhost:5433` and opens the tunnel via `ssh -fN -L 5433:localhost:5432 hetzner-db` if needed (idempotent).
+- Updated `AGENTS.md` Database Architecture section with the correct tunnel command and a note that models run on the Mac (not the server) — the website's update button is data-only by design.
+
+
 **What happened:** System lacked a structured way to track recurring errors and ensure quality before completion.
 **Prevention added:**
 - Created `error-log.md` (this file).
