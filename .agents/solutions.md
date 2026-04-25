@@ -1,3 +1,4 @@
+<!-- reference — read when relevant -->
 # Solutions — Recurring Fixes
 
 ## uv run fails in sandbox

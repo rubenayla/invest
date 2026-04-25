@@ -1,3 +1,4 @@
+<!-- reference — read when relevant -->
 # Deployment — Hetzner Server
 
 ## Architecture

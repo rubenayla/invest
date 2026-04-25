@@ -1,3 +1,4 @@
+<!-- read in full — kept under 150 lines -->
 # Data Conventions
 
 **Ratios stored as ratios, not percentages:**

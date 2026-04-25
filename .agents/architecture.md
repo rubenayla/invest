@@ -1,3 +1,4 @@
+<!-- reference — read when relevant -->
 # Architecture — Key Design Decisions
 
 ## Data Systems

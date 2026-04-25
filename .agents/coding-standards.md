@@ -1,3 +1,4 @@
+<!-- read in full — kept under 150 lines -->
 # Coding Standards
 
 - Single quotes: `'hello'`
