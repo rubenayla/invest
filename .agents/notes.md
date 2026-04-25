@@ -1,4 +1,25 @@
+<!-- consult selectively — grep, never read in full -->
 # Notes
+
+## Politician Trade Signal — House PTRs (2026-04-25)
+
+Pulls US House periodic transaction reports (no Senate) as a watchlist trigger.
+Senate eFD requires session/JS handling — deferred.
+
+- **Source**: `https://disclosures-clerk.house.gov/public_disc/financial-pdfs/{year}FD.zip`
+  (XML index of `FilingType=P` records) → per-DocID PDF at
+  `https://disclosures-clerk.house.gov/public_disc/ptr-pdfs/{year}/{doc_id}.pdf`
+- **Parser**: regex line-windowing in `politician_fetcher.py`. Treasury CUSIPs
+  filtered out by ticker regex (`[A-Z]{1,5}(?:\.[A-Z]{1,2})?`).
+- **Schema**: `politician_trades` + `politician_trades_fetch_log`.
+  `compute_politician_signal()` weights by `HIGH_SIGNAL_POLITICIANS`
+  (Pelosi 3.0, Tuberville 2.0, etc.) × log-ish amount band.
+- **Lag**: PTRs allowed up to 45 days post-trade. NOT a timing edge — surface
+  candidates for further research only.
+- **Pipeline**: `scripts/fetch_politician_data.py` (Phase 1f of `update_all.py`,
+  `--skip-politician` to bypass; auto-skipped under `--lite-fetch`).
+- **Surfaces**: dashboard signals column tag + `/feed` "Congress signal" card
+  when weighted_score ≥ 1.5 with high-signal politician.
 
 ## International Stock Fundamentals — Data Provider Research (2026-03-16)
 

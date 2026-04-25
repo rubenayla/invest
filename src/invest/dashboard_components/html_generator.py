@@ -12,6 +12,7 @@ import html
 import json
 import logging
 import math
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
@@ -532,6 +533,7 @@ class HTMLGenerator:
             stock_data.get("japan_stakes", {}),
             stock_data.get("holdings", {}),
             ticker,
+            politician=stock_data.get("politician", {}),
         )
 
 
@@ -635,13 +637,43 @@ class HTMLGenerator:
                     conf_style = 'background: rgba(205,66,70,0.12); color: #e76a6e'
                 confidence_badge = f'<div class="confidence-badge" style="{conf_style}; font-size: 12px; padding: 3px 7px; border-radius: 3px; margin-top: 2px; font-weight: 500; font-family: Geist Mono, monospace;">{conf_label}</div>'
 
+        age_badge = self._format_age_badge(valuation.get('timestamp'))
+
         return f'''
         <div class="valuation-cell">
             <div class="fair-value">{fair_value_str}</div>
             <div class="margin {margin_class}">{margin_str}</div>
             {ratio_str}
             {confidence_badge}
+            {age_badge}
         </div>'''
+
+    def _format_age_badge(self, timestamp_str) -> str:
+        """Format a small age badge showing how old a model prediction is."""
+        if not timestamp_str:
+            return ''
+        try:
+            if isinstance(timestamp_str, str):
+                ts = datetime.fromisoformat(timestamp_str)
+            else:
+                ts = timestamp_str
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
+            now = datetime.now(timezone.utc)
+            age_hours = (now - ts).total_seconds() / 3600
+            if age_hours < 24:
+                label = f'{int(age_hours)}h'
+            else:
+                label = f'{int(age_hours / 24)}d'
+            if age_hours > 168:  # > 7 days
+                style = 'color: #e76a6e'
+            elif age_hours > 72:  # > 3 days
+                style = 'color: #f0b726'
+            else:
+                style = 'color: #6b7280'
+            return f'<div style="{style}; font-size: 10px; margin-top: 1px; font-family: Geist Mono, monospace;" title="Model ran {label} ago">{label}</div>'
+        except (ValueError, TypeError):
+            return ''
 
     def _format_llm_cell(self, valuation: Dict, current_price: float = None, ticker: str = "") -> str:
         """Format LLM deep analysis cell showing verdict, EV%, and entry price. Clickable to open analysis notes."""
@@ -704,6 +736,7 @@ class HTMLGenerator:
             <div style="background:{badge_bg}; color:{badge_color}; font-weight:700; font-size:13px; padding:2px 8px; border-radius:3px; display:inline-block; font-family:var(--font-mono);">{verdict}</div>
             <div class="margin {ev_class}" style="margin-top:3px;">{ev_pct:+.0f}%</div>
             <div class="ratio">entry ${entry_price}</div>
+            {self._format_age_badge(valuation.get('timestamp'))}
         </div>
         </a>'''
 
@@ -1017,7 +1050,8 @@ class HTMLGenerator:
         return f'<span style="color: {color}; background: {bg}; padding: 1px 5px; border-radius: 2px; font-size: 13px; font-weight: 500; font-family: Geist Mono, monospace;">{text}</span>'
 
     def _format_signals_cell(self, insider: Dict, activist: Dict, japan: Dict,
-                              holdings: Dict, ticker: str) -> str:
+                              holdings: Dict, ticker: str,
+                              politician: Dict | None = None) -> str:
         """Format combined signals cell with readable tags."""
         tags = []  # (color, label, clickable_ticker_or_None)
 
@@ -1089,6 +1123,31 @@ class HTMLGenerator:
                 tags.append(('blue', f"held by {names}", None))
             elif holders_count > 0:
                 tags.append(('blue', f"{holders_count} fund{'s' if holders_count > 1 else ''}", None))
+
+        # Congressional/politician trades (House PTRs)
+        if politician and politician.get('has_data'):
+            buys = politician.get('buy_count', 0)
+            sells = politician.get('sell_count', 0)
+            score = politician.get('weighted_score', 0.0)
+            top = politician.get('top_politicians', [])
+            top_name = ''
+            if top:
+                # Show last name of highest-weighted politician
+                raw = top[0].get('name', '')
+                top_name = raw.split(',')[0].strip() if ',' in raw else raw.split()[-1]
+                top_name = f' · {top_name[:10]}'
+            if buys > 0 and score > 0:
+                tags.append((
+                    'green',
+                    f"{buys} congress buy{'s' if buys > 1 else ''}{top_name}",
+                    None,
+                ))
+            if sells > 0 and score < 0:
+                tags.append((
+                    'red',
+                    f"{sells} congress sell{'s' if sells > 1 else ''}{top_name}",
+                    None,
+                ))
 
         if not tags:
             return '<span style="color: #5f6b7c;">\u2014</span>'
@@ -3720,6 +3779,32 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                         "type": "numbers", "tag": "By the numbers",
                         "ticker": ticker, "name": name,
                         "body": observations, "pills": pills,
+                    })
+
+            # --- POLITICIAN SIGNAL (House PTRs — watchlist trigger, not timing edge) ---
+            politician = stock.get("politician", {})
+            if politician.get("has_data"):
+                p_buys = politician.get("buy_count", 0)
+                p_score = politician.get("weighted_score", 0.0)
+                top = politician.get("top_politicians", [])
+                top_name = ""
+                if top:
+                    raw = top[0].get("name", "")
+                    top_name = raw.split(",")[0].strip() if "," in raw else raw
+                # Surface only meaningful net buying with a high-signal politician
+                if p_buys >= 1 and p_score >= 1.5 and top_name:
+                    body = (
+                        f"{top_name} disclosed {p_buys} purchase"
+                        f"{'s' if p_buys > 1 else ''} of {ticker} in the last 6 months "
+                        "(House PTR). Disclosure lag up to 45d — treat as a watchlist trigger, "
+                        "not a timing signal."
+                    )
+                    hero = (f"+{p_score:.1f}", "weighted score", "pos")
+                    posts.append({
+                        "priority": 175 + min(p_score * 5, 25),
+                        "type": "signal", "tag": "Congress signal",
+                        "ticker": ticker, "name": name,
+                        "hero": hero, "body": body, "pills": [],
                     })
 
             # --- INSIDER SIGNAL (top 10 by dollar volume, show dollar amount as hero) ---

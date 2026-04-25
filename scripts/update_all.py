@@ -11,6 +11,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import socket
 import subprocess
 import sys
 import time
@@ -21,6 +22,31 @@ REPO_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(REPO_ROOT / 'src'))
 
 from invest.config.logging_config import setup_logging
+
+
+def ensure_db_tunnel(host: str = 'localhost', port: int = 5433, ssh_alias: str = 'hetzner-db') -> None:
+    """Open SSH tunnel to Hetzner Postgres if port 5433 is not already reachable.
+
+    The Mac connects to the production Postgres via an SSH tunnel; without it,
+    every model script crashes with "Connection refused". Idempotent: no-op if
+    the port is already up (existing tunnel or running locally).
+    """
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(2)
+        try:
+            s.connect((host, port))
+            return
+        except (socket.timeout, ConnectionRefusedError, OSError):
+            pass
+
+    print(f'==> Opening SSH tunnel to {ssh_alias} on localhost:{port}')
+    result = subprocess.run(
+        ['ssh', '-fN', '-L', f'{port}:localhost:5432', ssh_alias],
+        capture_output=True, text=True,
+    )
+    if result.returncode != 0:
+        print(f'   ssh tunnel failed: {result.stderr.strip()}', file=sys.stderr)
+        sys.exit(1)
 
 
 def run_cmd(cmd: List[str], label: str) -> None:
@@ -82,6 +108,7 @@ def run_gbm_predictions() -> None:
 
 def main() -> int:
     setup_logging(log_file_path="logs/update_all.log")
+    ensure_db_tunnel()
 
     parser = argparse.ArgumentParser(
         description='Update data, run predictions, and regenerate the dashboard',
@@ -98,6 +125,7 @@ def main() -> int:
     parser.add_argument('--skip-activist', action='store_true', help='Skip activist stakes (13D/13G)')
     parser.add_argument('--skip-holdings', action='store_true', help='Skip institutional holdings (13F)')
     parser.add_argument('--skip-edinet', action='store_true', help='Skip EDINET Japan data')
+    parser.add_argument('--skip-politician', action='store_true', help='Skip House PTR politician trades')
     parser.add_argument('--skip-scanner', action='store_true', help='Skip opportunity scanner')
     parser.add_argument('--lite-fetch', action='store_true',
                         help='Lite mode: fetch prices+metrics only (no statements/insider/activist/holdings/edinet)')
@@ -109,6 +137,7 @@ def main() -> int:
         args.skip_activist = True
         args.skip_holdings = True
         args.skip_edinet = True
+        args.skip_politician = True
 
     if not args.skip_fetch:
         fetch_cmd = [
@@ -152,6 +181,16 @@ def main() -> int:
         else:
             print('\n==> Skipping EDINET (EDINET_API_KEY not set)')
 
+    # --- Phase 1f: House PTR politician trades ---
+    if not args.skip_politician:
+        from datetime import datetime
+        year = datetime.utcnow().year
+        run_cmd(
+            [sys.executable, 'scripts/fetch_politician_data.py',
+             '--years', str(year - 1), str(year)],
+            'Fetching House PTR politician trades',
+        )
+
     # --- Phase 2: Valuations (independent of each other) ---
     # GBM reads fundamental_history + price_history; classic reads current_stock_data.
     # Both write to valuation_results. Order between them doesn't matter.
@@ -192,6 +231,11 @@ def main() -> int:
         run_cmd(
             [sys.executable,'scripts/run_opportunity_scan.py'],
             'Opportunity scanner',
+        )
+
+        run_cmd(
+            [sys.executable,'scripts/price_alerts.py'],
+            'Price target alerts',
         )
 
     return 0

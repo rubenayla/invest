@@ -116,6 +116,7 @@ class StockDataReader:
             'activist': self.get_activist_signal(ticker),
             'holdings': self.get_holdings_signal(ticker),
             'japan_stakes': self.get_japan_signal(ticker),
+            'politician': self.get_politician_signal(ticker),
         }
 
         return data
@@ -401,6 +402,19 @@ class StockDataReader:
             conn = self._conn()
             try:
                 return compute_japan_signal(conn, ticker)
+            finally:
+                conn.close()
+        except Exception:
+            return no_data
+
+    def get_politician_signal(self, ticker: str) -> Dict[str, Any]:
+        """Get House PTR politician-trade signal for a ticker."""
+        no_data = {'has_data': False}
+        try:
+            from .politician_db import compute_politician_signal
+            conn = self._conn()
+            try:
+                return compute_politician_signal(conn, ticker)
             finally:
                 conn.close()
         except Exception:

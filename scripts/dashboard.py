@@ -95,6 +95,14 @@ def load_stocks_from_database() -> dict:
 
         model_name = row['model_name']
 
+        # Parse timestamp for staleness tracking
+        model_ts = row['timestamp']
+        if isinstance(model_ts, str):
+            try:
+                model_ts = datetime.fromisoformat(model_ts)
+            except (ValueError, TypeError):
+                model_ts = None
+
         if row['suitable']:
             # Successful valuation
             valuation = {
@@ -103,7 +111,8 @@ def load_stocks_from_database() -> dict:
                 'current_price': row['current_price'],
                 'margin_of_safety': row['margin_of_safety'],
                 'upside': row['upside_pct'],
-                'confidence': row['confidence']
+                'confidence': row['confidence'],
+                'timestamp': model_ts.isoformat() if model_ts else None,
             }
 
             # Parse details JSON if present (JSONB comes back as dict already)
@@ -144,6 +153,7 @@ def load_stocks_from_database() -> dict:
                     'current_price': row['current_price'],
                     'upside': row['upside_pct'],
                     'confidence': row['confidence'],
+                    'timestamp': model_ts.isoformat() if model_ts else None,
                 }
                 details = row['details_json']
                 if isinstance(details, str):
@@ -158,7 +168,8 @@ def load_stocks_from_database() -> dict:
                 stocks[ticker]['valuations'][model_name] = {
                     'suitable': False,
                     'error': row['error_message'],
-                    'reason': row['failure_reason']
+                    'reason': row['failure_reason'],
+                    'timestamp': model_ts.isoformat() if model_ts else None,
                 }
 
     # Override displayed current price with the latest valuation price when available
@@ -177,9 +188,23 @@ def load_stocks_from_database() -> dict:
     except Exception as exc:
         print(f'  Insider data not available: {exc}')
 
+    # Load politician signals
+    politician_count = 0
+    try:
+        from invest.data.politician_db import compute_politician_signal
+        for ticker in stocks:
+            signal = compute_politician_signal(conn, ticker)
+            stocks[ticker]['politician'] = signal
+            if signal.get('has_data'):
+                politician_count += 1
+    except Exception as exc:
+        print(f'  Politician data not available: {exc}')
+
     conn.close()
 
-    print(f'Loaded {valuation_count} successful valuations, {insider_count} insider signals')
+    print(f'Loaded {valuation_count} successful valuations, '
+          f'{insider_count} insider signals, '
+          f'{politician_count} politician signals')
 
     return stocks
 
