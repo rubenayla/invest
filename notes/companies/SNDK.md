@@ -1,191 +1,129 @@
-# SanDisk Corporation (SNDK) - Deep Research Analysis
+# Sandisk Corporation (SNDK)
 
-**Date:** 2026-03-18
-**Price:** $753.69
-**Market Cap:** $111B
-**Sector:** Technology / NAND Flash Memory
-**52-Week Range:** $27.89 - $761.50
+**Sector:** Technology | **Industry:** Computer Hardware (NAND Flash)
+**Price:** $919.47 (2026-04-17) | **Market Cap:** $135.7B
+**Analysis Date:** 2026-04-17 (updated from 2026-03-18)
 
----
+## Situation Summary
 
-## Background
+SanDisk, spun out of Western Digital in Feb 2025, has run ~30x from its 52w low of $28.94 and +22% in the last 30 days on three compounding catalysts: (1) Q2 FY26 results blew out (rev $3.03B, +61% YoY; EPS $6.20 vs $3.54 est; gross margin 51%), (2) Nasdaq-100 inclusion effective **Mon 2026-04-20** forces index buying, (3) HBF (High Bandwidth Flash) standardization with SK Hynix kicked off under OCP on 2026-02-25, with first samples targeted for 2H 2026. NAND contract pricing was revised upward to **+55–60% QoQ in Q1 2026** (from prior +33–38%), and Samsung is reportedly mulling 20–30% NAND hikes in 2026. Q3 FY26 earnings — the critical binary event — hit **2026-04-30**, with guidance of $4.4–4.8B revenue / EPS $12–14. Consensus PTs now cluster $900–1,250 (Bernstein street-high $1,250, MS low $690, mean ~$904).
 
-SanDisk completed its separation from Western Digital in February 2025, re-listing on Nasdaq under ticker SNDK. Western Digital fully divested its remaining 7.5M SNDK shares on Feb 18, 2026. SanDisk is now a pure-play NAND flash memory company with a long-standing manufacturing JV with Kioxia (extended through 2034). The stock has risen ~1,640% since the spin-off, driven by the AI memory supercycle.
+## Variant Perception
 
----
+- **Consensus view:** AI memory supercycle winner. HBF is the "NAND HBM moment." Nasdaq-100 + upgrade cycle drives forced buying. Multiple reasonable on Q3 run-rate. Analysts have chased the stock up, mean PT now *above* current price.
+- **Our view:** No variant edge from here. The inflection is fully priced. Every bull pillar (NAND upcycle, HBF optionality, index buying, data-center share shift) is in consensus. The asymmetry is now to the downside: this is a cyclical commodity priced like a secular AI platform at the exact moment Samsung has historically flooded supply. Forward P/E looks cheap only if you believe cycle-peak earnings are sustainable — NAND stocks ALWAYS look cheap at the top.
+- **Trigger (for us, not market):** Q3 miss or in-line-without-raise on 2026-04-30 → momentum unwind. Samsung capex announcement signaling supply response. Any HBF delay would remove the "secular story" cap on the de-rating.
 
-## 0. Recent News & Catalysts (Last 90 Days)
+## Financial Snapshot
 
-- **Q2 FY2026 (Jan 29):** Revenue $3.03B (+31% QoQ, +61% YoY), GAAP net income $803M, non-GAAP EPS $6.20 (beat $3.62 consensus by 71%). Gross margin 51.1% (up from 29.9% QoQ).
-- **Q3 FY2026 Guidance:** Revenue $4.4B-$4.8B, gross margin 65-67%, EPS $12-$14. Massive sequential ramp.
-- **Kioxia JV Extended:** Through 2034. SanDisk to pay $1.165B for manufacturing services (2026-2029).
-- **Citron Short:** Citron Research announced a short position in Feb 2026, arguing NAND cycle is peaking and Samsung will flood supply.
-- **WDC Divestiture:** Western Digital sold remaining SNDK shares ~25% below current price.
-- **NAND Pricing:** Contract prices surging 33-38% QoQ in Q1 2026. Supply-demand gap widening (demand +20-22% YoY vs supply +15-17%).
+| Metric | Value | Trend |
+|--------|-------|-------|
+| Revenue (FY25, Jun) | $7.36B | +61% YoY growth accelerating |
+| Q2 FY26 Revenue | $3.03B | +31% QoQ, +61% YoY |
+| Q3 FY26 Guide | $4.4–4.8B | +52% QoQ midpoint |
+| Gross Margin (Q2) | 51.1% | Q3 guide 65–67% |
+| Operating Income (Q2) | $1.07B | vs $190M Q1 |
+| FCF (Q2) | $980M | vs -$120M annualized FY25 |
+| Net Cash | ~$668M | $1.48B cash − $2.04B debt (recent debt up for Kioxia JV payments) |
+| Forward P/E | 8.6x | ~4x on Q3 guide annualized (cycle-peak optics) |
+| P/S (TTM) | 15.2x | Stretched for a memory company |
+| P/B | 13.3x | Rich — historically memory trades <3x P/B |
 
----
+## Valuation Models (as of 2026-04-17)
 
-## 1. Variant Perception (Steinhardt's 4 Questions)
+| Model | Fair Value | Current | Upside | Conf | Run Date |
+|-------|-----------|---------|--------|------|----------|
+| gbm_opportunistic_3y | $1,988 | $710 | +180% | 0.98 | 2026-04-08 |
+| gbm_lite_3y | $1,760 | $710 | +148% | 0.97 | 2026-04-08 |
+| gbm_opportunistic_1y | $1,595 | $710 | +124% | 0.98 | 2026-04-08 |
+| gbm_lite_1y | $1,161 | $710 | +63% | 1.00 | 2026-04-08 |
+| autoresearch | $1,122 | $710 | +58% | 0.98 | 2026-04-08 |
+| gbm_3y | $1,365 | $908 | +50% | 0.89 | 2026-04-13 |
+| gbm_1y | $1,277 | $908 | +41% | 1.00 | 2026-04-13 |
+| simple_ratios | $288 | $710 | -60% | 0.70 | 2026-04-08 |
+| llm_deep_analysis (prior) | $650 | $754 | -14% | 0.72 | 2026-03-18 |
+| DCF / RIM / multi_stage_dcf | NULL | — | — | — | 2026-04-08 |
 
-### What does the consensus believe?
-The market believes SNDK is a prime AI infrastructure beneficiary. Strong Buy consensus (12 buy, 3 hold, 0 sell). Average PT ~$688 (below current price!), high PT $800. The stock has run 163% YTD and 1,640% since spin-off. Consensus sees continued explosive growth from data center NAND demand.
+**Critical freshness note:** Most GBM models were run when SNDK was at $710 (now $919, +29%). Their upside %s are meaningfully overstated vs current price. Recalculated against $919: gbm_3y → +48%, gbm_1y → +39%, gbm_opportunistic_3y → +116%. Still bullish but dampened.
 
-### What is the consensus missing?
-**Bull variant:** The magnitude of the data center NAND shift may be underestimated. Management says data centers will surpass mobile as the largest NAND consumer in 2026 for the first time in 15 years. If enterprise SSD ASPs hold and SNDK's BiCS8 technology delivers cost leadership, margins could sustain at 65%+ for multiple quarters. Multi-year supply agreements reduce cyclicality.
+**Model consensus:**
+- GBMs are **momentum extrapolators** — dangerous at cycle tops for commodity stocks. Trust them less here than for a quality compounder.
+- DCF/RIM NULL because trailing financials include spin-off losses (-$1.64B FY25 GAAP). They can't evaluate the current earnings power.
+- Simple_ratios anchored on historical memory-sector multiples — pessimistic but directionally correct that the stock is rich vs how memory usually trades.
+- Prior llm_deep_analysis at $650 said PASS at $754. Stock has since risen another 22%.
 
-**Bear variant:** Citron's argument has historical merit. Samsung has repeatedly flooded NAND supply to crush competitors (2008, 2012, 2018). Current NAND capacity is 2x the 2018 peak. The stock is priced like a tech platform but sells a commodity. Forward P/E ~8.8x on Q3 guidance annualized looks cheap, but at cycle peak that's exactly how memory stocks look before they crash.
+## Business Quality (17/25)
 
-### What would cause the consensus to change?
-- **Bullish catalyst:** Q3 results confirm the ramp. Revenue hits $4.6B+, margins hold 65%+. Samsung doesn't flood.
-- **Bearish catalyst:** NAND pricing rolls over. Samsung announces capacity expansion. AI capex slowdown.
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Moat | 2/5 | NAND is a commodity. Kioxia JV (extended to 2034) + BiCS8 cost leadership + vertical integration (flash+controller) provide margin advantage but no pricing power vs Samsung/SK Hynix/Micron. HBF optionality could widen the moat if it ships — not yet. |
+| Management | 4/5 | Goeckeler executing well post-spin. Multi-year agreements reduce cyclicality. Kioxia JV extension smart. Guidance credibility is strong (Q2 beat 77%). |
+| Profitability | 4/5 | Exceptional right now (51% GM, 35% OM, $980M quarterly FCF) — but this is cycle-peak, not normalized. Score reflects current reality, not durability. |
+| Balance Sheet | 3/5 | D/E 7.96 is concerning (debt up from $985M to $2.04B YoY for Kioxia payments). Current ratio 3.1 OK. $1.165B Kioxia payments 2026–2029 consume near-term cash. |
+| Growth | 4/5 | Revenue doubling sequentially. DC NAND +64% QoQ. Data centers surpassing mobile as #1 NAND consumer is genuinely structural. But growth is cyclical, not secular — HBF is the only durable growth vector and it's 18+ months away. |
 
-### What is the expected value of being different?
-The consensus average PT ($688) is BELOW the current price ($754), suggesting the easy money is indeed made. Being contrarian bearish has asymmetric upside if NAND cyclicality reasserts. Being contrarian bullish requires believing this cycle is structurally different (AI demand is secular, not cyclical).
+**Composite: 17/25** — Good execution in a cyclical business at cycle peak with a real but unproven secular optionality.
 
----
+## Inflection Point
 
-## 2. Valuation Model Summary (from DB, 2026-03-17)
+The inflection already happened and is fully priced. Spin-off (Feb 2025) + NAND supercycle + HBF concept launch compressed years of re-rating into 14 months (+3,100% from spin). No new inflection is visible; the question is duration, not direction. HBF is the only candidate for a *second* inflection, but first samples are 2H 2026 and first revenue-generating product won't arrive until late 2027.
 
-| Model | Fair Value | Current Price | Upside | Confidence |
-|-------|-----------|---------------|--------|------------|
-| gbm_opportunistic_3y | $1,968 | $704 | +180% | 0.98 |
-| gbm_lite_3y | $1,743 | $704 | +148% | 0.97 |
-| gbm_opportunistic_1y | $1,579 | $704 | +124% | 0.98 |
-| gbm_lite_1y | $1,150 | $704 | +63% | 1.00 |
-| autoresearch | $1,135 | $704 | +61% | 0.98 |
-| gbm_3y | $1,057 | $704 | +50% | 0.89 |
-| gbm_1y | $990 | $704 | +41% | 1.00 |
-| simple_ratios | $194 | $704 | -72% | high |
-| DCF/RIM/growth_dcf | N/A | N/A | N/A | N/A |
+## Bull Case
+- Q3 FY26 confirms or beats the $4.4–4.8B / $12–14 EPS guide on 2026-04-30 → forward P/E goes to ~4x annualized run-rate, re-rating to 10x takes stock to $1,200+.
+- Nasdaq-100 inclusion (2026-04-20) + ~$600B in passive assets force mechanical buying.
+- HBF lands a named hyperscaler customer in 2H 2026 → stock re-rates to "AI platform" multiples (SanDisk at Micron's P/B would be +30%).
+- NAND dry year persists through 2027 — Samsung restraint + hyperscaler contracts keep pricing elevated longer than a normal cycle.
+- Kioxia JV cost structure + BiCS8 = margin edge on enterprise SSDs where competitors are still catching up.
 
-**Model Critique:**
-- **GBM models are extremely bullish** (all +40% to +180%), but they're momentum-based and are extrapolating a parabolic move. For a cyclical commodity stock, GBM is dangerous at the top.
-- **DCF/RIM models returned NULL** - likely because historical financials show negative net income (FY2025 annual: -$1.64B GAAP). This is a spin-off artifact: the annual figures include the pre-separation losses and one-time charges. The company is now highly profitable on a quarterly basis.
-- **Simple ratios says -72% downside** - anchoring on historical multiples that don't reflect the current earnings power.
-- **High model divergence** = classic late-cycle momentum play. Momentum says up, fundamentals say stretched.
+## Bear Case
+- Classic "buy the rumor, sell the news" — Q3 beats but doesn't raise, or raises less than the ~$1,000+ targets imply → momentum unwind. Stock has run 22% in 30 days into the print.
+- Samsung announces NAND capex expansion. Historical pattern (2008, 2012, 2018): pricing rolls within 2–3 quarters.
+- AI capex digestion at hyperscalers (concentrated customer base for enterprise SSDs) — any slowdown cascades fast.
+- HBF is still vaporware. Samples 2H 2026, revenue 2027+. Any delay removes the secular cap on de-rating.
+- Forward P/E at ~4x annualized *is* how memory stocks look at tops. Citron's short thesis (Feb 2026) remains live.
+- Post-index-inclusion mechanical selling from traders who front-ran the 04-20 add.
 
----
+## Scenario Table
 
-## 3. Live Financials (yfinance)
+| Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
+|----------|------|----------------|-----------------|--------|--------|
+| Bull | 25% | Q3 beats + HBF customer win; EPS run-rate $50+; NAND cycle extends to 2027 | Re-rates to 12x forward as market accepts AI-memory platform narrative | $1,300 | +41% |
+| Base | 45% | Q3 in-line; NAND peaks mid-2026; EPS normalizes to $25–30 by FY27 | Drifts to 10x normalized ~ historical memory premium | $750 | -18% |
+| Bear | 25% | Samsung flood + guide-in-line not raise; EPS compresses to $15–18 FY27 | De-rates to 6–8x as cycle rolls | $400 | -56% |
+| Crash | 5% | Full 2018 repeat: NAND oversupply + AI capex pause | Memory-stock de-rating (60–80% drawdown typical) | $200 | -78% |
 
-### Quarterly Revenue Trajectory (Massive Ramp)
-| Quarter | Revenue | Gross Margin | Operating Income | Net Income | FCF |
-|---------|---------|-------------|-----------------|------------|-----|
-| Q2 FY26 (Dec '25) | $3.02B | 50.9% | $1.07B | $803M | $980M |
-| Q1 FY26 (Sep '25) | $2.31B | 29.8% | $190M | $110M | $438M |
-| Q4 FY25 (Jun '25) | $1.90B | 26.2% | $50M | -$20M | $49M |
-| Q3 FY25 (Mar '25) | $1.70B | 22.5% | -$40M | -$1.93B | -$18M |
-| Q2 FY25 (Dec '24) | $1.88B | 32.3% | $180M | $100M | $47M |
+**Expected value:** 0.25(+41%) + 0.45(-18%) + 0.25(-56%) + 0.05(-78%) = **-16.2%**
 
-### Key Metrics
-- **Forward P/E:** 8.8x (based on yfinance; ~13.5x on annualized Q2, ~4.2x on Q3 guidance annualized)
-- **Price/Book:** 10.9x
-- **D/E:** 0.08x (very low debt)
-- **Cash:** $1.54B | Total Debt: $813M (net cash position)
-- **Revenue Growth:** +61% YoY
-- **Quarterly FCF:** $980M (annualized ~$3.9B vs $111B market cap = ~3.5% FCF yield)
+**Thesis breaks if:** Q3 FY26 revenue <$4.3B or GM <60%; Samsung announces >10% capex increase; HBF timeline slips past 2027.
 
-### Annual Financials (distorted by spin-off)
-- FY2025 (Jun): Revenue $7.36B, Net Income -$1.64B (includes separation charges)
-- FY2024 (Jun): Revenue $6.66B, Net Income -$672M
-- FY2023 (Jun): Revenue $6.09B, Net Income -$2.14B (NAND downcycle)
+## Setup & Timing
 
----
+| Factor | Status |
+|--------|--------|
+| Crowdedness | **Very crowded** — institutional holding 82.5%; 20 analysts covering; index addition forces more |
+| Short interest | 8.6% of float — elevated but falling (already squeezed) |
+| Technical position | Near 52w high ($965); RSI extended; parabolic |
+| Next catalyst | **2026-04-30 Q3 FY26 earnings** (binary, 13 days out) |
+| Recent price action | +22% in 30 days; already ran hard into both Apr-20 index add AND Apr-30 earnings |
+| Valuation | P/S 15x, P/B 13x — extreme for memory |
 
-## 4. Business Quality Score
+**Read:** Classic "run into the catalyst" setup. You're buying *after* momentum, *into* a binary event, at *consensus-long* positioning. Asymmetry is bad even if you believe the bull case.
 
-| Dimension | Score (1-5) | Notes |
-|-----------|-------------|-------|
-| **Moat** | 2/5 | NAND is a commodity. Kioxia JV provides cost advantages and BiCS8 is competitive, but no pricing power vs Samsung/SK Hynix/Micron. Vertically integrated (flash + controller) provides some differentiation. |
-| **Management** | 4/5 | Goeckeler executing well on spin-off. Strategic shift to multi-year agreements reduces cyclicality. Kioxia JV extension through 2034 is smart. Focus on "system-level solutions" over raw wafer volume. |
-| **Profitability** | 4/5 | Current profitability is exceptional: 51% gross margin, 38% operating margin, $980M quarterly FCF. But this is cycle-peak profitability, not normalized. |
-| **Balance Sheet** | 4/5 | Net cash position ($1.54B cash vs $813M debt). Clean post-spin-off. $1.165B Kioxia JV payments over 2026-2029 are manageable. |
-| **Growth** | 4/5 | Revenue doubling sequentially. Data center NAND growing 40%+ annually. BiCS8 technology competitive. But growth is cyclical, not secular - eventually NAND pricing normalizes. |
+## Verdict
 
-**Composite Score: 3.6/5** - Strong execution in a cyclical business at the peak of the cycle.
+**PASS** — Conviction: HIGH (on the pass, not the stock)
 
----
+The thesis is real and the company is executing, but the stock has already priced the full bull case. At $919 with Nasdaq-100 buying ahead of you, analyst targets clustering at/below current price, a binary Q3 print in 13 days, and structurally cyclical fundamentals — the risk/reward is asymmetrically negative. The stock needs to run another 40%+ for the bull case to pay; meanwhile any disappointment could trigger a 30–50% drawdown characteristic of memory-cycle turns. Prior PASS at $754 was correct; at $919 it's more emphatic.
 
-## 5. Inflection Point Check
+- **Entry:** Not at $919. Natural re-entry zone $500–600 (30–45% pullback) gives margin of safety back. Best entry would be post-earnings disappointment + proven Samsung restraint.
+- **Holders:** If already long from much lower, trim into strength around catalysts; treat as a cyclical trade, not a compounder.
+- **Would upgrade to BUY if:** pullback to <$600 AND Samsung capex restraint signals confirmed AND first named HBF customer lands.
+- **Would upgrade to STRONG BUY if:** <$450 with NAND pricing still holding.
 
-**Is there an inflection?** YES, but the stock has already priced it in massively.
-
-The inflection was the spin-off (Feb 2025) + NAND supercycle (AI demand for enterprise SSDs). Data centers becoming the #1 NAND consumer for the first time ever is a genuine structural shift. However:
-
-- Stock is up 1,640% from spin-off price
-- Up 163% YTD in 2026
-- Trading near 52-week high ($761 vs current $754)
-- Average analyst PT ($688) is BELOW the current price
-- Citron Research is short
-
-**The inflection has been recognized and repriced.** The question is whether the supercycle lasts longer than expected.
-
----
-
-## 6. Scenario Table
-
-| Scenario | Probability | Price Target | Upside | Rationale |
-|----------|------------|-------------|--------|-----------|
-| **Bull: AI supercycle extends** | 25% | $1,000 | +33% | Q3 confirms $4.6B+ rev, 65%+ margins sustained through FY2027. NAND pricing stays elevated. Multiple quarters of $12+ EPS. Stock re-rates to 15x forward earnings. |
-| **Base: Gradual normalization** | 40% | $650 | -14% | Q3 delivers as guided, but NAND pricing peaks mid-2026. Margins normalize to 40-45% by year-end. Growth slows. Stock drifts to 12x normalized earnings. |
-| **Bear: Cycle turns** | 25% | $350 | -54% | Samsung floods NAND supply (historical pattern). Pricing collapses 30-40%. Margins revert to 25-30%. Stock de-rates aggressively as momentum reverses. |
-| **Crash: 2018 repeat** | 10% | $150 | -80% | Full NAND downcycle. Oversupply, demand slowdown (AI capex cuts), margins go negative. Memory stocks historically lose 60-80% peak to trough. |
-
-**Expected Value:** (0.25 x 33%) + (0.40 x -14%) + (0.25 x -54%) + (0.10 x -80%) = **-18.9%**
-
-The probability-weighted expected return is negative from current levels.
-
----
-
-## 7. Setup & Timing
-
-**Technical:** Near all-time high ($761). Stock is parabolic. RSI likely overbought. After 163% YTD, any negative catalyst could trigger a sharp correction.
-
-**Fundamental catalyst calendar:**
-- Q3 FY2026 earnings: ~Late April 2026 (this is the make-or-break quarter)
-- NAND pricing reports from TrendForce: Monthly
-- Samsung capex announcements: Could signal supply flood
-
-**Entry strategy (if buying):** Do NOT buy at $754. Wait for either:
-1. A 30-40% pullback to $450-$525 range (where the risk/reward improves)
-2. Confirmation that Q3 margins hold at 65%+ AND Samsung isn't expanding capacity
-
----
-
-## 8. Final Verdict: PASS
-
-**Rationale:** SNDK is a well-run company riding an extraordinary NAND supercycle, but:
-
-1. **The stock has already repriced the inflection** (+1,640% since spin-off)
-2. **Average analyst PT is below the current price** ($688 vs $754)
-3. **Probability-weighted expected return is -19%** from current levels
-4. **NAND is a commodity with violent cycles** - Samsung has historically flooded supply at exactly these moments
-5. **Citron's short thesis has historical precedent** (2008, 2012, 2018 NAND crashes)
-6. **GBM models are unreliable here** - they're extrapolating momentum in a cyclical stock at the top
-7. **DCF models can't even produce a value** due to GAAP losses (spin-off accounting)
-
-**This is a classic "great company, terrible entry point" situation.** The time to buy was at the spin-off ($40) or even at $300. At $754, you're paying for perfection in a cyclical commodity business.
-
-**Would revisit:** If SNDK pulls back to $400-$500 (margin of safety) or if NAND pricing demonstrates genuine 2+ year sustainability without Samsung flooding supply.
-
----
-
-## DB Model Summary
-
-| Model | Fair Value | Verdict |
-|-------|-----------|---------|
-| GBM consensus | ~$1,200 | Momentum-driven, unreliable at cycle top |
-| Simple ratios | $194 | Anchored on historical, too pessimistic |
-| LLM deep analysis | $650 | Base case, probability-weighted |
-
----
-
-Sources:
-- [SanDisk Q2 FY2026 Results](https://investor.sandisk.com/news-releases/news-release-details/sandisk-reports-fiscal-second-quarter-2026-financial-results)
-- [Kioxia-SanDisk JV Extension to 2034](https://www.sandisk.com/company/newsroom/press-releases/2026/2026-01-29-kioxia-and-sandisk-extend-yokkaichi-joint-venture-agreement-through-2034)
-- [Citron Research Short Position](https://www.benzinga.com/markets/equities/26/02/50823571/citron-research-shorts-sandisk-claims-nand-cycle-is-peaking)
-- [SNDK 132% YTD in AI Memory Supercycle](https://markets.financialcontent.com/stocks/article/marketminute-2026-3-16-sandisk-sndk-stock-skyrockets-132-ytd-in-2026-amid-ai-memory-supercycle)
-- [NAND Flash Prices Surge Q1 2026](https://evertiq.com/news/2026-01-05-dram-and-nand-flash-prices-to-surge-in-q1-2026)
-- [Analyst Price Targets](https://stockanalysis.com/stocks/sndk/forecast/)
-- [Kioxia-SanDisk Alliance in AI NAND Race](https://www.trendforce.com/news/2026/01/29/news-second-tier-no-more-kioxia-and-sandisk-balance-alliance-and-rivalry-in-ai-nand-race/)
-- [NAND Flash Market Outlook 2026-2031](https://finance.yahoo.com/news/nand-flash-memory-market-outlook-095700880.html)
+## Sources
+- SanDisk Q2 FY26 earnings (2026-01-29)
+- Nasdaq-100 inclusion announcement (2026-04-11, effective 2026-04-20)
+- SanDisk-SK Hynix HBF OCP standardization kickoff (2026-02-25)
+- TrendForce 1Q26 NAND contract pricing revision (+55–60% QoQ, 2026-02-02)
+- Analyst actions: Bernstein $1,250, Evercore $1,200, Cantor $1,000, Citi $980, Jefferies $1,000, MS $690 (April 2026)
+- Prior note: 2026-03-18 (PASS at $754)
