@@ -60,13 +60,18 @@ class DCFModel(ValuationModel):
                 self._last_suitability_reason = 'Negative or missing free cash flow'
                 return False
 
+            # Require enough revenue history to compute a credible growth rate
+            if self._calculate_revenue_cagr(data, min_years=3) is None:
+                self._last_suitability_reason = 'Insufficient revenue history (<3 years)'
+                return False
+
             return True
         except Exception:
             return False
 
     def _validate_inputs(self, ticker: str, data: Dict[str, Any]) -> None:
         """Validate required DCF inputs."""
-        required_fields = ['cashflow', 'balance_sheet', 'info']
+        required_fields = ['cashflow', 'balance_sheet', 'income', 'info']
 
         for field in required_fields:
             if field not in data or data[field] is None:
@@ -188,21 +193,41 @@ class DCFModel(ValuationModel):
         return cost_of_equity
 
     def _estimate_growth_rate(self, data: Dict[str, Any]) -> float:
-        """Estimate revenue/earnings growth rate."""
-        # Try to get analyst estimates or historical growth
-        info = data.get('info', {})
+        """Estimate growth rate from multi-year revenue CAGR.
 
-        # Use analyst estimates if available
-        earnings_growth = self._safe_float(info.get('earningsGrowth'))
-        revenue_growth = self._safe_float(info.get('revenueGrowth'))
+        Uses the income statement directly rather than yfinance's noisy
+        single-quarter growth fields. Refuses to fall back to noisy parameters —
+        if there isn't enough revenue history, the model is not suitable.
+        """
+        cagr = self._calculate_revenue_cagr(data, min_years=3)
+        if cagr is None:
+            raise ModelNotSuitableError(
+                self.name, 'unknown',
+                'Insufficient revenue history (<3 years) to compute growth CAGR',
+            )
+        return max(min(cagr, VALUATION_DEFAULTS.MAX_GROWTH_RATE), -0.25)
 
-        if earnings_growth is not None:
-            return max(min(earnings_growth, VALUATION_DEFAULTS.MAX_GROWTH_RATE), -0.25)
-        elif revenue_growth is not None:
-            return max(min(revenue_growth, VALUATION_DEFAULTS.MAX_GROWTH_RATE), -0.25)
+    def _calculate_revenue_cagr(self, data: Dict[str, Any], min_years: int = 3) -> Optional[float]:
+        """Compute revenue CAGR from the income statement.
 
-        # Default to conservative growth
-        return VALUATION_DEFAULTS.DEFAULT_GROWTH_RATE
+        Returns None if fewer than ``min_years`` of usable revenue history or if
+        the oldest revenue is non-positive (CAGR undefined).
+        """
+        income = data.get('income')
+        if income is None or getattr(income, 'empty', True):
+            return None
+        if 'Total Revenue' not in income.index:
+            return None
+        revenue = income.loc['Total Revenue'].dropna()
+        if len(revenue) < min_years:
+            return None
+        # Income statement columns are sorted chronologically (oldest first)
+        oldest = float(revenue.iloc[0])
+        latest = float(revenue.iloc[-1])
+        if oldest <= 0 or latest <= 0:
+            return None
+        n_years = len(revenue) - 1
+        return (latest / oldest) ** (1 / n_years) - 1
 
     def _project_cash_flows(self, initial_fcf: float, growth_rate: float, years: int) -> List[float]:
         """Project future cash flows."""

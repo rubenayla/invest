@@ -38,6 +38,9 @@ MODELS_TO_RUN = [
 ]
 
 
+CONFIDENCE_MAP = {'very_high': 0.95, 'high': 0.85, 'medium': 0.70, 'low': 0.50, 'very_low': 0.30}
+
+
 def save_to_database(conn, ticker: str, model_name: str, result: dict):
     """Save valuation result to valuation_results table."""
 
@@ -53,6 +56,15 @@ def save_to_database(conn, ticker: str, model_name: str, result: dict):
                 margin_of_safety, upside_pct, suitable,
                 confidence, details_json
             ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (ticker, model_name) DO UPDATE SET
+                fair_value = EXCLUDED.fair_value,
+                current_price = EXCLUDED.current_price,
+                margin_of_safety = EXCLUDED.margin_of_safety,
+                upside_pct = EXCLUDED.upside_pct,
+                suitable = EXCLUDED.suitable,
+                confidence = EXCLUDED.confidence,
+                details_json = EXCLUDED.details_json,
+                timestamp = NOW()
         ''', (
             ticker,
             model_name,
@@ -61,7 +73,7 @@ def save_to_database(conn, ticker: str, model_name: str, result: dict):
             result['margin_of_safety'],
             result['upside'],
             True,
-            result.get('confidence', 'medium'),
+            CONFIDENCE_MAP.get(result.get('confidence', 'medium'), 0.70),
             details_json
         ))
     else:
@@ -70,6 +82,17 @@ def save_to_database(conn, ticker: str, model_name: str, result: dict):
             INSERT INTO valuation_results (
                 ticker, model_name, suitable, error_message, failure_reason
             ) VALUES (%s, %s, %s, %s, %s)
+            ON CONFLICT (ticker, model_name) DO UPDATE SET
+                suitable = EXCLUDED.suitable,
+                error_message = EXCLUDED.error_message,
+                failure_reason = EXCLUDED.failure_reason,
+                fair_value = NULL,
+                current_price = NULL,
+                margin_of_safety = NULL,
+                upside_pct = NULL,
+                confidence = NULL,
+                details_json = NULL,
+                timestamp = NOW()
         ''', (
             ticker,
             model_name,
@@ -275,13 +298,17 @@ def main():
                             stats[db_name]['unsuitable'] += 1
 
                 except Exception as e:
+                    conn.rollback()
                     print(f'   [{i+1}/{len(tickers)}] {ticker} - {db_name}: Unexpected error - {str(e)}')
                     error_result = {
                         'suitable': False,
                         'error': str(e),
                         'reason': f'Unexpected error: {type(e).__name__}'
                     }
-                    save_to_database(conn, ticker, db_name, error_result)
+                    try:
+                        save_to_database(conn, ticker, db_name, error_result)
+                    except Exception:
+                        conn.rollback()
                     stats[db_name]['error'] += 1
 
             # Progress update
