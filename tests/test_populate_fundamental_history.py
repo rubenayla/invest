@@ -17,6 +17,9 @@ from unittest.mock import MagicMock, patch
 import pandas as pd
 import pytest
 
+# Requires a live Postgres at localhost:5432 — skipped under CI's `-m "not slow"`.
+pytestmark = pytest.mark.slow
+
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
