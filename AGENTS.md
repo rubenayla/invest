@@ -43,6 +43,10 @@ All Python via `uv run python script.py` / `uv run pytest`.
 
 Never `git checkout <file>` (destroys changes). Use `git reset <file>` to unstage.
 
+## Deploy
+
+`.github/workflows/ci.yml` auto-deploys to Hetzner on push to `main` after the test job passes. **Do not** `ssh hetzner ... git pull && systemctl restart` manually unless CI is broken AND you've explained the bypass to the user. Check `gh run list --workflow=ci.yml --limit=3` before any manual deploy. Never deploy past a red CI without justification.
+
 ## Database
 
 PostgreSQL on Hetzner is **source of truth**. If schema mismatches script, update the script.
