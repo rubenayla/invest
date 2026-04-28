@@ -737,14 +737,22 @@ def get_universe_tickers(universe: str) -> List[str]:
             # Add more indices as they become available
             tickers = list(dict.fromkeys(tickers))  # Remove duplicates
         elif universe == 'all':
-            # Get all known tickers + cached registry + curated lists
+            # Get all known tickers + cached registry + curated lists + everything already tracked in DB
             index_tickers = index_manager.get_all_tickers()
             cached_tickers = list(index_manager.companies['companies'].keys())
             curated_tickers = [t for lst in universe_configs.values() for t in lst]
-            tickers = list(dict.fromkeys(index_tickers + cached_tickers + curated_tickers))
+            db_tickers = []
+            try:
+                with get_connection() as _conn:
+                    with _conn.cursor() as _cur:
+                        _cur.execute('SELECT ticker FROM current_stock_data')
+                        db_tickers = [row[0] for row in _cur.fetchall()]
+            except Exception as _e:
+                logger.warning(f'Could not load DB tickers for universe=all: {_e}')
+            tickers = list(dict.fromkeys(index_tickers + cached_tickers + curated_tickers + db_tickers))
             source_desc = (
                 f"indices={len(index_tickers)}, cached={len(cached_tickers)}, "
-                f"curated={len(curated_tickers)}"
+                f"curated={len(curated_tickers)}, db={len(db_tickers)}"
             )
         elif universe == 'cached':
             # Return all companies in our registry
