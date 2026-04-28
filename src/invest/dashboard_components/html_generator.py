@@ -253,7 +253,7 @@ class HTMLGenerator:
         sec = health.get("sec_data", {})
         db_size = health.get("db_size_mb", 0)
 
-        # Overall staleness: worst of models AND price data
+        # Models staleness
         max_model_age = 0
         display_models = [
             "autoresearch", "gbm_opportunistic_1y", "gbm_opportunistic_3y",
@@ -265,28 +265,25 @@ class HTMLGenerator:
             if age is not None and age > max_model_age:
                 max_model_age = age
 
+        # Raw data (yfinance prices/fundamentals) staleness
         # Use p80 age (80th percentile) for prices to ignore stale scanner outliers
         price_age = stock_data.get("p80_age_hours") or stock_data.get("age_hours") or 0
-        max_age = max(max_model_age, price_age)
-        stale_source = "prices" if price_age > max_model_age else "models"
         stale_count = stock_data.get("stale_count", 0)
 
-        # Overall status based on p80 age (representative of the bulk of data)
-        if max_age > 168:
-            overall_cls = "stale-critical"
-            overall_label = f"Most {stale_source} over {max_age / 24:.0f}d old"
-        elif max_age > 48:
-            overall_cls = "stale-warning"
-            overall_label = f"Some {stale_source} up to {max_age / 24:.0f}d old"
-        elif max_age > 24:
-            overall_cls = "stale-mild"
-            overall_label = f"Data up to {max_age:.0f}h old"
-        else:
-            overall_cls = "stale-fresh"
-            if stale_count:
-                overall_label = f"Data is fresh ({stale_count} stale outliers)"
-            else:
-                overall_label = "Data is fresh"
+        def _staleness(age_hours: float, source: str, stale_outliers: int = 0) -> tuple[str, str]:
+            """Return (css_class, label) for a freshness indicator."""
+            if age_hours > 168:
+                return "stale-critical", f"Most {source} over {age_hours / 24:.0f}d old"
+            if age_hours > 48:
+                return "stale-warning", f"Some {source} up to {age_hours / 24:.0f}d old"
+            if age_hours > 24:
+                return "stale-mild", f"{source.capitalize()} up to {age_hours:.0f}h old"
+            if stale_outliers:
+                return "stale-fresh", f"{source.capitalize()} fresh ({stale_outliers} stale outliers)"
+            return "stale-fresh", f"{source.capitalize()} fresh"
+
+        overall_cls, overall_label = _staleness(max_model_age, "models")
+        raw_cls, raw_label = _staleness(price_age, "raw data", stale_count)
 
         # Build model chips
         model_chips = []
@@ -339,9 +336,15 @@ class HTMLGenerator:
         return f'''
         <div class="health-panel" id="healthPanel">
             <div class="health-header">
-                <div class="health-overall {overall_cls}">
-                    <span class="health-dot"></span>
-                    {overall_label}
+                <div class="health-overall-group">
+                    <div class="health-overall {overall_cls}" title="Age of newest result among displayed valuation models">
+                        <span class="health-dot"></span>
+                        {overall_label}
+                    </div>
+                    <div class="health-overall {raw_cls}" title="Age of yfinance raw data (p80 of stock_data.timestamp)">
+                        <span class="health-dot"></span>
+                        {raw_label}
+                    </div>
                 </div>
                 <div class="health-meta">
                     {stock_count} stocks | {db_size} MB
@@ -455,25 +458,42 @@ class HTMLGenerator:
         current_price = stock_data.get("current_price", 0)
         valuations = stock_data.get("valuations", {})
         fetch_ts = stock_data.get("fetch_timestamp", "")
-        # Format timestamp for display
-        if fetch_ts:
+        from datetime import datetime, timezone
+
+        def _format_age(ts_value):
+            if not ts_value:
+                return 'never', '#e76a6e'
             try:
-                from datetime import datetime, timezone
-                ts = fetch_ts if isinstance(fetch_ts, datetime) else datetime.fromisoformat(str(fetch_ts))
+                ts = ts_value if isinstance(ts_value, datetime) else datetime.fromisoformat(str(ts_value))
                 age_h = (datetime.now(timezone.utc) - ts.replace(tzinfo=timezone.utc)).total_seconds() / 3600
                 if age_h < 24:
-                    updated_str = f'{age_h:.0f}h ago'
+                    label = f'{age_h:.0f}h ago'
                 elif age_h < 720:
-                    updated_str = f'{age_h / 24:.0f}d ago'
+                    label = f'{age_h / 24:.0f}d ago'
                 else:
-                    updated_str = f'{age_h / 720:.0f}mo ago'
-                updated_color = '#e76a6e' if age_h > 168 else '#738091'  # Red if >7 days
+                    label = f'{age_h / 720:.0f}mo ago'
+                color = '#e76a6e' if age_h > 168 else '#738091'  # Red if >7 days
+                return label, color
             except Exception:
-                updated_str = '?'
-                updated_color = '#738091'
-        else:
-            updated_str = 'never'
-            updated_color = '#e76a6e'
+                return '?', '#738091'
+
+        updated_str, updated_color = _format_age(fetch_ts)
+
+        # Latest model timestamp across all valuations
+        model_ts_latest = None
+        for v in valuations.values():
+            if not isinstance(v, dict):
+                continue
+            t = v.get('timestamp')
+            if not t:
+                continue
+            try:
+                t_dt = t if isinstance(t, datetime) else datetime.fromisoformat(str(t))
+            except (ValueError, TypeError):
+                continue
+            if model_ts_latest is None or t_dt > model_ts_latest:
+                model_ts_latest = t_dt
+        models_str, models_color = _format_age(model_ts_latest)
         company_name = html.escape(stock_data.get("company_name", ticker))
 
         # Create meaningful status based on what actually worked
@@ -540,7 +560,7 @@ class HTMLGenerator:
         return f'''
         <tr class="stock-row {new_status}">
             <td class="rank-cell"></td>
-            <td class="ticker-cell"><span class="ticker-trigger" data-ticker="{ticker}" data-price="{current_price or 0}" onclick="toggleKebab(event, this)" title="{company_name}">{ticker} &#8942;</span><div class="kebab-menu"><div class="kebab-label">{company_name}</div><div class="kebab-label" style="color:{updated_color}; padding-top:0;">Updated: {updated_str}</div><div class="kebab-sep"></div><a class="kebab-item" href="#" onclick="openNotes('{ticker}'); return false;">&#128196; Analysis notes</a><div class="kebab-item" onclick="openAlarmModal('{ticker}', {current_price or 0}); closeAllKebabs();">&#128276; Price alarm</div><a class="kebab-item" href="https://finance.yahoo.com/quote/{ticker}" target="_blank" rel="noopener">&#128200; Yahoo Finance</a></div></td>
+            <td class="ticker-cell"><span class="ticker-trigger" data-ticker="{ticker}" data-price="{current_price or 0}" onclick="toggleKebab(event, this)" title="{company_name}">{ticker} &#8942;</span><div class="kebab-menu"><div class="kebab-label">{company_name}</div><div class="kebab-label" style="color:{updated_color}; padding-top:0;">Data: {updated_str}</div><div class="kebab-label" style="color:{models_color}; padding-top:0;">Models: {models_str}</div><div class="kebab-sep"></div><a class="kebab-item" href="#" onclick="openNotes('{ticker}'); return false;">&#128196; Analysis notes</a><div class="kebab-item" onclick="openAlarmModal('{ticker}', {current_price or 0}); closeAllKebabs();">&#128276; Price alarm</div><a class="kebab-item" href="https://finance.yahoo.com/quote/{ticker}" target="_blank" rel="noopener">&#128200; Yahoo Finance</a></div></td>
             <td>{self._safe_format(current_price, prefix="$")}</td>
             <td>{status_html}</td>
             <td>{autoresearch_html}</td>
@@ -1987,6 +2007,10 @@ renderCards();
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+        .health-overall-group {
+            display: flex; flex-wrap: wrap; align-items: center;
+            gap: 6px 18px;
         }
         .health-overall {
             display: flex; align-items: center; gap: 10px;
