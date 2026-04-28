@@ -409,263 +409,286 @@ class AsyncStockDataFetcher:
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         pass
 
-    def fetch_stock_data_sync(self, ticker: str, max_retries: int = 3) -> Dict:
-        """Fetch fresh data for a single stock with retry logic.
+    def fetch_stock_data_sync(self, ticker: str) -> Dict:
+        """Fetch fresh data for a single stock — single attempt, no in-loop retry.
 
-        Tries up to max_retries times with bounded backoff, then gives up
-        and returns an error dict so the caller can move on. Failed tickers
-        are listed in the run's data_fetch_summary_*.json under
-        'failed_tickers'.
+        Retries are handled at the pass level by fetch_multiple_stocks so a
+        worker never sleeps idle on one ticker. On failure, returns an error
+        dict; the caller decides whether to retry the ticker on a later pass.
         """
-        last_error = None
+        try:
+            logger.info(f"Fetching fresh data for {ticker}")
 
-        for attempt in range(max_retries):
-            try:
-                if attempt > 0:
-                    # Bounded backoff: 10s, 30s (capped). Most "empty info"
-                    # responses are delisted / wrong-suffix tickers (yfinance
-                    # 404), not transient rate limits, so don't burn minutes
-                    # per ticker — fail fast and let the next ticker run.
-                    wait_time = min(10 * (3 ** (attempt - 1)), 30)
-                    logger.info(f"{ticker}: Retry {attempt}/{max_retries} after {wait_time}s wait")
-                    time.sleep(wait_time)
+            # Fetch from yfinance
+            self.rate_limiter.acquire()
+            stock = yf.Ticker(ticker)
 
-                logger.info(f"Fetching fresh data for {ticker} (attempt {attempt + 1}/{max_retries})")
-
-                # Fetch from yfinance
-                self.rate_limiter.acquire()
-                stock = yf.Ticker(ticker)
-
-                # Get comprehensive data
-                data = {
-                    'ticker': ticker,
-                    'info': {},
-                    'financials': {},
-                    'price_data': {},
-                    'fetch_timestamp': datetime.now().isoformat()
-                }
-
-                # Fetch stock info (required for everything else)
-                self.rate_limiter.acquire()
-                info = stock.info
-
-                # Validate that info has real data — yfinance silently returns
-                # an empty/partial dict on rate-limit instead of raising, which
-                # would bypass the retry loop.  currentPrice is the bare minimum
-                # needed for any downstream valuation model.
-                if not info or not info.get('currentPrice'):
-                    raise RuntimeError(
-                        f"{ticker}: yfinance returned empty info (likely rate-limited)"
-                    )
-
-                # Basic info (most important)
-                data['info'] = {
-                    'currentPrice': info.get('currentPrice'),
-                    'marketCap': info.get('marketCap'),
-                    'sector': info.get('sector'),
-                    'industry': info.get('industry'),
-                    'longName': info.get('longName'),
-                    'shortName': info.get('shortName'),
-                    'symbol': info.get('symbol'),
-                    'currency': info.get('currency'),
-                    'financialCurrency': info.get('financialCurrency'),  # Added: explicit financial reporting currency
-                    'exchange': info.get('exchange'),
-                    'country': info.get('country')
-                }
-
-                # Key financial metrics
-                try:
-                    # Calculate debt-to-equity ourselves - yfinance returns it as percentage (92.867)
-                    # but we store ratios as ratios (0.929), not percentages
-                    debt_to_equity = None
-                    total_debt = info.get('totalDebt')
-                    book_value = info.get('bookValue')
-                    shares_outstanding = info.get('sharesOutstanding')
-
-                    if total_debt and book_value and shares_outstanding and book_value > 0:
-                        total_equity = book_value * shares_outstanding
-                        if total_equity > 0:
-                            debt_to_equity = total_debt / total_equity
-
-                    data['financials'] = {
-                        'trailingPE': info.get('trailingPE'),
-                        'forwardPE': info.get('forwardPE'),
-                        'priceToBook': info.get('priceToBook'),
-                        'returnOnEquity': info.get('returnOnEquity'),
-                        'debtToEquity': debt_to_equity,  # Use calculated ratio, not yfinance's percentage
-                        'currentRatio': info.get('currentRatio'),
-                        'revenueGrowth': info.get('revenueGrowth'),
-                        'earningsGrowth': info.get('earningsGrowth'),
-                        'operatingMargins': info.get('operatingMargins'),
-                        'profitMargins': info.get('profitMargins'),
-                        'totalRevenue': info.get('totalRevenue'),
-                        'totalCash': info.get('totalCash'),
-                        'totalDebt': info.get('totalDebt'),
-                        'sharesOutstanding': info.get('sharesOutstanding'),
-                        # Per-share metrics needed by Simple Ratios model
-                        'trailingEps': info.get('trailingEps'),
-                        'bookValue': info.get('bookValue'),
-                        'revenuePerShare': info.get('revenuePerShare'),
-                        'priceToSalesTrailing12Months': info.get('priceToSalesTrailing12Months'),
-                    }
-
-                    # Convert foreign currency financials to USD
-                    data['financials'] = convert_financials_to_usd(data['info'], data['financials'])
-
-                except Exception as e:
-                    logger.warning(f"Could not fetch financials for {ticker}: {e}")
-
-                # Recent price data (for charts/trends)
-                try:
-                    from datetime import timedelta
-                    self.rate_limiter.acquire()
-                    hist = stock.history(period='1y')
-                    if not hist.empty:
-                        # Use calendar-day cutoff, not bar index, to handle
-                        # holidays / missing trading days correctly.
-                        cutoff_30d = hist.index[-1] - timedelta(days=30)
-                        hist_30d = hist[hist.index >= cutoff_30d]
-                        if len(hist_30d) >= 2:
-                            trend_30d = float((hist_30d['Close'].iloc[-1] / hist_30d['Close'].iloc[0] - 1) * 100)
-                        else:
-                            trend_30d = None
-                        data['price_data'] = {
-                            'current_price': float(hist['Close'].iloc[-1]),
-                            'price_52w_high': float(hist['High'].max()),
-                            'price_52w_low': float(hist['Low'].min()),
-                            'avg_volume': int(hist['Volume'].mean()),
-                            'price_trend_30d': trend_30d,
-                        }
-                except Exception as e:
-                    logger.warning(f"Could not fetch price data for {ticker}: {e}")
-
-                # Raw financial statements (for DCF/RIM valuation models)
-                # Skipped in lite mode — statements change quarterly, not daily.
-                if not self.lite:
-                    # NOTE: These raw statements are stored WITHOUT currency conversion.
-                    # For ADRs reporting in non-USD (e.g., JPY, EUR), values are in the
-                    # original financialCurrency. We store the currency alongside so
-                    # downstream consumers can detect and handle this. Automatic
-                    # conversion is too risky here — see convert_financial_statements_to_usd
-                    # below for the converted path.
-                    try:
-                        import pandas as pd
-
-                        # Store financialCurrency so JSON consumers know the unit
-                        financial_currency = info.get('financialCurrency')
-                        if financial_currency:
-                            data['financial_statements_currency'] = financial_currency
-
-                        # Cash flow statement
-                        self.rate_limiter.acquire()
-                        cashflow = stock.cashflow
-                        if cashflow is not None and not cashflow.empty:
-                            # Reset index and convert timestamps to strings
-                            df = cashflow.reset_index()
-                            df.columns = df.columns.astype(str)  # Convert column names to strings
-                            # Convert timestamp values to strings
-                            for col in df.columns:
-                                if pd.api.types.is_datetime64_any_dtype(df[col]):
-                                    df[col] = df[col].astype(str)
-                            data['cashflow'] = df.to_dict(orient='records')
-
-                        # Balance sheet
-                        self.rate_limiter.acquire()
-                        balance_sheet = stock.balance_sheet
-                        if balance_sheet is not None and not balance_sheet.empty:
-                            df = balance_sheet.reset_index()
-                            df.columns = df.columns.astype(str)
-                            for col in df.columns:
-                                if pd.api.types.is_datetime64_any_dtype(df[col]):
-                                    df[col] = df[col].astype(str)
-                            data['balance_sheet'] = df.to_dict(orient='records')
-
-                        # Income statement
-                        self.rate_limiter.acquire()
-                        income_stmt = stock.income_stmt
-                        if income_stmt is not None and not income_stmt.empty:
-                            df = income_stmt.reset_index()
-                            df.columns = df.columns.astype(str)
-                            for col in df.columns:
-                                if pd.api.types.is_datetime64_any_dtype(df[col]):
-                                    df[col] = df[col].astype(str)
-                            data['income'] = df.to_dict(orient='records')
-
-                        logger.info(f"Fetched financial statements for {ticker}")
-                    except Exception as e:
-                        logger.warning(f"Could not fetch financial statements for {ticker}: {e}")
-
-                    # Convert financial statements if currency conversion was applied
-                    if data['financials'].get('_currency_converted'):
-                        financial_currency = data['financials'].get('_original_currency')
-                        exchange_rate = data['financials'].get('_exchange_rate_used')
-                        if financial_currency and exchange_rate:
-                            data = convert_financial_statements_to_usd(data, financial_currency, exchange_rate)
-
-                # Cache the data (lite mode preserves existing financial statements in DB)
-                if self.lite:
-                    self.cache.save_to_sqlite_lite(ticker, data)
-                    # Update cache index so get_update_order() knows this ticker was refreshed
-                    self.cache.index['stocks'][ticker] = {
-                        'last_updated': datetime.now().isoformat(),
-                        'file_size': self.cache.index.get('stocks', {}).get(ticker, {}).get('file_size', 0),
-                        'has_financials': True,
-                        'has_info': True,
-                        'has_cashflow': self.cache.index.get('stocks', {}).get(ticker, {}).get('has_cashflow', False),
-                        'has_balance_sheet': self.cache.index.get('stocks', {}).get(ticker, {}).get('has_balance_sheet', False),
-                        'has_income': self.cache.index.get('stocks', {}).get(ticker, {}).get('has_income', False),
-                    }
-                    self.cache.save_index()
-                else:
-                    self.cache.save_stock_data(ticker, data)
-
-                # Success - return data
-                return data
-
-            except Exception as e:
-                last_error = e
-                logger.warning(f"{ticker}: Attempt {attempt + 1}/{max_retries} failed: {e}")
-                if attempt == max_retries - 1:
-                    # Final attempt failed
-                    logger.error(f"{ticker}: All {max_retries} attempts failed. Last error: {e}")
-                # Loop continues to next retry
-
-        # All retries exhausted
-        return {
-            'ticker': ticker,
-            'error': f'Failed after {max_retries} attempts: {str(last_error)}',
-            'fetch_timestamp': datetime.now().isoformat()
-        }
-
-    async def fetch_multiple_stocks(self, tickers: List[str], max_concurrent: int = 10) -> Dict[str, Dict]:
-        """Fetch data for multiple stocks concurrently"""
-        results = {}
-
-        # Use ThreadPoolExecutor for yfinance calls (they're synchronous)
-        with ThreadPoolExecutor(max_workers=max_concurrent) as executor:
-            # Submit all tasks
-            future_to_ticker = {
-                executor.submit(self.fetch_stock_data_sync, ticker): ticker
-                for ticker in tickers
+            # Get comprehensive data
+            data = {
+                'ticker': ticker,
+                'info': {},
+                'financials': {},
+                'price_data': {},
+                'fetch_timestamp': datetime.now().isoformat()
             }
 
-            # Collect results as they complete
-            for i, future in enumerate(as_completed(future_to_ticker), 1):
-                ticker = future_to_ticker[future]
-                try:
-                    data = future.result(timeout=300)  # 5 min timeout to accommodate retries
-                    results[ticker] = data
+            # Fetch stock info (required for everything else)
+            self.rate_limiter.acquire()
+            info = stock.info
 
-                    if i % 10 == 0 or i == len(tickers):
-                        logger.info(f"Completed {i}/{len(tickers)} stocks")
+            # Validate that info has real data — yfinance silently returns an
+            # empty/partial dict on both rate-limit and 404 (delisted/wrong
+            # suffix). currentPrice is the bare minimum.
+            if not info or not info.get('currentPrice'):
+                raise RuntimeError(
+                    f"{ticker}: yfinance returned empty info (rate-limited or delisted)"
+                )
 
-                except Exception as e:
-                    logger.error(f"Failed to fetch {ticker}: {e}")
-                    results[ticker] = {
-                        'ticker': ticker,
-                        'error': str(e),
-                        'fetch_timestamp': datetime.now().isoformat()
+            # Basic info (most important)
+            data['info'] = {
+                'currentPrice': info.get('currentPrice'),
+                'marketCap': info.get('marketCap'),
+                'sector': info.get('sector'),
+                'industry': info.get('industry'),
+                'longName': info.get('longName'),
+                'shortName': info.get('shortName'),
+                'symbol': info.get('symbol'),
+                'currency': info.get('currency'),
+                'financialCurrency': info.get('financialCurrency'),  # Added: explicit financial reporting currency
+                'exchange': info.get('exchange'),
+                'country': info.get('country')
+            }
+
+            # Key financial metrics
+            try:
+                # Calculate debt-to-equity ourselves - yfinance returns it as percentage (92.867)
+                # but we store ratios as ratios (0.929), not percentages
+                debt_to_equity = None
+                total_debt = info.get('totalDebt')
+                book_value = info.get('bookValue')
+                shares_outstanding = info.get('sharesOutstanding')
+
+                if total_debt and book_value and shares_outstanding and book_value > 0:
+                    total_equity = book_value * shares_outstanding
+                    if total_equity > 0:
+                        debt_to_equity = total_debt / total_equity
+
+                data['financials'] = {
+                    'trailingPE': info.get('trailingPE'),
+                    'forwardPE': info.get('forwardPE'),
+                    'priceToBook': info.get('priceToBook'),
+                    'returnOnEquity': info.get('returnOnEquity'),
+                    'debtToEquity': debt_to_equity,  # Use calculated ratio, not yfinance's percentage
+                    'currentRatio': info.get('currentRatio'),
+                    'revenueGrowth': info.get('revenueGrowth'),
+                    'earningsGrowth': info.get('earningsGrowth'),
+                    'operatingMargins': info.get('operatingMargins'),
+                    'profitMargins': info.get('profitMargins'),
+                    'totalRevenue': info.get('totalRevenue'),
+                    'totalCash': info.get('totalCash'),
+                    'totalDebt': info.get('totalDebt'),
+                    'sharesOutstanding': info.get('sharesOutstanding'),
+                    # Per-share metrics needed by Simple Ratios model
+                    'trailingEps': info.get('trailingEps'),
+                    'bookValue': info.get('bookValue'),
+                    'revenuePerShare': info.get('revenuePerShare'),
+                    'priceToSalesTrailing12Months': info.get('priceToSalesTrailing12Months'),
+                }
+
+                # Convert foreign currency financials to USD
+                data['financials'] = convert_financials_to_usd(data['info'], data['financials'])
+
+            except Exception as e:
+                logger.warning(f"Could not fetch financials for {ticker}: {e}")
+
+            # Recent price data (for charts/trends)
+            try:
+                from datetime import timedelta
+                self.rate_limiter.acquire()
+                hist = stock.history(period='1y')
+                if not hist.empty:
+                    # Use calendar-day cutoff, not bar index, to handle
+                    # holidays / missing trading days correctly.
+                    cutoff_30d = hist.index[-1] - timedelta(days=30)
+                    hist_30d = hist[hist.index >= cutoff_30d]
+                    if len(hist_30d) >= 2:
+                        trend_30d = float((hist_30d['Close'].iloc[-1] / hist_30d['Close'].iloc[0] - 1) * 100)
+                    else:
+                        trend_30d = None
+                    data['price_data'] = {
+                        'current_price': float(hist['Close'].iloc[-1]),
+                        'price_52w_high': float(hist['High'].max()),
+                        'price_52w_low': float(hist['Low'].min()),
+                        'avg_volume': int(hist['Volume'].mean()),
+                        'price_trend_30d': trend_30d,
                     }
+            except Exception as e:
+                logger.warning(f"Could not fetch price data for {ticker}: {e}")
+
+            # Raw financial statements (for DCF/RIM valuation models)
+            # Skipped in lite mode — statements change quarterly, not daily.
+            if not self.lite:
+                # NOTE: These raw statements are stored WITHOUT currency conversion.
+                # For ADRs reporting in non-USD (e.g., JPY, EUR), values are in the
+                # original financialCurrency. We store the currency alongside so
+                # downstream consumers can detect and handle this. Automatic
+                # conversion is too risky here — see convert_financial_statements_to_usd
+                # below for the converted path.
+                try:
+                    import pandas as pd
+
+                    # Store financialCurrency so JSON consumers know the unit
+                    financial_currency = info.get('financialCurrency')
+                    if financial_currency:
+                        data['financial_statements_currency'] = financial_currency
+
+                    # Cash flow statement
+                    self.rate_limiter.acquire()
+                    cashflow = stock.cashflow
+                    if cashflow is not None and not cashflow.empty:
+                        df = cashflow.reset_index()
+                        df.columns = df.columns.astype(str)
+                        for col in df.columns:
+                            if pd.api.types.is_datetime64_any_dtype(df[col]):
+                                df[col] = df[col].astype(str)
+                        data['cashflow'] = df.to_dict(orient='records')
+
+                    # Balance sheet
+                    self.rate_limiter.acquire()
+                    balance_sheet = stock.balance_sheet
+                    if balance_sheet is not None and not balance_sheet.empty:
+                        df = balance_sheet.reset_index()
+                        df.columns = df.columns.astype(str)
+                        for col in df.columns:
+                            if pd.api.types.is_datetime64_any_dtype(df[col]):
+                                df[col] = df[col].astype(str)
+                        data['balance_sheet'] = df.to_dict(orient='records')
+
+                    # Income statement
+                    self.rate_limiter.acquire()
+                    income_stmt = stock.income_stmt
+                    if income_stmt is not None and not income_stmt.empty:
+                        df = income_stmt.reset_index()
+                        df.columns = df.columns.astype(str)
+                        for col in df.columns:
+                            if pd.api.types.is_datetime64_any_dtype(df[col]):
+                                df[col] = df[col].astype(str)
+                        data['income'] = df.to_dict(orient='records')
+
+                    logger.info(f"Fetched financial statements for {ticker}")
+                except Exception as e:
+                    logger.warning(f"Could not fetch financial statements for {ticker}: {e}")
+
+                # Convert financial statements if currency conversion was applied
+                if data['financials'].get('_currency_converted'):
+                    financial_currency = data['financials'].get('_original_currency')
+                    exchange_rate = data['financials'].get('_exchange_rate_used')
+                    if financial_currency and exchange_rate:
+                        data = convert_financial_statements_to_usd(data, financial_currency, exchange_rate)
+
+            # Cache the data (lite mode preserves existing financial statements in DB)
+            if self.lite:
+                self.cache.save_to_sqlite_lite(ticker, data)
+                self.cache.index['stocks'][ticker] = {
+                    'last_updated': datetime.now().isoformat(),
+                    'file_size': self.cache.index.get('stocks', {}).get(ticker, {}).get('file_size', 0),
+                    'has_financials': True,
+                    'has_info': True,
+                    'has_cashflow': self.cache.index.get('stocks', {}).get(ticker, {}).get('has_cashflow', False),
+                    'has_balance_sheet': self.cache.index.get('stocks', {}).get(ticker, {}).get('has_balance_sheet', False),
+                    'has_income': self.cache.index.get('stocks', {}).get(ticker, {}).get('has_income', False),
+                }
+                self.cache.save_index()
+            else:
+                self.cache.save_stock_data(ticker, data)
+
+            return data
+
+        except Exception as e:
+            logger.warning(f"{ticker}: fetch failed: {e}")
+            return {
+                'ticker': ticker,
+                'error': str(e),
+                'fetch_timestamp': datetime.now().isoformat()
+            }
+
+    async def fetch_multiple_stocks(
+        self,
+        tickers: List[str],
+        max_concurrent: int = 10,
+        max_passes: int = 3,
+    ) -> Dict[str, Dict]:
+        """Fetch data for many stocks with pass-based retries.
+
+        One worker = one ticker per attempt, no in-loop sleep. After each
+        pass we retry just the tickers that failed, up to ``max_passes``
+        passes. Whatever still fails after the last pass is left in the
+        results with its error — those are the genuine failures.
+        """
+        results: Dict[str, Dict] = {}
+        remaining = list(tickers)
+        total = len(tickers)
+
+        for pass_num in range(1, max_passes + 1):
+            if not remaining:
+                break
+
+            logger.info(
+                f"Pass {pass_num}/{max_passes}: fetching {len(remaining)} ticker(s)"
+            )
+
+            failed_this_pass: List[str] = []
+
+            with ThreadPoolExecutor(max_workers=max_concurrent) as executor:
+                future_to_ticker = {
+                    executor.submit(self.fetch_stock_data_sync, ticker): ticker
+                    for ticker in remaining
+                }
+
+                completed = 0
+                for future in as_completed(future_to_ticker):
+                    ticker = future_to_ticker[future]
+                    try:
+                        data = future.result(timeout=120)
+                    except Exception as e:
+                        data = {
+                            'ticker': ticker,
+                            'error': str(e),
+                            'fetch_timestamp': datetime.now().isoformat(),
+                        }
+
+                    if 'error' in data:
+                        failed_this_pass.append(ticker)
+                    else:
+                        results[ticker] = data
+
+                    completed += 1
+                    done_total = len(results) + (
+                        len(failed_this_pass) if pass_num == max_passes else 0
+                    )
+                    if completed % 10 == 0 or completed == len(future_to_ticker):
+                        logger.info(
+                            f"Pass {pass_num}: {completed}/{len(future_to_ticker)} "
+                            f"(succeeded so far: {len(results)}/{total})"
+                        )
+
+                    # Keep last-seen error for the final report
+                    if 'error' in data:
+                        results[ticker] = data
+
+            remaining = failed_this_pass
+            if remaining:
+                logger.info(
+                    f"Pass {pass_num}/{max_passes} done. "
+                    f"{len(remaining)} ticker(s) failed: {remaining[:10]}"
+                    + (' ...' if len(remaining) > 10 else '')
+                )
+
+        if remaining:
+            logger.error(
+                f"Giving up on {len(remaining)} ticker(s) after {max_passes} passes: "
+                f"{remaining[:20]}" + (' ...' if len(remaining) > 20 else '')
+            )
 
         return results
 
