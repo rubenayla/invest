@@ -745,12 +745,19 @@ async def api_notes(request: Request):
     if not re.match(r"^[A-Z0-9._-]+$", ticker):
         return PlainTextResponse("Invalid ticker", status_code=400)
 
-    md_path = NOTES_DIR / f"{ticker}.md"
-    if not md_path.is_file():
+    # Folder layout takes priority (TICKER/thesis.md), then flat (TICKER.md).
+    folder_path = NOTES_DIR / ticker / "thesis.md"
+    flat_path = NOTES_DIR / f"{ticker}.md"
+    if folder_path.is_file():
+        md_path = folder_path
+    elif flat_path.is_file():
+        md_path = flat_path
+    else:
         return HTMLResponse(
             f"<html><body style='background:#0d1117;color:#e0e6ed;font-family:system-ui;padding:40px;'>"
             f"<h2>No analysis notes for {ticker}</h2>"
-            f"<p style='color:#738091;'>Create <code>notes/companies/{ticker}.md</code> to add notes.</p>"
+            f"<p style='color:#738091;'>Create <code>notes/companies/{ticker}.md</code> "
+            f"or <code>notes/companies/{ticker}/thesis.md</code> to add notes.</p>"
             f"</body></html>",
             status_code=404,
         )
