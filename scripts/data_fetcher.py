@@ -409,15 +409,24 @@ class AsyncStockDataFetcher:
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         pass
 
-    def fetch_stock_data_sync(self, ticker: str, max_retries: int = 6) -> Dict:
-        """Fetch fresh data for a single stock with retry logic"""
+    def fetch_stock_data_sync(self, ticker: str, max_retries: int = 3) -> Dict:
+        """Fetch fresh data for a single stock with retry logic.
+
+        Tries up to max_retries times with bounded backoff, then gives up
+        and returns an error dict so the caller can move on. Failed tickers
+        are listed in the run's data_fetch_summary_*.json under
+        'failed_tickers'.
+        """
         last_error = None
 
         for attempt in range(max_retries):
             try:
                 if attempt > 0:
-                    # Exponential backoff: 10s, 30s, 60s, 120s, 120s (capped)
-                    wait_time = min(10 * (3 ** (attempt - 1)), 120)
+                    # Bounded backoff: 10s, 30s (capped). Most "empty info"
+                    # responses are delisted / wrong-suffix tickers (yfinance
+                    # 404), not transient rate limits, so don't burn minutes
+                    # per ticker — fail fast and let the next ticker run.
+                    wait_time = min(10 * (3 ** (attempt - 1)), 30)
                     logger.info(f"{ticker}: Retry {attempt}/{max_retries} after {wait_time}s wait")
                     time.sleep(wait_time)
 
