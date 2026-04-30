@@ -127,6 +127,8 @@ def main() -> int:
     parser.add_argument('--skip-edinet', action='store_true', help='Skip EDINET Japan data')
     parser.add_argument('--skip-politician', action='store_true', help='Skip House PTR politician trades')
     parser.add_argument('--skip-truthsocial', action='store_true', help='Skip Truth Social Trump-post fetch')
+    parser.add_argument('--skip-polymarket-policy', action='store_true',
+                        help='Skip Polymarket Trump-policy market poll')
     parser.add_argument('--skip-scanner', action='store_true', help='Skip opportunity scanner')
     parser.add_argument('--lite-fetch', action='store_true',
                         help='Lite mode: fetch prices+metrics only (no statements/insider/activist/holdings/edinet)')
@@ -140,6 +142,7 @@ def main() -> int:
         args.skip_edinet = True
         args.skip_politician = True
         args.skip_truthsocial = True
+        args.skip_polymarket_policy = True
 
     if not args.skip_fetch:
         fetch_cmd = [
@@ -198,6 +201,15 @@ def main() -> int:
         run_cmd(
             [sys.executable, 'scripts/fetch_truth_social.py'],
             'Fetching Truth Social posts',
+        )
+
+    # --- Phase 1h: Polymarket Trump-policy markets ---
+    # Cheap (one HTTP call per page, no heavy parsing) — safe to run frequently.
+    # Postgres-down is non-fatal inside the script, so it won't block update_all.
+    if not args.skip_polymarket_policy:
+        run_cmd(
+            [sys.executable, 'scripts/fetch_polymarket_policy.py'],
+            'Fetching Polymarket Trump-policy markets',
         )
 
     # --- Phase 2: Valuations (independent of each other) ---

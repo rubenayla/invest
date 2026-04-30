@@ -430,9 +430,25 @@ async def feed_index(request: Request) -> HTMLResponse:
     from dashboard import load_stocks_from_database
 
     stocks_data = load_stocks_from_database()
+
+    # Load Polymarket Trump-policy markets if the table exists.
+    # DB-down or table-missing is non-fatal — feed renders without that section.
+    policy_markets: list = []
+    try:
+        from invest.data.polymarket_db import get_active_markets
+        conn = get_connection()
+        try:
+            policy_markets = get_active_markets(conn, limit=12, sort_by_24h_move=True)
+        finally:
+            conn.close()
+    except Exception:
+        policy_markets = []
+
     generator = HTMLGenerator()
     notes_dir = str(REPO_ROOT / "notes" / "companies")
-    feed_html = generator.generate_feed_html(stocks_data, notes_dir=notes_dir)
+    feed_html = generator.generate_feed_html(
+        stocks_data, notes_dir=notes_dir, policy_markets=policy_markets,
+    )
     return HTMLResponse(feed_html, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
 
 
