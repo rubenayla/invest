@@ -13,20 +13,51 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Set
+from typing import Any, Dict, List, Set, Tuple
 
 import psycopg2.extensions
 
 logger = logging.getLogger(__name__)
 
 # Politicians whose trades have shown the strongest historical signal.
-# Multiplier applied when computing weighted signal score.
-HIGH_SIGNAL_POLITICIANS: Dict[str, float] = {
-    'Pelosi, Nancy': 3.0,
-    'Tuberville, Tommy': 2.0,
-    'Crenshaw, Dan': 1.5,
-    'Gottheimer, Josh': 1.5,
+# Multiplier applied when computing weighted signal score, keyed on
+# (politician_name, transaction_type) where transaction_type is 'P'
+# (Purchase) or 'S' (Sale). Splitting by direction lets us amplify or
+# fade a politician's signal independently per side.
+#
+# Weights from notes/research/politician_backtest_2026.md (Tuberville split).
+# Other politicians use uniform weights pending individual backtest.
+HIGH_SIGNAL_POLITICIANS: Dict[Tuple[str, str], float] = {
+    # Pelosi — uniform pending direction-split backtest
+    ('Pelosi, Nancy', 'P'): 3.0,
+    ('Pelosi, Nancy', 'S'): 3.0,
+    # Tuberville — backtest 2026: buys −9% alpha @180d (n=118, p=0.003),
+    # sells +14% alpha @365d (n=216, hit 75.5%, p<0.001). Fade buys, ride sells.
+    ('Tuberville, Tommy', 'P'): 0.3,
+    ('Tuberville, Tommy', 'S'): 3.5,
+    # Crenshaw — uniform pending individual backtest
+    ('Crenshaw, Dan', 'P'): 1.5,
+    ('Crenshaw, Dan', 'S'): 1.5,
+    # Gottheimer — uniform pending individual backtest
+    ('Gottheimer, Josh', 'P'): 1.5,
+    ('Gottheimer, Josh', 'S'): 1.5,
 }
+
+# Default weight for politicians not in the high-signal dict.
+DEFAULT_POLITICIAN_WEIGHT: float = 1.0
+
+
+def _politician_weight(name: str, tx_type: str | None) -> float:
+    """Look up signal weight for a (politician, transaction_type) pair.
+
+    transaction_type is normalized to its first letter uppercased
+    ('P' for Purchase, 'S' for Sale, 'E' for Exchange) before lookup,
+    matching how compute_politician_signal classifies trades.
+    """
+    if not tx_type:
+        return DEFAULT_POLITICIAN_WEIGHT
+    code = tx_type.strip().upper()[:1]
+    return HIGH_SIGNAL_POLITICIANS.get((name, code), DEFAULT_POLITICIAN_WEIGHT)
 
 
 def ensure_schema(conn) -> None:
@@ -207,7 +238,7 @@ def compute_politician_signal(
         if last_trade_date is None:
             last_trade_date = tx_date
 
-        weight = HIGH_SIGNAL_POLITICIANS.get(name, 1.0)
+        weight = _politician_weight(name, tx_type)
         size_factor = _amount_size_factor(amt_min, amt_max)
 
         is_buy = tx_type and tx_type.upper().startswith('P')  # Purchase
@@ -220,9 +251,13 @@ def compute_politician_signal(
             sell_count += 1
             weighted_score -= weight * size_factor
 
+        # Track the highest weight seen so far for this politician across
+        # directions — used purely for ranking in top_politicians.
         entry = politician_activity.setdefault(
             name, {'name': name, 'buys': 0, 'sells': 0, 'weight': weight}
         )
+        if weight > entry['weight']:
+            entry['weight'] = weight
         if is_buy:
             entry['buys'] += 1
         elif is_sell:
