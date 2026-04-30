@@ -3379,6 +3379,15 @@ renderCards();
         posts = self._generate_feed_posts(stocks_data, notes_dir)
         cards_html = self._render_feed_with_sections(posts)
 
+        # Real-time Trump signal cards (fetched fresh on each render so
+        # newly-arrived posts surface within seconds of the next page load).
+        # Defensive: any DB or import error returns an empty string so the
+        # feed never breaks if Postgres / the truthsocial table is down.
+        known_tickers = set(stocks_data.keys()) if stocks_data else set()
+        trump_html = self._render_trump_signal_cards(known_tickers)
+        if trump_html:
+            cards_html = trump_html + cards_html
+
         return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -3905,6 +3914,123 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                 result.append(remaining.pop(0))
 
         return result
+
+    def _render_trump_signal_cards(
+        self,
+        known_tickers: set,
+        lookback_hours: int = 48,
+        limit: int = 10,
+    ) -> str:
+        """
+        Render Trump (Truth Social) signal cards for the top of the feed.
+
+        Returns empty string on any failure (DB down, table missing, import
+        error) so the rest of the feed always renders.
+
+        Each card shows:
+        - timestamp (relative + absolute)
+        - post text (truncated to ~280 chars)
+        - extracted entity tags: tickers (linked if in our universe),
+          sectors, countries
+        """
+        try:
+            from invest.data.db import get_connection
+            from invest.data.truth_social_db import get_recent_posts
+        except Exception:
+            return ""
+
+        try:
+            conn = get_connection()
+        except Exception:
+            return ""
+
+        try:
+            posts = get_recent_posts(
+                conn,
+                lookback_hours=lookback_hours,
+                limit=limit,
+                require_signal=True,
+            )
+        except Exception:
+            posts = []
+        finally:
+            try:
+                conn.close()
+            except Exception:
+                pass
+
+        if not posts:
+            return ""
+
+        from datetime import datetime, timezone
+
+        def _relative_time(iso_ts: str) -> str:
+            try:
+                if iso_ts.endswith('Z'):
+                    iso_ts = iso_ts[:-1] + '+00:00'
+                dt = datetime.fromisoformat(iso_ts)
+                if dt.tzinfo is None:
+                    dt = dt.replace(tzinfo=timezone.utc)
+                delta = datetime.now(timezone.utc) - dt
+                hours = delta.total_seconds() / 3600
+                if hours < 1:
+                    minutes = max(1, int(delta.total_seconds() / 60))
+                    return f"{minutes}m ago"
+                if hours < 24:
+                    return f"{int(hours)}h ago"
+                return f"{int(hours / 24)}d ago"
+            except (ValueError, TypeError):
+                return iso_ts
+
+        parts: List[str] = []
+        parts.append(
+            '<div class="section-sep"><span>Trump signal</span></div>'
+        )
+
+        for post in posts:
+            text = post.get('text', '') or ''
+            display_text = text if len(text) <= 280 else text[:277].rstrip() + '…'
+            tickers = post.get('extracted_tickers', []) or []
+            sectors = post.get('extracted_sectors', []) or []
+            countries = post.get('extracted_countries', []) or []
+            posted_at = post.get('posted_at', '')
+            rel_time = _relative_time(posted_at) if posted_at else ''
+
+            tag_parts: List[str] = []
+            for t in tickers:
+                in_universe = t in known_tickers
+                cls = 'tag-numbers' if in_universe else 'tag-intro'
+                tag_parts.append(
+                    f'<span class="post-tag {cls}">${html.escape(t)}</span>'
+                )
+            for s in sectors:
+                tag_parts.append(
+                    f'<span class="post-tag tag-thesis">{html.escape(s)}</span>'
+                )
+            for c in countries:
+                tag_parts.append(
+                    f'<span class="post-tag tag-bear">{html.escape(c)}</span>'
+                )
+
+            tags_html = ''
+            if tag_parts:
+                tags_html = (
+                    '<div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:10px;">'
+                    + ''.join(tag_parts) + '</div>'
+                )
+
+            parts.append(f'''<div class="thread" style="--thread-heat: rgba(240,183,38,0.6); --thread-glow: rgba(240,183,38,0.10);">
+    <div class="thread-head" style="cursor:default;">
+        <span class="post-tag tag-signal">TRUMP</span>
+        <span class="thread-name" style="flex:1;">Truth Social &middot; {html.escape(rel_time)}</span>
+    </div>
+    <div style="margin-top:10px;">
+        <div style="font-size:14.5px; line-height:1.5; color:var(--t1);">{html.escape(display_text)}</div>
+        {tags_html}
+    </div>
+</div>''')
+
+        return '\n'.join(parts) + '\n'
 
     def _render_feed_with_sections(self, posts: List[Dict]) -> str:
         """Render posts grouped as company threads — each company is a mini-story."""

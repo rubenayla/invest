@@ -126,6 +126,7 @@ def main() -> int:
     parser.add_argument('--skip-holdings', action='store_true', help='Skip institutional holdings (13F)')
     parser.add_argument('--skip-edinet', action='store_true', help='Skip EDINET Japan data')
     parser.add_argument('--skip-politician', action='store_true', help='Skip House PTR politician trades')
+    parser.add_argument('--skip-truthsocial', action='store_true', help='Skip Truth Social Trump-post fetch')
     parser.add_argument('--skip-scanner', action='store_true', help='Skip opportunity scanner')
     parser.add_argument('--lite-fetch', action='store_true',
                         help='Lite mode: fetch prices+metrics only (no statements/insider/activist/holdings/edinet)')
@@ -138,6 +139,7 @@ def main() -> int:
         args.skip_holdings = True
         args.skip_edinet = True
         args.skip_politician = True
+        args.skip_truthsocial = True
 
     if not args.skip_fetch:
         fetch_cmd = [
@@ -189,6 +191,13 @@ def main() -> int:
             [sys.executable, 'scripts/fetch_politician_data.py',
              '--years', str(year - 1), str(year)],
             'Fetching House PTR politician trades',
+        )
+
+    # --- Phase 1g: Truth Social Trump posts (real-time signal) ---
+    if not args.skip_truthsocial:
+        run_cmd(
+            [sys.executable, 'scripts/fetch_truth_social.py'],
+            'Fetching Truth Social posts',
         )
 
     # --- Phase 2: Valuations (independent of each other) ---
