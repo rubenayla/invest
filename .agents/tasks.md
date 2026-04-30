@@ -3,9 +3,9 @@
 
 ## TODO
 
-- **Polymarket Trump-policy market poller** (added 2026-04-30): Extend `scripts/polymarket_lookup.py` to track policy markets specifically — tariff timing/levels by country, executive-order probabilities, Fed-action contracts, specific-bill passage. Build a `trump_policy_markets` table (market_id, question, current_yes_price, volume, close_date, last_updated). Push to `/feed` when implied probability moves >10pp in 24h. Acceptance: ≥10 active Trump-policy markets tracked; alert fires on any large probability shift. Reference: `.agents/notes.md` 2026-04-30.
+- **Per-signal alpha tooltip + signal_metadata table** (added 2026-04-30): Add a `signal_metadata` table — `signal_type (PK)`, `name`, `alpha_30d`, `alpha_90d`, `alpha_180d`, `alpha_365d`, `hit_rate`, `sample_size`, `effective_n`, `last_backtested_at`, `caveats (text)`. Populate from per-source backtest scripts (politicians, insider buys, activist 13D/G, smart-money 13F, Trump Truth Social, Polymarket policy). Each signal card on `/feed` renders a small (i) tooltip showing alpha_365d / hit_rate / sample_size + the caveat string. Critical: caveats must surface (e.g. trade-clustering reduces Tuberville's effective n from 356 to ~20). Acceptance: ≥3 signal types have backtest entries; tooltip visible on /feed; no regression on existing card layout.
 
-- **Backtest Vance + Tuberville PTR signal** (added 2026-04-30): Query `politician_trades` table for all Vance (pre-VP) and Tuberville disclosed transactions in last 24 months. For each trade, compute forward returns at 30d / 90d / 180d / 365d vs SPY. Compare hit rate + avg alpha to other politicians in `HIGH_SIGNAL_POLITICIANS`. If Vance / Tuberville show statistically meaningful alpha (>3% annualized vs control group), bump their weights in `politician_fetcher.py`. If not, leave as-is and document the null. Acceptance: written backtest results in `notes/research/politician_backtest_2026.md` with conclusion + weight changes (or no-change justification).
+- **Polymarket Trump-policy market poller** (added 2026-04-30): Extend `scripts/polymarket_lookup.py` to track policy markets specifically — tariff timing/levels by country, executive-order probabilities, Fed-action contracts, specific-bill passage. Build a `trump_policy_markets` table (market_id, question, current_yes_price, volume, close_date, last_updated). Push to `/feed` when implied probability moves >10pp in 24h. Acceptance: ≥10 active Trump-policy markets tracked; alert fires on any large probability shift. Reference: `.agents/notes.md` 2026-04-30.
 
 - **Re-evaluate SQM runner after May Q1 2026 earnings**: HOLD if EPS run-rate ≥$8 annualized AND lithium >$15/kg sustained. EXIT remaining 31.54 if Q1 miss OR lithium <$15/kg for 2 months. TRIM MORE if stock hits $130 pre-earnings.
 
@@ -19,6 +19,8 @@
 ## In Progress
 
 ## Done
+
+- [2026-04-30] **Backtest Vance + Tuberville PTR signal**: Full report at `notes/research/politician_backtest_2026.md`. Tuberville aggregate +5.9% annualised alpha vs House control at 365d (n=334, p<0.001) — but signal is asymmetric: sells +14% alpha @365d (n=216, hit 75.5%, p<0.001), buys −9% @180d (n=118, p=0.003). Vance untestable (n=1, only 1 public-stock trade as Senator). Acted on the asymmetric finding via the split-by-direction follow-up rather than a flat weight bump. Caveats: trade-clustering (effective n ~10-20, not 356), bull-market conditioning, joint-account ambiguity, CLF missing from price_history, Senate eFD scraped via third-party (capitoltrades).
 
 - [2026-04-30] **Split politician signal by transaction direction**: `HIGH_SIGNAL_POLITICIANS` in `src/invest/data/politician_db.py` now keys on `(name, transaction_type)` tuples. Tuberville buys weighted 0.3 (faded, −9% alpha @180d), Tuberville sells 3.5 (amplified, +14% alpha @365d); Pelosi/Crenshaw/Gottheimer kept uniform across P/S pending individual backtests. Added `_politician_weight()` helper + `DEFAULT_POLITICIAN_WEIGHT`. New `tests/test_politician_signal.py` (12 tests, all pass) covers Tuberville split, Pelosi uniformity, unknown-politician default, and DB-stubbed `compute_politician_signal` integration.
 
