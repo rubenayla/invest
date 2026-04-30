@@ -3371,13 +3371,27 @@ renderCards();
 
     # ── Doomscroll Insights Feed ─────────────────────────────────────────
 
-    def generate_feed_html(self, stocks_data: Dict, notes_dir: str = None) -> str:
-        """Generate the doomscroll insights feed — bite-sized investing posts."""
+    def generate_feed_html(self, stocks_data: Dict, notes_dir: str = None,
+                           policy_markets: List[Dict] = None) -> str:
+        """Generate the doomscroll insights feed — bite-sized investing posts.
+
+        Parameters
+        ----------
+        stocks_data : Dict
+            Per-ticker valuations and metadata (existing pipeline).
+        notes_dir : str
+            Path to notes/companies markdown directory.
+        policy_markets : List[Dict]
+            Optional list of Polymarket Trump-policy markets with deltas.
+            Rendered as a separate top section.
+        """
         import re
         if notes_dir is None:
             notes_dir = str(Path(__file__).parent.parent.parent.parent / "notes" / "companies")
         posts = self._generate_feed_posts(stocks_data, notes_dir)
         cards_html = self._render_feed_with_sections(posts)
+        policy_html = self._render_policy_markets(policy_markets) if policy_markets else ""
+        cards_html = policy_html + cards_html
 
         # Real-time Trump signal cards (fetched fresh on each render so
         # newly-arrived posts surface within seconds of the next page load).
@@ -4401,3 +4415,92 @@ document.querySelectorAll('.thread-head').forEach(h => {{
             {pills_html}
         </div>
     </div>'''
+
+    def _render_policy_markets(self, markets: List[Dict]) -> str:
+        """Render the Trump-policy market section at the top of the feed.
+
+        Each card shows: question, current YES price, 24h delta in pp
+        (color-coded), 24h volume, close date. Sorted by |Δ24h| upstream.
+        """
+        if not markets:
+            return ""
+
+        category_labels = {
+            'tariffs': 'Tariffs',
+            'fed_actions': 'Fed actions',
+            'executive_orders': 'Executive orders',
+            'cabinet_appointments': 'Cabinet picks',
+            'legislation': 'Legislation',
+            'china': 'China',
+            'energy_oil': 'Energy / oil',
+            'crypto': 'Crypto policy',
+            'immigration': 'Immigration',
+            'foreign_policy': 'Foreign policy',
+        }
+
+        parts = ['''<div class="section-sep"><span>Trump policy markets</span></div>''']
+        for m in markets[:12]:  # cap to keep section scannable
+            q = m.get('question') or ''
+            cat = m.get('category') or 'other'
+            cat_label = category_labels.get(cat, cat.replace('_', ' ').title())
+            yes = m.get('current_yes_price')
+            yes_str = f"{yes*100:.0f}%" if yes is not None else "?"
+            delta_pp = m.get('delta_pp')
+            delta_cls = m.get('delta_class') or ''
+            if delta_pp is None:
+                delta_str = "—"
+                delta_cls = ''
+            elif delta_pp > 0:
+                delta_str = f"+{delta_pp:.1f}pp"
+            else:
+                delta_str = f"{delta_pp:.1f}pp"
+
+            v24 = m.get('volume_24h') or 0
+            if v24 >= 1e6:
+                v24_str = f"${v24/1e6:.1f}M"
+            elif v24 >= 1e3:
+                v24_str = f"${v24/1e3:.0f}K"
+            else:
+                v24_str = f"${v24:.0f}"
+
+            close_dt = m.get('close_date')
+            close_str = close_dt.strftime('%b %d') if close_dt else '—'
+            url = m.get('url') or ''
+            link_open = f'<a href="{html.escape(url)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">' if url else ''
+            link_close = '</a>' if url else ''
+
+            # Sentiment border via existing thread heat vars
+            if delta_pp is not None and abs(delta_pp) >= 5:
+                if delta_pp > 0:
+                    intensity = min(delta_pp / 30.0, 1.0)
+                    heat_style = (f'style="--thread-heat: rgba(114,202,155,{0.3 + intensity*0.7:.2f}); '
+                                  f'--thread-glow: rgba(50,164,103,{intensity*0.15:.2f});"')
+                else:
+                    intensity = min(abs(delta_pp) / 30.0, 1.0)
+                    heat_style = (f'style="--thread-heat: rgba(231,106,110,{0.3 + intensity*0.7:.2f}); '
+                                  f'--thread-glow: rgba(205,66,70,{intensity*0.12:.2f});"')
+            else:
+                heat_style = ''
+
+            parts.append(f'''<div class="thread" {heat_style}>
+    {link_open}<div class="thread-head" style="cursor:default;">
+        <span class="post-tag tag-signal">{html.escape(cat_label)}</span>
+        <span class="thread-name" style="flex:1;white-space:normal;font-size:14px;color:var(--t1);font-weight:600;">{html.escape(q)}</span>
+    </div>
+    <div class="thread-collapsed">
+        <div class="thread-left">
+            <div class="thread-metrics">
+                <span class="thread-metric">YES <span class="mv">{yes_str}</span></span>
+                <span class="thread-metric">24h <span class="mv {delta_cls}">{delta_str}</span></span>
+                <span class="thread-metric">Vol <span class="mv">{v24_str}</span></span>
+                <span class="thread-metric">Closes <span class="mv">{close_str}</span></span>
+            </div>
+        </div>
+        <div class="thread-spark">
+            <span class="spark-val {delta_cls}">{delta_str}</span>
+            <span class="spark-label">24h</span>
+        </div>
+    </div>{link_close}
+</div>''')
+
+        return "\n".join(parts) + "\n"
