@@ -3,7 +3,7 @@
 
 ## TODO
 
-- **Per-signal alpha tooltip + signal_metadata table** (added 2026-04-30): Add a `signal_metadata` table — `signal_type (PK)`, `name`, `alpha_30d`, `alpha_90d`, `alpha_180d`, `alpha_365d`, `hit_rate`, `sample_size`, `effective_n`, `last_backtested_at`, `caveats (text)`. Populate from per-source backtest scripts (politicians, insider buys, activist 13D/G, smart-money 13F, Trump Truth Social, Polymarket policy). Each signal card on `/feed` renders a small (i) tooltip showing alpha_365d / hit_rate / sample_size + the caveat string. Critical: caveats must surface (e.g. trade-clustering reduces Tuberville's effective n from 356 to ~20). Acceptance: ≥3 signal types have backtest entries; tooltip visible on /feed; no regression on existing card layout.
+- **Backtest insider / activist / 13F signals to upgrade them past the gate** (added 2026-05-01): Strict-gate filter is now live (drops everything ungated), so Insider / Congress / activist / 13F cards have all vanished except Tuberville sells. Run a forward-return backtest per signal source vs SPY at 30/90/180/365d, populate entries in `src/invest/signals/gates.py` either as `passes=True` (with caveats in `notes/research/signal_inventory.md`) or `passes=False` so the drop is documented. Per-source priority: insider (highest, most volume), activist 13D/G, smart_money 13F. Reference: `notes/research/signal_inventory.md` UNGATED rows.
 
 - **Re-evaluate SQM runner after May Q1 2026 earnings**: HOLD if EPS run-rate ≥$8 annualized AND lithium >$15/kg sustained. EXIT remaining 31.54 if Q1 miss OR lithium <$15/kg for 2 months. TRIM MORE if stock hits $130 pre-earnings.
 
@@ -17,6 +17,8 @@
 ## In Progress
 
 ## Done
+
+- [2026-05-01] **Signal-gate layer for /feed (curated alpha + inline annotation)**: New `src/invest/signals/gates.py` with `GateResult` dataclass + `SIGNAL_GATES` registry keyed on `(source, name, kind)` tuples + `evaluate()` lookup + `apply_signal_gates(posts)` boundary filter. `_generate_feed_posts()` in `html_generator.py` restructured: politician posts now emit per (politician, direction) pair carrying `signal_source/signal_name/signal_kind`; insider posts also carry signal metadata. Boundary filter runs before the top-10 cap and drops any signal post without a curated `passes=True` entry. `_render_thread_post()` renders inline alpha annotation `+14.2% α · n=216 (eff 20) · 365d · trade clustering reduces effective n` under the body when `post['gate']` is set, using muted-text inline style (no new CSS class). Initial registry has only Tuberville sells passing; Tuberville buys explicitly fail; everything else (other politicians, insider, activist, 13F) drops. New `tests/test_signal_gates.py` (13 tests). New `notes/research/signal_inventory.md` ledger. **Side-effect (intentional):** the feed will get sparser — every Insider/Congress card without a Tuberville-sell upgrade vanishes until per-source backtests land. Plan file: `~/.claude/plans/do-a-proper-plan-jaunty-pelican.md`.
 
 - [2026-04-30] **Polymarket Trump-policy market poller**: `scripts/fetch_polymarket_policy.py` polls gamma-api, classifies markets into 10 policy categories (tariffs, fed_actions, exec_orders, cabinet, china, energy_oil, crypto, immigration, foreign_policy, legislation), upserts into `trump_policy_markets` + `trump_policy_price_history`, emits >10pp/24h moves into `policy_alerts`. Phase added to `update_all.py` with `--skip-polymarket-policy`. Feed gets a "Trump policy markets" section above ticker threads. 30 unit tests on filter; 43 live markets ingested against Hetzner DB.
 

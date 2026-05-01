@@ -3828,31 +3828,43 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                         "body": observations, "pills": pills,
                     })
 
-            # --- POLITICIAN SIGNAL (House PTRs — watchlist trigger, not timing edge) ---
+            # --- POLITICIAN SIGNAL (House PTRs — gated per (politician, direction)) ---
+            # Emit one post per (politician, direction) pair that has at least
+            # one trade. The boundary filter _apply_signal_gates() drops any
+            # post without a curated entry in src/invest/signals/gates.py, so
+            # unbacktested politicians vanish here. See notes/research/
+            # signal_inventory.md for current gate status.
             politician = stock.get("politician", {})
             if politician.get("has_data"):
-                p_buys = politician.get("buy_count", 0)
-                p_score = politician.get("weighted_score", 0.0)
-                top = politician.get("top_politicians", [])
-                top_name = ""
-                if top:
-                    raw = top[0].get("name", "")
-                    top_name = raw.split(",")[0].strip() if "," in raw else raw
-                # Surface only meaningful net buying with a high-signal politician
-                if p_buys >= 1 and p_score >= 1.5 and top_name:
-                    body = (
-                        f"{top_name} disclosed {p_buys} purchase"
-                        f"{'s' if p_buys > 1 else ''} of {ticker} in the last 6 months "
-                        "(House PTR). Disclosure lag up to 45d — treat as a watchlist trigger, "
-                        "not a timing signal."
-                    )
-                    hero = (f"+{p_score:.1f}", "weighted score", "pos")
-                    posts.append({
-                        "priority": 175 + min(p_score * 5, 25),
-                        "type": "signal", "tag": "Congress signal",
-                        "ticker": ticker, "name": name,
-                        "hero": hero, "body": body, "pills": [],
-                    })
+                for entry in politician.get("top_politicians", []):
+                    raw_name = entry.get("name", "")
+                    if not raw_name:
+                        continue
+                    display_name = raw_name.split(",")[0].strip() if "," in raw_name else raw_name
+                    weight = entry.get("weight", 1.0)
+                    for direction in ("P", "S"):
+                        count = entry.get("buys" if direction == "P" else "sells", 0)
+                        if count <= 0:
+                            continue
+                        action = "purchase" if direction == "P" else "sale"
+                        body = (
+                            f"{display_name} disclosed {count} {action}"
+                            f"{'s' if count > 1 else ''} of {ticker} in the last 6 months "
+                            "(House PTR). Disclosure lag up to 45d — treat as a "
+                            "watchlist trigger, not a timing signal."
+                        )
+                        hero_label = "purchases" if direction == "P" else "sales"
+                        hero = (str(count), hero_label, "pos" if direction == "P" else "neg")
+                        priority_base = 175 if direction == "P" else 180
+                        posts.append({
+                            "priority": priority_base + min(weight * 5, 25),
+                            "type": "signal", "tag": "Congress signal",
+                            "ticker": ticker, "name": name,
+                            "hero": hero, "body": body, "pills": [],
+                            "signal_source": "politician",
+                            "signal_name": raw_name,
+                            "signal_kind": direction,
+                        })
 
             # --- INSIDER SIGNAL (top 10 by dollar volume, show dollar amount as hero) ---
             buy_count = insider.get("buy_count", 0)
@@ -3870,6 +3882,9 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                     "type": "signal", "tag": "Insider signal",
                     "ticker": ticker, "name": name,
                     "hero": hero, "body": body, "pills": [],
+                    "signal_source": "insider",
+                    "signal_name": "cluster_buy",
+                    "signal_kind": None,
                 })
 
             # --- VERDICT ---
@@ -3894,6 +3909,12 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                     "ticker": ticker, "name": name,
                     "hero": hero, "body": verdict_text, "pills": pills,
                 })
+
+        # Apply the alpha gate to trade-signal posts. Anything without a
+        # curated entry in src/invest/signals/gates.py is dropped here;
+        # surviving posts carry post['gate'] for inline annotation.
+        from invest.signals.gates import apply_signal_gates
+        posts = apply_signal_gates(posts)
 
         # Cap signals to top 10 by priority (avoid 30+ insider cards)
         signal_posts = [p for p in posts if p["type"] == "signal"]
@@ -4406,12 +4427,32 @@ document.querySelectorAll('.thread-head').forEach(h => {{
                 pill_parts.append(f'<span class="pill">{label} <span class="v {cls}">{val}</span></span>')
             pills_html = '<div class="pills">' + "".join(pill_parts) + '</div>'
 
+        # Inline alpha annotation for gated trade signals — shows the
+        # measured edge so the user can size and trust appropriately.
+        gate_html = ""
+        gate = post.get("gate")
+        if gate is not None:
+            sign = "+" if gate.alpha >= 0 else ""
+            parts = [
+                f"{sign}{gate.alpha * 100:.1f}% α",
+                f"n={gate.n_nominal} (eff {gate.n_effective})",
+                gate.horizon,
+            ]
+            if gate.caveat:
+                parts.append(html.escape(gate.caveat))
+            gate_text = " · ".join(parts)
+            gate_html = (
+                f'<div style="color:var(--text-muted);font-size:12px;'
+                f'margin-top:4px;">{gate_text}</div>'
+            )
+
         return f'''    <div class="tp {line_class}">
         <div class="tp-dot {tag_class}"></div>
         <div class="tp-content">
             <span class="tp-tag {tag_class}">{html.escape(post["tag"])}</span>
             {hero_html}
             <div class="post-body">{post["body"]}</div>
+            {gate_html}
             {pills_html}
         </div>
     </div>'''
