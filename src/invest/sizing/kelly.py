@@ -4,6 +4,12 @@ Uses GBM models (standard, lite, opportunistic) at the 3-year horizon plus
 the autoresearch model. These predict actual expected returns, unlike DCF/RIM
 which estimate theoretical fair values. Agreement among models drives win
 probability.
+
+USAGE: see notes/references/kelly-usage.md before acting on this output.
+The 15% per-position cap is a CEILING for single-name concentration, not an
+allocation target. Per-stock results are computed independently and the sizer
+is price-blind — always cross-check live price vs 52w high and analyst PTs
+before recommending a buy.
 """
 
 from __future__ import annotations
@@ -17,13 +23,30 @@ from invest.valuation.db_utils import get_db_connection
 
 from .risk_checks import RiskChecker, RiskReport
 
-# Trusted models for Kelly sizing.
-# gbm_3y: actual hold-to-horizon return (median +12%, 77% bullish — well calibrated)
-# gbm_lite_3y: limited-history variant (median +53%, 100% bullish — overoptimistic)
-# gbm_opportunistic_3y: peak return within window (median +18%, 82% bullish)
-# autoresearch: LLM-driven fair value model (~700 stocks, high confidence, well calibrated)
-# Use all 4 as committee for agreement signal, but weight gbm_3y as primary.
-_TRUSTED_MODELS = ("gbm_3y", "gbm_lite_3y", "gbm_opportunistic_3y", "autoresearch")
+# Trusted models for Kelly sizing, with per-model trust weights.
+#
+# Trust ranking reflects user preference (most → least trusted):
+#   1. llm_deep_analysis: structured Claude-driven research with primary-source
+#      reading, variant perception, and scenario-weighted EV. Sparse coverage
+#      (~200 names — only stocks deep-researched). Highest weight, but a
+#      feedback-loop risk exists since this is Claude's own output; the loop
+#      is bounded by the structured /research workflow.
+#   2. autoresearch: LLM-driven fair value model (~700 stocks). Calibrated,
+#      high confidence, broad coverage.
+#   3. gbm_3y: GBM standard, calibrated (median +12%, 77% bullish).
+#   4. gbm_opportunistic_3y: peak-return-in-window target.
+#   5. gbm_lite_3y: limited-history variant — flagged overoptimistic.
+#
+# Weights are relative; only ratios matter. Per-model 'confidence' from the DB
+# is multiplied by the trust weight when computing weighted return and
+# weighted bullish fraction.
+_TRUSTED_MODELS = {
+    "llm_deep_analysis": 3.0,
+    "autoresearch": 2.0,
+    "gbm_3y": 1.0,
+    "gbm_opportunistic_3y": 1.0,
+    "gbm_lite_3y": 0.7,
+}
 
 # Dual-class share mappings: skip the less liquid class.
 _DUAL_CLASS_SKIP = {
@@ -115,28 +138,30 @@ class KellyPositionSizer:
         if not model_returns:
             return self._no_data_result(ticker, "no valid return predictions")
 
-        # Confidence-weighted expected return across trusted models.
-        # Models with confidence scores get weighted by confidence;
-        # GBM models without explicit confidence default to 0.80.
+        # Combined weight = stored confidence × per-model trust weight (see _TRUSTED_MODELS).
+        # Trust weight reflects how much we believe each model's signal independent
+        # of its self-reported confidence (e.g. llm_deep_analysis is structured
+        # qualitative judgment we trust more than the GBM ensemble).
         _DEFAULT_CONFIDENCE = 0.80
         weighted_sum = 0.0
         weight_total = 0.0
+        bull_weight = 0.0
         for model_name, ret in model_returns.items():
             conf = predictions.get(model_name, {}).get("confidence") or _DEFAULT_CONFIDENCE
+            trust = _TRUSTED_MODELS.get(model_name, 1.0)
+            w = conf * trust
             # Cap upside at 100% to prevent DCF-style outlier inflation
             capped_ret = min(ret, 1.0)
-            weighted_sum += capped_ret * conf
-            weight_total += conf
+            weighted_sum += capped_ret * w
+            weight_total += w
+            if ret > 0:
+                bull_weight += w
         expected_return = weighted_sum / weight_total if weight_total > 0 else 0.0
 
-        # p from agreement: how many models agree on direction + confidence.
+        # p from weighted agreement: trusted models agreeing on direction count more.
         # Base rate: 77% of stocks go up in gbm_3y.
-        n_bullish = sum(1 for r in model_returns.values() if r > 0)
-        n_models = len(model_returns)
-
-        # Start from base rate, adjust by model agreement fraction
         base_rate = 0.77
-        bull_frac = n_bullish / n_models
+        bull_frac = bull_weight / weight_total if weight_total > 0 else 0.0
         if expected_return > 0:
             # Scale: all agree → +0.08, 75% → +0.02, 50% → -0.04, 25% → -0.10
             agreement_bonus = (bull_frac - 0.67) * 0.24
@@ -304,7 +329,7 @@ class KellyPositionSizer:
         placeholders = ",".join(["%s"] * len(_TRUSTED_MODELS))
         cur = self.conn.cursor()
         cur.execute(
-            f"""SELECT model_name, fair_value, current_price, margin_of_safety, confidence
+            f"""SELECT model_name, fair_value, current_price, margin_of_safety, upside_pct, confidence
                FROM valuation_results
                WHERE ticker = %s AND model_name IN ({placeholders})""",
             (ticker, *_TRUSTED_MODELS),
@@ -312,7 +337,11 @@ class KellyPositionSizer:
         rows = cur.fetchall()
 
         predictions = {}
-        for model_name, fv, cp, mos, conf in rows:
+        for model_name, fv, cp, mos, upside_pct, conf in rows:
+            # llm_deep_analysis stores upside in upside_pct (as %), not margin_of_safety.
+            # Fall back so the sizer treats it like every other model.
+            if mos is None and upside_pct is not None:
+                mos = upside_pct / 100.0
             predictions[model_name] = {
                 "fair_value": fv,
                 "current_price": cp,

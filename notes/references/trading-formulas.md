@@ -18,6 +18,8 @@ Quick reference for the quantitative framework behind `scripts/run_position_size
 
 ## Position Sizing (Kelly Criterion)
 
+> **For correct usage** (when Kelly applies, how to interpret per-stock outputs, the difference between "ceiling" and "target"), see [`kelly-usage.md`](kelly-usage.md). The math below is a quick reference; usage is where mistakes happen.
+
 **Full Kelly**: `f* = (p * b - q) / b`
 - p = win probability, q = 1 - p, b = win/loss ratio
 - Maximizes long-term geometric growth rate
