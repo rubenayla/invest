@@ -14,6 +14,33 @@ This file tracks mistakes and failures in the investment analysis system and the
 
 ---
 
+## 2026-05-02 - Manually deployed instead of trusting CI
+**What happened:** After pushing `bfa55d9` to main, I SSH'd into Hetzner and ran `git pull && systemctl restart invest-dashboard` to "verify the deploy doesn't error." The user pointed out CI auto-deploys on push to main (`.github/workflows/ci.yml` has a `deploy` job that runs after `test` passes, gated on `if: github.ref == 'refs/heads/main'`). The CI run for `bfa55d9` had already completed successfully (50s) before I SSH'd in — my manual deploy was redundant and could have raced the CI deploy.
+
+**Root cause:** Didn't check whether a deploy pipeline existed before reaching for SSH. Defaulted to "I know how to deploy this directly" instead of "what does the project's pipeline do?" `.agents/deployment.md` documents the architecture but doesn't make it loud that pushes auto-deploy.
+
+**Prevention added:**
+- **Before any production deploy action (SSH, restart, pull), check `.github/workflows/` for a `deploy` job.** If push-to-main triggers deploy, the deploy IS the push — there is nothing to do manually.
+- **Verification path after pushing to main:** `gh run watch` (or `gh run list --branch main --limit 1`) to confirm CI green → `curl -sS -o /dev/null -w '%{http_code}\n' https://invest.rubenayla.xyz/feed` to confirm production renders. SSH only when CI itself fails, or for diagnostics that the production endpoint can't show.
+- Never SSH-deploy a CI-deployed repo "to be sure" — it can race the CI deploy and mask a broken pipeline (manual success hides automation failure).
+- Updated `.agents/deployment.md` to flag the auto-deploy step explicitly at the top.
+
+## 2026-05-02 - Treated per-stock Kelly target as a portfolio recommendation
+**What happened:** User asked whether to buy KRKNF/PNG.V instead of topping up existing positions. I ran `run_position_sizer.py` over their full portfolio + PNG.V, then read the per-stock "target %" column and computed `gap = target - current` for each ticker, recommending the names with the biggest gap. This produced two bad recommendations:
+1. **STLD as the top buy** — at 14.9% Kelly target vs 3% current = -12pp gap. But STLD was sitting at $229.27, literally at its 52-week high ($230.94), with analyst mean PT *below* the current price. The Kelly sizer is price-blind to extension and just saw "4/4 bulls, vol 34%, drawdown 30%" → max-cap recommendation. I never looked at the live price chart before recommending it.
+2. **PNG.V at the 15% Kelly cap** — framed as "the largest gap, hits the cap, buy aggressively." But the user has ~$6,500 cash, not $7,500 of free room for a single name; the Kelly cap is per-position ceiling, not an allocation target. Filling PNG.V to 15% would have required liquidating other positions the user holds for non-Kelly reasons (tax cost, conviction history) — a rotation decision I never raised.
+
+**Root cause:** Conceptually misused Kelly. Each stock's Kelly fraction is computed as if it were the only bet you'd make; the 15% cap protects against single-name concentration. When multiple names hit the cap (5 did in this run), the "individually optimal" sizes can sum to >100% — the system normalizes in `--portfolio` mode but I read pre-normalization per-stock targets and treated them as portfolio allocations. Compounded by a second failure: the sizer is a sizing tool, not a buy signal — it doesn't see price extension, technical setup, or recent run. I recommended STLD without sanity-checking the chart.
+
+**Prevention added:**
+- New canonical doc: [`notes/references/kelly-usage.md`](../notes/references/kelly-usage.md) — what Kelly is for, how to use it, valid use cases. Link from the Kelly module docstring.
+- Updated [`notes/references/trading-formulas.md`](../notes/references/trading-formulas.md) Kelly section with a pointer to the usage guide.
+- **Before recommending any buy from a Kelly run, fetch live price + analyst targets + 52-week range.** If price is within 5% of 52w high or above analyst mean PT, flag it explicitly — Kelly says nothing about entry price.
+- **Don't treat a per-stock Kelly target as an allocation target.** Use Kelly for: (a) ranking two specific names against each other, (b) capping single-position concentration. Don't compute "gap to Kelly target" across the whole portfolio and recommend filling them — that's not what Kelly tells you.
+- **For "should I buy X instead of topping up Y?" questions: compare both names' Kelly outputs side-by-side, then check both names' price extension, then decide.** Don't pull in the rest of the portfolio's gaps.
+
+---
+
 ## 2026-04-25 - Wrong claim about deploy automation, then bypassed the test gate
 **What happened:** Two compounding errors in one session:
 

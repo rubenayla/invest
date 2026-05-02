@@ -1,6 +1,17 @@
 <!-- reference — read when relevant -->
 # Deployment — Hetzner Server
 
+## TL;DR — push to main IS the deploy
+
+`.github/workflows/ci.yml` runs tests on every push, and on green commits to `main` the `deploy` job SSHs to Hetzner, pulls, and restarts `invest-dashboard`. **Do not manually `git pull` + `systemctl restart` after a push.** Verification path after pushing:
+
+```
+gh run watch                                                 # or: gh run list --branch main --limit 1
+curl -sS -o /dev/null -w '%{http_code}\n' https://invest.rubenayla.xyz/feed
+```
+
+SSH only when CI itself fails, or for diagnostics the production endpoint can't show. Never SSH-deploy "to be sure" — it can race the CI deploy and mask broken automation.
+
 ## Architecture
 
 - **Hetzner server**: hosts PostgreSQL (source of truth), fetches data (Yahoo + SEC), serves dashboard at `invest.rubenayla.xyz`
