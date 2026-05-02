@@ -221,6 +221,32 @@ Even a great company is a bad buy at the wrong price/time. Check:
 **If WATCH**: What would change your mind? What price/event triggers a BUY?
 **If PASS**: Why? Is it permanently uninvestable or just wrong timing?
 
+### Public-vs-private content rule (MANDATORY)
+
+The file you save under `notes/companies/{TICKER}.md` lives in the **public**
+invest repo. It must contain ONLY generic research that anyone could write,
+NOT decisions tied to the user's personal portfolio.
+
+**Belongs in the public file** (write these freely):
+- Scenarios, quality scores, valuations, model EVs, BUY/WATCH/PASS verdict
+- Generic conditional language: "Existing holders: trim 30-50%", "Would
+  upgrade to BUY at $X", "If already long: consider trimming"
+- Watchlist-style entry/exit prices that anyone could act on
+
+**Does NOT belong in the public file** (move to vault — see below):
+- Specific dollar amounts of the user's position ("$7,300 / 16% of portfolio")
+- Specific share counts ("15.5 shares")
+- Specific cost basis or purchase dates ("~$289/share, purchased 2025-11-17")
+- P&L percentages ("user's Revolut +140% P&L", "+44% P&L")
+- "Position Context" or "Personal Position" sections describing what the
+  user owns
+
+If the verdict naturally references personal context (e.g. you'd like to
+say "given your existing 16% position, don't add"), write a SEPARATE
+decision note at `~/vault/finance/notes/positions/{TICKER}.md` with the
+personal-decision content, and keep the public file generic. Do not let
+the two leak into each other.
+
 ---
 
 ## OUTPUT FORMAT
@@ -314,8 +340,15 @@ Template:
 
 {2-3 sentence rationale linking variant perception, quality, catalyst, and setup}
 
-**If BUY:** Entry at $X, scale-in plan, thesis-break at $X
+**If BUY:** Entry at $X, scale-in plan (generic — no personal share counts), thesis-break at $X
 **If WATCH:** Would upgrade on {specific condition}
+
+<!-- Do NOT add a "Position Context" / "Personal Position" / "My Holding"
+     section here. The public file is generic research only. Personal
+     position size, cost basis, P&L, and share counts go to
+     ~/vault/finance/notes/positions/{TICKER}.md (or are tracked in
+     portfolio.md / journal/transactions/). See the Public-vs-private
+     content rule in STEP 8 above. -->
 ```
 
 ---
