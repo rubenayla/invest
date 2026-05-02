@@ -14,6 +14,26 @@ This file tracks mistakes and failures in the investment analysis system and the
 
 ---
 
+## 2026-05-02 - Multiple verification failures in a single portfolio review (TRULY UNRELIABLE)
+**What happened:** User asked me to analyze the portfolio and recommend trims. In one review I made four distinct verification failures, each independently bad, compounding into recommendations the user could not trust:
+
+1. **Recommended trades on a stale portfolio file without cross-checking.** Read `~/vault/finance/notes/portfolio/portfolio.md` (last-updated header: 2026-04-27) and treated every row as a current holding. Recommended an ACGL exit. User: "I don't have ACGL." The position had already been sold — ` ~/repos/invest/TODO.md` line 7 says *"ACGL limit sell — modified existing order to ~$94 limit sell"* and the limit was below the recent close, so it had filled. portfolio.md just hadn't been updated.
+
+2. **Treated a recommendation in a journal note as an executed trade.** The May 2 Itochu earnings review recommends "BUY now" as a trade plan; I called it "already planned" in the action list as if it were in-flight. User had to correct: "I don't have Itochu." Recommendation ≠ execution. Journal-of-recommended-trades is not journal-of-executed-trades.
+
+3. **Concluded "not found" from a truncated grep.** When the user asked me to verify ACGL appearances, I ran `grep -rn ACGL ~/vault/finance/ | head -30` — the head -30 cut off after the price-history rows in `prices.beancount` (alphabetical order, before `notes/`), missing the actual portfolio.md rows entirely. Reported "ACGL is not in vault/finance" with confidence. It was at line 16 and 56 of portfolio.md. The user had to push back to make me re-grep without the head cap.
+
+4. **Skipped the freshness check before recommending action.** The data freshness check from `/api/health` showed model timestamps but I never separately validated holdings against any other source (TODO.md, taxes summary, beancount ledger, recent journal transactions). Per memory: *"Data files must be accurate. If portfolio.md says a position exists, treat it as ground truth OR flag the file as needing a fix."* I did NEITHER — I treated a stale file as ground truth without flagging.
+
+**Root cause:** No discipline around "before recommending an action that the user will execute, verify the precondition" against multiple sources. The single-file read became a single point of failure. The `head` cap on the verification grep was a separate sloppiness on top.
+
+**Prevention added:**
+- **Before recommending a trade based on a portfolio file, cross-check at least two sources for the named position.** For each ticker in the recommended action: (a) portfolio.md row, (b) most recent transaction in `notes/journal/transactions/`, (c) `vault/paperwork/taxes/<year>/summary.md` realized-gains entries, OR (d) explicit user confirmation. Two of those must agree before recommending sell/trim/exit.
+- **Treat journal review notes as plans, not executions.** A note titled `2026-05-02_<ticker>_earnings_review.md` with verdict "BUY" describes a *plan*. Confirm execution before phrasing as "already planned" — say "recommended in the May 2 review, not yet executed" and ask the user to confirm.
+- **Never `head`-truncate a verification grep.** When the user is testing a claim of "X does not exist," the grep MUST run unbounded. Use `wc -l` to size first, then read in chunks if needed. Or use `grep -l` to count distinct files. Never use `head -N` on a search-for-absence operation.
+- **State the freshness of every data source used.** Before issuing actions, list each input source and its last-updated date. If any is older than 7 days for trade recommendations, flag it explicitly. (Memory entry already exists for "check data freshness before analyzing"; this incident was a failure to apply it.)
+- **When the user pushes back, re-do the work fully — don't just patch the surface.** First pushback: ACGL not held → I dropped the line. Should have stopped there and re-verified ALL holdings against another source before continuing the recommendation. I instead kept the rest of the action list, which still contained the Itochu-as-planned mistake. Each correction should trigger a full rescan of related claims.
+
 ## 2026-05-02 - Manually deployed instead of trusting CI
 **What happened:** After pushing `bfa55d9` to main, I SSH'd into Hetzner and ran `git pull && systemctl restart invest-dashboard` to "verify the deploy doesn't error." The user pointed out CI auto-deploys on push to main (`.github/workflows/ci.yml` has a `deploy` job that runs after `test` passes, gated on `if: github.ref == 'refs/heads/main'`). The CI run for `bfa55d9` had already completed successfully (50s) before I SSH'd in — my manual deploy was redundant and could have raced the CI deploy.
 
