@@ -1,9 +1,9 @@
 """
 Parse Revolut + IBKR broker exports into per-year Spanish tax summaries.
 
-Input:  ~/repos/vault/paperwork/taxes/YYYY/raw/*.{csv,pdf}
-Output: ~/repos/vault/paperwork/taxes/YYYY/processed/{trades,gains,dividends}.csv
-        ~/repos/vault/paperwork/taxes/YYYY/processed/summary.json
+Input:  ~/vault/paperwork/taxes/YYYY/raw/*.{csv,pdf}
+Output: ~/vault/paperwork/taxes/YYYY/processed/{trades,gains,dividends}.csv
+        ~/vault/paperwork/taxes/YYYY/processed/summary.json
 
 Computes FIFO cost basis in EUR using ECB reference rates on each transaction date.
 Flags whether net realized gains exceed the €1,000 IRPF filing threshold.
