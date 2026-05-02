@@ -114,11 +114,9 @@ However, the stock has already rallied 229% from the $49 low, pricing in a signi
 
 The lithium recovery thesis is sound, and ALB is the premier Western lithium producer. However, the stock has already priced in a substantial recovery (+229% from trough), the expected value is only +3%, and the setup lacks a clear variant perception. This is now a commodity price bet, not a value play. The 12.7% short interest and -38% bear case downside vs. +8% base case upside make the risk/reward unattractive at $162.
 
-**Portfolio context:** The user already holds SQM at +61% gain (~$8.7K, largest position). SQM has lower production costs (Atacama brine) and offers similar lithium exposure. Adding ALB would create significant lithium concentration risk (~25%+ of portfolio in lithium). There is no diversification benefit.
+**Diversification note:** Investors already holding SQM should weigh the concentration risk of adding ALB — both are lithium pure-plays with overlapping exposure. SQM has lower production costs (Atacama brine), so layering ALB on top adds beta to the same commodity rather than diversifying within materials.
 
 **Would upgrade to BUY on:**
 1. Price pullback to $120-130 range (forward PE ~13x, better margin of safety)
 2. Lithium prices demonstrably breaking above $25/kg with supply discipline confirmed
 3. Insider buying by management (currently only selling)
-
-**Would consider SELL signal for SQM position if:** ALB analysis reveals SQM-specific risks not reflected here. For now, SQM remains the better lithium hold due to lower cost position.

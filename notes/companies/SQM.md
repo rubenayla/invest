@@ -119,4 +119,4 @@ SQM is a quality cyclical at a confirmed inflection, but the stock has run 225% 
 **If BUY:** Not at $95. Entry is $75–80 (20–25% pullback), which would restore asymmetric risk/reward. Full position only below $70.
 **If WATCH:** Would upgrade to BUY on (1) Q1 2026 earnings beat with EPS run-rate ≥$8 annualized AND guidance reaffirming $15+/kg realized prices, OR (2) pullback to $75–80 while lithium spot stays above $18/kg. Would downgrade to SELL on Q1 earnings miss showing realized prices below $15/kg with Kwinana still dragging, OR lithium spot breaking below $15/kg.
 
-**For existing positions (e.g., user's Revolut +140% P&L):** **TRIM 50–66% now.** Keep a runner (~33–50% of original position) into May earnings. Re-evaluate after Q1 results.
+**Existing holders sitting on multi-bagger gains:** **TRIM 50–66% now.** Keep a runner (~33–50% of original position) into May earnings. Re-evaluate after Q1 results.

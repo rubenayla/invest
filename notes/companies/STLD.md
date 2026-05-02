@@ -123,4 +123,4 @@ Steel Dynamics is a high-quality cyclical at a reasonable valuation with a genui
 
 **Would upgrade to BUY if:** (1) Stock pulls back to $140-150 range (12x trough forward PE), giving better risk/reward. (2) BlueScope bid is formally withdrawn, removing the acquisition overhang. (3) Q1 earnings on April 20 show aluminum segment profitability ahead of expectations. Any two of these three would trigger an upgrade.
 
-**Current position (~$1,225):** Small enough to hold through the uncertainty. No urgency to add or trim. Wait for April 20 earnings for more clarity on aluminum ramp and margin trajectory.
+**Existing small-position holders:** No urgency to add or trim. Wait for April 20 earnings for more clarity on aluminum ramp and margin trajectory.

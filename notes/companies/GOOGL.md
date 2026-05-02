@@ -163,13 +163,6 @@ Alphabet is one of the highest-quality businesses in the world (21/25, dominant 
 
 **Entry if forced to buy now:** Scale in at $295-305, add heavily at $260-270. Full position only below $270. Thesis-break stop at $210.
 
-## Position Context
-
-- **Existing holding**: ~$4,750 combined (IBKR + Revolut), ~15.5 shares at ~$306
-- **Original cost basis**: ~$289/share (purchased 2025-11-17)
-- **Unrealized gain**: ~+6%
-- **Action**: Hold current position. Do not add at current levels. Consider adding on pullback below $270.
-
 ## Monitoring
 
 - Track Cloud revenue growth and margin expansion each quarter

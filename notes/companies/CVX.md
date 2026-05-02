@@ -119,4 +119,4 @@ Chevron is a top-tier integrated oil major with excellent assets (Guyana, Permia
 
 **Would upgrade to BUY at:** $145-155 range (implying ~15x forward PE at $10 normalized EPS), offering a margin of safety and 4.5%+ dividend yield. This would likely require oil to normalize toward $75-85.
 
-**Current holding ($1,585, +44% P&L):** Consider trimming 30-50% at current levels to lock in gains. The position has performed well but risk/reward is now skewed to the downside. Keep a core position for the long-term production growth story.
+**Existing holders:** Consider trimming 30-50% at current levels to lock in gains. Risk/reward is now skewed to the downside. Keep a core position for the long-term production growth story.

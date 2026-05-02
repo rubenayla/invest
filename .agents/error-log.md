@@ -14,6 +14,19 @@ This file tracks mistakes and failures in the investment analysis system and the
 
 ---
 
+## 2026-05-02 - Wrong scope on portfolio-info migration (under-batched)
+**What happened:** User asked me to clean up ACGL stale references after they sold the position. I scoped the cleanup to ACGL only — moved `notes/companies/ACGL.md` from public repo to vault, deleted the public copy. User pushed back: "why just that one and you don't batch it for all?" Their actual policy is broader: *generic ticker analysis stays in the public invest repo (it's research, anyone could write it); decisions specific to my portfolio go to vault*. I had treated the entire ACGL.md as "personal" and over-reacted by moving it; the file was actually clean of personal-decision content.
+
+A scan of the other 248 company .md files turned up six with portfolio-specific content embedded in the analysis: 8002.md, ALB.md, CVX.md, GOOGL.md, SQM.md, STLD.md. Examples: "**Existing position ($7,300 / ~16% of portfolio)**", "**Position Context: Existing holding ~$4,750... Original cost basis ~$289... Unrealized gain ~+6%**", "**For existing positions (e.g., user's Revolut +140% P&L)**". The user's portfolio-specific lines had been written into the public research files over time, mixing two distinct concerns.
+
+**Root cause:** Treated "private info" as a binary file-level property when it's actually a content-level property — most files are clean research, but a small subset have decision-tied lines spliced into the verdict / position-context sections. The `/research` skill template at `.claude/commands/research.md` doesn't have a separation between "generic verdict" and "personal action" — its Step 8 verdict template asks "If BUY: At what price? Full position or scale in? What's the thesis-break signal?" which invites a mix.
+
+**Prevention added:**
+- **Public-vs-private content rule:** generic analysis (situation, variant perception, scenarios, quality scores, valuations, watchlist verdicts like BUY/WATCH/PASS) stays in `notes/companies/*.md` in the public invest repo. Anything that names a *specific* dollar amount, share count, P&L %, cost basis, or "the user's" position size is a personal decision and belongs in vault — `~/vault/finance/notes/portfolio/portfolio.md` for current state, `notes/journal/transactions/` for execution log, or a new vault note for forward decisions.
+- **Generic conditional language is fine in public files:** "Existing holders: trim 30-50%", "Would upgrade to BUY at $X", "If already long: consider trimming". Specific personal data is not: "$1,225 position", "user's Revolut +140%", "purchased 2025-11-17".
+- **When the user asks for a cleanup, audit the full surface, not the single named instance.** Before scoping to one file, grep the same pattern across the codebase. ACGL was one symptom of a class of leakage; the proper response was to find and fix the class.
+- **Update `.claude/commands/research.md` Step 8 verdict template** so future research notes generate generic recommendations only. Add a note: "Personal position size, cost basis, and execution plans go in `~/vault/finance/notes/`, not in the company analysis file." (Pending — flagged for follow-up.)
+
 ## 2026-05-02 - Multiple verification failures in a single portfolio review (TRULY UNRELIABLE)
 **What happened:** User asked me to analyze the portfolio and recommend trims. In one review I made four distinct verification failures, each independently bad, compounding into recommendations the user could not trust:
 
