@@ -53,6 +53,22 @@ Prioritized by combined signals: scanner score, insider buying, activist stakes 
 - [AMD](../companies/AMD.md) - AI accelerators + CPU share gains, high-risk 2y.
 - [CORZ](../companies/CORZ.md) (Core Scientific) - BTC miner→AI pivot value play. $4M/MW vs $7M/MW peers, $8.7B CoreWeave contract. See [BTC miners thesis](../theses/btc-miners-ai-datacenter-thesis.md).
 
+### Trump capital-flows basket — refreshed 2026-04-30
+Tested the "follow Trump's telegraphed priorities" thesis after StonkChris tweet about INTC gov-stake +$30B. Conclusion: theme is real but trade is late. None of the four names below clear a useful EV bar (>15%) at current prices.
+
+- [INTC](../companies/INTC.md) (Intel) - **TRIM if held / PASS if not**. $94.75 (+105% in 6w on Q1 26 beat). Fwd PE ~50x. EV -5.6%. Bull/Base/Bear: $130 (25%) / $90 (45%) / $55 (30%). Above old bull-case target. Risks: Treasury monetization of $41B gov stake, sell-side median PT still $63 (analysts haven't refreshed). Conviction MEDIUM.
+- [CCJ](../companies/CCJ.md) (Cameco) - WATCH. $116.45 (+177% TTM). 26x EV/EBITDA. Spot U3O8 ~$85, term $90; FY25 realized CAD$87 — contract book is mark-to-market, "rollup tailwind" mostly already realized. Westinghouse 49% optionality double-counted. EV +3%. Conviction MED-LOW.
+- [UEC](../companies/UEC.md) (Uranium Energy) - WATCH (small spec only). $14.02. Hard-asset floor only ~$1.96/sh; market pays $5.9B above tangible book for ISR permits + DOE relationship. Q2 production annualizes to ~180K lbs vs 1-2M lbs/yr the equity implies. Diluted +6% in one quarter. EV +7.5% dilution-adj. Conviction LOW.
+- [MP](../companies/MP.md) (MP Materials) - WATCH. $62.50 (down 38% from peak, up 245% from trough). NdPr at $108 vs DoD $110 floor PPA → put already near-the-money, not a windfall. Real swing factor is dysprosium (+105% YTD, $930/kg) and 10X magnet capex execution. EV +5-10%. Conviction MEDIUM.
+
+### Uranium fuel-cycle midstream — screened 2026-04-30
+Screen of less-crowded variant of the Trump nuclear/AI-power thesis: enrichment + conversion + HALEU pure-plays. Established names also priced in; the interesting setups are binary speculative.
+
+- [LEU](../companies/LEU.md) (Centrus Energy) - PASS/WATCH. $194.73 (round-tripped $66→$464→$195 in 12mo). Only US enricher + only domestic HALEU producer. 2026 rev guidance flat YoY despite Russian-ban thesis; first commercial cascade not online until 2029. Q4 25 missed EPS -44%, Nov 25 ATM raised $390M (17% dilution), Q1 May 5. Bull/Base/Bear $350/$180/$90 (25/45/30). EV +0.2%. Conviction MED.
+- [BWXT](../companies/BWXT.md) (BWX Technologies) - WATCH, **do not initiate before Q1 May 4**. $208.52, 45x fwd PE. Naval-reactor monopoly + microreactor optionality. Margin compression risk into print: Street wants +20% rev / +1% EPS — exactly the bear case in numerical form. Insider selling $2.7M YTD with zero buys. Bull/Base/Bear $260/$215/$150 (25/50/25). EV +0.75%. Conviction MED-HIGH.
+- [SLX.AX](../companies/SLX.md) (Silex Systems, ADR: SILXY) - SPEC BUY (small, sized as option). A$4.49 / ~US$15-16 ADR. SILEX laser enrichment via GLE JV with Cameco. **Lost Jan-2026 DOE $900M HALEU expansion to Centrus + General Matter** — that's the entry point. Cameco 49% w/ option to 75% caps the upside. GLE first commercial production slipped to 2030. Bull/Base/Bear A$18/A$5.50/A$1.20 (20/45/35). EV +44.5% gross. Conviction LOW. **If you want GLE exposure without binary downside, buy CCJ instead.**
+- [ASPI](../companies/ASPI.md) (ASP Isotopes) - SPEC STARTER (0.5-1.0% basket max). $5.07, mkt cap $638M, off 65% from $14.49 high. ASP enrichment for medical (Mo-98) + HALEU (via QLE subsidiary). QLE confidentially filed S-1 Nov 2025, targeting 1H 26 spin → single binary catalyst of the year. 2025 revenue $23.85M but recurring product rev only $5.7M (rest is non-recurring engineering fees). Bull/Base/Bear $14/$6/$2.50 (25/40/35). EV +33%. Conviction LOW.
+
 ### Starship beneficiaries (2026-04-05)
 - [RKLB](../companies/RKLB.md) (Rocket Lab) - WATCH. Best pure-play space co outside SpaceX, 18/25 quality, 64x P/S. Space Systems pivot (67% rev) benefits from cheap launch. EV -19%. Buy $38-45.
 - [LIN](../companies/LIN.md) (Linde) - WATCH. Industrial gas oligopoly, 21/25 quality, 28.5x fwd PE near ATH. Starbase LOX plant immaterial to $34B rev. EV +6%. Buy $425-450.
