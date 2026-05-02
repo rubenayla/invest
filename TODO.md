@@ -2,10 +2,6 @@ https://gexanalyzer.streamlit.app/
 
 # TODO
 
-## Pending Orders
-- [ ] **FSLR limit buy** — 29 shares @ $175 GTC (~$5,075). Place after ACGL sell fills (~$2,200) + existing $2,900 cash. ~11% of portfolio.
-- [ ] **ACGL limit sell** — modified existing order to ~$94 limit sell. Once filled, use proceeds for FSLR above.
-
 # 🎯 Priority Watchlist - March 2026
 1. **Synchrony Financial (SYF)** - Deep value play (+150% to +300% upside). Strongest fundamental pick.
 2. **Alphabet (GOOGL)** - AI infrastructure leader with TPU advantage. Fairly valued but high strategic moat.
