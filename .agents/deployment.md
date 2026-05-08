@@ -40,7 +40,7 @@ SSH only when CI itself fails, or for diagnostics the production endpoint can't 
 
 - **nginx**: reverse proxy `invest.rubenayla.xyz` → `[::1]:8050`
 - **invest-dashboard.service**: runs `dashboard_server.py --no-auto-shutdown` at Nice=19
-- **Cron**: nightly data fetch at 22:00 UTC (Mon-Fri), data-only (no ML)
+- **Cron**: nightly data fetch at 22:00 UTC (Mon-Fri), data-only (no ML); House PTR fetch daily at 02:30 UTC (`scripts/fetch_politician_data.py`, log `logs/cron_fetch_politician.log`)
 
 ## Workflow
 
