@@ -11,11 +11,17 @@ from __future__ import annotations
 
 import pytest
 
+import dataclasses
+from datetime import date
+
 from invest.signals.gates import (
     GateResult,
     SIGNAL_GATES,
+    annualised_alpha,
     apply_signal_gates,
+    confidence_tier,
     evaluate,
+    freshness,
 )
 
 
@@ -117,7 +123,7 @@ def test_apply_drops_failing_politician_signal():
 
 
 def test_apply_drops_unbacktested_politician():
-    posts = [_politician_post('Pelosi, Nancy', 'S')]
+    posts = [_politician_post('Schumer, Chuck', 'S')]
     out = apply_signal_gates(posts)
     assert out == []
 
@@ -157,3 +163,49 @@ def test_apply_does_not_mutate_input_posts():
     inp = _politician_post('Tuberville, Tommy', 'S')
     apply_signal_gates([inp])
     assert 'gate' not in inp
+
+
+# ---------------------------------------------------------------------------
+# Display helpers — confidence_tier, annualised_alpha, freshness
+# ---------------------------------------------------------------------------
+
+
+def test_confidence_tier_strong_for_low_p_high_n():
+    """Tuberville sells: p=0.001, n_eff=20 → strong (★★★)."""
+    g = evaluate('politician', 'Tuberville, Tommy', 'S')
+    assert confidence_tier(g) == '★★★'
+
+
+def test_confidence_tier_moderate_for_pelosi_buys():
+    """Pelosi buys: p=0.004 (passes <0.01) but n_eff=12 (<20) → ★★."""
+    g = evaluate('politician', 'Pelosi, Nancy', 'P')
+    assert confidence_tier(g) == '★★'
+
+
+def test_confidence_tier_empty_for_failing_gate():
+    """passes=False entries should never get a star (they don't render)."""
+    g = evaluate('politician', 'Tuberville, Tommy', 'P')
+    assert confidence_tier(g) == ''
+
+
+def test_annualised_alpha_compounds_correctly():
+    """log α 0.137 at 365d → simple-return ~14.7% / yr."""
+    g = evaluate('politician', 'Pelosi, Nancy', 'P')
+    ann = annualised_alpha(g)
+    assert 0.146 < ann < 0.148
+
+
+def test_freshness_buckets():
+    g = evaluate('politician', 'Tuberville, Tommy', 'S')
+    today = date(2026, 5, 10)
+    # baseline: backtested 2026-04-30, ~10d ago
+    _, sev = freshness(g, today)
+    assert sev == 'fresh'
+    # aging: 18 months old
+    aging = dataclasses.replace(g, last_backtested_at='2024-11-10')
+    _, sev = freshness(aging, today)
+    assert sev == 'aging'
+    # stale: >24 months
+    stale = dataclasses.replace(g, last_backtested_at='2023-01-01')
+    _, sev = freshness(stale, today)
+    assert sev == 'stale'

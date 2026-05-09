@@ -18,7 +18,9 @@ remember what's curated vs not.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
+from datetime import date
 from typing import Dict, Optional, Tuple
 
 
@@ -164,6 +166,53 @@ def evaluate(
     the default strict-gate policy.
     """
     return SIGNAL_GATES.get((source, name, kind))
+
+
+def confidence_tier(gate: GateResult) -> str:
+    """Return a star rating ('★★★' / '★★' / '★' / '') for a gate.
+
+    Combines p-value with effective n so a tiny-but-significant result
+    doesn't get the same display weight as a robust one. Tiers:
+      ★★★ Strong:   p < 0.01 AND n_effective >= 20
+      ★★  Moderate: p < 0.05 AND n_effective >= 10
+      ★   Weak:     anything else that still passes
+    Empty string for non-passing gates (they aren't rendered anyway).
+    """
+    if not gate.passes:
+        return ''
+    if gate.p_value < 0.01 and gate.n_effective >= 20:
+        return '★★★'
+    if gate.p_value < 0.05 and gate.n_effective >= 10:
+        return '★★'
+    return '★'
+
+
+def annualised_alpha(gate: GateResult) -> float:
+    """Compound the registered horizon alpha to one year (decimal return).
+
+    `gate.alpha` is the mean log-alpha at `gate.horizon` (e.g. '365d').
+    Returns simple-return annualised, suitable for a "+13.7% / yr" pill.
+    """
+    horizon_days = int(gate.horizon.rstrip('d'))
+    return math.expm1(gate.alpha * 365.0 / horizon_days)
+
+
+def freshness(gate: GateResult, today: Optional[date] = None) -> Tuple[str, str]:
+    """Return (label, severity) for the last_backtested_at date.
+
+    severity ∈ {'fresh', 'aging', 'stale'} — the dashboard maps these
+    to colours. Boundaries are 12 / 24 months; gates older than 24
+    months should be flagged as needing re-validation.
+    """
+    today = today or date.today()
+    backtest = date.fromisoformat(gate.last_backtested_at)
+    age_days = (today - backtest).days
+    label = f'as of {gate.last_backtested_at[:7]}'
+    if age_days < 365:
+        return label, 'fresh'
+    if age_days < 730:
+        return label, 'aging'
+    return label, 'stale'
 
 
 def apply_signal_gates(posts):

@@ -4429,14 +4429,30 @@ document.querySelectorAll('.thread-head').forEach(h => {{
 
         # Inline alpha annotation for gated trade signals — shows the
         # measured edge so the user can size and trust appropriately.
+        # Tier (★/★★/★★★) collapses p-value + n_effective into a glance-
+        # readable confidence; annualised α is more interpretable than
+        # a horizon-specific log alpha; freshness flags stale gates.
         gate_html = ""
         gate = post.get("gate")
         if gate is not None:
-            sign = "+" if gate.alpha >= 0 else ""
+            from invest.signals.gates import (
+                annualised_alpha,
+                confidence_tier,
+                freshness,
+            )
+            ann = annualised_alpha(gate)
+            sign = "+" if ann >= 0 else ""
+            tier = confidence_tier(gate)
+            fresh_label, fresh_sev = freshness(gate)
+            fresh_color = {
+                'fresh': 'var(--text-muted)',
+                'aging': '#c98a00',
+                'stale': '#c0392b',
+            }[fresh_sev]
             parts = [
-                f"{sign}{gate.alpha * 100:.1f}% α",
-                f"n={gate.n_nominal} (eff {gate.n_effective})",
-                gate.horizon,
+                f"{tier} {sign}{ann * 100:.1f}% / yr".strip(),
+                f"n={gate.n_nominal} (eff {gate.n_effective}) · {gate.horizon}",
+                f'<span style="color:{fresh_color}">{fresh_label}</span>',
             ]
             if gate.caveat:
                 parts.append(html.escape(gate.caveat))
