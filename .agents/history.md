@@ -66,6 +66,37 @@ total — same fate as Vance. Gate-FAIL with "n too small" caveat.
 Crenshaw. The one PASS that surfaces on `/feed` is Pelosi BUYS (★★)
 plus the existing Tuberville SELLS (★★★).
 
+## 2026-05-10 — CI speed: easy wins applied; bigger wins deferred
+
+Baseline: ~46s per run on `main` (3s checkout/python · 3s setup-uv · 8s
+`uv sync --all-groups` · 21s pytest+ruff · 9s SSH deploy). Sequential
+test → deploy.
+
+**Applied (target ~36s):**
+- `astral-sh/setup-uv@v5` with `enable-cache: true` and
+  `cache-dependency-glob: 'uv.lock'` (saves ~5–7s on install).
+- `uv sync --group dev` instead of `--all-groups` (skips `docs`
+  group — mkdocs etc. not needed for tests).
+- Workflow-level `concurrency: cancel-in-progress: true` so back-to-
+  back pushes don't queue.
+
+**Deferred — consider if push frequency / latency becomes a pain
+point:**
+- **pytest-xdist `-n auto`**: 21s of test is the largest chunk;
+  parallel runs could cut to 8–12s on a 4-core runner. Verify no
+  ordering-dependent tests first.
+- **Parallelise deploy with test, gate the restart on test pass**:
+  saves the 9s deploy block from the critical path. Needs a two-step
+  deploy (push code now, restart only after green). ~7-8s win.
+- **Self-hosted runner on Hetzner**: eliminates SSH-deploy entirely
+  (deploy = local restart) and warms a permanent uv cache on the
+  host. ~10-15s win. Adds a runner to maintain.
+- **Split lint into a parallel job**: cosmetic; lint is sub-second.
+
+Realistic target without ops complexity: ~30s (do xdist on top of
+today's changes). Below that needs the parallel-deploy or self-hosted
+runner path.
+
 ## 2026-05-10 — Dashboard: confidence tier + annualised α + freshness
 
 `/feed` cards now annotate gated trade signals with three derived
