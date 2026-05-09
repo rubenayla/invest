@@ -45,9 +45,9 @@ def test_tuberville_buys_explicitly_fail_the_gate():
 
 def test_unbacktested_politician_returns_none():
     """Drop-by-default for politicians not yet individually backtested."""
-    assert evaluate('politician', 'Pelosi, Nancy', 'P') is None
-    assert evaluate('politician', 'Pelosi, Nancy', 'S') is None
     assert evaluate('politician', 'Crenshaw, Dan', 'P') is None
+    assert evaluate('politician', 'Gottheimer, Josh', 'P') is None
+    assert evaluate('politician', 'Random, Nobody', 'S') is None
 
 
 def test_unbacktested_signal_source_returns_none():

@@ -14,7 +14,8 @@ the entry is `passes=False` to make the drop intentional.
 |---------------|-----------------------|------|-------------|---------------------------------------------|-----------------------------------------------|
 | politician    | Tuberville, Tommy     | S    | **PASS**    | +14.2% α @ 365d, p<0.001, n=216 (eff 20)    | re-check 2027-04-30                           |
 | politician    | Tuberville, Tommy     | P    | **FAIL**    | −13.3% α @ 180d, p=0.003, n=118             | keep faded                                    |
-| politician    | Pelosi, Nancy         | P/S  | UNGATED     | not yet individually backtested              | direction-split backtest                      |
+| politician    | Pelosi, Nancy         | P    | **PASS**    | +13.7% α @ 365d, p=0.004, n=16 (clusters 12) | re-check 2027-05-10 or on regime break        |
+| politician    | Pelosi, Nancy         | S    | **FAIL**    | −18.9% α @ 365d, p=0.023, n=9                | keep faded                                    |
 | politician    | Crenshaw, Dan         | P/S  | UNGATED     | not yet individually backtested              | direction-split backtest                      |
 | politician    | Gottheimer, Josh      | P/S  | UNGATED     | not yet individually backtested              | direction-split backtest                      |
 | politician    | (any other)           | P/S  | UNGATED     | not yet individually backtested              | direction-split backtest if of interest       |

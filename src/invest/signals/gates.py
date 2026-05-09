@@ -69,6 +69,35 @@ SIGNAL_GATES: Dict[Tuple[str, str, Optional[str]], GateResult] = {
         caveat='underperforms SPY post-disclosure',
         last_backtested_at='2026-04-30',
     ),
+    # See notes/research/pelosi_backtest_2026.md for derivation.
+    # Pelosi buys: +13.7% annualised alpha at 365d, hit rate 62.5%
+    # (cluster level 75%), p=0.004 vs House control. n_nominal=16 is
+    # small; cluster count 12. Survives leave-2-out robustness check
+    # but heavily exposed to bull-market regime (megacap-tech
+    # concentration). Provisional pass; revisit in 12mo.
+    ('politician', 'Pelosi, Nancy', 'P'): GateResult(
+        passes=True,
+        alpha=0.137,
+        horizon='365d',
+        p_value=0.004,
+        n_nominal=16,
+        n_effective=12,
+        caveat='small sample; bull-market regime; megacap-tech concentration',
+        last_backtested_at='2026-05-10',
+    ),
+    # Pelosi sells: -18.9% annualised alpha at 365d, p=0.023, hit
+    # rate 22% (cluster 12%). Significant underperformance — she
+    # sells names that subsequently beat SPY. Faded, not amplified.
+    ('politician', 'Pelosi, Nancy', 'S'): GateResult(
+        passes=False,
+        alpha=-0.189,
+        horizon='365d',
+        p_value=0.023,
+        n_nominal=9,
+        n_effective=8,
+        caveat='underperforms SPY post-disclosure (significantly negative)',
+        last_backtested_at='2026-05-10',
+    ),
     # Other politicians and signal sources: no entry here -> evaluate()
     # returns None -> the gate filter drops the post.
 }
