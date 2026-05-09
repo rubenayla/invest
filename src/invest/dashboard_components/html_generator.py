@@ -79,7 +79,7 @@ class HTMLGenerator:
                 <div class="last-updated">Page rendered: <span id="lastUpdated">{last_updated}</span></div>
                 <div class="header-actions">
                     <a id="liveServerLink" href="/" class="btn btn-update" style="{'display:none' if server_mode else ''}">Live Server</a>
-                    <a href="/feed" class="btn btn-docs">Insights</a>
+                    <a href="/feed" class="btn btn-docs">Feed</a>
                     <a href="https://rubenayla.github.io/invest/models/" target="_blank" rel="noopener noreferrer" class="btn btn-docs">Model Docs</a>
                     <button onclick="exportToCSV()" class="btn btn-export">Export CSV</button>
                     <button onclick="openReminderModal()" class="btn btn-update" style="{'display:none' if not server_mode else ''}">Reminders</button>
