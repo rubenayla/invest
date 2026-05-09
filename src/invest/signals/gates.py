@@ -98,6 +98,55 @@ SIGNAL_GATES: Dict[Tuple[str, str, Optional[str]], GateResult] = {
         caveat='underperforms SPY post-disclosure (significantly negative)',
         last_backtested_at='2026-05-10',
     ),
+    # See notes/research/gottheimer_backtest_2026.md for derivation.
+    # Gottheimer: no significant alpha vs House control at any horizon
+    # × direction. n large (105 P / 166 S, 90 / 115 clusters) so this
+    # is a confident reject, not "haven't measured." Set passes=False
+    # to document the negative result. Best p across all combos is
+    # 0.148 (sells 90d); 365d alphas track control closely.
+    ('politician', 'Gottheimer, Josh', 'P'): GateResult(
+        passes=False,
+        alpha=-0.072,
+        horizon='365d',
+        p_value=0.826,
+        n_nominal=59,
+        n_effective=54,
+        caveat='no significant alpha vs control across horizons',
+        last_backtested_at='2026-05-10',
+    ),
+    ('politician', 'Gottheimer, Josh', 'S'): GateResult(
+        passes=False,
+        alpha=0.079,
+        horizon='365d',
+        p_value=0.385,
+        n_nominal=83,
+        n_effective=70,
+        caveat='no significant alpha vs control across horizons',
+        last_backtested_at='2026-05-10',
+    ),
+    # Crenshaw, Daniel: only n=6 trades in DB (House Clerk PTRs since
+    # 2021 backfill). Same fate as Vance — sample too small for any
+    # inference. Documented as fail rather than left UNGATED.
+    ('politician', 'Crenshaw, Daniel', 'P'): GateResult(
+        passes=False,
+        alpha=0.0,
+        horizon='365d',
+        p_value=1.0,
+        n_nominal=6,
+        n_effective=6,
+        caveat='n too small for inference (6 total trades)',
+        last_backtested_at='2026-05-10',
+    ),
+    ('politician', 'Crenshaw, Daniel', 'S'): GateResult(
+        passes=False,
+        alpha=0.0,
+        horizon='365d',
+        p_value=1.0,
+        n_nominal=6,
+        n_effective=6,
+        caveat='n too small for inference (6 total trades)',
+        last_backtested_at='2026-05-10',
+    ),
     # Other politicians and signal sources: no entry here -> evaluate()
     # returns None -> the gate filter drops the post.
 }

@@ -16,8 +16,9 @@ the entry is `passes=False` to make the drop intentional.
 | politician    | Tuberville, Tommy     | P    | **FAIL**    | −13.3% α @ 180d, p=0.003, n=118             | keep faded                                    |
 | politician    | Pelosi, Nancy         | P    | **PASS**    | +13.7% α @ 365d, p=0.004, n=16 (clusters 12) | re-check 2027-05-10 or on regime break        |
 | politician    | Pelosi, Nancy         | S    | **FAIL**    | −18.9% α @ 365d, p=0.023, n=9                | keep faded                                    |
-| politician    | Crenshaw, Dan         | P/S  | UNGATED     | not yet individually backtested              | direction-split backtest                      |
-| politician    | Gottheimer, Josh      | P/S  | UNGATED     | not yet individually backtested              | direction-split backtest                      |
+| politician    | Crenshaw, Daniel      | P/S  | **FAIL**    | n=6 in DB; inference impossible              | re-check if disclosure volume rises           |
+| politician    | Gottheimer, Josh      | P    | **FAIL**    | -7.2% α @ 365d, p=0.826, n=59 (clusters 54)  | re-check 2028-05-10                           |
+| politician    | Gottheimer, Josh      | S    | **FAIL**    | +7.9% α @ 365d, p=0.385, n=83                | re-check 2028-05-10                           |
 | politician    | (any other)           | P/S  | UNGATED     | not yet individually backtested              | direction-split backtest if of interest       |
 | insider       | cluster_buy           | —    | UNGATED     | not yet backtested                            | event-study on 2+ insider buys ≥ $100K cluster |
 | activist      | 13D                   | —    | UNGATED     | not yet backtested                            | event-study on filing date                    |
