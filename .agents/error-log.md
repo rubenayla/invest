@@ -14,6 +14,32 @@ This file tracks mistakes and failures in the investment analysis system and the
 
 ---
 
+## 2026-05-10 - Repeatedly wrote `history.md` to `.agents/` instead of repo root (4th correction)
+
+**What happened:** When seeding the project's `history.md`, I created
+it at `.agents/history.md` — and kept appending there across multiple
+sessions. The user corrected me four times before I fixed it. Global
+guidance from `~/.claude/CLAUDE.md` is explicit: *"Lives at folder/topic
+level. Prefer `<topic>/history.md` when a topic has its own folder;
+fall back to repo-root `history.md` for cross-cutting/orphan
+entries."* The politician-signal arc, CI tweaks, and code-rot finding
+are all cross-cutting → repo root, not `.agents/`. Confused this with
+the `.agents/error-log.md` location, which IS in `.agents/`.
+
+**Root cause:** Local pattern-match — `.agents/` already contained
+`error-log.md`, `tasks.md`, `notes.md`, `architecture.md`, etc., so
+appending another markdown there felt consistent. Didn't re-read the
+global rule about `history.md`'s placement.
+
+**Prevention added:**
+- Moved `.agents/history.md` → `history.md` (`git mv`).
+- Updated `AGENTS.md` to explicitly call out that `history.md` lives
+  at the repo root, in a separate "Repo root files" sub-section so
+  it's not visually grouped with the `.agents/` consult-selectively list.
+- Saved a feedback memory at
+  `~/.claude/projects/-Users-rubenayla-repos-invest/memory/feedback_history_md_at_root.md`
+  so future sessions read the rule before writing.
+
 ## 2026-05-02 - Wrong scope on portfolio-info migration (under-batched)
 **What happened:** User asked me to clean up ACGL stale references after they sold the position. I scoped the cleanup to ACGL only — moved `notes/companies/ACGL.md` from public repo to vault, deleted the public copy. User pushed back: "why just that one and you don't batch it for all?" Their actual policy is broader: *generic ticker analysis stays in the public invest repo (it's research, anyone could write it); decisions specific to my portfolio go to vault*. I had treated the entire ACGL.md as "personal" and over-reacted by moving it; the file was actually clean of personal-decision content.
 

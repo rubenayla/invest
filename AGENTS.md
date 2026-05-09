@@ -13,9 +13,11 @@
 - `solutions.md` — recurring fixes
 
 **Consult selectively** (grep, never read in full):
-- `error-log.md` — failure history (grep when debugging)
-- `history.md` — accumulating record of decisions, investigations, surprising findings (dated, oldest first). After non-trivial work, **append here** so the reasoning survives context expiration. Also the overflow target for AGENTS.md.
+- `.agents/error-log.md` — failure history (grep when debugging)
 - `notes.md` — research notes by topic
+
+**Repo root files (NOT in `.agents/`)**:
+- `history.md` — accumulating record of cross-cutting decisions, investigations, surprising findings (dated, oldest first). Lives at the **repo root**, not in `.agents/`. After non-trivial work, **append here** so the reasoning survives context expiration. Also the overflow target for AGENTS.md.
 
 ## Investment Analysis
 
