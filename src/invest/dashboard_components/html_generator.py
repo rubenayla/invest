@@ -428,6 +428,10 @@ class HTMLGenerator:
             table_rows.append(row_html)
 
         return f'''
+        <div class="table-search-bar" style="display:flex; align-items:center; gap:8px; padding:6px 4px;">
+            <input type="text" id="tableSearch" placeholder="Filter rows: ticker, company, signals, sector..." oninput="filterTableRows()" style="flex:1; max-width:520px; padding:6px 10px; background:var(--bg-base); color:var(--text-primary); border:1px solid var(--border-subtle); border-radius:4px; font-family:Geist Mono,monospace; font-size:13px;" />
+            <span id="tableSearchCount" style="color:var(--text-muted); font-size:12px; font-family:Geist Mono,monospace;"></span>
+        </div>
         <div class="table-container">
             <table class="stock-table results-table" id="stockTable">
                 <thead>
@@ -1146,26 +1150,43 @@ class HTMLGenerator:
 
         # Congressional/politician trades (House PTRs)
         if politician and politician.get('has_data'):
+            from invest.signals.gates import (
+                annualised_alpha,
+                confidence_tier,
+                evaluate,
+            )
             buys = politician.get('buy_count', 0)
             sells = politician.get('sell_count', 0)
             score = politician.get('weighted_score', 0.0)
             top = politician.get('top_politicians', [])
+            top_raw = ''
             top_name = ''
             if top:
-                # Show last name of highest-weighted politician
-                raw = top[0].get('name', '')
-                top_name = raw.split(',')[0].strip() if ',' in raw else raw.split()[-1]
-                top_name = f' · {top_name[:10]}'
+                top_raw = top[0].get('name', '')
+                last = top_raw.split(',')[0].strip() if ',' in top_raw else top_raw.split()[-1]
+                top_name = f' · {last[:10]}'
+
+            def _gate_annotation(direction: str) -> str:
+                """Append ★/★★/★★★ + annualised α if (top politician, direction) gate-passes."""
+                if not top_raw:
+                    return ''
+                g = evaluate('politician', top_raw, direction)
+                if g is None or not g.passes:
+                    return ''
+                ann = annualised_alpha(g)
+                sign = '+' if ann >= 0 else ''
+                return f' {confidence_tier(g)} {sign}{ann * 100:.1f}%/yr'
+
             if buys > 0 and score > 0:
                 tags.append((
                     'green',
-                    f"{buys} congress buy{'s' if buys > 1 else ''}{top_name}",
+                    f"{buys} congress buy{'s' if buys > 1 else ''}{top_name}{_gate_annotation('P')}",
                     None,
                 ))
             if sells > 0 and score < 0:
                 tags.append((
                     'red',
-                    f"{sells} congress sell{'s' if sells > 1 else ''}{top_name}",
+                    f"{sells} congress sell{'s' if sells > 1 else ''}{top_name}{_gate_annotation('S')}",
                     None,
                 ))
 
@@ -2823,6 +2844,38 @@ renderCards();
                     if (cell) cell.textContent = rank++;
                 }
             });
+        }
+
+        // ── Free-text row filter (above the table) ──
+        // Splits the query on whitespace; row must contain ALL tokens
+        // (case-insensitive, anywhere in row text). Updates a count badge
+        // and re-numbers ranks. Cleared input restores all rows.
+        function filterTableRows() {
+            const input = document.getElementById('tableSearch');
+            const tbody = document.getElementById('stockTable')?.querySelector('tbody');
+            const counter = document.getElementById('tableSearchCount');
+            if (!input || !tbody) return;
+            const query = input.value.trim().toLowerCase();
+            const tokens = query ? query.split(/\\s+/) : [];
+            let visible = 0;
+            const rows = tbody.querySelectorAll('tr');
+            rows.forEach(row => {
+                if (!tokens.length) {
+                    row.style.display = '';
+                    visible++;
+                    return;
+                }
+                const text = row.textContent.toLowerCase();
+                const match = tokens.every(t => text.includes(t));
+                row.style.display = match ? '' : 'none';
+                if (match) visible++;
+            });
+            if (counter) {
+                counter.textContent = tokens.length
+                    ? `${visible} / ${rows.length} rows`
+                    : '';
+            }
+            updateRankNumbers();
         }
 
         // ── Export CSV ──
