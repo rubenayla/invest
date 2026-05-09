@@ -80,11 +80,16 @@ test → deploy.
 - Workflow-level `concurrency: cancel-in-progress: true` so back-to-
   back pushes don't queue.
 
+**Tested and rejected:**
+- **pytest-xdist `-n auto`**: tried locally (2026-05-10). Serial pure-
+  pytest is 7.65s; `-n auto` is 8.66s — parallel is *slower*. The 21s
+  number I'd quoted earlier was the whole "Test (fast)" CI step,
+  which includes lint + step orchestration, not pure pytest. At <10s
+  suite size, xdist's fork + re-import + coordination overhead
+  dominates. Don't add it. Re-evaluate if the suite grows past ~30s.
+
 **Deferred — consider if push frequency / latency becomes a pain
 point:**
-- **pytest-xdist `-n auto`**: 21s of test is the largest chunk;
-  parallel runs could cut to 8–12s on a 4-core runner. Verify no
-  ordering-dependent tests first.
 - **Parallelise deploy with test, gate the restart on test pass**:
   saves the 9s deploy block from the critical path. Needs a two-step
   deploy (push code now, restart only after green). ~7-8s win.
@@ -96,6 +101,29 @@ point:**
 Realistic target without ops complexity: ~30s (do xdist on top of
 today's changes). Below that needs the parallel-deploy or self-hosted
 runner path.
+
+## 2026-05-10 — Code rot finding: tests/test_lite_fetch.py
+
+While testing xdist locally I noticed all 12 tests in
+`tests/test_lite_fetch.py` fail with `AttributeError: 'StockDataCache'
+object has no attribute 'db_path'` and `NameError: 'sqlite3' not
+defined`. The tests target the pre-PostgreSQL `StockDataCache` API
+that was migrated away in commit `0880086` ("fix: update tests for
+PostgreSQL migration"). They're silently green on CI because
+`tests/conftest.py:62` skips `requires_data`-marked tests when the
+DB isn't reachable. Locally (with the SSH tunnel open) the skip
+doesn't trigger, so the tests run and the rot surfaces.
+
+Out of scope for the xdist work. Future fix options:
+1. Migrate the tests to whatever cache backend the lite-fetch path
+   actually uses today (most authentic).
+2. Mark the file `pytest.skip(..., allow_module_level=True)` with a
+   pointer to whoever needs to migrate it.
+3. Delete it if the lite-fetch behavior is now covered elsewhere.
+
+Don't ad-hoc patch one symptom at a time (I tried adding `import
+sqlite3` — got past the NameError, hit the missing-`db_path`
+AttributeError next).
 
 ## 2026-05-10 — Dashboard: confidence tier + annualised α + freshness
 
