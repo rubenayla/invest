@@ -130,6 +130,62 @@ class StockDataReader:
         conn.close()
         return tickers
 
+    def get_tickers_with_gate_pass_politician_trade(
+        self,
+        lookback_days: int = 180,
+        direction: str = 'P',
+    ) -> List[str]:
+        """Tickers that received at least one gate-PASS politician trade recently.
+
+        Joins ``politician_trades`` with the ticker universe in
+        ``current_stock_data`` and consults
+        ``src/invest/signals/gates.py:SIGNAL_GATES`` to keep only trades
+        whose (politician, direction) entry has ``passes=True``. Today
+        that means Pelosi BUYS and Tuberville SELLS — but the function
+        is direction-parameterized so callers can request either side.
+
+        Parameters
+        ----------
+        lookback_days : int
+            Look back this many days from today for the trade date.
+        direction : str
+            ``'P'`` for purchases (default) or ``'S'`` for sales.
+
+        Returns
+        -------
+        Sorted list of distinct tickers, all guaranteed to be in the
+        scanner's working universe (``current_stock_data``).
+        """
+        from datetime import datetime, timedelta
+
+        from invest.signals.gates import SIGNAL_GATES
+
+        passing_names = sorted({
+            name for (source, name, kind), gate in SIGNAL_GATES.items()
+            if source == 'politician' and kind == direction and gate.passes
+        })
+        if not passing_names:
+            return []
+
+        cutoff = (datetime.utcnow() - timedelta(days=lookback_days)).strftime('%Y-%m-%d')
+        conn = self._conn()
+        cursor = conn.cursor()
+        cursor.execute(
+            """
+            SELECT DISTINCT pt.ticker
+            FROM politician_trades pt
+            JOIN current_stock_data csd ON csd.ticker = pt.ticker
+            WHERE pt.transaction_type = %s
+              AND pt.transaction_date >= %s
+              AND pt.politician_name = ANY(%s)
+            ORDER BY pt.ticker
+            """,
+            (direction, cutoff, passing_names),
+        )
+        tickers = [row[0] for row in cursor.fetchall()]
+        conn.close()
+        return tickers
+
     def get_stocks_by_sector(self, sector: str) -> List[str]:
         """Get all tickers in a specific sector."""
         conn = self._conn()

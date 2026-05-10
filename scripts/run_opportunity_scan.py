@@ -75,6 +75,24 @@ def main() -> int:
         help='Comma-separated list of tickers to scan (default: all)'
     )
     parser.add_argument(
+        '--source',
+        type=str,
+        choices=['all', 'politician-pass-buys', 'politician-pass-sells'],
+        default='all',
+        help=(
+            'Universe source. "all" (default) scans every ticker in the database. '
+            '"politician-pass-buys" restricts to tickers with a recent buy from a '
+            'gate-PASS politician (Pelosi today). "politician-pass-sells" does the '
+            'symmetric thing for backtested sell signals (Tuberville).'
+        ),
+    )
+    parser.add_argument(
+        '--lookback-days',
+        type=int,
+        default=180,
+        help='How many days back to look when --source is politician-pass-* (default: 180)',
+    )
+    parser.add_argument(
         '--quiet',
         action='store_true',
         help='Only output notification messages (for OpenClaw)'
@@ -87,6 +105,23 @@ def main() -> int:
     tickers = None
     if args.tickers:
         tickers = [t.strip().upper() for t in args.tickers.split(',')]
+    elif args.source != 'all':
+        direction = 'P' if args.source == 'politician-pass-buys' else 'S'
+        tickers = scanner.reader.get_tickers_with_gate_pass_politician_trade(
+            lookback_days=args.lookback_days, direction=direction,
+        )
+        if not tickers:
+            print(
+                f'No tickers found for source={args.source} '
+                f'(lookback {args.lookback_days}d). Nothing to scan.'
+            )
+            return 0
+        if not args.quiet:
+            print(
+                f'Universe restricted to {len(tickers)} ticker(s) with a '
+                f'gate-PASS politician {"buy" if direction == "P" else "sell"} '
+                f'in the last {args.lookback_days} days: {", ".join(tickers)}'
+            )
 
     # Status mode
     if args.status:

@@ -137,6 +137,44 @@ Helpers in `src/invest/signals/gates.py`; renderer in
 `html_generator.py:4430-4470`. Six new boundary tests
 (`tests/test_signal_gates.py`).
 
+## 2026-05-10 — Opportunity scanner: gate-aware scoring + politician universe filter
+
+Closed the last open item from the politician-signal arc — wiring the
+gate registry into the scoring pipeline, not just into rendering.
+
+**Option B (gate-aware scoring).** `compute_politician_signal` now uses
+a new `_gate_aware_weight` helper that layers the gate registry on top
+of the manual `HIGH_SIGNAL_POLITICIANS` weights:
+- gate-PASS politicians keep their manual weight (signal is real).
+- gate-FAIL politicians contribute zero (signal is noise or
+  wrong-direction).
+- Unbacktested politicians keep their manual weight (preserves prior
+  behavior for the long tail).
+
+Effect: Gottheimer and Crenshaw stop polluting the catalyst score
+across the entire universe; Pelosi sells and Tuberville buys also
+stop contributing (they're FAIL on the wrong-direction side); Pelosi
+buys and Tuberville sells contribute at full weight as before.
+
+**Option A (universe filter).** Added
+`StockDataReader.get_tickers_with_gate_pass_politician_trade(
+lookback_days, direction)` plus a CLI flag
+`--source politician-pass-buys|politician-pass-sells` on
+`scripts/run_opportunity_scan.py`. Restricts the scan universe to
+tickers with at least one recent gate-PASS politician trade.
+
+Today the buy-side filter returns AAPL, AMZN, GOOGL, NVDA, VST (Pelosi
+buys, last 180d). Sell-side returns nothing because Tuberville's
+Senate trades aren't ingested yet. Use as `uv run python
+scripts/run_opportunity_scan.py --source politician-pass-buys
+--preview`.
+
+Two existing tests that pinned pre-gate behavior were rewritten
+(Tuberville BUYS no longer contribute 0.3 weight — they collapse to
+zero; Pelosi BUYS keep 3.0 weight, Pelosi SELLS collapse to zero). A
+new test for unbacktested politicians (Schumer) confirms they still
+contribute at the default weight.
+
 ---
 
 ## Reference

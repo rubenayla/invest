@@ -104,8 +104,9 @@ def _stub_conn(rows):
     return conn
 
 
-def test_compute_signal_tuberville_buy_uses_faded_weight():
-    """A single Tuberville purchase contributes 0.3 * size_factor, not 2.0."""
+def test_compute_signal_tuberville_buy_zeroed_by_gate_fail():
+    """Tuberville BUYS are gate-FAIL; the catalyst score must drop to zero
+    despite the 0.3 manual weight in HIGH_SIGNAL_POLITICIANS."""
     rows = [
         # name, tx_type, tx_date, amt_min, amt_max
         ('Tuberville, Tommy', 'P', '2026-04-01', 1_001, 15_000),  # size_factor 0.5
@@ -115,12 +116,13 @@ def test_compute_signal_tuberville_buy_uses_faded_weight():
     assert out['has_data'] is True
     assert out['buy_count'] == 1
     assert out['sell_count'] == 0
-    # 0.3 weight * 0.5 size_factor = 0.15
-    assert out['weighted_score'] == pytest.approx(0.15)
+    # gate-FAIL → weight collapses to 0 regardless of the manual weight
+    assert out['weighted_score'] == pytest.approx(0.0)
 
 
 def test_compute_signal_tuberville_sell_uses_amplified_weight():
-    """A single Tuberville sale subtracts 3.5 * size_factor from the score."""
+    """A single Tuberville sale subtracts 3.5 * size_factor from the score
+    (gate-PASS keeps the manual weight)."""
     rows = [
         ('Tuberville, Tommy', 'S', '2026-04-01', 1_001, 15_000),  # size_factor 0.5
     ]
@@ -133,12 +135,27 @@ def test_compute_signal_tuberville_sell_uses_amplified_weight():
     assert out['weighted_score'] == pytest.approx(-1.75)
 
 
-def test_compute_signal_pelosi_uniform_across_directions():
-    """Pelosi buy weight == Pelosi sell weight (until backtested)."""
+def test_compute_signal_pelosi_buy_passes_sell_zeroed():
+    """Pelosi BUYS are gate-PASS (keep weight 3.0), Pelosi SELLS are
+    gate-FAIL (zero contribution). The manual weight is symmetric across
+    directions; the gate breaks the symmetry."""
     buy_rows = [('Pelosi, Nancy', 'P', '2026-04-01', 1_001, 15_000)]
     sell_rows = [('Pelosi, Nancy', 'S', '2026-04-01', 1_001, 15_000)]
     buy_score = compute_politician_signal(_stub_conn(buy_rows), 'AAPL')['weighted_score']
     sell_score = compute_politician_signal(_stub_conn(sell_rows), 'AAPL')['weighted_score']
-    # buys add, sells subtract — but magnitudes should match
-    assert buy_score == pytest.approx(-sell_score)
-    assert abs(buy_score) == pytest.approx(3.0 * 0.5)
+    # 3.0 manual weight × 0.5 size_factor on the buy side
+    assert buy_score == pytest.approx(1.5)
+    # FAIL → zero
+    assert sell_score == pytest.approx(0.0)
+
+
+def test_compute_signal_unbacktested_politician_uses_default_weight():
+    """A politician with no entry in SIGNAL_GATES should still contribute at
+    DEFAULT_POLITICIAN_WEIGHT — the gate filters known-bad signals, it
+    doesn't punish unmeasured ones."""
+    rows = [('Schumer, Chuck', 'P', '2026-04-01', 1_001, 15_000)]
+    conn = _stub_conn(rows)
+    out = compute_politician_signal(conn, 'AAPL')
+    assert out['has_data'] is True
+    # DEFAULT_POLITICIAN_WEIGHT = 1.0, size_factor = 0.5
+    assert out['weighted_score'] == pytest.approx(0.5)

@@ -60,6 +60,35 @@ def _politician_weight(name: str, tx_type: str | None) -> float:
     return HIGH_SIGNAL_POLITICIANS.get((name, code), DEFAULT_POLITICIAN_WEIGHT)
 
 
+def _gate_aware_weight(name: str, tx_type: str | None) -> float:
+    """Politician weight with the gate registry applied as a filter.
+
+    Layers `src/invest/signals/gates.py:SIGNAL_GATES` on top of the
+    manual weight in `HIGH_SIGNAL_POLITICIANS`:
+      - Backtested PASS  → keep the manual weight (signal is real).
+      - Backtested FAIL  → return 0 (signal is noise or wrong-direction).
+      - UNGATED          → keep the manual weight (haven't measured;
+                           preserves today's behavior for the long tail).
+    Result: politicians like Gottheimer (FAIL both directions) and
+    Pelosi sells (FAIL) stop contributing to the catalyst score, while
+    Pelosi buys and Tuberville sells contribute at their full weight.
+    """
+    base = _politician_weight(name, tx_type)
+    if not tx_type:
+        return base
+    code = tx_type.strip().upper()[:1]
+    # Imported lazily so the politician-data layer doesn't depend on
+    # the signals layer at module import time.
+    from invest.signals.gates import evaluate
+
+    gate = evaluate('politician', name, code)
+    if gate is None:
+        return base  # UNGATED — preserve manual weight
+    if not gate.passes:
+        return 0.0  # FAIL — drop contribution
+    return base  # PASS — keep manual weight
+
+
 def ensure_schema(conn) -> None:
     """Create politician_trades tables if they don't exist."""
     cur = conn.cursor()
@@ -238,7 +267,7 @@ def compute_politician_signal(
         if last_trade_date is None:
             last_trade_date = tx_date
 
-        weight = _politician_weight(name, tx_type)
+        weight = _gate_aware_weight(name, tx_type)
         size_factor = _amount_size_factor(amt_min, amt_max)
 
         is_buy = tx_type and tx_type.upper().startswith('P')  # Purchase
