@@ -1,144 +1,125 @@
 # Abbott Laboratories (ABT)
 
 **Sector:** Healthcare | **Industry:** Medical Devices
-**Price:** $101.83 | **Market Cap:** $177B
-**Analysis Date:** 2026-04-08
+**Price:** $87.91 (2026-05-19) | **Market Cap:** ~$153B
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** Abbott is a diversified healthcare company organized around four roughly equal-sized segments. **Medical Devices (~45% of sales)** is the crown jewel — anchored by FreeStyle Libre, the world's leading continuous glucose monitor (CGM), plus structural heart franchises (MitraClip transcatheter mitral repair, Navitor TAVI valves, AVEIR leadless pacemakers, Amulet left atrial appendage occluders), electrophysiology (TactiFlex ablation catheters and the new Volt pulsed-field ablation platform), and rhythm management. **Diagnostics (~25%)** sells immunoassay analyzers, molecular and point-of-care testing, and — as of March 2026 — Exact Sciences' Cologuard colorectal cancer screen and Oncotype DX precision oncology test (acquired for $23B). **Established Pharmaceuticals (~15%)** sells branded generics in emerging markets (Latin America, Asia, India, Russia) — high-volume cardiometabolic, gastrointestinal, and women's-health drugs sold outside the United States. **Nutrition (~15%)** is Similac infant formula, PediaSure children's nutrition, and Ensure adult nutritional shakes. Customers are hospitals, clinics, pharmacies, retail chains, and increasingly direct-to-consumer through reimbursed prescription channels for Libre.
+
+**Where they want to grow.** Three explicit growth engines. (1) Continued geographic and indication expansion of FreeStyle Libre — Medicare reimbursement for basal-insulin type 2 diabetics was expanded by the Centers for Medicare and Medicaid Services (CMS) in early 2026, and the FreeDM randomized trial demonstrated continuous glucose monitoring outperforms fingersticks even in non-intensive insulin users, widening the addressable population from roughly 10 million intensive-insulin patients to 30 million-plus type 2 diabetics. (2) Structural heart plus electrophysiology — Volt pulsed-field ablation (PFA) US launch and TactiFlex Duo Europe rollout in the second half of 2026, plus the Amulet 360 next-generation left atrial appendage (LAA) occluder (positive VERITAS data) and AVEIR DR dual-chamber leadless pacemaker. (3) The Exact Sciences integration — bolts Cologuard ($2B+ revenue, growing double-digits) and Oncotype DX onto Abbott's diagnostics footprint, with synergy potential through Abbott's larger international and hospital channels. Underlying everything: Established Pharma double-digit growth in emerging markets and Nutrition recovery as the strategic 2025 pricing reset annualizes.
+
+**What could go wrong (business risks).** The necrotizing enterocolitis (NEC) infant-formula litigation is the most-watched overhang — nearly 1,000 pending lawsuits alleging premature infants developed NEC from Similac-branded preterm formula, a $495M Missouri verdict was upheld on appeal, and a securities class action alleges Abbott concealed United States Food and Drug Administration (FDA) facility-safety issues. Aggregate exposure is hard to bound. CGM competition is intensifying: Dexcom G7 in the United States, Senseonics' implantable Eversense in the 365-day form, and Medtronic's Simplera all target the same expanding total addressable market, and CGM is increasingly commoditized at the sensor level. Diagnostics faces post-COVID normalization (Core Lab volumes finally recovering but slowly) and tariff exposure across globally sourced devices and reagents. The Exact Sciences deal is dilutive ($0.20 earnings-per-share hit in 2026, management guided) and integration of two multi-thousand-person commercial organizations is execution-heavy. Established Pharma is foreign-exchange-sensitive — a strong dollar compresses reported growth on a real franchise that grows 9 percent-plus in local currency.
+
+**How to think about it.** Abbott is a diversified medtech compounder where the bull case is "FreeStyle Libre is a generational franchise, structural heart and electrophysiology are durable share-takers, and Exact Sciences was a real strategic move into screening." The bear case is "you're paying roughly 25 times trailing earnings for a sub-7 percent organic grower with NEC litigation tail risk, post-COVID diagnostics normalization, and an acquirer's-curse Exact Sciences deal that diluted earnings-per-share guidance." It is not a deep-value play — Residual Income Model (RIM) and Discounted Cash Flow (DCF) models flag it as expensive on backward-looking earnings — but the Geometric Brownian Motion (GBM) ensemble and analyst consensus (target $118 versus $87.91) see high-single-digit organic growth plus Libre and structural-heart-led multiple support justifying current levels. Bet on the medtech compounding, not on multiple expansion.
 
 ## Situation Summary
 
-Abbott is trading near its 52-week low ($100.88) after an 11% drop following a Q4 2025 sales miss in January, and has continued drifting lower amid broad tariff-driven market weakness. The stock is down 27% from its $139 52-week high. The transformative $21B acquisition of Exact Sciences closed on March 23, 2026, adding Cologuard (colorectal cancer screening) and Cancerguard (multi-cancer early detection) to Abbott's diagnostics portfolio, positioning the company in a $60B cancer screening market. This deal temporarily increases leverage to ~2.7x debt/EBITDA and dilutes EPS by ~$0.20 in 2026, but management expects it to be accretive by 2028. Meanwhile, the NEC baby formula litigation (~800 federal cases pending) remains unresolved with bellwether trials not expected until August 2026. FreeStyle Libre continues to dominate CGM with 56% market share and a clear path to $10B in annual sales by 2028. Q1 2026 earnings are due April 16.
+Abbott reported the first quarter of 2026 on April 16: revenue $11.16B (+3.7% comparable), adjusted earnings per share $1.15 (+6%), with Medical Devices +8.5% organic (13.2% reported) led by Libre, electrophysiology, and heart failure, and Established Pharmaceuticals +9.0% organic on emerging-market strength. The stock fell roughly 5% on the print despite the beat because management trimmed full-year 2026 adjusted earnings-per-share guidance to $5.38-$5.58 (from $5.55-$5.80) to absorb $0.20 of Exact Sciences acquisition dilution, even as comparable sales growth guide of 6.5-7.5% was held. The Exact Sciences deal closed March 23 ($23B), bringing Cologuard and Oncotype DX in-house. Overhangs: NEC infant-formula litigation ($495M Missouri verdict upheld; roughly 1,000 cases pending; securities class action filed), CGM competition (Dexcom, Senseonics, Medtronic), and tariff exposure on globally sourced devices. Stock has drifted from $92.80 mid-May into the high-$87s as of today.
 
 ## Variant Perception
 
-- **Consensus view:** Analysts are bullish (22 Buy, 0 Sell, $132 mean target) but the market is skeptical -- the stock has traded down 27% from highs despite strong analyst support. The market is pricing in: (1) near-term EPS dilution from Exact Sciences, (2) NEC litigation overhang, (3) tariff headwinds, and (4) concern that diversification masks low organic growth. At $102, the stock implies ~18x forward adjusted EPS of $5.68, which is a discount to its 5-year average forward PE of ~22x.
-- **Our view:** The market is underweighting two things. First, the Exact Sciences acquisition transforms Abbott's growth profile -- cancer screening (Cologuard, Cancerguard MCED) is a secular growth market that will accelerate Abbott's revenue growth from mid-single-digits to high-single-digits starting 2027. The $0.20 EPS dilution is transient; the growth is structural. Second, the combination of FreeStyle Libre's CGM dominance (56% share, expanding into Type 2) and the Exact Sciences cancer portfolio gives Abbott two generational growth engines in healthcare's highest-growth verticals. At $102, the market is pricing Abbott like a slow-growth conglomerate when it's actually assembling a best-in-class diagnostics/devices growth franchise.
-- **Trigger:** Q1 2026 earnings on April 16 will be the first report post-Exact Sciences close -- combined revenue guidance and integration commentary will force the market to re-evaluate the growth trajectory. Additionally, NEC bellwether trial outcomes in August 2026 could remove the litigation discount if results are favorable.
+- **Consensus view:** Quality medtech compounder, but post-Exact-Sciences guidance cut plus NEC litigation overhang plus CGM competition keep the multiple range-bound. Street price targets cluster at $118 (mean) with 25 analyst opinions and a "buy" recommendation key.
+- **Our view:** The Exact Sciences dilution is a one-time generally-accepted-accounting-principles (GAAP) reset, not a franchise impairment — Cologuard's double-digit organic growth is real and durable. Libre's CGM total-addressable-market expansion from intensive-insulin (roughly 10 million in the United States) to all type 2 diabetics (roughly 30 million) via the FreeDM trial and CMS reimbursement is under-appreciated; this is the next leg of a franchise already at roughly $7B-plus run-rate. Volt PFA launch in the second half of 2026 plus AVEIR and Amulet refresh keep structural heart compounding. NEC tail risk is real but bounded relative to a $153B market capitalization — even an aggregate $5B settlement is roughly 3% of cap. Variant: the market is treating Abbott like a GLP-1-threatened diabetes play, but Libre is complementary to GLP-1 therapies (patients on GLP-1s are still managed with CGM).
+- **Trigger:** Second-quarter 2026 earnings (mid-July) showing accelerating Medical Devices growth (Volt PFA plus Libre Medicare expansion) and proof that the Exact Sciences earnings-per-share drag is in the rearview; favorable NEC verdict trend (any reversal of the $495M ruling at the Supreme Court or trial-level wins) would re-rate the litigation discount.
 
 ## Financial Snapshot
 
-| Metric | Value | 3yr Trend |
-|--------|-------|-----------|
-| Revenue | $44.3B | +5.1% CAGR (2023-25, post-COVID base) |
-| Net Income | $6.5B | Stable ex-2024 anomaly ($13.4B from tax benefit) |
-| FCF | $7.4B | Recovering: $5.1B -> $6.4B -> $7.4B |
-| Operating Income | $8.1B | +11.5% CAGR (2023-25) |
-| ROE | 13.0% | Stable around 12-13% |
-| D/E | 0.27x | Improving (0.48 -> 0.27 over 3yr) pre-EXAS deal |
-| FCF Yield | 4.2% | |
-| Net Debt/EBITDA | 0.4x pre-deal, ~2.7x post-deal | |
-| Gross Margin | 56.7% | Stable |
-| Operating Margin | 18.2% | Recovering (16.2% -> 18.2%) |
-| Trailing P/E | 27.4x | |
-| Forward P/E | 17.9x | Based on $5.68 adj EPS guide |
-| Dividend Yield | 2.5% | $2.52/yr, payout ratio 63% |
-
-**Key observations:**
-- Organic revenue growth has recovered to ~5% CAGR post-COVID normalization, driven by Medical Devices (+10.5% in Q4 2025).
-- Operating margins recovering strongly: 16.2% (2023) -> 18.2% (2025), with adjusted margins at 25.8%.
-- FCF generation is robust and improving: $7.4B in 2025, supporting both the dividend and debt paydown.
-- Post-Exact Sciences, leverage jumps to ~2.7x EBITDA but is manageable given $7-8B annual FCF.
-- 2026 guidance: 7% organic sales growth, ~10% adj EPS growth to $5.55-$5.80 midpoint $5.68.
-
-## Insider Activity
-
-| Person | Role | Amount | Price | Date |
-|--------|------|--------|-------|------|
-| Robert Ford | CEO | $2.0M | ~$107 | Feb 2026 |
-| Daniel Starks | Director | $1.1M | -- | Feb 2026 |
-
-CEO buying $2M personally at $107 (now trading below his purchase price) with direct visibility into the Exact Sciences integration and Q1 results is a significant signal. Cluster buying (CEO + director) is statistically more meaningful than isolated purchases.
+| Metric | Value (FY2025) | 3-Year Trend |
+|--------|---------------|-----------|
+| Revenue | $44.3B | ~+0.6% compound annual growth rate (2022 $43.7B -> 2025 $44.3B; COVID diagnostics normalization) |
+| Net Income | $6.5B | Declining from $13.4B (2024) — 2024 had divestiture gain, normalized roughly $7B |
+| Free Cash Flow | $7.4B | Roughly flat (2022 $7.8B -> 2025 $7.4B) |
+| Return on Equity | 12.3% | Stable mid-teens, depressed by Exact Sciences goodwill |
+| Debt/Equity | 0.65 | Improving (Total Debt $13.9B versus $17.7B in 2022) |
+| Free Cash Flow Yield | 4.8% | Modest for a quality medtech |
+| Operating Margin | 13.5% | Compressed by Exact Sciences integration costs |
+| Gross Margin | 56.5% | Stable |
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence |
-|-------|-----------|--------|------------|
-| gbm_lite_3y | $145.07 | +42.4% | 0.69 |
-| gbm_3y | $126.98 | +24.7% | 0.69 |
-| gbm_1y | $123.43 | +21.2% | 0.74 |
-| autoresearch | $121.75 | +19.6% | 0.57 |
-| gbm_opportunistic_1y | $121.08 | +18.9% | 0.77 |
-| gbm_lite_1y | $116.00 | +13.9% | 0.96 |
-| gbm_opportunistic_3y | $110.04 | +8.1% | 0.75 |
-| simple_ratios | $51.70 | -49.2% | 0.00 |
-| dcf variants | $33-40 | -60-67% | 0.00 |
-| rim | $36.61 | -64.0% | 0.00 |
+Live price $87.91. Models cached at $92.80 (2026-05-18) — recalculated upside versus live price below.
 
-**Model consensus:** GBM/ML models are uniformly bullish, ranging from +8% to +42% upside (median ~+20%). Fundamental models (DCF, RIM, simple_ratios) remain deeply bearish at -49% to -67%, but these have zero confidence scores and known biases against intangible-heavy healthcare names. Per methodology, GBM and autoresearch are the most reliable return predictors. The ML consensus points to fair value of ~$120-125, implying 18-23% upside from current levels.
+| Model | Fair Value | Upside @ $87.91 | Confidence | Run Date |
+|-------|-----------|-----------------|------------|----------|
+| gbm_lite_3y | $129.46 | +47.3% | 0.70 | 2026-05-18 |
+| gbm_3y | $113.32 | +28.9% | 0.70 | 2026-05-18 |
+| gbm_1y | $109.86 | +25.0% | 0.76 | 2026-05-18 |
+| gbm_opportunistic_1y | $108.05 | +22.9% | 0.77 | 2026-05-18 |
+| autoresearch | $107.93 | +22.8% | 0.55 | 2026-05-18 |
+| gbm_lite_1y | $103.52 | +17.8% | 0.96 | 2026-05-18 |
+| gbm_opportunistic_3y | $98.20 | +11.7% | 0.74 | 2026-05-18 |
+| rim | $52.58 | -40.2% | 0.70 | 2026-05-18 |
+| simple_ratios | $50.14 | -43.0% | 0.85 | 2026-05-18 |
+| dcf | $42.65 | -51.5% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | $42.33 | -51.8% | 0.70 | 2026-05-18 |
+| dcf_enhanced | $34.20 | -61.1% | 0.70 | 2026-05-18 |
 
-**Analyst consensus:** 25 analysts, $132 mean target (+30%), $113 low, $158 high. Strong Buy consensus with zero Sell ratings.
+**Model consensus:** Bimodal split — GBM ensemble (forward-return machine learning on historical patterns) and autoresearch see +15% to +30% upside; DCF, RIM, and simple_ratios see -40% to -60% downside. This is the canonical "high-multiple compounder" disagreement: backward-looking earnings models cannot justify roughly 25 times trailing price-to-earnings on a 6-7% grower, while forward-pattern models see the franchise quality persisting. Analyst mean target $118.64 (+35%) sits in the GBM camp. Trust GBM_3y and autoresearch over DCF for Abbott (DCF anti-bias on quality compounders; RIM anti-growth bias on asset-light medtech).
 
-## Business Quality (19/25)
+## Business Quality (22/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 4/5 | FreeStyle Libre: strong switching costs (patient/doctor lock-in, data ecosystem), 56% CGM market share. Medical Devices: regulatory barriers, physician training moats. Now adding Cologuard's dominant position in noninvasive CRC screening. Weaker moat in generics/nutrition. |
-| Management | 4/5 | Robert Ford: competent capital allocator, delivered 12% adj EPS growth in 2025 despite tariffs. $2M personal buy at $107 is strong conviction signal. Exact Sciences deal is bold but strategically sound. Low insider ownership (0.55%) is a negative. |
-| Profitability | 4/5 | Gross margins 56.7%, adj operating margins 25.8% (expanding), FCF conversion strong at $7.4B on $44.3B revenue. ROE at 13% is adequate but suppressed by large equity base. |
-| Balance Sheet | 3/5 | Pre-deal: fortress at 0.4x net debt/EBITDA. Post-Exact Sciences: ~2.7x, manageable but a step down. $7-8B annual FCF provides rapid deleveraging capacity. Current ratio 1.58. Downgraded from 4 to 3 due to temporary leverage increase. |
-| Growth | 4/5 | Upgraded from 2 to 4. The Exact Sciences deal fundamentally changes the growth profile. Combined: FreeStyle Libre ($10B target by 2028), Cologuard/Cancerguard ($60B TAM in cancer screening), structural heart devices. Revenue growth should accelerate to 7-9% organically. Medical Devices already grew 10.5% in Q4. |
+| Moat | 5/5 | FreeStyle Libre is the number-one CGM globally; structural heart MitraClip is the de facto standard; switching costs in implanted devices are enormous. Brand, scale, and regulatory moats. |
+| Management | 4/5 | The Miles White era was legendary on capital allocation (AbbVie spin, Alere, St. Jude). Robert Ford has continued portfolio shaping; the Exact Sciences deal is debatable on price but strategically coherent. Insiders hold only 0.5% (typical for mega-cap). |
+| Profitability | 4/5 | 56.5% gross, 13.5% operating margin (depressed by Exact Sciences); normalized operating margin closer to 20%. Return on equity 12% (depressed by goodwill); return on invested capital mid-teens steady-state. |
+| Balance Sheet | 5/5 | $8.5B cash, $13.9B debt, debt-to-equity 0.65, current ratio 1.39. Easily services Exact Sciences acquisition leverage. Dividend Aristocrat (53 consecutive years of increases). |
+| Growth | 4/5 | 6-7% organic sustainable; Libre, structural heart, emerging-market pharma, and Cologuard each multi-year double-digit drivers. Nutrition drag is annualizing. |
 
 ## Inflection Point
 
-**Yes -- Abbott is at a strategic inflection point.** The Exact Sciences acquisition (closed March 23, 2026) transforms Abbott from a slow-growth diversified healthcare conglomerate into a company with two powerful secular growth engines: (1) CGM/diabetes management via FreeStyle Libre and (2) cancer screening/diagnostics via Cologuard/Cancerguard. This is a hidden growth story masked by near-term EPS dilution. The stock's 27% decline from highs creates a window to buy into the inflection before the combined growth trajectory becomes visible in reported numbers (likely Q2-Q3 2026 reporting cycle).
-
-Observable evidence the inflection has begun:
-- Exact Sciences deal closed, integration underway
-- FreeStyle Libre users grew from 5M (2023) to 7M (2025)
-- Medical Devices revenue growing 10.5% in Q4 2025
-- Operating margins expanding (25.8% adjusted)
-- CEO buying stock at $107
+Modest inflection in progress: (1) Libre Medicare expansion (CMS basal-insulin reimbursement, FreeDM trial) widens the total addressable market materially in 2026-2027; (2) Volt PFA United States launch in the second half of 2026 adds a new electrophysiology growth vector against Boston Scientific's Farapulse and Johnson & Johnson's Varipulse; (3) Exact Sciences integration year-1 is the trough — accretion starts 2027. This is not a deep turnaround; it is a quality compounder absorbing acquisition dilution while the underlying franchises accelerate. Observable evidence of inflection equals Q1 Medical Devices +8.5% organic (versus roughly 6% trailing) and electrophysiology double-digit growth.
 
 ## Bull Case
 
-- **FreeStyle Libre secular growth**: CGM market growing 15%+ CAGR; Libre targeting $10B by 2028 from current ~$6B, driven by Type 2 diabetes expansion and pump integration partnerships (Medtronic, Tandem)
-- **Exact Sciences unlocks cancer screening TAM**: Cologuard is the dominant noninvasive CRC screening test; Cancerguard MCED could be a blockbuster in the $60B+ cancer early detection market
-- **Operating leverage**: Combined entity should see margin expansion as Exact Sciences scales on Abbott's global distribution infrastructure; only $100M synergies baked in -- upside to this number
-- **Multiple re-rating**: At 18x forward PE, Abbott trades at a discount to its 5yr avg (~22x). As the growth acceleration becomes visible post-integration, multiple should re-rate to 20-22x
-- **CEO conviction**: $2M personal buy at $107 by a CEO who guided to 10% EPS growth and has direct integration visibility
+- FreeStyle Libre franchise expansion from intensive-insulin niche to broader type 2 diabetes drives sustained low-double-digit Libre growth through 2028; Libre alone becomes a $10B-plus business.
+- Volt PFA captures high-single-digit share in the $5B-plus atrial fibrillation ablation market in the second half of 2026; AVEIR DR plus Amulet 360 refresh keep structural heart franchise compounding.
+- Exact Sciences cross-sell unlocks faster Cologuard penetration internationally where Abbott has scale and Exact did not; the deal moves from dilutive (2026) to accretive (2027-plus).
+- Established Pharmaceuticals 9 percent-plus comparable growth continues as emerging-market middle class expands; foreign-exchange normalization adds reported tailwind.
+- Multiple holds at roughly 22-24 times forward earnings per share as Libre and structural heart re-rate the company toward higher-quality medtech peers.
 
 ## Bear Case
 
-- **Exact Sciences integration risk**: $21B is Abbott's largest-ever acquisition. Integration of Exact Sciences' direct-to-consumer model with Abbott's healthcare system-focused approach could prove challenging
-- **NEC litigation**: ~800 federal cases, with state court verdicts of $60M and $495M already. A large federal settlement could cost $2-5B+ and damage the Similac brand
-- **Near-term EPS dilution**: $0.20 hit in 2026, $0.16 in 2027. If market focuses on near-term earnings, stock could stay depressed
-- **Leverage risk**: Post-deal debt/EBITDA of 2.7x limits buyback capacity and M&A flexibility for 2-3 years
-- **Tariff headwinds**: ~$200M impact in 2026, with risk of escalation given Abbott's global manufacturing footprint
-- **Competitive threats**: Dexcom competing aggressively in CGM; Guardant Health competing in liquid biopsy/MCED
+- **NEC infant-formula aggregate liability balloons** — over 1,000 cases, $495M Missouri verdict upheld, $70M April verdict, $53M Chicago verdict; a multi-billion settlement or class certification could compress equity by 5-10%. Securities class action adds disclosure risk. This is the under-covered primary risk: while news mentions it, sell-side rarely models a base-case aggregate liability — most assume it gets settled cheap.
+- CGM commoditization — Dexcom G7, Senseonics 365-day Eversense, and Medtronic Simplera erode Libre's price premium and slow share gains, especially in markets outside the United States where Libre's price advantage matters more.
+- Exact Sciences integration friction — channel conflict between Abbott's diagnostics sales force and Exact's primary-care-physician push, slower-than-modeled synergy realization, additional fiscal-year 2027 dilution.
+- Nutrition recovery delayed — Similac share loss from NEC overhang does not reverse, Asia and emerging-market nutrition pricing reset slower than guided.
+- Tariff exposure on globally sourced medical devices compresses margins 50-100 basis points in 2026-2027; not yet quantified by management.
+- Multiple compresses to 18-20 times as the "diversified medtech compounder" narrative cracks under any combination of the above.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | Revenue accelerates to 8-9% organic growth as Libre + EXAS contribution kicks in; adj EPS reaches $6.50+ in 2027 | Re-rating from 18x to 22x forward PE as growth acceleration becomes visible | $143 | +40% |
-| **Base** | 50% | 7% organic growth per guidance; adj EPS of $5.68 in 2026, $6.10 in 2027; EXAS integration goes smoothly | Modest re-rating from 18x to 20x as growth profile clarifies | $122 | +20% |
-| **Bear** | 25% | Growth disappoints at 4-5%; NEC settlement costs $2-3B; EXAS integration slower than expected; tariffs escalate | Multiple compresses to 16x as leverage concerns grow | $90 | -12% |
+| Bull | 30% | FY27 earnings per share $6.40 (Libre + electrophysiology + Cologuard accretion); NEC settles under $3B | Re-rate to 23 times forward = roughly $147 | $145 | +65% |
+| Base | 50% | FY27 earnings per share $5.90 (high-single-digit organic + modest Exact Sciences accretion); NEC drags but bounded | Steady roughly 19-20 times forward | $115 | +31% |
+| Bear | 20% | FY27 earnings per share $5.40 (CGM share loss, Exact Sciences underperforms, Nutrition stagnant); NEC settles $5-8B | De-rate to 16 times = $86 | $70 | -20% |
 
-**Expected value: +17.0%**
+**Expected value: +30.3%** (0.30 × 65 + 0.50 × 31 + 0.20 × -20)
 
-(0.25 x 40%) + (0.50 x 20%) + (0.25 x -12%) = 10% + 10% - 3% = +17.0%
-
-Including the 2.5% dividend yield, total expected return is ~+19.5% over 12 months.
-
-**Thesis breaks if:** (1) NEC settlement exceeds $5B, (2) Exact Sciences revenue growth decelerates below 10% post-acquisition, (3) FreeStyle Libre loses significant market share to Dexcom, or (4) management cuts 2026 EPS guidance below $5.40 at Q1 earnings.
+**Thesis breaks if:** Libre organic growth decelerates below 8% year-over-year for two consecutive quarters AND a NEC class certification or aggregate settlement exceeds $5B AND Exact Sciences shows negative organic growth in 2027. Any one of those would trim conviction; all three together would invalidate the thesis.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Uncrowded -- 82% institutional ownership is normal for mega-cap healthcare; no concentrated hedge fund positioning. Stock is down 27% from highs, reducing crowding risk. |
-| Short interest | 1.3% of float -- negligible, no squeeze potential but no consensus negative either |
-| Technical position | Oversold -- trading near 52-week low ($100.88), well below 50-day ($109) and 200-day ($124) moving averages |
-| Next catalyst | **April 16 -- Q1 2026 earnings** (first report post-EXAS close). Combined guidance and integration update. |
-| Recent price action | Down 7% in past month, 27% from highs. Has NOT run ahead of catalyst -- if anything, positioned for positive surprise. |
+| Crowdedness | Institutional ownership 83% — consensus long, but not aggressive hedge fund crowding. Healthcare generalist staple. |
+| Short interest | 1.45% of float — low, no squeeze setup. |
+| Technical position | Drifted from $92.80 (one week ago) to $87.91; well off implied 52-week highs from earlier in 2026. Mildly oversold post-Q1 guidance cut. |
+| Next catalyst | Second-quarter 2026 earnings approximately July 16-17 (Volt PFA launch progress, Exact Sciences first-full-quarter accretion math, Libre Medicare uptake). Volt PFA second-half launch. NEC trial outcomes ongoing. |
+| Recent price action | Down roughly 5% from cached price; underperforming healthcare sector year-to-date. |
+| Dividend yield | 2.87% (53-year Aristocrat) provides downside cushion. |
 
-**Setup assessment:** Favorable. Stock is oversold, near 52-week lows, catalyst is 8 days away (Q1 earnings April 16), CEO bought at higher prices, analyst consensus is strongly bullish ($132 mean target = +30% upside). The risk is that Q1 disappoints and the stock breaks below $100, but the asymmetry favors being long here.
+Favorable setup: uncrowded for a mega-cap, near-term catalyst (Q2 earnings), observable inflection in Medical Devices, stock has not run ahead of the catalyst.
 
 ## Verdict
 
-**BUY** -- Conviction: MEDIUM
+**BUY** — Conviction: **MEDIUM**
 
-Abbott is a high-quality healthcare franchise (19/25) at a strategic inflection point. The Exact Sciences acquisition transforms its growth profile from mid-single-digits to high-single-digits, but the market is focused on near-term EPS dilution and tariff/litigation headwinds, creating a classic "buy the inflection" opportunity. At $102, you're getting Abbott at 18x forward PE -- a 20% discount to its historical average -- right when its growth trajectory is about to accelerate. CEO insider buying at $107 provides downside confidence. Expected return of +17% (ex-dividends) with a near-term catalyst on April 16.
+The variant perception is clear and modest: the market is treating Abbott like a GLP-1-impaired diabetes play with NEC tail risk, while the underlying medtech franchise (Libre total-addressable-market expansion, Volt PFA, structural heart) is accelerating into 2026-2027. Quality is high (22/25), free cash flow and dividend are durable, the balance sheet supports the Exact Sciences integration, and the second-quarter earnings catalyst is dateable and proximate. The GBM ensemble points to +20% to +30% one-year return, analyst targets cluster at +35%, and our scenario expected value is +30%. Conviction is MEDIUM rather than HIGH because the DCF camp is not wrong on paper — Abbott is not cheap on trailing earnings, and the NEC litigation tail is genuinely unbounded.
 
-**Entry:** $100-103 (current range). Stock is at prior analysis buy zone ($95-100) plus slight premium given the Exact Sciences growth upgrade.
-**Scale-in plan:** 50% position now, add remaining 50% after Q1 earnings if guidance is confirmed/raised.
-**Thesis-break:** Below $90 (implies 16x forward on reduced estimates), or if NEC settlement exceeds $5B, or EXAS growth materially decelerates.
+**If BUY:** Entry zone $85-90 (current). Scale-in plan — half position now, half on either (a) any drop to $80 on litigation headlines without business deterioration, or (b) confirmation of Volt PFA traction at Q2 earnings. Thesis-break price approximately $75 absent fundamental deterioration would warrant reassessment, not auto-stop.
+
+<!-- Generic research only. Personal position size, cost basis, and P&L belong in ~/vault/finance/notes/positions/ABT.md, not here. -->

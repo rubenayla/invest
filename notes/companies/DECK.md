@@ -1,122 +1,128 @@
 # Deckers Outdoor Corporation (DECK)
 
 **Sector:** Consumer Cyclical | **Industry:** Footwear & Accessories
-**Price:** $100.43 | **Market Cap:** $14.6B
-**Analysis Date:** 2026-03-22
+**Price:** $94.61 (2026-05-19) | **Market Cap:** $13.4B
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** Deckers Outdoor is a premium footwear holding company built around two engines and a handful of smaller brands. HOKA, the performance running brand (Clifton, Bondi, Speedgoat, Mach), is the growth story — it has gone from a niche ultra-running brand to one of the top two running shoes sold in athletic specialty stores in the United States. UGG, the sheepskin-lined boot and slipper brand, is the cash cow — it generated about $1.3B in a single quarter (Q3 FY2026) and remains the largest segment by revenue, anchored in the Classic boot but expanding into men's, slippers, and lifestyle sneakers. The smaller portfolio — Teva (sport sandals), Sanuk (casual), Ahnu (women's outdoor lifestyle, relaunched) — is rounding error. The company sells through three channels: direct-to-consumer e-commerce, owned stores, and wholesale (specialty running shops, department stores, sporting goods). Fiscal year ends March; the company just closed FY2026 (April 2025 to March 2026), with Q4 results due 2026-05-21.
+
+**Where they want to grow.** Management is making three explicit bets. First, HOKA international expansion — Europe is less than 20% penetrated in athletic specialty stores and 40% in sporting goods, China is at less than one-third of its potential, even US specialty is only around 25% of target doors; international revenue grew 15% in the most recent quarter versus 5% in the US, and the order book is described as "very encouraged." Second, UGG year-round-ization — pushing the brand out of its Q3 sheepskin-boot peak via the "365" initiative, men's expansion, lifestyle sneakers (Lommel doubled year-over-year), and new franchises (Quill, Tazelle, Minal, OXXO). Third, capital return at scale — $1B+ of buybacks targeted in FY2026, $1.8B remaining authorization, $2.1B cash with no debt, supporting >20¢ of Earnings Per Share accretion per year. Success in 3-5 years looks like HOKA in the $3.5-4.5B revenue range (from ~$2.3B today), UGG flat-to-slightly-growing on a much bigger base, and a substantially smaller share count.
+
+**What could go wrong (business risks).** HOKA growth has visibly decelerated — the brand grew 35% then 24% in prior quarters, then 10% in Q4 FY2025, with Q4 FY2026 guided to 13-14%. The cohort of "max-cushion thick-sole" running has been the dominant trend, and HOKA shares that pool with On Holding (NYSE:ONON), which is taking share aggressively in Europe and the running specialty channel. Brooks, ASICS, and a re-energized Nike Pegasus/Vomero line are competing for the same shelf space. UGG is structurally exposed to fashion cycles — the Classic boot is back in cycle now but has been cold for multi-year stretches in the past, and the "year-round" pivot has been a stated strategy for half a decade with mixed results. Tariffs are the near-term overhang: Q4 FY2026 carries an approximately 200 basis point gross margin headwind from the full 20% tariff burden in that quarter, and the full-year net tariff impact was disclosed as $25M mitigated (from $110M unmitigated). Direct-to-Consumer mix shifts and promotional intensity could permanently re-rate gross margin lower if HOKA loses pricing power. Customer concentration is low, but the wholesale channel is meaningful and exposed to department-store distress.
+
+**How to think about it.** This is a premium athletic+lifestyle brand portfolio with HOKA as the engine, UGG as the funding source, and a fortress balance sheet ($2.1B cash, no debt) financing aggressive buybacks. Bet on HOKA international expansion holding while UGG normalizes — that is the thesis in one sentence. The opposing view is that HOKA is a fashion cycle masquerading as structural growth and a 13x trailing Price-to-Earnings ratio is appropriate (not cheap) for a brand transitioning out of hyper-growth. The variant lever is international — if Europe and China keep compounding at 15%+ while the United States digests, the consolidated number will surprise the bears.
 
 ## Situation Summary
 
-Deckers is a premium footwear powerhouse built on two exceptional brands: HOKA (performance running, ~$2.2B revenue, growing 18% in Q3 FY26) and UGG (record $1.3B quarterly revenue, growing mid-single digits). The stock has been cut roughly in half from its Sep 2024 highs (~$133 post-split adjusted) and trades at just 14.3x trailing / 13.7x forward earnings -- an extraordinarily cheap multiple for a company with 58% gross margins, 38% ROE, $1.6B net cash, and $1B+ annual buybacks. Q3 FY26 was a beat-and-raise: revenue $1.96B (+7.1% YoY), EPS $3.33 vs $2.77 consensus (+20% beat), FY26 guidance raised to $5.4-5.43B revenue and $6.80-6.85 EPS. The stock dropped 14% over 8 days in early March on macro fears, pushing it to $100 -- below the 200-day moving average of $103.58. Main overhang: tariffs (~75% production in Vietnam, 20% tariff rate), estimated $110M FY26 COGS headwind, which management plans to offset through price increases and vendor cost-sharing. HOKA growth is decelerating (24% in FY25 to mid-teens in FY26) but remains exceptional. The 6-for-1 stock split and $2.5B buyback authorization signal management confidence.
+DECK trades at $94.61, down approximately 50% from its 52-week high of $131.58 and roughly 53% from its 2024 peak above $220 (split-adjusted), making it one of the ugliest large-cap consumer drawdowns of the cycle. The drawdown was triggered by progressive HOKA growth deceleration — 35% to 24% to 10% to mid-teens — combined with explicit tariff disclosure ($110M unmitigated, $25M net) and cautious Q4 guidance flagged at the Q3 FY2026 call on 2026-01-29. Q3 results themselves were strong (revenue +7%, HOKA +18.5%, UGG +4.9%, EPS +11% record, $349M of buybacks executed in-quarter at $92.36), and management raised full-year FY2026 guidance to revenue $5.40-5.43B, HOKA mid-teens, UGG mid-single-digits, EPS $6.80-6.85, gross margin ~57%, operating margin ~22.5%. The Q4 FY2026 report on 2026-05-21 is the immediate catalyst. Analyst views have polarized: Piper Sandler Underweight at $85, Goldman Sachs Sell at $93, UBS Buy at $145, Jefferies Hold at $110, consensus target ~$127.
 
 ## Variant Perception
 
-- **Consensus view:** Analysts are bullish (21 analysts, mean target $128.52, range $90-$184). The market sees DECK as a quality compounder but worries about HOKA growth deceleration (from 24% to mid-teens), tariff margin compression, and On Holdings taking share. Short interest is low at 3.4%. Consensus expects mid-to-high single digit revenue growth going forward with some margin pressure.
-- **Our view:** The market is dramatically underpricing DECK. At 14.3x trailing PE (or ~11x ex-cash), the stock prices in ZERO growth premium -- this is a mature utility multiple, not appropriate for a company growing EPS at 29% CAGR over 3 years with HOKA still in early innings internationally (barely 15% of revenue from international running). Key variant: HOKA's deceleration from 24% to mid-teens is being treated as "peak growth" when the brand has massive white space in Europe, China, Japan, plus lifestyle/trail extensions. On Holdings' 43% growth gets all the attention, but On trades at 40x+ earnings vs DECK at 14x -- the market is pricing HOKA as if it's already peaked while pricing On as if it's just starting. The tariff overhang (~$110M or ~2% of revenue) is real but manageable given 58% gross margins and demonstrated pricing power (59.8% Q3 gross margin). The buyback ($1B+/yr at 14x PE) is massively accretive -- they're buying back 7%+ of market cap annually.
-- **Trigger:** Q4 FY26 earnings (May 21, 2026) for tariff impact clarity and FY27 guidance; FY27 guide showing HOKA sustaining 15%+ growth would force re-rating; any tariff relief on Vietnam.
+- **Consensus view:** HOKA growth has peaked and the brand will continue decelerating as On Holding takes share; UGG fashion cycle is mature and at risk of reversal; tariffs will compress margins durably; the 13x trailing P/E is appropriate for a consumer-cyclical no-growth name.
+- **Our view:** The deceleration is geographic mix, not brand exhaustion. International HOKA is growing 15%+ off a small base (Europe under 20% penetrated in athletic specialty, China under one-third penetrated), and consolidated HOKA growth in the low-to-mid teens is sustainable for several years as international scales. UGG's year-round pivot is finally producing measurable second-derivative wins (Lommel doubled, men's expanding, Q3 record quarter). At $94 with $2.1B net cash and >$1B annual buybacks, you are paying roughly 10x ex-cash earnings for a 57% gross margin brand portfolio with double-digit growth and a buyback yield around 8%.
+- **Trigger:** Q4 FY2026 earnings on 2026-05-21 — if HOKA prints 13-14% as guided and FY2027 initial commentary points to continued international momentum, the stock re-rates toward $130-150. A miss or cautious FY2027 takes it to $75-85.
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $4.99B (FY25), FY26E $5.4B | +16.5% CAGR |
-| Net Income | $966M (FY25), FY26E ~$1.04B | +28.8% CAGR |
-| EPS | $6.33 (FY25), FY26E $6.80-6.85 | +32.7% CAGR (buyback boost) |
-| FCF | $958M (FY25) | $121M -> $456M -> $944M -> $958M |
-| ROE | 38.4% | Consistently 30%+ |
-| D/E | 0.11x | Near zero debt; $1.6B net cash |
-| FCF Yield | 6.5% | Excellent for growth company |
-| Gross Margin | 57.5% (FY25), 59.8% Q3 FY26 | Expanding (was 51% in FY22) |
-| Operating Margin | 23.6% (FY25), 31.4% Q3 FY26 | Expanding (was 17.9% in FY22) |
-| Net Margin | 19.3% | Nearly doubled from FY22 |
-
-**Key observations:**
-- Revenue compounded at 16.5% over 3 years with accelerating profitability -- operating margin expanded 580bps.
-- HOKA is the growth engine: ~$1.4B in FY23 to $2.2B+ in FY25, guiding mid-teens growth in FY26.
-- UGG remains a cash cow: record Q3 quarter of $1.3B, stable growth, enormous brand equity.
-- FCF conversion is excellent: $958M FCF on $966M net income (99% conversion).
-- Balance sheet is fortress: $1.6B net cash, virtually no debt. Could lever up 1-2x EBITDA and return $3-4B to shareholders.
-- Share count declining ~6-7% annually via aggressive buybacks at accretive multiples.
-- DTC mix at 56% of Q3 revenue (up from ~50%), driving margin expansion.
+| Revenue (FY25) | $4.99B | +16.5% CAGR |
+| Net Income (FY25) | $966M | +28.8% CAGR |
+| FCF (FY25) | $958M | Strong, ~100% CAGR off 2022 low |
+| EBITDA (FY25) | $1.32B | +29.3% CAGR |
+| ROE | 39.7% | Stable high |
+| D/E | 0.13 | Effectively net cash |
+| Cash | $1.89B | Growing |
+| FCF Yield | ~7.1% (FCF/MarketCap) | Attractive |
+| Gross Margin | 57.5% | Expanding |
+| Operating Margin | 31.4% TTM / ~22.5% guided | Peak-ish |
+| Trailing P/E | 13.4 | Compressed from ~30x peak |
+| Forward P/E | 12.9 | |
 
 ## Valuation Models
 
-No models currently in database. Analyst consensus and manual analysis:
+| Model | Fair Value | Upside (vs $94.61) | Confidence | Run Date |
+|-------|-----------|--------------------|------------|----------|
+| gbm_lite_3y | $254.20 | +169% | 0.97 | 2026-05-18 |
+| gbm_opportunistic_1y | $168.78 | +78% | 0.83 | 2026-05-18 |
+| gbm_3y | $167.51 | +77% | 0.92 | 2026-05-18 |
+| gbm_opportunistic_3y | $154.63 | +63% | 0.81 | 2026-05-18 |
+| autoresearch | $149.35 | +58% | 0.89 | 2026-05-18 |
+| gbm_lite_1y | $147.76 | +56% | 0.93 | 2026-05-18 |
+| gbm_1y | $137.18 | +45% | 0.89 | 2026-05-18 |
+| dcf_enhanced | $121.62 | +29% | 0.70 | 2026-05-18 |
+| rim | $68.62 | -27% | 0.70 | 2026-05-18 |
+| simple_ratios | $54.47 | -42% | 0.85 | 2026-05-18 |
+| dcf | $32.43 | -66% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | $26.00 | -73% | 0.70 | 2026-05-18 |
 
-| Source | Fair Value | Upside | Notes |
-|--------|-----------|--------|-------|
-| Analyst Mean Target | $128.52 | +28% | 21 analysts, consensus Buy |
-| Analyst High Target | $184.00 | +83% | |
-| Analyst Low Target | $90.00 | -10% | |
-| DCF (SimplyWallSt) | ~$127 | +26% | Implies 21% discount at current price |
-| PE-based (20x FY27E) | $148-152 | +47-51% | Assumes modest re-rating to peer-like multiple |
-| FCF-based (18x FY26E FCF) | $118 | +17% | Conservative, no growth premium |
+*Models ran 2026-05-18 with current_price $106.77 stored. Live is now $94.61 (~13% lower), so upside percentages recomputed against $94.61 above — fair values themselves remain valid.*
 
-**Valuation context:** DECK trades at 14.3x trailing PE. Comparable footwear companies: Nike at 25-30x, On Holdings at 40x+, Skechers at 15x, VF Corp at 12x. DECK's profitability (58% gross, 24% operating margin) and growth (16% CAGR) are closer to Nike/On than to Skechers/VF, yet it trades at a discount to all. Ex-cash PE is ~11x -- absurdly cheap for this quality.
+**Model consensus:** Heavy bullish skew. All seven GBM/autoresearch models cluster fair value $137-254 (upside +45% to +169%), with the most reliable (gbm_3y) at $167. DCF-enhanced and analyst consensus ($127) align in the $120-130 range. Negative outliers (simple_ratios, dcf, multi_stage_dcf, rim) are classic asset-light/peak-cyclical false alarms — RIM under-rewards intangibles, simple_ratios anchors on book, classical DCF over-discounts long-duration brand cashflows. Median fair value across reasonable models: ~$140 (+48%).
 
 ## Business Quality (22/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 4/5 | Two powerful brands: HOKA (performance/innovation leader in max-cushion running) and UGG (45+ year lifestyle icon). Both have strong brand loyalty and pricing power. Deduction: HOKA faces increasing competition from On (+43% growth), New Balance, and Brooks; UGG is fashion-cyclical. No structural switching costs beyond brand loyalty. |
-| Management | 5/5 | CEO Dave Powers and team have executed brilliantly: grew HOKA from $0 to $2.2B, expanded margins 580bps in 3 years, prudently phased out Koolaburra, authorized massive buybacks at attractive prices, maintained fortress balance sheet. Capital allocation is best-in-class for mid-cap consumer. |
-| Profitability | 5/5 | 58% gross margins (best-in-class footwear), 24% operating margins, 19% net margins, 38% ROE, 99% FCF conversion. Exceptional and still improving via DTC mix shift and scale leverage. |
-| Balance Sheet | 5/5 | $1.6B net cash. Zero meaningful debt. $2.5B buyback authorization. Can self-fund all growth. Fortress. |
-| Growth | 3/5 | HOKA decelerating from 24% to mid-teens; UGG growing mid-single digits. Total revenue growth guiding ~8.5% for FY26. International is the growth lever but HOKA domestic growth is slowing. Risk that HOKA max-cushion trend plateaus. Would need re-acceleration evidence for full score. |
+| Moat | 4/5 | Strong brand equity in two distinct categories; HOKA #1-2 in run specialty, UGG iconic in sheepskin. Competitive intensity rising from On Holding. |
+| Management | 4/5 | Disciplined capital allocation ($1B+ buybacks, no debt, $2.1B cash), transparent tariff math (110→25), conservative guidance habit. CEO transition (Dave Powers retired, Stefano Caroti now leading) is a watch item. |
+| Profitability | 5/5 | 57% gross margin, 31% TTM operating margin, 40% ROE, 19% ROA. Best-in-class for footwear. |
+| Balance Sheet | 5/5 | $1.9B cash, $277M debt, current ratio 2.86, zero leverage concerns. |
+| Growth Runway | 4/5 | HOKA international penetration is the durable lever (Europe <20%, China <33%); UGG year-round pivot adds optionality. Saturation risk in US HOKA is real but small base internationally. |
 
 ## Inflection Point
 
-**Valuation inflection, not business inflection.** DECK has de-rated from 30x+ PE to 14x PE over the past year despite continued execution, driven by: (1) HOKA growth deceleration fears, (2) tariff concerns, (3) broader consumer discretionary rotation, and (4) a recent 14% 8-day slide on overvaluation concerns (ironic given it's now at 14x PE). The business fundamentals remain intact and improving: margin expansion, DTC shift, international growth, record UGG quarter.
-
-The tariff impact (~$110M gross, ~$25M net after mitigation) is manageable at ~0.5% of revenue net. Gross margins in Q3 FY26 hit 59.8%, only 50bps below prior year, demonstrating real pricing power. Q4 will face a ~200bps gross margin headwind as full 20% tariff burden hits, but this is well-flagged and likely priced in.
-
-This is a classic "multiple compression on decelerating but still excellent growth" setup that historically creates buying opportunities. The market is pricing DECK like growth is over; it isn't.
+This is a sentiment/multiple inflection rather than a fundamental one. Fundamentals continue compounding — revenue growing, HOKA growing, UGG growing, cash growing, share count shrinking — while the multiple compressed from ~30x to ~13x trailing. The inflection signal would be the Q4 FY2026 print (2026-05-21) demonstrating that 13-14% HOKA growth in Q4 was the trough rate of deceleration, with FY2027 guidance steadying at low-to-mid teens. Management buying back $349M at $92.36/share in Q3 is the strongest observable evidence that insiders see value at these levels.
 
 ## Bull Case
-- HOKA sustains 15-20% growth as international expansion (Europe, China, Japan) offsets US deceleration; brand extends into lifestyle/trail categories
-- Tariff resolution or mitigation limits gross margin impact to <100bps; demonstrated pricing power preserves margins
-- Aggressive buybacks ($1B+/yr) at 14x PE drive 7%+ annual share count reduction, turbocharging EPS growth
-- Multiple re-rates from 14x to 20-25x as market re-prices growth durability, driving $140-175+ stock price
-- DTC mix continues expanding toward 60%+, driving operating margin toward 25-28%
+
+- HOKA international (Europe + China + run specialty under-penetration) sustains 15%+ growth for several years, supporting consolidated HOKA growth of 12-15% even as US digests.
+- UGG year-round initiative produces visible second-derivative wins — Lommel lifestyle sneaker doubling YoY, men's category growing, new franchises (Quill, Tazelle) gaining traction.
+- $1B+ annual buybacks at $90-100 prices remove 7-8% of share count per year, mechanically lifting Earnings Per Share even on flat revenue.
+- Tariffs largely mitigated ($110M down to $25M net) — feared overhang turns out to be one-time and absorbed.
+- Multiple re-rates from 13x toward 18-22x as deceleration scare fades and the market recognizes structural durability.
 
 ## Bear Case
-- HOKA growth decelerates to single digits as max-cushion trend fades and On/New Balance/Nike compete aggressively
-- Tariff escalation on Vietnam (currently 20%) compounds with consumer weakness, compressing gross margins 300-400bps
-- UGG enters secular decline as fashion cycle turns; warm winters reduce seasonal demand
-- Consumer discretionary spending weakens in recession; premium $150-200 shoes face demand destruction
-- On Holdings continues gaining share at HOKA's expense in performance running
+
+- HOKA US growth turns negative as On Holding, Brooks, and Nike Pegasus continue taking share in athletic specialty and sporting goods.
+- UGG fashion cycle reverses — Classic boot momentum fades, year-round pivot fails to compensate, segment falls 5-10% in FY2028.
+- Tariff math worsens — current $25M net assumes successful supplier cost-sharing and price increases that may not stick at the consumer level.
+- **Under-covered risk from primary source:** Management noted Q4 FY2026 gross margin assumes the FULL 20% tariff burden, making it the largest quarterly rate impact of FY2026. If that burden carries forward into FY2027 without further mitigation, structural gross margin could re-base 150-300bp lower — news headlines frame tariffs as a one-time event but management framed Q4 as the worst-rate quarter still ahead, implying potential persistence rather than fade.
+- Inventory at $633M (+10%) signals demand softness; promotional intensity needed to clear it could permanently dilute HOKA's premium-price positioning.
+- Chief Executive Officer transition risk — execution slips during succession.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 30% | FY27 EPS $8.00+ on HOKA 15%+ growth, margin expansion, buybacks | Re-rates to 22x on growth durability narrative | $176 | +75% |
-| **Base** | 45% | FY27 EPS $7.40-7.60 on 10% rev growth, stable margins, buybacks | Modest re-rate to 18x as tariff fears ease | $135 | +34% |
-| **Bear** | 25% | FY27 EPS $6.00-6.30 on HOKA deceleration, margin compression, macro weakness | Stays at 14-15x on growth concerns | $90 | -10% |
+| Bull | 30% | FY27 EPS $8.00 on 12% HOKA growth, flat UGG, 7% buyback boost | Re-rate 13x → 19x | $152 | +61% |
+| Base | 45% | FY27 EPS $7.20 on 9% HOKA, flat UGG, buyback boost | 13x → 16x | $115 | +22% |
+| Bear | 25% | FY27 EPS $5.80, HOKA flat/-LSD US, UGG -MSD, margin compression | Stays 13x or de-rates to 11x | $70 | -26% |
 
-**Expected value: +33.0%**
-(0.30 x 75%) + (0.45 x 34%) + (0.25 x -10%) = 22.5% + 15.3% - 2.5% = +35.3%
+**Expected value:** 0.30 × 61% + 0.45 × 22% + 0.25 × (-26%) = 18.3 + 9.9 - 6.5 = **+21.7%**
 
-**Thesis breaks if:** HOKA growth decelerates to below 10% for two consecutive quarters AND gross margins compress >300bps from tariffs without pricing offset, indicating brand power erosion and structural competitive disadvantage.
+**Thesis breaks if:** Q4 FY2026 report shows HOKA growth below 10%, OR FY2027 initial commentary guides HOKA below 10% and/or UGG below flat. Also: gross margin guides below 55% structurally (vs 57% current).
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Uncrowded -- stock down ~25% from highs, not a consensus hedge fund long at current levels |
-| Short interest | 3.4% -- low, no squeeze setup but confirms no consensus bear thesis |
-| Technical position | Oversold: $100.43 vs 52w range $78.91-$133.43. Below 50-day ($108.57) and 200-day ($103.58). ~25% below highs, ~27% above lows. Recent 14% 8-day decline. |
-| Next catalyst | Q4 FY26 earnings May 21, 2026 -- FY27 guidance will be the key re-rating event |
-| Recent price action | Beat-and-raise in late Jan drove +19% 30-day move, but gave back all gains in Feb-Mar sell-off. Now below pre-earnings levels. |
-| Valuation floor | At 14x trailing PE with $1.6B net cash and $958M FCF, downside well-supported. Net cash is 11% of market cap. |
+| Crowdedness | Uncrowded — 98.5% institutional, but recent capitulation; consensus has soured |
+| Short interest | 4.3% of float — moderate, room for squeeze on beat |
+| Technical position | Near 52w low ($78.91), down ~50% from highs — oversold |
+| Next catalyst | Q4 FY2026 earnings — 2026-05-21 (2 days away) |
+| Recent price action | Drifting lower into print — no pre-catalyst run-up |
+
+Uncrowded, near-term catalyst, observable inflection evidence (management buying back $349M at $92), stock has not run. Setup favors entering before the print, though the binary 2-day proximity argues for sizing accordingly — half position now, balance after print.
 
 ## Verdict
 
-**BUY** -- Conviction: HIGH
+**BUY** — Conviction: **MEDIUM**
 
-DECK is a rare quality compounder trading at a deep value multiple. At 14.3x trailing PE (or ~11x ex-cash), you're getting a company with 58% gross margins, 38% ROE, 16.5% revenue CAGR, $1.6B net cash, and 7%+ annual buybacks for essentially free growth premium. The HOKA deceleration narrative is overblown: mid-teens growth for a $2.5B brand with massive international white space is excellent, not disappointing. The market prices DECK at the same multiple as Skechers despite vastly superior profitability and growth. The tariff headwind is real but manageable (~0.5% of revenue net) and management has demonstrated pricing power.
+Premium brand portfolio with structural HOKA international runway, $2.1B cash and aggressive buybacks at the current price, model consensus pointing to fair value around $140 (+48%), trading at 13x trailing earnings after a 50% drawdown. The variant perception is that HOKA's deceleration is geographic mix-driven rather than brand exhaustion, and the international engine has multi-year duration. Risks are real (HOKA US, UGG cycle, tariffs, succession), which keeps conviction at MEDIUM rather than HIGH. The Q4 FY2026 print 2026-05-21 is a binary near-term gate — favorable setup but timing exposes a 2-day catalyst risk.
 
-Expected value of +33-35% significantly exceeds cost of equity. Risk/reward is highly asymmetric: bull case (+75%) dwarfs bear case (-10%), and the probability-weighted outcome is exceptional.
+**If BUY:** Entry around $94-100. Scale-in plan: half position now ahead of the print, half after Q4 results confirm (or refute) HOKA's trough rate. Thesis-break at $70 (would require HOKA to print sub-10% growth and FY2027 guidance to disappoint materially). Would upgrade conviction to HIGH on a Q4 beat plus FY2027 guidance at or above low-teens HOKA growth.
 
-**Entry now at $100.43** -- stock is oversold (below both moving averages after 14% 8-day drop). This is an attractive accumulation zone.
-**Add aggressively below $90** -- approaches net cash + 1yr FCF on EV basis.
-**Thesis-break price:** Below $75 (implies multiple compression AND earnings decline, suggesting brand impairment).
+<!-- Public file: generic research only. Personal position context (if any) belongs in ~/vault/finance/notes/positions/DECK.md, not here. -->

@@ -1,152 +1,137 @@
 # Intel Corporation (INTC)
 
 **Sector:** Technology | **Industry:** Semiconductors
-**Price:** $94.75 (close 2026-04-29) | **Market Cap:** ~$464B
-**Analysis Date:** 2026-04-30
+**Price:** $108.17 (2026-05-18) | **Market Cap:** ~$544B
+**Analysis Date:** 2026-05-19
 
-## What changed since 2026-03-20
+## Business Primer
 
-- **Price: $46.18 -> $94.75 (+105% in ~6 weeks).** Now near 52w high of $95.69; 200d MA was ~$34 in March.
-- **Q1 2026 blowout (reported 2026-04-23):** revenue $13.58B vs $12.42B est (+7% YoY), non-GAAP gross margin 41% (+650bps vs guide), EPS $0.29 vs $0.01 est. Data center +22% to $5.1B. Management says AI-driven businesses are now 60% of revenue and grew 40% YoY.
-- **Q2 guide raised:** revenue $13.8-14.8B (Street was $13.07B), EPS $0.20 (Street was $0.09).
-- **Foundry ops loss narrowed to $2.4B** (from ~$2.5B prior; on track to halve the bear-case ~$10B/yr run-rate). External foundry revenue still tiny ($174M).
-- **18A yields:** Intel says yields keep improving across Intel 4 / 3 / 18A; Panther Lake and Clearwater Forest powered-on. Apple reportedly eyeing 18A-P; Google exploring advanced packaging. No signed external volume customer yet.
-- **Government stake update:** Aug-2025 cost basis ~$8.9B at $20.47/share (433M shares, 10%). At $94.75 the stake is worth ~$41B -- unrealized gain >$30B. Trump publicly bragging on 2026-04-29. **This is now an exit-overhang risk.**
-- **Evercore upgraded to Outperform, $111 PT** (~17% upside from spot). Sell-side consensus median PT still lags around $63 -- most analysts haven't refreshed yet.
-- **Short squeeze contributed to the move.** INTC had been the most-shorted Dow component; short interest was ~2.4% in March, briefly surged to ~2.9% in mid-April (~144M shares) into the print and got crushed on the 25% post-earnings gap. Days-to-cover only ~1.2x though, so this is "wood for the fire" rather than a GME-style mechanical squeeze.
+**What they do today.** Intel designs and (uniquely among large US chip companies) also manufactures semiconductors. Revenue splits across five main segments. Client Computing Group (CCG) sells x86 CPUs that go into the laptops and desktops you buy from Dell, HP, Lenovo, Apple-competitor PC makers, and so on; this is still the largest single revenue line and was historically Intel's cash cow. Data Center & AI (DCAI) sells Xeon server CPUs to hyperscale cloud providers (Amazon AWS, Microsoft Azure, Google Cloud) and enterprises, along with the Gaudi line of AI training/inference accelerators that compete with NVIDIA H100/B200 GPUs and AMD MI300/MI350. Network & Edge (NEX) supplies silicon for telecom equipment, 5G base stations, and edge compute boxes. Mobileye, a separately-listed but Intel-majority-owned subsidiary, sells driver-assistance and increasingly autonomous-driving systems (camera plus EyeQ chip plus software) to automakers. The newest segment, Intel Foundry Services (IFS), takes Intel's fabs and sells manufacturing capacity to *external* chip designers — a business model Intel never had before, copying TSMC's playbook with U.S.-soil fabs.
 
-**Net:** the bull case from March played out faster and harder than the old scenario table allowed for. The old $75 bull target is already in the rear-view mirror.
+**Where they want to grow.** The whole company is reorganized around two bets. Bet one is becoming the second viable leading-edge foundry on the planet next to TSMC, anchored by the 18A process node (1.8-nanometer-class, with new RibbonFET gate-all-around transistors and PowerVia backside power delivery). In April 2026 Intel reported 18A is in high-volume production with Panther Lake (the first 18A AI PC chip, branded Core Ultra Series 3 / Core Series 3) ramping 6-7x sequentially and yields converging toward year-end targets by mid-2026. Microsoft, Amazon, and reportedly Apple have signed multi-year 18A manufacturing deals; Google has a long-term agreement; NVIDIA selected Xeon 6 as the host CPU for its DGX Rubin AI systems. Success in 3-5 years looks like 18A and the follow-on 18AP and 14A nodes winning meaningful external wafer volume from TSMC, Foundry segment breaking even and then turning profitable, and Intel becoming the U.S. government's preferred onshore advanced-node supplier. Bet two is winning back the AI PC and server CPU upgrade cycle with Panther Lake (client) and the next-gen Clearwater Forest / Diamond Rapids Xeons (server). Mobileye is a third, separate optionality — it's executing well in 2026 with safety-driver-removal commercialization beginning this year and the Mentee Robotics acquisition extending it into humanoid robotics.
+
+**What could go wrong (business risks).** AMD's EPYC took a *record* 46.2% server CPU revenue share in Q1 2026, up 6.8 points year-over-year, and AMD's $5.8B data-center revenue passed Intel's $5.1B DCAI revenue for the first time — Intel's most profitable historical franchise is being structurally eroded. Foundry execution is the single biggest risk: external Foundry revenue was only $174M in Q1 2026, the segment lost $2.4B that quarter, and turning announced multi-year deals into ramped wafer volume takes 2-3 years; if 18A yields stall or Apple/Microsoft walk away mid-ramp, the entire turnaround thesis evaporates. Gaudi is a distant third in AI accelerators behind NVIDIA (Rubin in 2026) and AMD (MI350/MI400); Intel competes with NVIDIA, AMD, *and* the in-house silicon at Amazon Trainium, Google TPU, and Microsoft Maia simultaneously. The U.S. government holds an escrowed equity stake from the CHIPS Act Secure Enclave arrangement — passive, no board seat, but Treasury monetization of that block at some future date is a structural supply overhang on the share price. Capex remains enormous (roughly $25B/year), free cash flow has been deeply negative for three consecutive years (-$9B to -$16B annually), and the balance sheet carries $47B of debt against $14B cash — the company is running on capital-market goodwill until Foundry self-funds.
+
+**How to think about it.** This is a *turnaround in the x86 incumbent attempting transition to becoming a leading-edge foundry*. The investable thesis is 18A executing in volume and Intel Foundry winning enough external customers to turn its $10B+ annual capex into wafer-revenue growth — not Gaudi winning the AI accelerator market, not Intel reclaiming server share from AMD. Mobileye is a side bet, not the story. Treat this as a high-conviction operational call on a single technology node and a sales motion (selling fab capacity to outside chip designers) that Intel has never executed before, with a U.S. government-backed safety net underneath.
 
 ## Situation Summary
 
-Intel's turnaround under Lip-Bu Tan has gone from "show me" to "show me the next leg." Q1 2026 was the first quarter where the financial trajectory clearly inflected: gross margin jumped 650bps above guide on better 18A yields and product mix, data center grew 22% (CPU demand pulled along by the AI buildout), and management explicitly framed AI as 60% of revenue growing 40%. The stock has more than doubled in six weeks and is now pricing in a fairly clean execution path. The U.S. government's 10% stake (cost ~$8.9B, now worth ~$41B) provides a "national champion" floor but also a future supply overhang -- Trump is publicly anchoring on the gain, which raises the probability of a future monetization event. Foundry is still bleeding $2.4B per quarter and external customer commitments remain thin (Apple/Google rumored, nothing signed for volume). At $94.75 Intel trades at roughly 95x the implied 2026 EPS run-rate and infinite multiples on TTM GAAP earnings, which assumes the foundry inflection from here is approximately linear -- the same bet the market made at $46, just at 2x the entry price.
+Intel stock has rallied roughly 470% from its 52-week low of $18.97 to $108.17 — including a single-day +23.6% move on Q1 2026 earnings (April 23, the best single-session since 1987) and a +14% pop on the May 8 Wall Street Journal report that Apple and Intel reached a preliminary 18A foundry agreement. Q1 2026 revenue was $13.6B vs. ~$12.2B guided, non-GAAP gross margin 41% (650 bps above guide), Foundry external revenue up to $174M, and management said 18A yields are tracking to end-of-year targets by mid-2026. CEO Lip-Bu Tan said on Mad Money on May 18 that "customers are now knocking on my door" for 18AP and 14A. The narrative has fully flipped from "Intel can't execute" (the consensus through 2025) to "Intel Foundry is a national treasure" — and the market has rapidly priced that flip. Mercury Research's Q1 2026 data, released the same week as the Apple report, showed AMD EPYC at record 46.2% server CPU revenue share with AMD data-center revenue passing Intel's — a headline the rally is largely ignoring.
 
 ## Variant Perception
 
-- **Consensus view:** Sell-side is in the middle of catching up. Median 12-month PT still sits near $63 (-33% from spot) because most analysts haven't re-rated post-earnings; Evercore is the leading edge at $111 (+17%). The narrative has flipped from "permanently broken" to "AI CPU + foundry option is mispriced," and momentum/flow funds are piling in. Short interest is still elevated (~2.9% pre-earnings) but days-to-cover only ~1.2x -- the fire is burning down.
-- **Our view:** Q1 was a real beat, but the magnitude of the price move (+105%) has front-run several quarters of expected operational improvement. At $94.75 the stock is no longer cheap on any reasonable forward multiple and the asymmetry has flipped vs March. The new risks are: (1) a U.S. government secondary offering to monetize the gain -- 433M shares is ~10% of float and even a partial sale would cap the stock; (2) "AI revenue is 60%" is a framing choice (it includes traditional DC CPU) that sets up a definitional disappointment if AI accelerator share doesn't show up; (3) the foundry losses, while improving, are still $9-10B annualized -- breakeven is still 2027/28; (4) at this price Intel is competing for capital with NVDA/AMD/TSMC at much higher quality.
-- **Trigger:** A signed volume external foundry customer (Apple 18A-P confirmation, or anyone else north of $1B annualized) would justify another leg up. A Treasury secondary, a Q3 gross margin reset back to mid-30s, or any 18A yield setback would crater it back to $60s.
+- **Consensus view (now):** Intel Foundry is the real deal; 18A works; Apple/Microsoft/Amazon validation locks in a 2-3 year ramp; CHIPS Act and government stake provide downside floor. Sell-side targets have raced upward but mean target ($87.86) is still 19% *below* the current price — analysts are running behind the tape.
+- **Our view:** The early-2025 thesis (extreme value with optionality on Foundry) is gone. At $108 with $544B market cap on 10x sales and 70x forward P/E, the stock now embeds Foundry success that hasn't yet shown up in external revenue ($174M, less than 4% of Foundry segment, less than 1.3% of total). AMD continues taking server share at an *accelerating* rate. Free cash flow stays deeply negative through 2027 even in the bull case. The mean sell-side target sitting 19% below spot is a tell — even bullish analysts haven't found numbers to justify $108. Bank of America explicitly flagged the Apple deal as "priced for best case."
+- **Trigger (bearish):** any 18A yield stumble or Apple/Microsoft ramp delay disclosed at Q2 2026 earnings (late July), an AMD share-gain print in Q2 that finally cracks the narrative, or — most likely — a Treasury monetization of the CHIPS Act equity stake creating a known supply overhang. **Trigger (bullish):** Q2 2026 external Foundry revenue inflecting above ~$500M, a second named hyperscaler customer beyond the existing handful, or 14A taping out on schedule. The stock has already discounted a lot of the bullish triggers.
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | ~$54-55B (annualized post-Q1 beat) | Returning to growth after -5.7% CAGR trough |
-| Q1 2026 Revenue | $13.58B | +7.2% YoY, +650bps GM beat |
-| Q1 2026 GAAP EPS | (small loss) / $0.29 non-GAAP | First non-GAAP profitable Q since 2022 |
-| Foundry Op Loss (Q1) | -$2.4B | Improved $72M QoQ; ~-$9-10B annualized |
-| External foundry rev (Q1) | $174M | Still tiny vs $5.4B internal |
-| Gross Margin (non-GAAP) | 41% | Bottomed at 32.7% in 2024; large step-up |
-| FCF | Still negative TTM | Capex ~$15B/yr; first positive Q possibly in 2026 |
-| Net Debt/EBITDA | ~2x | Stable |
-| Cash | ~$14B | + ~$8.9B gov't proceeds from Aug-2025 |
-| Short Interest | ~2.9% (~144M shares) | Spiked into earnings, getting unwound |
+| Revenue (TTM) | ~$53B | -8% CAGR from $63B FY22 |
+| Net Income | -$0.3B (TTM) | Negative 3 of 4 years; -$18.8B trough |
+| Operating Cash Flow | $9.7B | Stable ~$8-15B |
+| Free Cash Flow | -$4.9B | Negative all four years (-$5B to -$16B) |
+| Gross Margin | 37.2% (TTM) | Down from 43% pre-2022 |
+| Operating Margin | 6.9% (TTM, GAAP) / 41% (non-GAAP Q1) | Recovering |
+| Total Debt | $46.6B | Up from $42B FY22 |
+| Stockholders Equity | $114B | Stable |
+| Cash | $14.3B | |
+| Capex | -$14.6B (latest) | Peaked at $25.8B FY24 |
+| ROE | -2.9% | Trough -18%, recovering |
+| Forward P/E | 70.3x | |
+| P/Sales | 10.1x | |
+| P/Book | 4.7x | |
+| Beta | 2.19 | High |
+
+Foundry segment Q1 2026: $5.4B revenue (+20% q/q), external revenue only $174M, operating loss -$2.4B.
+DCAI Q1 2026: ~$5.1B revenue, +22% growth (per company release), now smaller than AMD's data-center segment.
 
 ## Valuation Models
 
-| Model | Fair Value (March run) | Upside vs $94.75 | Note |
-|-------|-----------|--------|------------|
-| gbm_opportunistic_1y | $95.67 | +1% | Already at the 1y opportunistic FV |
-| gbm_opportunistic_3y | $85.94 | -10% | Stock is past 3y opportunistic FV |
-| gbm_lite_3y | $84.64 | -11% | Past FV |
-| gbm_3y | $73.01 | -23% | Significantly past FV |
-| gbm_1y | $59.60 | -37% | Significantly past FV |
-| autoresearch | $59.22 | -37% | |
-| simple_ratios | $52.69 | -44% | |
-| dcf / rim / growth_dcf | Failed | N/A | Negative earnings/FCF |
+| Model | Fair Value | Upside (vs $108.17 today) | Confidence | Run Date |
+|-------|-----------|---------------------------|------------|----------|
+| gbm_opportunistic_1y | $177.69 | +64% | 0.97 | 2026-05-18 |
+| gbm_opportunistic_3y | $159.61 | +48% | 0.94 | 2026-05-18 |
+| gbm_lite_3y | $157.19 | +45% | 0.84 | 2026-05-18 |
+| gbm_3y | $136.93 | +27% | 0.93 | 2026-05-18 |
+| autoresearch | $111.83 | +3% | 0.80 | 2026-05-18 |
+| gbm_1y | $110.69 | +2% | 0.92 | 2026-05-18 |
+| gbm_lite_1y | $102.94 | -5% | 0.58 | 2026-05-18 |
+| simple_ratios | $68.54 | -37% | 0.70 | 2026-05-18 |
+| rim | $12.62 | -88% | 0.70 | 2026-05-18 |
+| DCF variants | failed (negative FCF) | — | — | 2026-05-18 |
 
-**Model consensus (caveat):** These FVs were generated 2026-03-20 and have NOT been re-run with Q1 2026 actuals. Even so, the directional read is clear: at $94.75, Intel is trading at or above every functioning model's fair value from six weeks ago. The Q1 beat justifies upward revisions, but to make the math work at spot price, GBM 1y FV has to roughly double from $59.60 -- a re-rating of that magnitude in one quarter would itself be unusual. Rerunning the models with refreshed inputs is the highest-priority next step before any add. **GBM is the most reliable family per project conventions; classic DCF/RIM still inapplicable due to negative GAAP earnings.**
+*Models last ran when INTC printed at $84.99; current price is $108.17 (+27% intraday post-Apple-deal). Upside percentages have been recalculated against today's price. The GBM family's bullish skew partly reflects the trailing price window before this move was fully ingested — Monday's model run will likely re-rate downward.*
 
-## Business Quality (14/25, +2 from March)
+**Model consensus:** Severely split. GBM family (most reliable per our calibration) says fair value $137-177, suggesting more upside. Fundamental models (simple_ratios -37%, RIM -88%) say the stock has overshot fair value. DCF variants couldn't compute (negative FCF). The fundamental models are *anchored on trailing book and earnings* which deeply understate any forward Foundry success — but the GBMs are *anchored on a price trajectory that just spiked*, which overstates near-term upside. Truth is probably between the two clusters, around the autoresearch ($112) and gbm_1y ($111) center — i.e. roughly fair at current levels.
+
+## Business Quality (13/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 3/5 | Unchanged. x86 duopoly with AMD, foundry has no moat yet, government support is artificial moat. |
-| Management | 4/5 | **Upgraded.** Lip-Bu Tan delivered a real Q1 beat with margin upside, not just cost cuts. Communication of "AI is 60% of rev" is sharp. Still no firm timeline on foundry breakeven or merchant AI accelerator. |
-| Profitability | 2/5 | **Upgraded.** Non-GAAP GM jumped to 41%, first non-GAAP profitable quarter in years. GAAP still negative. ROE still ~0%. Foundry still loses $9-10B annualized. |
-| Balance Sheet | 3/5 | Unchanged. Net debt/EBITDA ~2x, $14B cash + ~$8.9B gov proceeds. Still capex-heavy. |
-| Growth | 2/5 | DC +22% in Q1 is strong, but it's CPU-pull-through rather than AI accelerator share. AI accelerator product still pushed to 2027. Foundry external rev still microscopic. |
+| Moat | 3/5 | x86 ISA still a meaningful franchise; manufacturing scale and IP in 18A is genuinely rare globally (only TSMC and Samsung in the same conversation); but moat *eroded* through 2018-2024 by missing several process generations, and the AI accelerator moat is essentially zero vs NVIDIA's CUDA ecosystem. |
+| Management | 3/5 | Lip-Bu Tan (CEO since 2025) is an industry veteran with strong execution narrative — Q1 2026 was the sixth straight beat under his tenure, 18A is shipping, external deals are signed. But the broader Intel management track record on capital allocation is poor (years of buybacks at $50+ followed by emergency capex pivot, missed 10nm/7nm/Intel 4 deadlines, failed acquisitions). Limited insider buying. |
+| Profitability | 2/5 | GAAP unprofitable, deeply negative free cash flow three years running, ROE -2.9%, ROA 0.6%. Non-GAAP margins improving but the gap between GAAP and non-GAAP is itself a quality flag. |
+| Balance Sheet | 2/5 | $46.6B debt, $14.3B cash, equity $114B but propped up by CHIPS Act equity injection. Current ratio 2.3 is OK, but capex is ~$25B/yr against OCF of ~$10B — the gap is funded by debt, government, and asset sales. |
+| Growth Runway | 3/5 | Foundry total addressable market is genuinely large ($100B+ if Intel wins real share); AI PC cycle is real; but core x86 server share is *shrinking*, Gaudi is uncompetitive, and Mobileye is a single-digit-percent contribution. Growth depends on a manufacturing-execution success that has only just begun. |
+
+**Total: 13/25** — yellow flag, consistent with a turnaround mid-execution.
 
 ## Inflection Point
 
-**The inflection is now confirmed in the financials -- but priced in.** Q1 was the proof point that 18A yield improvements convert into gross margin upside, that AI buildout drags Intel's CPU business along, and that cost cuts have stuck. What's NOT yet proven: (1) that foundry external revenue ramps to material levels (currently $174M of $5.4B foundry rev is external -- ~3%); (2) that Intel can re-enter the merchant AI accelerator market in any meaningful way before 2027; (3) that the gross margin bridge to 50%+ (where TSMC/AMD live) actually closes. The market is pricing all three as probable. At $46 you were paid to wait for the inflection; at $94.75 you have to underwrite the next two inflections happening on schedule.
+**Yes — operational inflection is *observable*.** Q1 2026 was the sixth consecutive earnings beat. 18A is in high-volume production. Panther Lake ramped 6-7x sequentially. External Foundry deals with Microsoft, Amazon, reportedly Apple, plus Google long-term agreement, all signed in the last 9 months. CEO Tan publicly saying "customers are knocking on my door" for 18AP/14A. This is the textbook "enter *after* initial recovery is visible" inflection that the research framework calls out.
+
+**But:** the *stock* has discounted most of that inflection. From $19 to $108 in roughly a year — a 470% move. The Fisher-style rule about entering after observable evidence trades off some upside for less value-trap risk, but at 470% past the trough the trade has become "buy after the whole world has bought" rather than "buy after the inflection." The remaining inflection (Foundry external revenue actually crossing $1B/quarter) is at least 2-3 quarters out.
 
 ## Bull Case
 
-- 18A yields keep stepping up; Apple 18A-P signs as a named volume customer in 2026; external foundry revenue reaches $1B+ run-rate by year-end
-- Foundry operating loss halves to <$5B annualized by Q4 2026; clear path to breakeven 2027
-- Gross margin holds 40%+ with upward bias as 18A mix grows
-- Data center growth continues 15%+ as AI buildout pulls along Xeon volumes
-- Government does NOT sell -- holds as strategic stake, removing the overhang
-- Re-rating to "specialty foundry + recovering fabless" gets a sustained 25-30x forward multiple on $3+ EPS by 2027
+- **18A wins external volume at scale.** Apple, Microsoft, Amazon ramp 18A wafer purchases through 2026-2027, taking external Foundry revenue from $174M/quarter to $1B+ by year-end 2027.
+- **U.S. government as anchor demand.** Defense, intelligence, and federal AI compute increasingly require U.S.-made advanced silicon; Intel becomes the de facto national champion with associated pricing power.
+- **AI PC refresh cycle is real.** Panther Lake's 50-TOPS NPU meets Microsoft Copilot+ requirements, triggering a 2026-2027 enterprise PC refresh; 200+ designs already announced from Dell/HP/ASUS.
+- **Mobileye stand-alone value.** Mobileye safety-driver-removal commercialization in 2026 plus the Mentee Robotics humanoid pivot creates meaningful sum-of-parts optionality not in Intel's core multiples.
+- **CHIPS Act floor.** Government equity stake and CHIPS subsidies de-risk the worst-case scenario.
 
 ## Bear Case
 
-- **U.S. Treasury monetizes part of the 10% stake.** Even a 2-3% secondary creates a multi-quarter overhang and resets price discovery. Trump publicly anchoring on the $30B gain raises this probability.
-- Q1 GM beat doesn't persist -- mix shifts back, or 18A pricing pressure shows up, and Q3/Q4 GM resets to mid-30s
-- AI accelerator program disappoints again; Falcon Shores successor slips from 2027
-- Foundry external revenue stays sub-$1B for all of 2026 -- the "TSMC alternative" narrative gets reframed as "captive fab"
-- Macro/AI capex digestion in 2027 takes Xeon growth back to flat
-- At ~$94 you're paying ~95x forward EPS on a business with 41% GM and infinite GAAP P/E -- any miss compresses the multiple sharply
-- Insider activity: management compensation grants get exercised at these prices -- watch for sales
+- **Foundry external revenue stays small longer than the market expects.** $174M external in Q1 2026 on $5.4B segment revenue (the rest is internal cross-charges) means external customers are still <4% of Foundry. Even with the Apple deal, contractually-ramped revenue is 2-3 years out per BofA. The stock is priced as if the ramp is closer.
+- **AMD continues taking server share — and the market is currently ignoring this.** AMD EPYC 46.2% server CPU revenue share (record) is the under-covered risk vs. the news cycle, which is all-Foundry-all-the-time. DCAI is still ~25% of Intel revenue and has higher margins than CCG; structural erosion here breaks the consolidated margin story regardless of Foundry success. *This is the risk in management's own segment disclosure that headlines are under-covering.*
+- **Free cash flow stays deeply negative.** Capex ~$25B/year, OCF ~$10B/year, so FCF gap of $10-15B/year funded by debt and CHIPS Act. Bull case requires FCF to inflect; in the bear case, the company issues more equity or takes more debt at higher rates.
+- **Treasury monetization of the CHIPS Act equity stake.** Government holds an escrowed block of Intel common stock with no public lockup mechanism; a Treasury decision to sell creates a known forward supply overhang that the bull case ignores entirely.
+- **Gaudi competing with NVIDIA/AMD/TPU/Trainium/Maia simultaneously.** Intel's AI accelerator strategy is the weakest leg; competing against an entrenched CUDA ecosystem and four hyperscaler in-house chips at once is a losing posture. If the bull thesis quietly assumes Gaudi contributes, that assumption is wrong.
 
 ## Scenario Table
 
-Probability weights shifted post-Q1 to reflect: (a) inflection is now confirmed, raising base/bull odds; (b) but valuation has compressed forward returns, so bull upside is smaller. Bull target raised from $75 -> $130 reflecting Evercore's $111 PT plus 18A external customer optionality. Base raised from $48 -> $90 (small downside, reflecting digestion + gov stake overhang). Bear path now has a real catalyst (Treasury secondary).
-
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| Bull | 25% | 18A external customer signed (Apple/Google volume), GM holds 42%+, foundry losses halve, EPS run-rate $2.50 by 2027 | Multiple expands to 30-35x forward as foundry optionality re-rates; "national champion + AI CPU" gets premium | $130 | +37% |
-| Base | 45% | Q1 GM holds, foundry losses narrow gradually but no signed external whale, DC grows 10-15%, EPS path to $1.50 | Stays at ~25-30x forward post euphoria; digestion phase | $90 | -5% |
-| Bear | 30% | Treasury monetizes 2-5% of stake OR Q3 GM resets OR foundry customer disappointment. EPS sub-$1. | Multiple compresses to 18-22x forward as turnaround re-questioned | $55 | -42% |
+| Bull | 25% | 18A external Foundry inflects above $1B/quarter by end-2027; Panther Lake AI PC cycle drives CCG growth; DCAI stabilizes near current levels; FY27 EPS ~$3 | Multiple holds at 50x forward as Foundry is re-rated to TSMC-adjacent | $150 | +39% |
+| Base | 50% | Foundry ramp is real but slow; external revenue $400-700M/quarter by end-2027; AMD continues taking server share; EPS recovers to $1.50 by FY27 | Multiple compresses to 40x as the easy money on the turnaround narrative is already made | $95 | -12% |
+| Bear | 25% | 18A yields disappoint mid-2026 or an external customer delays ramp; AMD prints another record server share; Treasury announces monetization timeline; EPS stays sub-$1 | De-rating to 25x forward as Foundry credibility cracks | $55 | -49% |
 
-**Expected value: -3.4%**
-(0.25 x 37%) + (0.45 x -5%) + (0.30 x -42%) = +9.25% - 2.25% - 12.6% = **-5.6%** (call it -5% with rounding)
-
-**Thesis breaks if:** (a) U.S. Treasury announces any sale of Intel shares, (b) Q2 or Q3 GM falls back below 38%, (c) foundry external revenue stays below $300M/quarter through year-end, (d) any 18A yield regression announced.
+**Expected value: +0.4%** (= 0.25 × 39 + 0.50 × -12 + 0.25 × -49)
+**Thesis breaks if:** Q2 2026 earnings (late July) shows 18A yields slipping or external Foundry revenue *down* sequentially, OR Treasury announces a monetization schedule for the CHIPS Act stake.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | High and rising. Momentum/AI baskets adding. Up 150% YTD; up 92% in April alone. |
-| Short interest | ~2.9% pre-earnings (~144M shares); days-to-cover ~1.2x. Squeeze fuel mostly burned in the 25% post-earnings gap. |
-| Technical position | At/near 52w high $95.69. RSI deeply overbought. ~2.5x above 200d MA. Classic blow-off setup. |
-| Government overhang | Treasury holds 433M shares (10%) at $20.47 cost. Unrealized gain >$30B. Trump publicly anchoring on the gain raises monetization probability over the next 6-12 months. |
-| Insider activity | Watch for management 10b5-1 sales at these prices -- highly likely. |
-| Next catalyst | Q2 earnings (late July 2026); any 18A external customer announcement; any Treasury statement on the stake. |
-| Recent price action | $46 -> $94.75 in 6 weeks. Vertical. |
+| Crowdedness | **Crowded** — narrative has fully flipped from "broken" to "national treasure" in ~6 months; momentum funds and AI thematic baskets piling in. Institutions hold 64% of float. |
+| Short interest | 2.76% of float — low; squeeze already happened. |
+| Technical position | Recently ran from $66.78 (April 23) to $132.75 high (52-week), now $108.17 — down 18% from highs in the last few sessions, beta 2.19. Volume on the way down is heavy. |
+| Next catalyst | Q2 2026 earnings (late July 2026) — 18A yield update, external Foundry revenue print, AMD server share comparison. |
+| Recent price action | +470% from 52w low; +14% on May 8 Apple-deal news; -18% from May 12 highs. Stock is firmly in "already ran" territory. Mean sell-side target ($87.86) is 19% below spot. |
+
+**Setup verdict:** Unfavorable for new long entries. Crowded, post-rally, with sell-side still catching up *upward* — even bullish analysts haven't found a model that justifies $108. Stocks where the price leads the targets by 20% tend to consolidate.
 
 ## Verdict
 
-**TRIM (if held) / PASS (if not held)** -- Conviction: MEDIUM
+**WATCH** — Conviction: MEDIUM
 
-The thesis from March worked -- harder and faster than expected. Q1 2026 was a genuine inflection print and the +105% repricing partially reflects that. But at $94.75 the expected value calculation is now slightly negative (-5%), the asymmetry has flipped (bear -42% vs bull +37%), and the U.S. Treasury sits on a >$30B unrealized gain that creates a structural exit overhang. Adding here is paying full price for an inflection that's already happened, on the assumption the next two inflections (foundry external revenue ramp + AI accelerator) also land cleanly. That's a worse deal than the one available six weeks ago.
+The operational turnaround is real and observable — Q1 2026 was a genuine inflection on 18A and Foundry external deals. But the stock has discounted most of that inflection (+470% from trough) and now trades 19% above mean sell-side target on 70x forward P/E with deeply negative free cash flow. The under-priced bear case (AMD taking record server share + Treasury monetization overhang + 2-3 year Foundry ramp lag) creates an expected value near zero with wide and asymmetric downside. Scenario math gives roughly 0% EV with a 75% probability of a flat-or-negative one-year outcome.
 
-**Action if currently long from <$50:** Trim 30-50% to lock in the move. Trail stop on the rest at ~$78 (below the $80 psychological + ~17% pullback). The remaining position rides the bull case for free.
+**Would upgrade to BUY at $75 or below** — that level prices in a base-case ramp without bull-case heroics and gives proper risk-reward for a mid-execution turnaround.
+**Would stay WATCH between $75-$110** — favorable thesis, unfavorable setup.
+**Would consider trimming above $130** — that level requires the bull case to be the *base* case, which is not yet supported by external Foundry revenue prints.
+**Thesis-break signal:** Q2 2026 earnings showing either external Foundry revenue down sequentially, 18A yields tracking below targets, or AMD server share north of 50% — any of these would invalidate the inflection thesis.
 
-**Action if not long:** Pass. Wait for one of:
-- Pullback to $70-75 range (-20-25%) where base case is at least flat-EV
-- Confirmed signed external foundry customer at volume ($1B+ commitment)
-- Treasury issues a public lock-up/no-sale statement removing the overhang
-- Q2 earnings hold the 41% GM line AND foundry external rev steps up materially
-
-**Would re-engage as long on:**
-- Pullback to $70 with thesis intact
-- Apple 18A-P confirmed as volume customer
-- Treasury formally commits to multi-year hold
-
-**Would short / aggressive avoid on:**
-- Treasury announces any secondary
-- Q2/Q3 gross margin reset back below 38%
-- 18A yield setback or Panther Lake delay
-
-Sources for the 2026-04-30 refresh:
-- [Intel Reports First-Quarter 2026 Financial Results](https://www.intc.com/news-events/press-releases/detail/1767/intel-reports-first-quarter-2026-financial-results)
-- [Intel Q1 2026 earnings transcript - Motley Fool](https://www.fool.com/earnings/call-transcripts/2026/04/23/intel-intc-q1-2026-earnings-transcript/)
-- [Intel Q1 2026 Earnings: $13.6B Revenue, DCAI Up 22%](https://tech-insider.org/intel-q1-2026-earnings-13-6-billion-revenue-data-center-surge/)
-- [Intel Surges 12% on April 29, 2026 - Meyka](https://meyka.com/blog/intc-stock-surges-12-on-april-29-2026-as-semiconductor-rally-continues-3004/)
-- [Intel Stake Held by US Government Jumps to $36 Billion - Bloomberg](https://www.bloomberg.com/news/articles/2026-04-24/us-government-stake-in-intel-has-jumped-300-to-36-billion)
-- [Trump Says US Made Over $30 Billion On Intel Stock - Benzinga](https://www.benzinga.com/markets/tech/26/04/52158908/trump-says-us-made-30-billion-on-intel-stock-in-just-90-days)
-- [Intel Foundry Gains Momentum: Apple Reportedly Eyes 18A-P - TrendForce](https://www.trendforce.com/news/2026/04/29/news-intel-foundry-gains-momentum-apple-reportedly-eyes-18a-p-as-google-explores-advanced-packaging/)
-- [Intel (INTC) Short Interest - MarketBeat](https://www.marketbeat.com/stocks/NASDAQ/INTC/short-interest/)
+<!-- Public file: generic research only. No personal position data. -->

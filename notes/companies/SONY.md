@@ -1,120 +1,134 @@
 # Sony Group Corporation (SONY)
 
 **Sector:** Technology | **Industry:** Consumer Electronics / Entertainment Conglomerate
-**Price:** $20.22 | **Market Cap:** $120B
-**Analysis Date:** 2026-03-23
+**Price:** $22.71 (2026-05-18 close) | **Market Cap:** $134.2B
+**Analysis Date:** 2026-05-19
+
+> **Source confidence note:** The Sony IR site (`sony.com/en/SonyInfo/IR`) blocked direct fetches; primary numbers below come from Sony Group's SEC Form 6-K filings (May 2026) accessed via SEC EDGAR aggregators, cross-checked against multiple wire/analyst summaries (Reuters, Nikkei, CoinCentral, EBC, Simply Wall St, Push Square). Segment guidance figures for FY2026 sourced from a single aggregator and should be treated as approximate until cross-confirmed at the IR PDF level — flagged but not "news-summary-only."
+
+## Business Primer
+
+**What they do today.** Sony Group is a Japan-based diversified entertainment and technology conglomerate. After spinning off its Financial Services arm in October 2025 (Sony Financial Group, "SFGI" — Sony retained 16.4%), the parent now operates four core segments. (1) **Game & Network Services ("G&NS")** sells PlayStation consoles, first- and third-party software, and the recurring PlayStation Network / PS Plus subscription business — the biggest profit pool, ¥463B operating income in fiscal year 2025 (year ended March 2026). (2) **Music** is one of the world's three major recorded-music groups (Sony Music Entertainment) plus Sony/ATV and EMI publishing — ¥447B operating income, mostly high-margin streaming royalties and catalog cashflow, recently augmented by the Hipgnosis catalog acquisition. (3) **Pictures** is Sony Pictures Entertainment (Columbia, TriStar) — film and television production and licensing, ¥105B. (4) **Entertainment, Technology & Services ("ET&S")** sells TVs, cameras, audio, professional broadcast gear — ¥159B. Outside these four sits **Imaging & Sensing Solutions ("I&SS")** — the merchant-market CMOS image sensor business (roughly 50% global share in smartphone sensors, supplying Apple, Samsung, Chinese OEMs, plus a growing automotive ADAS pipeline) — ¥357B operating income. Total continuing-operations revenue was ¥12.48 trillion (~$78B at 0.0063 USD/JPY) in fiscal 2025.
+
+**Where they want to grow.** Three explicit bets. First, **monetize content IP harder across screens** — turn PlayStation franchises into films/TV (the "Last of Us" playbook), keep Music streaming compounding via catalog M&A (Hipgnosis), and use Pictures to franchise game properties. Second, **scale Imaging & Sensing Solutions at the high end** — the May 2026 memorandum of understanding with TSMC to co-develop next-generation sensors at advanced nodes protects Sony's smartphone dominance and supports an automotive design-win pipeline that is supposed to ramp through 2027–2028. Third, **return capital aggressively** — the ¥500 billion (~$3.3B) buyback authorized through May 10, 2027 and the 184.5 million treasury share cancellation on May 29, 2026 (~3% of outstanding) signal a willingness to shrink the float as the conglomerate-discount thesis closes. Management's stated FY2026 operating income target is ¥1.6 trillion (+10.5% year over year), which implicitly bakes in modest segment growth across the board.
+
+**What could go wrong (business risks).** PlayStation 5 is in its end-of-cycle decline phase and PS6 timing is explicitly undecided (CEO Totoki said in May 2026 component costs remain too high to commit to a launch date) — so G&NS earnings rest more on services/software than hardware for at least another year. The console business is structurally cyclical; mis-timing the PS6 launch (too early on expensive silicon, too late vs. Microsoft/Nintendo) is a real risk. Imaging & Sensing Solutions is exposed to smartphone demand cycles and to Chinese competition (Omnivision, SMIC-fab options), and the TSMC JV is still only an MOU — capex commitment hasn't been signed. Music faces medium-term royalty-rate pressure if Spotify/Apple renegotiate label deals. The Financial Services spin-off in October 2025 booked a ¥1.38 trillion non-cash deconsolidation loss that pushed reported consolidated net income to a loss — optically ugly but accounting-only. The remaining 16.4% SFGI stake is now equity-accounted, removing a steady annuity earnings stream. Finally, the yen: management's FY2026 guidance assumes roughly ¥150/USD; a rally to ¥140 would mechanically compress reported operating income by mid-single-digit percent.
+
+**How to think about it.** Sony is best understood as a **sum-of-the-parts media-and-sensors conglomerate** with a structural discount that capital returns are slowly closing. The right peer set is not a single industry — Music compares to Universal Music Group and Warner Music (~18-22x earnings), Pictures to Lionsgate/Warner Bros Discovery (~10-13x), I&SS to ON Semi and STMicro (~15-18x), Gaming to Nintendo and Microsoft Xbox (services-attached, ~18-22x). At ~21x trailing earnings on the consolidated ADR, you're paying a market multiple for a higher-quality mix of recurring cashflow streams than the multiple implies, with optionality on PS6 and auto sensors. Think "Berkshire-of-entertainment with a real silicon franchise underneath" rather than "consumer electronics OEM" — and remember that, post-Financial-Services-spin, this is a simpler, more focused company than the Sony of three years ago.
 
 ## Situation Summary
 
-Sony trades at $20.22, near its 52-week low of $20.13 and down 33% from the 52-week high of $30.34, despite strong Q3 FY2025 results (operating profit +22% YoY to JPY 515B) and raised full-year guidance to JPY 1.54T operating income. The selloff reflects macro headwinds: US tariff fears on Japanese companies (though Sony itself revised the impact down from JPY 100B to JPY 70B), late-cycle PS5 hardware declines, and broad weakness in Japan ADRs. Music and image sensor segments are firing on all cylinders, management expanded its buyback program to JPY 250B ($1.6B), and all 4 covering analysts rate it a Strong Buy with a mean target of $29.79 (+47% upside). The disconnect between fundamentals and price is the widest it has been in years.
+Sony reported FY2025 (year ended March 31, 2026) on May 8, 2026: continuing-operations revenue ¥12.48T (+3.7% YoY), operating income ¥1,447.5B (+13.4% YoY) — both records. FY2026 operating income guidance came in at ¥1.6T (+10.5%), roughly in line with consensus but below the most bullish estimates, producing a measured market reaction. On May 11 the board authorized a ¥500B (~$3.3B) buyback running through May 10, 2027 plus a 184.5M treasury-share cancellation effective May 29, 2026. The Financial Services partial spin-off (Sony Financial Group, "SFGI") was already executed October 1, 2025 — Sony distributed ~80% of SFGI shares as a dividend in kind, retained 16.4%, and booked a ¥1.38T non-cash deconsolidation loss that pushed reported consolidated net income to a loss but did not affect cash flow. The stock fell to a 52-week low of $19.63 on May 4 (pre-earnings de-risking), rallied on the buyback announcement to a post-earnings high of $22.79 on May 13, and has consolidated to $22.71 — up roughly 16% from the low. CEO Hiroki Totoki publicly said PlayStation 6 timing is not yet decided, removing that as a near-term catalyst. A new TSMC memorandum of understanding for next-generation sensor co-development was signed.
 
 ## Variant Perception
 
-- **Consensus view:** Sony is a gaming hardware company entering a dead zone between PS5 end-of-life and PS6 (expected 2028). Tariff headwinds and yen volatility create near-term earnings uncertainty. Analysts are unanimously bullish (Strong Buy, mean target $29.79) but the stock keeps falling — the market is ignoring them.
-- **Our view:** The market is pricing Sony as if gaming IS the company, but gaming is only ~25% of operating profit. The real value drivers are: (1) Music — a structurally growing, high-margin recurring revenue business with irreplaceable catalog assets (EMI, GIC JV for music rights); (2) Image sensors — dominant ~50% share in mobile CMOS with growing automotive/industrial TAM; (3) Anime/entertainment — Kadokawa stake (10%, largest shareholder) locks in FromSoftware IP pipeline. At 15.7x PE and 9.3% FCF yield, you're getting these high-quality businesses at a deep discount because of a temporary gaming hardware trough.
-- **Trigger:** (1) FY2025 full-year results in May 2026 showing Music and I&SS strength, (2) PS6 announcement expected late 2026/early 2027 re-igniting gaming narrative, (3) Continued aggressive buybacks at near-lows.
+- **Consensus view:** Sony has delivered, but the easy money is gone. Two of the three previously-anchored catalysts (FY25 print, buyback expansion) hit. Sell-side targets cluster at $29-30 mean. The narrative shifted from "PS5 trough / tariff fear" to "diversified compounder with capital return." PS6 is no longer assumed imminent.
+- **Our view:** The sum-of-the-parts discount is **partially closed but not fully**. At $22.71 the stock trades ~21x trailing / ~19x forward earnings — still a discount to a mix that should value Music at ~18-22x, I&SS at ~15-18x, and Gaming services at premium multiples. The post-spin Sony is structurally cleaner: Financial Services is no longer dragging the consolidated cost-of-capital narrative, and the equity-accounted 16.4% SFGI stake plus the spin distribution unlocked latent value most consensus models still discount. The PS6 delay is actually under-appreciated as a *good* thing for FY2026 earnings (no launch losses), and the buyback execution + share cancellation creates a mechanical bid through May 2027.
+- **Trigger:** (1) Quarterly buyback execution cadence (~¥125B/quarter if linear) printing through FY2026 earnings releases, (2) the May 29 share cancellation mechanically lifting EPS ~3%, (3) auto-sensor design-win disclosures at FY1H FY2026 results (~November 2026), (4) potential PS6 announcement in late 2026 or 2027.
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | JPY 13.0T ($87B) | +9.3% CAGR |
-| Net Income | JPY 1.14T ($7.6B) | +9.0% CAGR |
-| EBITDA | JPY 2.67T ($17.8B) | +10.7% CAGR |
-| Operating Income | JPY 1.41T ($9.4B) | +8.3% CAGR |
-| FCF | JPY 1.67T ($11.2B) | Strong recovery |
-| ROE | 14.5% | Improving |
-| D/E | 0.51x | Stable, conservative |
-| Net Debt/EBITDA | 0.46x | Very comfortable |
-| FCF Yield | 9.3% | Exceptionally high |
-| Operating Margin | 10.9% | Expanding |
-| Gross Margin | 29.5% | Stable |
+| Revenue (FY25 continuing) | ¥12.48T (~$78B) | +5.8% CAGR (post-spin basis comparable) |
+| Operating Income | ¥1,447.5B (~$9.1B) | +9.2% CAGR |
+| Net Income (continuing) | ¥1,030.9B (~$6.5B) | Slightly down YoY due to FX/comparables |
+| EBITDA | ¥2.67T (~$16.8B) | +10.7% CAGR |
+| FCF (FY25) | ¥1.67T (~$10.5B) | Strong recovery from FY23 negative |
+| ROE | 12.4% | Reset post-spin; underlying trend stable |
+| Debt/Equity | 19.6% | Conservative |
+| FCF Yield | ~7.8% on $134B mcap | Attractive |
+| Operating Margin | 11.6% (continuing) | Expanding |
+
+*Reported consolidated net income for FY25 is a loss of ¥326.9B due to the ¥1.38T non-cash Financial Services deconsolidation charge — accounting only, no cash impact.*
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence |
-|-------|-----------|--------|------------|
-| llm_deep_analysis (prior) | $24.95 | +21.0% | 0.70 |
+Models pulled 2026-05-19. Pre-rally models (run 2026-04-27 through 2026-04-30) used $20.14; recomputed upside below uses today's $22.71.
 
-**Market-implied valuation:**
-- Trailing PE: 15.7x (vs 5yr avg ~17-20x)
-- Forward PE: 17.0x
-- Price/Book: 2.35x
-- FCF Yield: 9.3% (extremely attractive)
-- Analyst mean target: $29.79 (+47% upside)
-- Analyst range: $22.00 - $34.00
+| Model | Fair Value | Recomputed Upside @ $22.71 | Confidence | Run Date |
+|-------|-----------|----------------------------|------------|----------|
+| gbm_lite_3y | $34.11 | +50.2% | 0.74 | 2026-05-18 (uses stale price) |
+| gbm_opportunistic_1y | $27.99 | +23.2% | 0.68 | 2026-05-18 |
+| gbm_opportunistic_3y | $27.08 | +19.2% | 0.73 | 2026-05-18 |
+| autoresearch | $26.11 | +15.0% | 0.86 | 2026-05-18 |
+| gbm_lite_1y | $26.01 | +14.5% | 0.80 | 2026-05-18 |
+| gbm_1y | $24.82 | +9.3% | 0.62 | 2026-05-18 |
+| gbm_3y | $24.39 | +7.4% | 0.69 | 2026-05-18 |
+| simple_ratios | $24.02 | +5.8% | 0.85 | 2026-05-18 |
+| llm_deep_analysis (prior) | $25.41 | +11.9% | 0.70 | 2026-05-14 |
+| dcf | $15.06 | -33.7% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | $12.92 | -43.1% | 0.70 | 2026-05-18 |
+| rim | $10.56 | -53.5% | 0.70 | 2026-05-18 |
+| dcf_enhanced | $7.21 | -68.2% | 0.70 | 2026-05-18 |
 
-**Model consensus:** At 15.7x trailing earnings for a company growing earnings at 9% CAGR with dominant positions in music, image sensors, and gaming — the stock is clearly undervalued. The FCF yield of 9.3% alone suggests significant mispricing. Sony's tariff exposure has proven smaller than feared, and the yen direction (bearish consensus for 2026 toward 160 JPY/USD) is actually a tailwind for yen-denominated earnings when translated back.
+*Models older than 7 days — upside columns rebased to today's price. GBM/autoresearch are trusted; DCF/RIM family excluded from consensus per Kelly sizer convention (asset-light/conglomerate bias).*
+
+**Trusted-model consensus (GBM family + autoresearch, confidence-weighted):** fair value ~$27.50, upside ~+21% from $22.71.
 
 ## Business Quality (19/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 4/5 | Dominant in CMOS image sensors (~50% mobile share), irreplaceable music catalog (Sony Music + EMI), PlayStation ecosystem with 100M+ users. Not quite 5 because gaming hardware has commodity risk. |
-| Management | 4/5 | Excellent capital allocation: aggressive buybacks (JPY 250B program), disciplined M&A (Kadokawa 10% stake for IP, music rights JV with GIC), consistent guidance raises. CEO Kenichiro Yoshida has executed well on entertainment strategy pivot. |
-| Profitability | 4/5 | Margins expanding: operating margin 10.9%, gross 29.5%. Music and I&SS are high-margin. Conglomerate structure creates some drag vs pure-play peers. ROE 14.5% is solid. |
-| Balance Sheet | 4/5 | Net Debt/EBITDA 0.46x, D/E 0.51x, JPY 3.0T cash. Financial services spinoff simplifies structure. Fortress balance sheet. |
-| Growth | 3/5 | Revenue CAGR 9.3%, earnings 9.0% — solid but not explosive. Growth diversified across streaming music (structural), image sensor (mobile + auto), anime/entertainment. Gaming is cyclical and entering trough. PS6 cycle won't start until 2028-2029. |
+| Moat | 4/5 | ~50% smartphone CMOS image sensor share, irreplaceable Sony Music + EMI + Hipgnosis catalog, PlayStation 100M+ Monthly Active Users ecosystem. Gaming hardware itself is commodity-adjacent. |
+| Management | 4/5 | ¥500B buyback authorized at 52w-low, 184.5M share cancellation, Kadokawa 10% stake, GIC music joint venture, disciplined TSMC sensor MOU (not full capex commitment). Totoki's capital allocation has been credible. |
+| Profitability | 4/5 | Operating margin 11.6% on continuing operations, I&SS segment OP up sharply on mobile AI-camera content and auto. Music high-margin recurring. Conglomerate drag persists but narrower post-spin. |
+| Balance Sheet | 4/5 | Net cash positive at parent level (enterprise value slightly negative on yfinance basis), cash ¥2.98T, buyback funded from FCF not leverage. |
+| Growth | 3/5 | Mid-single-digit revenue, FY26 guide +10.5% OI. Music structural, sensors cyclical-with-auto-upside, gaming PS5-trough through PS6. Not hypergrowth. |
 
 ## Inflection Point
 
-**Hidden segment growth masked by gaming trough.** This is the classic "multiple businesses in a conglomerate" setup. Music streaming revenue is growing mid-teens, image sensor is benefiting from mobile AI camera upgrades and automotive ADAS adoption, and anime/entertainment is hitting new highs. But PS5 hardware is declining as the console approaches end-of-life, and tariff headlines are creating noise. The inflection is already underway in Music and I&SS — it's just being obscured by the gaming cycle.
-
-**PS6 announcement (expected late 2026/early 2027)** will serve as a narrative inflection, re-exciting the gaming investment thesis and potentially triggering multiple expansion.
-
-**Financial services spinoff** simplifies the corporate structure, removing a conglomerate discount overhang and unlocking capital for entertainment M&A.
-
-**Buyback acceleration** at near-52-week-lows — management is signaling conviction by expanding from JPY 150B to JPY 250B.
+**Partial inflection underway, not fully ignited.** The Financial Services spin (Oct 2025) was the structural inflection — Sony is now a cleaner media-plus-sensors business with a smaller, simpler reporting structure. The May 8 print and buyback authorization confirmed the capital-return inflection. What remains is the **PS6 narrative inflection**, which CEO commentary in May 2026 explicitly pushed out (timing undecided, component costs too high). Best characterized as: structural cleanup complete, capital-return engine running, narrative catalysts (PS6, sensor auto wins) 6-18 months out. The mechanical inflection — share count compression — runs continuously through May 2027.
 
 ## Bull Case
 
-- Music segment continues structural streaming growth at 13%+ YoY, GIC JV deploys $2-3B into music rights creating a compounding royalty annuity
-- Image sensor business wins major automotive design wins as ADAS/autonomous driving proliferates, expanding TAM beyond mobile
-- PS6 announcement in late 2026 re-ignites gaming narrative, driving multiple expansion from 16x to 20x+ earnings
-- Aggressive buyback program (JPY 250B) reduces share count ~3-4%, accelerating EPS growth
-- Yen weakness toward 160 JPY/USD is a tailwind for translated earnings; tariff impact proves smaller than feared (already revised down)
-- Kadokawa/FromSoftware IP pipeline (next Elden Ring, etc.) strengthens gaming content advantage
+- Buyback execution at $22-24 mechanically supports the stock; 184.5M cancellation lifts EPS ~3% on May 29, 2026
+- FY2026 guidance (+10.5% OI) historically conservative — Sony has raised mid-year guidance in three of the last four years
+- I&SS auto-sensor design wins materialize at FY1H FY2026 results (November 2026) — multi-year visibility opens up
+- TSMC MOU graduates to full joint venture, de-risking advanced-node capacity and protecting ~50% smartphone share
+- Music segment continues high-single-digit growth on streaming + catalog M&A; Pictures gets a franchise tailwind from game-IP adaptations
+- Yen weakens further toward ¥155 (against management's ¥150 assumption), creating mid-year guidance raise pressure
 
 ## Bear Case
 
-- Tariffs escalate further, eating into margins across hardware segments (PS5, sensors, cameras)
-- Music streaming growth plateaus as Spotify/Apple negotiate lower royalty rates
-- PS5-to-PS6 transition creates a deeper-than-expected gaming revenue trough in FY2027-2028
-- Yen strengthens unexpectedly against USD, compressing ADR-denominated earnings
-- Competition in image sensors from Samsung/OmniVision erodes pricing power
-- Activist pressure at Kadokawa (Oasis Management 8.86% stake) complicates Sony's strategic partnership
+- **Underappreciated risk from primary source: the ¥1.38T deconsolidation loss is non-cash, but the equity-accounted 16.4% SFGI stake means Sony lost a stable ~¥150B/year Financial Services operating income annuity** that previously smoothed cyclical segments. Consensus models that compare YoY OI growth still on a "consolidated" basis are doing it wrong; the continuing-ops comp is the right one and is less flattering.
+- FY2026 segment-level guidance disclosures imply Music operating income may *decline* (Hipgnosis amortization, comp resets), which is not yet baked into bull-case sum-of-the-parts models that price Music at full premium multiples.
+- **PS5 hardware unit decline is accelerating** — software/services need to fully offset. Totoki's May 2026 PS6 deferral suggests management is also worried about timing.
+- Auto-sensor design wins disclosed less aggressively than expected; ADAS adoption slower than the multi-year bull thesis assumes (Chinese OEM competition from Omnivision).
+- Yen rally to ¥140/USD would compress reported operating income by ~6%; FY26 guidance midpoint at risk.
+- Stock has rallied 15.7% off the May 4 low ($19.63) — near-term technical extension argues against fresh buying at $22.71.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| Bull | 25% | Music +15% growth, I&SS wins auto, EPS grows 12-15% to ~$1.55 | PS6 announcement re-rates to 20x forward | $31.00 | +53% |
-| Base | 50% | Steady 8-9% earnings growth, EPS ~$1.40, tariff drag manageable | Multiple normalizes to 18x as fear fades | $25.00 | +24% |
-| Bear | 25% | Gaming trough deeper, tariffs escalate, EPS flat at ~$1.20 | Stays at current 16x, no re-rating catalyst | $19.00 | -6% |
+| Bull | 25% | FY26 OI beats to ¥1.7T (+5% vs guide), auto sensor wins announced Nov 2026, PS6 announcement re-frames G&NS | Re-rates to 20x forward on diversified-compounder narrative | $30 | +32% |
+| Base | 50% | FY26 OI hits ¥1.6T guide, buyback grinds float -3-4%, Music flat, I&SS +12%, G&NS recovers | Holds 18-19x forward, slow re-rate | $26 | +14% |
+| Bear | 25% | Yen strengthens to ¥140, FY26 OI cut mid-year to ¥1.50T, PS6 slips to 2028, Music single-digit | De-rates to 14x as conglomerate-discount narrative reasserts | $19 | -16% |
 
-**Expected value: +23.8%**
+**Expected value: +11.0%** (0.25 × 32 + 0.50 × 14 + 0.25 × -16 = 8.0 + 7.0 - 4.0 = +11.0%)
 
-Decomposition: Bull (25% x 53%) + Base (50% x 24%) + Bear (25% x -6%) = 13.3 + 12.0 - 1.5 = +23.8%
-
-**Thesis breaks if:** Music streaming growth stalls below 5%, image sensor market share drops below 40%, or management stops buybacks and makes a large dilutive acquisition.
+**Thesis breaks if:** Music segment growth turns negative, I&SS smartphone share drops below 45%, management funds a large dilutive games-studio M&A that consumes the buyback budget, or yen rallies through ¥140.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Uncrowded — only 7.8% institutional ownership on ADR, very low short interest |
-| Short interest | 0.17% — negligible |
-| Technical position | At 52-week low ($20.13), down 33% from high. Below 50d ($22.44) and 200d ($26.04) MAs. Maximum pessimism territory. |
-| Next catalyst | FY2025 full-year results: May 2026 (~2 months) |
-| Recent price action | Steady decline from $30+ since mid-2025, now testing 52-week low support. Falling in 7 of last 10 days. |
-| Beta | 0.703 — low beta, defensive characteristics |
-| Buyback support | JPY 250B program actively buying, providing a floor |
+| Crowdedness | Uncrowded on ADR — 7.92% institutional. Tokyo line more crowded post-rally. |
+| Short interest | 0.21% — negligible |
+| Technical position | $22.71 vs 50-day MA $20.89 (extended +8.7%), 200-day MA $25.17 (below). RSI elevated after 15.7% run from May 4 low. |
+| Next catalyst | 184.5M share cancellation May 29; Q1 FY2026 results August 2026; FY1H FY2026 (sensor commentary) November 2026; PS6 still undated. |
+| Recent price action | +15.7% from May 4 low ($19.63) to today ($22.71); 52w range $19.63-$23.06. Stock has effectively retraced most of the post-earnings rally pullback. |
 
 ## Verdict
 
-**BUY** — Conviction: MEDIUM-HIGH
+**WATCH** — Conviction: MEDIUM
 
-Sony at $20.22 offers a compelling risk/reward: 9.3% FCF yield, 15.7x trailing PE, and a quality conglomerate (19/25) with dominant positions in structurally growing markets (music streaming, image sensors) being priced as if it's a declining gaming hardware company. The variant perception is clear — the market is over-indexing on the PS5 end-of-life trough and tariff headlines while undervaluing the music/sensor businesses that drive the majority of profits and growth. Management is backing this view with an aggressive $1.6B buyback at near-lows, and yen weakness in 2026 is actually a tailwind. With unanimous Strong Buy analyst consensus, a 47% gap to mean target, and FY2025 results due in ~2 months, the setup is favorable.
+The variant perception is partially closed: the May 8 print, ¥500B buyback, and Oct 2025 Financial Services spin all validated the structural sum-of-the-parts thesis, and the stock has re-rated 15.7% off its May low. Expected value at $22.71 is +11% over twelve months — positive but not the +25%+ setup it offered at $19.63. Quality remains 19/25, capital return is real, the post-spin structure is cleaner. But the stock is now technically extended, the PS6 catalyst was just pushed out by management, and the most attractive entry windows recur at pullbacks toward the 50-day moving average.
 
-**Entry:** Current price ($20.22) is near the 52-week low and attractive. Scale in: 50% now, 50% on any dip below $19 or after May earnings confirm thesis.
-**Thesis-break:** Below $16 (would imply ~12x earnings and something structurally wrong) or if music segment growth turns negative.
+**Would upgrade to BUY at:** $20.50 or lower (restores ~+25% EV)
+**Would downgrade to TRIM at:** $26+ without new catalyst confirmation
+**Existing holders:** Hold core; consider trimming 25-40% if position has run to overweight; redeploy on pullback or into November 2026 sensor disclosure / PS6 catalyst window
+**Thesis-break:** Sustained close below $19 (broken trend, FY26 OI cut), or large dilutive M&A that consumes the buyback budget
+
+<!-- Public file: generic research only. Personal position size, cost basis, P&L, share counts → ~/vault/finance/notes/positions/SONY.md if needed. -->

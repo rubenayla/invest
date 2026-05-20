@@ -1,132 +1,129 @@
 # Advanced Micro Devices (AMD)
 
 **Sector:** Technology | **Industry:** Semiconductors
-**Price:** $201.33 | **Market Cap:** $328B
-**Analysis Date:** 2026-03-22
+**Price:** $420.99 (2026-05-19) | **Market Cap:** $686B
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** AMD designs computer chips. It does not own factories — it pays TSMC (Taiwan Semiconductor Manufacturing Company) to fabricate the silicon. Revenue splits into four segments. (1) Data Center (~56% of revenue, $5.8B Q1 2026): server CPUs branded EPYC, which sit in the racks of every major cloud (Amazon Web Services, Microsoft Azure, Google Cloud, Meta, Oracle) and increasingly enterprise on-prem deployments; and Instinct accelerators (MI300, MI325, MI350 GPUs) sold for training and running large AI models. (2) Client (~28%, $2.9B): Ryzen CPUs for desktop and laptop PCs sold via partners like Dell, HP, Lenovo, Asus. (3) Gaming (~7%, $720M): semi-custom system-on-chip parts for Sony PlayStation 5 and Microsoft Xbox consoles, plus Radeon discrete graphics cards. (4) Embedded (~8%, $873M): industrial, automotive, aerospace, defense and networking chips — most of this is the Xilinx field-programmable gate array (FPGA) business AMD bought for $49 billion in 2022. AMD makes money two ways: by gaining share against Intel in x86 server and client CPUs (where it has gone from <5% server share in 2017 to over 30% in 2026), and by being the only credible second source for AI accelerators in a market that Nvidia otherwise owns 80%+ of.
+
+**Where they want to grow.** Three explicit bets. First, Instinct GPUs into the AI training and inference market — Q1 2026 announcements include a Meta partnership for up to 6 gigawatts of AMD GPUs across multiple generations including a custom Meta accelerator on MI450 architecture, and the previously disclosed OpenAI deal for 6 gigawatts of MI450 deployments starting H2 2026 with management talking "tens of billions" of revenue. The MI400 series (launching H2 2026) jumps to high-bandwidth memory generation four (HBM4) with 432 gigabytes per GPU versus MI350's 288 GB, narrowing or closing the performance gap with Nvidia Blackwell on key inference workloads. Helios is the rack-scale system that packages MI400 with AMD networking and EPYC CPUs as a CUDA-alternative full stack. Second, continued EPYC share gains in server CPU as agentic AI workloads expand the addressable market — every AI accelerator needs a host CPU. Third, leveraging Xilinx FPGA assets into AI-edge, automotive and defense, where reprogrammable silicon competes with specialized inference accelerators.
+
+**What could go wrong (business risks).** Nvidia's compute-unified-device-architecture (CUDA) software stack remains the moat that matters — most large language model training code is written against CUDA, and porting to AMD's open-source ROCm (Radeon Open Compute) software is the binding constraint on Instinct adoption, not silicon performance. Hyperscalers building their own custom silicon (Google's Tensor Processing Units, Amazon's Trainium and Inferentia, Microsoft's Maia, Meta's Training and Inference Accelerator) are the real long-term threat — if Meta or Microsoft scale internal chips, they buy less merchant silicon from both Nvidia and AMD. Intel's resurgence under new leadership and a US government investment stake could compress AMD's pricing power in server CPU just as the AI accelerator narrative carries the stock. China export restrictions cost AMD an MI308 inventory writedown in 2025 and remain an active overhang on data center revenue. The Q1 2026 print also flagged a >20% second-half decline in gaming on consumer demand softness from elevated memory costs.
+
+**How to think about it.** AMD is the credible #2 in two markets where being #2 is enormously valuable: the #2 x86 CPU vendor taking share from Intel year after year, and the only merchant alternative to Nvidia in AI accelerators with real customer deployments (Meta, OpenAI, Microsoft, Oracle). This is a share-taking growth story, not a category-leader story — the bull case does not require beating Nvidia, only that Nvidia's pricing power and hyperscaler diversification pressure push 15-20% of accelerator spend toward a second source. The bear case is that the second source is hyperscaler in-house silicon, not AMD.
 
 ## Situation Summary
 
-AMD delivered a record Q4 2025 with $10.3B revenue (+34% YoY) and non-GAAP EPS of $1.53, driven by surging data center demand (EPYC Turin + Instinct MI300X). Full-year 2025 revenue hit $34.6B with FCF of $6.7B. The transformative development is the landmark hyperscaler deals: OpenAI (October 2025) and Meta (February 2026) each committed to 6 gigawatts of AMD Instinct GPU deployment, deals worth an estimated $60-100B each over 5 years, with AMD issuing performance-based warrants for up to 160M shares to each partner (~320M total, ~20% dilution if fully vested). Oracle will deploy 50,000 MI450 GPUs starting Q3 2026. Despite these wins, the stock trades at $201, down 25% from its 52-week high of $267, as the market weighs execution risk on MI450/Helios (H2 2026 launch), China export restrictions (~$1.5B revenue headwind), and ROCm software maturity vs CUDA. CEO Lisa Su traveled to South Korea on March 18 to secure HBM4 supply from Samsung, underscoring the urgency of the MI450 ramp. Q1 2026 guidance: ~$9.8B revenue (+32% YoY, -5% QoQ).
+AMD just reported a blowout Q1 2026: revenue $10.3B (+38% YoY), Data Center $5.8B (+57%), EPS $1.37 beating $1.27 consensus, gross margin 55% (up 170 basis points YoY). Q2 guide of $11.2B (+46% YoY) with 56% gross margin. Management said MI450 customer forecasts now exceed initial plans with multi-gigawatt opportunities beyond the announced Meta and OpenAI deals. The stock has nearly quadrupled from a 52-week low of $107.67 to $420.99 — most of that move came after the October 2025 OpenAI deal (6 gigawatts of MI450) and was extended by the Meta partnership and this Q1 print. Analyst targets have whiplashed: TD Cowen at $270, Gil Luria at $375, mean $458 with high $625 — the dispersion reflects how completely the narrative has shifted from "Intel-killer with a hopeful AI GPU side bet" to "credible Nvidia second source." Forward PE 32x, trailing PE 140x, price/sales 18x — priced as if the AI accelerator business will scale meaningfully without margin pressure.
 
 ## Variant Perception
 
-- **Consensus view:** AMD is a credible #2 in AI GPUs but structurally disadvantaged vs NVIDIA due to CUDA ecosystem dominance. The OpenAI/Meta deals are impressive but unproven at scale -- the market is "show me" on MI450 execution. 46 analysts cover with a Buy consensus and $290 mean target, but the stock's 25% drawdown from highs reveals deep skepticism about AMD closing the software gap. Forward PE of ~19x implies ~$10.75 in forward EPS, requiring a 4x jump from 2025 GAAP EPS of $2.66 -- the market demands massive margin expansion AND AI GPU revenue scaling.
-
-- **Our view:** The market is underpricing two structural shifts: (1) **The hyperscaler diversification imperative is real and accelerating.** 12 gigawatts of committed GPU capacity from OpenAI + Meta, plus Oracle's 50K GPU deployment, is not speculative -- these are binding multi-year agreements with performance milestones. The warrant structure (vesting tied to $600 stock price for final tranche) aligns incentives perfectly. (2) **The EPYC CPU story is the hidden gem.** Server CPU share crossing 40% and heading to 50%+ by late 2026 creates a high-margin, recurring revenue stream that provides a floor under the AI GPU volatility. This is a once-in-a-generation structural shift in x86 servers. The key risk the market is RIGHT to price in: ROCm 7.x is improving (MI355X shows 30% faster inference than B200, ~40% better tokens/dollar) but the software ecosystem gap vs CUDA remains the single biggest execution risk. ROCm 8.0 targeting 90-95% CUDA compatibility in 2026 is the make-or-break milestone.
-
-- **Trigger:** (1) MI450 first silicon results and Helios rack validation (H1-H2 2026) -- if performance meets the 2.9 ExaFLOPS (FP4) spec with 432GB HBM4, the re-rating begins. (2) Oracle OCI cluster going live Q3 2026 as the first public MI450 supercluster -- this is a real-world proof point. (3) Q1 2026 earnings (late April) -- data center revenue trajectory and any new MI450 customer announcements. (4) ROCm 8.0 launch with demonstrated PyTorch/JAX parity.
+- **Consensus view:** AMD is the only viable Nvidia alternative; OpenAI/Meta deals validate Instinct as a real product line; data center revenue grows 43%+ in 2026 to $22-23B; MI450 ramp in H2 2026 unlocks "tens of billions" of multi-year revenue; mean analyst target $458 reflects belief that the share-shift story has years to run.
+- **Our view:** Most of the easy upside has been paid. At $686B market cap and ~18x sales, the stock is now priced for ~$50-60B in AI-accelerator-driven revenue at sustained mid-50s gross margin within 3 years. That is achievable in the bull case but assumes (a) ROCm closes enough of the CUDA gap to win incremental inference deployments without aggressive discounting, (b) hyperscaler custom silicon does not displace AMD faster than it displaces Nvidia, and (c) gross margin holds as Instinct mix (lower margin than mature EPYC) becomes the dominant growth engine. The risk-adjusted return from $421 is materially worse than from $200, even if the operational thesis stays intact. The most under-discussed risk is the H2 2026 gaming guide-down (>20%) and the fact that the OpenAI/Meta gigawatt numbers are *capacity commitments*, not signed-volume contracts — execution slippage on MI400 or HBM4 supply turns the narrative quickly.
+- **Trigger:** Either (a) any quarter where MI400 supply, yield, or HBM4 availability misses expectations, (b) a hyperscaler announcing a custom inference chip that displaces planned AMD deployment, or (c) compressed gross margin as Instinct mix grows. Upward re-rating requires MI400 actually shipping in volume with disclosed cloud customer wins beyond the announced two, which is an H2 2026 / 2027 event.
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $34.6B | +13.6% CAGR (understates: 2025 was +34% YoY, accelerating) |
-| Net Income | $4.3B (GAAP) | +48.6% CAGR |
-| FCF | $6.7B | Strong inflection: $1.1B (2023) -> $2.4B (2024) -> $6.7B (2025) |
-| ROE | 7.1% | Misleadingly low due to $48B+ goodwill/intangibles from Xilinx |
-| D/E | 6.4% | Conservative. Net cash position of $1.7B |
-| FCF Yield | 2.1% | Low -- priced for growth |
-| Gross Margin | 52.5% | Improving (non-GAAP 57% in Q4 2025) |
-| Operating Margin | 17.1% (GAAP) | Up from 1.8% in 2023 -- operating leverage inflecting |
-| Net Debt/EBITDA | -0.23x | Net cash |
+| Revenue (FY25) | $34.6B | 13.6% CAGR (FY22 $23.6B -> FY25 $34.6B); Q1 26 +38% YoY |
+| Net Income (FY25) | $4.3B | 48% CAGR (FY22 $1.3B -> FY25 $4.3B) |
+| FCF (FY25) | $6.7B | $3.1B -> $2.4B -> $6.7B (Q1 26 record $2.6B/qtr) |
+| Operating Margin | 14.4% (TTM); 25% Q1 26 non-GAAP | Inflecting up |
+| Gross Margin | 53.1% (TTM); 55% Q1 26 | Expanding |
+| ROE | 8.1% | Low — Xilinx goodwill drag |
+| Debt/Equity | 6% | Conservative |
+| FCF Yield | 1.0% (FCF $6.7B / cap $686B) | Compressed by stock run |
+| Forward PE | 32.5x | |
+| Trailing PE | 140x | |
+| Price/Sales | 18.3x | |
 
-**Key observations:**
-- Revenue CAGR of 13.6% understates momentum -- FY2025 was +34% YoY, accelerating from flat 2023-2024. Q1 2026 guides +32% YoY.
-- GAAP profitability is depressed by ~$3B/yr in Xilinx amortization. Non-GAAP operating income was a record $2.9B in Q4 alone.
-- FCF inflection is real and dramatic: $6.7B on only $974M capex. This is an asset-light fabless model.
-- Balance sheet pristine: $5.5B cash, $3.8B debt, current ratio 2.85, quick ratio 1.78.
-- Management guided long-term targets: >60% annual data center growth, >35% revenue CAGR, EPS >$20 in strategic timeframe, tens of billions in DC AI revenue by 2027.
+Beta 2.40. Short interest 2.2%. Held by institutions 72%. Analyst mean target $458 (range $225-$625, 48 analysts, "buy" rec key).
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence |
-|-------|-----------|--------|------------|
-| llm_deep_analysis (prior) | $218 | +6.0% | 0.70 |
+| Model | Fair Value | Stale Upside (vs $334.63) | True Upside (vs $420.99) | Confidence | Run Date |
+|-------|-----------|---------------------------|--------------------------|------------|----------|
+| gbm_opportunistic_3y | $794.63 | +137% | +88.8% | 0.97 | 2026-05-18 |
+| gbm_opportunistic_1y | $664.76 | +99% | +57.9% | 0.95 | 2026-05-18 |
+| gbm_lite_3y | $610.09 | +82% | +44.9% | 0.83 | 2026-05-18 |
+| autoresearch | $600.96 | +80% | +42.7% | 0.99 | 2026-05-18 |
+| gbm_lite_1y | $396.30 | +18% | -5.9% | 0.73 | 2026-05-18 |
+| gbm_1y | $380.03 | +14% | -9.7% | 0.94 | 2026-05-18 |
+| gbm_3y | $337.00 | +1% | -20.0% | 0.70 | 2026-05-18 |
+| simple_ratios | $98.27 | -71% | -76.7% | 0.85 | 2026-05-18 |
+| dcf | $52.16 | -84% | -87.6% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | $42.45 | -87% | -89.9% | 0.70 | 2026-05-18 |
+| dcf_enhanced | $37.42 | -89% | -91.1% | 0.70 | 2026-05-18 |
+| rim | $5.51 | -98% | -98.7% | 0.70 | 2026-05-18 |
 
-**Note:** GBM and autoresearch models (when run) cluster $219-$459 fair value, while DCF/RIM models systematically undervalue AMD due to Xilinx goodwill distortion and GAAP amortization suppressing earnings. Trust GBM models for this name.
+*All models from 2026-05-18 used current_price $334.63. Live price $420.99 (+25.8% in one day on Q1 2026 earnings beat and Meta deal news). True upside columns recalculated against live price.*
+
+**Model consensus:** Bimodal — GBM (return-prediction-trained) models cluster bullish ($380-$795, mean ~$540, +28% vs live); fundamentals-anchored models (DCF, RIM, simple_ratios) cluster bearish, valuing AMD at $5-$100 because they extrapolate current cyclical earnings against a high asset base. RIM at $5.51 is meaningless — anti-growth bias on an asset-light, high-PE name (known issue). DCF models flagging severe overvaluation reflect that *current* earnings cannot support $686B cap; the bull case requires the AI ramp to compound. GBM 3y at $337 (-20%) is the most credible bearish signal since it accounts for momentum decay. Net read: forward-looking GBM models agree on a $400-800 range; backward-looking earnings models say the stock is priced 5x ahead of cash flow.
 
 ## Business Quality (19/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 4/5 | x86 duopoly in CPUs (EPYC now 40% server share). One of only two credible AI GPU alternatives to NVIDIA. Fabless with TSMC leading-edge access. High switching costs for deployed EPYC in data centers. Weakness: ROCm software ecosystem still trails CUDA, though gap narrowing (ROCm 7.2 delivering 5x perf uplift, 30% faster inference than B200 on key models). |
-| Management | 4/5 | Lisa Su has executed arguably the best semiconductor turnaround in history. Capital allocation disciplined: low debt, buybacks, no dividend. The warrant deals with OpenAI/Meta are creative -- trading ~20% dilution for $120-200B in committed revenue is shrewd. Insider selling ($44M in 2026) is pre-planned 10b5-1, not opportunistic. New PRSU tied to stock performance ($600 target for full vest) aligns incentives. |
-| Profitability | 3/5 | Gross margins at 52.5% (57% non-GAAP) are good but well below NVIDIA's 75%+. Operating margins improving rapidly: GAAP from 1.8% (2023) to 17% (2025). Non-GAAP operating income $2.9B in Q4 alone. Trajectory strongly positive but still middling vs best-in-class semis. Margin expansion to 25%+ GAAP is plausible as data center mix increases. |
-| Balance Sheet | 5/5 | Pristine. Net cash $1.7B. Current ratio 2.85. D/E 6.4%. FCF of $6.7B covers all obligations with wide margin. No refinancing risk. Warrant dilution (~20% if fully vested) is the main balance sheet risk, but tied to $120B+ revenue. |
-| Growth | 3/5 | Multiple vectors: EPYC CPU share gains (40% -> 50%+), AI GPUs (MI450/Helios with 12GW committed from OpenAI+Meta), Oracle 50K GPUs, embedded/Xilinx. Management targets >35% revenue CAGR and >$20 EPS long-term. TAM expanding to $1T+. Risks: console semi-custom in structural decline (significant double-digit drop in 2026), China restrictions ($1.5B+ headwind). Score reflects execution risk on MI450 being the swing factor. |
+| Moat | 3/5 | EPYC server share gains real and durable (x86 duopoly with Intel). Instinct moat is weak — ROCm software ecosystem still trails CUDA materially. No CUDA-equivalent lock-in. |
+| Management | 4/5 | Lisa Su has delivered one of the great corporate turnarounds. Xilinx acquisition has paid off. Honest about MI308 China writedown and gaming H2 weakness. Capital allocation good — record FCF, conservative debt. |
+| Profitability | 4/5 | Gross margin 55% expanding; operating margin inflecting. ROE 8% looks low but is Xilinx goodwill drag — true operating economics strong. |
+| Balance Sheet | 5/5 | $5.5B cash, $3.8B debt, net cash positive. Debt/equity 6%. Plenty of capacity for buybacks or M&A. |
+| Growth | 3/5 | TAM expansion in AI accelerators is real, but law-of-large-numbers risk at $686B cap. Easy share-taking gains versus Intel are mostly behind. Future growth depends on AI mix, which carries execution risk and margin questions. |
 
 ## Inflection Point
 
-**Yes -- AMD is at a major profitability and credibility inflection.** Multiple observable evidence points:
-
-1. **Hyperscaler validation at scale:** 12GW of committed GPU capacity from OpenAI + Meta + Oracle 50K deployment. This is not aspirational -- these are binding agreements with milestone-based warrants. AMD has gone from "can they compete?" to "they have $120-200B in committed pipeline."
-
-2. **Data center mix shift:** Data center went from ~25% of revenue in 2023 to ~45%+ in 2025, with management guiding >60% growth in this segment. This is the highest-margin segment.
-
-3. **Operating leverage already visible:** Operating income 9x'd from $401M (2023) to $3.7B (2025). FCF went $1.1B -> $2.4B -> $6.7B. The inflection is not a projection; it has happened.
-
-4. **Server CPU market share crossing 50%:** EPYC crossing the 50% threshold in 2026 would mark the end of Intel's 30-year server CPU dominance. This creates a durable, high-margin revenue base independent of the volatile AI GPU narrative.
-
-5. **MI450 architecture breakthrough:** 432GB HBM4, N2 process, 2.9 ExaFLOPS rack -- if this delivers on spec, it addresses the memory wall that limits large-model inference and offers a concrete technical advantage over Blackwell in memory capacity.
-
-6. **ROCm closing the gap:** ROCm 7.x already delivering 30% faster inference than B200 on key models with 40% better tokens/dollar. ROCm 8.0 targeting 90-95% CUDA compatibility.
-
-The inflection has begun. The question is whether MI450 execution confirms it at GPU scale, or whether CUDA ecosystem lock-in limits AMD to a permanent 10-15% AI GPU share.
+The inflection happened in late 2025 / early 2026 — OpenAI deal (October 2025) re-rated the stock, Meta deal (Q1 2026) confirmed it. We are now well past the inflection and the question is execution at scale, not whether the turn happened. The next observable inflection points are: (1) MI400 first-customer-ship in H2 2026, (2) ROCm reaching parity-enough for inference workloads to displace Nvidia in cloud deployments, (3) gross margin trajectory as Instinct mix grows. Buying after the inflection has been confirmed (the right move) is different from buying after the stock has already priced it in (less compelling).
 
 ## Bull Case
 
-- MI450/Helios delivers on spec (2.9 ExaFLOPS, 432GB HBM4), Oracle Q3 2026 deployment proves competitive with NVIDIA Rubin/VR200 at scale.
-- OpenAI and Meta begin first 1GW deployments in H2 2026, triggering warrant vesting and validating the multi-year pipeline worth $120-200B+.
-- ROCm 8.0 achieves 90%+ CUDA compatibility, removing the last major adoption barrier. Developer friction drops dramatically.
-- EPYC crosses 50% server CPU market share, becoming the default server CPU. Data center CPU revenue alone exceeds $15B.
-- 2026 non-GAAP EPS reaches $9-10 on 40%+ revenue growth and margin expansion to 25%+ operating margins. Multiple re-rates to 30x+ forward as AI GPU credibility is established.
-- Long-term: warrant-adjusted EPS accretion of 13-23% by 2030 as $120B+ in contracted revenue flows through.
+- MI400 ships on schedule in H2 2026 with HBM4 supply secured; OpenAI 6GW and Meta 6GW translate to $15-25B incremental revenue over 2027-2029.
+- Multi-gigawatt deals beyond OpenAI/Meta materialize — management already hinted "additional multi-gigawatt opportunities" in Q1 2026 call. Microsoft, Oracle, or a sovereign AI cloud (UAE, Saudi, EU) signing would re-rate.
+- Gross margin holds 55-57% even as Instinct mix grows; agentic AI infrastructure drives EPYC attach to every accelerator deployed.
+- Intel continues to struggle under new leadership; AMD reaches 40%+ server CPU share by 2027.
+- ROCm 7 / 8 closes enough of the CUDA gap for inference to default-switch to AMD on TCO.
 
 ## Bear Case
 
-- MI450 launch delayed or underperforms vs NVIDIA Rubin. ROCm 8.0 fails to achieve CUDA compatibility targets, and hyperscalers hit software friction at scale.
-- OpenAI/Meta delay deployments or renegotiate terms. Warrant milestones slip, creating dilution overhang without corresponding revenue.
-- China export restrictions tighten permanently. Loss of $2-3B annual TAM with no license approvals.
-- NVIDIA cuts prices aggressively to defend share, compressing AMD's GPU margins below profitability threshold.
-- Console semi-custom revenue collapses faster than expected, dragging total revenue growth below 20%.
-- Intel Granite Rapids / Sierra Forest stages a comeback in servers, stalling EPYC share gains at ~45%.
-- 20% warrant dilution (320M shares) materializes partially without full revenue trigger, diluting EPS for existing shareholders.
+- **Under-covered in headlines:** Gross margin pressure from Instinct mix shift. Management guided 56% gross margin Q2 but the long-arc question — what is steady-state margin when AI accelerators are 40%+ of revenue and you are price-competing against Nvidia? — is not in news cycles but is the biggest risk to the valuation math.
+- Hyperscaler custom silicon (Google TPU, AWS Trainium, Microsoft Maia, Meta MTIA) consumes incremental capacity. Meta's MI450-based custom accelerator means Meta is *also* building its own — AMD is partner today, displaced tomorrow.
+- China export restrictions tighten further; MI308-style writedowns recur. AMD has explicitly disclosed this as ongoing.
+- Q1 2026 guide for H2 gaming "decline >20%" hints at consumer cyclicality the bull case ignores.
+- MI400 / HBM4 supply slippage. Memory supply for HBM4 is the bottleneck for every AI accelerator in 2026-2027; AMD's allocation versus Nvidia's is a real variable.
+- Multiple compression: even if revenue executes, going from 32x forward PE to 22x forward PE on a 50% EPS growth year still produces flat-to-negative price action.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 30% | 2026 non-GAAP EPS ~$10.50 on 45%+ revenue growth, MI450 ramp begins, Meta/OpenAI 1GW milestones hit, EPYC >50% share | Re-rate to 30x forward as AI GPU credibility established via hyperscaler deployments | $310 | +54% |
-| **Base** | 45% | 2026 non-GAAP EPS ~$8.50 on 30-35% revenue growth, EPYC gains continue, AI GPU grows solidly but MI450 ramp slower than hoped | Stable at 25x forward as contracted pipeline provides visibility | $210 | +4% |
-| **Bear** | 25% | 2026 non-GAAP EPS ~$6.00 on China losses, MI450 delays/underperformance, semi-custom collapse, NVIDIA price war | De-rate to 20x as "perpetual #2" narrative hardens | $120 | -40% |
+| Bull | 30% | MI400 ships clean H2 26; new multi-GW deal in 2026; FY27 EPS $20+; data center +60% | Multiple holds at 30x forward as AI optionality persists | $600 | +43% |
+| Base | 45% | MI400 ships on schedule but no new mega-deals; FY27 EPS $15-17; gross margin holds 54-55% | Multiple compresses to 25x as growth normalizes | $400 | -5% |
+| Bear | 25% | MI400 slips / HBM4 supply constrained / hyperscaler custom silicon scales faster than expected / gross margin slips to low-50s | Multiple compresses to 18-20x as story breaks | $250 | -41% |
 
-**Expected value: +8.0%** (0.30 x 54% + 0.45 x 4% + 0.25 x -40%)
+**Expected value: +0.4%** (0.30 x 43 + 0.45 x -5 + 0.25 x -41 = 12.9 - 2.25 - 10.25 = +0.4%)
 
-**Thesis quality check:** The bull case is driven primarily by earnings growth (MI450 ramp + EPYC share) with multiple expansion as confirmation, not the primary driver. This is HIGHER QUALITY than a pure multiple-expansion thesis. The contracted pipeline from OpenAI/Meta provides visibility that did not exist 6 months ago.
-
-**Thesis breaks if:** (1) MI450 first silicon results disappoint or Helios rack fails validation; (2) OpenAI or Meta delay or cancel 1GW deployments; (3) ROCm 8.0 fails to achieve meaningful CUDA compatibility; (4) Two consecutive quarters of data center revenue growth below 40% YoY.
+**Thesis breaks if:** MI400 ships materially late (>1 quarter slip), OR a hyperscaler announces it is moving its OpenAI-sized GPU allocation back to Nvidia or to in-house silicon, OR gross margin drops below 52% on Instinct mix.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | **Moderately crowded.** 72% institutional ownership. Not a contrarian play, but not as consensus-long as NVIDIA. |
-| Short interest | **Low at 2.1%.** No squeeze setup, no strong bear conviction. |
-| Technical position | **Neutral-oversold.** Trading 25% below 52-week high ($267). 52-week range $76-$267. Stock has nearly doubled from its low but stalled since November highs. |
-| Next catalyst | **Q1 2026 earnings: late April 2026** (~5 weeks away). MI450 product updates at Computex (June). Oracle 50K deployment Q3 2026. |
-| Recent price action | Trading $201, down from $205 prior close. In $195-215 consolidation range for 3+ weeks. Not chasing a run-up. |
-
-**Warrant dilution note:** The 320M potential warrant shares (~20% dilution) are NOT priced into the current share count. However, they vest only on milestone achievement tied to massive revenue ($120-200B), and the final tranche requires AMD stock to hit $600. This is EPS-accretive at scale but creates overhang uncertainty in the near term.
+| Crowdedness | Crowded — consensus AI long, 72% institutional, mean target $458 implies still "buy" |
+| Short interest | 2.2% — low; no squeeze setup |
+| Technical position | Near 52-week high ($469.22). Up ~290% from low ($107.67) in 12 months. Strongly overbought |
+| Next catalyst | Q2 2026 earnings (early August). MI400 first-shipment confirmation H2 2026 |
+| Recent price action | Massive run — stock jumped from $334 to $421 in a single day on Q1 26 print. All near-term good news is in price |
 
 ## Verdict
 
-**WATCH** -- Conviction: MEDIUM-HIGH
+**WATCH** — Conviction: MEDIUM
 
-AMD is at a genuine inflection point backed by the most significant hyperscaler commitments any NVIDIA challenger has ever secured. The 12GW pipeline from OpenAI + Meta, Oracle's 50K GPU deployment, EPYC approaching 50% server CPU share, and the MI450's 432GB HBM4 architecture represent a fundamentally stronger competitive position than existed even 6 months ago. The business quality score of 19/25 reflects a high-quality franchise.
+The operational thesis is intact and even improving — Q1 2026 numbers were excellent, MI450 demand exceeds plan, Meta deal is real. But the share price has priced in most of the bull case. Expected value is roughly flat from $421 because the asymmetry has flipped: the easy money was made between $100 and $300; from here, the bear scenario (multiple compression + any execution slip) is roughly as large as the bull scenario (more deals + clean MI400 ramp). The market is paying ~32x forward earnings for a hardware business that still has cyclical exposure, gross margin uncertainty as mix shifts, and an open question on hyperscaler in-house silicon.
 
-However, at $201 the stock prices in substantial success. The forward PE of ~19x requires non-GAAP EPS to reach ~$10.75, which demands both MI450 ramp execution AND continued margin expansion. The expected value of +8% is positive but not compelling enough for a full-conviction BUY given the binary nature of the MI450 software/execution risk. The ROCm ecosystem gap vs CUDA remains the single biggest uncertainty -- hyperscalers have committed hardware but real-world software friction at scale is untested.
+**If WATCH:** Would upgrade to BUY on a pullback to $300 or below without thesis damage (i.e. a market-driven drawdown, not an MI400 slip). Would also upgrade if MI400 ships in volume in H2 2026 with a third hyperscaler signing on, validating the "tens of billions" claim with hard contracts. Would downgrade to PASS / SELL if gross margin slips below 52% in any Instinct-heavy quarter, or if any hyperscaler reduces planned AMD allocation in favor of internal silicon.
 
-**Would upgrade to BUY on:** (1) Price pullback to $175-185, providing 15-20% margin of safety below base case; OR (2) MI450 first silicon/benchmark results confirming competitive performance vs NVIDIA Rubin; OR (3) ROCm 8.0 beta showing demonstrated PyTorch/JAX parity in independent testing; OR (4) Q1 2026 earnings showing data center revenue above $7B with new MI450 design wins beyond existing partners.
+**Existing holders:** Consider trimming 30-50% of position above $400 — the risk-adjusted return is materially worse here than at the original entry price, and locking gains while the narrative is loudest is the standard playbook for a stock that has more than tripled in a year. Re-add on weakness.
 
-**Entry price if forced to buy today:** Scale in at $195-205 (current range), add aggressively below $180.
-**Thesis-break signal:** MI450 delayed beyond Q4 2026, OR OpenAI/Meta delay 1GW milestones, OR data center growth decelerating below 35% YoY for two consecutive quarters.
+<!-- Public file: generic research only. No personal position size, cost basis, or P&L. -->

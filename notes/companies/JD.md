@@ -1,115 +1,122 @@
 # JD.com, Inc. (JD)
 
 **Sector:** Consumer Cyclical | **Industry:** Internet Retail
-**Price:** $28.02 | **Market Cap:** $40.5B | **EV:** $37.9B
-**Analysis Date:** 2026-03-20
+**Price:** $32.16 (2026-05-19) | **Market Cap:** ~$43.4B (ADR)
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** JD.com is China's #2 e-commerce platform by gross merchandise value (GMV), behind Alibaba and competing fiercely with Pinduoduo (PDD) and Douyin's commerce arm. Unlike Alibaba's marketplace-first model, JD's heritage is "first-party" (1P) direct retail: JD buys inventory wholesale and resells it through JD.com and the JD app, with its own warehouses, trucks, and last-mile couriers. Electronics and home appliances are the historic stronghold (TVs, smartphones, white goods, computers); supermarket / fast-moving consumer goods (FMCG — packaged food, beverages, household basics) is the second pillar. A third-party (3P) marketplace overlays the 1P platform, where merchants pay commissions and ads. Beyond core retail, JD operates four other reporting units: JD Logistics (separately Hong Kong-listed, JDL — express delivery and warehousing sold to external customers, not just JD), JD Health (online pharmacy and telehealth, also HK-listed), JD Industrials (B2B procurement, MRO — maintenance, repair, operations parts), and a fast-growing food-delivery push launched in 2025 (leveraging Dada Now, JD's instant-delivery arm) that is directly attacking Meituan's turf. Revenue is roughly ¥1.31 trillion (~$192B USD), with the core "JD Retail" segment doing the bulk and JD Logistics adding ~¥200B+ of which over 70% now comes from external customers.
+
+**Where they want to grow.** Management's near-term bets are explicit: (1) ride the Chinese government's consumer trade-in subsidy program — large state-funded discounts on appliances, electronics, and now cars — that disproportionately benefits JD because of its electronics dominance; (2) grow JD Supermarket / grocery, the under-penetrated category where JD's cold-chain logistics is a real advantage; (3) scale JD Logistics' external (non-JD) revenue and turn JDL into a profitable third-party express carrier competing with SF Express and Cainiao; (4) gain share in food delivery — JD entered in early 2025 with zero-commission promises to restaurants and full-time courier benefits, accepting heavy losses to build a third pillar against Meituan; (5) return capital — JD has authorized multi-billion-dollar buyback programs and pays a ~3% dividend yield, an unusual posture for a Chinese internet name. Success in 3-5 years looks like: stabilized China retail at low-single-digit growth with operating margins back above 4%, JDL doing >¥250B revenue with positive margins, food delivery at run-rate breakeven, and ~10% of shares retired through buybacks.
+
+**What could go wrong (business risks).** Chinese consumer spending remains weak — high savings rates, soft property prices, and youth unemployment are structural headwinds that no e-commerce platform can outrun. PDD has eaten JD's mid-tier price-sensitive shoppers; Douyin's livestream commerce has taken share in apparel and beauty; Alibaba is fighting back with its own consumer subsidies. JD's 2025 operating margin collapsed (operating income ¥3.7B vs ¥39.6B in 2024) because the food-delivery launch is burning cash with no proven path to scale against an entrenched Meituan duopoly with Ele.me — this is the single biggest execution risk and could persist for 2-3 years. JDL faces commoditization pressure from SF, Cainiao, and YTO/STO/ZTO. Regulatory: U.S. ADR delisting risk under the Holding Foreign Companies Accountable Act lingers despite PCAOB inspections being allowed since 2022; a re-escalation of U.S.-China tensions could force a Hong Kong-only listing. Liu Qiangdong (founder, controls majority voting power via dual-class shares) has a history of personal-conduct controversies and unpredictable strategic pivots — the food-delivery foray was a Liu-driven decision that surprised the market.
+
+**How to think about it.** JD is a Chinese e-commerce incumbent with a real logistics moat and a deep-value setup: trading at ~7x forward earnings, ~0.03x revenue, 1.4x book, with a 3%+ dividend, multi-billion buyback, and net cash on the balance sheet (cash ¥137B vs debt ¥107B). The bull case is not a growth story — it is a balance-sheet-return-of-capital + trade-in-stimulus + logistics-margin story for a company that is structurally profitable in its core retail and has been temporarily depressed by a strategic food-delivery investment. Bet on: trade-in subsidies extending through 2026, JD Logistics third-party scaling, food-delivery losses narrowing, and ~$5B/year in combined buybacks + dividends. Skip it if you don't underwrite China consumer recovery, if you can't stomach ADR delisting tail risk, or if you require revenue growth above mid-single digits — this is deep value, not compounder.
 
 ## Situation Summary
 
-JD.com just reported strong FY2025 results on March 5: revenue up 13% to RMB 1,309B ($180B), gross margin expanded 18bps to 16%, and 700M+ annual active customers with shopping frequency up 40%. The company is in the middle of a bold European expansion — launching the Joybuy marketplace in 6 countries (March 16, 2026) and acquiring Ceconomy (MediaMarkt/Saturn) for EUR 2.2B. Simultaneously, JD returned $4.4B to shareholders in 2025 via $3B in buybacks (6.3% of shares cancelled) and a $1.4B dividend. The stock is down 33% from its Feb 2025 highs near $42, largely on US-China trade tensions (tariffs at 145% US / 125% China) and concerns about European expansion execution risk. Four smart money funds hold positions, suggesting institutional conviction despite the selloff.
+JD's FY2025 results show the bifurcation cleanly: revenue grew 13% YoY to ¥1.31T as trade-in subsidies juiced electronics/appliances, but operating income collapsed 91% YoY to ¥3.7B and net income fell 53% to ¥19.6B because of the food-delivery launch costs — couriers, restaurant subsidies, and infrastructure build. Free cash flow dropped from ¥44B to ¥4.8B. Yet the stock is ~$32 (down from a 2024 peak above $47) and continues to return ~$5B/year via buybacks + a 3.16% dividend. The market is treating food-delivery as a black hole; the variant view is that retail core is healthier than headline EPS suggests (segment-level retail operating margin actually expanded), trade-in stimulus extended into 2026 keeps the top-line tailwind, and JD's balance sheet (net cash) means the company can absorb 2-3 years of food-delivery losses without dilution while still buying back stock. Next earnings (Q1'26) is the key catalyst — investors want food-delivery loss guidance and clarity on whether the core retail margin held.
 
 ## Variant Perception
 
-- **Consensus view:** JD is a low-margin Chinese retailer facing competitive pressures from PDD/Temu and Alibaba, with uncertain international expansion and geopolitical overhang. The market prices it as a value trap — cheap on paper but structurally low-growth.
-- **Our view:** The market underestimates three things: (1) JD's margin inflection — operating income grew 37% YoY in 2024 and gross margins keep expanding as the 3P marketplace and advertising mix shifts; (2) the shareholder return machine — 11% total yield (3.6% dividend + 7.4% buyback) is extraordinary and rapidly shrinking the float; (3) the Europe play via Ceconomy gives JD an instant customer base and logistics footprint that Temu/Shein lack — a real competitive moat. At 6.6x forward PE and 4.3x EV/EBITDA, the stock prices in zero growth and maximum risk.
-- **Trigger:** Q1 2026 earnings (likely May 2026) showing continued margin expansion + first Joybuy/Ceconomy revenue contribution. Secondary trigger: any US-China trade de-escalation.
+- **Consensus view:** "JD is dead money — food-delivery is a strategic blunder that will burn $3-5B/year for years with no path to profitability against Meituan; meanwhile China consumer is weak and PDD/Douyin keep taking share. Cheap for a reason."
+- **Our view:** The market is over-discounting food-delivery losses (which are capped by management's stated investment ceiling and JD's balance sheet) while under-pricing the core retail recovery driven by extended trade-in subsidies, JDL third-party margin expansion, and an aggressive capital return that mechanically compresses share count by 5-7%/year. At 7x forward earnings and 0.03x sales for a profitable, net-cash, dividend-paying logistics-and-retail platform, the bar for "not getting worse" is very low. The Liu-driven food-delivery push is also a free option — if JD captures even 8-10% share through differentiated courier benefits (a real Liu strategic instinct), the multiple re-rates dramatically.
+- **Trigger:** Q1'26 earnings (May/June 2026) showing core retail operating margin held or expanded, plus food-delivery losses tracking *below* the implied $4-5B annualized run-rate baked into consensus. Secondary: Beijing extending or expanding the trade-in subsidy program into H2 2026.
 
 ## Financial Snapshot
 
-| Metric | Value | 3yr Trend |
-|--------|-------|-----------|
-| Revenue | RMB 1,309B ($180B) | +7.8% CAGR |
-| Net Income (GAAP) | RMB 41.4B (FY2024) | Massive improvement (loss in 2021 -> 41B in 2024) |
-| Non-GAAP NI | RMB 27B (FY2025) | Steadily expanding |
-| FCF | RMB 44.3B ($6.1B) | +30.4% CAGR (3yr) |
-| ROE | 17.3% | Improving |
-| D/E | 0.38 | Net cash position (RMB 18.6B) |
-| FCF Yield | 15.1% | |
-| Gross Margin | 16.0% (FY2025) | Expanding (+18bps YoY) |
-| Operating Margin | 3.4% (FY2024) | Rapidly expanding |
-| Total Shareholder Yield | ~11% | $3B buyback + $1.4B dividend |
+| Metric | Value (FY2025, CNY) | 3yr Trend |
+|--------|---------------------|-----------|
+| Revenue | ¥1,309B (~$192B) | +7.7% CAGR (¥1,046B → ¥1,309B) |
+| Net Income | ¥19.6B (~$2.9B) | volatile: ¥10B → ¥24B → ¥41B → ¥20B |
+| Operating Income | ¥3.7B | collapsed from ¥39.6B (food-delivery drag) |
+| FCF | ¥4.8B | down from ¥44B in 2024 |
+| ROE | 6.0% (trailing) | normalized retail ROE ~12-14% |
+| Debt/Equity | 38.5% | rising (¥65B → ¥107B) but still net cash ¥30B |
+| FCF Yield (normalized) | ~8-10% on 2024 base | depressed in 2025 |
+| Dividend Yield | 3.16% | initiated 2024, growing |
+
+Net cash position: Cash ¥137B – Debt ¥107B = ~¥30B net cash (~$4.4B USD), plus stakes in HK-listed JDL and JD Health worth several billions more.
 
 ## Valuation Models
 
-No prior valuation models exist in the database for JD. External consensus:
+| Model | Fair Value | Upside | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| simple_ratios | $95.15 | +197% | 0.85 | 2026-05-18 |
+| dcf_enhanced | $76.86 | +140% | 0.70 | 2026-05-18 |
+| dcf | $67.99 | +112% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | $60.77 | +90% | 0.70 | 2026-05-18 |
+| gbm_lite_3y | $55.10 | +72% | 0.76 | 2026-05-18 |
+| gbm_opportunistic_1y | $50.60 | +58% | 0.83 | 2026-05-18 |
+| gbm_opportunistic_3y | $48.10 | +50% | 0.85 | 2026-05-18 |
+| gbm_3y | $46.43 | +45% | 0.86 | 2026-05-18 |
+| autoresearch | $41.47 | +30% | 0.83 | 2026-05-18 |
+| gbm_1y | $39.41 | +23% | 0.61 | 2026-05-18 |
+| gbm_lite_1y | $37.00 | +16% | 0.87 | 2026-05-18 |
+| rim | $7.96 | -75% | 0.70 | 2026-05-18 |
 
-| Source | Fair Value / Target | Upside | Basis |
-|--------|-------------------|--------|-------|
-| Analyst Mean Target | $38.58 | +37.6% | 35 analysts, Strong Buy consensus |
-| Analyst High Target | $60.06 | +114% | |
-| Analyst Low Target | $21.97 | -21.6% | |
-| Forward PE implied (15x) | $63.31 | +126% | Forward EPS $4.22 x 15x |
-| Forward PE implied (10x) | $42.21 | +50.6% | Forward EPS $4.22 x 10x |
-| EV/EBITDA implied (8x) | ~$55 | +96% | Peers trade 8-15x |
+*All models fresh (run 2026-05-18, price aligns with $32).*
 
-**Model consensus:** Every reasonable valuation framework points to significant undervaluation. At 6.6x forward PE, the stock is priced for permanent earnings decline. Even a modest re-rating to 10x forward PE — still deeply discounted vs. US internet retail — yields 50%+ upside.
+**Model consensus:** Strongly bullish — every model except RIM points to material upside. GBM models (most reliable for return predictions per our calibration) cluster $46-55 → +45-70% over 3 years, which aligns with the variant thesis. DCF models are too aggressive because they extrapolate 2024 margins, not 2025 depressed levels — treat them as upside cases. RIM's $8 reflects depressed trailing earnings and is the known asset-light-but-growing-investment blindspot, not a real warning. Sell-side mean target $41 (36 analysts, "strong_buy") = +28% — closely tracks autoresearch.
 
 ## Business Quality (17/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 3/5 | Proprietary logistics network (nationwide same-day/next-day delivery) is a genuine competitive advantage. Brand trust for authentic goods. But low switching costs for consumers; PDD/Alibaba compete aggressively. |
-| Management | 4/5 | Excellent capital allocation — $3B buyback + $1.4B dividend while investing in Europe. Ceconomy acquisition is bold but disciplined (2.2B EUR for established brand). Richard Liu stepping back operationally. |
-| Profitability | 3/5 | Gross margins low (16%) but expanding. Operating leverage kicking in — OpInc CAGR much higher than revenue. FCF generation is strong. Thin absolute margins mean margin of safety is narrow. |
-| Balance Sheet | 4/5 | Net cash position. Current ratio 1.2x. Strong cash generation funds both growth and returns. Ceconomy deal is manageable. |
-| Growth | 3/5 | Domestic revenue growth decelerating (1.5% in Q4). Europe expansion opens new TAM but execution uncertain. 3P marketplace and services growing 20%+ — mix shift is the real growth story. |
+| Moat | 4/5 | JD Logistics asset base is the real moat — 1,800+ warehouses, ~400K couriers, cold-chain that PDD/Douyin can't replicate cheaply. 1P inventory model = supplier trust in electronics, which is where counterfeits matter most. Brand = "authentic + fast" in Chinese consumer mind. Erodes vs PDD on price but holds on speed/authenticity. |
+| Management | 3/5 | Founder Liu Qiangdong controls via dual-class; track record mixed — built world-class logistics, but personal controversies (2018 Minnesota case) and erratic strategic pivots (food delivery) introduce key-man risk. Capital allocation has improved (initiated dividend 2024, large buybacks). Sandy Xu (CEO) since 2023 has been disciplined operationally. |
+| Profitability | 3/5 | Gross margin ~9% (1P retail-driven, low by tech standards); retail segment operating margin ~4-5% steady; consolidated margin destroyed in 2025 by food-delivery. Normalized profitability is real but thin. |
+| Balance Sheet | 5/5 | Net cash position (~$4.4B USD), plus stakes in publicly listed JDL and JD Health worth several billion more. Current ratio 1.18. Can fund food-delivery losses for years without dilution. |
+| Growth | 2/5 | Mid-single-digit core retail growth is the realistic ceiling — China consumer is structurally slow, PDD/Douyin have capped JD's share gains. Food-delivery and JDL third-party are the only above-double-digit opportunities, and food-delivery is unproven economics. |
 
 ## Inflection Point
 
-**Yes — margin inflection + international expansion.**
-
-JD is at a genuine turning point on two fronts:
-
-1. **Profitability inflection**: The shift from 1P-heavy to 3P marketplace is structural. Service revenues grew 24% in FY2025. Higher-margin advertising and commission revenue is becoming a larger share of the mix. Operating income has grown from RMB 5.9B (2021) to RMB 39.6B (2024) — a 6.7x increase while revenue grew only 22%. This operating leverage is not yet reflected in the stock price.
-
-2. **Geographic expansion**: The Joybuy launch + Ceconomy acquisition represent JD's first serious attempt to diversify beyond China. If even modestly successful, it opens a TAM that the market currently assigns zero value to. The 60-warehouse European infrastructure is real capex already deployed.
-
-**Observable evidence**: Margin expansion is already in the numbers (4 consecutive years). Europe expansion just launched — too early for revenue evidence but the asset commitment is real.
+Yes — but it's a *margin* inflection, not a growth inflection. The thesis is that 2025 represents trough operating margin (food-delivery loss-peak), and the path back to 3-4% consolidated operating margin over 2026-2027 — combined with continuing buybacks — drives the re-rate. Observable evidence to confirm: (1) food-delivery loss trajectory turns from "growing" to "stable/narrowing" within 2-3 quarters; (2) core retail segment-level operating margin holds at or above 5%; (3) JDL external revenue growth >20% with positive margins. None of these is fully confirmed yet — Q1'26 earnings is the first data point. This is why entry should be "scale-in" rather than full-position.
 
 ## Bull Case
-- 3P marketplace continues to grow 20%+, driving gross margin toward 18-20% over 3 years
-- Ceconomy/Joybuy gains traction — even 5% of European electronics market = material revenue
-- Continued aggressive buybacks ($2B remaining authorization) shrink float further
-- US-China trade tensions de-escalate, removing the geopolitical discount
-- Re-rating from 6.6x to 10-12x forward PE as market recognizes the quality of cash flows
+
+- Trade-in subsidies extended through 2026 (already announced for appliances/electronics, likely to widen to home goods) — JD is the disproportionate beneficiary given its category mix; +8-12% retail revenue tailwind into 2026.
+- Food-delivery losses peak in H2 2025 / H1 2026 and start narrowing as scale efficiencies kick in — even reaching breakeven late 2027 unlocks ~¥20B of operating income that consensus is not modeling.
+- JD Logistics third-party revenue (already >70% of JDL) compounds at 15%+ with operating margin expanding from 1-2% to 3-4% — sum-of-parts value of JDL alone could approach 30-40% of current JD market cap.
+- Capital return: ~$5B/year of buybacks + dividends on a $43B market cap = ~11% gross capital return yield, mechanically reducing share count and supporting per-share earnings.
+- Net cash + listed-subsidiary stakes are roughly 15-20% of market cap — significant margin of safety even in a bear scenario.
 
 ## Bear Case
-- PDD/Temu intensify domestic price wars, compressing JD's margins
-- European expansion is a capital-destroying distraction (Joybuy fails to gain traction, Ceconomy integration issues)
-- US-China relations worsen — ADR delisting risk resurfaces, tariffs expand
-- Chinese consumer remains weak, revenue growth stalls below 5%
-- Management deploys capital on further international M&A at poor returns
+
+- Food-delivery losses run hotter and longer than guided (Meituan responds aggressively, courier-benefit costs structurally higher than expected) — consolidated operating margin stays compressed through 2027, EPS doesn't recover.
+- **Under-covered risk (from primary data, not headlines):** JD's gross margin is only 9.3% and the multi-year trend is essentially flat-to-down — this isn't just food-delivery, it reflects intensifying price competition with PDD in the core 1P retail business. If gross margin sinks below 8.5% durably, operating leverage works in reverse and the entire deep-value thesis breaks regardless of food-delivery outcome. Headlines focus on food-delivery; the slow gross-margin compression in core retail is the bigger long-term threat.
+- ADR delisting re-escalation: if U.S.-China tensions resume and PCAOB access is revoked, forced ADR-to-HK conversion creates 10-20% technical de-rating even with no business change.
+- China consumer weakness persists into 2027 — trade-in subsidy is a pull-forward, not durable demand creation; once it ends, electronics demand could air-pocket.
+- Liu Qiangdong launches another surprise strategic push (international expansion? robotaxis? AI? — he's hinted at all three) that consumes capital without clear ROI, undermining the capital-return narrative.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | FY2026 EPS $5.00+ from margin expansion + Europe contribution; 15%+ revenue growth | Re-rate to 12x forward PE as profitability proves durable | $60 | +114% |
-| **Base** | 50% | FY2026 EPS ~$4.20 (consensus); 8-10% revenue growth; steady margin expansion | Modest re-rate to 9x forward PE as valuation gap narrows | $38 | +35.6% |
-| **Bear** | 25% | FY2026 EPS $3.00 from margin pressure + Europe losses; 3-5% revenue growth | De-rate to 5x forward PE on growth concerns | $15 | -46.4% |
+| Bull | 30% | Food-delivery losses peak Q2'26, narrowing thereafter; trade-in subsidies extended; core retail OPM holds 5%+; JDL margin expansion. 2027E EPS ~$5.50 | Re-rate to 10x as China consumer recovers and capital return narrative dominates | $55 | +71% |
+| Base | 45% | Food-delivery losses persist 2026 then narrow 2027; flat core retail margin; buybacks reduce share count 6%/yr; 2027E EPS ~$4.30 | 9x forward — modest re-rate from current 7x as risks clarify | $39 | +21% |
+| Bear | 25% | Food-delivery losses expand; gross margin slips to 8.5%; trade-in subsidies expire mid-2026; PDD takes more share | De-rate to 6x on 2027E EPS of $3.50 = $21; partial offset from buybacks | $22 | -32% |
 
-**Expected value: +34.7%** (0.25 x 114% + 0.50 x 35.6% + 0.25 x -46.4%)
+**Expected value: +23%** (0.30 × 71 + 0.45 × 21 + 0.25 × -32)
 
-**Thesis breaks if:** Gross margins contract for 2 consecutive quarters (reversing the trend), or European operations burn >$2B annually with no path to breakeven, or ADR delisting becomes probable.
+**Thesis breaks if:** (1) gross margin falls below 8.5% durably (signals structural pricing-power loss to PDD), OR (2) food-delivery losses exceed ¥40B/year and management doubles down rather than retrenches, OR (3) trade-in subsidy program is canceled before mid-2026.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| **Crowdedness** | Uncrowded — only 13% institutional ownership on ADR, 4 smart money funds. Not a hedge fund hotel. |
-| **Short interest** | Low — 1.8% of float. No squeeze setup but minimal bearish conviction. |
-| **Technical position** | Near 52-week low ($24.51). Down 33% from highs. 50-day MA $28.17 — stock is right at it. Oversold but not capitulating. |
-| **Next catalyst** | Q1 2026 earnings (est. May 2026) — first quarter with Joybuy live. Also: $1.00 dividend ex-date April 9. |
-| **Recent price action** | Consolidating around $28 for ~6 weeks after selling off from $42. Sideways, not falling. |
+| Crowdedness | Uncrowded — institutional ownership only 19%; sentiment poor post-FY2025 results |
+| Short interest | 2.3% of float — low, no squeeze setup |
+| Technical position | Off ~30% from 2024 peak (~$47); near 52w lows; oversold but no clear reversal yet |
+| Next catalyst | Q1'26 earnings (May/June 2026) — within ~4 weeks |
+| Recent price action | Flat-to-down past 6 months; no run-up into earnings |
+| Analyst stance | 36 analysts, mean target $41 (+28%), "strong_buy" — but EPS estimates being cut |
 
 ## Verdict
 
 **BUY** — Conviction: MEDIUM
 
-JD.com at $28 offers a compelling risk/reward: 15% FCF yield, 11% total shareholder yield, expanding margins, and an optionality play on European expansion — all at 6.6x forward earnings. The variant perception is clear: the market prices JD as a no-growth value trap, but the financials show accelerating profitability and management that is aggressively returning capital. The main risks are geopolitical (ADR/tariffs) and execution on the Europe bet, which are real but adequately compensated by the valuation discount.
+Cheap deep-value Chinese e-commerce incumbent with a real logistics moat, net cash, aggressive buyback + dividend, and an identifiable trough margin in 2025 that should mean-revert as food-delivery losses peak and trade-in subsidies extend. Variant perception is that the market is over-discounting a contained strategic investment while under-pricing core retail durability + capital return. Q1'26 earnings is a near-term catalyst, and downside is cushioned by ~15-20% of market cap in net cash + listed subsidiary stakes. Conviction is MEDIUM (not HIGH) because food-delivery economics are unproven, the gross-margin trend in core retail is concerning, ADR delisting tail risk is real, and the inflection has not been confirmed yet — only set up.
 
-Conviction is MEDIUM rather than HIGH because: (1) China macro remains uncertain, (2) the Europe expansion is unproven, and (3) geopolitical tail risk is not zero.
-
-**Entry:** $28 or below — current price is attractive. Scale in: 50% now, 50% on any dip below $25.
-**Thesis-break:** Exit if gross margins contract 2 consecutive quarters or if ADR delisting becomes a regulatory reality.
-**Dividend capture:** Ex-date April 9, 2026 — $1.00/ADS (3.6% yield).
+**If BUY:** Scale-in below $33; add aggressively below $28; full position by $25. Thesis-break price: $22 if accompanied by Q1'26 earnings showing gross margin <8.5% or food-delivery losses accelerating. Variant perception requires the post-earnings tape — be willing to exit if the data invalidates the trough-margin thesis.

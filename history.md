@@ -196,3 +196,140 @@ contribute at the default weight.
 3. Add entries to `gates.py:SIGNAL_GATES` for both P and S (use `passes=False` if rigorous test fails — documents the negative result)
 4. Update `notes/research/signal_inventory.md` row from UNGATED to PASS / FAIL
 5. Run `uv run pytest tests/test_signal_gates.py --no-cov`
+
+## 2026-05-10 — Portfolio review session: TTD / MOH / SK Square / PTON / BRK.B / 8002 / cash deployment
+
+### X posts triaged (5 fetched via vxtwitter)
+- **@browomo** (AI trading stack, $180K self-reported gains) — vibe post, no track record. Discard as signal; mildly interesting as tooling inspiration.
+- **@theaiportfolios** (Claude-managed $50K paper portfolio, trailing SPY 60bps) — noise on a tiny sample. Individual picks (INTR, MGNI, PGY) could be screened but the "AI portfolio" framing adds no edge.
+- **@babyfolio** (SK Square as backdoor SK Hynix, 43% NAV discount) — **only X post worth following up.** Holdco-discount arb is a real pattern.
+- **@pepemoonboy** ($PLAB, $AMKR naked ticker reply) — discard.
+- **@seelffff** (open-source replacing $2K/mo trading subs) — DIY tooling advocacy, not investing content.
+
+### Deep dives → decisions
+
+**TTD — DOWNGRADE to HOLD (was BUY at $23.51 in prior 2026-03-20 note)**
+- Moat is **structurally weakening**, not just re-rating. Three vectors: Amazon DSP take rate 1–2% vs TTD's effective ~21%; Walmart Connect exclusivity ended; Disney/Roku/Netflix now have Amazon DSP as co-equal pipe. WPP CFO publicly said TTD "operates in a smaller slice of the ad market" — structural messaging.
+- CTV market grew 14% in 2026, TTD's CTV-heavy book guided 8% in Q2. That's share loss, not macro.
+- Kokai costs are permanent (margin guide flat at 40%, not expanding). EV revised +42% → +16%. Probabilities shifted: bull 25→15%, bear 25→40%.
+- Prior $21 add-level no longer triggers a buy. Thesis-break revised $15 → $17. Cut if Q2 < $735M or second top-5 agency formally derecommends. Detail: `notes/companies/TTD_2026-05-10_update.md`.
+
+**MOH — HOLD, don't chase (already a 14% combined position)**
+- Q1 cleared the bear-case thesis-break (MCR 91.1%, well below 93%). But +28% rerate from $142 → $182 compressed EV from +16% to +4%. Street PT $144–172 still lags price.
+- Trap: MOH's own FY guide says Q1 was trough-of-trough — Medicaid MCR 92.0% trending to 92.9% full-year, so 2H runs ~93.3%. Market is paying 36x trough EPS for a recovery management says won't show until 2027.
+- Burry position confirmed (1.73% of Scion portfolio) but his HMO track record is mixed — confirmation, not edge.
+- Marketplace PTC expiration is the under-discussed tail risk (already mitigated by MOH's 20% footprint cut).
+- Trim IBKR portion ~25–33% back to ~10% combined. Re-add at $150–160 on Q2 wobble OR breakout above $200 after July rates ≥4%. Next print: Q2 ~Jul 23. Detail: `notes/companies/MOH/2026-05-10_update.md`.
+
+**SK Square (KRX 402340) — PASS**
+- NAV is **~96% SK Hynix** (~200 tn KRW); unlisted holdings (Shieldus, 11st in forced sale, T Map, Wavve) only ~2.5% of NAV.
+- Discount has already compressed 65.7% → 43% over 18 months; stock up 192% YTD. Sell-side floor for the discount is ~25–30%, set structurally by ~25% Korean capgains tax on Hynix monetization + chaebol governance + reinvestment risk.
+- Remaining compression ~15pp = ~15% upside on the arb leg. Beyond that it's just leveraged Hynix beta with a permanent 25–30% haircut.
+- If bullish HBM through 2027 fine; if HBM peaks 2026 the discount cushion won't protect. Trade via KRX 402340 in KRW (SKSQF OTC is illiquid), 15% Korean dividend WHT under treaty. Detail: `notes/companies/SK_Square_402340.md`.
+
+**PTON — HOLD all of it (revised from earlier "is the thesis still valid?" framing)**
+- Q3 FY26 (May 7) was the inflection: revenue +1% YoY (first positive print in years), FCF +59% to $151M, **first-ever GAAP profitable year**, FY26 FCF guide raised $275M → $350M, net debt -70% YoY to $173M. Stock $5.70 (+24% since prior review).
+- Subscriber bleed persists (-7.6% YoY, 2.662M) — "shrinking to profitability" has finite runway.
+- Triggers: add at $4.80–5.00; trim 25% at $7.50, another 33% at $9.00; exit if churn >2.5% two quarters OR Q4 revenue miss >3% OR refi fails OR breaks $3.80 on fundamentals. Detail: `notes/companies/PTON_2026-05-10_update.md`.
+
+**BRK.B — CLOSE the Revolut position**
+- Identified from Revolut CSV: 2.07016706 shares, cost basis $1,000.01 (filled @ $481.85 on 2025-02-14, fx 1.0519). Now ~$986 (-1.4%). Source: `vault/paperwork/taxes/2026/raw/revolut_transactions_2020-2026.csv:182`. **Not booked in beancount** — Revolut positions aren't being reconciled there.
+- P/B 1.41 = exactly historical median. Abel transition smooth, $397B cash pile, buybacks restarted. Fair, not cheap.
+- At 2.1% it's worst-of-both: too small to anchor, too big to ignore. Notes don't support a 7–10% conviction sizing. Close. Detail: `notes/companies/BRK_B.md`.
+
+**8002.T Marubeni — TRIM 25% (not 30%, not 50%)**
+- **Critical late-breaking fact:** Berkshire crossed the 10% threshold on both Marubeni and Sumitomo the week ending 2026-05-09. Fresh committed-buyer catalyst — don't trim aggressively into strengthening news.
+- Valuation reality check on Morningstar comparable basis: Mitsui 8.6x P/E · **Marubeni 9.0x** · Mitsubishi 10.3x · Sumitomo 10.6x · Itochu 12.1x. Mid-pack, not expensive. The "fully priced" framing from prior notes used a different P/B basis and was overstated.
+- But: 14% portfolio weight is at Kelly cap with zero margin; JPY appreciation is a 10% USD-return headwind if BOJ tightens; Q3 FY26 EPS missed by 27%. Sizing discipline says trim.
+- Sell ~50 shares ≈ $1,740. Leaves ~$5,200 / 10.5% weight. Re-trim 25% more if breaks 6,200 JPY without earnings support; add back if pulls below 4,500 JPY on macro fear. Detail: `notes/companies/8002_2026-05-10_update.md`.
+
+### Cash deployment plan (~19% post-trims)
+
+Hold cash, don't force a buy. EUR money market ~2%, USD ~4% — paid to wait. Tripwires:
+
+| Trigger | Action |
+|---|---|
+| MOH pulls back to $150–160 | Re-add 5% position |
+| CNC stays <10x fwd P/E through Q2 | Open starter 3–5% |
+| SK Hynix sells off 20%+ on HBM cycle fear | Add Hynix directly (not via SK Square) |
+| Broad market -10% correction | Deploy ~half of cash into existing winners (GOOG, AVGO) |
+| 6 months pass with no trigger fired | Force review — drift to global cheap (BABA, energy, EU defense) or accept structural cash |
+
+**EUR parking:**
+- Below ~€5K: leave in Revolut Flexible Account (~1.8–2.2%, takes ~30–50bps haircut vs €STR).
+- Above ~€10K: transfer to IBKR, buy **XEON** (Xtrackers II EUR Overnight Rate Swap UCITS, Xetra) — tracks €STR ~2%, daily liquid. Alternatives: CSH2, C3M, ERNE within 10–20bps.
+- IBKR's own EUR cash sweep pays ECB deposit rate −50bps above €10K threshold (~1.5%) — useful zero-effort baseline but lowest yield.
+
+**USD parking:**
+- IBKR auto-sweep at ~4.3% on USD balances above $10K threshold, or buy SGOV.
+
+### Other findings this session
+- **Sony FY2025 results (reported 2026-05-08):** Record ¥1,447.5B OP but FY2026 guide soft (¥1,600B vs higher consensus) on memory shortages, Afeela EV wind-down (+¥30B charge on top of ¥44.9B), Bungie impairments, tariff uncertainty. Music was the bright spot (+21% sales, +28% OP). Stock -23% YTD. Not broken, not obviously cheap — hold or tax-loss harvest if Spain allows.
+- **MOH catalyst diagnosis** (Apr 23 +14% move): Q1 MCR 91.1% (250bps better than Q4 2025's 94.6%) + CMS 2027 MA Final Rate Notice +2.48% net + Burry disclosure + UNH/ELV peer guidance raises. Justified but no longer cheap.
+
+### Memory hygiene
+- Fixed stale MEMORY.md claim that portfolio lived in this repo — it's at `~/vault/finance/notes/portfolio/portfolio.md` (moved out in commit d2f95bf). Transactions at `~/vault/finance/notes/transactions/`. Beancount at `~/vault/finance/*.beancount`.
+- Added new feedback memory: `feedback_verify_memory_before_acting.md` — always check path/state exists before relying on a memory claim; fix stale entries rather than routing around them.
+
+---
+
+## 2026-05-18 — STLD exit + tactical buy plan for Wed/Thu
+
+### Trades today
+- **STLD sold full position** on Revolut (free monthly trade): 7.50131272 sh @ market $226.94, gross $1,702.35, fee $0.05 (SEC Sec-31 pass-through), net **$1,702.30**. Realized **+66.5%**. Triggered by: free trade availability + cyclical-at-peak (analyst +4%, DCFs −28 to −34%, GBM 3y only +16-25%, +66% gain) + macro CAUTIOUS regime. Full rationale: `~/vault/finance/notes/transactions/2026-05-18_sell_STLD.md`.
+- **FX**: ~$1,000 USD → EUR same day at Revolut.
+- **Revolut → IBKR transfer**: €3,000 SEPA initiated (leaving small EUR reserve in Revolut + residual USD).
+- **AGENTS.md updated** with `Repo Scope vs Personal Data` section pointing at `~/vault/finance/` for portfolio/transactions/ledgers — this repo is analysis infra only.
+
+### Macro snapshot (2026-05-18)
+- S&P -1.5% off ATH, +24% YoY (2× hist avg). VIX 19 calm. 10Y 4.60%. Polymarket: 98% prob NO Fed change at June meeting, **70% prob NO Fed cuts in 2026**. Gold +40% YoY (hedging beneath calm). Verdict: **CAUTIOUS — keep dry powder** (unchanged from May 10 reading).
+- Tripwires from 2026-05-10 plan: none have fired (MOH bounced from lows to $183, doesn't qualify as $150-160 pullback; CNC unchanged; no broad -10% correction). Default cash-holding stance still operative.
+
+### Technical setup snapshot for buy candidates (2026-05-18 close)
+
+| Ticker | Price | RSI14 | vs SMA20/50 | 20d move | ATR14 | WL BUY zone | Setup |
+|---|---|---|---|---|---|---|---|
+| **DECK** | $95.07 | **31.8** | below / below | -14.4% | $3.40 | $100-110 | **Oversold + below entry zone**. Prime setup. |
+| **META** | $612.37 | **26.4** | below / below | -8.7% | $17.10 | (not listed) | **Deeply oversold quality**. GBM 5/5 bulls. |
+| **BSX** | $55.24 | 38.2 | below / below | -9.4% | $1.68 | $68-73 | Oversold, below zone. |
+| **CRM** | $178.78 | 47.9 | slightly below / below | -4.0% | $7.25 | $190-200 | Neutral, below WL zone. |
+| **GILD** | $130.41 | 52.5 | slightly below / below | -4.0% | $3.31 | $132-140 | In WL zone, neutral. |
+| **PINS** | $20.06 | 51.1 | slightly below / above 50 | -2.8% | $1.14 | $18-19 | Just above WL zone, neutral. |
+| **NOW** | **$103.21** | **67.3** | above / above | +3.4% (last 5d **+12.8%**) | $4.79 | (held starter @ $88.67) | **Just popped +8.6% on May 18 on 1.14× vol — approaching overbought. Don't chase tranche 2 at this level.** |
+| **FSLR** (held) | $230.62 | 72.5 | above / above | +19.8% | $11.78 | — | Overbought; don't add to existing 35 sh. |
+| **MOH** (held) | $183.18 | 47.9 | below / above 50 | +22% | $7.87 | — | Bounced from April lows; don't add. |
+
+### NOW thesis check after today's move
+NOW closed $103.21 today vs $95.07 Fri close = +8.6% on 32.3M vol (1.14× 20d avg). RSI jumped from ~50 → 67.3. No obvious headline catalyst found in 5-deep news scan. Could be: software-sector momentum, AI/Agentforce-adjacent move, M&A speculation, or technical breakout above 50-day SMA at $99.31. The fundamentals didn't change in one day, but the **tactical entry has worsened materially**. Original plan was to add tranche 2 at $88-95. Limit at ~$98 (just above 50-day SMA) is the disciplined waiting price; chasing $103 is not.
+
+### Tomorrow / Wed-Thu deployment plan
+
+Cash availability: ~$1,500 (existing IBKR) + ~$3,300 USD post-FX (incoming SEPA, lands Wed-Thu) = **~$4,800 deployable**.
+
+**Primary plan** (best technical setups, defers NOW):
+1. **DECK** initiation: limit buy **20 sh @ $96.00 GTC** ≈ $1,920. RSI 31.8 oversold + below WL BUY zone + Kelly top score (+71.6%, 5/5 bulls, ROE 40%).
+2. **META** initiation: limit buy **3 sh @ $610.00 GTC** ≈ $1,830. RSI 26.4 deeply oversold + quality (32.9% ROE) + GBM 5/5 bulls (3y opp +27.5%).
+3. **NOW** add (tranche 2, patient): limit buy **20 sh @ $97.00 GTC** ≈ $1,940. **Only fills on pullback** to/below 50-day SMA. If unfilled in 5 trading days, re-evaluate.
+
+Cash math: DECK + META fills = $3,750 committed, $1,050 dry powder. If NOW limit fills too: over-budget by ~$890 → cancel NOW limit at that point or shrink DECK to 18 sh.
+
+**Alternative (single-initiation, sticks closer to original NOW plan):**
+1. DECK 20 sh @ $96 GTC = $1,920
+2. NOW 20 sh @ $97 GTC = $1,940
+3. Skip META this round.
+
+### Tripwire updates (additions to 2026-05-10 plan)
+| Trigger | Action |
+|---|---|
+| NOW pulls to $90-95 | Fill tranche 2 immediately at market (original plan zone) |
+| META breaks below $590 | Add second tranche on extreme oversold flush |
+| DECK breaks below $90 | Double initial size (oversold extreme) |
+| US 10Y above 4.80% | Reassess all duration-sensitive positions; defer remaining buys |
+| VIX above 25 | Stop deploying; reassess macro regime |
+
+
+## 2026-05-19 — Revolut → IBKR transfer time
+
+Revolut-to-IBKR cash transfer completed **overnight** (initiated previous evening, available next morning). Earlier estimates of 2–3 days were wrong.
+
+**Rule for future plans:** assume Revolut → IBKR USD cash transfer = **1 business day**, not 2–3. Plan limit-order timing and deployment windows accordingly.

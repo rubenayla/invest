@@ -1,122 +1,119 @@
-# Constellation Energy (CEG)
+# Constellation Energy Corporation (CEG)
 
 **Sector:** Utilities | **Industry:** Utilities - Independent Power Producers
-**Price:** $282.00 | **Market Cap:** $102B
-**Analysis Date:** 2026-03-22
+**Price:** $262.00 (2026-05-19) | **Market Cap:** ~$95B
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** Constellation Energy is the largest zero-emission power producer in the United States and, after closing the Calpine merger on 2026-01-07, also one of the largest natural-gas generators. The combined fleet is roughly 55-60 gigawatts (GW): about 22 GW of nuclear (the country's biggest nuclear operator), legacy hydro and wind/solar from the pre-Calpine Constellation, and now roughly 23 GW of natural-gas and renewable capacity acquired from Calpine. Two business lines generate revenue. First, the generation segment sells electricity wholesale into competitive markets (PJM, ERCOT, New York, New England, California) at hourly market prices and through long-term Power Purchase Agreements (PPAs) — notably a 20-year PPA signed in 2024 with Microsoft to restart Three Mile Island Unit 1 (rebranded Crane Clean Energy Center, 835 megawatts, targeting 2027-2028 commercial operation) dedicated to AI data centers. Second, the customer-facing retail business sells electricity, natural gas, and energy services to commercial, industrial, and residential customers across the United States — this segment grew materially with the Calpine retail platform. Revenue split is dominated by the wholesale generation business; commodity prices and capacity-market clearing prices (PJM in particular) drive the bulk of earnings.
+
+**Where they want to grow.** Management is making three explicit bets. First, sign more long-duration, high-price PPAs directly with hyperscalers (Microsoft, Amazon, Meta, Google) for AI data center load, leveraging the scarcity value of always-on zero-carbon baseload. Second, integrate Calpine to capture cost synergies and build a complete fuel-and-tech-diverse fleet (nuclear baseload + flexible gas peakers + renewables) that can serve any customer profile in any market. Third, pursue nuclear uprates, license extensions to 80 years, and selective new builds (small modular reactors, restart of mothballed units) financed in part by federal loans and the Inflation Reduction Act nuclear Production Tax Credit (PTC). Success in 3-5 years looks like adjusted operating Earnings Per Share compounding double digits, a fleet-wide realized power price meaningfully above current PJM clears, and 5-10 GW of incremental load locked under direct hyperscaler contracts.
+
+**What could go wrong (business risks).** Four genuine business risks. First, regulatory pushback: the Federal Energy Regulatory Commission (FERC), state regulators, and grid operators (especially PJM Interconnection) are scrutinizing direct-to-customer "behind the meter" hyperscaler deals because they bypass the regulated transmission grid and may leave residential ratepayers absorbing higher capacity costs — a hostile ruling could cap the PPA opportunity. Second, nuclear operational risk: an unplanned outage, fuel-related event, or safety incident at any of the 22 GW nuclear fleet would damage earnings and, more importantly, the franchise's reputation as a reliable baseload counterparty. Third, Calpine integration and leverage: the $21.8 billion cash-and-stock deal added meaningful net debt and Q1 2026 interest expense jumped 73% year-over-year — synergy execution and gas-fleet integration must deliver or the deal becomes earnings-dilutive. Fourth, grid interconnect delays: even with a signed PPA, getting transmission capacity built to connect a restarted nuclear plant to a hyperscaler data center can take years longer than expected; the Crane restart timeline has already drifted from 2027 to 2028.
+
+**How to think about it.** This is an Independent Power Producer (IPP) — not a regulated utility — that happens to dominate zero-emission baseload generation at exactly the moment artificial-intelligence capital expenditure has created an unprecedented bid for reliable 24/7 carbon-free power. The investment case is not "buy a utility for the dividend"; it is "bet that long-term PPA repricing over the next decade structurally lifts the realized power price on a fleet that was previously valued at merchant-strip prices." That makes the equity behave like a long-dated call option on hyperscaler power demand, partially hedged by the nuclear PTC floor (roughly $43.75 per megawatt-hour). The recent drawdown of about 17% reflects the market wrestling with whether CEG deserves a growth multiple or a utility multiple — Argus just cut the fair-value target to $350 specifically arguing for the latter framing.
 
 ## Situation Summary
 
-Constellation Energy completed its transformative $16.4B acquisition of Calpine on January 7, 2026, creating the nation's largest electricity producer with ~55-60 GW of combined capacity spanning nuclear, natural gas, and geothermal. The stock is trading at $282, down ~32% from its 52-week high of $413, pressured by a brief dip in CPI electricity prices (Feb 2026), rising Treasury yields, and post-deal integration uncertainty. The market narrative is dominated by the AI data center power demand thesis -- CEG is positioned as the premier "picks and shovels" play for AI infrastructure through its nuclear baseload fleet and the Three Mile Island restart (20-year Microsoft PPA, targeting 2027 restart). Q4 2025 adjusted EPS of $2.30 beat estimates; 2026 guidance will be provided at the March 31 Business & Earnings Outlook call.
+CEG closed the $21.8B Calpine acquisition on 2026-01-07, doubling the fleet and adding gas, renewables, and retail. Q1 2026 results (reported 2026-05-12) showed adjusted operating Earnings Per Share of $2.74 vs. $2.59 consensus, with revenue of $11.1B and net income of $1.59B — a clean beat. But the stock fell about 6% on the print and another 6% the next day after Argus cut its target from $425 to $350 (kept Buy), arguing CEG should trade closer to traditional-utility multiples rather than as a high-growth tech-adjacent name. Drivers of the selloff: full-year guidance midpoint slightly below consensus, interest expense up 73% year-over-year to $253M from Calpine debt, and lingering PJM regulatory overhang on behind-the-meter hyperscaler deals. The stock is now around $262, down from a 52-week high near $375, while the Microsoft / Crane Clean Energy Center restart remains on track (approximately 80% staffed, 2027-2028 target). The Three Mile Island AI thesis is intact; multiple compression is the issue.
 
 ## Variant Perception
 
-- **Consensus view:** CEG is the best-positioned utility for the AI power demand supercycle. Analyst consensus is Buy with a $394 mean target (~40% upside). The market treats it as a premium growth utility deserving a 20x+ forward PE. Most bulls focus on nuclear's role as 24/7 carbon-free baseload for hyperscaler PPAs.
-
-- **Our view:** The consensus is directionally correct but may be underestimating two things: (1) the Calpine integration synergies -- combining nuclear baseload with Calpine's flexible gas fleet creates a unique "firm power" offering that no competitor can match, enabling premium pricing on data center contracts; (2) the Three Mile Island restart in 2027 adds 835 MW of contracted revenue at likely very attractive economics. However, the stock is NOT cheap at 20x forward PE for a utility, and the AI power demand thesis is now well-known and widely held. The real edge is in the magnitude and durability of contract repricing as legacy PPAs roll off at much higher rates, but this is a 2-3 year story. Near-term, the March 31 guidance call is the key catalyst.
-
-- **Trigger:** March 31, 2026 Business & Earnings Outlook call -- first combined guidance incorporating Calpine. If management guides to $14-16+ adjusted EPS and articulates a clear synergy roadmap, the stock re-rates. Secondary trigger: TMI restart progress milestones (2027).
+- **Consensus view:** Post-selloff, the bull camp says "artificial-intelligence power scarcity is permanent, CEG is the cleanest play" while the emerging bear camp (Argus, parts of the sell side) says "this is a utility — stop paying 25x for it, multiple should compress to 15-18x." Average analyst target $366; recommendation key "buy."
+- **Our view:** The multiple debate is the wrong frame. CEG's earnings power over the next 5 years is structurally higher than the trailing fleet-wide realized power price suggests, because each new hyperscaler PPA reprices a chunk of the fleet at a premium to PJM merchant strip. The market is anchoring on a snapshot of 2026 earnings while underweighting (a) the option value of additional hyperscaler PPAs beyond Microsoft, and (b) the nuclear Production Tax Credit floor that limits downside to nuclear cash flows. The Argus de-rating is overdone: even if CEG deserves a "premium utility" rather than "tech-adjacent" multiple, 18-20x forward on rising earnings still implies meaningful upside from $262.
+- **Trigger:** Next dateable catalysts: (1) a second hyperscaler PPA announcement (rumored Meta or Amazon in 2026H2) would force re-rating; (2) Q2 2026 earnings (around early August) showing Calpine synergy capture would relieve the integration overhang; (3) any favorable FERC ruling on co-located load. The Argus cut probably marked the local sentiment trough.
 
 ## Financial Snapshot
 
-| Metric | Value | 3yr Trend |
+| Metric | Value (FY25) | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $25.5B (2025) | 1.5% CAGR (flat, masking mix shift) |
-| Net Income | $2.3B (2025) | Volatile: -$160M -> $1.6B -> $3.7B -> $2.3B |
-| EBITDA | $6.0B (2025) | Strong: $1.6B -> $4.8B -> $7.0B -> $6.0B |
-| Operating Income | $4.2B (2025) | Improving: -$0.4B -> $2.4B -> $4.8B -> $4.2B |
-| FCF | $1.3B (2025) | Inflecting: -$4.0B -> -$7.7B -> -$5.0B -> +$1.3B |
-| ROE | 16.4% | Improving |
-| D/E | 63.9 | Stable (net debt/EBITDA ~0.9x) |
-| FCF Yield | 1.3% | First positive year |
-
-**Revenue CAGR (3yr, 2022-2025):** ~1.5%
-**Net Debt/EBITDA:** ~0.9x (conservative)
-**FCF Yield:** 1.3% (will improve as Calpine cash flows integrate)
-
-**Note on FCF history:** The deeply negative FCF in 2022-2024 was driven by collateral postings on commodity hedges during the energy crisis -- not operational cash burn. As hedges rolled off and prices normalized, operating cash flow swung to +$4.2B in 2025. This is a critical distinction the headline numbers obscure.
+| Revenue | $25.5B | Approximately +1.5% Compound Annual Growth Rate (lumpy; commodity mix) |
+| Net Income | $2.32B | Recovering from -$0.16B (2022) — sharp inflection |
+| EBITDA | $5.96B | Up about 56% over 3 years (post-spin operational ramp) |
+| Operating Cash Flow | $4.24B | Reversed from negative — major inflection |
+| Free Cash Flow | $1.29B | First positive year post-spin |
+| Return on Equity | 16.1% | Improving |
+| Debt/Equity | 0.66 | Rising post-Calpine (will jump in Q1 2026 print) |
+| FCF Yield | About 1.4% | Low; reinvestment-heavy |
+| P/E (trailing) | 22.8x | Compressed from 30x+ peak |
+| Forward P/E | 19.3x | |
 
 ## Valuation Models
 
-No existing models in the database for CEG. This is the first analysis.
+| Model | Fair Value | Upside vs $262 | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| gbm_opportunistic_1y | $533 | +103% | 0.88 | 2026-05-18 |
+| gbm_lite_3y | $484 | +85% | 0.55 | 2026-05-18 |
+| gbm_3y | $441 | +68% | 0.84 | 2026-05-18 |
+| autoresearch | $415 | +58% | 0.85 | 2026-05-18 |
+| gbm_1y | $405 | +55% | 0.88 | 2026-05-18 |
+| gbm_lite_1y | $361 | +38% | 0.90 | 2026-05-18 |
+| gbm_opportunistic_3y | $353 | +35% | 0.59 | 2026-05-18 |
+| simple_ratios | $134 | -49% | 0.85 | 2026-05-18 |
+| DCF family (dcf, dcf_enhanced, multi_stage_dcf, growth_dcf, rim) | NULL | — | — | 2026-05-18 |
 
-**Market-implied valuation:**
-- At $282 and ~20.5x forward PE, the market implies ~$13.75 forward EPS
-- Analyst consensus targets $394 (mean), range $277-$481
-- At $394 target and 20.5x forward PE, implied forward EPS = ~$19.2
+*Note: models ran against $315.17 (yesterday) but live price is now $262 (down approximately 17%). All upside percentages above are recalculated against $262. The DCF family returned NULL — likely tripping on negative historical free cash flow (2022-2024 were all negative). Models lean bullish but the spread is wide ($134 simple_ratios to $533 GBM opportunistic).*
+
+**Model consensus:** Heavy bullish skew from the Geometric Brownian Motion (GBM) family — which captures historical volatility-adjusted return distributions well — and autoresearch. The simple_ratios model screens cheap-utility ratios and flags overvalued — a useful counterweight reflecting "if this is just a utility, it is expensive." DCFs failing suggests the free-cash-flow profile is too lumpy and early-stage for those models to anchor. Weighted toward GBM and autoresearch (per project notes, these are most reliable for return predictions), consensus fair value is $400-440, implying roughly 50-65% upside.
 
 ## Business Quality (19/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 4/5 | Irreplaceable nuclear fleet (32.4 GW) with 20+ year licenses. Regulatory barriers to new nuclear are enormous. Only company offering combined nuclear + gas "firm power" for data centers. Switching costs are very high (20-year PPAs). Deducted 1 point because commodity pricing on wholesale power limits pricing power outside contracted volumes. |
-| Management | 4/5 | CEO Joe Dominguez has executed well: TMI restart deal, Calpine acquisition, $1B federal loan secured. Dividend growing 10%/yr. Stock-based comp is reasonable. Deducted 1 point for integration execution risk on Calpine (largest deal in company history). |
-| Profitability | 3/5 | Operating margins ~9.6% are modest but typical for the sector. EBITDA margins have expanded significantly ($1.6B to $6.0B over 3 years). ROE of 16.4% is solid. Deducted 2 points: margins are still thin relative to asset-light businesses, and 2024's elevated net income ($3.7B) included favorable mark-to-market items that didn't repeat. |
-| Balance Sheet | 4/5 | Net debt/EBITDA of 0.9x is very conservative. $3.6B cash on hand. Current ratio 1.5x. Debt increased with Calpine but manageable. Deducted 1 point for the absolute debt level ($9B) and capex intensity (~$3B/yr). |
-| Growth | 4/5 | AI data center demand is a genuine secular tailwind. TMI restart adds 835 MW contracted. Calpine adds 26 GW capacity + geothermal. Contract repricing as legacy PPAs roll off at higher rates. Deducted 1 point: nuclear fleet is aging and new capacity is decades away; growth is more about repricing existing capacity than building new. |
+| Moat | 5/5 | The 22 GW nuclear fleet is functionally irreplicable — nobody is permitting new large nuclear plants in the United States on any near-term timeline. Combined with hyperscaler-grade reliability, this is among the most durable physical moats in the US economy. |
+| Management | 4/5 | Joe Dominguez has executed cleanly since the 2022 Exelon spin — turned cash flow positive, signed the landmark Microsoft PPA, closed Calpine on schedule. The Calpine price ($21.8B, approximately 4.4x Enterprise Value to EBITDA on Calpine standalone) looks defensible. One notch off because integration risk is live. |
+| Profitability | 4/5 | Operating margin 22%, Return on Equity 16%, but capital intensity is brutal (every $1 of EBITDA requires roughly $0.50 of capex). Margins expanding; trajectory positive. |
+| Balance Sheet | 3/5 | Net debt approximately $5.4B pre-Calpine, will be approximately $13-15B post-deal. Net debt to EBITDA around 1.5x — acceptable for an Independent Power Producer — but interest expense rose 73% year-over-year in Q1. Current ratio 1.36; quick ratio 0.48 (typical utility). Manageable, not pristine. |
+| Growth Runway | 3/5 | Artificial-intelligence-driven power demand creates a genuine 5-10 year tailwind, but growth is constrained by the physical asset base. Cannot suddenly double generation; growth comes from price (PPA repricing) and selective uprates and restarts. Not a high-growth name in volume terms. |
 
 ## Inflection Point
 
-**Yes -- multiple overlapping inflections:**
-
-1. **FCF inflection (confirmed):** After 3 years of deeply negative FCF (commodity hedge collateral), CEG printed +$1.3B FCF in 2025. This is the most important fundamental change -- the company is now generating real cash.
-
-2. **Calpine integration (underway):** The combined company is the largest US electricity producer. First synergies and combined guidance expected March 31. The CyrusOne 380 MW deal (announced post-close) shows early commercial traction.
-
-3. **Three Mile Island restart (2027):** 835 MW of nuclear capacity coming online under a 20-year Microsoft PPA. This is a unique asset that adds high-margin contracted revenue.
-
-4. **Power market repricing (ongoing):** As AI data center demand grows, wholesale and contracted power prices are structurally rising. CEG's legacy contracts will roll off into a much higher-priced environment over the next 2-5 years.
-
-**Timing assessment:** The FCF inflection is confirmed. Calpine integration is early-stage. TMI restart is 1-2 years out. This is a story where the fundamental evidence is emerging but the full re-rating is a multi-year process.
+Yes — multiple overlapping inflections. (1) Free cash flow turned positive in 2025 for the first time post-spin. (2) The nuclear Production Tax Credit effective 2024 onward establishes a hard revenue floor and structurally re-rates the cash-flow risk profile. (3) The hyperscaler PPA market emerged in 2024-2025; the Microsoft deal is the first of what should be several. (4) The Calpine merger reshapes the fleet from "pure nuclear merchant" to "diversified clean-and-flexible." The current drawdown of about 17% is providing entry as the consensus debates the multiple, not the inflection itself.
 
 ## Bull Case
 
-- March 31 guidance shows combined adjusted EPS of $15-17 for 2026, implying <19x forward PE at current price -- cheap for this growth profile
-- AI data center power demand exceeds expectations; CEG signs additional multi-GW PPAs at premium prices
-- TMI restart on track for 2027; success proves nuclear restart is viable, unlocking optionality on other retired units
-- Calpine synergies (cost savings + commercial cross-sell) beat the $300-400M target
-- Power prices structurally higher due to demand-supply imbalance; legacy PPA rollovers drive multi-year earnings acceleration
+- Second and third hyperscaler PPAs land in 2026H2 through 2027 (Meta, Amazon, Google reportedly negotiating), each repricing 500-1500 megawatts of fleet at $80-110/MWh vs. PJM merchant strip of $45-55/MWh — material earnings step-up.
+- Calpine synergies (approximately $300-500M run-rate by 2027 per management) plus gas/nuclear cross-optimization deliver above-deal-model EBITDA.
+- Nuclear Production Tax Credit inflation adjustment continues lifting the floor; PJM capacity auctions clear well above prior cycles given artificial-intelligence load and coal retirements.
+- Crane Clean Energy Center restarts on schedule in 2027-2028, instantly contributing 835 megawatts of contracted nuclear at premium pricing.
 
 ## Bear Case
 
-- AI power demand growth decelerates (efficiency gains, alternative energy sources, hyperscaler capex cuts)
-- Calpine integration stumbles: culture clash, higher-than-expected costs, or DOJ-mandated asset sales (4.4 GW/$5B) hurt more than anticipated
-- TMI restart faces delays or cost overruns (nuclear construction history is full of cautionary tales)
-- Regulatory risk: electricity price caps, nuclear safety requirements, or changes to Production Tax Credits reduce profitability
-- Stock is a consensus crowded long among institutional investors (78.9% institutional ownership) -- any narrative break causes outsized selling
+- The Argus framing wins: the market decides CEG is a utility, the multiple compresses to 14-16x forward, the stock drifts to $220-240 even with Earnings Per Share growth.
+- FERC or PJM rules against direct-to-data-center co-location structures (the under-discussed risk — this is disclosed in the 10-K but not the headlines) — kills the option value of incremental hyperscaler deals at premium pricing.
+- An unplanned outage at any of the 22 GW nuclear fleet damages the reliability narrative and triggers de-rating.
+- Calpine integration delivers below synergy targets while gas margins compress with potential natural-gas price spikes; leverage now feels too high.
+- Artificial-intelligence capital expenditure pauses or hyperscalers "right-size" data-center buildouts in 2026-2027, reducing the bidding intensity for PPAs (this is the slow-moving but most material long-term risk).
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | Combined EPS $16+ in 2026, growing 15-20%/yr on PPA repricing + TMI restart | Re-rates to 25x forward on "growth utility" narrative | $400 | +42% |
-| **Base** | 50% | Combined EPS $13-14 in 2026, growing 10-12%/yr on steady PPA rollovers | Holds 20-22x forward PE as large-cap utility | $300 | +6% |
-| **Bear** | 25% | EPS $11-12 as integration costs drag, AI demand slows, or regulatory headwinds hit | Compresses to 16-18x as growth premium fades | $200 | -29% |
+| Bull | 30% | Two new hyperscaler PPAs + full Calpine synergies + Crane on schedule; 2027 Earnings Per Share approximately $17 | Re-rates to 25x as scarcity narrative wins | $425 | +62% |
+| Base | 45% | Existing PPAs hold, Calpine synergies partial, one new modest PPA; 2027 Earnings Per Share approximately $15 | Settles at 20x | $300 | +14% |
+| Bear | 25% | FERC adverse ruling or Calpine integration miss; 2027 Earnings Per Share approximately $12 | De-rates to 16x | $192 | -27% |
 
-**Expected value: +7.3%** (0.25 x 42% + 0.50 x 6% + 0.25 x -29%)
-
-**Thesis breaks if:** 2026 combined adjusted EPS guidance comes in below $12, TMI restart is delayed beyond 2028, or AI data center power demand growth materially slows (watch hyperscaler capex announcements).
+**Expected value: +18.6%** (0.30 * 62 + 0.45 * 14 + 0.25 * (-27))
+**Thesis breaks if:** FERC formally restricts behind-the-meter co-located hyperscaler PPAs OR a material nuclear outage occurs OR Calpine FY2026 EBITDA tracks more than 15% below the deal model.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Moderately crowded -- 78.9% institutional ownership, consensus Buy, widely discussed AI power play |
-| Short interest | Low at 2.6% of float -- not a contrarian short |
-| Technical position | Trading at $282, down 32% from 52w high of $413, above 52w low of $161. Below 50-day MA ($301) and 200-day MA ($329). Technically in a correction/pullback, not oversold |
-| Next catalyst | March 31, 2026 -- Business & Earnings Outlook call (9 days away) |
-| Recent price action | Down ~11% in March, driven by CPI electricity data and rate fears. Has stabilized around $280-290 |
+| Crowdedness | 82% institutional ownership, 0.3% insider — was a consensus long; recent selloff suggests partial unwind |
+| Short interest | 3.25% of float — moderate, not crowded short |
+| Technical position | Down approximately 30% from 52-week high (~$375); oversold short-term, mid-range long-term |
+| Next catalyst | Q2 2026 earnings (around early August); any new PPA announcement; FERC decisions on co-location |
+| Recent price action | Two consecutive sharp down days post-earnings; Argus cut target from $425 to $350; some selling exhaustion likely |
 
 ## Verdict
 
-**WATCH** -- Conviction: MEDIUM
+**WATCH (leaning BUY)** — Conviction: MEDIUM
 
-CEG is a high-quality business (19/25) at a genuine inflection point, positioned in the right place for the AI power demand theme. However, the expected value of +7.3% is modest, the stock is a well-known consensus long, and the forward PE of 20.5x already embeds meaningful growth expectations. The pullback from $413 makes it more attractive than it was, but not cheap enough to justify a full position without seeing the combined guidance on March 31.
+Variant perception is clear (the multiple debate is the wrong frame; PPA repricing is structural earnings power, not a multiple story), quality is strong (19/25), and an inflection is evident across cash flow, the Production Tax Credit, and artificial-intelligence demand. But the +18.6% expected value is not a slam-dunk given a real 25% bear case with -27% downside, and the next hard catalyst is 2-3 months out (Q2 earnings). The Argus de-rating creates the buying window but momentum can still push lower before the next PPA announcement or earnings reaffirmation.
 
-**Would upgrade to BUY if:**
-1. March 31 guidance shows combined adjusted EPS of $15+ for 2026 (would put stock at <19x forward, attractive for this growth profile)
-2. Stock pulls back further to $250-260 range (would provide margin of safety)
-3. Any combination of lower price + better-than-expected guidance that pushes expected value above +15%
+**If BUY:** Entry $245-260 (scale in, half now / half on Q2 print or first new PPA signal). Full position only on a confirmed second hyperscaler PPA. Thesis-break at $215 (would imply the market has settled on a utility multiple permanently).
+**Would upgrade to BUY at:** $240 outright, or at the current price on confirmation of (a) a second hyperscaler PPA announcement, (b) favorable FERC guidance on co-location, or (c) Q2 2026 reaffirming or raising guidance with visible Calpine synergy capture.
 
-**Entry target:** $250-260 for a starter position, scale in on March 31 guidance confirmation
-**Full position:** Below $240 or on confirmed strong guidance + technical support
-**Thesis-break stop:** Below $180 (implies structural thesis impairment)
+<!-- Public file: generic research only. No personal position size, cost basis, P&L, or share counts here. -->

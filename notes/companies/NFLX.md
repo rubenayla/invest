@@ -1,123 +1,124 @@
-# Netflix (NFLX)
+# Netflix, Inc. (NFLX)
 
 **Sector:** Communication Services | **Industry:** Entertainment
-**Price:** $95.20 | **Market Cap:** $404B
-**Analysis Date:** 2026-03-17
+**Price:** $89.65 (2026-05-18, post 10-for-1 split executed 2025-11-17) | **Market Cap:** $377.5B
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** Netflix is the global leader in subscription video streaming, with roughly 325 million paid memberships (last disclosed January 2026; management has stopped reporting subs quarterly). The core product is a flat monthly subscription giving on-demand access to a library of original and licensed films and series across 190+ countries. Revenue is essentially all subscriptions today, but increasingly diversified by tier: a Standard with Ads plan (now ~190 million monthly active ad-tier viewers) sells inventory to brand advertisers via a Microsoft-then-in-house ad-tech stack, on top of the legacy ad-free Standard and Premium tiers. The company also makes a smaller amount from licensing content, a nascent games initiative (mobile games included in subscription), and a fast-growing live events slate — Netflix aired 70+ live events in Q1 2026 alone, including NFL Christmas Day games, weekly WWE Raw under a 10-year deal, boxing (Joshua vs. Paul), and the World Baseball Classic. Customers are individual households paying monthly; advertisers are increasingly Madison Avenue brands buying CPMs (cost per thousand impressions) against premium video.
+
+**Where they want to grow.** Three explicit bets. First, the advertising tier — management has reiterated a goal of roughly doubling advertising revenue to about $3 billion in 2026 and views ads as the structural lever that lets them price the entry tier low while monetizing engagement at the high end; the build-out of their own ad-tech platform (replacing the Microsoft partnership) is the enabling investment. Second, live programming and events — sports (NFL, WWE) and tentpole live events are positioned not as a content category in their own right but as engagement and ad-CPM catalysts that pull through subscriptions and reduce churn. Third, ongoing pricing power and tier mix on the existing base — selective price hikes, the paid-sharing crackdown (now largely lapped), and a steady upgrade ladder from Ads to Standard to Premium. Mergers-and-acquisitions optionality is real: Netflix attempted to buy Warner Bros. Discovery's streaming and studios business in late 2025, was outbid by Paramount Skydance in February 2026, and collected a $2.8 billion termination fee. Success in 3-5 years looks like roughly $70-80 billion in revenue, mid-30s operating margin, advertising revenue at $8-12 billion, and Netflix as the dominant Western streamer that has absorbed share from struggling peers.
+
+**What could go wrong (business risks).** Content cost arms race remains the central structural risk — sports rights inflation in particular (the next NFL package, NBA, premium league rights) could compress margins faster than advertising revenue scales. YouTube is the most underappreciated competitor: it already commands more United States television-viewing share than Netflix and has lower content costs, free distribution, and a creator flywheel Netflix cannot replicate. Disney+, Amazon Prime Video (with NBA and Thursday Night Football), Apple, and HBO Max under new Paramount Skydance ownership all keep the bidding war for talent and rights hot. Saturation in mature markets (United States, United Kingdom, Northern Europe) means future net additions skew to lower-average-revenue-per-user geographies (Latin America, Asia-Pacific, India) where pricing power is weaker and foreign exchange is a persistent headwind. Execution risk on the in-house ad-tech transition is real — Microsoft was the training-wheels partner; Netflix now has to compete with Google, Amazon, and The Trade Desk for advertising budgets. Regulatory risk includes European Union content quotas, Digital Services Act and Digital Markets Act fines, and United States tax treatment of cross-border streaming revenue. Finally, the engagement-plateau risk: if hours-per-member stop growing, the ad tier's effective price per impression caps out and the whole bull case slows.
+
+**How to think about it.** Mature streaming subscription business with embedded advertising optionality — bet on ad-tier monetization, pricing power, and operating leverage on a roughly flat-to-slowly-growing global member base, NOT on subscriber growth at heart. Subscribers are a stock; average revenue per user times engagement times ad-load is the flow that matters from here. Compared to peers, Netflix is the only profitable, free-cash-flow-positive pure-play streamer at scale; everyone else is either a conglomerate cross-subsidizing streaming (Disney, Amazon, Apple) or a leveraged turnaround (the post-WBD and Paramount Skydance combination). That structural profitability gap is the moat — not content per se.
 
 ## Situation Summary
 
-Netflix is recovering from a turbulent Q1 2026. The stock dropped ~30% from its 52-week high of $134 after Netflix announced a $82.7B deal to acquire Warner Bros. Discovery in December 2025, which spooked investors with its massive debt implications and triggered a DOJ antitrust probe. Netflix demonstrated capital discipline by walking away from the deal on February 26, 2026, declining to match Paramount Skydance's competing $110B bid, stating it was "no longer financially attractive." Netflix received a $2.8B breakup fee. The underlying business remains exceptional: Q4 2025 showed 18% revenue growth, 325M+ subscribers, 30% operating margin expansion trajectory, and ad revenue that more than doubled to $1.5B. The stock has bounced 25% off its February lows (~$75) but remains well below pre-deal highs. Next earnings April 16, 2026.
+Netflix reported Q1 2026 revenue of $12.25 billion (+16% year-over-year, +14% foreign-exchange-neutral) and operating income of $4.0 billion at a 32.3% operating margin, modestly beating consensus. Management reiterated full-year 2026 revenue guidance of $50.7-51.7 billion with a 31.5% operating margin and the $3 billion advertising revenue target (a doubling year-over-year). The dominant non-operating event this year was the failed Warner Bros. Discovery acquisition: announced December 2025, terminated February 27, 2026 when Warner Bros. Discovery pivoted to a deal with Paramount Skydance, leaving Netflix with a $2.8 billion cash termination fee but no consolidation prize. The stock executed a 10-for-1 split on November 17, 2025; the current $89.65 reflects post-split pricing (pre-split equivalent roughly $897). Wall Street is squarely bullish — 60 buy / 16 hold / 0 sell, mean target $114-126 (roughly +28-40% upside), with the variant case resting on ad-tier acceleration. Recent price action has been weak (stock near 6-month lows; up only modestly off mid-May trough) as investors digest the failed Warner Bros. Discovery deal and absorb concerns about content spend ramping ahead of advertising monetization.
 
 ## Variant Perception
 
-- **Consensus view:** Analysts rate NFLX a "Buy" with mean target $113, implying ~19% upside. The market sees Netflix as the streaming winner but worries about: (1) the WBD deal overhang now cleared, (2) DOJ antitrust scrutiny lingering from the deal process, (3) whether 30%+ margins are sustainable given rising content costs, and (4) the stock's premium valuation even after the pullback. The consensus expects solid but decelerating growth.
-
-- **Our view:** The market is underappreciating three things: (1) The WBD walkaway was a *positive* event -- Netflix avoided a balance-sheet-destroying acquisition and pocketed $2.8B in cash, yet the stock is still trading 29% below pre-deal levels. The "deal overhang discount" should be unwinding. (2) The ad tier is an underappreciated margin accelerator -- 190M MAUs on the ad tier with revenue doubling to ~$3B in 2026 is essentially incremental high-margin revenue layered on top of the subscription base. (3) Operating margin guidance of 31.5% for 2026 (up from 29.5% in 2025 and 17.8% in 2022) shows operating leverage that the market is not fully pricing in at a forward P/E of ~25x.
-
-- **Trigger:** Q1 2026 earnings (April 16) should show the WBD deal is fully behind them, ad revenue tracking toward the ~$3B target, and margin expansion continuing. This is the catalyst to close the gap between current price and pre-deal levels.
+- **Consensus view:** Netflix is a high-quality compounder transitioning from subscriber-growth to average-revenue-per-user / advertising-monetization story. Bulls (the street consensus) believe advertising revenue doubles to $3 billion in 2026 and gets to $8-10 billion by 2028, driving operating margin into the mid-to-high 30s and supporting a 30-35x forward price-to-earnings multiple. Bears argue YouTube plus Disney+/Amazon competition plus content cost inflation cap the margin story and that 28-30x forward earnings is full.
+- **Our view:** Modest constructive variant. The market is fairly priced on the *base* case but is under-weighting two things: (a) the Warner Bros. Discovery termination fee is real, taxable but cash, and management has been disciplined about returning capital via buybacks rather than chasing the next deal at any price — that capital-allocation track record deserves a quality premium; (b) the live sports and events flywheel is dismissed as expensive marketing, but the 70-plus live events in Q1 plus weekly WWE represent a structural increase in advertising inventory that the sell-side has not fully modeled into 2027-28 advertising revenue. The downside: the gradient-boosted-machine (GBM) ensemble models in our database project 100%+ 3-year upside, which we believe is too aggressive — that is pricing in continuation of the historical multiple expansion that has already largely played out post-split.
+- **Trigger:** Q2 2026 earnings (mid-July) — first full quarter of in-house ad-tech post-Microsoft transition. If advertising average revenue per user shows acceleration and full-year ad revenue is tracking above $3 billion, the multiple re-rates higher; if ad growth disappoints (sub-doubling), the story stalls. Secondary trigger: 2026 NFL Christmas Day games (December) — engagement and ad sell-through metrics.
 
 ## Financial Snapshot
 
-| Metric | Value | 3yr Trend |
+| Metric | Value (TTM/FY25) | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $45.2B | 12.6% CAGR |
-| Net Income | $11.0B | 34.7% CAGR |
-| FCF | $9.5B | Massive expansion (from $1.6B in 2022) |
-| ROE | 41.3% | Improving (was ~21% in 2022) |
-| D/E | 0.54x | Stable/declining |
-| Net Debt/EBITDA | 0.18x | Very low leverage |
-| FCF Yield | 2.3% | |
-| Op Margin | 29.5% (2025) | 17.8% -> 20.6% -> 26.7% -> 29.5% |
-
-**Revenue CAGR (3yr):** 12.6% -- solid, accelerating from the 2022 slowdown.
-**Earnings CAGR (3yr):** 34.7% -- remarkable margin expansion driving earnings growth far above revenue growth.
-**FCF:** Exploded from $1.6B (2022) to $9.5B (2025) as content amortization stabilized and operating leverage kicked in.
+| Revenue | $45.2B | +12.6% CAGR |
+| Net Income | $11.0B | +34.7% CAGR |
+| Operating Income | $13.3B | margin 17.8% → 29.5% |
+| Free Cash Flow | $9.5B | $1.6B → $9.5B (5.8x) |
+| Return on Equity | 48.5% | rising |
+| Operating Margin (Q1'26) | 32.3% | expanding |
+| Net Debt | $5.4B | declining |
+| Net Debt / EBITDA | 0.18x | very conservative |
+| FCF Yield | 2.5% | |
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence |
-|-------|-----------|--------|------------|
-| gbm_opportunistic_3y | $264.0 | +167% | 0.98 |
-| gbm_lite_3y | $213.1 | +115% | 0.94 |
-| gbm_opportunistic_1y | $196.8 | +99% | 0.97 |
-| autoresearch | $188.2 | +97% | 0.99 |
-| gbm_3y | $128.8 | +30% | 0.78 |
-| gbm_1y | $111.0 | +12% | 0.95 |
-| gbm_lite_1y | $110.2 | +11% | 0.95 |
-| rim | $96.1 | -3% | -- |
-| simple_ratios | $23.2 | -77% | high |
-| dcf | $21.4 | -78% | -- |
-| dcf_enhanced | $17.3 | -83% | -- |
+| Model | Fair Value | Upside | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| gbm_opportunistic_3y | $242.77 | +166% | 0.98 | 2026-05-18 |
+| gbm_lite_3y | $199.31 | +118% | 0.94 | 2026-05-18 |
+| gbm_opportunistic_1y | $190.32 | +108% | 0.97 | 2026-05-18 |
+| autoresearch | $186.99 | +105% | 0.99 | 2026-05-18 |
+| gbm_3y | $117.35 | +28% | 0.77 | 2026-05-18 |
+| gbm_lite_1y | $102.16 | +12% | 0.96 | 2026-05-18 |
+| gbm_1y | $102.13 | +12% | 0.98 | 2026-05-18 |
+| dcf_enhanced | $28.19 | -69% | 0.70 | 2026-05-18 |
+| simple_ratios | $26.03 | -72% | 0.85 | 2026-05-18 |
+| rim | $15.99 | -83% | 0.70 | 2026-05-18 |
+| dcf | $7.35 | -92% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | $5.66 | -94% | 0.70 | 2026-05-18 |
 
-**Model consensus:** Massive divergence. The GBM/ML models (most reliable per repo conventions) are unanimously bullish, with fair values ranging from $110 to $264. The DCF models are catastrophically bearish ($17-$23), which is clearly broken -- DCF models systematically fail on asset-light companies where value is in content library amortization, not tangible assets. RIM at $96 is near current price but suffers from known anti-growth bias. The autoresearch model (confidence 0.99) at $188 is notable. **Trust the GBM models here: they point to significant undervaluation.**
+*Models all dated 2026-05-18 with current_price ~$91.37, very close to today's $89.65 — upside percentages are valid.*
 
-The simple_ratios and DCF models should be disregarded for NFLX -- they cannot properly value a subscription/advertising hybrid with massive operating leverage and content as the primary asset.
+**Model consensus:** Extreme bimodal split. The gradient-boosted-machine ensemble (most reliable for high-quality growth names) projects strong upside, mean roughly +82%. The discounted-cash-flow / residual-income-model family projects deep undervaluation of *the implied current value* — these models anchor on book value (residual income model) and trailing earnings / free cash flow, which understate the multiple a streaming compounder commands; classic asset-light growth bias known to bias these models negative. Truth is in the gbm_1y range ($102, +12%) for a near-term fair value and gbm_3y ($117, +28%) for the 3-year case. We discount the gbm_opportunistic variants as too aggressive (they over-extrapolate the post-pandemic multiple expansion).
 
-## Business Quality (20/25)
+## Business Quality (22/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 5/5 | Dominant global streaming platform with 325M+ subs, massive content library, recommendation algorithm, and brand. Network effects from content investment loop (more subs -> more content spend -> better content -> more subs). Pricing power demonstrated through multiple successful price increases. |
-| Management | 4/5 | Excellent capital allocation -- walked away from WBD deal showing discipline. Hastings/Sarandos/Peters have navigated password sharing crackdown, ad tier launch, and live sports entry brilliantly. Negative: insiders have sold $287M in 90 days with zero buying, though this is typical for Netflix and largely compensation-related. |
-| Profitability | 5/5 | Operating margins expanded from 17.8% (2022) to 29.5% (2025), targeting 31.5% in 2026. ROE of 41%, FCF conversion excellent. Best-in-class among streamers -- Disney+, Paramount+, Max all struggle to break even. |
-| Balance Sheet | 4/5 | Net debt/EBITDA of 0.18x is extremely conservative. $9B cash on hand. $14.5B total debt is well-managed with staggered maturities. Lost a point because content obligations (off-balance-sheet) are substantial, and the company will likely increase leverage for buybacks/content. |
-| Growth | 4/5 | Revenue guide of 12-14% for 2026 is solid for a $45B revenue base. Ad tier doubling to ~$3B. Live sports (WWE, NFL) adding engagement. But law of large numbers applies -- 325M subs means penetration in developed markets is high. Growth increasingly depends on ARPU (pricing + ads) rather than sub additions. Lost a point for deceleration risk. |
+| Moat | 5/5 | 325M-member scale, content production flywheel, brand, recommendation algorithm, only profitable pure-play streamer at scale — competitors burning cash to keep up |
+| Management | 4/5 | Excellent operational execution, disciplined capital allocation (walked away from Warner Bros. Discovery when bidding got crazy, kept the $2.8B fee), transparent in earnings communication; minor knock on stopping quarterly subscriber disclosure (which we read as confidence-signaling but reduces transparency) |
+| Profitability | 5/5 | 32% operating margin, 48% return on equity, 28% net margin — best-in-class for the category; margin trajectory still expanding |
+| Balance Sheet | 4/5 | Net debt only 0.18x EBITDA, $9B cash, $14.5B debt — fortress for the industry; not 5/5 only because content liabilities sit off balance sheet |
+| Growth | 4/5 | Mid-teens revenue growth in 2026 from a $45B base is exceptional; saturation risk in mature markets caps the score below 5 |
 
 ## Inflection Point
 
-**Yes -- profitability inflection is well underway and not yet fully priced.** Netflix crossed a critical threshold in 2023-2024 where content spending stabilized as a % of revenue while subscribers and pricing continued growing, creating an operating leverage flywheel. The ad tier (launched late 2022) is now at scale with 190M MAUs and is the highest-margin incremental revenue stream Netflix has ever had. The company is guiding for continued margin expansion (31.5% in 2026, likely 33%+ in 2027).
-
-The WBD deal collapse created a secondary inflection: a "perception gap." The stock was punished for a deal that is no longer happening, and hasn't yet recovered to pre-deal levels. This gap should close.
+Netflix has already passed its most important inflection (paid-sharing crackdown plus advertising-tier launch, 2023-2024) and is in the *harvest* phase. The current inflection is narrower: transition from Microsoft-partnered ad-tech to in-house, which begins delivering measurable average-revenue-per-user lift in second-half 2026. This is a margin / average-revenue-per-user inflection, not a unit-growth inflection — appropriate for a $377B-market-cap mature compounder. No turnaround dynamics; no hidden segment; no corporate event after Warner Bros. Discovery fell through.
 
 ## Bull Case
 
-- Ad revenue doubles to $3B in 2026 and continues scaling toward $6-8B by 2028, driving margins toward 35%+
-- Operating margin expansion to 33%+ in 2027 as content spending growth slows relative to revenue
-- $2.8B breakup fee + strong FCF enables accelerated buybacks, reducing share count meaningfully
-- Live sports (WWE RAW, NFL) drive engagement, reduce churn, and create premium ad inventory
-- Stock re-rates from ~25x forward P/E toward 30-35x as market recognizes the margin expansion story is durable
+- Advertising revenue beats the $3 billion 2026 target and accelerates to $8-10 billion by 2028 as in-house ad-tech matures and effective cost per thousand impressions rises on live sports inventory
+- Operating margin expands beyond the 31.5% guide to mid-30s by 2027 on operating leverage plus advertising mix
+- Warner Bros. Discovery failure forces Paramount Skydance into a messy integration, leaving Netflix as the clean share-taker in United States streaming for 18-24 months
+- Live events flywheel (NFL, WWE, boxing) becomes structural — engagement metrics rise, churn drops, advertising inventory grows
+- Capital return accelerates — with no big mergers-and-acquisitions on the table, the $2.8 billion termination fee plus $9B+ annual free cash flow funds aggressive buybacks at a still-reasonable multiple
 
 ## Bear Case
 
-- DOJ antitrust scrutiny from the WBD process could lead to ongoing regulatory risk and behavioral constraints on Netflix's market power
-- Content cost inflation accelerates -- 10% increase in 2026 spending could compress margins if revenue growth disappoints
-- Ad tier revenue growth disappoints -- competition for digital ad dollars from YouTube, Meta, Amazon is intense
-- Subscriber growth stalls at 340-350M, and pricing power hits limits in key markets, capping revenue growth below 10%
-- Insider selling ($287M in 90 days) signals executives see limited near-term upside
+- YouTube continues to take television-viewing share at lower content cost and Netflix's engagement-hours growth stalls — this is the largest structural risk and is NOT in news headlines but is implicit in the deceleration of streaming television-share data (under-covered in earnings press)
+- Sports rights inflation accelerates: the next NFL renewal, NBA package, or Premier League bidding pushes content spend up 15-20% in a single year while advertising revenue only doubles, compressing margins
+- In-house ad-tech transition fumbles — fewer demand-side integrations than Microsoft provided, advertising average revenue per user stalls below the $3 billion full-year target
+- Foreign exchange headwinds in Latin America / Asia-Pacific accelerate as net additions skew to lower-average-revenue-per-user geographies; reported revenue growth slips below 10% in 2027
+- Multiple compression from 30x to 22-25x as the market accepts that "structural growth" has matured into "mid-single-digit-real-revenue-growth gross-domestic-product-plus compounder"
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| Bull | 25% | Ad revenue hits $3.5B, op margin 32%+, buybacks accelerate. 2026E EPS ~$3.20 | Re-rates to 35x fwd P/E as durability of margin expansion confirmed | $112 | +18% |
-| Base | 50% | Revenue $51B (midpoint guidance), op margin 31.5%, ad revenue ~$3B. 2026E EPS ~$2.97 | Holds 30x fwd P/E as growth normalizes | $89 | -7% |
-| Bear | 25% | Revenue misses at $48B, ad growth slows, margin compression to 28%. 2026E EPS ~$2.50 | De-rates to 22x on growth deceleration fears | $55 | -42% |
+| Bull | 25% | 2027 EPS ~$4.20 (ad revenue $6-8B, op margin 34%) | 30x forward multiple holds | $125 | +39% |
+| Base | 55% | 2027 EPS ~$3.60 (ad revenue ~$5B, op margin 32%) | 28x forward multiple | $100 | +12% |
+| Bear | 20% | 2027 EPS ~$3.10 (YouTube share loss, sports cost ramp, margin 30%) | de-rate to 22x | $68 | -24% |
 
-**Expected value: -5%**
-**Thesis breaks if:** Q1 2026 earnings show ad revenue growth decelerating (not tracking toward doubling), operating margin below 30%, or new material regulatory action constraining Netflix's content acquisition strategy.
+**Expected value: +11.4%** (0.25 × 39 + 0.55 × 12 + 0.20 × -24)
+
+**Thesis breaks if:** (a) advertising revenue tracks below $2.5 billion for 2026 by Q3 earnings, OR (b) operating margin guide is cut below 31% for 2027, OR (c) Q2 2026 disclosure shows engagement-hours per member declining year-over-year.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Crowded -- 84% institutional ownership, top holders are index funds (Vanguard, BlackRock, State Street). This is a mega-cap consensus long. |
-| Short interest | 2.1% -- very low, no squeeze potential, no meaningful bearish conviction |
-| Technical position | RSI 82 -- overbought after 25% bounce off February lows. Trading at $95 vs 50-day MA $87 and 200-day MA $109 |
-| Next catalyst | Q1 2026 earnings on April 16 |
-| Recent price action | Bounced 25% off $75 low in 1 month. Still down 29% from 52-week high of $134. Currently overbought short-term. |
+| Crowdedness | Crowded — 84.9% institutional ownership, consensus long among large-cap growth funds |
+| Short interest | Low — 2.27% of float, no squeeze setup |
+| Technical position | Near 6-month lows post-split; Relative Strength Index neutral-to-oversold; roughly -25% from post-split highs |
+| Next catalyst | Q2 2026 earnings (mid-July 2026) — first quarter of in-house ad-tech |
+| Recent price action | Weak — stock has not bounced from May lows despite Q1 beat; market digesting Warner Bros. Discovery failure and content-spend ramp |
 
 ## Verdict
 
-**WATCH** -- Conviction: MEDIUM
+**WATCH** — Conviction: MEDIUM
 
-Netflix is a best-in-class business with a genuine profitability inflection story, and the WBD deal walkaway was the right move. However, the risk/reward at $95 is not compelling enough for a BUY:
+Netflix is a high-quality compounder (22/25) trading at a fair-but-not-cheap 30x 2026 earnings-per-share with expected value of +11% over the next 12-18 months — adequate but not compelling for a single-name concentrated position. The variant perception (live events advertising inventory under-modeled, capital allocation discipline) is real but modest. The setup favors patience: the stock is technically weak, the next dateable catalyst is two months away, and the market is still digesting the failed Warner Bros. Discovery deal. The gradient-boosted-machine models' aggressive upside reflects extrapolation of past multiple expansion that has already happened. Better to wait for either (a) a clearer ad-monetization print at Q2 earnings, or (b) a pullback to the high $70s where the bear-case downside is largely priced in and the base case offers above 20% upside.
 
-1. **No clear variant perception.** The consensus already rates this a "Buy" with a $113 target. Our GBM models are more bullish ($110-264), but the scenario-weighted expected value is slightly negative at current prices because the base case already prices in the good news and the bear case downside is severe.
+**Would upgrade to BUY at:** $78 or below (offers roughly 30% base-case upside and limits bear-case downside to about -13%)
+**Would consider scaling out at:** $115+ (base case largely realized; risk-reward turns flat-to-negative)
+**Thesis-break (sell) signal:** Q2 2026 advertising revenue annualizing below $2.5 billion run rate, OR operating margin guide cut below 31% for 2027.
 
-2. **Technically overbought.** RSI of 82 after a 25% rally in one month suggests the easy money from the WBD-collapse recovery has been made. Buying into a parabolic move is poor entry timing.
-
-3. **Valuation is not cheap.** At ~25x forward earnings and 2.3% FCF yield, Netflix needs to execute flawlessly on ad revenue doubling and margin expansion to justify even current levels. There is no margin of safety.
-
-4. **Insider selling is a yellow flag.** $287M in net sales with zero purchases in 90 days. While largely compensation-related, the absence of any open-market buying at these "discounted" levels is notable.
-
-**Would upgrade to BUY on:** A pullback to $80-85 (25x 2026E P/E gives better risk/reward), or Q1 earnings showing ad revenue significantly ahead of plan and margins expanding faster than guided. Entry below $80 would create a genuinely attractive risk/reward with ~40% upside to analyst consensus.
+<!-- Public file — generic research only. Personal position context (if any) lives at ~/vault/finance/notes/positions/NFLX.md -->

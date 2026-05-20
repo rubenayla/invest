@@ -1,119 +1,141 @@
-# Boston Scientific (BSX)
+# Boston Scientific Corporation (BSX)
 
 **Sector:** Healthcare | **Industry:** Medical Devices
-**Price:** $69.89 | **Market Cap:** $104B | **EV:** $114B
-**Analysis Date:** 2026-03-20
+**Price:** $55.92 (2026-05-19) | **Market Cap:** $83.1B | **Enterprise Value:** $92.9B
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** Boston Scientific is a medical-device manufacturer that sells implantable and single-use tools used by interventional cardiologists, electrophysiologists, endoscopists, urologists, and neuromodulation specialists. Revenue is roughly $20B trailing twelve months, split across four major segments. The biggest is Cardiovascular (around 70% of sales), which includes the FARAPULSE pulsed-field ablation (PFA) catheter system used to treat atrial fibrillation, the WATCHMAN left-atrial appendage closure device used as a stroke-prevention alternative to blood thinners, drug-eluting coronary stents, and the AGENT drug-coated balloon for in-stent restenosis. MedSurg makes up the rest — Endoscopy (gastrointestinal tools, single-use bronchoscopes, biliary stents), Urology (the Rezum prostate-treatment system, kidney-stone tools, men's-health implants), and Neuromodulation (spinal-cord stimulators for chronic pain and deep-brain stimulators for Parkinson's). The customers are hospitals and ambulatory surgery centers, and procedures are reimbursed by insurers and government payors like Medicare. The unit economics are good: gross margin around 69%, operating margin around 21%, with high recurring-procedure volumes.
+
+**Where they want to grow.** Three explicit bets. First, electrophysiology — FARAPULSE PFA is the company's signature growth driver, designed to replace the older thermal (radiofrequency and cryo) ablation techniques as the standard of care for treating atrial fibrillation. Boston Scientific wants FARAPULSE to take a dominant share of a global ablation market that medtech analysts size at $10B-plus, and they are pursuing label expansion into persistent AF (the harder-to-treat form) via the AVANT GUARD trial and follow-ons. Second, structural heart — the WATCHMAN franchise (especially the WATCHMAN FLX Pro version) is being pushed both as a standalone procedure and concomitantly with PFA ablation, with a long runway as AF patient pools expand. Third, geographic and category fill-in via mergers and acquisitions: the Acotec acquisition gave them a China drug-coated-balloon foothold, Silk Road added carotid stenting, and AGENT is being expanded into peripheral indications. Success in three to five years looks like high-single-digit organic revenue growth sustained, mid-teens EPS growth, and FARAPULSE plus WATCHMAN cementing the company as the electrophysiology category leader.
+
+**What could go wrong (business risks).** Competitive intensity in PFA is the single largest near-term risk. Johnson & Johnson's Varipulse is natively integrated into the dominant CARTO mapping system that most labs already use, giving J&J workflow stickiness Boston Scientific has not yet matched; Medtronic's Sphere-9 and Affera-based PulseSelect platforms keep pressure on too, and Abbott is now launching its own PFA platform in the United States. Management already disclosed losing more electrophysiology share than expected in Q1 2026, and standalone WATCHMAN volumes outright declined for the first time in February 2026 — a structural shift Wall Street has not fully digested. Other risks: an active securities class-action lawsuit alleging the company overstated electrophysiology growth projections; ongoing recall and safety exposure that comes with any high-volume implant business; digestion risk from a heavy multi-year acquisition cadence ($11.4B total debt against equity of $24B); tariff and supply-chain shocks on a global manufacturing base; and reimbursement pressure if procedure-coding changes for either PFA or LAAC compress per-case revenue.
+
+**How to think about it.** This is a medtech compounder with a near-monopoly position in pulsed-field ablation that is now meeting real competition — the investment question is whether FARAPULSE keeps a durable share lead as standard of care shifts from thermal to pulsed-field, or whether J&J's workflow integration and Medtronic's catalog selling erode that lead before it monetizes. Not a deep-value stock and not a hyper-growth story. It's a high-quality category leader at a 49% drawdown from highs, where the bet is on operational execution rather than business-model reinvention.
 
 ## Situation Summary
 
-Boston Scientific delivered a blockbuster FY2025 -- $20.1B revenue (+19.9% reported), adj. EPS $3.06 (+22%), FCF $3.4B -- yet the stock has crashed 36% from its $109.50 52-week high to ~$70. The selloff was triggered by Q4 2025 earnings (Feb 4): despite beating estimates, management guided 2026 organic growth of 10-11%, well below the ~25% U.S. EP segment growth the Street had baked in. The FARAPULSE pulsed-field ablation franchise saw U.S. sequential growth flatten as competitors (Medtronic's PulseSelect, J&J's VARIPULSE) entered. A securities fraud class action was filed alleging management misrepresented the sustainability of U.S. EP volumes (lead plaintiff deadline May 4, 2026). BSX announced the $14.5B Penumbra acquisition (Jan 15) to enter neurovascular/thrombectomy, expected to close H2 2026, ~$0.06-0.08 dilutive in year one. The Farapoint PFA catheter received FDA approval in January 2026 for persistent AFib, expanding the FARAPULSE platform. BSX hosts an investor event at the ACC Scientific Session on March 28, 2026, to present key clinical data. Next earnings: April 22, 2026.
+Boston Scientific is in the middle of a sharp sentiment reset. After the Q4 2025 print on 2026-02-04, the stock fell ~17.6% in a single session as management disclosed slower-than-expected U.S. electrophysiology growth and rising competitive pressure, and a securities class-action lawsuit followed shortly after. Q1 2026 reported on 2026-04-22 was a mixed result: revenue grew 11.6% to $5.2B with FARAPULSE and AVANT GUARD trial data both positive, but management lowered full-year organic sales growth guidance from 10.5–11.5% to 7.0–8.5% and adjusted EPS to $3.34–$3.41, citing standalone WATCHMAN volume declines (down YoY for the first time in February 2026), lost EP share to J&J Varipulse, and Urology growing below market. The CEO publicly called the guide-down "not something we are proud of." Shares now trade at $55.92, roughly 49% below the 52-week high of $109.50, with forward PE around 14.9 and a strong-buy analyst consensus (target mean $85.19, 32 analysts) — a setup that prices in significant earnings disappointment relative to the sell-side narrative.
 
 ## Variant Perception
 
-- **Consensus view:** The market fears FARAPULSE's U.S. growth is decelerating from hyper-growth to normal growth as PFA competition intensifies. The Penumbra deal adds leverage and is near-term dilutive. The class action lawsuit creates headline risk. Analysts still rate it Strong Buy (33 analysts, mean PT ~$104) but PTs are being cut (UBS $120->$105, RBC $130->$115, Citi $102->$94). The stock has de-rated from ~35x to ~20x forward PE.
-- **Our view:** The market is over-extrapolating FARAPULSE deceleration. EP is one segment -- BSX has diversified growth across Cardiology (WATCHMAN, ICDs), Endoscopy, Urology (eCoin acquisition), and Neuromodulation. Organic growth of 10-11% in medtech is still elite-tier. The stock at 20.2x 2026E EPS prices in near-zero growth above current guidance, ignoring the operating leverage story (op margins went 16% -> 20% in 3 years). FCF of $4.2B guided for 2026 on a $104B market cap = 4.1% yield, attractive for a double-digit grower. Recent ADVENT LTO 4-year data showed FARAPULSE superiority over thermal ablation (published in Nature Medicine), and the new Farapoint catheter expands BSX's addressable EP market into linear/focal lesions. The competitive threat is real but BSX has a multi-year head start, proprietary training ecosystem, and now FDA-approved expanded indications.
-- **Trigger:** ACC investor event (March 28) showcasing clinical data. Q1 2026 earnings (April 22) showing EP stabilization or better-than-feared growth in non-EP segments. Penumbra deal close removing overhang.
+- **Consensus view:** Wall Street still has a Strong Buy rating but is now framing 2026 as a "reset year" — analysts trimmed price targets while keeping Outperform ratings, betting the lowered bar is now executable. The market action says the opposite: a 49% drawdown, a securities-fraud lawsuit being marketed to investors, and forward-PE compression to ~14.9 imply the market thinks even the lowered guide is fragile and the EP share-loss story is structural, not transient.
+- **Our view:** The market is over-extrapolating one weak segment (standalone WATCHMAN) and one quarter of EP share give-back into a permanent narrative shift, ignoring that (a) FARAPULSE still grew electrophysiology revenue ~24% in Q1 2026, (b) pulsed-field ablation as a category is still in the early innings of replacing thermal ablation globally, (c) gross margin is holding above 68%, and (d) management has historically been transparent about misses (Fisher point #14). The lowered 7–8.5% guide is more likely a true bottom than a starting point for further cuts. FARAPULSE losing share when its main competitor (Varipulse) has the CARTO workflow advantage is expected — what matters is whether Boston Scientific keeps absolute revenue growing double digits in EP, which it is.
+- **Trigger:** Q2 2026 earnings (late July 2026) showing EP revenue growth holding above 20% with sequential WATCHMAN stabilization would force a re-rate. Additional FARAPULSE label expansion into persistent AF (AVANT GUARD readouts) is a separate catalyst over the next 12 months.
 
 ## Financial Snapshot
 
-| Metric | Value | 3yr Trend |
-|--------|-------|-----------|
-| Revenue | $20.1B | +16.5% CAGR |
-| Net Income | $2.9B | +60.7% CAGR |
-| EBITDA | $5.1B | +22.9% CAGR |
-| FCF | $3.4B | +55.0% CAGR |
-| Gross Margin | 68.8% | Stable (~69%) |
-| Op Margin | 19.7% | Expanding (16.0% -> 19.7%) |
-| ROE | 12.4% | Improving |
-| D/E | 0.49 | Stable |
-| Net Debt/EBITDA | 1.9x | Manageable |
-| FCF Yield | 3.3% | (4.1% on 2026E $4.2B) |
+| Metric | Value (TTM/FY25) | 3yr Trend |
+|--------|------------------|-----------|
+| Revenue | $20.07B | +16.6% CAGR (12.68 → 20.07) |
+| Net Income | $2.90B | +60.5% CAGR (0.70 → 2.90) |
+| EBITDA | $5.10B | +22.9% CAGR |
+| Operating Income | $3.97B | +25.0% CAGR |
+| Operating Margin | 20.6% | Expanding |
+| Gross Margin | 68.9% | Stable / slight expansion |
+| Free Cash Flow | $3.40B | +55% CAGR (0.91 → 3.40) |
+| FCF Yield (on market cap) | 4.1% | Rising |
+| ROE | 14.7% | Improving |
+| ROA | 6.1% | Improving |
+| Total Debt | $11.44B | +23% (M&A funded) |
+| Net Debt / EBITDA | ~1.9x | Manageable |
+| D/E | 0.42 | Stable |
+| Current / Quick Ratio | 1.9 / 0.98 | Healthy |
+| Revenue Growth (YoY) | 11.6% | Decelerating from ~20% |
 
-**Revenue breakdown (FY2025):** Total $20.1B. Growth drivers include MedSurg (+17% organic), Cardiology (+15%), with Endoscopy and Neuromodulation also contributing double-digit growth. U.S. EP growth decelerated to ~15% in Q4 from ~25% earlier in 2025.
+Sources: yfinance, fetched 2026-05-19.
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence |
-|-------|-----------|--------|------------|
-| AutoResearch | $112.38 | +60.8% | 0.97 |
-| GBM Opportunistic 1y | $100.72 | +44.1% | 0.73 |
-| GBM Opportunistic 3y | $98.98 | +41.6% | 0.79 |
-| GBM Lite 3y | $98.66 | +41.2% | 0.67 |
-| GBM Lite 1y | $81.03 | +15.9% | 0.85 |
-| GBM 1y | $78.25 | +12.0% | 0.98 |
-| GBM 3y | $64.73 | -7.4% | 0.90 |
-| Simple Ratios | $27.82 | -60.2% | high |
-| RIM | $18.56 | -73.4% | -- |
-| DCF | $16.87 | -75.9% | -- |
-| DCF Enhanced | $10.63 | -84.8% | -- |
+| Model | Fair Value | Upside vs $55.92 | Confidence | Run Date |
+|-------|-----------|------------------|------------|----------|
+| autoresearch | $96.73 | +73.0% | 0.97 | 2026-05-18 |
+| gbm_opportunistic_1y | $86.52 | +54.7% | 0.74 | 2026-05-18 |
+| gbm_opportunistic_3y | $85.02 | +52.0% | 0.79 | 2026-05-18 |
+| gbm_lite_3y | $84.75 | +51.6% | 0.66 | 2026-05-18 |
+| gbm_lite_1y | $69.60 | +24.5% | 0.84 | 2026-05-18 |
+| gbm_1y | $67.21 | +20.2% | 0.97 | 2026-05-18 |
+| gbm_3y | $55.61 | -0.6% | 0.89 | 2026-05-18 |
+| dcf_enhanced | $31.06 | -44.5% | 0.70 | 2026-05-18 |
+| simple_ratios | $29.39 | -47.4% | 0.85 | 2026-05-18 |
+| dcf | $14.57 | -73.9% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | $9.94 | -82.2% | 0.70 | 2026-05-18 |
+| rim | $3.22 | -94.2% | 0.70 | 2026-05-18 |
 
-**Model consensus:** Sharp divergence. The machine-learning models (AutoResearch, GBM variants) are overwhelmingly bullish (+12% to +61%). The traditional valuation models (DCF, RIM, simple ratios) are wildly bearish, pricing BSX as if it should trade at 5-7x earnings -- clearly broken for a high-margin, high-growth medtech company. This is a known DCF/RIM failure mode for asset-light, high-PE quality compounders. The GBM models and AutoResearch are far more reliable here. The AutoResearch model (highest confidence at 0.97) implies a $112 fair value. Even the most conservative GBM (GBM 3y at -7%) is a near-hold.
+*Models snapshot price was $59.95 (2026-05-18); upside columns recalculated against today's live price $55.92.*
 
-**Model diagnosis:** DCF/RIM/simple ratios are structurally broken for BSX. They anchor on book value and backward-looking earnings multiples, which penalize a company with heavy goodwill from acquisitions and rapidly growing earnings. Discard them. Trust AutoResearch and GBM models.
+**Model consensus:** Sharp split. Growth-aware models (autoresearch, all GBM variants) cluster bullish $67–$97, supported by ~17% revenue CAGR, FCF turning, and operating leverage. Static DCF / multi-stage DCF / RIM print absurd negative fair values — a known bias of those models against asset-heavy, acquisition-driven medtechs that capitalize FARAPULSE/Acotec/Silk Road via debt and where book-value anchoring undervalues category-leadership intangibles. Analyst mean target of $85.19 sits firmly in the middle of the growth-model cluster. Weight: trust GBMs and autoresearch; treat the static DCFs as floors on if-things-broke-completely.
 
-## Business Quality (20/25)
+## Business Quality (19/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 4/5 | FARAPULSE is market-leading PFA technology with first-mover advantage in EP. WATCHMAN dominant in LAAC. Strong switching costs in implanted devices (physician training, hospital systems). Farapoint catheter extends platform into linear/focal lesions. PFA competition is growing but BSX has multi-year head start and ADVENT LTO 4-year superiority data. |
-| Management | 4/5 | CEO Mike Mahoney has driven 5 consecutive years of double-digit organic growth. Excellent capital allocation -- Penumbra adds strategic adjacency. Margins expanding consistently. The EP growth guidance misstep is a ding, but transparency in cutting guidance is a positive signal vs. sandbagging. New board members (Cathy Smith, Christophe Weber) add financial and pharma CEO expertise. |
-| Profitability | 4/5 | Gross margins ~69% (medtech elite). Operating margins expanding from 16% to 20% over 3 years with 50-75bps further expansion guided for 2026. FCF conversion excellent ($3.4B on $2.9B net income). |
-| Balance Sheet | 4/5 | Net debt/EBITDA 1.9x is comfortable. Will increase with Penumbra debt (~$11B cash portion), pushing to ~4x temporarily, but FCF of $4.2B/yr deleverages quickly. Investment grade credit. $1.97B cash on hand. |
-| Growth | 4/5 | 10-11% organic growth guided for 2026 is elite in medtech. Diversified across Cardiology, Endoscopy, Urology, Neuromodulation. Penumbra adds neurovascular TAM. Farapoint expands addressable EP market. Law of large numbers is a risk at $22B+ revenue but multiple growth vectors remain. |
+| Moat | 4/5 | FARAPULSE category leadership in PFA, WATCHMAN dominant in LAAC, large installed base of trained electrophysiologists and labs creates switching cost. But J&J Varipulse + CARTO integration is real competitive pressure; moat is durable but not impregnable. |
+| Management | 3/5 | CEO Mike Mahoney has long capital-allocation track record (multiple successful M&A: Acotec, Silk Road, Apollo Endosurgery), but the February 2026 guide-down and active securities class-action suggest overstated growth communication. Self-acknowledged "not proud of" the cut — Fisher point #14 partially honored. |
+| Profitability | 5/5 | Gross 69%, operating 21%, ROE 14.7% and rising, FCF margin 17%. Best-in-class medtech profitability with expanding trajectory. |
+| Balance Sheet | 3/5 | Net debt/EBITDA ~1.9x is fine for medtech but elevated from M&A. Current ratio 1.9, quick ratio 0.98 (tight). $1.97B cash, $11.4B debt. Manageable but no major dry powder. |
+| Growth | 4/5 | Revenue CAGR ~17% over 3 years, FARAPULSE + WATCHMAN + AGENT + Acotec all in growth phase, PFA category still in early adoption. EP share loss is a real headwind but absolute growth still ~24%. |
+
+**Total: 19/25** — strong-quality business with execution risk on EP competition.
 
 ## Inflection Point
 
-This is **not a turnaround** -- BSX is a high-quality compounder that hit a speed bump. The inflection is in the **valuation reset**: the stock has de-rated from ~35x to ~20x forward PE while fundamentals remain strong. This creates a classic "growth at a reasonable price" entry point.
+Two candidates, in opposing directions:
+- **Negative inflection (already happened):** Standalone WATCHMAN volumes declining YoY for the first time in February 2026; EP share give-back to J&J Varipulse. This is fresh news the market is still digesting.
+- **Positive inflection (forward):** AVANT GUARD trial data continues to support FARAPULSE safety/effectiveness, with persistent-AF label expansion being the next catalyst. PFA category penetration into the global ablation market still has years of runway. AGENT drug-coated balloon ramps in coronary in-stent restenosis.
 
-The key question is whether FARAPULSE deceleration stabilizes. The ADVENT LTO 4-year data (published in Nature Medicine) showing superiority over thermal ablation supports BSX's competitive position. The Farapoint FDA approval expands the platform's capabilities. If U.S. EP growth normalizes at 15-18% (vs. the prior 25%+ pace) with margins continuing to expand, the stock re-rates higher.
-
-Evidence the inflection has started: stock found support at ~$67-68 (the 52-week low of $67.56) and has been basing for several weeks. Analyst PTs, while being cut, still imply 48%+ upside from current levels. Insider selling has been minimal. New institutional buyers entering (CIBC $59M, Avity new position).
+Net read: the market has likely already absorbed the negative inflection (49% drawdown, securities lawsuit filed, guidance cut, forward PE compression). The next 6-12 months are about whether positive operational data validates the lowered bar. This is a "post-inflection-down, awaiting confirmation of stabilization" setup, which historically offers good risk/reward for compounders if quality is intact.
 
 ## Bull Case
-- FARAPULSE competition fears are overdone; BSX maintains 50%+ PFA market share as the total addressable PFA market itself grows 20%+ annually -- Farapoint FDA approval extends BSX's platform advantage
-- ADVENT LTO 4-year superiority data cements FARAPULSE as the gold standard, driving physician loyalty and training lock-in
-- Operating margin expansion continues toward 22-24% as scale benefits kick in across all segments (50-75bps guided for 2026 alone)
-- Penumbra acquisition unlocks neurovascular TAM worth $5B+, creates cross-selling opportunities across vascular and neuro
-- At 20x forward PE with 10%+ growth and margin expansion, significant multiple re-rating potential toward 28-30x
-- Class action dismissed as meritless (typical post-selloff ambulance chasing -- no SEC investigation)
+
+- FARAPULSE label expansion to persistent atrial fibrillation (AVANT GUARD readouts ongoing) re-accelerates electrophysiology growth above 25%, re-establishing PFA category leadership narrative.
+- WATCHMAN standalone-procedure decline stabilizes as concomitant-with-ablation use grows (the company itself flagged this dynamic in the Q1 call); mid-teens growth returns by late 2026.
+- AGENT drug-coated balloon ramps faster than expected as the first FDA-approved DCB in the U.S. coronary market; tailwind to Cardiovascular segment.
+- 49% drawdown plus forward PE 14.9 leaves room for multiple re-expansion back toward the historical 22–25x range as growth visibility returns.
+- Analyst consensus PT $85.19 (mean of 32 analysts) supports a base-case re-rate path even without further EPS upside.
 
 ## Bear Case
-- FARAPULSE market share erodes faster than expected as Medtronic and J&J ramp competing PFA platforms; U.S. EP growth drops below 10%
-- Penumbra integration stumbles; $11B in new debt constrains capital allocation flexibility and pushes leverage to uncomfortable levels
-- Class action reveals genuine management misrepresentation, resulting in SEC investigation or settlement
-- Medical device tariffs escalate under current trade policy, pressuring margins beyond the ~$200M already absorbed
-- Growth decelerates to mid-single digits as EP normalization spreads to other segments; forward PE compresses to 15-17x
+
+- J&J Varipulse + CARTO workflow advantage compounds — Boston Scientific keeps losing PFA share each quarter, and electrophysiology growth decelerates from 24% to mid-teens to single-digits over 18 months.
+- WATCHMAN standalone declines are structural (not transient): payors tighten LAAC indications or concomitant-with-PFA cannibalizes the higher-margin standalone procedure permanently.
+- **Under-covered by news but disclosed by management:** Urology growing **below market** in 2026 — this is a quiet admission that a whole segment (~12% of sales) is underperforming, which most coverage skipped. If MedSurg as a category breaks, the "Cardiovascular subsidizes everything else" story holds the company back from being valued as a pure EP/structural-heart growth story.
+- Securities class-action lawsuit settles materially or surfaces additional disclosures around management's earlier growth projections — reputational and capital cost.
+- Net debt/EBITDA 1.9x plus $11.4B of debt limits M&A optionality if a meaningful competing PFA system or mapping platform comes up for sale.
+- Tariff / supply-chain shocks on a global manufacturing footprint not specifically called out in commentary but real for any global medtech.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | EPS grows to $3.80-4.00 as margins expand + EP stabilizes at 15-18% growth; Farapoint ramp accelerates | Re-rates to 28-30x as market regains confidence in growth durability; ADVENT LTO data strengthens narrative | $110 | +57% |
-| **Base** | 50% | EPS hits guided $3.43-3.49, organic growth 10-11% as guided; tariff headwinds manageable | Modest re-rating to 24-25x as selloff overdone sentiment fades; ACC event and Q1 data reassure | $85 | +22% |
-| **Bear** | 25% | EPS $3.20-3.30 on EP weakness + Penumbra dilution + tariff headwinds; class action creates uncertainty | Stays at 18-19x on growth deceleration fears and legal overhang | $62 | -11% |
+| Bull | 30% | EPS reaches $4.20 by 2027 (FARAPULSE re-accelerates, WATCHMAN stabilizes, AGENT ramps); mid-teens organic growth restored | Forward PE re-rates to 22x as growth visibility returns | $92 | +65% |
+| Base | 50% | EPS hits $3.70 by 2027 on the lowered 7–8.5% guide holding; EP share losses stabilize but no big bounce | Forward PE 18x — partial re-rate from 14.9x as fear unwinds | $67 | +20% |
+| Bear | 20% | EPS stagnates at $3.10–$3.20 as EP share loss accelerates, WATCHMAN keeps declining, Urology drags | Forward PE compresses to 12x as compounder narrative breaks | $38 | -32% |
 
-**Expected value: +22%** (0.25 * 57% + 0.50 * 22% + 0.25 * -11%)
+**Expected value: +25.1%** (= 0.30×65 + 0.50×20 + 0.20×(-32))
 
-**Thesis breaks if:** U.S. EP segment shows accelerating share losses in Q1/Q2 2026 (organic EP growth <10%), OR Penumbra deal falls through leaving BSX with broken strategic narrative, OR class action results in material financial penalty >$1B.
+**Thesis breaks if:** Q2 2026 earnings (late July) show FARAPULSE/EP segment growth below 18% YoY, OR a second standalone WATCHMAN quarterly decline, OR forward EPS guidance is cut again below $3.30.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Moderate -- 95% institutional ownership is standard for mega-cap medtech. Not a hedge fund hotel. New institutional buyers entering (CIBC, Avity). |
-| Short interest | 1.8% -- very low, no squeeze setup but also no consensus bearishness |
-| Technical position | Oversold -- trading at $69.89 vs. 50-day MA $81.56 and 200-day MA $96.09. Near 52-week low of $67.56. |
-| Next catalyst | ACC investor event March 28 (clinical data); Q1 2026 earnings April 22 |
-| Recent price action | Down 36% from highs; has been basing near $67-72 for several weeks. Current price near bottom of range. |
+| Crowdedness | Held 95% by institutions — once-crowded long, now being shaken out; net positioning likely lighter than a year ago |
+| Short interest | 1.93% of float — low, no squeeze setup, no consensus negative |
+| Technical position | Near 52w low ($52.52); ~49% off 52w high ($109.50). Oversold zone — bouncing off support |
+| Next catalyst | Q2 2026 earnings late July 2026 (~10 weeks). AVANT GUARD readouts and FDA label decisions on FARAPULSE persistent-AF indication in coming quarters |
+| Recent price action | Bounced from low $50s to $55.92 in mid-May; not extended, hasn't run ahead of catalyst |
+
+Setup favors patient buyers: uncrowded relative to a year ago, near-term dateable catalyst (Q2 print), no technical froth, sentiment washed out, and the analyst sell-side hasn't capitulated (mean target $85 well above price), which provides re-rate fuel if results stabilize.
 
 ## Verdict
 
-**BUY** -- Conviction: MEDIUM-HIGH
+**BUY** — Conviction: **MEDIUM**
 
-Boston Scientific is a best-in-class medtech compounder trading at a multi-year valuation trough after a growth normalization scare. At 20.2x forward PE with 10-11% organic growth, expanding margins, and $4.2B in guided FCF, the risk/reward is heavily skewed to the upside. The AutoResearch model (0.97 confidence) and 5 of 6 GBM models agree this is meaningfully undervalued. The DCF/RIM models are structurally broken for this type of company.
+A high-quality medtech compounder with category leadership in pulsed-field ablation is trading at 14.9x forward earnings after a 49% drawdown driven by genuine but bounded competitive pressure. The variant perception is that the market is extrapolating one weak segment and one quarter of EP share give-back into a permanent narrative break, while FARAPULSE still grew ~24% in Q1, gross margins held above 68%, and analyst consensus PT sits 52% above current price. The negative inflection appears already priced in; the Q2 2026 print is the next dateable catalyst that either confirms stabilization or invalidates the thesis.
 
-The variant perception is clear: the market is pricing in FARAPULSE competitive destruction, but BSX is a diversified medtech franchise with multiple growth vectors beyond EP. The ADVENT LTO 4-year superiority data and Farapoint FDA approval strengthen BSX's competitive moat, not weaken it. Even if EP growth normalizes to 15%, BSX still delivers elite-tier organic growth. The 20x forward multiple underprices this quality. Two near-term catalysts (ACC March 28, Q1 earnings April 22) offer potential re-rating triggers.
+**If BUY:** Entry favorable at current $55.92 area. Scale-in plan — start position with 50% now, add 25% if Q2 print confirms EP growth above 20%, hold final 25% in reserve for either a deeper drawdown (down to $48–$50) or a confirmed re-acceleration in the second half of 2026. Thesis-break signal: forward EPS guide cut below $3.30, or two consecutive quarters of EP growth below 18%.
 
-**Entry:** $68-72 (current levels are attractive; scale in with 50% now, 50% post Q1 earnings if EP data is not catastrophic)
-**Thesis break:** $58 (implies <17x forward on below-guidance EPS -- would signal fundamental deterioration beyond temporary deceleration)
-**Target:** $85-110 over 12 months depending on EP trajectory and Penumbra integration
+**If WATCH:** Would downgrade to WATCH if Q2 2026 prints any EP growth below 18% YoY without an offsetting margin or WATCHMAN positive.
+
+<!-- Public-only research file. Personal position size, cost basis, P&L, and share counts belong in ~/vault/finance/notes/positions/BSX.md (or portfolio.md / journal/transactions/). See the Public-vs-private content rule in the research skill. -->

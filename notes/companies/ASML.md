@@ -1,107 +1,131 @@
-# ASML Holding (ASML)
+# ASML Holding N.V. (ASML)
 
 **Sector:** Technology | **Industry:** Semiconductor Equipment & Materials
-**Price:** $1,366 | **Market Cap:** $537B
-**Analysis Date:** 2026-03-20
+**Price:** $1,472.39 (2026-05-19) | **Market Cap:** ~$567B
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** ASML is the world's only manufacturer of extreme-ultraviolet (EUV) lithography systems — the multi-hundred-million-dollar machines that imprint the finest circuit patterns onto silicon wafers at advanced nodes (today 3nm/2nm and below). They also sell deep-ultraviolet (DUV) immersion and dry systems used for trailing-edge and mature nodes. Customers are essentially everyone who fabs chips at scale: TSMC, Samsung Foundry, Intel Foundry, SK hynix, Micron, and SMIC (DUV only — EUV is export-restricted to China). Revenue splits roughly: ~75% new-system sales (EUV the biggest growth driver, plus DUV immersion/dry) and ~25% "Installed Base Management" — service contracts, field upgrades, and software/source upgrades on the ~6,000-machine installed base. Each new EUV "Low-NA" tool runs ~$200M; High-NA EUV (NXE:5000-series) tools run ~$380M; the installed base generates 50%+ gross-margin service revenue for decades after sale.
+
+**Where they want to grow.** Three explicit bets. First, the High-NA EUV ramp — successors to today's Low-NA EUV (0.33 numerical aperture) that enable 2nm/A14/A10 logic and future DRAM nodes without expensive multi-patterning; ASML has shipped early systems to Intel, TSMC, Samsung, and SK hynix and aims to scale to ~20+ tools/year by ~2028. Second, deeper memory penetration as DRAM (especially high-bandwidth memory — HBM — for AI accelerators) shifts from immersion-DUV multi-patterning to single-exposure EUV, with memory now over half of new system sales as of Q1'26. Third, installed-base service ASP growth — every new EUV/High-NA tool adds a multi-decade annuity of service, upgrades, and consumables. Success in 3-5 years looks like €40-55B revenue, ~55% gross margins, and an order book that's increasingly High-NA and non-China.
+
+**What could go wrong (business risks).** Customer concentration: TSMC alone is ~30-40% of new-system revenue at peak, and the top three (TSMC + Samsung + Intel) are over 60% — any one of them slipping a fab plan delays billions. Export controls are the dominant macro risk: the U.S. has already restricted EUV to China entirely and is escalating around DUV; the proposed MATCH Act would extend to service of previously installed gear, threatening the ~€2-3B/year China service annuity. The semi cap-equipment cycle is real — bookings can air-pocket for 2-4 quarters even with full long-term visibility (2023-2024 saw exactly this). High-NA adoption could come slower than the bull case if TSMC's "stretched Low-NA" path works for A14, deferring volume orders. And EU/US tariff regimes could pressure pricing or routing of Veldhoven-built systems.
+
+**How to think about it.** ASML is the single-vendor monopoly toll-collector on Moore's Law at the leading edge — there is no substitute for EUV, and High-NA is years ahead of any competitor (nobody else is even trying). It's a cyclical compounder with ~2 years of revenue visibility from backlog, where the long-term thesis is "AI/leading-edge capex keeps growing and EUV intensity per wafer keeps growing", and the short-term volatility is "which quarter does TSMC slot in the next ten machines." Bet on the High-NA upgrade cycle and the installed-base annuity; expect a bumpy ride.
 
 ## Situation Summary
 
-ASML just delivered a strong FY2025 with EUR 32.7B revenue (+16% YoY) and EUR 9.6B net income. Q4 2025 bookings exploded to EUR 13.2B (vs ~6.3B expected), building a record EUR 38.8B backlog. The company guided 2026 revenue of EUR 34-39B with 51-53% gross margins, signaling continued growth despite a significant China revenue decline (from ~25% to ~20% of sales). The AI boom is the dominant demand driver, with NVIDIA's wafer requirements per product reportedly rising from ~2.5 to ~10 wafers by 2027, pulling through massive EUV demand. The stock has recovered strongly from its mid-2025 lows (~$580) and now trades near $1,366, about 12% below its 52-week high of $1,547.
+ASML reported Q1 2026 revenue of €8.8B (+13% YoY) with EPS of €7.15, beating consensus, and raised full-year 2026 guidance to €36-40B (from €34-39B prior) — the second consecutive guide-up driven by stronger immersion demand and incremental EUV upside concentrated in non-China customers. Year-end 2025 backlog stood at €38.8B with €7.4B EUV bookings; memory hit 51% of net system sales as DRAM/HBM customers accelerate EUV adoption to escape multi-patterning. The countervailing pressure: China revenue dropped from 36% of system sales in Q4'25 to 19% in Q1'26 and is guided to ~20% for full-year 2026 (vs 33% in 2025), reflecting US export-control escalation and demand normalization. The proposed MATCH Act would threaten ASML's high-margin China service annuity. Stock has rallied meaningfully on the guide-raise but trades well below the consensus sell-side mean target.
 
 ## Variant Perception
 
-- **Consensus view:** ASML is a consensus "Buy" (40 buy / 1 hold / 0 sell). The market sees it as the irreplaceable monopoly supplier of EUV lithography, riding the AI capex supercycle. Analysts target ~$1,470 mean. The risk is well-understood: China export controls reduce near-term revenue, but non-China demand more than compensates. The stock is "expensive but worth it" at ~48x trailing PE.
-- **Our view:** The consensus is largely correct on the fundamental story -- ASML's monopoly is real and the AI demand pull-through is structural. However, the market may be underestimating: (1) the magnitude of the High-NA EUV upgrade cycle starting in 2026-2027, where each system costs >$400M vs ~$200M for current EUV, roughly doubling the revenue per unit; (2) the installed-base services business growing steadily (guided ~EUR 2.4B in Q1 alone), which provides an increasingly large and high-margin recurring revenue floor. The bear risk the market underestimates is rare earth supply chain vulnerability from Chinese export controls.
-- **Trigger:** Q1 2026 earnings on April 15 will provide the first look at 2026 execution. High-NA EUV first commercial shipments to Intel and Samsung in 2026 are the key milestones. A strong bookings quarter would confirm backlog momentum.
+- **Consensus view:** Cyclical-quality compounder near peak multiple; AI/HBM and High-NA underwrite a multi-year revenue ramp, but the stock has already re-rated and China overhang caps near-term upside. Sell-side mean target ~$1,661 (~13% upside).
+- **Our view:** Consensus is correctly bullish on the *long-term* monopoly economics but is under-modeling the *durability* of the EUV intensity step-up in memory. The Q1 mix shift to 51% memory is not a one-quarter blip — DRAM/HBM EUV adoption is structurally early (only top-tier nodes today) and has 3-5 more years of penetration ahead independent of the logic cycle. This decouples ASML's cycle from pure foundry capex for the first time. China headwind is real but largely priced in; service-annuity risk from MATCH Act is the under-discussed tail.
+- **Trigger:** (1) Q2'26 and Q3'26 earnings continuing to print memory >45% of systems, validating the structural mix shift; (2) High-NA throughput milestones and the first volume order announcement (likely 2026 H2 from TSMC or Intel); (3) clarity on MATCH Act / export-control scope by late 2026.
 
 ## Financial Snapshot
 
-| Metric | Value | 3yr Trend |
+| Metric | Value (FY25) | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | EUR 32.7B | 15.6% CAGR |
-| Net Income | EUR 9.6B | 19.5% CAGR |
-| FCF | EUR 11.0B | Strong recovery from 2023 trough |
-| ROE | 49.0% | Expanding (improving capital efficiency) |
-| D/E | 0.22 | Low; net cash position (EUR 8.5B net cash) |
-| FCF Yield | 2.2% | Low (reflects premium valuation) |
-| Gross Margin | 52.8% | Stable, guided 51-53% for 2026 |
-| Operating Margin | 34.6% | Expanding from 30.7% in 2022 |
+| Revenue | $32.7B | +15.5% CAGR (22-25) |
+| Net Income | $9.6B | +19.6% CAGR |
+| FCF | $11.0B | Lumpy but trending up |
+| EBITDA Margin | 38.4% | Expanding |
+| Gross Margin | 52.8% | Stable-to-up |
+| Operating Margin | 36.0% | Expanding |
+| ROE | 52.2% | Very high |
+| Debt/Equity | 0.13 (12.9%) | Conservative |
+| Cash | $12.9B | Building |
+| FCF Yield | ~1.9% | Premium multiple |
 
-**Key calculations:**
-- Revenue CAGR (3yr, 2022-2025): 15.6%
-- Net Income CAGR (3yr): 19.5%
-- Net debt/EBITDA: -0.68x (net cash)
-- Trailing PE: 48.0x | Forward PE: 31.8x
-- Price/Sales: 16.4x | Price/Book: 23.4x
+Revenue CAGR (3yr): ~15.5%. Net income CAGR (3yr): ~19.6%. FCF/MarketCap yield: ~1.9%. Net cash position (cash > debt).
 
 ## Valuation Models
 
-No existing models in the database for ASML. This is the first deep analysis entry.
+| Model | Fair Value | Upside | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| gbm_lite_3y | $2,774 | +84.7% | 0.84 | 2026-05-18 |
+| gbm_opportunistic_1y | $2,391 | +59.2% | 0.84 | 2026-05-18 |
+| gbm_opportunistic_3y | $2,082 | +38.6% | 0.77 | 2026-05-18 |
+| gbm_lite_1y | $1,981 | +31.9% | 0.85 | 2026-05-18 |
+| autoresearch | $1,885 | +25.5% | 0.77 | 2026-05-18 |
+| gbm_1y | $1,876 | +24.9% | 0.74 | 2026-05-18 |
+| gbm_3y | $1,809 | +20.5% | 0.68 | 2026-05-18 |
+| rim | $1,666 | +11.0% | 0.70 | 2026-05-18 |
+| dcf | $671 | -55.3% | 0.70 | 2026-05-18 |
+| dcf_enhanced | $671 | -55.3% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | $528 | -64.9% | 0.70 | 2026-05-18 |
+| growth_dcf | $300 | -80.0% | 0.70 | 2026-05-18 |
+| simple_ratios | $234 | -84.4% | 0.85 | 2026-05-18 |
 
-**Implied expectations at current price:** At $1,366 with forward PE of ~32x and consensus 2026 EPS of ~$43, the market is pricing in continued double-digit earnings growth through 2028-2030. For a company with 100% EUV market share and 15%+ revenue CAGR, a 30-35x forward PE is defensible but leaves limited room for disappointment.
+*Models all run 2026-05-18 against a $1,501.81 reference price (~2% below today's $1,472.39 — minor stale-price adjustment, upside %s broadly valid.)*
 
-## Business Quality (22/25)
+**Model consensus:** Sharp split between GBM/return-prediction models (all positive, range +20% to +85%, mean ~+38%) and DCF-style models (all sharply negative, -55% to -84%). The GBM models price the empirical return distribution of a monopoly compounder with widening moat; the DCFs penalize the elevated trailing P/E (~49x) and assume a normalized-margin terminal that does not credit High-NA's pricing power or installed-base annuity growth. This is exactly the known DCF "anchor on current FCF / terminal margin reversion" bias flagged for compounders — DCFs reliably understate firms whose value lives in future option value (High-NA + memory penetration). Weight the GBM cluster and autoresearch ($1,876-$2,082 range) over the DCFs. Excluding the DCF cluster, the model mean implies ~+38% upside.
+
+## Business Quality (24/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 5/5 | 100% market share in EUV lithography. No competitor can replicate this within a decade. Customers (TSMC, Samsung, Intel) have no alternative. Extreme switching costs and technological lock-in. This is one of the widest moats in global technology. |
-| Management | 4/5 | CEO Christophe Fouquet (since April 2024) continuing Peter Wennink's disciplined approach. EUR 12B buyback program through 2028. R&D spend doubled to EUR 4.7B to fund High-NA. Guidance has been reliable; Q4 2024 bookings miss was an anomaly. Payout ratio conservative at 27%. |
-| Profitability | 5/5 | 52.8% gross margins on complex hardware is extraordinary. 34.6% operating margins expanding. ROE of 49%. Margins above virtually all industrial/capital goods peers. Services revenue provides high-margin floor. |
-| Balance Sheet | 4/5 | Net cash of EUR 8.5B. D/E of 0.22. Current ratio 1.26. Interest coverage is massive. Only minor ding: quick ratio (0.73) reflects heavy inventory for long-lead-time systems, which is operationally necessary. |
-| Growth | 4/5 | AI-driven demand provides multi-year runway. High-NA EUV doubles ASP. Installed base services growing. Risk: law of large numbers at EUR 32B+ revenue. China decline creates a near-term headwind. TAM expansion via 2nm/1.4nm node transitions and memory EUV adoption. |
+| Moat | 5/5 | Single-vendor monopoly on EUV and High-NA. ~20 years and tens of billions of R&D to replicate. Switching costs effectively infinite (no alternative). |
+| Management | 4/5 | Fouquet steady through cycle; conservative guidance philosophy; capital returns disciplined (buybacks + dividend, no acquisitions chasing growth). Slight ding for prior cycle over-communication that whipsawed the stock. |
+| Profitability | 5/5 | 52.8% gross margin, 36% operating margin, 52% ROE — top decile vs any cap-goods or semi peer. Service mix expanding margins further. |
+| Balance Sheet | 5/5 | $12.9B cash vs $4.4B debt = net cash. Interest coverage trivial. Funds High-NA R&D and buybacks from FCF. |
+| Growth | 5/5 | 2-year backlog visibility (€38.8B), structural memory EUV penetration just starting, High-NA upgrade cycle 2026-2032, installed-base service compounding. |
+
+**Total: 24/25** — Exceptional. Capped only by management's prior communication missteps during 2024 cycle pivot.
 
 ## Inflection Point
 
-ASML is at a **positive product-cycle inflection** with High-NA EUV. This represents a generational upgrade:
-- Current EUV systems: ~$200M per unit
-- High-NA EUV systems: >$400M per unit
-- First commercial shipments expected in 2026 to Intel and Samsung
-- This roughly doubles revenue per system while ASML remains the sole supplier
-
-Additionally, the **memory chip EUV adoption** is accelerating. DRAM manufacturers (Samsung, SK hynix, Micron) are increasing EUV layer counts, creating a second demand vector beyond leading-edge logic.
-
-The China revenue decline is a **negative inflection** that is largely priced in (market expects ~20% of 2026 sales from China, down from ~50% peak).
+Yes — two overlapping inflections. First, **memory EUV adoption** is at an early-volume inflection (51% of Q1'26 system sales, structurally moving higher as more DRAM nodes adopt EUV). Second, **High-NA EUV ramp** is at the commercial inflection (volume-order phase begins late 2026 / 2027). The Q1 2026 guidance raise — the second in two quarters — is the *observable evidence* the inflection is in motion. Entering after this observable evidence trades some upside for materially reduced cycle-trap risk.
 
 ## Bull Case
-- High-NA EUV ramp drives significant ASP uplift in 2027-2028, pushing revenue toward EUR 44-60B (2030 guidance range)
-- AI capex supercycle extends through 2028+; TSMC, Samsung, Intel all expanding aggressively
-- Memory EUV adoption accelerates (currently only ~5-10% of DRAM layers use EUV, could reach 20%+)
-- Installed base services grow to EUR 10B+ annually, creating a large recurring revenue stream
-- Share buybacks (EUR 12B through 2028) provide meaningful EPS accretion
+
+- Memory EUV penetration runs 5+ years from <30% today to >70% of leading-node DRAM/HBM layers, structurally lifting EUV unit volumes independent of foundry capex.
+- High-NA EUV moves from 2-4 tools/year to 20+ tools/year by 2028 at ~$380M ASP, adding €5-8B revenue at >50% gross margin.
+- Installed-base service grows from ~€7B to €10-12B by 2028 as the EUV fleet matures; pure annuity at 60%+ gross margin.
+- AI capex sustains foundry EUV intensity per wafer (more layers, more masks) even at flat wafer-starts.
+- Capital returns: ~€5-7B/year buybacks compound per-share value.
 
 ## Bear Case
-- China rare earth export controls disrupt ASML's supply chain for critical components (gallium, germanium, cobalt)
-- AI capex cycle peaks earlier than expected; hyperscaler spending slows or shifts to inference (less cutting-edge)
-- Intel's foundry struggles reduce a key EUV customer; Intel cancels or delays High-NA orders
-- Geopolitical escalation leads to broader export restrictions, further limiting addressable market
-- Multiple compression: if growth slows to single digits, the 30x+ forward PE becomes unsustainable
+
+- **MATCH Act / extended export controls** kill the China service annuity (currently ~€2-3B/year at premium margins) — this is the under-headlined risk: news leads with new-system China revenue, but management's IR materials flag the *service* installed-base exposure as the bigger long-tail hit.
+- TSMC's "stretched Low-NA EUV" path proves adequate for A14, pushing High-NA volume orders out 18-24 months and creating a 2027-2028 revenue air-pocket.
+- Memory EUV adoption stalls if DRAM pricing weakens and memory makers defer node transitions (history says this happens in every memory downcycle).
+- Customer concentration: TSMC slipping any major fab (Arizona, Kumamoto, German) by 2-3 quarters delays €3-5B in system orders.
+- Multiple compression — at 49x trailing / 31x forward, any growth disappointment compresses the multiple sharply (sell-side bear cases target $900).
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| Bull | 25% | High-NA ramp + memory EUV adoption drives 2027 revenue to EUR 42B+, EPS ~$55 | Re-rates to 35x forward on sustained growth visibility | $1,925 | +41% |
-| Base | 50% | Revenue hits EUR 36B in 2026, steady progress to EUR 40B+ by 2027, EPS ~$48 | Maintains ~32x forward PE, market rewards execution | $1,536 | +12% |
-| Bear | 25% | China weakness deeper than expected, AI capex moderates, revenue flat at EUR 33-34B, EPS ~$38 | De-rates to 28x forward on growth concerns | $1,064 | -22% |
+| Bull | 30% | Memory EUV continues >45% mix, High-NA volume orders confirmed 2026 H2, revenue compounds 18%/yr to €48B by 2028, EPS ~€44 | Multiple holds 35x forward as monopoly + High-NA visibility extends | $2,200 | +49% |
+| Base | 50% | Revenue grows 12-14%/yr to ~€41B 2028, EPS ~€35-37, mid-cycle margins, China stabilizes at 20% | Multiple compresses modestly to 28-30x forward | $1,700 | +15% |
+| Bear | 20% | China service hit by MATCH Act (-€2B annuity), High-NA orders slip 2027→2028, revenue flat-ish €36B, EPS ~€28 | Multiple compresses to 22-24x forward as cycle fears dominate | $950 | -35% |
 
-**Expected value: +11%** (0.25 x 41% + 0.50 x 12% + 0.25 x -22%)
-
-**Thesis breaks if:** (1) A competitor emerges in EUV (extremely unlikely in 5yr horizon), (2) China rare earth embargo materially disrupts production for >2 quarters, (3) AI capex declines >30% in a single year, or (4) revenue in 2026 comes in below EUR 33B guidance floor.
+**Expected value:** 0.30(+49%) + 0.50(+15%) + 0.20(-35%) = **+15.2%**
+**Thesis breaks if:** (1) MATCH Act or equivalent passes AND extends to existing China service contracts, removing the high-margin annuity; or (2) TSMC publicly defers volume High-NA orders to 2028+, signaling the upgrade cycle pushes right.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Moderately crowded -- consensus buy, 18.7% institutional ownership, well-known quality name |
-| Short interest | Very low: 0.26% of float -- no meaningful short thesis |
-| Technical position | Trading at $1,366, ~12% below 52w high of $1,547. 50-day avg $1,383. Well above 200-day avg of $1,020. Not overbought but has run significantly from $580 lows. |
-| Next catalyst | Q1 2026 earnings: April 15, 2026 (~4 weeks away) |
-| Recent price action | Stock has rallied ~135% from mid-2025 lows. Most of the "easy money" recovery trade is done. |
+| Crowdedness | Moderate — institutional ownership ~19%, well-known compounder, not crowded hedge fund consensus |
+| Short interest | 0.19% of float — essentially zero, no squeeze setup, no consensus bear |
+| Technical position | Recovered from late-2024/2025 China-overhang lows; trades below sell-side mean $1,661 target; below recent ATH |
+| Next catalyst | Q2 2026 earnings (mid-July 2026), High-NA volume order announcements (2H 2026), MATCH Act legislative progress (2H 2026) |
+| Recent price action | Has run from the guide-raise but not euphoric; still ~11% below sell-side mean target |
+
+Setup is **constructive** — uncrowded for its quality, near-term earnings catalyst (Q2'26 in ~8 weeks), observable inflection evidence (Q1 memory mix + guide-raise), stock has re-rated but not exhausted.
 
 ## Verdict
 
-**WATCH** -- Conviction: MEDIUM
+**BUY** — Conviction: **MEDIUM-HIGH**
 
-ASML is an exceptional business with arguably the strongest moat in the semiconductor industry. The quality score (22/25) is among the highest possible. However, at $1,366 with a 48x trailing PE and only +11% expected value, the risk/reward is not compelling enough for a new position at current levels. The stock has already re-rated dramatically from its 2025 lows. The variant perception (High-NA revenue uplift, memory EUV adoption) is real but partially reflected in forward estimates. The near-term catalyst (Q1 earnings April 15) could provide a better entry on any pullback.
+Variant perception is clear (under-modeled memory EUV structural shift + High-NA optionality), business quality is among the highest in any sector (24/25), observable inflection is in motion (consecutive guide-raises + memory mix shift), and setup is constructive with a near-term earnings catalyst. The DCF cluster's bearishness is the standard "compounder with future option value gets crushed by terminal-margin DCFs" pattern — discount it. The real risk is MATCH Act tail risk on the China service annuity, which the scenario table addresses with a -35% bear leg at 20% probability.
 
-**Would upgrade to BUY on:** A pullback to $1,150-1,200 (25-28x forward PE) which would improve expected value to ~25%+. Alternatively, a significant positive surprise on High-NA orders or bookings that resets growth expectations higher. An earnings miss causing a 15%+ drawdown would be an attractive entry for this quality franchise.
+**If BUY:** Entry below $1,500 attractive; scale in over 2-3 tranches to manage MATCH Act binary risk. Add aggressively on a dip to $1,300 (which would imply Q2'26 disappointment or export-control escalation). Thesis-break signal: confirmed MATCH-Act passage covering installed-base service, OR TSMC publicly deferring High-NA volume orders past 2028.
+
+**Position sizing note:** Given monopoly quality but real binary export-control tail risk, this is a high-conviction core position but with a 6-10% portfolio cap rather than a max-Kelly bet — the asymmetric MATCH-Act downside argues for sizing discipline.
+
+<!-- Public-research file — no personal position sizing, cost basis, or P&L. -->

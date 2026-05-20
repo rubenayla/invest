@@ -1,115 +1,123 @@
 # S&P Global Inc. (SPGI)
 
 **Sector:** Financial Services | **Industry:** Financial Data & Stock Exchanges
-**Price:** $426.14 | **Market Cap:** $129.0B
-**Analysis Date:** 2026-03-20
+**Price:** $417.41 (2026-05-19) | **Market Cap:** $123.6B
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** S&P Global is a financial infrastructure company that sells data, ratings, indices, and analytics to the firms that allocate capital. Revenue (about $15.3B trailing twelve months, growing roughly 10% YoY) is split across five segments. **Ratings** (~35% of revenue, ~67% operating margins) assigns credit ratings to bond issuers — a near-duopoly with Moody's, where together with Fitch they control roughly 95% of global ratings; debt issuers pay them to rate every new bond. **Market Intelligence** (~30%) sells subscription data and analytics terminals (Capital IQ Pro, Visible Alpha, RatingsXpress) to banks, asset managers, and corporates. **S&P Dow Jones Indices** (~15%) licenses the S&P 500 and thousands of other indices to ETF providers (BlackRock, Vanguard, State Street) and collects asset-linked fees that scale with passive flows. **Commodity Insights** (~15%, the legacy Platts business) provides oil, gas, metals, and chemicals price assessments used as benchmarks for commodity contracts globally. **Mobility** (~5%) sells vehicle history (Carfax), VIN-level data, and automotive market analytics. Customers are the world's banks, asset managers, energy traders, automakers, and corporates — paid as recurring subscriptions or per-issuance fees.
+
+**Where they want to grow.** Three strategic bets. First, monetize the IHS Markit acquisition (closed 2022) by cross-selling combined datasets — sustainability scores, supply-chain analytics, private-credit data — to existing Capital IQ customers. Second, ride the secular shift to passive investing: every dollar that flows from active mutual funds into S&P-500-tracking ETFs is a tiny royalty payment. Indices revenue has compounded ~12% over the last decade and management expects this to continue. Third, ship AI-native analytics products — Spark Assist (the embedded large-language-model workflow tool on Capital IQ), agentic research workflows, and Kensho-powered natural-language processing — to defend the subscription base from disruption and justify price increases. The 3-5 year scoreboard: 7-9% organic revenue growth, mid-teens earnings-per-share growth, expanding margins past 52%.
+
+**What could go wrong (business risks).** Ratings revenue is cyclical and tied to debt-issuance volume — when corporate bond markets freeze (2022 rate-shock, Global Financial Crisis), transactional revenue can drop 20-30% in a quarter. Regulatory: post-Global-Financial-Crisis reforms (Dodd-Frank) targeted credit rating agency liability, and recurring Department of Justice and Securities and Exchange Commission interest in "issuer-pays" conflict-of-interest reform is a structural tail risk that could reduce pricing power. Moody's is a genuine peer competitor with comparable margins and arguably better pure-ratings discipline. The Sustainable1 Environmental, Social, and Governance business has slowed materially as European mandates pull back and US backlash bites. Commodity Insights depends on volatile energy markets — the Q1 2026 Iran disruption already forced a one-percentage-point cut to that segment's guidance. And every subscription business now faces the question of whether artificial-intelligence agents disintermediate paid-data terminals (the Bloomberg-killer question, applied to Capital IQ).
+
+**How to think about it.** SPGI is a financial-data and credit-ratings duopoly compounder with monopolistic moats — bet on a debt-issuance cycle recovery plus indices passive-flow growth, with margins compounding on top. It is not a growth story you buy for revenue acceleration; it is an infrastructure royalty with operating leverage that pays a small dividend and has historically traded at 25-30x earnings because investors price in the moat. The variant question is always: at what multiple, and is the cycle helping or hurting right now?
 
 ## Situation Summary
 
-S&P Global shares are 26% off their 52-week high of $579 after disappointing Q4 2025 earnings (EPS miss) and soft 2026 guidance ($19.40-$19.65 EPS, implying only 9-10% growth vs. 32% in 2025). The selloff was amplified by AI disruption fears around Market Intelligence's subscription model and a cooling credit issuance cycle after two years of hyper-growth. Director Hubert Joly (ex-Best Buy CEO turnaround legend) bought $1M in open-market shares near the lows in Feb 2026. The company continues to execute on IHS Markit integration with operating margins expanding to 40.3% (from 27% in 2022), and recently launched AI-enhanced Capital IQ Pro and private credit workflow tools. All five divisions beat margin guidance in 2025.
+SPGI reported strong Q1 2026 on 2026-04-28: revenue $4.17B (+10% year-over-year, +9% organic constant currency), adjusted earnings per share $4.97 vs $4.82 consensus, and 100 basis points of margin expansion to 51.8%. Ratings revenue grew 13% (transactional +15%, non-transactional +11%) on continued debt-issuance recovery; Market Intelligence +8% (helped by the With Intelligence acquisition adding six percentage points to Data Analytics & Insights); Indices benefited from asset-linked fees on rising exchange-traded-fund assets under management. But the stock has been weak — down from $579 (52-week high) to $417, roughly -28% — because the February 2026 full-year guide ($19.40-$19.65 earnings per share) came in below the $19.96 consensus, the Energy segment took a one-percentage-point growth cut from Iran-related commodity disruption, and the market is debating whether artificial-intelligence-native research tools threaten the Capital IQ subscription base. Sell-side recommendation is Strong Buy with $534 mean target (28% above current).
 
 ## Variant Perception
 
-- **Consensus view:** SPGI is a high-quality compounder that has hit a growth air pocket — ratings revenue normalizing after a boom, Market Intelligence faces AI headwinds, and 2026 guidance disappointed. Analysts rate it Strong Buy but the stock is drifting lower as the market reprices for slower growth. Wall Street models ~4% ratings revenue growth in 2026.
-- **Our view:** The market is conflating a cyclical pause in ratings issuance with structural deterioration, and massively overweighting AI disruption fears for a business whose moat is regulatory (NRSRO designation), legal (trademark on S&P 500), and contractual (Platts benchmark references in commodity contracts). The 40.3% operating margin shows integration is AHEAD of schedule. At 21.8x 2026 guidance EPS, you're paying a reasonable multiple for a franchise that will compound at 10-12% EPS growth through the cycle with minimal reinvestment needs. FCF yield of 4.2% on a business this durable is genuinely attractive.
-- **Trigger:** (1) Q1 2026 earnings (expected late April/early May) showing credit issuance stabilization; (2) AI narrative shift as SPGI launches AI-enhanced products that reinforce rather than displace its data moat; (3) share buybacks accelerating at depressed prices (returned 113% of adjusted FCF in 2025, $5B+ in buybacks).
+- **Consensus view:** Quality compounder priced for perfection; recent guide-down and artificial-intelligence-disruption fear justify the de-rating from 30x to ~21x forward; wait for issuance to re-accelerate or AI strategy to clarify before paying up.
+- **Our view:** The de-rating is overdone. SPGI is now trading at ~19x forward earnings — a discount to its 10-year average (~25x) and within a hair of crisis-era valuations — for a business with 51.8% operating margins, 13% Ratings growth, and structural tailwinds from passive flows. The Iran/Energy cut is one segment for one year. AI is more likely a margin tailwind for SPGI (proprietary structured financial datasets are exactly what large-language-model workflows need) than a substitution threat. The variant claim: this is one of the rare times you can buy SPGI at a "normal-company" multiple, and the multiple should re-rate as 2026 issuance volume confirms the recovery.
+- **Trigger:** (1) Q2 2026 earnings (late July) — if Ratings transactional revenue holds double-digit growth and full-year guide is held or raised, the AI-disruption narrative loses oxygen. (2) Federal Reserve cuts in the second half of 2026 would accelerate the debt-issuance backdrop. (3) Any concrete AI-product monetization disclosure (Spark Assist pricing, Kensho enterprise contracts).
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $15.3B | 11.1% CAGR |
-| Net Income | $4.5B | 11.2% CAGR |
-| FCF | $5.5B | 29.5% CAGR |
-| Operating Margin | 40.3% | 27.0% -> 32.4% -> 38.6% -> 40.3% (expanding) |
-| ROE | 14.4% | Understated by $36B goodwill from IHS Markit |
-| D/E | 0.38 | Stable, conservative |
-| Net Debt/EBITDA | 1.5x | Comfortable |
-| FCF Yield | 4.2% | Strong for quality compounder |
-
-**2025 Full Year:** Revenue $15.3B (+8% YoY), GAAP EPS $14.66 (+19%), adjusted EPS ~$17.80. Returned $5B+ to shareholders via buybacks. 53rd consecutive dividend increase (Dividend Aristocrat).
-
-**2026 Guidance:** Revenue growth 6-8% organic, EPS $19.40-$19.65 (adjusted), continued margin expansion.
+| Revenue (FY25) | $15.34B | ~11% CAGR from $11.18B (FY22) |
+| Net Income (FY25) | $4.47B | ~11% CAGR from $3.25B (FY22) |
+| Operating Income (FY25) | $6.18B | 40% margin, up from 27% (FY22) |
+| Free Cash Flow (FY25) | $5.46B | Stable ~$5.5B since FY24 |
+| Return on Equity | 13.9% | Diluted by IHS Markit goodwill |
+| Total Debt | $13.58B | Up from $11.93B (FY24) |
+| Debt/Equity | 0.38 | Conservative for the cash flow |
+| Free-cash-flow Yield | 4.4% | On $123.6B market cap |
+| Gross margin | 70.5% | Software-like |
+| Operating margin (TTM) | 44.3% | Best-in-class |
 
 ## Valuation Models
 
-No models in the database. Using external data points:
+| Model | Fair Value | Upside | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| gbm_opportunistic_3y | $656.71 | +50.2% | 0.85 | 2026-05-18 |
+| gbm_opportunistic_1y | $636.69 | +45.6% | 0.75 | 2026-05-18 |
+| autoresearch | $622.49 | +42.4% | 0.93 | 2026-05-18 |
+| gbm_lite_3y | $581.76 | +33.1% | 0.80 | 2026-05-18 |
+| gbm_lite_1y | $516.38 | +18.1% | 0.75 | 2026-05-18 |
+| gbm_1y | $491.45 | +12.4% | 0.97 | 2026-05-18 |
+| gbm_3y | $387.87 | -11.3% | 0.95 | 2026-05-18 |
+| dcf_enhanced | $256.94 | -41.2% | 0.70 | 2026-05-18 |
+| dcf | $154.19 | -64.7% | 0.70 | 2026-05-18 |
+| simple_ratios | $134.33 | -69.3% | 0.85 | 2026-05-18 |
+| multi_stage_dcf | $124.79 | -71.5% | 0.70 | 2026-05-18 |
+| rim | $90.82 | -79.2% | 0.70 | 2026-05-18 |
 
-| Source | Fair Value | Upside | Confidence |
-|--------|-----------|--------|------------|
-| Analyst mean target | $539 | +26% | Moderate (21 analysts) |
-| Analyst low target | $480 | +13% | — |
-| Analyst high target | $625 | +47% | — |
-| Morningstar FV (est.) | ~$560 | +31% | Moderate |
-| 25x 2026E EPS ($19.52) | $488 | +15% | Conservative |
-| 30x 2026E EPS ($19.52) | $586 | +37% | Historical avg multiple |
-| 22x 2027E EPS (~$21.50) | $473 | +11% | Two-year forward |
+*Models from 2026-05-18 used current_price $437.22; today's price is $417.41 (-4.5%), so listed upsides are about 4-5 pp understated.*
 
-**Model consensus:** At $426, the stock is trading at 21.8x 2026 guided EPS — well below its 5-year average P/E of ~30x. The discount reflects growth deceleration fears but appears overdone for a franchise with 40%+ margins, 4.2% FCF yield, and durable competitive advantages. Mean analyst target of $539 implies 26% upside.
+**Model consensus:** GBM (Geometric Brownian Motion forward simulation) models and autoresearch (the most reliable for return prediction) cluster at $490-$660 fair value, +12% to +50% upside. Discounted-cash-flow and Residual Income Model implementations systematically undervalue SPGI because they anchor on book equity and tangible capital — completely missing the intangible-moat economics of a ratings duopoly. Sell-side analyst mean target is $534 (+28%), strong buy consensus from 21 analysts. The reliable models all agree: undervalued.
 
-## Business Quality (21/25)
+## Business Quality (24/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 5/5 | Unmatched: regulatory duopoly in ratings (NRSRO), legal monopoly on S&P 500 index, Platts benchmarks written into commodity contracts. Highest-moat business in financial services. |
-| Management | 4/5 | 113% of adj FCF returned to shareholders in 2025. $5B+ buybacks. 53 consecutive dividend increases. Merger integration ahead of schedule (margin expansion). Minor ding: 2026 guidance disappointed — either sandbagging or genuine slowdown. |
-| Profitability | 5/5 | 40.3% operating margin (up from 27% in 2022), 70% gross margin, 29% net margin. Ratings segment >60% op margin. Capital-light: only $195M capex on $15.3B revenue (1.3% capital intensity). |
-| Balance Sheet | 4/5 | Net debt/EBITDA 1.5x is very manageable. $13.6B total debt offset by $5.5B annual FCF generation. Current ratio 0.8 is the only blemish — acceptable for a subscription/recurring revenue business. |
-| Growth | 3/5 | 11% revenue CAGR is solid but decelerating. 2026 guidance of 6-8% organic growth reflects ratings normalization. Growth runway exists in private credit ratings, AI data products, ESG/carbon benchmarks, and index licensing (passive investing tailwind). But this is a mid-single-digit organic grower at maturity, not a high-growth story. |
+| Moat | 5/5 | Ratings duopoly with Moody's (95% global share with Fitch); S&P 500 index licensing is an unreplicable franchise; Capital IQ has 10+ year customer stickiness |
+| Management | 4/5 | Doug Peterson era delivered the IHS Markit integration on plan; capital allocation returns ~$5B/year to shareholders via buybacks plus dividends; mild ding for slow AI-strategy articulation |
+| Profitability | 5/5 | 44% operating margin, 70% gross margin, return on invested capital well above weighted-average cost of capital; FY25 margin expansion +100 basis points |
+| Balance Sheet | 5/5 | $13.6B debt vs $5.5B annual free cash flow = 2.5x; investment grade, no refinancing risk |
+| Growth | 5/5 | 10%+ organic revenue growth, multiple secular tailwinds (passive flows, debt issuance recovery, private credit data, sustainability analytics) |
 
 ## Inflection Point
 
-This is not a classic inflection story — it is a **cyclical trough in a secular compounder**. The inflection elements are:
-
-- **Margin inflection already underway:** IHS Markit integration drove operating margins from 27% (2022) to 40.3% (2025) — this is the steepest margin expansion in SPGI's history. The question is whether further expansion is possible (management says yes).
-- **AI as enhancer, not disruptor:** The March 2026 Capital IQ Pro expansion (ProntoNLP sentiment, Drift AI for Excel) positions SPGI to monetize AI rather than be displaced by it. The moat is the DATA, not the delivery mechanism.
-- **Private credit expansion:** SPGI launched DataXchange and AmendX (March 2026) to build infrastructure for the booming private credit market — a large, underpenetrated addressable market for ratings and data.
-- **Ratings cycle trough:** After two years of hyper-growth in credit issuance (2023-2024), analysts expect normalization in 2026. This is the setup for a buying opportunity — ratings revenue is cyclical but the franchise value is not.
+Yes — debt-issuance cycle inflection. Ratings transactional revenue grew 15% in Q1 2026 vs. negative-to-flat in 2022-2023 when rates spiked. Corporate refinancing wall in 2026-2028 ($1.8T+ of investment-grade and high-yield debt maturing) is a structural tailwind regardless of where rates settle. The stock's de-rating (30x to 19x forward) anticipates a stall in this recovery; the operating data says it's still accelerating. Observable evidence the inflection has begun: four consecutive quarters of double-digit Ratings revenue growth.
 
 ## Bull Case
 
-- **Buying a toll bridge at a discount:** 21.8x forward EPS for a business with 40% margins, 4.2% FCF yield, and regulatory moats is historically cheap. 5-year avg P/E is ~30x.
-- **Insider conviction:** Hubert Joly's $1M open-market buy at $399 near 52w lows — a respected capital allocator with a turnaround track record — signals the board sees value.
-- **Margin expansion has further room:** Management guiding for continued margin expansion in 2026. Full IHS Markit synergies not yet realized.
-- **Buyback yield accelerating at lower prices:** $5B+ annual buyback program at depressed stock price = higher per-share value creation.
-- **AI is a tailwind, not a headwind:** SPGI's proprietary datasets (credit ratings history, Platts benchmarks, auto data) become MORE valuable as AI models need structured, authoritative data to train on.
+- Debt-issuance recovery continues through the 2026-2028 refinancing wall; Ratings revenue compounds 12%+ for three years.
+- Multiple re-rates from 19x forward back to historical 25x as guide stabilizes and AI-disruption fears fade.
+- Passive flows into S&P 500 ETFs continue at ~$300B/year; Indices revenue compounds 10%+ on asset-linked fees.
+- IHS Markit cross-sell finally hits stride — private credit data and sustainability analytics become measurable revenue lines.
+- AI products (Spark Assist, Kensho) become a margin tailwind rather than a threat — proprietary structured data is the moat large-language models cannot replicate.
 
 ## Bear Case
 
-- **Growth is decelerating:** 6-8% organic revenue growth in 2026 vs. 14% in 2024. The high-growth phase may be over, and the multiple should reflect that.
-- **Ratings cyclicality:** A credit market freeze (recession, rate spike) would hit the highest-margin segment hard. Ratings is ~25% of revenue but >35% of profits.
-- **AI disruption to Market Intelligence:** LLMs aggregating financial data could challenge Capital IQ's subscription model. This segment has the weakest moat of the five.
-- **Valuation still premium:** Even at 21.8x forward, SPGI is not cheap in absolute terms. In a broad market selloff, high-multiple stocks get hit harder.
-- **Regulatory overhang:** Ratings oligopoly is a political target. EU and US regulators periodically threaten to open the market — low probability but high impact.
+- Artificial-intelligence agents disintermediate the Capital IQ subscription terminal (the "Bloomberg-killer" risk applied to SPGI). Slow erosion is hard to spot until it's late.
+- Macro recession in 2026 or 2027 freezes the investment-grade and high-yield issuance market for several quarters; Ratings transactional revenue drops 20%.
+- **Under-covered in news:** Sustainable1 Environmental, Social, and Governance slowdown — management has flagged this as a multi-quarter drag but the headlines focus on the Iran-Energy cut. ESG was a 2021-era growth bull case; its quiet removal subtracts a re-rating leg without ever making the front page.
+- Moody's wins the AI-product race; SPGI ends up the slower of the two duopolists.
+- Regulatory: any concrete Department of Justice or Securities and Exchange Commission action on issuer-pays conflict-of-interest reform would compress Ratings margins by several hundred basis points overnight.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | Ratings rebound + continued margin expansion -> $21+ EPS in 2027 | Re-rate to 28-30x as growth fears fade | $600 | +41% |
-| **Base** | 50% | Guidance met ($19.50 EPS 2026), 10% growth to $21.50 in 2027 | Stable at 24-25x forward | $520 | +22% |
-| **Bear** | 25% | Recession hits ratings volumes, EPS flat at $19 | De-rate to 20x on growth concerns | $380 | -11% |
+| Bull | 30% | FY27 earnings per share ~$24 (Ratings +12%, Indices +10%, Market Intelligence +8%) | Re-rate to 25x as cycle confirms | $600 | +44% |
+| Base | 50% | FY27 earnings per share ~$22 (guide-range execution, 7% top-line) | Stable 22x forward | $485 | +16% |
+| Bear | 20% | FY27 earnings per share ~$19 (issuance stalls, ESG drag, AI competition) | De-rate to 17x | $325 | -22% |
 
-**Expected value: +19.3%** (0.25 x 41% + 0.50 x 22% + 0.25 x -11%)
-
-**Thesis breaks if:** Operating margins contract below 35% (indicating IHS Markit dis-synergies), credit ratings market share loss, or sustained revenue declines >2 quarters. Stock below $350 (-18%) without fundamental improvement would also warrant reassessment.
+**Expected value: +18.8%** (0.30 x 44 + 0.50 x 16 + 0.20 x -22)
+**Thesis breaks if:** Two consecutive quarters of Ratings transactional revenue decline AND Capital IQ subscriber churn turns negative — that combination would signal both the cyclical and the structural bear cases are real.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Moderate — 91% institutional ownership, but not a crowded hedge fund hotel. Recent selling by Alecta (67K shares in March 2026) |
-| Short interest | Very low — 1.5% of float. No short squeeze thesis but also no bearish conviction |
-| Technical position | Oversold — 26% off 52w high, trading below both 50-day ($470) and 200-day ($504) moving averages |
-| Next catalyst | Q1 2026 earnings (late April / early May 2026) |
-| Recent price action | Down from $579 high, stabilizing around $420-430 range. Near where Joly bought ($399) |
+| Crowdedness | Uncrowded — institutional ownership at 91% is high but the stock has been a Q1 2026 underperformer; consensus longs have trimmed |
+| Short interest | 0.9% of float — negligible, no squeeze, no bear consensus |
+| Technical position | Near 52-week low ($381) vs. high ($579); -28% from peak; oversold but not capitulating |
+| Next catalyst | Q2 2026 earnings (late July 2026) — full-year guide hold/raise/cut |
+| Recent price action | Stock has not yet rebounded; entry is into weakness, not strength |
 
 ## Verdict
 
-**BUY** — Conviction: HIGH
+**BUY** — Conviction: **MEDIUM-HIGH**
 
-This is a generational franchise trading at a cyclical discount. At 21.8x 2026 guided EPS with 40% operating margins, 4.2% FCF yield, a 1.5x levered balance sheet, and regulatory moats that make this business virtually uninvestable for competitors to disrupt, the risk/reward is compelling. The AI disruption narrative is fundamentally wrong for this business — SPGI's moats are regulatory and legal, not technological. The Hubert Joly insider buy at $399 provides a credible "smart money" floor. Expected value of +19% with limited downside in the bear case (-11%) and significant upside in a re-rating scenario (+41%).
+SPGI is a 24/25 quality compounder trading at 19x forward earnings (vs. 25x historical) because the market is overweighting a one-segment guidance trim and an unsubstantiated artificial-intelligence-disruption fear. The variant perception is concrete: the de-rating implies a stall in the debt-issuance cycle that the operating data (Ratings +13%, transactional +15%) directly contradicts. Catalyst is dateable (Q2 2026 earnings in roughly 10 weeks). Setup is uncrowded with the stock near its 52-week low.
 
-**Entry:** Current levels ($420-430) are attractive. Scale in: 60% now, 40% on any dip below $400 (near Joly's buy price).
-**Thesis breaks at:** $350 (or operating margins contracting below 35% for 2+ quarters).
-**Position sizing note:** Quality score 21/25 supports a full-weight position. Low beta-adjusted risk.
+**If BUY:** Entry at $417 or below; scale-in over $400-$430 zone; add aggressively below $400. Thesis-break signal: $325 (would mark a two-quarter Ratings-decline plus negative Market Intelligence subscriber growth scenario). Trim above $560 (back to historical multiple).
+**If WATCH:** Already actionable; not a watch.
+
+<!-- Personal position details belong in ~/vault/finance/notes/positions/SPGI.md, not here. -->

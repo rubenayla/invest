@@ -1,123 +1,136 @@
 # Adobe Inc. (ADBE)
 
 **Sector:** Technology | **Industry:** Software - Application
-**Price:** $248.15 | **Market Cap:** $102B
-**Analysis Date:** 2026-03-22
+**Price:** $255.64 (2026-05-19) | **Market Cap:** $103.3B
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** Adobe sells professional creative and document software, almost entirely through subscriptions. Two umbrella product families generate nearly all revenue. The first is **Digital Media**, which is Creative Cloud (Photoshop, Illustrator, Premiere Pro, After Effects, InDesign, Lightroom, plus the consumer-tier Express) and Document Cloud (Acrobat, PDF services, e-signatures via Acrobat Sign). Creative Cloud is paid by everyone from solo designers to film studios; Document Cloud is paid by knowledge workers, legal teams, finance teams, and anyone who lives in PDFs. The second family is **Digital Experience**, which is a marketing and analytics stack — Adobe Experience Platform, Adobe Analytics, Adobe Experience Manager (web content management), Marketo (B2B marketing automation), and Workfront (work management) — sold to enterprise marketing departments to run their digital customer journeys. Across both families, **Firefly** (Adobe's generative AI for images, video, audio, and 3D) is now embedded as the AI layer, monetized via per-seat AI add-ons ("AI Assistant for Acrobat") and via "generative credits" that meter heavy image/video generation. As of Q1 FY2026, total annual recurring revenue (ARR) is $26.1 billion, with ~$6.4 billion of quarterly revenue (+12% year-over-year), 89% gross margins, and ~$9.85 billion of trailing free cash flow.
+
+**Where they want to grow.** Three explicit bets. First, **monetize Firefly across the existing 850 million monthly active user base** — image, video, and 3D generative AI, sold both as a standalone subscription ($250M+ ARR in Q1 FY2026, up 75% quarter-over-quarter) and as generative credits packaged into Creative Cloud and Document Cloud plans. Second, **convert the freemium funnel into paid** — Creative Cloud Express and Acrobat Web now have ~80 million free monthly active users (up 50% year-over-year), and management's bet is that AI features pull them through the paywall. Third, **own the enterprise content supply chain** — GenStudio, the Adobe Experience Platform, and the pending Semrush acquisition (closing Q2 FY2026, subject to approval) push deeper into B2B marketing operations, where each AI agent is sold as additional consumption. Success in 3-5 years looks like ARR compounding at low double digits with AI add-ons lifting average revenue per user (ARPU) instead of seat-count growth doing all the work.
+
+**What could go wrong (business risks).** The bear thesis is that generative AI is value-destructive to Adobe specifically. Three legs: (1) **Canva** has eaten the small-business and prosumer end of design, runs natively on the web, ships AI features fast, and has a much lower price point; the gap to Adobe widens as AI commoditizes "good enough" output. (2) **Figma** (now public after its 2025 initial public offering) is the de facto standard for product and user-experience design and has expanded into Figma Slides, FigJam, and AI-assisted design — directly contested with Illustrator, Adobe XD, and InDesign in workflows that used to be Adobe-default. (3) **Midjourney, Runway, OpenAI Sora, ElevenLabs, Suno** and peers offer best-in-class generative output that Firefly arguably trails on raw quality; if a creative professional's AI tool of choice is non-Adobe, the creative application of choice may follow. Layer in concrete disclosed weakness: Adobe's traditional **stock-image business** is in steeper-than-expected decline (~$450 million annual headwind), the **freemium model is dampening short-term ARR** by design, and **the chief executive officer is leaving after 18 years** with no named successor — execution risk on top of competitive risk. Government and enterprise seat compression from AI productivity gains also threatens the seat-licensing model.
+
+**How to think about it.** ADBE is a creative-software incumbent under genuine AI disruption, with a powerful but mature cash machine to defend itself. The investable question is not "will AI hurt Adobe?" — it already has, the stock is down ~40% from its $423 high. The question is whether Firefly monetization plus workflow integration (Photoshop + Premiere + Acrobat + Experience Cloud all wired together with AI) reaccelerates ARR enough to make a 9.7x forward earnings multiple, ~10% free-cash-flow yield, and a $25 billion buyback authorization look like a gift. The bet is on the **moat surviving disruption**, not on linear seat-price increases. If Firefly ARR keeps tripling year-over-year and freemium converts, this is a fat-pitch defensive growth name. If the stock-image business decline becomes the template for Creative Cloud itself, it is a slow-bleeding melting ice cube and the multiple is justified.
 
 ## Situation Summary
 
-Adobe reported record Q1 FY2026 revenue of $6.40B (+12% YoY) on March 12, beating on EPS ($6.06 vs $5.87 consensus) but the stock dropped ~6% as CEO Shantanu Narayen simultaneously announced he will step down after 18 years, with a successor search underway led by Lead Independent Director Frank Calderoni. Days later on March 19, the UK CMA launched a probe into Adobe's subscription cancellation fees (50% early exit charge), following a $150M FTC settlement in the US on similar grounds. The stock is trading at $248, near its 52-week low of $241, down 41% from the 52-week high of $423. Competitive pressure is intensifying: Canva has crossed $3.3B ARR with 240M MAUs, Figma went public and is expanding into Adobe's territory, and AI-native tools (Midjourney, Runway, Sora) are commoditizing high-end content creation. On the positive side, AI-first ARR more than tripled YoY and subscription revenue grew 13%.
+ADBE reported a solid Q1 FY2026 on 2026-03-12: revenue $6.40 billion (+12%), non-GAAP earnings per share $6.06 (+19%), total ARR $26.06 billion (+10.9% year-over-year). AI-first ARR more than tripled year-over-year and Firefly ARR crossed $250 million (+75% quarter-over-quarter). On the same call, CEO Shantanu Narayen announced he is stepping down after 18 years once a successor is named, sending the stock down 7% on the announcement and contributing to a ~24% year-to-date decline. Wall Street's central debate is whether Firefly monetization can outrun the Canva/Figma/Midjourney disruption narrative; analyst consensus is split (25 Buy, 12 Hold, 3 Sell across 40 covering analysts) with a $327 average price target (+28% upside). The stock now trades at 9.7x forward earnings — a level that has historically priced ADBE only during the 2008 crisis or deep recessions, despite the business growing double digits with 47% non-GAAP operating margins.
 
 ## Variant Perception
 
-- **Consensus view:** Hold-to-Buy with mean target ~$328. Market sees Adobe as a mature SaaS compounder under AI disruption threat. 34 analysts covering, consensus "buy" but recent downgrades (Keybanc cut target to $235). Short interest rose 15.6% to 14.3M shares (3.9% of float). The fear: generative AI commoditizes creative tools and "seat compression" reduces the number of Adobe licenses enterprises need.
-- **Our view:** The market is over-penalizing Adobe for AI disruption fears. At 14.5x trailing PE and 9.4x forward PE, the stock is priced as if AI will destroy margins -- yet Adobe is generating $9.9B in FCF on $23.8B revenue (42% FCF margin), growing revenue 12% with 89% gross margins. AI-first ARR tripling shows the pivot is working. Firefly's commercially-safe training on licensed data is a genuine moat for enterprise adoption that Midjourney/Sora cannot replicate. The $11B+ annual buyback at depressed prices is highly accretive. The 9.7% FCF yield provides downside protection -- this is deep value pricing for an elite software franchise.
-- **Trigger:** Q2 FY2026 earnings (June 2026) will test whether AI ARR growth translates into sustained headline revenue acceleration. CEO successor announcement (David Wadhwani is the heir apparent as President of Digital Media) could be a positive catalyst if the pick is AI-focused. CMA probe resolution by September 2026.
+- **Consensus view:** Adobe is a value-trap incumbent being structurally disrupted by AI-native competitors (Canva, Figma, Midjourney, Runway). The CEO transition adds execution risk on top of competitive risk. The multi-year ARR slowdown from ~15% to ~10% confirms the thesis. Multiple should stay compressed.
+- **Our view:** The market is pricing in a Kodak-style outcome (terminal decline) at 9.7x forward earnings per share, while Adobe is actually executing a textbook AI-incumbent defense: Firefly ARR tripling, 850 million monthly active users (+17%), generative-credit consumption +45% quarter-over-quarter, $9.85 billion free cash flow, $25 billion buyback authorization (~24% of market capitalization), 89% gross margins. The stock-image business decline (-$450 million) is the only real structural headwind disclosed and is small relative to total ARR. At a normal-business 15-18x forward earnings per share, fair value is $390-470. The CEO transition is messy but Narayen stays as Chair and Adobe's bench (David Wadhwani, Anil Chakravarthy) is deep.
+- **Trigger:** (1) Successor CEO named within 6 months — removes uncertainty discount; (2) Firefly ARR crossing $500 million and AI-first ARR continuing to triple; (3) Q3-Q4 FY2026 ARR reaccelerating past 11% as freemium conversion kicks in; (4) Semrush acquisition closing (Q2 FY2026) adding Digital Experience revenue.
 
 ## Financial Snapshot
 
-| Metric | Value | 3yr Trend |
-|--------|-------|-----------|
-| Revenue | $23.8B | +10.5% CAGR (FY2022-2025), accelerating to 12% in Q1 |
-| Net Income | $7.1B | +14.4% CAGR, strong operating leverage |
-| EBITDA | $9.8B | +12.0% CAGR |
-| FCF | $9.9B | +10.0% CAGR ($7.4B -> $6.9B -> $7.9B -> $9.9B) |
-| ROE | 58.8% | Outstanding, partly leverage-driven |
-| D/E | 0.58 | Moderate, manageable |
-| FCF Yield | 9.7% | Extremely attractive for a tech compounder |
-| Operating Margin | 37.8% | Expanding (34.6% in FY2022 -> 36.6% in FY2025) |
-| Gross Margin | 89.4% | Best-in-class, stable |
-
-**Revenue CAGR (3yr):** +10.5% (FY2022-2025)
-**Earnings CAGR (3yr):** +14.4% (accelerating due to operating leverage)
-**Net debt/EBITDA:** 0.12x (essentially net-cash: $5.4B cash vs $6.6B debt)
+| Metric | FY2025 | 3yr Trend |
+|--------|--------|-----------|
+| Revenue | $23.77B | +10.5% CAGR ($17.6B→$23.8B) |
+| Net Income | $7.13B | +14.5% CAGR ($4.76B→$7.13B) |
+| Operating Income | $8.71B | +12.6% CAGR |
+| EBITDA | $9.82B | +12.1% CAGR |
+| Free Cash Flow | $9.85B | +10.0% CAGR ($7.4B→$9.85B) |
+| Return on Equity | 58.8% | High and stable (asset-light software-as-a-service) |
+| Gross Margin | 89.4% | Stable |
+| Operating Margin (GAAP) | 38.8% | Expanding |
+| Debt / Equity | 0.58 | Modest leverage |
+| Free Cash Flow Yield (on $103B cap) | 9.5% | Very high for a 12% grower |
 
 ## Valuation Models
 
-No models currently in the database for ADBE. Cross-referencing with analyst targets and fundamental analysis:
+Live price reference: $255.64. Models below ran 2026-05-18 against a stale $239.31 — upsides recalculated against today's price.
 
-| Source | Fair Value | Upside | Notes |
-|--------|-----------|--------|-------|
-| Analyst Mean Target | $328 | +32% | 34 analysts, consensus Buy |
-| Analyst Low Target | $220 | -11% | Keybanc (Mar 2026) |
-| Analyst High Target | $487 | +96% | Morgan Stanley |
-| FCF-based (25x FCF) | $560 | +126% | Historical median ~30x FCF |
-| FCF-based (15x FCF) | $336 | +35% | Conservative multiple |
-| Forward PE (15x FY27E EPS $20) | $300 | +21% | Moderate re-rate |
-| Forward PE (20x FY27E EPS $20) | $400 | +61% | Mean reversion |
+| Model | Fair Value | Upside (vs $255.64) | Confidence | Run Date |
+|-------|-----------|---------------------|------------|----------|
+| gbm_opportunistic_3y | $464.01 | +81.5% | 0.94 | 2026-05-18 |
+| gbm_opportunistic_1y | $463.52 | +81.3% | 0.94 | 2026-05-18 |
+| gbm_lite_3y | $435.64 | +70.4% | 0.83 | 2026-05-18 |
+| dcf_enhanced | $389.46 | +52.3% | 0.70 | 2026-05-18 |
+| dcf | $389.06 | +52.2% | 0.70 | 2026-05-18 |
+| autoresearch | $369.62 | +44.6% | 0.95 | 2026-05-18 |
+| multi_stage_dcf | $331.51 | +29.7% | 0.70 | 2026-05-18 |
+| rim | $311.79 | +22.0% | 0.70 | 2026-05-18 |
+| gbm_lite_1y | $295.30 | +15.5% | 0.57 | 2026-05-18 |
+| gbm_1y | $271.89 | +6.4% | 0.94 | 2026-05-18 |
+| simple_ratios | $256.23 | +0.2% | 0.85 | 2026-05-18 |
+| gbm_3y | $248.71 | -2.7% | 0.63 | 2026-05-18 |
+| growth_dcf | $222.72 | -12.9% | 0.70 | 2026-05-18 |
 
-**Assessment:** At 9.4x forward PE, Adobe trades at a 64% discount to the 26x median of large-cap software peers. Even applying a significant disruption discount, this valuation implies severe margin compression that the financials contradict.
+**Confidence-weighted consensus fair value: $348 → +36% upside.** Every model except `growth_dcf` (which extrapolates the slowing growth rate) shows upside, with the GBM family and autoresearch (the most reliable per repo conventions) clustering at +44% to +81%. Sell-side mean target $327 (+28%) sits in the middle of this band. Analyst targets and quant models agree directionally; the disagreement is magnitude, not sign.
 
 ## Business Quality (21/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 5/5 | Creative Cloud is THE industry standard. File format dominance (PDF, PSD, AI), massive switching costs for enterprise workflows, 850M MAU. Firefly's commercially-safe training on licensed data is a unique differentiator for enterprise AI adoption that competitors cannot easily replicate. |
-| Management | 3/5 | Narayen was excellent but is departing. Successor unknown -- Wadhwani is the frontrunner but unconfirmed. Capital allocation strong ($11.3B buybacks in FY2025, highly accretive at these prices). $150M FTC settlement and CMA probe are governance stains on subscription practices. |
-| Profitability | 5/5 | 89% gross margins, 38% operating margins, 42% FCF margins, 59% ROE. One of the highest-quality financial profiles in all of software. Margins expanding, not contracting. |
-| Balance Sheet | 4/5 | Near net-cash ($5.4B cash vs $6.6B debt). Net debt/EBITDA 0.12x. Current ratio 0.91 is slightly tight due to deferred revenue but massive FCF generation ($9.9B/yr) covers all obligations easily. |
-| Growth | 4/5 | 10.5% revenue CAGR accelerating to 12% in latest quarter. AI-first ARR tripled YoY. Document Cloud and Experience Cloud expanding TAM beyond creative tools. Risk: law of large numbers at $24B revenue base. |
+| Moat | 4/5 | Massive switching costs in professional creative workflows (PSD/AI/INDD file formats, plugin ecosystems, learned muscle memory). 850 million monthly active user funnel. Brand is the verb ("photoshop it"). Eroding at the prosumer end (Canva, Figma) but rock-solid at the professional/enterprise end. Not a 5 anymore because AI commoditizes some output workflows. |
+| Management | 4/5 | Narayen's 18-year tenure delivered the software-as-a-service transition (2012-2015) and 6x stock price. Capital allocation excellent: $25 billion buyback authorization at 14.9x trailing earnings, modest debt, accretive M&A (Marketo, Figma deal correctly aborted when Department of Justice blocked). Transition risk is the only blemish — and he stays as Chair. |
+| Profitability | 5/5 | 89% gross margin, 38.8% GAAP operating margin (47.4% non-GAAP), 58.8% return on equity, 41% free-cash-flow margin. Best-in-class software economics; among the most profitable companies of its size globally. |
+| Balance Sheet | 4/5 | $6.6 billion debt vs $5.4 billion cash, $9.85 billion annual free cash flow. Net debt covered by ~1.5 quarters of free cash flow. Current ratio 0.91 is a touch light (deferred revenue is a structural feature of software-as-a-service), but interest coverage is comfortable and debt is investment grade. |
+| Growth | 4/5 | 10-12% revenue growth and double-digit ARR growth despite scale; AI optionality (Firefly tripling) provides reacceleration path. Not a 5 because the law of large numbers is real and core Creative Cloud growth is decelerating. |
 
 ## Inflection Point
 
-**Yes -- AI monetization inflection + generational valuation reset.**
+**Yes — early evidence of an AI-monetization inflection plus a sentiment inflection.**
 
-- **AI ARR tripling:** Adobe is successfully monetizing Firefly through generative credits, upsell to premium AI tiers, and enterprise licensing. This is not disruption -- it is platform evolution.
-- **Valuation compression:** At 14.5x trailing PE (multi-year low), the stock is priced for zero growth or margin compression. Neither is happening. Forward PE of 9.4x is deep value territory for a company with 89% gross margins.
-- **CEO transition:** Creates short-term uncertainty but also opportunity. If David Wadhwani (AI-focused executive) gets the job, it signals acceleration of the AI pivot.
-- **Regulatory pressure:** CMA probe and FTC settlement are headwinds but also potential catalysts if Adobe reforms subscription practices -- removing the overhang.
+Specific observable evidence the inflection has begun:
+- **Firefly ARR $250 million+, +75% quarter-over-quarter, AI-first ARR tripling year-over-year** — the monetization layer is no longer hypothetical.
+- **Generative-credit consumption +45% quarter-over-quarter, video generative actions 8x, audio 2x** — usage growth precedes ARR growth in metered consumption models.
+- **80 million+ freemium monthly active users (+50%)** funneling toward paid tiers is a multi-quarter ARR tailwind that hasn't shown up yet.
+- **$25 billion buyback authorization** at depressed multiples is management telegraphing they think the stock is mispriced.
+- **CEO transition resolves within months** — removes the largest current overhang.
 
-**Caution**: Short interest rising 15.6% suggests institutional skepticism is increasing, not decreasing. Need Q2 confirmation that Q1's 12% growth rate is sustainable.
+This is not a turnaround (Adobe is not broken — margins are expanding, free cash flow is growing, ARR is +11%). It is a **sentiment inflection on a healthy business** where the market has already moved to AI-loser pricing.
 
 ## Bull Case
-- New CEO (Wadhwani) accelerates AI strategy, market re-rates from "disrupted legacy" to "AI platform leader"
-- AI-first ARR continues tripling, reaching $15B+ by FY2027, driving headline growth to 14-15%
-- Operating leverage pushes margins higher as AI generation costs decline with NVIDIA partnership
-- Aggressive buybacks at depressed prices ($11B+ annually) drive EPS growth of 20%+
-- Stock re-rates to 20-25x forward PE (still below historical average of 30-40x) = $400-$550
+
+- **AI monetization layer scales fast.** Firefly ARR follows Acrobat AI Assistant's trajectory (3x year-over-year) and reaches $1 billion+ within 18 months; generative-credit consumption keeps compounding 40%+ quarter-over-quarter as the 850 million monthly active user base expands AI usage.
+- **Multiple re-rating from 9.7x to 15-18x forward earnings per share** as CEO uncertainty clears, ARR growth re-accelerates above 11%, and the market accepts that AI is additive (not destructive) to Adobe's economics. 15x forward earnings per share on consensus $26 → $390+.
+- **$25 billion buyback (~24% of market capitalization)** mechanically lifts earnings per share by mid-to-high single digits annually at current prices.
+- **Semrush acquisition** closes Q2 FY2026, adds ~$400 million revenue and strengthens the Digital Experience marketing-stack pitch against Salesforce, HubSpot, and Klaviyo.
+- **Enterprise AI-credit consumption** monetizes the previously flat seat model — average revenue per user expansion replaces seat growth as the primary lever.
 
 ## Bear Case
-- CEO transition goes poorly, key talent defects to competitors, execution stumbles
-- Generative AI commoditization accelerates -- Canva ($3.3B ARR, 240M MAU), OpenAI/Sora, open-source tools erode Creative Cloud pricing power
-- "Seat compression" -- enterprises need fewer designer licenses as AI automates workflows
-- CMA probe results in forced changes to subscription model (removal of cancellation fees), increasing churn
-- Revenue growth decelerates to sub-8% as macro weakness + AI cannibalization hit simultaneously
+
+- **Canva + Figma + Runway/Midjourney structurally cap pricing power.** Seat compression accelerates as enterprises consolidate and use AI to do more with fewer designers. Creative Cloud ARR growth slips below 8% in FY2027.
+- **Firefly trails best-of-breed AI quality.** Creative professionals adopt Midjourney/Runway as primary tools and use Adobe only for legacy file formats and editing — Adobe becomes the "Word for design files," tolerated but disrespected.
+- **CEO transition lands badly** — successor lacks Narayen's product instincts, or an external hire creates strategy whiplash. Six-to-twelve-month execution drift during search.
+- **Stock-image business decline ($450 million annual) is the template, not an exception.** [UNDERCOVERED PRIMARY-SOURCE RISK] The traditional Adobe Stock business is in steeper-than-expected decline at the same time Adobe ships Firefly generative imagery. If Adobe's own AI is cannibalizing its own stock-image revenue faster than it monetizes elsewhere, that pattern could repeat across Creative Cloud subscriptions as users substitute AI-generated assets for paid creative work. This is in the transcript but largely absent from sell-side notes that frame the stock business as "non-core legacy."
+- **Macro / information-technology budget compression** in FY2026-2027 stretches deal cycles in Digital Experience (enterprise marketing budgets are discretionary) and slows the Semrush integration ramp.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
-|----------|------|----------------|-----------------|--------|--------|
-| Bull | 25% | AI ARR 3x again, revenue accelerates to 14%, EPS $22+ FY2027E | Re-rate to 22x forward on AI platform narrative + new CEO | $484 | +95% |
-| Base | 50% | Revenue grows 10-12%, AI monetization steady, EPS $20 FY2027E | Hold at 15x forward, modest re-rate as CEO resolved + CMA clears | $300 | +21% |
-| Bear | 25% | Revenue growth slows to 7%, AI competition erodes pricing, EPS $17 | De-rate to 11x forward on disruption + regulatory fears | $187 | -25% |
+|----------|------|-----------------|-----------------|--------|--------|
+| Bull | 30% | FY2027 earnings per share to $30 on 11-13% revenue growth + buyback; Firefly $1B+ ARR; ARPU expansion via AI credits | Re-rates to 17x forward earnings per share as CEO named and Firefly proves monetization | $510 | +100% |
+| Base | 50% | FY2027 earnings per share to $28 on 9-10% growth + buyback; Firefly tracks plan ($500-700 million); ARR steady at ~11% | Multiple recovers to 13x forward earnings per share — still discounted vs. software-as-a-service peers | $365 | +43% |
+| Bear | 20% | FY2027 earnings per share flat at $24; Creative Cloud growth decays to 6%; Firefly disappoints; seat compression hits | Multiple stays at 9x; possible further compression to 7-8x | $190 | -26% |
 
-**Expected value: +28.0%**
-(0.25 x 95%) + (0.50 x 21%) + (0.25 x -25%) = 23.75% + 10.5% - 6.25% = +28.0%
+**Expected value: +47%** (0.30 × 100 + 0.50 × 43 + 0.20 × −26 = 30 + 21.5 − 5.2 = +46.3%)
 
-**Thesis breaks if:** Revenue growth drops below 7% for two consecutive quarters, OR AI-first ARR growth decelerates sharply (below 50% YoY), OR new CEO signals strategic retreat from creative tools, OR CMA/FTC actions force material changes to subscription model that increase churn above 5%.
+**Thesis breaks if:** (a) Two consecutive quarters of sub-9% ARR growth with Firefly ARR growth decelerating below 50% year-over-year, or (b) Q3/Q4 FY2026 prints showing Creative Cloud net seat losses (not just slowdown — actual seat erosion), or (c) the new CEO publicly resets long-term growth expectations to mid-single digits.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | LOW -- stock near 52w low, sentiment very negative post-earnings + CEO departure + CMA probe |
-| Short interest | 3.9% (14.3M shares), rising 15.6% -- bears are adding |
-| Technical position | -41% from 52w high ($423), within 3% of 52w low ($241). RSI oversold territory. Below 50-day ($277) and 200-day ($335) moving averages. |
-| Next catalyst | Q2 FY2026 earnings (June 2026), CEO successor announcement (likely Q2-Q3), CMA resolution (by Sep 2026) |
-| Recent price action | Dropped from $270 to $248 post-earnings + CMA probe. Testing support near $241 52w low. |
-| FCF yield | 9.7% -- provides strong downside support. Company buying back $11B/yr at these prices. |
+| Crowdedness | **Uncrowded** — was a consensus long, now a contrarian name; institutional ownership 86% but sentiment has flipped to "show me" |
+| Short interest | 4.8% of float — elevated but not crowded short |
+| Technical position | **Oversold / washed out** — down ~40% from $423 52-week high, near 52-week low of $224; trades at 9.7x forward earnings per share (historical low ex-2008) |
+| Next catalyst | Q2 FY2026 earnings (~mid-June 2026); successor CEO announcement (within 3-6 months); Semrush deal close |
+| Recent price action | Down ~24% year-to-date 2026; stock has NOT run ahead of any catalyst — entire move is sentiment compression |
+
+**Setup favors buying now.** Uncrowded, washed-out technically, multiple near historical lows, multiple dateable catalysts within 6 months, no price-action run-up to fade. The one timing concern is "more bad news could come" — but at 9.7x forward earnings per share and ~10% free-cash-flow yield, the downside is bounded by the buyback floor and the 59% return-on-equity business.
 
 ## Verdict
 
-**WATCH** -- Conviction: MEDIUM
+**BUY** — Conviction: **MEDIUM-HIGH**
 
-Adobe is a high-quality software franchise at a historically cheap valuation (~14x fwd PE, 42% FCF margins, 12% revenue growth). The AI disruption fear is likely overdone at this price — AI-first ARR is tripling and the business is still growing. However, critical red flags prevent a BUY:
+Adobe is a 12%-revenue-grower with 89% gross margins, 48% operating margins, 59% return on equity, $9.85 billion in annual free cash flow, and a $25 billion buyback authorization, trading at 9.7x forward earnings because the market has decided AI is a Kodak-moment for it. The primary-source evidence (Firefly ARR $250 million+ tripling, 850 million monthly active users, AI-first ARR tripling, generative-credit consumption +45% quarter-over-quarter) shows Adobe is monetizing AI, not being destroyed by it. The CEO transition and ~$450 million stock-image business decline are real but priced in three times over. Expected value +47% over 12-18 months, with multiple dateable catalysts (CEO announcement, Q2-Q3 earnings, Semrush close) likely within 6 months.
 
-1. **Zero insider buying** — at "10-year low" valuations, no executive is putting their own money in. CFO sold $485K recently. When insiders don't buy the dip, listen.
-2. **CEO departing** — Narayen is leaving after 18 years. Leadership transitions at this scale introduce significant execution risk.
-3. **AI disruption is real** — Canva ($3.3B ARR), Midjourney, and video gen tools are eating the low end. The question is how far up-market the disruption goes.
+**If BUY:** Scale-in entry at $255 with adds on weakness to $220-240. Thesis-break signal at $190 (two quarters of sub-9% ARR growth or Creative Cloud seat erosion). Trim into $380-410 as multiple normalizes.
+**If WATCH:** Already past WATCH — fundamentals support BUY at current price. Would downgrade to WATCH on a 20% rally without fundamental confirmation, or on first sub-9% ARR print.
 
-The $9.9B FCF + $11B buyback creates a floor, but without insider conviction or a proven new CEO, there's no urgency catalyst.
-
-**Would upgrade to BUY if:** (1) New CEO shows strong AI-first vision, (2) insiders start buying, or (3) stock drops below $200 where FCF yield alone justifies entry.
-**Thesis-break signal:** Revenue growth below 7% for 2 quarters, AI ARR growth below 50% YoY, or major enterprise customer churn emerges.
+<!-- Public file: generic research only. No personal position data. -->

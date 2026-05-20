@@ -1,175 +1,123 @@
-# Alphabet Inc. (GOOG / GOOGL)
+# Alphabet Inc. (GOOGL)
 
 **Sector:** Communication Services | **Industry:** Internet Content & Information
-**Price:** $305.73 | **Market Cap:** $3.70T
-**Analysis Date:** 2026-03-20
+**Price:** $396.94 (2026-05-18) | **Market Cap:** $4.81T
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** Alphabet is the holding company for Google. The overwhelming majority of revenue still comes from advertising — specifically the auction-based ads served against Google Search results, on YouTube videos, and on third-party websites that participate in the Google Network (the AdSense/AdMob platform). When you search for "running shoes" and click a sponsored link, that is the core engine of the business. Google Services (Search, YouTube ads, YouTube subscriptions, Android, Play Store, Pixel hardware, Chrome) generated the bulk of 2025's $403 billion of total revenue. Google Cloud — the rentable computing infrastructure and software platform that competes with Amazon Web Services and Microsoft Azure — is the second segment, and it grew 63% year over year in the most recent quarter to a roughly $80 billion annualized run rate, with operating margins of 32.9%. Other Bets is a third, much smaller bucket holding non-core ventures, most importantly Waymo (autonomous ride-hail) and Verily (health technology).
+
+**Where they want to grow.** Three explicit strategic bets. First, integrate the in-house Gemini family of large language models into every Google product (Search via AI Overviews, Workspace, Android, Cloud) and monetize directly through Gemini Enterprise and consumer "AI plans" — the latter just had its strongest quarter ever. Second, scale Google Cloud Platform from challenger to credible third-place hyperscaler, riding the wave of enterprise AI workloads — backlog nearly doubled sequentially to $462 billion in Q1 2026, signaling years of contracted future revenue. Third, commercialize Waymo: rides are growing fast (more than 500,000 fully autonomous rides per week, expanded into 11 U.S. cities and six new ones year-to-date) and management is laying the groundwork to turn what was a research project into a self-funding transportation business. To support all this, capital expenditures are being scaled to a planned $180–190 billion for 2026 alone, mostly for AI data centers and custom Tensor Processing Unit chips.
+
+**What could go wrong (business risks).** The single biggest structural risk is that generative AI assistants (ChatGPT, Perplexity, Anthropic's Claude, plus answer-style results inside Google itself) erode the click-through behavior that monetizes Search faster than Gemini and AI Overviews can be monetized. The unit economics of an AI-generated answer are worse than ten blue links — Google pays inference compute per query while showing fewer ads above the fold. The second is regulatory: a U.S. federal court in 2025 ruled Google illegally monopolized search and search advertising; remedies so far include bans on certain exclusive default-search contracts and forced data sharing with rivals, with the Department of Justice and 35 states appealing for stronger remedies including Chrome divestiture (decision expected late 2026 / early 2027). The European Union's Digital Markets Act adds parallel pressure. The third is the capex bet itself: roughly half a trillion dollars cumulatively from 2024-2027 has to earn its cost of capital. If AI demand stalls or compute supply normalizes, the depreciation tail is brutal.
+
+**How to think about it.** Treat Alphabet as a search-and-advertising monopoly with the world's strongest cash machine, now using that cash to fund an emerging hyperscale cloud business and a portfolio of moonshots (Waymo most importantly). The bet is essentially: will Gemini monetize fast enough — across Cloud, Workspace, and Search itself — to more than offset whatever share AI disruption peels off the legacy search funnel, while regulators chip rather than chop? The stock's repricing in 2025-2026 reflects markets answering "yes" with growing conviction.
 
 ## Situation Summary
 
-Alphabet just delivered a blockbuster FY2025: revenue crossed $400B (+15% YoY), net income surged 32% to $132B, and Google Cloud accelerated to 48% growth ($17.7B in Q4) with a $240B backlog. The Wiz acquisition ($32B) closed, adding cybersecurity to Cloud. However, the 2026 capex guidance of $175-185B -- nearly doubling 2025's $91B -- has the market questioning FCF sustainability. Meanwhile, Gemini has exploded to ~22% AI chatbot market share (up from 5.7% a year ago, approaching ChatGPT's declining 64.5%), and Waymo is targeting 1M rides/week by year-end across 20+ cities. Regulatory overhang persists: DOJ is appealing the search antitrust ruling (which let Google keep Chrome but banned exclusive default deals), and the ad-tech trial ruling is expected mid-2026. The stock sits at $306, down 13% from its $350 high, in a technical no-man's-land between the 50DMA ($319) and 200DMA ($259).
+Q1 2026 (reported April 29, 2026) blew past expectations: revenue $109.9 billion (+22% year over year), net income $62.6 billion (+81%), earnings per share $5.11. Google Cloud accelerated to +63% with operating margins of 32.9%, and Cloud backlog nearly doubled sequentially to $462 billion — a step-change signal that enterprise AI demand is real and Google has its share. Gemini Enterprise paid monthly active users grew 40% quarter-over-quarter; first-party model API usage hit 16 billion tokens per minute (+60% QoQ). Waymo surpassed 500,000 fully autonomous rides per week across 11 cities. Management raised 2026 capex guidance to $180–190 billion (from $175–185B) and signaled 2027 will be "significantly higher." On the legal front, the September 2025 antitrust remedies order let Google keep Chrome but imposed behavioral remedies (no exclusive default-search deals, mandatory search-index/user-data sharing); both sides appealed in early 2026 — D.C. Circuit hears arguments late 2026 / early 2027. Stock has rerated from the $140s (mid-2024) to $397, reflecting the resolution of "AI loser" fears and the materialization of Cloud and Gemini economics.
 
 ## Variant Perception
 
-- **Consensus view:** Strong Buy (38/41 analysts, avg PT $360-377). The market sees Alphabet as the best-positioned mega-cap for AI monetization: Gemini has 750M MAUs, Cloud is accelerating with a doubled backlog, Search is growing 17% despite AI disruption fears, and the capex spend is justified by demand (management says they are "supply-constrained"). Antitrust is seen as manageable -- no Chrome breakup, no structural remedies so far. The worry is capex ROI, but consensus believes demand validates the spend.
-
-- **Our view:** The consensus is largely correct on business quality but underestimates two risks: (1) **The capex-to-FCF ratio is about to get ugly.** At $180B capex vs ~$165B operating cash flow, Alphabet could be FCF-negative or near-zero in 2026 before new capacity generates returns. This is a dramatic shift for a company valued on cash generation -- FCF yield has already compressed to 2.0%. (2) **AI search cannibalization is a slow bleed, not a non-event.** Google's search share dipped below 90%, ChatGPT commands ~17% of Google's query volume, and AI Overviews reduce ad real estate. The market is pricing in ~14% earnings growth at 22.8x forward PE -- this is fair, not cheap. At $306, you are paying a reasonable price for a great business, not getting a discount. The variant perception here is weak: the market already knows everything we know.
-
-- **Trigger:** Q1 2026 earnings (April 23-28) is the critical test. The market needs to see (a) Cloud maintaining 40%+ growth, (b) Search revenue holding, and (c) management providing ROI metrics on the capex ramp. A miss sends this to $260-270. Alternatively, a favorable ad-tech ruling (expected mid-2026) removes the last major regulatory overhang.
-
-### Reverse-engineering the price
-
-At $305.73 with ~12.1B shares outstanding, trailing EPS is ~$10.93, forward consensus ~$13.41. Forward PE of 22.8x implies the market expects ~14% sustained earnings growth. For a company growing revenue at 12-18% with operating leverage, this is achievable but leaves no margin of safety. If Cloud slows or capex ROI disappoints, forward PE contracts to 18-20x and the stock trades to $240-270.
+- **Consensus view:** Alphabet has now won the "is AI an existential threat?" question — search query volume is growing, Gemini works, Cloud is a credible hyperscaler. Strong Buy from 52 analysts, average target $427.88 (range $334–$515), institutions own 81%, short interest only 1.3%. The narrative has flipped from "left behind" to "compounder firing on all cylinders."
+- **Our view:** The easy money was made on the rerate from $140 to $400. From here, three risks are under-discounted: (1) the capex/depreciation tail — $500B cumulative 2024-2027 will hit the income statement starting 2027-2028 just as comparison periods get harder; (2) Search Average Revenue Per User compression as AI Overviews replace ten blue links faster than incremental ad units offset; (3) the Department of Justice appeal — even if Chrome divestiture is unlikely, the data-sharing requirements degrade Google's index-quality moat over time. The setup is no longer asymmetric; this is a quality compounder priced for continued execution.
+- **Trigger:** D.C. Circuit antitrust appeal ruling (late 2026 / early 2027), and Q4 2026 capex/depreciation guide for 2027. Either could force a re-rate in either direction.
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $402.8B | 12.5% CAGR |
-| Net Income | $132.2B | 30.1% CAGR |
-| FCF | $73.3B | 6.9% CAGR (stalling as capex surges) |
-| ROE | 35.7% | Expanding (23.4% in 2022) |
-| D/E | 0.16x | Low, rising (debt $59B, up from $23B) |
-| FCF Yield | 2.0% | Compressing rapidly |
-| Net Debt/EBITDA | 0.16x | Pristine |
-| Op Margin | 32.0% | Expanded from 26.5% (2022) |
-| Capex/Revenue | 22.7% (2025), ~42% guided (2026) | Rapidly increasing |
-
-**Key observation:** Earnings CAGR (30%) far outpaces revenue CAGR (12.5%) -- operating leverage at work. But FCF CAGR is only 6.9% because capex tripled from $31B to $91B. In 2026, with $175-185B capex, FCF could compress to near-zero unless operating cash flow scales proportionally. Depreciation will surge starting late 2026, pressuring reported margins.
-
-### Detailed financials (FY2022-FY2025)
-
-| | FY2025 | FY2024 | FY2023 | FY2022 |
-|---|--------|--------|--------|--------|
-| Revenue ($B) | 402.8 | 350.0 | 307.4 | 282.8 |
-| Net Income ($B) | 132.2 | 100.1 | 73.8 | 60.0 |
-| EBITDA ($B) | 180.7 | 135.4 | 98.0 | 85.2 |
-| Operating Cash Flow ($B) | 164.7 | 125.3 | 101.7 | 91.5 |
-| Free Cash Flow ($B) | 73.3 | 72.8 | 69.5 | 60.0 |
-| Capex ($B) | 91.4 | 52.5 | 32.3 | 31.5 |
-| Total Debt ($B) | 59.3 | 22.6 | 27.1 | 29.7 |
-| Stockholders Equity ($B) | 415.3 | 325.1 | 283.4 | 256.1 |
+| Revenue | $402.8B (2025) | +12.5% CAGR (282.8 → 402.8) |
+| Net Income | $132.2B (2025) | +30% CAGR (60 → 132) |
+| Free Cash Flow | $73.3B (2025) | Flat despite earnings doubling — capex eating it |
+| Operating Cash Flow | $164.7B (2025) | +21% CAGR (91 → 165) |
+| Capital Expenditure | $91.4B (2025) | $31B → $91B (+190%); guided $180-190B for 2026 |
+| Return on Equity | 38.9% | Improving (was ~23% in 2022) |
+| Gross Margin | 60.4% | Stable |
+| Operating Margin | 36.1% | Expanding from ~26% |
+| Debt/Equity | 0.20 | Rose with 2025 bond issuance for AI build-out |
+| FCF Yield | 1.5% | Compressed by capex; misleading absent infrastructure cycle context |
+| Trailing P/E | 30.3 | Reasonable for quality + growth |
+| Forward P/E | 27.5 | |
 
 ## Valuation Models
 
-No existing models in database for GOOG/GOOGL. Previous run (from dashboard, Mar 9-16) produced:
+| Model | Fair Value | Upside vs $397 | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| gbm_opportunistic_3y | $262.34 | -34% | 0.93 | 2026-05-18 |
+| gbm_lite_3y | $249.88 | -37% | 0.80 | 2026-05-18 |
+| gbm_opportunistic_1y | $234.84 | -41% | 0.88 | 2026-05-18 |
+| gbm_lite_1y | $233.88 | -41% | 1.00 | 2026-05-18 |
+| autoresearch | $218.78 | -45% | 0.97 | 2026-05-18 |
+| gbm_1y | $185.84 | -53% | 0.96 | 2026-05-18 |
+| gbm_3y | $179.28 | -55% | 0.76 | 2026-05-18 |
+| Analyst target mean | $427.88 | +7.8% | — | live |
 
-| Model | Fair Value | Upside | Confidence | Notes |
-|-------|-----------|--------|------------|-------|
-| gbm_opportunistic_3y | $559 | +83% | 0.92 | Most bullish ML model |
-| rim | $548 | +79% | -- | Anchoring on high book value ($415B equity) |
-| gbm_lite_3y | $533 | +74% | 0.81 | |
-| gbm_opportunistic_1y | $501 | +64% | 0.89 | |
-| gbm_lite_1y | $499 | +63% | 1.00 | Highest confidence |
-| autoresearch | $473 | +55% | 0.94 | Most balanced signal |
-| gbm_1y | $396 | +30% | 0.92 | |
-| gbm_3y | $382 | +25% | 0.76 | |
-| growth_dcf | $297 | -3% | -- | Approximately fair |
-| simple_ratios | $141 | -54% | high | Punishes high PE vs historical |
-| dcf | $123 | -60% | -- | Broken by capex surge |
-| multi_stage_dcf | $123 | -60% | -- | Same issue |
-| dcf_enhanced | $120 | -61% | -- | Same issue |
+**Critical note on stale models.** Every GBM/autoresearch row above was scored against `current_price = $140` (likely a mid-2024 snapshot before the rerate). They predicted forward price levels that the stock has *already* exceeded. So the negative "upside" reflects the fact that the models' forecast horizons have effectively been pulled forward by the market — they are saying "GOOGL has already realized 3 years of expected return in less than 12 months." This is informational, not actionable as a short signal. The active live anchor is the analyst mean target of $428 and the structural earnings power.
 
-**Model consensus:** Massive divergence (144pp spread). GBM/ML models unanimously bullish ($382-559), DCF models unanimously bearish ($120-297). The divergence is explained by capex: DCF models discount massive cash outflows, while GBM models focus on earnings trajectory.
+**Model consensus:** Statistical models say "you've already had the move." Analyst panel says modest single-digit upside. Both push toward "WATCH / trim" rather than "BUY."
 
-**Model critique:**
-- **DCF models are temporarily broken** for Alphabet. A $123 FV implies ~11x PE for a company earning $132B/year at 30% CAGR -- clearly wrong. Capex depresses projected FCF, but this is investment, not permanent burn.
-- **RIM at $548 is surprisingly bullish** -- Alphabet's massive $415B equity base drives this.
-- **GBM models are most reliable** per repo conventions, but may be overly optimistic by extrapolating momentum without pricing capex ROI risk.
-- **Autoresearch at $473** (0.94 confidence) is the most balanced signal.
-
-**My fair value estimate:** $350-420, implying 15-35% upside. Discounts GBM optimism for capex risk but rejects DCF pessimism.
-
-## Business Quality (21/25)
+## Business Quality (23/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 5/5 | Search (89-90% share), YouTube (no competitor at scale), Android (3B+ devices), Cloud (#3 but fastest-growing, 48% YoY). Data flywheel for AI training is self-reinforcing. One of the strongest moats in global business. |
-| Management | 4/5 | Pichai navigated the AI transition well -- Gemini at 750M MAUs, Cloud accelerating, Wiz acquisition strategically sound. Aggressive buyback ($70B+/yr). Knock: $175-185B capex guidance is aggressive even by his own admission ("elements of irrationality"). Low insider ownership (6.6%) though founders retain voting control via dual-class. |
-| Profitability | 5/5 | Operating margins 32%, net margins 33%, ROE 36%, ROA 15%. All expanding. Gross margins ~60%. Among the most profitable large companies on Earth. |
-| Balance Sheet | 4/5 | Net debt/EBITDA 0.16x, current ratio 2.0x. Fortress. But total debt jumped from $23B to $59B YoY to fund capex -- still low but trajectory matters. Deducting for capex ramp creating potential FCF pressure in 2026. |
-| Growth | 3/5 | Revenue growing 12-18% is excellent at $400B scale, but law of large numbers is real at $3.7T market cap. Cloud at 48% is the star. Search (17%) strong but faces structural AI competition. YouTube (~10%) maturing. The $175-185B capex bet is binary. Score reflects capex ROI uncertainty. |
+| Moat | 5/5 | Search distribution scale, YouTube network effect, advertiser auction depth, Android/Chrome installed base, Gemini training data. Antitrust ruling acknowledges the moat is structural. |
+| Management | 4/5 | Pichai's capital discipline criticized for years now vindicated by Cloud margins; $90B+ buybacks; 2024 dividend initiation. Minus one for the capex magnitude (correct or career-ending — to be determined). |
+| Profitability | 5/5 | 36% operating margin, 39% return on equity, 60% gross margin. Cloud margins crossed 33% — peer-leading for a number-three hyperscaler. |
+| Balance Sheet | 5/5 | $30B cash plus ~$95B in marketable securities, debt/equity 0.20, current ratio 1.92, interest coverage massive. |
+| Growth | 4/5 | Revenue +22% year-over-year most recent quarter, Cloud +63%, backlog $462B. Minus one for law-of-large-numbers concern at $4.8T market cap. |
 
 ## Inflection Point
 
-**Yes -- Alphabet is at a critical investment inflection.** The company is doubling capex to $175-185B in 2026, betting that AI infrastructure will be the defining competitive advantage for the next decade.
-
-Evidence the inflection is real:
-- Cloud backlog doubled YoY to $240B, providing multi-year revenue visibility
-- Gemini went from 0 to ~22% AI chatbot market share in ~18 months, now #2 globally
-- Gemini API reached 85B monthly requests (up 142% in <1 year), 2.4M active developers
-- AI Overviews expanding Search's addressable query set
-- Wiz acquisition ($32B) adds high-growth cybersecurity to Cloud
-- Waymo targeting 1M rides/week by end-2026, expanding to 20+ cities
-- Management says Google remains "supply constrained"
-
-But the inflection is **not yet proven in financial results**. We need 2026 Cloud revenue to sustain 40%+ growth, Search to not decelerate, and margins to hold despite depreciation from the capex ramp. The stock prices in success but not overwhelming success.
-
-**Timing:** The inflection has begun (Cloud acceleration, Gemini adoption) but ROI proof is 2-3 quarters away. This argues for patience.
+**Already passed.** The inflection — "Google will not get AI'd into irrelevance" — played out from mid-2024 through 2026. Stock went from $140 to $400. We are now post-inflection: the question is whether the new narrative holds. There is no fresh inflection to buy into here unless you count Waymo commercialization (still 1-2 years from materiality at Alphabet scale).
 
 ## Bull Case
 
-- Google Cloud sustains 40%+ growth, reaches $100B+ revenue by 2027, with operating margins expanding toward 25-30% (currently ~17%). $240B backlog provides 3+ years of visibility.
-- AI Overviews expand Search's total addressable queries rather than cannibalizing ads -- management cites data showing increased engagement and monetization for commercial queries.
-- $175-185B capex creates a durable infrastructure moat that smaller competitors cannot match, locking in enterprise customers for a decade.
-- Ad-tech trial results in behavioral remedies only (no forced divestiture), removing the last regulatory overhang.
-- Gemini's surge (5.7% to 22% in 12 months) with distribution advantages (Chrome, Android, Search) could flip the AI rankings vs OpenAI.
-- Waymo reaches scale profitability, creating an entirely new revenue stream ($1B+ in 2026, accelerating).
+- Gemini Enterprise monetization curve matches early-stage Microsoft Copilot / Amazon Web Services trajectory; Cloud sustains 40%+ growth into 2027-2028 with margins expanding past 35%.
+- Search Average Revenue Per User holds because AI Overviews drive deeper engagement and Google introduces shopping / agentic monetization layers (transaction take rates higher than cost-per-click).
+- D.C. Circuit upholds Judge Mehta's behavioral remedies and rejects DOJ's structural appeal — overhang clears.
+- Waymo commercialization accelerates; pilot rides at 500,000 per week reach ~5 million per week within 18 months, and management spins out a clean operating P&L that the market values separately at $100B+.
+- YouTube Premium / subscription revenue and shopping take rate become a third growth pillar.
 
 ## Bear Case
 
-- **Capex ROI disappoints.** $175-185B spend does not generate proportional revenue growth. Depreciation balloons starting late 2026, compressing margins 3-5pp. Market re-rates to lower multiple.
-- **AI search cannibalization accelerates.** Google's search share drops below 87%, ChatGPT Search and Perplexity take meaningful ad dollars. AI Overviews reduce cost-per-click.
-- **Ad-tech forced divestiture.** Judge rules Google must divest AdX/Ad Manager (~$30B revenue, ~$10B operating income). Ruling expected mid-2026.
-- **Antitrust compounds.** DOJ appeal on search case succeeds (Chrome divestiture). EU AI probe results in Gemini integration restrictions.
-- **Cloud growth decelerates** to 25-30% as enterprise AI adoption slows, hyperscaler overcapacity emerges, Azure/AWS fight back on pricing.
-- **Hyperscaler overcapacity.** All three major cloud providers spending $150-185B each on capex. If AI demand slows, massive write-downs follow.
+- Capex/depreciation tail: $180-190B in 2026 plus larger 2027 means depreciation will roughly double from 2024 base by 2027-2028. If revenue growth from AI does not keep pace, operating margins compress 300-500 basis points. **This is the under-discussed risk** — the market is celebrating Cloud growth without modeling the back-end depreciation hit.
+- AI Overviews structurally compress Search query monetization — fewer clicks, lower cost-per-click on remaining inventory, higher inference cost per query. Even small Average Revenue Per User compression on a $300B+ Services revenue base is billions of operating income.
+- DOJ appeal succeeds in part: forced Chrome separation, or stricter data-sharing rules that erode index quality versus Bing / Perplexity over 2-3 years.
+- Mandatory search-index data sharing **already in effect** under the 2025 remedies order — this is a slow-burn moat erosion most coverage barely mentions because there is no headline event, but rivals get incrementally better every quarter Google must share data.
+- Compute cycle reverses: AI training / inference demand normalizes, leaving Google with fixed depreciation on assets running below planned utilization.
+- Macro: advertising cycle rolls over in 2027 recession scenario — Search ad revenue down high single digits in a downturn historically.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | Cloud sustains 45%+ growth, Search grows 15%+, FY26 EPS $14.50+ | Re-rates to 28x as capex ROI becomes visible, ad-tech risk resolved | $406 | +33% |
-| **Base** | 50% | Cloud decelerates to 35%, Search grows 12%, FY26 EPS $13.00-13.50 | Holds 23x as market waits for capex proof | $305 | 0% |
-| **Bear** | 25% | Cloud slows to 25%, Search flat, margin compression from depreciation, FY26 EPS $11.50 | De-rates to 20x on FCF concerns + regulatory fear | $230 | -25% |
+| Bull | 25% | Cloud +40% sustained, Gemini monetization beats, Waymo creates $100B+ optionality | Multiple expands to 32x on confirmed AI-winner status | $530 | +34% |
+| Base | 50% | Revenue +15% CAGR, EPS +18% (operating leverage), capex eats half the FCF gain | Multiple holds at 27-28x forward | $445 | +12% |
+| Bear | 25% | Search ARPU -5% to -10%, Cloud decelerates to +25%, depreciation crushes 2027-2028 margins, DOJ appeal partial win | Re-rate to 22x on growth doubt | $295 | -26% |
 
-**Expected value: +2%** (0.25 x 33% + 0.50 x 0% + 0.25 x -25%)
+**Expected value: +8.0%** (0.25 x 34 + 0.50 x 12 + 0.25 x -26)
 
-**Thesis quality check:** The bull case depends on both earnings growth AND moderate multiple expansion -- acceptable. The base case is dead money. The bear case is meaningful (-25%). Not a screaming buy; a quality business at a fair price.
-
-**Thesis breaks if:** (1) FY26 Cloud growth decelerates below 30% for two consecutive quarters, (2) Google search market share drops below 85%, (3) ad-tech forced divestiture is ordered, or (4) FY26 FCF comes in below $20B.
+**Thesis breaks if:** Cloud growth decelerates below 30% year-over-year for two consecutive quarters, OR D.C. Circuit orders Chrome divestiture / structural remedies, OR AI Overviews tracked monetization shows >10% Average Revenue Per User compression in Q3-Q4 2026 prints.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | **Crowded** -- 61% institutional ownership, consensus strong buy (38/41 analysts), top hedge fund holding |
-| Short interest | **~1.3%** -- negligible, no squeeze setup |
-| Technical position | **Neutral** -- $306, down 13% from 52wk high $350, above 200DMA ($259) but below 50DMA ($319) |
-| Next catalyst | **Q1 2026 earnings: ~April 23, 2026** (~5 weeks) |
-| Recent price action | Corrected from $350 to $306 (-13%), driven by broad tech selloff + capex concerns |
-
-**Assessment:** The setup is mixed. The 13% pullback creates a slightly better entry than the peak, but the stock is crowded and earnings are imminent. Buying here is essentially betting on Q1 results. A miss would send this to $260-270 where risk/reward becomes genuinely attractive.
+| Crowdedness | Crowded — 81% institutional, strong-buy consensus, narrative reversal mostly played out |
+| Short interest | 1.3% — minimal; no squeeze setup |
+| Technical position | Near 52-week highs after $140 → $397 rerate; not oversold |
+| Next catalyst | Q2 2026 earnings (late July), DOJ appeal arguments (late 2026 / early 2027) |
+| Recent price action | Up ~180% from mid-2024 trough; up ~15% year-to-date 2026 |
 
 ## Verdict
 
-**WATCH** -- Conviction: MEDIUM
+**WATCH** — Conviction: MEDIUM
 
-Alphabet is one of the highest-quality businesses in the world (21/25, dominant moat, accelerating Cloud, expanding margins, fortress balance sheet). The ML models see significant upside ($380-560 range). However, at $306 (forward PE 22.8x, FCF yield 2.0%), the expected value is only +2%, it is a crowded consensus long, and the $175-185B capex ramp introduces genuine uncertainty about 2026-2027 FCF. The variant perception is weak -- the market already knows everything here, and the consensus "strong buy" with a $360-377 target suggests the crowd expects the bull case.
+Alphabet is a top-tier business (23/25 quality, dominant moat, expanding margins, real AI execution), but the asymmetric setup is gone. The market has correctly repriced the stock from "AI loser at $140" to "AI winner at $397," and from here the risk/reward is roughly symmetric: ~+12% base case, ~+34% bull, ~-26% bear. Expected value of ~+8% does not compensate for capex-cycle, antitrust appeal, and Search Average Revenue Per User compression risks that are under-discounted in current pricing. This is a hold-quality-forever name, not a buy-today name.
 
-**Would upgrade to BUY on:**
-- Pullback to $260-270 (forward PE ~19-20x), providing genuine margin of safety and improving EV to +15-20%
-- Q1 2026 earnings (April 23) confirmation that Cloud growth remains 40%+, with concrete capex ROI metrics
-- Resolution of ad-tech case with behavioral remedies only
+**If WATCH:** Would upgrade to BUY on (a) pullback to $330-340 (forward P/E ~22x — recession or AI sentiment wobble), OR (b) D.C. Circuit ruling that clears the antitrust overhang and confirms behavioral-only remedies, OR (c) two more quarters of Cloud +50%+ growth with operating margins crossing 35% while capex guide is held flat (showing AI capex producing real operating leverage). Existing holders with large cost-basis gains: consider trimming on strength rather than adding here.
 
-**Entry if forced to buy now:** Scale in at $295-305, add heavily at $260-270. Full position only below $270. Thesis-break stop at $210.
-
-## Monitoring
-
-- Track Cloud revenue growth and margin expansion each quarter
-- Watch for capex guidance revisions (any moderation is bullish)
-- Monitor Google search market share (below 87% is a warning)
-- Ad-tech antitrust ruling expected mid-2026
-- DOJ appeal on search case (timeline uncertain, likely 2026-2027)
-- Q1 2026 earnings: ~April 23 -- the next major inflection test
-- Gemini market share trajectory vs ChatGPT (currently 22% vs 64.5%)
-- Waymo ride volume scaling toward 1M/week target
+<!-- Public file — generic research only. Personal position data lives in
+     ~/vault/finance/notes/positions/GOOGL.md if applicable. -->

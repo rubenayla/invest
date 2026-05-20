@@ -19,6 +19,21 @@
 **Repo root files (NOT in `.agents/`)**:
 - `history.md` — accumulating record of cross-cutting decisions, investigations, surprising findings (dated, oldest first). Lives at the **repo root**, not in `.agents/`. After non-trivial work, **append here** so the reasoning survives context expiration. Also the overflow target for AGENTS.md.
 
+## Repo Scope vs Personal Data
+
+This repo (`~/repos/invest/`) is **analysis infrastructure only** — models, scanner, dashboard, company research notes (`notes/companies/*.md`). It is public-safe; no personal portfolio data lives here.
+
+Personal financial data lives in **`~/vault/finance/`** (private Obsidian vault, git-tracked separately):
+- `notes/portfolio/portfolio.md` — current holdings across IBKR / Revolut / Binance
+- `notes/portfolio/watchlist.md` — open watch ideas
+- `notes/transactions/` — per-trade records (one file per trade: `YYYY-MM-DD_action_TICKER.md`)
+- `history.md` — **append-only log of cross-cutting decisions, user preferences (e.g. MSFT dispreference), FX rates, valuation frameworks, session summaries.** Grep this when picking up a session — it's where context that spans multiple trades lives.
+- `*.beancount` ledgers (entry: `main.beancount`)
+
+When answering "should I sell X" / "what's in my portfolio" / "size a position": **read from `~/vault/finance/`** — start with `portfolio.md` for current state, then grep `history.md` for recent context (decisions, preferences, FX rates, deferred trades). Never expect those files in this repo. Company analysis under `~/repos/invest/notes/companies/TICKER.md` is thesis-only — no position/PnL data.
+
+**When the user executes a trade**: write a transaction note under `~/vault/finance/notes/transactions/YYYY-MM-DD_action_TICKER.md` (thesis + scenario table + sizing logic), update `portfolio.md` with the new position, and append a short summary to `~/vault/finance/history.md`. Don't skip these — they're the institutional memory the next session needs.
+
 ## Investment Analysis
 
 For ANY stock question (`should I buy X?`, `what about X?`), run `/research TICKER` first. Then:
@@ -62,6 +77,7 @@ PostgreSQL on Hetzner is **source of truth**. If schema mismatches script, updat
 
 - `scripts/polymarket_lookup.py "<keyword>"` — prediction-market probabilities
 - `scripts/macro_context.py` — single-score buy-environment snapshot
+- **Live market data**: use `yfinance` (already a project dep) for prices/fundamentals/history, plus `WebSearch`/`WebFetch` for news and earnings commentary. Evaluated `financial-datasets` MCP and dropped it — cheapest plan is $200/month, no free tier, not worth it for personal research.
 
 ## Scheduled Routines (`/schedule`)
 

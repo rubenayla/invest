@@ -1,305 +1,125 @@
-# Peloton Interactive Inc. (PTON)
+# Peloton Interactive, Inc. (PTON)
 
-**Sector:** Consumer Cyclical | **Industry:** Leisure / Connected Fitness
-**Price:** $4.58 | **Market Cap:** $1.95B | **EV:** $2.27B (post-Feb paydown)
-**Analysis Date:** 2026-04-03
+**Sector:** Consumer Cyclical | **Industry:** Leisure
+**Price:** $5.30 (2026-05-19) | **Market Cap:** ~$2.29B | **Enterprise Value:** ~$2.89B
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** Peloton sells two things, and the second is the business that actually matters. The first is connected fitness hardware: the Peloton Bike and Bike+ (the original product), the Tread and Tread+ (running), the Row (rowing), and a growing accessories line — heart-rate monitors, weights, mats, apparel. The second is a subscription that turns that hardware into something you keep paying for: the Connected Fitness ("All-Access") membership runs roughly $44/month per household and unlocks the on-bike/treadmill instructor-led classes that Peloton built its brand on. There's also a cheaper app-only tier (~$13-25/month) for people who don't own the hardware. As of the most recent quarter, Peloton had ~2.66 million paid Connected Fitness Subscriptions (households) plus around 600-700k paid app-only subs. Roughly two-thirds of revenue and ~70%+ of gross profit comes from Subscription, not hardware — gross margin on the sub is in the 65-70% range versus low/negative single digits on hardware. Distribution is shifting: alongside Peloton's own showrooms and direct-to-consumer site, Bikes and Treads are now sold in third-party retail (Amazon, Costco, Dick's Sporting Goods) and a refurbished-equipment program targets price-sensitive new members.
+
+**Where they want to grow.** Under CEO Peter Stern (ex-Apple Fitness+, ex-Ford), who arrived January 2025, the playbook is explicitly "subscription-platform turnaround, not hardware reflation." Four bets: (1) stabilize and eventually grow Connected Fitness subscribers by fixing churn (better content, household-account features, lower-friction entry via refurbished/financed hardware and 3P retail), (2) grow the App-only subscriber base as a cheaper on-ramp and as a defensive line against Apple Fitness+ and other content competitors, (3) launch new hardware on a slower, more disciplined cadence — a commercial-grade Bike series for gyms and hotels ships late 2026 — rather than constant SKU sprawl, and (4) expand internationally (UK, Germany, Australia) modestly without the cash-burning marketing of the COVID era. Success in 3-5 years looks like ~3M+ paid CF subs (versus 2.66M now), $400-500M+ annual free cash flow, GAAP profitable, net debt approaching zero, and EV/EBITDA re-rated from the current ~5-6x toward 8-10x as the market reclassifies it from "broken hardware company" to "subscription business with a hardware moat."
+
+**What could go wrong (business risks).** Subscriber attrition is the central risk — the CF sub base has shrunk roughly 7-8% year-over-year for several quarters running, and "shrinking to profitability" has a hard ceiling: at some point cost cuts run out and EBITDA peaks if the top of the funnel doesn't reignite. Competition is structural: Apple Fitness+ is free with Apple One, Hydrow and Tonal own adjacent hardware niches, and the pandemic-era home-fitness tailwind has fully reversed as gyms (Planet Fitness, Equinox) and outdoor activity normalize. Hardware demand is permanently lower than the 2020-21 peak and may keep drifting; if accessories and refurbished don't offset that, the install-base of paying subscribers slowly bleeds. Debt is the other shoe: roughly $2B of total debt against $1.04B cash, with a term loan and convertibles that have to be refinanced — terms on the refi (or failure to refi cleanly) will dictate whether the equity story works. Execution risk on Stern's plan is real: he's been in the seat ~16 months, and turnarounds in consumer hardware have a long graveyard. Finally, brand risk — a recall, safety incident, or content controversy would hit the only thing that justifies the premium subscription price.
+
+**How to think about it.** This is a subscription-led fitness platform turnaround. The bet is on stabilized churn, durable subscription gross profit dollars, and cost discipline driving GAAP profitability and free cash flow — NOT on hardware growth or returning to 2020-era peak demand. Closer mental model: Sirius XM at its lowest (a paid base with a hardware acquisition channel) trying to become Netflix (a content moat) rather than the next Fitbit. If you find yourself underwriting hardware re-acceleration to justify the price, you are underwriting the wrong company.
 
 ## Situation Summary
 
-Peloton's turnaround thesis is gaining believers after a volatile Q1 2026. The stock crashed 28% in February after Q2 FY2026 earnings missed on revenue ($657M vs $674M expected) and EPS (-$0.09 vs -$0.06), then recovered 19% to $4.58 on a series of bullish catalysts: David Einhorn's Greenlight Capital publicly added to its position, calling PTON "not in secular decline" with a $7.50-$31.50 target range depending on EBITDA execution; EMJ Capital's Eric Jackson disclosed a long position (March 30), driving an 8.9% single-day pop; and the Peloton Commercial Series launch (March 16) signaled a credible pivot into the $16B commercial fitness market via Precor. Meanwhile, the Supreme Court ruled Trump's IEEPA tariffs illegal in February 2026, creating a potential refund catalyst ($4M+ paid by Peloton, $166B industry-wide). CFO Liz Coddington departed March 30 to join Palmetto; Saqib Baig is interim CFO with an external search underway. Sarah Robb O'Hagan (ex-CEO of EXOS, Flywheel; ex-Gatorade president) started as Chief Content & Member Development Officer on April 1. The term loan prepayment penalty expires May 2026, and Q3 earnings (May 7-14) is the next inflection test.
+Q3 FY2026 (reported 2026-05-07) was the inflection quarter — revenue grew ~+1% year-over-year to $630.9M (the first positive YoY print in years), beat on both hardware and subscription, and management raised FY26 free-cash-flow guidance to $350M (from $275M) plus expects the first-ever GAAP profitable full year. Adjusted EBITDA guide is $470-480M on $2.42-2.44B revenue; net debt is down roughly 70% YoY to $173M. The stock ran from ~$4.60 in early April to ~$5.70 post-print, then settled at $5.30 with the broader consumer-discretionary pullback. The remaining headache is the subscriber base: paid Connected Fitness Subscriptions of 2.662M, down 7.6% YoY — the profitability inflection is real, the sub-growth inflection is not. The next tests are Q4 (August 2026), the late-2026 Commercial Series hardware launch, and the term-loan refinancing window.
 
 ## Variant Perception
 
-- **Consensus view:** PTON is a shrinking pandemic-era business with unstable leadership (4th CEO in 5 years, CFO just departed). Revenue declining 3% YoY, subscribers down 7% YoY, churn rising. Short interest at 16-20% reflects significant bearish conviction. Analysts have a Buy consensus ($7.88 mean target) but have been slashing targets aggressively post-Q2 (Goldman $12.50→$7, JPM $9→$6, Citi $8.25→$5). The market prices PTON for continued decline at 4.6x EV/Adj EBITDA.
-
-- **Our view:** The market is over-anchoring on the top-line decline and missing three things: (1) PTON's revenue (~$2.4B) is now at its pre-COVID trendline — this is normalization, not structural death; (2) the profitability transformation is extraordinary — EBITDA went from $4M (FY2024) to ~$475M (FY2026E), FCF swung from -$86M to +$324M, gross margins expanded from 19.5% to 52% — and is mostly locked in through cost cuts already executed; (3) the balance sheet is no longer distressed — net leverage dropped from 14x to 0.8x after the Feb convertible paydown, with $980M cash remaining. At 4.6x EV/Adj EBITDA on $475M EBITDA, the stock prices in terminal decline. But any stabilization — via Commercial Series, price increases sticking, or Peloton IQ retention — forces a re-rating to 6-8x, which implies $6-10. The Einhorn thesis ($7.50-$31.50 if EBITDA hits $450M) validates the asymmetric setup.
-
-- **Trigger:** Three near-term catalysts: (1) Q3 FY2026 earnings (May 7-14) — management guided for revenue inflection toward YoY growth in H2 FY2026; any flat-to-positive quarter forces narrative shift; (2) Term loan refinancing (May/June 2026, penalty expires) — if achieved at SOFR+300bps, saves ~$29M/year; (3) Supreme Court tariff refund enforcement (by June 2026) — $4M+ direct refund plus reduced ongoing costs.
+- **Consensus view:** "The turnaround is working, but the easy part is over." Sell-side has migrated from skeptical to cautiously constructive — 16 analysts, target mean $7.97, range $4-20, recommendation tilting "buy." Short interest is still ~13% of float — the contrarian shorts haven't capitulated, but the "no longer going to zero" view is widespread. The market is paying for profitability but not yet for sub stabilization.
+- **Our view:** The market is still pricing PTON as a melting-ice-cube subscription business with a finite cost-cut runway. We think Stern has another 12-18 months of margin and free-cash-flow improvement before churn becomes the rate-limiting variable, AND the combination of refurbished hardware + 3P retail (Costco/Amazon) + Commercial Series is more likely to stabilize CF sub net adds than to fail. The variant is on the *durability* of free cash flow, not its existence: if FY27 FCF prints $400M+ with CF subs down only 3-4% YoY (versus -7-8% now), EV/EBITDA expands to 8-9x and the stock has another leg. If subs keep falling 7-8%, the bear is right and the cost-cut runway ends in 2027.
+- **Trigger:** Q4 FY2026 print (August 2026) — sub net-add trajectory plus initial FY27 guide. Secondary trigger: term-loan refinancing announcement (terms = market verdict on credit). Tertiary: Commercial Series launch reception (late 2026) and FY27 Q1 (November 2026) showing whether app-only plus refurbished actually slow the bleed.
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $2.49B (FY2025) | -11.3% CAGR (FY22-25, COVID normalization) |
-| Net Income | -$119M (FY2025) | Rapid improvement: -2,828 → -1,262 → -552 → -119 |
-| FCF | $324M (FY2025) | Turned positive: -2,357 → -470 → -86 → +324 |
-| EBITDA (Adj) | ~$475M (FY2026E) | Massive expansion from ~$4M in FY2024 |
-| Gross Margin | 51.7% (FY2025), ~52-54% guided (FY2026) | Improving: 19.5% → 33% → 44.7% → 50.9% |
-| D/E | Negative equity (-$414M) | Improving: negative equity narrowing |
-| FCF Yield | 16.6% ($324M / $1.95B mkt cap) | |
-| Net Debt/Adj EBITDA | ~0.7x (post-Feb paydown) | Down from 14x → 1.6x → 0.7x |
-
-**Key computed metrics:**
-- EV/Adj EBITDA (FY2026E): 4.6x ($2.27B EV / $475M EBITDA midpoint) — below turnaround comps (6-10x)
-- P/S (TTM): 0.80x — extremely cheap for a subscription business
-- Forward P/E: 19.7x (first time calculable — approaching GAAP profitability)
-- Cash: ~$980M (post-Feb paydown) vs Total Debt: ~$1.30B → Net Debt: ~$320M
-- Operating Cash Flow: $358M TTM
-- Capital intensity: minimal ($9M capex FY2025, down from $337M FY2022)
-- EV/Revenue: 0.93x
+| Revenue (FY25) | $2.49B | Declining: $3.58B (FY22) → $2.80B (FY23) → $2.70B (FY24) → $2.49B (FY25). Q3 FY26 +1% YoY = inflection. |
+| Net Income (FY25) | -$119M | Improving sharply: -$2.83B (FY22) → -$1.26B (FY23) → -$552M (FY24) → -$119M (FY25). FY26 guided to first-ever GAAP profit. |
+| EBITDA (FY25) | $109M | Inflected to positive: -$2.62B (FY22) → -$331M (FY24) → +$109M (FY25). FY26 guide $470-480M adjusted. |
+| Operating Cash Flow (FY25) | $333M | -$2.02B (FY22) → -$66M (FY24) → +$333M (FY25). Huge swing. |
+| Free Cash Flow (FY25) | $324M | FY26 guide $350M (raised from $275M). FCF yield ~14% on market cap. |
+| Total Debt | $1.98B | Down from $2.37B (FY22). Net debt on balance sheet ~$940M; management cites ~$173M after segregated liquidity. |
+| Stockholders Equity | -$414M | Still negative (cumulative losses) but improving from -$519M FY24. |
+| Cash | $1.04B | Up from $698M FY24. |
+| Gross Margin | 52.0% | Stable/improving (Sub gross margin ~68%, hardware near breakeven). |
+| Operating Margin | 9.5% | First sustained positive operating margin in company history. |
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence | Date |
-|-------|-----------|--------|------------|------|
-| gbm_3y | $12.38 | +170% | 1.00 | 2026-03-28 |
-| gbm_lite_3y | $12.06 | +163% | 0.99 | 2026-03-27 |
-| gbm_opportunistic_1y | $11.90 | +160% | 1.00 | 2026-03-27 |
-| gbm_opportunistic_3y | $11.73 | +156% | 0.98 | 2026-03-28 |
-| gbm_1y | $5.93 | +29% | 0.98 | 2026-03-28 |
-| gbm_lite_1y | $6.16 | +35% | 0.93 | 2026-03-28 |
-| autoresearch | $5.80 | +27% | 0.81 | 2026-03-28 |
-| dcf / multi_stage_dcf | $5.72 | +25% | N/A | 2026-03-17 |
-| Analyst Mean Target | $7.88 | +72% | — | 16 analysts |
-| Analyst Low Target | $4.00 | -13% | — | — |
-| Analyst High Target | $20.00 | +337% | — | — |
-| EV/EBITDA at 8x (FY2026E) | $9.80 | +114% | — | Manual calc |
-| EV/EBITDA at 6x (FY2026E) | $6.30 | +38% | — | Manual calc |
-| Einhorn range | $7.50-$31.50 | +64% to +588% | — | Feb 2026 |
+| Model | Fair Value | Upside | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| gbm_3y | $14.84 | +179% | 1.00 | 2026-05-18 |
+| gbm_lite_3y | $14.45 | +172% | 0.99 | 2026-05-18 |
+| gbm_opportunistic_3y | $14.35 | +170% | 0.98 | 2026-05-18 |
+| gbm_opportunistic_1y | $14.30 | +169% | 1.00 | 2026-05-18 |
+| gbm_lite_1y | $7.38 | +39% | 0.93 | 2026-05-18 |
+| gbm_1y | $7.10 | +34% | 0.98 | 2026-05-18 |
+| autoresearch | $6.98 | +32% | 0.81 | 2026-05-18 |
+| llm_deep_analysis (prior, stale) | $6.00 | — | 0.70 | 2026-04-03 |
+| dcf / rim / simple_ratios / growth_dcf / multi_stage_dcf | N/A | — | — | Failed — negative equity / unstable inputs. |
 
-**Model consensus:** Strong bullish skew. GBM 3-year models are extremely bullish ($12+) reflecting mean-reversion potential for a deeply beaten-down stock with improving fundamentals. 1-year models and DCF cluster around $5.70-6.20 (+25-35%), consistent with modest re-rating. Even the most conservative model (DCF at $5.72) shows upside. The only bearish signal is the analyst low target at $4.00 (-13%). All models were run at $3.87-$4.43, so some upside has been captured by the move to $4.58, but significant upside remains.
+*Models older than 7 days may use stale prices. GBM 3y models look at long-tail upside in high-vol turnarounds; their +170% targets assume Peloton fully re-rates toward a software multiple — directionally consistent with the bull case, not a literal forecast. The DCF/RIM family failed because of negative book equity. Autoresearch's ~$7 target is the most defensible "fundamentals-only" number.*
 
-## Business Quality (13/25)
+**Model consensus:** Strongly bullish where models converge (GBM-1y and autoresearch at ~$7, +30-40% upside); much higher in the 3y GBM tail. Earnings-based DCF/RIM cannot price PTON given negative equity and only one year of positive EBITDA — that is a feature of the situation, not a bug, and part of why the stock is mispriced.
+
+## Business Quality (11/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 3/5 | 51% market share in at-home connected fitness (but shrinking TAM). Content library + instructor community creates switching costs. Competitors (Mirror, Tonal, iFit) are dying or struggling. Real threats: Planet Fitness ($25/mo), Apple Fitness+ ($10/mo), free YouTube workouts. Peloton IQ engaging 46% of active members adds AI-driven retention. |
-| Management | 2/5 | CEO Peter Stern (4th CEO in 5 years) is untested — co-founded Apple Fitness+ which is relevant but he's been at Peloton since Jan 2025 only. CFO just departed (March 30), external search underway. Sarah Robb O'Hagan is a strong content hire (Gatorade, Nike, Flywheel, EXOS). Zero insider buying, continued insider selling ($994K by departing CFO). Cost discipline has been impressive. |
-| Profitability | 3/5 | Gross margins excellent at 52% (subscription: 72%). Operating margins just crossed positive (~1.7% GAAP). But G&A still 15.7% (should be 8-12%) and S&M 23.2% (should be 10-15%) — room to cut further. Adj EBITDA margin ~19.6%. Approaching GAAP profitability for first time ever. |
-| Balance Sheet | 3/5 | Materially improved since last analysis. Post-Feb paydown: ~$980M cash, ~$1.3B debt, net debt ~$320M, net leverage 0.7-0.8x adj EBITDA. No near-term maturities (term loan 2029, convertibles 2029). Interest burden ~$90-120M/yr but refi opportunity in May/June could save $29M. Current ratio 1.98. Upgraded from 2/5. |
-| Growth | 2/5 | Revenue declining -2.6% YoY. Subscribers -7% YoY. Monthly churn 1.9% (up from 1.4%). Commercial Business Unit grew 10% YoY but small base. Commercial Series shipping late 2026 — unproven at scale. Global commercial fitness TAM growing at 9.5% CAGR to $36B by 2033. Oct 2025 price increase ($44→$49.99/mo) testing demand elasticity. |
+| Moat | 3/5 | Strong consumer brand and content library, real switching costs once a household owns the hardware and is mid-class-streak. But Apple Fitness+ at near-zero marginal cost is a permanent ceiling on pricing power, and the moat is narrower than a true platform business. |
+| Management | 3/5 | Stern (since January 2025) has the right CV — Apple Fitness+, Ford subscription/connected experience. Executing well on cost cuts and guidance beats. Too early to grade capital allocation: the refi and Commercial Series launch are the real tests. Insider ownership only ~1.1% — low skin in the game. |
+| Profitability | 2/5 | Just crossed into positive EBITDA after years of losses. Operating margin 9.5% in the latest quarter is real but unproven for a full cycle. Hardware gross margin near zero — the business only works on the sub. |
+| Balance Sheet | 2/5 | Negative book equity, $1.98B total debt, $1.04B cash. Net debt has improved sharply but the term-loan refi is the make-or-break event. Current ratio 2.49 is healthy short-term; longer-dated structure is fragile. |
+| Growth | 1/5 | Revenue has declined four of the last four fiscal years; subs declining 7-8% YoY. The Q3 +1% revenue print is a single data point. Genuine growth is the bull case, not the base case. |
+
+**Total: 11/25** — Yellow flag. The score is held back by sub attrition and balance sheet — both of which are the variables the turnaround is supposed to fix. A successful FY27 would re-score Growth and Balance Sheet upward.
 
 ## Inflection Point
 
-**Yes — profitability inflection confirmed, revenue inflection is the open question.**
-
-Evidence the inflection is real and accelerating:
-- First operating profit in company history: FY2025 +$62M (vs -$406M prior year)
-- FCF generation: -$86M → +$324M in one year, guided to $275M+ for FY2026
-- EBITDA explosion: $4M (FY2024) → ~$475M (FY2026E) — 100x+ in two years
-- Gross margin: 19.5% → 52% in three years (subscription margin 72%)
-- Net leverage: 14x → 0.7x — no longer distressed
-- Capital intensity collapsed: $337M capex → $9M — asset-light transition complete
-- Convertible debt retired Feb 2026 ($200M), cleaning up the balance sheet
-
-Evidence revenue inflection NOT yet confirmed:
-- Revenue still declining (-2.6% YoY)
-- Subscribers still churning (2.66M, -7% YoY, churn rising to 1.9%)
-- Q3 guidance: revenue $605-625M (-1% YoY midpoint) — still declining
-- Management guided "revenue inflection toward growth in H2 FY2026" but hasn't delivered yet
-- No insider buying despite stock near all-time lows
-- Hardware refresh (Cross Training, price increases) haven't moved the needle on subscriber growth
-
-**Assessment:** This is the pivot point. The cost side is done — profitability is secured. The entire investment question reduces to: can revenue stabilize? Q3 earnings (May) is the litmus test. If revenue comes in flat or positive YoY, the narrative shifts from "declining pandemic stock" to "turnaround complete." If it misses again, the market's patience will thin further.
+Yes — and it has observable evidence. The inflection is the *profitability* inflection, not the *demand* inflection: positive free cash flow, positive operating income, positive EBITDA, raised guide, first-ever guided GAAP profitable year. This is real and printed. The *second* inflection — sub stabilization — has NOT yet shown up in the data (subs still -7.6% YoY) but is the variant-perception bet. The right time to buy a turnaround is after the first inflection is visible and before the second is consensus.
 
 ## Bull Case
 
-- **Revenue stabilizes in H2 FY2026 as guided**, then grows in FY2027 as Commercial Series ships and Peloton IQ improves retention. Revenue returns to pre-COVID trendline growth of 4-6%.
-- **Term loan refinancing in May/June 2026** saves $29M/year in interest. At SOFR+300bps, signals credit market confidence in the turnaround.
-- **Commercial expansion via Precor's 60-country distribution** opens a $16B+ TAM. 10% commercial growth accelerates as hardware ships late 2026. B2B revenue has higher margins and lower churn than consumer.
-- **Short squeeze potential:** 16-20% short interest + Einhorn/EMJ buying + improving fundamentals = forced covering if Q3 beats.
-- **Tariff refund wildcard:** Supreme Court ruled IEEPA tariffs illegal. Peloton paid $4M+; industry-wide $166B in refunds pending. Enforcement/timing uncertain but directionally positive.
-- **EV/EBITDA re-rates from 4.6x to 8-10x** as the market prices "stable" rather than "declining" — stock reaches $9-12.
+- FY26 prints first-ever GAAP profit and $350M+ FCF; market re-rates EV/EBITDA from ~5x to 7-9x as the "broken company" risk premium compresses. EV/EBITDA expansion alone gets the stock to $8-10.
+- Refurbished hardware + Costco/Amazon/Dick's distribution + Commercial Series (late 2026) slow the CF sub bleed from -7-8% to -2-3%, then to flat by FY28. App-only crosses 1M paid subs. Sub revenue inflects positive in FY27.
+- Term loan refis at SOFR+300-400bps in 2026-27, cutting interest expense and accelerating equity-value formation. Net debt approaches $0 by FY28.
+- Activist (David Einhorn / Greenlight) range $7.50-31.50 remains intact; the low end is now achievable on EBITDA alone.
 
 ## Bear Case
 
-- **Revenue decline accelerates** as subscription churn continues. $49.99/month is a tough sell vs gym memberships ($25/mo) and Apple Fitness+ ($10/mo). Oct price increase could backfire with accelerated churn.
-- **Management instability:** 4th CEO in 5 years. CFO just departed during a critical turnaround phase. Interim CFO + external search creates execution risk. Sarah Robb O'Hagan is untested at Peloton.
-- **Commercial Series fails to gain traction.** Peloton's cost structure (15.7% G&A, 23.2% S&M) is 2x too high for commercial equipment margins. Technogym/Life Fitness are entrenched with decades of gym relationships.
-- **No insider buying** despite stock near all-time lows. All insider activity is selling. Management doesn't believe in their own turnaround enough to put money in.
-- **Consumer spending headwinds:** Michigan Consumer Sentiment at 56.6, well below neutral. Tariff uncertainty hits discretionary spending. Connected fitness is deeply discretionary.
-- **"Shrinking to profitability" has limits** — eventually you run out of costs to cut and need actual growth. If subscriber erosion continues at 7-8%/year, EBITDA peaks and then declines.
+- CF subs continue bleeding 7-8% YoY. Cost cuts hit a floor by FY27 — you cannot cut your way to growth, and EBITDA peaks before subs stabilize. Stock revisits $3.50-4.00.
+- Hardware demand stays soft as gyms reclaim share post-pandemic; refurbished cannibalizes new-hardware gross margin without enough new subs.
+- **Underappreciated risk (from primary source, under-covered in news):** management's FCF beat is partly working-capital-driven (inventory unwind, accounts-payable timing). The underlying "operating FCF excluding working capital" trajectory is less impressive than the headline $350M FCF guide implies. If working-capital tailwinds reverse in FY27, "owner earnings" disappoint relative to the headline.
+- Term-loan refinancing comes at worse-than-expected terms (SOFR+500+bps) or requires covenant relief, signaling credit-market skepticism and pressuring equity.
+- Apple Fitness+ bundling intensifies or a major content competitor (Netflix/Disney) enters streaming fitness, structurally compressing the sub pricing ceiling.
+- Negative shareholders equity persists; any dilutive equity raise would be punishing.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | Revenue flat-to-positive FY2027, Commercial Series launches, refi saves $29M/yr. FY2027E EBITDA $550M | Re-rates to 8x as "turnaround proven." Einhorn thesis validates | $10.00 | +118% |
-| **Base** | 45% | Revenue -2%, cost discipline holds. FY2026 EBITDA $475M. Refi achieved at modest improvement. Subscribers stabilize ~2.6M | Stays at 5-6x (turnaround discount) | $6.20 | +35% |
-| **Bear** | 25% | Revenue -5-8%, churn accelerates past 2%, Commercial Series disappoints. EBITDA compresses to $375M | De-rates to 4x on execution failure + management uncertainty | $2.90 | -37% |
-| **Worst** | 5% | Turnaround fails, -10%+ revenue, subscriber death spiral, debt restructuring risk | 2-3x distressed multiple | $1.10 | -76% |
+| Bull | 30% | FY27 FCF $400M+, CF subs -3% YoY tightening to flat, app subs 1M+, refi closes cleanly | EV/EBITDA 8-9x (vs ~5-6x now) as turnaround risk premium compresses | $10.50 | +98% |
+| Base | 50% | FY26 hits guide ($350M FCF, GAAP profit), FY27 FCF $370M, CF subs -5% YoY | EV/EBITDA 6-7x — modest re-rating, no full reclassification | $7.25 | +37% |
+| Bear | 20% | Sub bleed re-accelerates, hardware soft, refi at worse terms, FY27 FCF $250M and falling | EV/EBITDA stays ~5x or compresses to 4x | $3.50 | -34% |
 
-**Expected value: +31%** (0.25 × 118% + 0.45 × 35% + 0.25 × -37% + 0.05 × -76%)
+**Expected value: +41%** ((0.30 × 98) + (0.50 × 37) + (0.20 × -34) ≈ +41).
 
-**Thesis quality**: Upside is primarily earnings-driven (EBITDA from $475M to $550M in bull case) PLUS multiple expansion (4.6x to 8x). The multiple expansion component is significant, but justified if revenue stabilizes — the current multiple prices in permanent decline which is the variant perception. Not a pure multiple-expansion bet.
-
-**Thesis breaks if:** Monthly subscriber churn exceeds 2.5% for two consecutive quarters, OR revenue declines more than 8% YoY with no sign of stabilization, OR term loan refinancing fails/comes at materially worse terms, OR Q3 FY2026 revenue misses guidance ($605M floor) by >3%.
+**Thesis breaks if:** any single quarter shows CF sub monthly churn >2.5% for two consecutive prints, OR Q4 FY26 revenue misses the guide midpoint by >3%, OR FY26 Adj EBITDA guide is cut, OR term-loan refi requires equity issuance or comes at >SOFR+550bps, OR the stock breaks $3.80 on fundamental news.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Moderately uncrowded — stock down 50% from 52-week high. Einhorn and EMJ are vocal bulls but not consensus. Hedge funds added 14.8M shares last quarter. |
-| Short interest | 16-20% of float — high, squeeze potential. Short ratio 6.4 days to cover. |
-| Technical position | Near 52-week low ($3.65). Current $4.58 (+25% off lows). Below 50d ($4.86) and 200d ($6.59) MAs. Not oversold anymore after recent bounce. |
-| Insider ownership | 1.2% — very low skin in game. Zero insider buying. |
-| Institutional ownership | 91.3% — heavily institutional. Top holders: Vanguard, BlackRock, Fidelity, Eminence Capital. |
-| Next catalyst | **Q3 FY2026 earnings (May 7-14)**, term loan refi (May/June), tariff refund ruling (by June) |
-| Recent price action | +19% from $3.84 (March 23) to $4.58. Bounced off lows on Einhorn/EMJ news. Some upside already captured but stock still 50% below 52W high. |
+| Crowdedness | Moderate — institutions 88.6%, but spread across many funds; not a marquee hedge-fund consensus long. Activist (Einhorn) involved. |
+| Short interest | 13.2% of float — elevated. Squeeze potential on positive surprise; also signals contrarian skepticism is alive. |
+| Technical position | Neutral. ~42% off 52w high ($9.20), ~45% above 52w low ($3.65). Pulled back from $5.70 post-earnings to $5.30 with consumer-discretionary tape. |
+| Next catalyst | Q4 FY2026 earnings (August 2026, ~3 months out) — sub trajectory + FY27 guide. Then term-loan refi window 2026-27, Commercial Series late 2026. |
+| Recent price action | Ran +24% from April to post-Q3 peak, gave back ~7%. The easy 4.6x→6x EV/EBITDA capture is in. The next leg requires sub-stabilization evidence. |
+
+**Setup verdict:** Reasonably favorable but not screaming. Uncrowded enough, near-term catalyst (Q4 in ~3 months), inflection evidence is real (Q3 FY26 print), and the stock has cooled from its post-earnings high. Adding aggressively at $5.30 is paying for execution that's now consensus; waiting for $4.80-5.00 or for Q4 confirmation improves the asymmetry materially.
 
 ## Verdict
 
-**BUY** — Conviction: **MEDIUM**
+**WATCH** — Conviction: **MEDIUM**
 
-The thesis from March 23 has played out directionally (+19%) and the fundamental picture has strengthened: balance sheet improved after Feb convertible paydown (net leverage 0.7x), credible bulls have surfaced (Einhorn, EMJ Capital), the Commercial Series launch got positive reception, and the Supreme Court tariff ruling is a tailwind. At $4.58, the stock trades at 4.6x EV/Adj EBITDA — still pricing in terminal decline — with an expected value of +31% and three dateable catalysts within 3 months (Q3 earnings, term loan refi, tariff refund). The key risk remains revenue stabilization: until a quarter prints flat-to-positive YoY, the turnaround is incomplete. No insider buying is a persistent yellow flag. Risk/reward remains favorable but margin of safety is thinner than at $3.84.
+The turnaround is real and the profitability inflection has printed — that is the easy part. The variant perception (sub stabilization, durable FCF, multi-year re-rating) is plausible but unproven, and the stock has already captured most of the "we're not going to zero" re-rate. Expected value of +41% across scenarios is attractive, but the bull case requires execution evidence that won't show up until Q4 FY26 (August). Buying at $5.30 is fine if sized as a 3-5% position and you accept a ~-30% drawdown to the bear; an aggressive add requires either a pullback to $4.80-5.00 or post-Q4 confirmation of sub trajectory. Existing holders: hold the core, harvest 25-33% into $7.50 (Einhorn low-range), another 33% into $9.00, exit on thesis-break triggers above.
 
-**Entry:** $4.58 is still attractive. Ideal add levels: $4.00 (near prior support), $3.50 (aggressive add if sentiment dips). Scale in — don't size full here given the 19% run.
-**Position size:** Small/speculative (turnaround — size for a -40% drawdown being tolerable).
-**Thesis break:** Exit if churn exceeds 2.5% for 2 quarters, Q3 revenue < $585M, or refi terms disappoint materially. Hard reassessment below $2.50.
+**If WATCH:** Upgrade to BUY at $4.80-5.00 on no thesis damage, or after Q4 FY2026 (August 2026) print confirms sub stabilization (CF subs flat-to-positive QoQ) and FY27 guide brackets $400M+ FCF. Thesis-break trigger at $3.80 on fundamentals.
 
----
-
-## Appendix: Detailed Historical Data
-
-### Complete Earnings History (FY2017-FY2025)
-
-| Fiscal Year | Revenue | Gross Margin | Operating Income | Net Income |
-|-------------|---------|--------------|------------------|------------|
-| FY2017 | $219M | ~40% | — | -$71M |
-| FY2018 | $435M | ~40% | — | -$48M |
-| FY2019 | $915M | 42% | -$192M | -$196M |
-| FY2022 | $3,582M | 19.5% | -$1,981M | -$2,828M |
-| FY2023 | $2,800M | 33.0% | -$863M | -$1,262M |
-| FY2024 | $2,700M | 44.7% | -$406M | -$552M |
-| FY2025 | $2,491M | 50.9% | +$62M | -$119M |
-
-### Q2 FY2026 Results (Dec 2025 quarter)
-
-| Line | Q2 FY2026 | Q2 FY2025 | YoY |
-|------|-----------|-----------|-----|
-| Subscription Revenue | $412.6M | $420.6M | -2% |
-| Hardware Revenue | $243.9M | $253.4M | -4% |
-| **Total Revenue** | **$656.5M** | **$673.9M** | **-3%** |
-| Total Gross Margin | 50.5% | 47.3% | +320bps |
-| Subscription Margin | 72.1% | 67.9% | +420bps |
-| **Adjusted EBITDA** | **$81.4M** | **$58.4M** | **+39%** |
-| GAAP Net Loss | ($38.8M) | ($92.0M) | Improving |
-| Paid CF Subscribers | 2.661M | 2.875M | -7% |
-| Monthly Churn (CF) | 1.9% | 1.4% | +50bps |
-
-### Q3 FY2026 Guidance
-
-| Metric | Q3 Guidance | YoY Implied |
-|--------|-------------|-------------|
-| Revenue | $605-625M | -1% midpoint |
-| Gross Margin | ~54% | +300bps |
-| Adj EBITDA | $121-135M | +43% midpoint |
-| Paid CF Subscribers | 2.650-2.675M | -8% |
-
-### FY2026 Full-Year Guidance
-
-| Metric | Guidance |
-|--------|----------|
-| Revenue | $2,400-2,440M (-3% YoY, lowered by $71M) |
-| Gross Margin | ~52% (+210bps YoY) |
-| Adjusted EBITDA | $450-500M (raised $25M) |
-| Free Cash Flow | >= $275M (raised $25M) |
-
-### Balance Sheet (post-Feb 2026 convertible payoff)
-
-| Item | Amount |
-|------|--------|
-| Term Loan (SOFR+600bps, May 2029) | ~$1,000M |
-| 5.50% Convertible Notes (Dec 2029) | ~$300M |
-| 0% Convertible Notes (Feb 2026) | $0 (paid off) |
-| **Total Debt** | **~$1,300M** |
-| Cash | ~$980M |
-| **Net Debt** | **~$320M** |
-| Net Leverage (Adj EBITDA) | ~0.7x |
-| Stockholders' Equity | -$414M |
-| Current Ratio | 1.98 |
-
-### Comparable Multiples (EV/EBITDA)
-
-| Comp | Multiple | Notes |
-|------|----------|-------|
-| Planet Fitness (PLNT) | ~20.5x | Franchise gym model |
-| Life Time (LTH) | ~11-14x | Premium gym, asset-heavy |
-| Recreation sector median | 10.4x | Damodaran dataset |
-| Turnaround companies | 6-10x | Discount for execution risk |
-| **PTON today** | **4.6x** | Below turnaround range |
-
-### Analyst Targets (Feb/Mar 2026)
-
-| Analyst | Price Target | Direction |
-|---------|-------------|-----------|
-| Goldman Sachs | $7.00 | Cut from $12.50 |
-| JPMorgan | $6.00 | Cut from $9.00 |
-| Truist Financial | $9.00 | Cut from $12.00, Strong Buy |
-| Macquarie | $6.00 | Cut from $12.00, Buy |
-| Telsey Advisory | $6.00 | Cut from $8.00, Hold |
-| Morgan Stanley | $5.00 | Cut from $6.50, Hold |
-| Citigroup | $5.00 | Cut from $8.25, Hold |
-| Baird | $5.50 | Cut from $8.50 |
-| Bernstein | $6.00 | Cut from $7.50 |
-| Deutsche Bank | $6.60 | Upgraded to Buy (from Hold) |
-| Argus Research | — | Downgraded to Hold |
-| **Consensus Mean** | **$7.88** | **+72% upside from $4.58** |
-
-### Key Bull: David Einhorn / Greenlight Capital
-
-- Added to position after Feb 2026 Q2 earnings crash
-- Publicly stated "I don't think Peloton is in secular decline"
-- Target range: $7.50-$31.50 if FY2026 Adj EBITDA hits $450M
-- Reasoning: 6-25x EBITDA on $450M = $2.7B-$11.25B EV → subtract net debt, divide by shares
-- One of the highest-profile activist-style bulls on the name
-
-### EMJ Capital Disclosure (March 30)
-
-- Eric Jackson disclosed long position
-- Argued market stuck on pandemic-decline narrative
-- Stock surged 8.9% to $4.43 on 38M share volume
-
-### Insider Activity (Jan-Mar 2026)
-
-- Open-market buys: **0 shares**
-- Key sales: Coddington (CFO, departing) 238K shares @ $4.18 ($995K); Baig (CAO) 30.9K @ $4.14; Caldwell (CPO) 42.6K @ $3.86; Cunningham Cotter 125.4K; Sanders 88.2K; Kirol (COO) 6.4K
-- All selling appears tied to RSU vesting/tax obligations and CFO departure — not discretionary open-market selling
-- Nonetheless, zero insider buying near all-time lows remains a yellow flag
-
-### Pre-COVID Revenue Trendline
-
-| FY | Pre-COVID Trendline | Actual | Gap |
-|----|-------------------|--------|-----|
-| 2019 | $915M | $915M | — |
-| 2020 | ~$1,200M | $1,826M | COVID pull-forward |
-| 2021 | ~$1,500M | $4,022M | Peak insanity |
-| 2022 | ~$1,800M | $3,582M | Hangover |
-| 2023 | ~$2,100M | $2,800M | Deflating |
-| 2024 | ~$2,300M | $2,700M | Converging |
-| 2025 | ~$2,500M | $2,491M | On trendline |
-| 2026E | ~$2,600M | $2,420M | Slightly below |
-
-### Competitive Landscape
-
-| Competitor | Status |
-|-----------|--------|
-| Mirror (Lululemon) | Discontinued, $443M write-off |
-| Tonal | Struggling, continued layoffs |
-| iFit/NordicTrack | Near-bankruptcy, co-plaintiff in tariff lawsuit |
-| Hydrow | <2% market share |
-| BowFlex | <2% market share |
-| **Peloton** | **51% share of at-home connected fitness** |
-
-Real competition: Planet Fitness ($25/mo gyms), Apple Fitness+ ($10/mo, deepened Strava partnership), Technogym (launched "Checkup" product, strong B2B), free YouTube workouts.
-
-### Tariff Lawsuit
-
-- Jan 7, 2026: Peloton/Precor sued U.S. CBP in Court of International Trade, challenging IEEPA tariffs
-- Part of 75+ consolidated company complaints (Costco, Revlon, iFit, etc.)
-- Peloton paid $4M+ in tariffs since Feb 2025
-- Supreme Court ruled tariffs illegal (Feb 2026); $166B industry-wide refunds pending
-- Decision enforcement expected by June 2026
-
-### Commercial Expansion (Peloton Commercial Series)
-
-Announced March 16, 2026. First gym-grade connected bike and treadmill combining Peloton digital content with Precor industrial-grade hardware. Shipping late 2026 in US, UK, Canada, Germany, Australia, Austria. Leverages Precor's 60-country distribution network. Global commercial fitness TAM: $16B today, projected $36B by 2033 (9.5% CAGR). Commercial Business Unit grew 10% YoY in Q2 FY2026.
-
-## Notes
-
-- Analysis date: 2026-04-03
-- Previous analysis: 2026-03-23 (stock was $3.84, now $4.58 = +19%)
-- Data sources: Q2 FY2026 earnings, yfinance, SEC filings, web research, Einhorn/EMJ public disclosures
-- Fiscal year ends June 30
-- FY2026 = July 2025 - June 2026
-- User holding: ~$3,350 combined (turnaround bet)
+<!-- Public file: generic research only. Personal position size / cost basis / P&L
+     live in ~/vault/finance/notes/positions/PTON.md per the public-vs-private rule. -->

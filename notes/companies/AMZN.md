@@ -1,123 +1,129 @@
 # Amazon.com, Inc. (AMZN)
 
 **Sector:** Consumer Cyclical | **Industry:** Internet Retail
-**Price:** $205.37 | **Market Cap:** $2.20T
-**Analysis Date:** 2026-03-22
+**Price:** $264.86 (2026-05-19) | **Market Cap:** $2.85T
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** Amazon is three businesses bolted onto one logistics and data spine. First, retail: it sells goods directly to consumers (first-party, where Amazon owns the inventory) and runs a marketplace where third-party sellers list their own goods and pay Amazon fees plus Fulfillment by Amazon (FBA) for storage and shipping. Third-party sellers now generate roughly 60% of unit volume. Second, Amazon Web Services (AWS): rented cloud computing — virtual servers (EC2), storage (S3), databases, and increasingly AI compute (Bedrock, SageMaker, Trainium custom chips) — sold to enterprises and startups including OpenAI, Anthropic, Meta, and Uber. AWS is roughly 17% of revenue but ~60%+ of operating profit. Third, advertising: sponsored product placements on amazon.com search results plus Prime Video ads — a ~$70B+ run-rate business growing 20%+ that drops most revenue straight to operating margin. Supporting these are Prime subscriptions (~200M global members paying ~$139/yr in the US for shipping, video, music), devices (Kindle, Echo, Fire TV, Ring, Alexa), Whole Foods/Fresh grocery, and Project Kuiper low-Earth-orbit satellite broadband.
+
+**Where they want to grow.** Management's explicit bets are AWS AI workloads (generative AI run-rate is over $15B and growing triple-digit), Trainium custom silicon (chips business at ~$20B run-rate, framed as a path to ~$50B annual run-rate as customers move off Nvidia), advertising as a high-margin growth engine (Prime Video ads launched 2024 is still ramping), Project Kuiper (3,236-satellite broadband constellation racing the FCC's mid-2026 deployment deadline against Starlink), grocery (Whole Foods integration plus Amazon Fresh expansion), healthcare (One Medical, Amazon Pharmacy), and continued retail margin expansion through robotics in fulfillment centers. Success in 3-5 years looks like AWS at $60B+ quarterly revenue with stable 35%+ margins, advertising at $80-90B annually, and North America retail operating margins continuing the climb from ~6% toward 8-10%.
+
+**What could go wrong (business risks).** Hyperscaler competition is real: Microsoft Azure grew 40% and Google Cloud 63% in Q1 2026 versus AWS at 28% — AWS still leads in absolute size but is the slowest-growing of the three, and OpenAI's primary alignment with Microsoft remains a structural disadvantage. Capital expenditure has exploded — $44B in Q1 2026 alone, $200B+ planned for 2026 — and trailing-twelve-month free cash flow collapsed to $1.2B from $25.9B; if AI demand cools or compute prices drop, the depreciation wave hits with no revenue offset. Retail margins remain vulnerable to consumer weakness, tariff regimes on China-sourced inventory, and FBA fee pressure from third-party sellers. The Federal Trade Commission (FTC) antitrust trial is scheduled for October 2026 and could force changes to Buy Box practices, anti-discounting clauses, or in a tail scenario a structural separation of fulfillment from retail. Kuiper deployment risk is acute: the FCC requires half the constellation (1,600+ satellites) in orbit by July 2026 to avoid losing the spectrum license. Project Kuiper, devices, grocery, and healthcare all lose money — execution drag persists.
+
+**How to think about it.** Amazon is a retail+cloud+advertising conglomerate where AWS is the profit engine — value it sum-of-parts, NOT as pure e-commerce. The interesting move from 2024-2026 is that the highest-margin pieces (AWS, ads) are also the fastest-growing, so the mix shift is doing the work; the question is whether that mix shift survives the capex-intensive AI buildout cycle, and whether AWS can defend its #1 market share as Azure and GCP compound faster off smaller bases.
 
 ## Situation Summary
 
-Amazon reported strong Q4 2025 results (revenue $213.4B, +14% YoY; operating income $25B, +18% YoY) but shares fell after management guided 2026 capex to $200B, far above the $147B consensus. The stock trades at $205, down 21% from its 52-week high of $258.60, below both the 50-day ($220.87) and 200-day ($224.81) moving averages. AWS grew 24% in Q4 (fastest in 13 quarters) with a $244B backlog growing 40% YoY. CEO Jassy recently stated AWS could eventually reach $600B in annual revenue. Tariff headwinds are hitting e-commerce — ~71% of Amazon marketplace products originate from China — though the Supreme Court ruled against Trump's tariff authority in February 2026, providing some relief. Azure (39% growth) and Google Cloud (32% growth) are outpacing AWS (24% growth), intensifying competitive pressure. The consensus narrative is "great company, but capex is out of control and FCF will suffer."
+Amazon reported a blowout Q1 2026 on 2026-04-29: $181.5B revenue (+17% YoY), operating income $23.9B (record 13.1% operating margin), net income $30.3B. AWS grew 28% YoY to $37.6B — its fastest growth rate in 15 quarters off a now-massive base — with $14.2B operating income and AI run-rate disclosed at $15B+. Q2 guidance: $194-199B revenue (16-19% growth). The stock initially sold off post-print because capex hit $44B in the quarter and management framed 2026 capex at $200B+, crushing free cash flow (trailing-twelve-month free cash flow collapsed to $1.2B from $25.9B prior year). Since then the stock has recovered toward 52-week highs at $264.86 (52w high $278.56) as the AI-demand-is-real narrative beat the capex-discipline narrative. Next major catalysts: Kuiper FCC deadline July 2026, Q2 earnings 2026-07-30, FTC antitrust trial October 2026.
 
 ## Variant Perception
 
-- **Consensus view:** Amazon is over-investing. $200B in 2026 capex will crater free cash flow, and the payoff from AI/AWS infrastructure is uncertain and years away. Tariffs will pressure e-commerce margins. The stock deserves a compressed multiple until capex peaks and FCF recovers.
-- **Our view:** The consensus is partially right — FCF will be terrible in 2026 (already collapsed to $7.7B in 2025 from $32.9B in 2024). But the market is underweighting three things: (1) AWS is supply-constrained, not demand-constrained — the $244B backlog growing 40% YoY means this capex will monetize, (2) operating margins have gone from 2.4% to 11.2% in three years, demonstrating real operational leverage that the capex cycle obscures, and (3) advertising ($85B+ run-rate, growing 22%) is a high-margin profit engine that provides margin uplift regardless of capex. The variant perception is MODERATE — we see the same picture as the market but believe the capex peak is closer than consensus expects (late 2026/early 2027), at which point FCF will snap back violently. Additionally, Jassy's custom silicon (Graviton + Trainium) at $10B+ annualized run-rate gives AWS a cost advantage competitors lack.
-- **Trigger:** Q1 2026 earnings (late April 2026) — if AWS growth sustains 22%+ and management signals capex moderation in H2 2026, the stock re-rates. Any sign of capex guidance reduction would be a major positive catalyst.
+- **Consensus view:** Amazon is a high-quality compounder but capex is destroying free cash flow, AWS is being out-grown by Azure (40%) and Google Cloud (63%), and FTC overhang caps the multiple. Mean analyst target $311 (~18% upside), strong-buy rating, 62 analysts covering — heavily-covered, well-owned, no obvious information edge.
+- **Our view:** Three nuances consensus underweights. (1) The capex IS the moat — Trainium at $20B run-rate plus owned data center capacity locks in cost-per-token advantage that Azure (renting Nvidia at scale) cannot replicate; AWS gross margins should expand as Trainium share rises, partially offsetting depreciation drag. (2) Advertising is structurally underestimated — at ~$70B run-rate growing 20%+ with 50%+ incremental margins, ads alone are worth several hundred billion at any reasonable multiple, and consensus still buckets Amazon as "retail." (3) AWS growth deceleration vs Azure/GCP is mostly a base-rate optical illusion — $37.6B times 1.28 adds more dollars than Azure's smaller base times 1.40 in absolute terms; what matters for valuation is dollars of incremental gross profit, which AWS still leads.
+- **Trigger:** Q2 earnings 2026-07-30 (AWS sequential acceleration confirmation), Kuiper deployment milestone July 2026 (eliminate spectrum-loss tail risk), and a constructive FTC outcome by late 2026 (most likely a behavioral settlement, not structural breakup).
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $716.9B | +11.7% CAGR |
-| Net Income | $77.7B | +59.8% CAGR (2yr, was negative in 2022) |
-| FCF | $7.7B (2025), $32.9B (2024) | Collapsing due to capex surge |
-| OCF | $139.5B | Growing 20% YoY — real cash generation is strong |
-| ROE | 22.3% | Expanding rapidly |
-| D/E | 43.4% | Stable |
-| Net Debt/EBITDA | 0.40x | Conservative |
-| Op Margin | 11.2% | 2.4% -> 6.4% -> 10.8% -> 11.2% (massive expansion) |
-| FCF Yield | 0.35% (2025) | Distorted by $131.8B capex year |
-| CapEx | $131.8B (2025) | Guided to $200B in 2026 |
-
-**Key observation:** Operating cash flow grew 20% to $139.5B in 2025 (6.3% OCF yield). The business is generating enormous cash — it is the capex surge that destroys reported FCF. If capex were flat at 2024 levels ($83B), FCF would have been ~$57B (2.6% yield on market cap). This is the core tension in the stock.
+| Revenue (FY25) | $716.9B | +12% CAGR (FY22 $514B → FY25 $717B) |
+| Net Income (FY25) | $77.7B | From -$2.7B FY22 to $77.7B — massive inflection |
+| Operating Income (FY25) | $80.0B | $12B → $37B → $69B → $80B |
+| FCF (FY25) | $7.7B | Collapsed from $32.9B FY24 due to AI capex |
+| Operating Cash Flow (FY25) | $139.5B | +20% CAGR |
+| Capex (FY25) | -$131.8B | $64B → $83B → $132B (escalating) |
+| ROE | 24.3% | Improving |
+| Operating Margin | 13.1% | Record |
+| Gross Margin | 50.6% | Mix shift to AWS/ads |
+| D/E | 0.53 | Modest |
+| Net Debt/EBITDA | <0.5x | Negligible — effectively net cash |
+| FCF Yield | 0.3% (TTM, depressed) | Not meaningful during capex spike |
+| Forward P/E | 27.0x | |
+| P/S | 3.84x | |
+| P/B | 6.45x | |
 
 ## Valuation Models
 
-No models currently in the database for AMZN. Using analyst consensus and computed metrics:
+| Model | Fair Value | Upside | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| gbm_opportunistic_3y | $589 | +126% | 0.96 | 2026-05-18 |
+| gbm_lite_3y | $507 | +94% | 0.88 | 2026-05-18 |
+| gbm_opportunistic_1y | $474 | +82% | 0.93 | 2026-05-18 |
+| autoresearch | $453 | +73% | 0.99 | 2026-05-18 |
+| gbm_3y | $343 | +31% | 0.80 | 2026-05-18 |
+| gbm_lite_1y | $318 | +22% | 0.52 | 2026-05-18 |
+| gbm_1y | $292 | +12% | 0.97 | 2026-05-18 |
+| simple_ratios | $100 | -62% | 0.85 | 2026-05-18 |
+| dcf_enhanced | $27 | -90% | 0.70 | 2026-05-18 |
+| Analyst mean target | $312 | +18% | — | live |
 
-| Source | Fair Value | Upside | Confidence |
-|--------|-----------|--------|------------|
-| Analyst Mean Target | $280.47 | +37% | 62 analysts |
-| Analyst Low Target | $175.00 | -15% | — |
-| Analyst High Target | $360.00 | +75% | — |
-| Forward PE implied (30x) | $232 | +13% | Based on ~$7.74 FY26E EPS |
-| OCF-based (15x OCF/share) | $195 | -5% | Conservative cash flow anchor |
+*All models above use 2026-05-18 base prices ($261.12); live price $264.86 (within 2%), so upside percentages are still valid.*
 
-**Model consensus:** Analyst consensus strongly bullish with $280 mean target (+37%). The forward PE of 22x is historically cheap for Amazon (10yr avg ~55x forward). The OCF-based valuation suggests near fair value, but this is a trough metric distorted by peak capex. The key question is what normalized FCF will look like post-capex peak.
+**Model consensus:** All GBM models and autoresearch (the most reliable models for return prediction per project notes) point strongly bullish, with 3-year fair values implying $343-$589 (range +31% to +126%). The DCF models are broken on Amazon — `dcf_enhanced` returns $27 because TTM FCF is depressed by AI capex; this is exactly the known DCF-on-capex-intensive-growers bias. `simple_ratios` and the DCFs should be ignored. The 1-year GBMs (+12-22%) align closely with the analyst consensus +18%, suggesting near-term upside is bounded but multi-year compounding is the thesis.
 
-## Business Quality (21/25)
+## Business Quality (23/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 5/5 | Unmatched ecosystem: marketplace network effects (>2M sellers), AWS switching costs (multi-year contracts, $244B backlog), Prime ecosystem lock-in (200M+ subscribers), logistics infrastructure no competitor can replicate. Advertising moat growing as brands must pay to be visible on Amazon. Custom silicon (Graviton, Trainium) adds proprietary cost advantage. |
-| Management | 4/5 | Jassy has executed well on cost discipline (margins 2.4% to 11.2%) and doubled down on AWS at the right time. The $200B capex guidance is bold but carries execution risk. Capital allocation is aggressive — the "AWS could reach $600B revenue" vision is ambitious. Insider selling is routine for Amazon executives (stock comp liquidation). |
-| Profitability | 4/5 | Operating margins expanded from 2.4% to 11.2% in 3 years — exceptional operating leverage. Gross margins at 50.3% are strong. Advertising segment is extremely high-margin and growing 22% YoY. However, 2026 capex surge will compress near-term profitability metrics. |
-| Balance Sheet | 4/5 | Net debt/EBITDA of 0.40x is conservative. $86.8B cash on hand. Total debt of $153B is manageable given $165B EBITDA and $140B operating cash flow. Interest coverage is very strong. Concern is trajectory — debt rising to fund AI capex, new issuance in March 2026. |
-| Growth | 4/5 | AWS growing 24% at $142B run-rate (fastest in 13 quarters). Advertising at $85B+ run-rate growing 22%. E-commerce growing ~10-14%. Total revenue CAGR 11.7% for a $717B revenue company is remarkable. Amazon LEO (satellite constellation, 20+ launches planned 2026) is long-term optionality. Law of large numbers is a real concern. |
+| Moat | 5/5 | AWS has switching-cost moat (data gravity, IAM, hundreds of services); Prime + FBA + 1-day shipping creates retail flywheel; ads moat is search query intent at point-of-purchase (uniquely valuable to advertisers). Trainium adds vertical-integration moat. |
+| Management | 5/5 | Jassy disciplined on margin expansion since 2023, killed unprofitable bets (Halo, Astro), maintains transparency on capex tradeoffs. Insider holdings 8.9%. |
+| Profitability | 5/5 | Operating margin 13.1% record, ROE 24.3%, gross margin 50.6%. Mix shift to AWS/ads structurally lifts margins. |
+| Balance Sheet | 5/5 | Net cash $87B, D/E 0.53, debt easily serviceable, current ratio 1.18. |
+| Growth | 3/5 | Revenue $717B base — law of large numbers real. AWS, ads, international retail still have decade-long runways but the trillion-dollar revenue ceiling is visible from here. |
 
 ## Inflection Point
 
-Amazon is at a **capex inflection point** — not yet at the turning point, but approaching it. The company is in the middle of the largest corporate infrastructure build in history ($200B guided for 2026). The inflection will come when:
-
-1. **Capex peaks and begins to moderate** (likely late 2026 or 2027) — this is when FCF snaps back
-2. **AWS AI revenue materializes at scale** — the $244B backlog starts converting to recognized revenue
-3. **Operating leverage reasserts** — marginal revenue from AI services flows through at high incremental margins
-
-We are NOT at the inflection yet. We are in the "pain before the payoff" phase. The observable evidence is that AWS growth is re-accelerating (19% -> 20% -> 24% in recent quarters) and the backlog is growing faster than revenue (40% vs 24%), which suggests the payoff is real, not speculative.
-
-**Risk:** This could be a value trap if AI demand plateaus before capex peaks. The history of massive infrastructure builds (telecom in the 2000s) shows this is not a zero-probability outcome. Additionally, Azure and Google Cloud are growing faster than AWS, suggesting competitive intensity is rising.
+Two inflections compounding: (1) **profitability inflection** — operating margin went from 2.4% FY22 to 13.1% FY25 as AWS and ads scale and retail right-sizes; this margin expansion still has 2-4 points of runway. (2) **AI compute inflection** — AWS AI run-rate $15B growing triple-digit, Trainium economics differentiating from Azure/GCP. The combination is observable in the financials, not speculative. Stock has recovered post-Q1 capex sell-off, suggesting the market is starting to price the AI demand side.
 
 ## Bull Case
 
-- AWS sustains 22-28% growth through 2026-2027 as $244B backlog converts; AI services command premium pricing
-- Capex peaks in late 2026 at ~$200B, then moderates to $120-150B in 2027, driving FCF recovery to $50-80B
-- Operating margins expand to 13-15% as advertising mix shift continues and AWS margins improve with scale
-- Advertising grows to $100B+ by 2027, becoming the third profit pillar alongside AWS and marketplace
-- Custom silicon (Graviton, Trainium) gives AWS structural cost advantage, sustaining market share despite Azure/GCP competition
-- Tariff headwinds prove temporary; Amazon's scale gives it pricing power vs. smaller competitors
+- AWS reaccelerates through 30%+ in 2026-2027 as Trainium capacity comes online and AI workloads ramp; segment operating margin expands toward 38-40%.
+- Advertising hits $90B+ by 2027 at 50%+ incremental margins, contributing $25-30B operating profit.
+- North America retail operating margin expands from 6% toward 9% as robotics deployment scales (Amazon disclosed 1M+ robots in fulfillment).
+- Capex normalizes 2027+ as AI buildout completes, free cash flow snaps back to $80-100B annualized.
+- FTC trial settles with behavioral remedy, no structural breakup.
 
 ## Bear Case
 
-- $200B capex is just the beginning — AI infrastructure arms race forces continued hyper-spending into 2028+
-- AWS growth decelerates to 15-18% as Azure (39% growth) and Google Cloud (32% growth) take share; enterprises diversify cloud providers
-- Tariff regime permanently impairs e-commerce margins; 71% China-sourced product base is a structural vulnerability
-- AI monetization disappoints — companies find cheaper alternatives to cloud-based AI (on-premise, open source models)
-- Antitrust/regulatory action (FTC case still active) forces structural changes to marketplace or AWS bundling
-- Amazon LEO satellite constellation ($1B+ incremental cost in Q1 2026 alone) becomes a cash drain without sufficient revenue
+- Capex stays elevated indefinitely as AI demand grows — depreciation wave hits in 2027-2028 and operating margin compresses 200-300bp. **(This is the under-covered risk: management explicitly flagged $200B+ 2026 capex with no commitment to taper — news headlines emphasized "AI demand strong" but the FCF math is structurally bad if utilization doesn't keep pace with capacity. Buried in the capex disclosure was a $59.3B year-over-year increase in property and equipment purchases, which most reporting under-emphasized.)**
+- Azure (Microsoft + OpenAI lock-in) and Google Cloud (Gemini integration) compound at 40%+ for another 2-3 years, eroding AWS market share from ~32% toward ~25%; the absolute-dollar lead narrows.
+- Kuiper misses July 2026 FCC deadline, partial spectrum loss, $30-50B sunk capex impaired.
+- FTC October 2026 trial produces structural remedy (forced separation of FBA from marketplace) — long-tail but catastrophic.
+- US consumer recession compresses retail margins, third-party seller fees pressured by competition from Shein, Temu, and TikTok Shop.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| Bull | 25% | EPS grows to $11-12 by 2027E on AWS acceleration + margin expansion to 13%+; advertising crosses $100B | Re-rates to 33-35x forward on FCF recovery visibility and capex peak narrative | $275 | +34% |
-| Base | 50% | EPS grows to $9-10 by 2027E on steady 12% revenue growth, margins hold 11-12% | Multiple stable at 27-30x forward | $235 | +14% |
-| Bear | 25% | EPS flat at $7-8 as capex overshoot compresses margins; AWS decelerates to 18%; tariffs bite | De-rates to 22-24x on FCF concerns and competitive pressure | $170 | -17% |
+| Bull | 30% | AWS reaccelerates to 32%, ads to $90B, op margin to 15%; FY27 EPS ~$10 | Re-rate to 38x on AI compounding | $380 | +43% |
+| Base | 50% | AWS at 25-28%, ads +20%, op margin 13-14%, capex peaking; FY27 EPS ~$8.50 | Stable 32-34x | $290 | +9% |
+| Bear | 20% | AWS decel to 18%, capex digestion, FTC overhang, margin compress; FY27 EPS ~$6.50 | De-rate to 22x | $160 | -40% |
 
-**Expected value: +11.3%** (0.25 x 34% + 0.50 x 14% + 0.25 x -17%)
+**Expected value: +9.4%** (0.30 × 43 + 0.50 × 9 + 0.20 × -40 = 12.9 + 4.5 - 8.0 = +9.4%)
 
-**Thesis quality check:** The bull case relies on BOTH earnings growth (AWS, advertising) AND multiple expansion (FCF recovery narrative). The base case is almost entirely earnings-driven with stable multiples. This is acceptable quality — the return is not dependent on multiple expansion alone.
-
-**Thesis breaks if:** AWS growth decelerates below 18% for two consecutive quarters AND capex guidance increases beyond $200B for 2026. This would signal that Amazon is losing the AI infrastructure race while still burning capital. Specific price: sustained trading below $165 would indicate the market has priced in a structural impairment.
+**Thesis breaks if:** AWS YoY growth falls below 20% for two consecutive quarters AND operating margin compresses below 11% — that combination means the AI buildout is destroying value, not creating it.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | CROWDED — 67% institutional ownership, consensus strong buy (53 Buy + 1 Strong Buy out of 62 analysts), top holding in most tech/growth funds |
-| Short interest | 0.84% — negligible. No squeeze setup, no meaningful short thesis |
-| Technical position | WEAK — trading at $205.37, down 21% from 52w high ($258.60), below both 50-day ($220.87) and 200-day ($224.81) MAs. RSI in oversold territory |
-| Next catalyst | Q1 2026 earnings: late April 2026 (~4-5 weeks away). Prime Video Ultra price increase April 10 |
-| Recent price action | Declining since early 2026; post-Q4 selloff on capex guidance. Friday close at $205.37 (down from $208.76 prior close). No observable recovery signal yet |
+| Crowdedness | Crowded — 67.9% institutional, top hedge fund holding, "strong_buy" consensus from 62 analysts |
+| Short interest | 0.9% of float — minimal |
+| Technical position | Near 52w high ($278.56), up 16% YTD — extended |
+| Next catalyst | Q2 earnings 2026-07-30; Kuiper FCC deadline July 2026; FTC trial October 2026 |
+| Recent price action | Recovered from post-Q1 capex sell-off, up materially from spring lows |
+
+Setup is mixed. The thesis is sound but the stock is no longer cheap or uncrowded. Better entries would come from a capex-shock pullback (similar to post-Q1 sell-off) or FTC-driven volatility.
 
 ## Verdict
 
-**WATCH** -- Conviction: MEDIUM
+**WATCH** — Conviction: **MEDIUM**
 
-Amazon is a world-class business (21/25 quality) trading at a historically cheap forward PE (22x) during a temporary capex-driven FCF trough. The 22x forward multiple is well below Amazon's historical average, reflecting genuine market concern about the $200B capex cycle. However, three factors keep this at WATCH rather than BUY: (1) the stock is a consensus crowded long with no variant perception strong enough to provide real edge — everyone sees the same AWS/AI narrative, (2) competitive pressure from Azure (39% growth) and Google Cloud (32% growth) outpacing AWS (24% growth) introduces real risk that the capex may not yield expected returns, and (3) the expected value of +11.3% is modest for a stock with 1.42 beta and meaningful near-term execution risk on $200B capex. The honest assessment is that Amazon at $205 is probably slightly cheap — but this is not a fat pitch entry point given the crowdedness and execution uncertainty.
+Amazon is a 23/25 quality business with two compounding inflections (margin expansion + AI compute) and a genuine variant perception (advertising under-valued, Trainium moat under-credited, AWS dollar-growth still leading). But at $264 near 52-week highs with a crowded shareholder base, the 12-month risk/reward is only modestly positive (~+9% base case) and the bear case (-40%) is non-trivial given the capex/FTC overhang. The 3-year GBM models support a meaningfully higher fair value ($343-$589), so this is a hold-or-add-on-weakness name, not an urgent buy. Existing holders: hold. Would upgrade to BUY on a pullback to $220-230 (which would also reset technicals) or on a clean Kuiper deployment milestone removing tail risk. Would downgrade to TRIM if AWS Q2 growth prints below 25% AND capex guidance steps up again.
 
-**Would upgrade to BUY on:**
-- Price below $185 (24x forward on 2027E EPS of ~$7.75, providing meaningful margin of safety)
-- Management signals capex moderation at Q1 earnings (late April)
-- AWS growth sustains 22%+ with improving margins -- confirming the capex is monetizing
-- Azure/GCP growth decelerating while AWS sustains, indicating competitive moat is holding
-- Any of these combined with a broader market pullback creating a better entry
+**If BUY:** Entry at $220-230 (15% pullback), scale in over 2-3 tranches, thesis-break at $195 (close below 52w low with AWS deceleration).
+**If WATCH:** Would upgrade on (a) AWS Q2 2026 acceleration to 29%+, or (b) constructive FTC pre-trial settlement signal, or (c) pullback to $220-230.
+
+<!-- Public-research file only. Personal position context goes to ~/vault/finance/notes/positions/AMZN.md. -->

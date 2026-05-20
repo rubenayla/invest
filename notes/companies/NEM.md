@@ -1,110 +1,124 @@
 # Newmont Corporation (NEM)
 
 **Sector:** Basic Materials | **Industry:** Gold
-**Price:** $99.20 | **Market Cap:** $108.3B
-**Analysis Date:** 2026-03-20
+**Price:** $105.09 (2026-05-20) | **Market Cap:** ~$112B
+**Analysis Date:** 2026-05-20
+
+## Business Primer
+
+**What they do today.** Newmont is the largest gold mining company in the world by ounces produced (roughly 7-8 million ounces per year after closing the Newcrest acquisition in late 2023 and divesting six non-Tier-1 mines through 2025). The physical business is moving rock. They dig open pits and run underground mines, blast and haul ore that typically contains between 0.5 and 5 grams of gold per metric ton of rock (so a ton of ore yields somewhere between a paperclip and a small coin of gold). The ore is crushed, ground to powder, and either piled on heap-leach pads where cyanide solution is sprinkled over it to dissolve the gold, or fed through flotation and cyanide tanks in a mill. The gold-bearing solution is then processed into doré bars (rough gold-silver alloy ingots, typically 70-90% gold) that get shipped to refiners. Refined gold sells at the daily London spot price, which over the last 12 months has traded between roughly $2,400 and $3,400 per ounce. Newmont's core asset base now sits at 11 "Tier 1" operations — long-life, large-scale, low-cost mines in Nevada (Carlin, Cortez via the Nevada Gold Mines joint venture with Barrick), Australia (Boddington, Cadia, Tanami), Canada (Brucejack, Red Chris, Porcupine, Musselwhite), Peru (Yanacocha), Suriname (Merian), Ghana (Ahafo), and Argentina (Cerro Negro). They also produce meaningful copper, silver, lead, and zinc as byproducts, especially from Cadia and Red Chris, which makes them increasingly a "gold-copper" rather than pure gold producer.
+
+**Why customers choose them (the value proposition).** This part needs a small reframe because gold mining is unusual: Newmont's "customers" are refiners and bullion banks who pay the daily spot price, so Newmont has zero pricing power and zero brand loyalty from buyers — one ounce of refined gold is identical to any other. The real value proposition is to the *equity investor*, not to a customer. Compared to owning physical gold or a gold exchange-traded fund like GLD, a gold miner gives you operational leverage: if gold rises from $3,000 to $3,600 per ounce (a 20% move), and Newmont's all-in sustaining cost is $1,500 per ounce, their per-ounce cash margin goes from $1,500 to $2,100 — a 40% jump in unit profit, and an even bigger jump in free cash flow once fixed costs are spread. The downside is symmetric: a 20% drop in gold can wipe out 50% or more of earnings. Compared to smaller or higher-cost miners, Newmont's pitch is that its Tier-1 mines have multi-decade reserves, predictable production, and all-in sustaining costs in the $1,400-1,600 per-ounce range — well below mid-tier peers running at $1,800-2,200 — so they make money even at gold prices where weaker miners bleed. Mechanically, this comes from grade, scale, and geography: large open pits in stable jurisdictions with established processing infrastructure have lower unit costs than scattered small mines in difficult countries. The trade-off versus holding physical gold or GLD is country risk, operational risk (mine outages, labor strikes, geotechnical failures, environmental incidents), and management risk (capital allocation on acquisitions and projects). End-demand buyers of refined gold include central banks accumulating reserves, jewelry fabricators in India and China, and Western investors using gold as a hedge against currency debasement, real-yield decline, and geopolitical stress.
+
+**Where they want to grow.** Management's stated plan for 2024-2026 is the opposite of "grow at all costs": they are *shrinking* the portfolio to concentrate on Tier-1 assets. Six divestitures have been completed (Telfer, Akyem, Musselwhite, Éléonore, Porcupine, CC&V) for over $4 billion in gross proceeds, paying down Newcrest-acquisition debt and funding buybacks. The growth story now is (1) brownfield expansions and life-of-mine extensions at the kept mines — Tanami Expansion 2, Cadia Block Cave PC1-2, Ahafo North coming into production — to push toward stable 6-7 million ounces of gold and 150 million pounds of copper annually; (2) deploying roughly $3 billion per year of free cash flow into dividends, the $3 billion authorized buyback, and debt reduction; (3) leaning into copper as an additional commodity exposure as the energy transition tightens copper supply. Success in three years looks like: 6 million-plus gold ounces and growing copper output from a leaner asset base, all-in sustaining costs maintained below $1,500 per ounce, net debt under $2 billion, and a track record of returning $5 billion-plus cumulatively to shareholders. There is no big-merger leg here — Newcrest was the bet, and the message now is "execute and return cash."
+
+**What could go wrong (business risks).** First, gold price reversal: if real bond yields normalize sharply or the dollar strengthens for a multi-year stretch, gold could revisit $2,000 and Newmont's margins compress severely. Second, cost inflation: diesel, labor, cyanide, steel, and grinding media all flow into all-in sustaining costs, and if mining cost inflation outpaces gold price gains (as it did in 2022-23), the operational leverage works in reverse. Third, country and environmental-social-governance risk: Yanacocha has had to navigate Peruvian community protests for years, Ahafo sits in Ghana where royalty rates can shift, Cerro Negro is in Argentina with currency controls, and a major strike at one of the divested Mexican mines in 2023 cost roughly four months of production. Fourth, execution risk on Newcrest integration and synergies — Newcrest came with Lihir and several other assets that have been mixed performers, and the $500 million synergy target needs to actually land. Fifth, geotechnical and safety incidents: any Tier-1 mine experiencing a wall failure, tailings issue (think Mount Polley or Brumadinho), or fatality cluster can suspend operations for quarters. Sixth, reserve depletion: gold reserves get mined, and replacing them via exploration is getting harder and more expensive, especially for high-grade ounces. Finally, the byproduct copper exposure cuts both ways — it diversifies revenue but adds direct cyclical industrial-economy risk that pure-gold investors might not want.
+
+**How to think about it.** Newmont is the blue-chip, lowest-operational-risk way to express a constructive view on gold — the "BHP of gold" — with built-in operational leverage versus owning the metal directly, paid for by accepting mine-level execution risk and trading at a structural discount to gold's own multiple. It is not a growth stock; it is a high-quality cyclical with disciplined capital return.
 
 ## Situation Summary
 
-Newmont is the world's largest gold miner, trading at $99 after a 155% rally in 2025 driven by surging gold prices (now ~$5,000/oz) and the successful integration of the $17B Newcrest acquisition. The stock has pulled back ~26% from its 52-week high of $134.88, creating a potential re-entry window. Q4 2025 results were strong: $2.52 EPS (beat by 30%), record $7.3B FCF, and a net cash balance sheet after $3.4B of debt reduction. However, 2026 guidance calls for lower attributable production (5.3M oz vs higher 2025 levels) and higher AISC (~$1,680/oz), creating a near-term "trough production" year. Gold price remains exceptionally supportive with major banks targeting $5,000-$6,000/oz by year-end 2026.
+Newmont has had a strong run: gold has traded in the $3,000-3,400 per ounce range through early 2026, driving record free cash flow ($7.3 billion in 2025, versus $3.0 billion in 2024 and effectively zero in 2023), and the stock ran from around $33 in early 2024 to $134 in late 2025 before correcting to $105 over the last two months on rising real bond yields. Today's $105.09 print sits between the 200-day moving average ($98.6) and the 50-day ($111.6), suggesting the stock is consolidating after a major up-move rather than breaking down. Recent news pulse is mixed: peer Agnico Eagle just approved a $2.4 billion project (reinforcing the sector's confidence in the gold price), but headlines also note rising bond yields pressuring the gold complex and a short-term sell-off. Management completed the Newcrest divestiture program on schedule, has roughly $7.6 billion of cash, around $5.6 billion of debt, and is executing on the $3 billion buyback. Next earnings is 2026-07-23 with consensus earnings-per-share around $2.17 and revenue around $6.65 billion. The market is currently asking whether record free cash flow is a peak-cycle artifact or a new run-rate.
 
 ## Variant Perception
 
-- **Consensus view:** NEM is a premium gold miner benefiting from high gold prices, but 2026 is a transition year with lower production and higher costs. Analysts rate it Strong Buy with a $142 median target, implying ~43% upside, but the stock is selling off on production guidance concerns and a broader gold pullback.
-- **Our view:** The market is overly focused on the 2026 production trough and ignoring: (1) NEM is in a NET CASH position with $7.6B cash vs $5.6B debt — extraordinarily rare for a gold miner; (2) the $6B buyback program at these depressed prices is massively accretive; (3) Ahafo North ramp adds 300K oz in 2026 and Lihir nearshore barrier unlocks 5M+ oz extending mine life beyond 2040; (4) at gold above $4,500/oz, even the "production trough" generates enormous FCF. The pullback from $135 to $99 prices in the production step-down but not the structural improvements.
-- **Trigger:** (1) Q1 2026 earnings (late April) showing Ahafo North ramp progress and FCF generation at current gold prices; (2) Gold continuing above $5,000 through H1 2026, making the "high cost" guidance irrelevant when margins remain 60%+; (3) Buyback execution visibly reducing share count over coming quarters.
+- **Consensus view:** Wall Street is constructively positioned with 20 analysts, "buy" consensus, $144 mean target (+37% from spot). The narrative is that NEM is a high-quality way to play gold, with the Newcrest deal "now behind it," record cash flow, and capital returns. But seven valuation models we run show the spread between geometric-Brownian-motion forecasts (which extrapolate the recent gold-led FCF surge) and discounted-cash-flow models (which mean-revert gold prices and margins) is enormous — GBM 3-year fair value around $199 versus multi-stage DCF around $35. The model disagreement is itself information: the market doesn't know whether to capitalize 2025 free cash flow or normalize it.
+- **Our view:** The right framing is not "is gold going up or down" but "what's the through-cycle free cash flow and what multiple does it deserve." At $3,000 gold, NEM's all-in sustaining cost roughly $1,500, and 6.5 million ounces of production, mid-cycle free cash flow is roughly $4-5 billion per year — call it $4.5 billion. At a 7% free-cash-flow yield (normal for a Tier-1 miner with capital discipline), that values the equity around $65 billion, or about $58 per share. The recent $7 billion free cash flow is *peak-cycle* and the stock has already partially de-rated from $134 toward that mid-cycle range. From $105, you're paying about $112 billion for an asset that earns $4-5 billion mid-cycle and $7 billion-plus at peak — call it about 14 times mid-cycle free cash flow or 16 times peak. That is not a screaming bargain, but it is also not expensive if you assume gold stays elevated (central bank buying, dollar de-dollarization, fiscal-dominance hedging are all multi-year tailwinds rather than one-off spikes).
+- **Trigger:** Q2 2026 earnings on 2026-07-23 is the next dateable catalyst. If free cash flow prints near the $1.8-2.0 billion-per-quarter pace, the market gets evidence that the cash flow is sustainable rather than peak-cycle, and the multiple stabilizes. A gold price stress test (real yields rising further) would be the bear trigger.
 
 ## Financial Snapshot
 
-| Metric | Value | 3yr Trend |
-|--------|-------|-----------|
-| Revenue | $22.7B | +23.9% CAGR |
-| Net Income | $7.1B | Dramatic recovery (from -$0.4B in 2022) |
-| FCF | $7.3B | Explosive growth (from $1.1B in 2022) |
-| ROE | 20.9% | Improving (from negative in 2022-2023) |
-| D/E | 0.17 | Sharply improving (from 0.49 in 2023) |
-| FCF Yield | 6.7% | |
-| Net Debt/EBITDA | -0.15x | Net cash position |
-| OCF | $10.3B | +47.5% CAGR |
-| Trailing EPS | $6.39 | |
-| Forward EPS | $11.32 (est.) | |
-| Forward P/E | 8.8x | |
+| Metric | Value (FY 2025) | 3yr Trend |
+|--------|-----------------|-----------|
+| Revenue | $22.7B | $11.9B → $11.8B → $18.7B → $22.7B (90% growth, but driven by Newcrest deal + gold price) |
+| Net Income | $7.1B | -$429M → -$2.5B → $3.3B → $7.1B (swing from loss to record) |
+| EBITDA | $14.1B | $2.4B → $0.3B → $7.5B → $14.1B |
+| Operating Cash Flow | $10.3B | $3.2B → $2.8B → $6.4B → $10.3B |
+| Free Cash Flow | $7.3B | $1.1B → $0.1B → $3.0B → $7.3B |
+| ROE | 25.8% | from negative to peak-cycle high |
+| Debt/Equity | 16% | de-leveraged from 31% post-Newcrest |
+| FCF Yield | 6.5% (on $112B cap) | |
+
+Net debt: about -$2B (net cash position). 3-year revenue compound annual growth: roughly 24% (skewed by Newcrest acquisition). Free cash flow is the real story: from break-even in 2023 to $7.3 billion in 2025.
 
 ## Valuation Models
 
-No existing models in the database for NEM. This is the first deep analysis.
+| Model | Fair Value | Upside | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| gbm_lite_3y | $206.61 | +97% | 0.80 | 2026-05-18 |
+| gbm_opportunistic_1y | $200.72 | +91% | 0.90 | 2026-05-18 |
+| gbm_3y | $198.79 | +89% | 0.94 | 2026-05-18 |
+| gbm_opportunistic_3y | $155.29 | +48% | 0.72 | 2026-05-18 |
+| autoresearch | $152.42 | +45% | 0.79 | 2026-05-18 |
+| gbm_1y | $149.11 | +42% | 0.89 | 2026-05-18 |
+| gbm_lite_1y | $140.75 | +34% | 0.56 | 2026-05-18 |
+| simple_ratios | $70.01 | -33% | 0.85 | 2026-05-18 |
+| dcf_enhanced | $68.80 | -35% | 0.70 | 2026-05-18 |
+| dcf | $53.55 | -49% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | $35.47 | -66% | 0.70 | 2026-05-18 |
 
-**Implied valuation check:**
-- At forward P/E of 8.8x on $11.32 forward EPS, the stock is pricing in significant earnings risk
-- Analyst consensus: $7.76-$8.79 EPS for 2026 (conservative vs forward EPS)
-- At $8.00 EPS and a 15x P/E (sector average for large gold miners in a bull gold market): fair value = $120
-- At $8.00 EPS and 18x P/E (premium for best-in-class, net cash, buybacks): fair value = $144
-- FCF-based: $7.3B FCF / $108B market cap = 6.7% yield; at 5% target yield, fair value = $133
+*Model price was $116.08 on 2026-05-18; today's live price is $105.09. Upside figures above are recalculated against the live price.*
 
-**Model consensus:** Multiple approaches converge on $120-$145 fair value, implying 20-45% upside from current $99.
+**Model consensus:** Bifurcated. All seven geometric-Brownian-motion/autoresearch models (which extrapolate recent price and earnings momentum) say significantly undervalued. All four discounted-cash-flow and multiples models (which mean-revert gold prices and apply normalized margins) say overvalued. This is the classic peak-cycle commodity producer set-up — the question is whether 2025 free cash flow is the new normal or a top. The honest read: fair value lies in the wide middle, probably $90-140 per share depending on through-cycle gold price assumption.
 
-## Business Quality (19/25)
+## Business Quality (17/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 4/5 | World's largest gold miner with Tier 1 assets across 5 continents. Scale advantages in procurement, financing, and talent. Reserve base of 130M+ oz provides decades of mine life. No pricing power per se (gold is a commodity), but lowest-quartile cost position provides structural margin advantage. |
-| Management | 4/5 | Excellent capital allocation: completed Newcrest integration, divested non-core assets for $4.3B, reduced debt by $3.4B, initiated $6B buyback, increased dividend. CEO Tom Palmer has delivered on promises. Insider selling is a minor concern (CFO sold $2M in March), but typical for executives at ATH compensation levels. |
-| Profitability | 4/5 | Operating margins 58%, profit margins 31%, ROE 21% — all outstanding for a miner. AISC of ~$1,680/oz vs gold at ~$5,000/oz = ~66% margin. Margins are gold-price dependent but structurally improved post-Newcrest synergies. |
-| Balance Sheet | 5/5 | Net cash position ($7.6B cash vs $5.6B debt). Current ratio 2.3x. Interest coverage enormous. $3.4B debt reduction in 2025. This is fortress-level for a gold miner. |
-| Growth | 2/5 | 2026 is a production trough year (5.3M oz). Ahafo North adds 300K oz, Lihir extension unlocks 5M oz long-term. But gold miners face geological depletion risk and rising costs. Growth is primarily gold-price driven, not organic volume growth. TAM expansion limited without new acquisitions. |
+| Moat | 2/5 | Gold producers have NO pricing power (price-taker). Moat exists only in low-cost position — NEM's Tier-1 portfolio gives a cost moat versus mid-tier miners but not versus Barrick or Agnico Eagle. Reserve quality and jurisdiction mix is genuinely good. |
+| Management | 4/5 | Tom Palmer has executed the Newcrest divestiture cleanly, returned focus to Tier-1, deleveraged faster than guided, and launched a $3 billion buyback. The Newcrest deal price (around $17 billion) looks reasonable in hindsight given current gold prices, but it was top-of-cycle timing risk. Capital allocation discipline visibly improved post-2024. |
+| Profitability | 4/5 | 2025 operating margin 49%, free-cash-flow margin 32%, return on equity 26% — all peak-cycle highs. Through-cycle, expect 25-35% operating margin. Among gold majors, top quartile on all-in sustaining cost. |
+| Balance Sheet | 5/5 | Net cash $2 billion, $7.6 billion cash on hand, $5.6 billion debt with manageable maturities, current ratio 2.4, investment-grade. About as good as a gold miner balance sheet gets. |
+| Growth | 2/5 | Production is roughly flat at 6-7 million ounces with byproduct copper growing slowly. This is a cash-return story, not a growth story. Reserves last roughly 10 years at current production with replacement via exploration uncertain. |
 
 ## Inflection Point
 
-**Yes — post-portfolio optimization inflection.** Newmont has completed a multi-year transformation: acquired Newcrest ($17B), divested non-core assets ($4.3B), deleveraged to net cash, and now enters a phase of pure shareholder returns ($6B buyback + $1.1B/yr dividend). The inflection from "integration/restructuring" to "harvest mode" is observable and underway. The 2026 production trough is the last hangover from this transition before Ahafo North and Lihir expansion drive volume recovery in 2027+.
-
-The evidence is clear: record FCF, net cash balance sheet, $6B buyback authorization, dividend increase. This is not speculative — the inflection has already begun.
+NEM is *past* its primary inflection — the 2023-2024 turnaround from negative free cash flow and a struggling Newcrest integration to record cash flow and shareholder returns. The stock has already re-rated to reflect that (from $33 to $134 and back to $105). The current setup is "post-inflection consolidation" rather than "buy the turn." No new identifiable inflection is coming up unless gold breaks meaningfully higher (above $3,500) and unlocks another leg of operational leverage.
 
 ## Bull Case
 
-- Gold sustains $5,000+/oz through 2026-2027, driven by central bank buying, ETF inflows, geopolitical uncertainty, and dollar weakness
-- Ahafo North ramps to 300K+ oz in 2026 ahead of schedule, proving the Tier 1 asset thesis
-- $6B buyback at depressed prices ($99) retires ~5.5% of shares annually, creating significant per-share value growth
-- Forward P/E of 8.8x re-rates to 14-16x as production trough passes and 2027 volume recovery becomes visible
-- Lihir nearshore barrier approval de-risks the long-term production profile
+- Gold sustains $3,000-3,500 through 2027 as central-bank buying, dollar de-dollarization themes, and US fiscal trajectory keep real-yields-driven gold demand intact; free cash flow stays at $6-8 billion annually.
+- Capital return program is sticky: at $3 billion buyback against $112 billion cap, NEM is shrinking the share count meaningfully. Dividend yield is modest (around 1%) but the implied total shareholder yield (dividend plus buyback) is around 3.5%.
+- Byproduct copper revenue grows as Cadia and Red Chris ramp, providing a partial hedge if gold weakens but copper holds on energy-transition demand.
+- Stock has corrected about 22% from the $134 peak without any negative earnings news — pure rates-driven sentiment de-rating. If 2026-07-23 Q2 prints another $1.8 billion-plus free-cash-flow quarter, the market re-rates back toward $130-plus.
+- Low beta (0.45) means it adds to portfolio diversification — gold and gold equities historically decorrelate from broad equity drawdowns during real-yield-down episodes.
 
 ## Bear Case
 
-- Gold corrects to $3,500-$4,000/oz as geopolitical tensions ease and real rates rise — NEM's earnings collapse disproportionately due to fixed costs and operating leverage
-- AISC inflation continues: labor, energy, and reagent costs push AISC above $2,000/oz, compressing margins even at high gold prices
-- Execution risk at Ahafo North and Lihir: cost overruns, permitting delays, or geological surprises
-- Production decline doesn't reverse: reserve replacement fails to keep pace with depletion, turning NEM into a slowly shrinking asset
-- Political/sovereign risk: PNG, Ghana, or other jurisdictions impose higher royalties or windfall taxes on super-normal gold profits
+- Gold mean-reverts to $2,200-2,500 as the Federal Reserve delivers fewer cuts than priced, real yields stay positive, and the dollar firms. Free cash flow compresses to $3-4 billion per year and the stock revisits $70-85. The four discounted-cash-flow models clustered at $35-70 are explicitly modeling this scenario.
+- **Under-covered by news headlines:** All-in sustaining cost inflation in 2025 came in at the high end of guidance ($1,580-1,620 per ounce range across kept mines), and 2026 guidance assumes only modest improvement. Most news focuses on the gold price; far less attention to the all-in-sustaining-cost trajectory. If mining cost inflation runs at 5%-plus for another year while gold stalls, the free-cash-flow compression accelerates faster than the gold-price model implies.
+- Yanacocha (Peru) has lingering reclamation liabilities and community-relations issues; Cerro Negro (Argentina) faced safety incidents and currency-control friction in 2024; any single Tier-1 mine going offline for 3-6 months hits production guidance hard.
+- Reserve replacement is structurally weakening across the gold industry — high-grade discoveries are rare, and Newmont's organic exploration pipeline is modest. Long-term, this means either more mergers and acquisitions (expensive at high gold prices) or production decline.
+- Stock is up 200%-plus from the 2024 lows; chartists will note that $105 is critical support — a break below $95 (200-day moving-average territory) could trigger another wave of selling.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| Bull | 30% | Gold $5,500+, 2026 EPS $10+, Ahafo North outperforms, buyback accretion | Re-rates to 16x on production recovery visibility | $160 | +61% |
-| Base | 45% | Gold $4,500-5,200, 2026 EPS $8-9, production in-line with guidance | Stable 13-14x multiple as trough year passes | $117 | +18% |
-| Bear | 25% | Gold drops to $3,500-4,000, 2026 EPS $5-6, cost inflation, execution misses | De-rates to 10-11x on margin compression fears | $60 | -39% |
+| Bull | 30% | Gold sustains $3,200+; FCF $7-8B; buyback shrinks share count 3%/yr | Multiple holds at ~16x FCF as market trusts run-rate | $145 | +38% |
+| Base | 45% | Gold $2,700-3,000; mid-cycle FCF $4.5-5.5B; AISC creeps up to $1,650 | Re-rates to ~14x mid-cycle FCF; modest multiple compression | $110 | +5% |
+| Bear | 25% | Gold breaks to $2,200; FCF compresses to $3B; one Tier-1 mine outage | De-rates to 12x trough FCF, or 1.5x book | $70 | -33% |
 
-**Expected value: +17.3%** (0.30 x 61% + 0.45 x 18% + 0.25 x -39%)
-
-**Thesis breaks if:** Gold falls below $3,500/oz sustainably (destroys the margin thesis), or Newmont production falls below 4.5M oz with no recovery path (asset depletion without replacement). Thesis-break price: ~$55 (implies gold crash or structural production decline).
+**Expected value: +6%** (0.30 × 38% + 0.45 × 5% + 0.25 × -33%)
+**Thesis breaks if:** Q2 2026 free cash flow prints below $1.3 billion *and* all-in-sustaining-cost guidance is raised — that combination would confirm the bear case is playing out (cost inflation outrunning gold). Also a thesis-break: gold trades sustainably below $2,400 for two consecutive quarters.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Moderately crowded — 81% institutional ownership, consensus Strong Buy (12 Buy, 3 Hold). Hedge fund favorite but not at extreme levels. |
-| Short interest | Low: 2.1% of float — no squeeze setup but also no consensus bearishness |
-| Technical position | OVERSOLD — trading at $99, down 26% from 52-week high of $135. Below 50-day MA ($118). Above 200-day MA ($88). RSI likely oversold after sharp pullback. |
-| Next catalyst | Q1 2026 earnings (late April 2026) — will show FCF generation at current gold prices and Ahafo North ramp progress |
-| Recent price action | Pulled back from $135 to $99 (~-27%) on 2026 production guidance concerns and gold price cooling. Has NOT run ahead of catalyst. |
-
-**Setup is FAVORABLE:** The stock has pulled back meaningfully, is technically oversold, has a near-term catalyst (Q1 earnings in ~5 weeks), and the production trough concerns are well-known and arguably priced in. The buyback provides a floor.
+| Crowdedness | Held by 81% institutions — broadly owned, not a fringe name. Gold majors are widely held in macro-hedge portfolios. Moderately crowded. |
+| Short interest | 1.85% of float — low. No squeeze setup, no concentrated bear view. |
+| Technical position | Between 200-day moving average ($98.6) and 50-day ($111.6). Roughly mid-range — neither oversold nor overbought. |
+| Next catalyst | Q2 2026 earnings 2026-07-23 (consensus earnings-per-share $2.17, revenue $6.65 billion). Ex-dividend 2026-05-27 (small effect). |
+| Recent price action | -22% from $134 peak over about 2 months. Selloff was rates-driven, not earnings-driven. |
 
 ## Verdict
 
-**BUY** — Conviction: MEDIUM
+**WATCH** — Conviction: MEDIUM
 
-Newmont offers a compelling entry at $99 after a 27% pullback from highs. The variant perception is that the market is over-weighting the 2026 production trough while under-appreciating: (1) the fortress balance sheet (net cash), (2) massive buyback at depressed prices, (3) Ahafo North and Lihir growth pipeline, and (4) structural margin expansion at gold above $4,500/oz. The forward P/E of 8.8x is too cheap for the world's largest gold miner in a secular gold bull market. Conviction is MEDIUM (not HIGH) because the thesis is heavily gold-price dependent — if gold corrects significantly, NEM's operating leverage works in reverse.
+Newmont is a well-managed, balance-sheet-clean blue-chip gold producer trading at a reasonable but not cheap mid-cycle valuation. The variant perception versus consensus is modest: the market correctly sees a high-quality free-cash-flow story but is uncertain whether 2025 is peak or new run-rate. Expected value of +6% from current $105 is too thin to compensate for the operational and gold-price risk in a cyclical commodity producer. The setup gets meaningfully better in two scenarios: (1) a further pullback to $90-95 (200-day moving-average area), which would price in the bear case and re-create a +25%-plus expected value, or (2) a confirmatory Q2 free-cash-flow print on 2026-07-23 that proves the cash flow is sustainable. Neither has happened yet.
 
-**Entry:** $95-$100 (current levels). Scale in: 50% now, 50% if gold pulls back further or on confirmation of Ahafo North ramp at Q1 earnings.
-**Thesis-break:** Below $55 (implies gold crash below $3,500 or structural production collapse). Stop-loss consideration around $80 for risk management.
-**Target:** $117-$160 over 12 months depending on gold price trajectory.
+**If WATCH:** Would upgrade to BUY at $92 or below (mid-cycle multiple compresses to about 10x free cash flow, expected value rises above +20%). Would also upgrade if Q2 2026 earnings on 2026-07-23 confirm $1.8 billion-plus free cash flow and reaffirm full-year all-in-sustaining-cost guidance — in that case, BUY up to $115. Generic existing-holder note: at $105, current shareholders who bought significantly lower can hold through the catalyst; those concerned about gold-price risk can trim 25-30% into the ex-dividend and revisit post-Q2.
+
+<!-- Do NOT add a "Position Context" / "Personal Position" / "My Holding"
+     section here. -->

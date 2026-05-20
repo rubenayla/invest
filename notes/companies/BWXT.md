@@ -1,142 +1,120 @@
 # BWX Technologies, Inc. (BWXT)
 
 **Sector:** Industrials | **Industry:** Aerospace & Defense
-**Price:** $208.52 | **Market Cap:** $19.10B | **EV:** ~$20.9B
-**Analysis Date:** 2026-04-30
+**Price:** $197.33 (2026-05-20) | **Market Cap:** $18.1B
+**Analysis Date:** 2026-05-20
 
-**What changed since 2026-04-06:** Stock dropped ~3.7% (from $216.48) including a sharp 3.8% one-day drop on Apr 29 on overvaluation/insider-selling concerns; new 52w high of $241.82 was set then faded back to ~$208; analyst mean target compressed from $230.91 to $209.70 (~0% upside, was +6.7%); BWXT announced a fourth bolt-on acquisition (Precision Components Group, ~$125M revenue, Apr 20) layering more commercial-segment dilution onto the margin debate; Q1 2026 earnings now confirmed for May 4 (4 trading days away) with consensus $818.6M revenue / $0.92 EPS (+20% rev, +1.1% EPS, illustrating the exact margin-compression risk flagged in the prior note); BWXT delivered a full TRISO core for Project Pele to INL in Dec 2025 (milestone) and signed a Rolls-Royce SMR steam generator detailed-design contract (Oct 2025).
+## Business Primer
+
+**What they do today.** BWX Technologies is a manufacturer of nuclear reactor cores, nuclear fuel, and high-precision nuclear components. Roughly two-thirds of revenue comes from the Government Operations segment, where BWXT designs and physically builds the small pressurized-water nuclear reactors that propel U.S. Navy submarines (Virginia-class attack subs, Columbia-class ballistic missile subs) and aircraft carriers (Ford-class). They do this under multi-decade contracts with the U.S. Department of Energy's Naval Nuclear Propulsion Program, which has used BWXT (and predecessor Babcock & Wilcox) as the sole-source reactor core manufacturer since 1956. The remaining third is Commercial Operations: nuclear fuel and fuel-handling components for Canadian CANDU power reactors, manufacturing of large nuclear pressure vessels and steam generators, medical radioisotopes (most notably Molybdenum-99, the precursor isotope used to generate Technetium-99m, which is injected into roughly 40 million patients per year for SPECT diagnostic imaging — bone scans, cardiac stress tests, cancer staging), and engineering services for nuclear plant operators (acquired with Kinectrics in 2025). The company books revenue under long-term cost-plus and fixed-price contracts; Q1 2026 hit $860M revenue (+26% year-over-year) on a total backlog of $8.65B (up from $4.88B a year earlier).
+
+**Why customers choose them (the value proposition).** A naval nuclear reactor core is a forged steel pressure vessel about the size of a small car, holding fuel assemblies of highly-enriched uranium that have to operate for 30+ years inside a submarine hull without refueling, while surviving combat shock loads, never leaking radiation into the crew compartment, and meeting tolerances measured in thousandths of an inch on welds that must hold under 2,000+ pounds-per-square-inch of pressurized water at 300 degrees Celsius. To bid on this work a company needs: (a) the heavy-forging and precision-machining infrastructure (BWXT's Mount Vernon, Indiana and Lynchburg, Virginia plants have the giant presses and clean rooms required, built up over 70 years), (b) a workforce of welders, machinists and engineers cleared at the "Q" security level by the Department of Energy (years of vetting per person), (c) the Nuclear Regulatory Commission and Department of Energy quality-system certifications (NQA-1, 10 CFR 50 Appendix B) which take a decade to build and a single audit failure to lose, and (d) the institutional process knowledge of having previously built reactor cores that worked. No other U.S. company has all four. The alternative for the Navy is not "switch supplier" — it is "spend 15 to 20 years rebuilding a parallel industrial base from scratch," which Congress has repeatedly declined to fund. Same logic on the commercial side: a startup like X-energy or Kairos that wants to build a small modular reactor needs someone who can actually forge and machine the pressure vessel and fabricate the tristructural-isotropic (TRISO) fuel under a Nuclear Regulatory Commission-licensed quality system — BWXT is one of two or three places on the continent that can. For medical isotopes, the value proposition is supply security: most Molybdenum-99 today comes from a handful of aging research reactors in the Netherlands, Belgium, Australia and South Africa, several of which are scheduled to shut down before 2030; BWXT's irradiation deal with Bruce Power's CANDU reactors in Ontario produces Molybdenum-99 without needing weapons-grade uranium and gives North American hospitals a domestic supply.
+
+**Where they want to grow.** Three explicit bets. First, naval volume scales with submarine production: the Navy's plan calls for roughly two Virginia-class and one Columbia-class submarine per year, which translates to a multi-year ramp in reactor-core deliveries and is the main reason backlog roughly doubled year-over-year in Q1 2026. Second, advanced reactors: BWXT is the manufacturing partner for Project Pele (the Department of Defense's transportable microreactor for forward bases), is fabricating the reactor pressure vessel for X-energy's Xe-100 high-temperature gas reactor, and is producing TRISO fuel through a Department of Energy contract — the bet is that small modular reactors actually get built this decade and BWXT is the industrial supplier each developer goes to. Third, medical isotopes: the $525M Kinectrics acquisition (closed 2025) and the Molybdenum-99 production ramp at Bruce Power target a global isotope market estimated at $5 to 10 billion and growing, plus therapeutic isotopes (Lutetium-177, Actinium-225) used in next-generation cancer radioligand drugs from Novartis and others. The recent Precision Components Group acquisition (announced Q1 2026) adds a U.S. commercial nuclear component manufacturing footprint to serve utility customers extending the lives of existing reactors. Three-to-five-year target: revenue ramping past $4 billion with adjusted EBITDA margins holding around 17 to 19 percent.
+
+**What could go wrong (business risks).** Government-program concentration is the single biggest risk: a multi-year Navy budget pause, a Columbia-class redesign slip, or a Congressional decision to stretch out the build cadence would directly suppress the core revenue line, and BWXT cannot pivot to another customer. Cost-plus contracts cap upside; fixed-price work on first-of-a-kind small modular reactors exposes BWXT to engineering overruns the way Boeing got hurt on the KC-46 tanker program. Skilled-labor scarcity is real — finding nuclear-cleared welders and machinists is harder every year, and a strike or wage spike at Mount Vernon could squeeze margins. The advanced-reactor thesis depends on customers (X-energy, Kairos, TerraPower, Project Pele) actually executing; if small modular reactor deployments stay perpetually "five years away," BWXT's commercial growth narrative weakens. Medical isotopes face competition from alternative production routes (cyclotron-produced Technetium-99m, Eckert and Ziegler, NorthStar Medical) and from incumbents like the Institute for Radioelements (IRE) in Belgium that may extend reactor life. Finally, the balance sheet has expanded: total debt rose from $1.06 billion to $2.02 billion in 2025 to fund Kinectrics and Precision Components Group, pushing debt-to-equity to about 158 percent — manageable given $480 million operating cash flow but leaving less room for the next acquisition or a downturn.
+
+**How to think about it.** BWXT is the sole-source industrial bottleneck for U.S. naval nuclear propulsion, riding a multi-decade submarine build cycle, with optionality on small modular reactors and medical isotopes layered on top — closer to a regulated infrastructure asset with a defense-budget tailwind than to a typical aerospace and defense contractor.
 
 ## Situation Summary
-
-BWX Technologies is the sole manufacturer of naval nuclear reactors and fuel for the U.S. Navy's submarine and aircraft carrier fleets — a government-mandated monopoly with no viable substitute. The stock is up ~104% off its 52-week low of $102.42 and trades 14% below its all-time high of $241.82, having pulled back ~3.7% since the prior note. FY2025 delivered $3.2B revenue (+18% YoY), adjusted EPS of $4.01 (+20%), and a record $7.3B backlog (+50% YoY). 2026 guidance: ~$3.75B revenue (+17%), $4.55-$4.70 non-GAAP EPS (+13-17%), $645-$660M adjusted EBITDA. The stock now trades at 58x trailing and 45x forward P/E.
-
-The April 20 announcement to acquire Precision Components Group ($125M revenue, ASME-certified heavy fabrication, 500K sqft, 400 employees) extends the commercial-segment build-out — closing 2H26, terms undisclosed, joining Kinectrics and AOT in the Commercial Operations segment. This is the *fourth* commercial acquisition in 18 months and lands directly on the open question from the prior note: when does the commercial segment's 6.8% operating margin re-rate, and at what point does additional dilution stop being "investment" and start being structural mix shift?
-
-Q1 2026 earnings drop **May 4** (Monday). Consensus: $818.6M revenue (+20% YoY), $0.92 EPS (+1.1% YoY). The implied operating leverage gap — 20% revenue growth producing only 1% EPS growth — is itself the bear case in numerical form. A clean beat with margin expansion would invalidate the bear thesis; a miss or in-line print with further margin compression would validate it.
+BWXT just reported Q1 2026 revenue of $860M (+26% year-over-year), with Commercial up 121% on nuclear-component, fuel and medical isotope ramp, and Government up 4% on steady naval work. Management raised full-year guidance: revenue at least $3.75B, adjusted EBITDA $650-665M, non-GAAP earnings per share $4.60-4.75, free cash flow $315-330M. Backlog hit $8.65B versus $4.88B a year earlier — a 77% jump driven by new Naval Nuclear Propulsion Program awards and the Kinectrics/Precision Components Group acquisitions. The stock trades at $197 (off the $242 52-week high) on 38x forward earnings and about 5.4x sales, with 95% institutional ownership and a "buy" consensus from 11 analysts at a $239 mean target. Narrative: defense-budget supplier with a clean nuclear-renaissance kicker, recently de-rated modestly as the small modular reactor sub-sector cooled and rate-sensitive long-duration stories sold off.
 
 ## Variant Perception
-
-- **Consensus view:** BWXT remains a "must-own" nuclear defense monopoly with $7.3B of contracted backlog and multiple optionality on TRISO/SMR/microreactor deployment. 11-analyst Buy rating with mean target now $209.70 — *the consensus has effectively de-rated to "fairly valued"* even while keeping the Buy rating. Short interest still ~4%.
-- **Our view (refined):** The April pullback partially closes the valuation gap but does not change the structural concern. At 45x forward and 58x trailing, BWXT is still priced for margin recovery that has not yet occurred. The Precision Components acquisition is a tell: management is doubling down on heavy-manufacturing capacity to capture commercial nuclear demand, but every commercial acquisition to date has come in below 7% operating margin, dragging the consolidated figure down. The 1.1% EPS growth implied by Q1 consensus on 20% revenue growth is the same margin-compression dynamic that took operating margins from 13.8% (2022) to 10.1% (2025). Insider selling has now accelerated ($2.7M sold in last 3 months, no buys). The 3.8% drop on Apr 29 (no specific catalyst) suggests the marginal buyer is gone and the stock is leaning on Q1 to hold.
-- **Trigger:** Q1 2026 earnings on **May 4, 2026**. Margin trajectory remains the single binary variable. Government segment margin (was 16.8%) and commercial segment margin (was 6.8%) — watch each separately, not just consolidated.
+- **Consensus view:** A high-multiple defense compounder with a story-stock kicker; analysts model steady mid-teens revenue growth and roughly 17% adjusted EBITDA margins, justify the multiple with backlog visibility, and treat small modular reactor / Molybdenum-99 upside as "maybe nice." Mean target around $239 implies roughly 21% upside.
+- **Our view:** Earnings power may already be priced; backlog growth is real but heavily reflects acquired revenue (Kinectrics + Precision Components Group) not organic Navy ramp, and the 38x forward price-to-earnings ratio leaves no margin for slippage. Under the hood, GAAP operating income was actually *flat* year-over-year in 2025 ($325M vs $329M in 2024) while revenue grew 18% — operating leverage has not yet materialized, even as headcount and capital expenditures grow. That margin compression at the operating-income line is what the multiple is ignoring.
+- **Trigger:** A naval-program revision in the FY2027 defense budget cycle (autumn 2026 markups), or a Q2/Q3 2026 print where operating margin again fails to expand despite revenue growth, would force the market to re-evaluate whether the higher revenue is profitably ramping.
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue (TTM) | $3.20B | +18.3% YoY (accelerating) |
-| Net Income | $329M | +16.7% YoY |
-| EBITDA | $552M | +9.1% CAGR |
-| FCF | $295M | +85% CAGR (from depressed 2022 base) |
-| ROE | 26.7% | Stable high-20s |
-| D/E | 1.67x | Spiked from 0.98x in 2024 (debt doubled for acquisitions) |
-| Net Debt/EBITDA | 2.7x | Up from 2.1x in 2024; PCG deal will add more |
-| FCF Yield | 1.5% | Low for a 58x P/E stock |
-| Gross Margin | 22.9% | Declining from 24.7% (2022) |
-| Operating Margin | 10.1% | Declining from 13.8% (2022) — *the variable* |
-| Trailing P/E | 58.3x | — |
-| Forward P/E | 45.2x | — |
-| Dividend Yield | 0.52% | $1.08/share |
-| 52w range | $102.42 - $241.82 | Currently 14% below ATH |
-
-**2026 Guidance:** Revenue ~$3.75B (+17%), adj. EBITDA $645-660M (+13-15%), non-GAAP EPS $4.55-4.70 (+13-17%), FCF $305-320M.
-
-**Q1 2026 consensus (reports May 4):** Revenue $818.6M (+20% YoY); EPS $0.92 (+1.1% YoY); Earnings ESP +2.96% (Zacks); BWXT has beaten consensus all 4 prior quarters (avg surprise +22.5%).
-
-**Pending acquisition (Apr 20, 2026):** Precision Components Group — $125M revenue, 500K sqft heavy manufacturing, 400 employees, ASME-certified pressure vessel/heat exchanger fab. Joins Commercial Operations. Closes 2H26. Terms undisclosed (likely $300-500M based on revenue multiples). Adds capacity for commercial nuclear renaissance but extends the margin-dilution dynamic.
+| Revenue (2025) | $3.20B | +12.7% CAGR (2022 to 2025) |
+| Net Income (2025) | $329M | +11.4% CAGR |
+| Operating Income (2025) | $325M | flat ($309M to $325M) |
+| EBITDA (2025) | $552M | +9.1% CAGR |
+| Operating Cash Flow (2025) | $480M | rising steadily |
+| Free Cash Flow (2025) | $295M | $46M to $295M (rebuilding) |
+| Return on Equity | 29% | high, partly leverage-driven |
+| Debt-to-Equity | 158% | up from ~120% pre-Kinectrics |
+| Net Debt / EBITDA | ~2.7x | manageable |
+| Free Cash Flow Yield | 1.6% | low |
+| Trailing P/E | 52x | rich |
+| Forward P/E | 38x | rich |
+| Price-to-Sales | 5.4x | high for industrials |
 
 ## Valuation Models
 
-| Model | Fair Value | Upside vs $208.52 | Confidence | Notes |
-|-------|-----------|-------------------|------------|-------|
-| DCF (aggressive) | $225.31 | +8.0% | 0.70 | 25% growth assumption |
-| DCF Enhanced | $191.62 | -8.1% | 0.70 | More conservative |
-| Multi-stage DCF | $142.13 | -31.8% | 0.70 | Stages down growth |
-| RIM | $85.40 | -59.0% | 0.70 | Known asset-light bias |
-| GF Value | $130.12 | -37.6% | 0.80 | Per GuruFocus, Apr 29 |
-| Simple Ratios | $53.26 | -74.5% | 0.90 | Generic peer-based |
-| Analyst Mean Target | $209.70 | +0.6% | — | Down from $230.91; 11 analysts |
+| Model | Fair Value | Upside (vs $197.33) | Confidence | Run Date |
+|-------|-----------|---------------------|------------|----------|
+| llm_deep_analysis (prior run) | $220 | +11% | 0.70 | 2026-04-06 |
+| rim | $63 | -68% | 0.70 | 2026-05-18 |
+| simple_ratios | $48 | -76% | 0.85 | 2026-05-18 |
+| dcf_enhanced | $33 | -83% | 0.70 | 2026-05-18 |
+| dcf | negative | not meaningful | 0.70 | 2026-05-18 |
+| multi_stage_dcf | negative | not meaningful | 0.70 | 2026-05-18 |
+| growth_dcf | n/a | n/a | n/a | 2026-05-18 |
 
-**Model consensus (refined):** The pullback does not materially change the model picture — still no model with high confidence sees significant upside. The analyst mean target has *de-rated by ~9%* since the prior note (from $230.91 to $209.70), confirming sell-side is taking down expectations even before Q1 prints. Only the most aggressive DCF finds upside; everything else flags overvaluation.
+*The 2026-05-18 models used a current_price of about $222; today's price is $197 (about 11% lower), so the upside percentages were recalculated against today's price.*
 
-## Business Quality (20/25)
+**Model consensus:** Every quantitative model says BWXT is materially overvalued — discounted cash flow models go negative because reinvestment (capital expenditure, working capital, acquisitions) overwhelms current free cash flow at any reasonable discount rate, and the residual income model gets around $63 because book value is only $1.2 billion against an $18 billion market capitalization. The catch: these models are notorious for under-valuing defense primes and infrastructure assets where contract backlogs and regulatory moats are not captured in financial statements. The honest read: the stock is *expensive* relative to current cash generation, but the models cannot see the multi-decade Navy contract visibility or the optionality on small modular reactors and isotopes.
+
+## Business Quality (18/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 5/5 | Government-mandated monopoly on naval nuclear reactors. Sole-source naval fuel. Sole large-scale TRISO manufacturer in North America (proven by Dec 2025 Project Pele full-core delivery). Sole CANDU-component designer in North America. Q-clearance and NRC barriers are essentially insurmountable. |
-| Management | 4/5 | CEO Geveden has executed: Kinectrics, AOT, now PCG. Capital allocation aggressive (4 commercial deals in 18 months). Concern: CEO sold $2M at $203 in Feb; total insider selling now $2.7M in last 3 months with zero buying. ROIC ~9.3% — adequate but unremarkable for the moat quality. |
-| Profitability | 3/5 | Operating margins declining 13.8% → 10.1% across 3 years. Government segment 16.8% (healthy); commercial 6.8% (drag). Q1 consensus implies the dilution dynamic is *still active* (20% rev growth → 1% EPS growth). PCG acquisition continues the pattern. |
-| Balance Sheet | 4/5 | Net debt/EBITDA 2.7x manageable for a contracted-revenue defense name; PCG deal will push it higher. $500M cash. Interest coverage adequate. Leverage rising for a reason (capacity build), but each new bolt-on extends the deleveraging timeline. |
-| Growth | 4/5 | 12.7% revenue CAGR; $7.3B backlog = 2+ years visibility. Multiple vectors: Columbia/Virginia subs, TRISO/SMR (Project Pele full core delivered Dec 2025; Rolls-Royce SMR steam-generator design Oct 2025), Kinectrics international (AP1000 Bulgaria), medical isotopes (MURR), DUECE uranium pilot, PCG heavy-manufacturing capacity. TAM expanding. |
+| Moat | 5/5 | Sole-source naval reactor cores under a 70-year incumbency. Switching costs effectively infinite — the Navy has no other certified U.S. supplier. Nuclear Regulatory Commission and Department of Energy security/quality certifications keep new entrants out for a decade-plus. |
+| Management | 3/5 | CEO Rex Geveden has executed well operationally, but capital allocation is mixed: Kinectrics at $525M and Precision Components Group add capability but pushed debt-to-equity from 120% to 158%, and operating income was flat in 2025 despite the revenue ramp. Insider ownership is only 0.36% — a yellow flag for skin-in-the-game alignment. |
+| Profitability | 3/5 | 23% gross, 10% operating, 10% net margins. Return on equity 29% is flattered by leverage. Operating margin has *fallen* from 13.8% (2022) to 10.1% (2025), which is the most concerning trend in the financials. |
+| Balance Sheet | 3/5 | Net debt $1.5B, EBITDA $552M, ratio 2.7x. Current ratio 2.4. Coverage fine, but the rapid debt build-up via mergers and acquisitions leaves less dry powder. |
+| Growth | 4/5 | Backlog up 77% year-over-year ($4.88B to $8.65B), revenue up 26% in Q1 2026, three independent growth vectors (submarines, small modular reactors, isotopes), but heavily M&A-driven and organic operating-income growth has stalled. |
 
 ## Inflection Point
-
-**Still partial — revenue inflection is real and accelerating; profitability inflection has not yet arrived and Q1 consensus implies it has not yet started.**
-
-The revenue side of the inflection has additional confirmation since the prior note: Project Pele full TRISO core delivered to INL (Dec 2025) — first commercial-scale TRISO production milestone. Rolls-Royce SMR steam-generator detailed design (Oct 2025) — first major non-naval reactor pressure-vessel program. PCG acquisition (Apr 2026) — heavy-manufacturing capacity for commercial reactors. All of these *add to* TAM and revenue trajectory.
-
-The profitability side has gotten *worse*, not better. Q1 consensus prints 20% revenue growth against 1% EPS growth — that's the mix-shift dilution writ large. The fourth commercial acquisition in 18 months extends the dilution window further. Until BWXT shows a quarter where commercial-segment operating margin moves above 9-10%, there is no observable evidence the inflection is happening.
+Yes — but a *revenue* inflection more than a *profitability* inflection. Naval submarine production cadence is structurally rising (Columbia-class first-of-class deliveries, Virginia Block V/VI ramp). Small modular reactor commercial deployments — long promised, perpetually delayed — finally have funded orders (TVA's Clinch River BWRX-300, Ontario Power Generation, Project Pele). Molybdenum-99 commercial production from Bruce Power began ramping in 2025 and replaces aging foreign reactors. The observable evidence: backlog up 77% year-over-year. The risk: if margin doesn't follow revenue, the inflection narrative is hollow.
 
 ## Bull Case
-
-- **Q1 2026 (May 4) prints clean beat with margin expansion:** Government margin holds 16-17%, commercial margin steps toward 8-9%, EPS beats $0.92 consensus by 10%+ — multiple holds at 50x and stock re-rates back above $230
-- **Submarine production ramp accelerates:** Columbia and Virginia class create a 30+ year naval-reactor demand floor; volume ramp through 2030 lifts government segment margin via fixed-cost absorption
-- **TRISO becomes the SMR/microreactor standard:** Project Pele is the proof-of-concept; commercial X-energy/Pele successor contracts could create a high-margin recurring fuel business that doesn't dilute commercial margin
-- **PCG and Kinectrics integration deliver leverage:** Commercial segment margin recovers toward 12-15% by 2027 as capacity utilization rises and integration costs roll off; consolidated operating margin returns to 13-14%
-- **Nuclear-for-AI-data-centers narrative re-accelerates:** BWXT positions as picks-and-shovels supplier; international AP1000 wins (Bulgaria template) and Rolls-Royce SMR program create a multi-decade tailwind
+- Naval production cadence accelerates with Columbia-class entering serial production, locking in 10+ years of reactor-core revenue at rising volumes.
+- Small modular reactor deployments (X-energy Xe-100, BWXT BWRX-300 components, Project Pele) move from prototype to commercial orders, with BWXT capturing high-margin first-of-a-kind manufacturing on every credible Western program.
+- Kinectrics and Precision Components Group integrations deliver synergies and lift Commercial operating margin back above 15% as one-time integration costs roll off.
+- Molybdenum-99 and Lutetium-177 production scales into a structurally undersupplied isotope market; medical revenue grows from low-hundreds-of-millions toward $500M+ at high margins.
+- Geopolitics keeps defense budgets elevated, and "supply-chain reshoring" thematics extend the rich multiple.
 
 ## Bear Case
-
-- **Q1 2026 misses or prints in-line with further margin compression:** Commercial segment margin drops below 6%, government margin compresses on contract mix — confirms dilution is structural, not transitory; multiple compresses violently from 45x forward to 30-35x
-- **Margins never recover:** The pattern of "buy commercial revenue, dilute consolidated margin" repeats with PCG; BWXT becomes a "revenue grower with stagnant earnings" story. The 1.1% Q1 EPS growth on 20% revenue growth is the canary.
-- **Acquisition fatigue and integration risk:** Four bolt-ons in 18 months (Kinectrics, AOT, PCG, plus smaller). Net debt/EBITDA pushes toward 3.0x+ post-PCG close. If any one of these stumbles, EPS takes a hit while interest expense rises.
-- **SMR/microreactor commercialization delayed:** Project Pele is still a *prototype*; commercial deployment of TRISO-fueled microreactors is years away. If timelines slip another 2-3 years, the optionality discounts hard.
-- **Insider selling continues:** $2.7M sold in the last 3 months, zero buys. Not a smoking gun but a subtle signal that the people closest to the numbers don't see the next leg up at these levels.
-- **Defense budget reprioritization:** A naval shipbuilding pause (Columbia/Virginia programs are over budget and behind schedule) would crater the government segment — BWXT's revenue floor.
+- The under-covered risk: *operating margin has compressed despite revenue growth.* GAAP operating income was essentially flat 2022 to 2025 ($308M to $325M) while revenue grew from $2.23B to $3.20B — implying the incremental dollar of revenue is generating very little incremental operating profit. If Q2/Q3 2026 prints continue this pattern, the multiple cannot hold. The news leads with backlog growth; the 10-K and quarterly footnotes show this margin stall, and it is not in headlines.
+- Defense-budget concentration: a Congressional Columbia-class stretch-out or sequester scenario in the FY2027 appropriations cycle would directly cut into the backlog conversion timing.
+- Heavy nuclear-cleared labor shortages drive wage inflation that fixed-price contracts cannot pass through.
+- Small modular reactor projects slip again, deflating the commercial growth story; Kinectrics goodwill becomes an impairment candidate.
+- Balance sheet leverage (158% debt-to-equity) limits flexibility, and refinancing risk rises if rates stay elevated.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | Q1 beats + margin expansion; 2026 EPS $4.85+; commercial margin steps toward 9%; 2027 EPS path to $5.50+ | Holds at 48-50x forward | $260 | +25% |
-| **Base** | 50% | Q1 in-line; 2026 EPS lands mid-guide ($4.55-4.65); margins stabilize at 10-11%; PCG closes neutral | De-rates from 45x to 40x as growth normalizes | $215 | +3% |
-| **Bear** | 25% | Q1 misses on margin; commercial drops below 6%; 2026 EPS $4.30-4.40; PCG integration adds drag | De-rates to 32-35x as multiple-compression dominates | $150 | -28% |
+| Bull | 25% | Revenue to $4.3B by 2028, operating margin expands to 13%, EPS to $6.50 | Multiple stays around 40x as SMR thesis catches | $260 | +32% |
+| Base | 55% | Revenue to $3.85B by 2027, operating margin stuck at 10-11%, EPS to $5.20 | Modest de-rate to 36x | $187 | -5% |
+| Bear | 20% | Naval program review or small-modular-reactor slip, EPS stays around $4.60, operating margin compresses further | De-rate to 28x as growth story breaks | $128 | -35% |
 
-**Expected value:** (0.25 × 25%) + (0.50 × 3%) + (0.25 × -28%) = 6.25% + 1.5% + (-7.0%) = **+0.75%**
-
-Slightly worse EV than the prior note's +1.7%, despite the lower price — because the margin evidence has not improved and the analyst consensus has de-rated, while the company has added another margin-dilutive acquisition.
-
-**Thesis breaks if:** Q1 prints commercial-segment operating margin <6% AND consolidated operating margin <10% (combination would confirm structural dilution). Or government segment shows revenue declines (program delays/cuts). Or net debt/EBITDA exceeds 3.5x post-PCG without a clear deleveraging path.
+**Expected value: +1.5%** (0.25 × +32 + 0.55 × −5 + 0.20 × −35)
+**Thesis breaks if:** Two consecutive quarters of revenue growth above 15% with operating margin still below 11%, OR a publicly disclosed Columbia-class delay/budget stretch.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | **Still very crowded** — 94% institutional ownership, 11-analyst Buy rating, but mean target compressed to $209.70 (~0% upside). Sell-side is signaling exhaustion via target cuts even while keeping rating. |
-| Short interest | ~4% — still negligible; no squeeze setup |
-| Technical position | $208.52, 14% below ATH ($241.82). Sharp 3.8% drop on Apr 29 on no specific catalyst → marginal buyer thinning. RSI cooling but not oversold. |
-| Next catalyst | **Q1 2026 earnings — May 4, 2026 (Monday after-market)**. Binary event. Consensus $818.6M / $0.92. ESP +2.96%. Track record: 4-for-4 beats with avg +22.5% surprise — but margin trajectory is the *quality* of the beat, not just EPS. |
-| Recent price action | Pulled back from ATH; -3.7% since prior note. Sentiment shift visible in analyst-target compression and insider selling pattern. |
-| Insider activity | $2.7M sold in last 3 months, zero buying — modestly negative signal |
+| Crowdedness | Crowded — 95% institutional ownership, "buy" consensus, popular defense holding |
+| Short interest | 4.0% of float — modest |
+| Technical position | Off about 18% from 52-week high of $242; closer to neutral than oversold |
+| Next catalyst | Q2 2026 earnings (early August 2026); FY2027 Department of Defense budget markup (autumn 2026) |
+| Recent price action | Down about 18% from peak, beta 0.78 (low volatility), reflects modest sector cooling rather than thesis break |
 
 ## Verdict
 
-**WATCH** — Conviction: **MEDIUM-HIGH**
+**WATCH** — Conviction: MEDIUM
 
-The May 4 earnings print is a clean binary event 4 trading days away, and the risk/reward is asymmetric in favor of waiting. Buying ahead of the print at $208 means accepting full Q1 risk for an EV around +1% — a poor trade. Waiting until after the print costs 5-10% of upside in the bull case ($235-260 target zone) but eliminates the 25% probability of a -28% drop, which is the dominant scenario in expected-value terms.
+The moat is real and the backlog is exploding, but the stock is priced for operating leverage that has not shown up yet — operating income was *flat* in 2025 despite +18% revenue, and every discounted cash flow model in the database screams expensive. At 38x forward earnings, you are paying for a small-modular-reactor and isotope optionality narrative on top of a defense-prime core, with no margin for execution slippage. Pay for it cheaper or wait for margin proof.
 
-The business remains exceptional (quality 20/25); the price-versus-evidence relationship has not improved. Operating margins are still down 370 bps from 2022, the fourth consecutive commercial acquisition (PCG) in 18 months extends the margin-dilution window, and Q1 consensus mathematically implies margin compression continues (20% revenue → 1% EPS). Sell-side has quietly de-rated targets to flat. Insider selling pattern is consistent with a "fairly priced" view from those closest to the numbers.
+**Would upgrade to BUY at:** approximately $155-165 (28-30x forward EPS, in line with peer defense primes), OR at current prices if Q2 or Q3 2026 prints show operating margin expansion above 12% on continued revenue growth.
 
-**Action:**
-1. **Do not initiate before May 4.** EV is too thin to justify Q1 risk.
-2. **If Q1 beats with margin expansion (commercial >8%, consolidated >11%):** upgrade to BUY on the post-print pullback (if any) toward $215-225 — the bull thesis re-engages and the multiple is justified.
-3. **If Q1 in-line or misses with margin compression:** target a pullback to $170-185 (35-40x forward) before initiating; that level provides 15-20% margin of safety and would coincide with multiple compression to a more defensible range.
-4. **If Q1 prints clean beat with margin expansion AND stock gaps up:** stand aside, wait for the next pullback. Do not chase.
+**If already long:** Trim 25-40% above $230 (re-test of 52-week high); hold the remainder for the multi-decade naval thesis. Do not add at $197+.
 
-**Key data points to extract from the May 4 print (in priority order):**
-1. Commercial Operations segment operating margin (was 6.8% in FY25; need to see 7.5%+)
-2. Consolidated operating margin (was 10.1% FY25; need 10.5%+ to invalidate compression thesis)
-3. Government Operations segment revenue and margin (any sign of program delays)
-4. Updated 2026 guidance — any narrowing toward the high end of $4.55-4.70 EPS
-5. Backlog progression (was $7.3B exiting FY25)
-6. PCG acquisition — purchase price, accretion timeline, financing structure
+<!-- Generic research only; personal position context belongs in
+     ~/vault/finance/notes/positions/BWXT.md if needed. -->

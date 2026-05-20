@@ -1,126 +1,129 @@
-# Meta Platforms (META)
+# Meta Platforms, Inc. (META)
 
 **Sector:** Communication Services | **Industry:** Internet Content & Information
-**Price:** $606.70 | **Market Cap:** $1,535B
-**Analysis Date:** 2026-03-20
+**Price:** $611.21 (2026-05-19) | **Market Cap:** ~$1.55T
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** Meta is a digital-advertising company that monetizes attention across its Family of Apps — Facebook, Instagram, WhatsApp, Messenger, and Threads — collectively reaching roughly half the world's population every month. Advertisers (mostly small and mid-sized businesses, plus large brands) bid in real-time auctions to place ads in users' feeds, Stories, and Reels. The Family of Apps generated $55.9B of revenue in Q1 2026 (about 99% of the total) at a 41% operating margin and is the cash engine that funds everything else. The second segment, Reality Labs, sells Quest virtual-reality headsets, Ray-Ban Meta and Oakley AI smart glasses, and is building Orion-class augmented-reality glasses for the future; it does roughly $400M/quarter in revenue but loses around $4B/quarter, with cumulative losses now over $90B since 2020.
+
+**Where they want to grow.** Three growth bets, all financed by the ads engine. First, AI-driven ad efficiency: the Andromeda ranking system, GEM (Generative Embedding Models), and Lattice auction infrastructure are lifting ad price (+12% year-over-year in Q1 2026) and impressions (+19%) simultaneously — that combination is rare and is the proximate cause of revenue reaccelerating to 33% growth. Second, monetizing the under-monetized surfaces: Threads (400M users, ads rolling out in 2026 with $4-8B revenue potential at maturity), WhatsApp Business messaging (real revenue in Brazil and India, just getting started in developed markets), and Reels (now contributing to net revenue). Third, AI-native consumer hardware and assistants: Ray-Ban Meta daily active users tripled year-over-year, the Ray-Ban Display sold out in-store inventory in 48 hours, and Meta AI now serves billions of users with the Llama model family as the open-source backbone. The 3-5 year vision is "the next computing platform" — glasses that replace the phone — paid for by the ad engine in the meantime.
+
+**What could go wrong (business risks).** Five live ones. (1) AI capex intensity: 2026 capex guided to $125-145B (up from $72B in 2025), free cash flow already declined in 2025 ($46B versus $54B prior year) despite revenue growth — if AI advertising lift plateaus before the capex compounds, returns on invested capital collapse. (2) Reality Labs is a permanent ~$15-20B/year drag with no clear path to profitability before 2028+, and the Ray-Ban Display launch was already delayed once. (3) Regulatory: the European Union opened a formal antitrust probe into Meta's WhatsApp policy blocking competing AI providers; a €200M DMA (Digital Markets Act) fine on "pay or consent" already landed; the EU's first DMA revision report drops May 2026 and may pull cloud/AI into scope. (4) Competition for user time from TikTok and YouTube Shorts remains intense, and iOS privacy changes still cap ad-signal quality. (5) AI commoditization: if Llama falls behind Gemini and GPT-5 (Llama 4 Behemoth has reportedly slipped), Meta's open-source-as-moat thesis weakens.
+
+**How to think about it.** Meta is a social-advertising cash machine funding a long-cycle, high-risk bet on AI infrastructure and AR/VR glasses. The investment question is not "is the ads business good" (it is exceptional — 40% operating margin, 33% growth, AI is improving it not disrupting it) but "will the capex pay off without breaking the engine that funds it?" You are betting on Zuckerberg's capital allocation across a five-year horizon, not on this quarter's numbers. The closest mental analog is Amazon in 2014-2018: investors hated the AWS capex until they loved it.
 
 ## Situation Summary
 
-Meta is in the middle of a historic capital spending cycle -- guiding $115-135B in 2026 capex (roughly double 2025's $70B) to build AI infrastructure for what Zuckerberg calls "personal superintelligence." The stock is down 24% from its 52-week high of $796, trading below both its 50-day ($652) and 200-day ($691) moving averages. Q4 2025 was a blowout ($59.9B revenue, +24% YoY, EPS $8.88 vs $8.21 est.) and Q1 2026 guidance of $53.5-56.5B crushed the Street's $51.4B. But a cascade of concerns is weighing on shares: the Avocado frontier AI model is delayed to May 2026 with performance gaps vs. Google's Gemini, a reported 20% workforce reduction (~15,800 jobs) is being planned, and the $27B Nebius AI infrastructure deal underscores the sheer scale of spending. The core ad business remains an extraordinary cash machine, but FCF is set to crater in 2026 as capex absorbs most operating cash flow.
+Meta reported a blowout Q1 2026 on April 29 — revenue $56.3B (+33% YoY), net income $26.8B (+61%), EPS $10.44 (+62%), driven by AI-powered ad lift (price +12%, impressions +19%). The stock fell roughly 7% after-hours and has continued to drift lower (now $611, down about 23% from the 52-week high of $796) because management raised 2026 capex guidance from $115-135B to $125-145B citing higher GPU and custom-chip pricing, and simultaneously announced about 8,000 layoffs (~10% of workforce) — investors read this combination as Meta acknowledging that AI infrastructure costs are running ahead of plan. Adding to the overhang: the European Commission opened a formal antitrust probe into Meta's WhatsApp AI-provider policy in late April, and the Ray-Ban Display launch slipped (a soft signal that the glasses roadmap is behind). The narrative shifted from "AI is reaccelerating the ads engine" (true) to "but the capex bill is unbounded" (also true, until proven otherwise).
 
 ## Variant Perception
 
-- **Consensus view:** META is a world-class ad business making a risky but potentially transformative bet on AI. "Strong Buy" consensus with $864 median target (43% upside from current). 46 of 56 analysts rate Strong Buy. The market expects the AI spend to eventually pay off but is nervous about the magnitude, timing, and Avocado delays. The recent pullback reflects capex sticker shock, not fundamental deterioration of the ad business.
-- **Our view:** The consensus is probably directionally right but underestimates two risks: (1) FCF will collapse to ~$8B in 2026 vs $46B in 2025, an ~83% drop, as $125B+ capex absorbs nearly all operating cash flow. The market has not fully priced in how thin the FCF cushion becomes. (2) The Avocado model delay to May 2026, with performance between Gemini 2.5 and 3.0, suggests Meta may be falling behind in frontier AI despite spending more than anyone. The shift from open-source (Llama) to proprietary for Avocado signals a strategic pivot that could alienate the developer ecosystem that made Llama successful. However, this is a consensus name with 60 analysts covering it -- the variant perception is weak. The debate is about execution timing, not undiscovered value.
-- **Trigger:** Q1 2026 earnings (~April 29) is the next major catalyst. Key questions: (a) Avocado model progress/timeline, (b) whether capex is tracking high or low end of $115-135B range, (c) whether ad revenue growth holds above 20%. Secondary trigger: Avocado model release (now targeted May 2026) -- success could reignite shares to $750+; failure could push toward $500.
+- **Consensus view:** Strong-buy rating from sell-side (58 analysts, mean target $826), but recent price action says investors are punishing the capex revision. Two camps: bulls believe AI ad-lift compounds and Threads/WhatsApp monetization is the next leg; bears say capex outruns FCF, Reality Labs stays a $15-20B drag, and the AI race forces Meta to keep spending defensively.
+- **Our view:** The market is over-weighting near-term capex pain and under-weighting that Meta is the only hyperscaler whose AI spend has a direct, measurable, immediate ROI line — its own ads engine. Andromeda and GEM are already lifting prices 12% and impressions 19% simultaneously; that is $20B+ of incremental high-margin revenue per year traceable to AI infrastructure. Google's AI spend funds Search defense; Microsoft's funds Azure compute resale; Meta's funds its own first-party ad inventory at 80%+ gross margins. The capex panic conflates Meta with companies that lack this feedback loop.
+- **Trigger:** Q2 2026 earnings (late July) — if ad price and impression growth hold at double-digits and operating margin stays above 40% despite the capex ramp, the "AI ROI is real" thesis gets validated. Secondary triggers: Threads monetization launch (mid-2026), Ray-Ban Display launch (second half of 2026), and the EU DMA revision report (May 2026).
 
 ## Financial Snapshot
 
-| Metric | Value | 3yr Trend |
-|--------|-------|-----------|
-| Revenue | $201.0B | +19.9% CAGR |
-| Net Income | $60.5B | +37.6% CAGR |
-| EBITDA | $105.7B | +41.0% CAGR |
-| FCF | $46.1B | Declined from $54.1B in 2024; est. ~$8B in 2026 |
-| ROE | 27.8% | Stable |
-| D/E | 0.39x | Rising (debt up from $26.6B to $83.9B in 3 years) |
-| FCF Yield | 3.0% | Compressing (est. ~0.5% in 2026) |
-| Net Debt/EBITDA | 0.45x | Manageable |
-| Operating Margin | 41.3% | Expanding |
-| Capex/Revenue | 34.7% (2025) | Surging to ~57% est. in 2026 |
-
-**Key concern:** FCF declined YoY in 2025 despite 22% revenue growth because capex nearly doubled ($69.7B vs $37.3B in 2024). In 2026, if capex hits the $125B midpoint and OCF grows 15%, FCF collapses to ~$8B. Net income also dipped from $62.4B to $60.5B YoY in 2025, the first decline in 3 years, likely due to higher depreciation from the capex surge. The $27B Nebius deal adds further capex commitments extending through 2031.
+| Metric | Value (FY2025) | 3yr Trend (2022→2025) |
+|--------|---------------|-----------------------|
+| Revenue | $201.0B | +20%/yr CAGR ($116B → $201B) |
+| Net Income | $60.5B | +38%/yr CAGR ($23B → $60.5B) |
+| FCF | $46.1B | Flat-to-declining ($54B in 2024) |
+| Operating CF | $115.8B | +32%/yr CAGR |
+| Capex | $69.7B | +30%/yr CAGR; jumped from $37B (2024) |
+| Operating Margin | 41% | Expanding (24% → 41%) |
+| ROE | 33% | Stable, top-tier |
+| Debt/Equity | 0.36 | Low |
+| FCF Yield (LTM) | 3.0% | Compressed by capex surge |
+| Cash | $35.9B | Down from $43.9B as capex hits |
+| Current Ratio | 2.35 | Strong liquidity |
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence |
-|-------|-----------|--------|------------|
-| gbm_opportunistic_3y | $1,208 | +99% | 0.92 |
-| autoresearch | $1,104 | +82% | 0.89 |
-| gbm_lite_3y | $1,151 | +90% | 0.81 |
-| gbm_opportunistic_1y | $1,082 | +78% | 0.89 |
-| gbm_lite_1y | $1,077 | +78% | 1.00 |
-| Analyst consensus | $864 | +42% | -- |
-| gbm_1y | $856 | +41% | 0.92 |
-| gbm_3y | $826 | +36% | 0.76 |
-| rim | $555 | -9% | -- |
-| growth_dcf | $541 | -11% | -- |
-| simple_ratios | $293 | -52% | high |
-| dcf_enhanced | $201 | -67% | -- |
-| dcf / multi_stage_dcf | $192 | -68% | -- |
+Models below were run 2026-05-18 at $678.62. Live price is $611.21, so upside % is **recalculated against today's price**.
 
-**Model consensus:** Extreme divergence (167pp spread). GBM/ML models uniformly bullish ($826-$1,208), reflecting strong momentum and growth trajectories. Traditional valuation models (DCF, RIM, ratios) uniformly bearish ($192-$555), reflecting that META trades at a premium to what static approaches justify. This is classic for high-growth tech in a capex cycle: DCF models see negative near-term FCF, while GBM models extrapolate revenue/earnings momentum. The RIM undervaluation is expected given META's asset-light ad business (known RIM bias). **GBM models are more reliable per our model notes, and at $607 (down from $627 three days ago), the upside on those models has expanded. The 16.9x forward PE is the cheapest META has been in this cycle.**
+| Model | Fair Value | Upside (vs $611.21) | Confidence | Run Date |
+|-------|-----------|---------------------|------------|----------|
+| gbm_lite_3y | $1,315 | +115% | 0.88 | 2026-05-18 |
+| gbm_3y | $990 | +62% | 0.87 | 2026-05-18 |
+| gbm_opportunistic_1y | $906 | +48% | 0.60 | 2026-05-18 |
+| gbm_opportunistic_3y | $865 | +42% | 0.66 | 2026-05-18 |
+| autoresearch | $853 | +40% | 0.77 | 2026-05-18 |
+| gbm_1y | $845 | +38% | 0.70 | 2026-05-18 |
+| gbm_lite_1y | $836 | +37% | 0.55 | 2026-05-18 |
+| dcf_enhanced | $738 | +21% | 0.70 | 2026-05-18 |
+| dcf | $361 | -41% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | $261 | -57% | 0.70 | 2026-05-18 |
+| growth_dcf | $232 | -62% | 0.70 | 2026-05-18 |
+| simple_ratios | $214 | -65% | 0.85 | 2026-05-18 |
+| rim | $136 | -78% | 0.70 | 2026-05-18 |
 
-Note: No META data existed in the database prior to this analysis.
+*All models priced at $678.62 before yesterday's drift; the 10% gap to $611 makes them slightly more bullish than shown above.*
 
-## Business Quality (21/25)
+**Model consensus:** Sharp split. GBM/ML models (which look at price-history return distributions and consensus analyst trajectory) cluster +37% to +62% with high confidence. DCF/RIM family is deeply negative — but these models are known to under-value asset-light, high-PE growth companies and especially mis-price companies with capex ramps that have not yet earned their return (the multi_stage_dcf is reading 2025's $46B FCF as a permanent step-down). The dcf_enhanced model, which uses normalized assumptions, lands at +21% — probably the most reliable single point estimate. Per AGENTS.md guidance, trust GBM over DCF on growth names with capex inflections. Weighted mean of GBM family is roughly +45%.
+
+## Business Quality (22/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 5/5 | Dominant network effects (3.3B+ DAU across family of apps), unmatched ad targeting data, switching costs for advertisers, AI/ML infrastructure at scale. One of the widest moats in tech. |
-| Management | 4/5 | Zuckerberg's capital allocation is aggressive but has track record of bold bets paying off (mobile pivot, Instagram, Reels). Concerns: dual-class structure concentrates control, the metaverse pivot cost ~$50B+ before being effectively abandoned, Avocado model delays suggest execution challenges. Planned 20% workforce reduction shows cost discipline. Creator Fast Track program ($3B paid in 2025) builds ecosystem loyalty. |
-| Profitability | 5/5 | 82% gross margins, 41% operating margins, 30% net margins. Among the most profitable businesses on Earth. Core ad business is an extraordinary profit engine that continues to expand margins even as AI spending surges. |
-| Balance Sheet | 4/5 | Net debt/EBITDA only 0.45x, current ratio 2.6x. However, total debt has tripled in 3 years ($26.6B to $83.9B) and will accelerate further to fund capex. The $27B Nebius commitment adds long-term obligations. Still very manageable given cash generation, but trajectory warrants monitoring. |
-| Growth | 3/5 | Revenue grew 22% in 2025 on a $201B base -- remarkable. Q1 2026 guidance implies 23-27% growth. But law of large numbers is a real constraint. AI-driven ad improvements are the current growth engine. AI monetization beyond ads (Meta AI with 1B+ users, AI video tools at $10B run rate) is promising but speculative. Reality Labs continues to lose ~$19B/yr. |
+| Moat | 5/5 | Network effects across five apps, ~3.4B daily users, irreplicable social-data graph, ad-tech infrastructure (Andromeda/GEM), first-party data advantage post-iOS privacy changes, 67% of global social-ad spend. |
+| Management | 4/5 | Zuckerberg's capital allocation track record is mixed-positive: bought Instagram and WhatsApp for $1B and $19B (genius), pivoted out of Diem and Free Basics quickly, but Reality Labs has burned $90B with little to show. The "Year of Efficiency" buyback execution was textbook. Insider holdings tiny (0.1%) — voting control via Class B shares is the relevant lever. |
+| Profitability | 5/5 | 41% operating margin, 33% net margin, 33% ROE. The Family of Apps standalone is one of the most profitable businesses on earth. |
+| Balance Sheet | 4/5 | $36B cash, $84B debt (rising as Meta term-funds data centers), D/E 0.36, current ratio 2.35. Manageable but leverage trajectory worth watching as capex compounds. |
+| Growth Runway | 4/5 | Threads (~$5-8B opportunity), WhatsApp Business (large untapped), ad-tech AI lift compounding, Reels still ramping, glasses as five-year option. The cap is the law of large numbers — a $200B revenue base means 20% growth gets increasingly hard. |
 
 ## Inflection Point
 
-Meta is at a **capital allocation inflection**. The company is transitioning from a capital-light, high-FCF ad business into a capital-intensive AI infrastructure company. The $125B 2026 capex represents a bet that AI (personal assistants, AI-powered ad optimization, smart glasses, AI video generation) will become the next growth driver. This is analogous to Amazon's AWS investment cycle in 2014-2017, where massive capex depressed FCF before creating an enormous new profit center.
+**Yes — AI-driven ad efficiency inflection is visibly happening.** Observable evidence: Q1 2026 ad price +12% AND impressions +19% simultaneously (historically these trade off — pricing power AND volume growth at the same time is the AI ROI signal). Revenue growth reaccelerated from 22% (Q3 2025) to 33% (Q1 2026). Andromeda was rolled out to the full advertiser base mid-2025; the lift is showing up in Q1 numbers but is not yet fully in trailing financials. This is the kind of "shift has begun, not yet priced in" pattern that does not require buying the absolute bottom.
 
-**Evidence the inflection has begun:** (1) AI-driven ad improvements already contributing to 24% revenue growth, (2) AI video generation tools hitting $10B run rate in Q4 2025, (3) planned 20% workforce reduction signals operational discipline alongside spending, (4) Meta AI has 1B+ users, (5) Ray-Ban Meta smart glasses gaining traction with new retail flagship on Fifth Avenue.
-
-**Evidence of execution risk:** (1) Avocado frontier model delayed to May 2026 with performance gaps vs. Google Gemini, (2) shift from open-source to proprietary approach for Avocado may alienate developer ecosystem, (3) the $27B Nebius deal suggests Meta needs external capacity on top of its massive internal buildout -- scale of commitment is unprecedented, (4) successor "Watermelon" model already being planned, suggesting Avocado alone won't close the gap.
-
-The inflection is underway but the payoff is 2-3 years away. The key question is whether Meta can close the frontier model gap with Google/OpenAI by late 2026.
+Secondary inflection: Threads monetization launching in 2026 is a brand-new revenue line, not an extrapolation of an existing one.
 
 ## Bull Case
 
-- AI-powered advertising continues to drive 18-22% revenue growth through 2028, with AI models improving ad conversion rates and ROAS for advertisers
-- Meta AI becomes a major platform (1B+ users growing) and opens new monetization channels (subscriptions, commerce, enterprise); AI video tools scale past $10B run rate
-- AI capex peaks in 2026-2027 and then moderates as infrastructure buildout completes, driving massive FCF recovery (similar to AWS capex cycle)
-- Avocado model launches in May/June 2026 and closes the gap with Gemini, validating the spending thesis
-- Workforce cuts save $5-8B/yr, improving operating leverage; 16.9x forward PE is cheapest entry in this cycle
-- Smart glasses (Ray-Ban Meta) become a meaningful hardware platform with new retail distribution
+- **AI ad-lift compounds.** Andromeda/GEM/Lattice keep delivering more than 10% combined price/volume gains for two to three more years; revenue growth holds at 20%+ on a $200B base, FCF rebuilds as capex normalizes in 2027.
+- **Threads and WhatsApp monetization land.** Threads ads contribute $5-8B by 2028; WhatsApp Business messaging scales to $10B+ globally. Both are pure incremental margin on an existing user base.
+- **Ray-Ban Meta is the early iPhone moment.** Sales tripled year-over-year, in-store sellouts. If glasses cross 50M units/year by 2028, Reality Labs flips from drag to optionality.
+- **Margin floor at 35-40% even with capex.** Operating margin stayed at 41% in Q1 despite capex acceleration — operating leverage from AI is partially offsetting infrastructure costs.
+- **Buybacks resume aggressively.** $50B+ FCF base plus an active buyback program; share count shrinks 1-2%/yr, compounding the per-share story.
 
 ## Bear Case
 
-- $125B+ capex delivers no differentiated AI product; Avocado underperforms Gemini/GPT, and Meta ends up licensing rather than leading
-- FCF craters to near-zero in 2026-2027, forcing capital allocation trade-offs (buyback reduction, potential dividend cut, more debt issuance)
-- Ad revenue growth decelerates to single digits as market saturates and privacy/regulatory changes limit targeting
-- Reality Labs losses continue at $15-20B/yr with no path to profitability, compounding the capex burden
-- Shift from open-source to proprietary AI alienates developer ecosystem, weakening Meta's competitive position vs. open alternatives
-- Antitrust/regulatory action (FTC lawsuit, EU DMA compliance) constrains growth or forces divestitures
+- **Capex outruns ad-lift ROI.** $125-145B capex in 2026 against $46B FCF in 2025; if AI ad-lift plateaus in the second half of 2026 or in 2027, the math breaks — return on incremental capital collapses and FCF stays compressed through 2028. This is the consensus bear case.
+- **Reality Labs is a $20B/year structural drag.** No path to profitability before 2028; if smart glasses do not reach mass adoption, the $90B burned becomes $150B with nothing to show.
+- **EU regulatory escalation.** The WhatsApp AI-provider probe could force unbundling of Meta AI from WhatsApp in the EU; the DMA revision in May 2026 may extend gatekeeper obligations into AI/cloud, capping the WhatsApp Business monetization opportunity in Europe. This is **the under-covered risk** — the news cycle is focused on capex, but if the Commission rules that Meta AI must give competitors equal WhatsApp access, that breaks one leg of the growth thesis the market is implicitly pricing in.
+- **Llama falls behind in foundation models.** Llama 4 Behemoth has reportedly slipped. If Meta becomes a model-taker rather than a model-maker, its open-source moat narrative weakens and AI commoditization hits its differentiation.
+- **TikTok refuses to die.** If TikTok-US persists and ByteDance keeps Reels at bay on engagement quality, time-spent share migrates and ad-pricing pressure returns.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| Bull | 25% | Revenue grows 18-20% in 2026-2027, Avocado launches successfully, AI video/commerce add $15B+ by 2028, margins hold 40%+ as capex peaks | Re-rates to 22-25x forward as AI ROI becomes visible and FCF recovery begins | $900 | +48% |
-| Base | 50% | Revenue grows 14-16%, ad business solid but AI ROI unclear for 2+ years, FCF compressed but manageable, Avocado launches but doesn't lead | Multiple stays at 17-18x forward, in line with current | $700 | +15% |
-| Bear | 25% | Revenue growth slows to 8-10%, Avocado fails to compete, capex overshoots $135B, FCF near zero, Reality Labs drag persists | De-rates to 13-14x forward on FCF concerns, model execution failure, and capex overshoot | $460 | -24% |
+| Bull | 30% | Ad revenue +20%/yr through 2028, operating margin holds 40%, capex peaks 2026, Threads/WhatsApp contribute $10B by 2028, FCF rebuilds to $80B by 2027 | Re-rate to ~28x forward P/E as FCF inflects upward | $950 | +55% |
+| Base | 50% | Ad revenue +15%/yr, operating margin compresses to 37% on capex, FCF stays $50-55B through 2027 then expands | Stable ~22x forward P/E | $740 | +21% |
+| Bear | 20% | Ad-lift plateaus mid-2026, capex stays elevated through 2028, EU forces WhatsApp AI unbundling, Reality Labs $20B/yr drag persists | De-rate to ~15x forward P/E on FCF compression | $440 | -28% |
 
-**Expected value: +13.5%** (0.25 x 48% + 0.50 x 15% + 0.25 x -24%)
+**Expected value: +21.4%** (0.30 × 55 + 0.50 × 21 + 0.20 × -28 = 16.5 + 10.5 - 5.6)
 
-**Thesis breaks if:** (1) Revenue growth falls below 10% for two consecutive quarters, signaling ad market share loss, (2) 2026 capex exceeds $140B with no demonstrable AI product differentiation, (3) Avocado model launches in May/June and clearly trails Gemini 3.0/GPT-5 in benchmarks, confirming Meta can't compete on the frontier despite outspending everyone.
+**Thesis breaks if:** Q2 or Q3 2026 ad price growth decelerates below 5% YoY while the capex guide is raised again. That combination would prove AI ROI is plateauing while spend is still ramping — the canonical capex value-trap pattern.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Very crowded -- consensus "Strong Buy," 78.7% institutional ownership, 46/56 analysts rate Strong Buy |
-| Short interest | 1.1% -- negligible, no squeeze dynamics |
-| Technical position | 24% off 52w high ($796), below 50-day ($652) and 200-day ($691) MAs. Technically weak, approaching oversold |
-| Next catalyst | Q1 2026 earnings ~April 29; Avocado model release May/June 2026 |
-| Recent price action | Down from $740+ post-Q4 earnings to $607, ~18% decline in 7 weeks on capex/model delay concerns. Continued slide from $627 three days ago. |
+| Crowdedness | Moderate — top-10 institutional holding, but recent drawdown has shaken weak hands |
+| Short interest | 1.3% of float (very low) |
+| Technical position | -23% from 52-week high ($796), +17% from 52-week low ($520); RSI likely oversold-to-neutral after recent slide |
+| Next catalyst | Q2 2026 earnings (late July 2026) — ad metrics will validate or refute AI ROI thesis |
+| Recent price action | Down ~10% in past few sessions, ~7% post-Q1 earnings drop, capex narrative driving |
+
+Setup is favorable: the stock has de-rated meaningfully, the near-term catalyst (Q2 earnings) is two months out, sentiment is bruised but not capitulated, and the variant perception (AI ad-lift is the inflection, capex is the cost of admission) is testable on the next print.
 
 ## Verdict
 
-**WATCH** -- Conviction: MEDIUM
+**BUY** — Conviction: **MEDIUM-HIGH**
 
-Meta is an exceptional business (21/25 quality) undergoing a massive and risky capital investment cycle. The core ad business is outstanding (82% gross margins, 41% operating margins, 22% revenue growth on a $201B base), but the $115-135B capex plan creates a genuine FCF valley that is beginning to weigh on the stock. At $607 and 16.9x forward PE, the stock is getting more interesting -- this is the cheapest META has been valued in this growth cycle. The GBM models see 36-99% upside. However, the variant perception remains weak: this is a heavily covered consensus name where 60 analysts are debating the same well-understood risks (capex ROI, Avocado execution, FCF compression).
+Meta has a visible AI-ROI inflection (ad price +12%, impressions +19% simultaneously — a rare combination) that the market is discounting because it is anchored on the capex revision. The variant perception is that Meta is the only hyperscaler with a first-party feedback loop converting AI spend into measurable, near-term high-margin revenue, and Q2/Q3 2026 earnings will force that re-rating. Business quality is 22/25, balance sheet supports the capex bill, expected value is +21%, and the bear case requires multiple bad outcomes to compound.
 
-The 13.5% expected return is decent but not compelling enough for a high-conviction buy given the execution uncertainty around frontier AI model development and the unprecedented scale of the capex commitment. The stock needs either to get cheaper or to demonstrate AI execution progress before becoming a clear buy.
-
-**Would upgrade to BUY if:** (1) Stock drops to $520-540 range (14-15x forward PE), providing a genuine margin of safety, (2) Avocado model launches in May/June and benchmarks competitively vs. Gemini 3.0, validating the spend thesis, (3) Q1 2026 earnings show capex tracking at the low end ($115B) of guidance while revenue growth stays above 20%. Any two of these three conditions would make this actionable.
-
-**Would downgrade to PASS if:** (1) Avocado launches and clearly trails competitors, (2) capex guidance raised above $135B, (3) ad revenue growth decelerates below 15% without offsetting AI revenue.
+**If BUY:** Entry zone $580-620 (current price is in the zone). Scale-in: two thirds now, one third reserved for a flush below $560 if Q2 ad metrics disappoint or EU regulatory headlines escalate. **Thesis-break signal: $480** (about 15x trailing earnings, fully reflecting the bear case) — but more importantly, watch ad price growth in Q2: below 5% YoY would be the qualitative break before the price hits the trigger.

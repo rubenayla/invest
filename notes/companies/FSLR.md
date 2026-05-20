@@ -1,185 +1,121 @@
 # First Solar, Inc. (FSLR)
 
 **Sector:** Technology | **Industry:** Solar
-**Price:** $190.29 | **Market Cap:** $20.4B | **EV:** $17.7B
-**Analysis Date:** 2026-03-27
+**Price:** $233.64 (2026-05-19) | **Market Cap:** $25.1B
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** First Solar is the largest United States photovoltaic module manufacturer and the only major Western alternative to Chinese crystalline-silicon panels. They make thin-film modules using cadmium telluride (CdTe) — a fundamentally different photovoltaic technology from the silicon panels that dominate global supply. Their customers are utility-scale solar developers and independent power producers building large ground-mount projects in the United States (and to a lesser extent India). Modules are sold under fixed-price multi-year contracts, with average selling prices around $0.30 per watt. Revenue is essentially single-product (modules); they do not make inverters, residential panels, racking, or installation services. 2025 revenue was $5.2 billion with $1.5 billion of net income, of which roughly $1.0–1.3 billion was the Section 45X Advanced Manufacturing Production Credit (a per-watt cash tax credit on US-produced modules under the 2022 Inflation Reduction Act).
+
+**Where they want to grow.** Three explicit bets. First, ramp Series 7 — their larger-format, US-only module — across the Alabama (3.5 GW), Louisiana (3.5 GW), and Ohio expansions, taking total nameplate capacity from roughly 11 GW today to about 14 GW in 2026 and 17.7 GW in 2027. Second, monetize 45X manufacturing credits aggressively — already selling tranches (e.g., $311.8 million sold to a third party) to recycle cash before the credit phases down. Third, push efficiency through the CuRe (Copper Replacement) thin-film technology, claiming up to 8% more lifetime energy yield than crystalline silicon. The 47.9 GW / $14.4 billion contracted backlog gives revenue visibility through 2028. Success in five years looks like roughly 25 GW of annual shipments, mid-40s percent gross margin, and durable US policy protection against Chinese imports.
+
+**What could go wrong (business risks).** The dominant risk is policy: 45X currently contributes the majority of operating income, and a hostile administration could repeal, dilute, or "strictly enforce" eligibility (a July 2025 executive order has already directed Treasury to tighten clean-energy credit enforcement, though 45X manufacturing credits remain intact for now). Second, customer concentration is real — utility-scale solar bookings are lumpy and developer cancellations or safe-harbor (developers pre-buying modules to lock in tax treatment) reversals can hit revenue. Third, the international fleet (Malaysia, Vietnam) is now at "significantly reduced utilization" because non-US modules don't earn 45X, so margin depends on US factory ramp execution. Fourth, Series 7 yield and efficiency must keep pace with falling silicon prices — Chinese mono-PERC and TOPCon panels are sub-$0.10/watt globally, and the United States tariff wall is the only thing keeping CdTe economically viable for US developers.
+
+**How to think about it.** First Solar is a US-policy-shielded utility-scale solar manufacturer, not a clean-energy growth story. The investment case is a bet on (a) 45X manufacturing credits surviving the current administration intact through their 2029 phase-down schedule, (b) the Series 7 ramp executing on time, and (c) tariffs on Chinese silicon staying in place. It is not a residential-solar play (no Enphase / SunRun overlap), not an inverter play, and not levered to electricity prices or renewable demand growth in any meaningful way — booked backlog through 2028 makes near-term volume essentially fixed. The asset is closer to a regulated US manufacturer with a long-duration order book than to a renewable-energy growth equity.
 
 ## Situation Summary
 
-First Solar is the only vertically integrated, US-based thin-film (CdTe) solar manufacturer at scale, giving it a unique moat under IRA domestic content rules and tariff protections. The stock has pulled back ~33% from its 52-week high of $286 amid flat 2026 revenue guidance ($4.9-5.2B vs Street's $6B), policy uncertainty under Trump, and $125-135M in tariff charges. However, three critical developments have de-risked the thesis: (1) the "One Big Beautiful Bill" (signed July 2025) preserved 45X manufacturing credits until 2032, removing the key overhang; (2) new FEOC (Foreign Entity of Concern) restrictions penalize competitors reliant on Chinese components while favoring FSLR's US supply chain; (3) US utility-scale solar demand is surging — 43.4 GW planned for 2026 (+60% YoY) driven by data center power needs, with some manufacturers reporting modules sold out through year-end 2026. The company delivered strong full-year 2025 results ($5.2B revenue, $1.53B net income, $1.19B FCF), though Q4 EPS of $4.84 missed consensus ($5.22) by 7% — the weak 2026 guidance was the real negative catalyst, triggering a 13% drop. Q1 2026 earnings expected April 23 (after close).
+First Solar reported a strong Q1 2026 on 2026-04-30: $1.04 billion revenue (+24% year-over-year), $3.22 diluted EPS (+65%), 47% gross margin, and an unchanged full-year 2026 guide of $4.9–5.2 billion revenue, 17.0–18.2 GW shipments, and $2.6–2.8 billion adjusted EBITDA. Contracted backlog stood at 47.9 GW worth $14.4 billion, spanning 2026–2028. The stock has nonetheless drifted lower — at $233.64 it sits 18% off the 52-week high — because the market is discounting two overhangs: (1) the July 2025 Trump executive order directing Treasury to "strictly enforce" clean-energy tax credit termination (though 45X manufacturing credits are not yet directly targeted), and (2) a pending Section 232 polysilicon tariff decision that creates Q2/Q3 uncertainty for customers. International factories (Malaysia, Vietnam) are at "significantly reduced utilization" because non-US production doesn't earn 45X. Management held guidance and continues to monetize 45X credits via tax-credit sales (most recently $311.8 million sold to a third party).
 
 ## Variant Perception
 
-- **Consensus view:** Good company in a bad policy environment. Flat 2026 guidance disappointed. Market worries about permitting delays, tariff volatility, and potential demand softening (global PV demand forecast to decline in 2026 for first time in a decade). Analysts say "Buy" with $256 mean target but the stock keeps drifting lower. 9.3% short interest reflects ongoing skepticism.
-- **Our view:** The market is over-discounting policy risk that has already been largely resolved. At 7.7x forward earnings, the stock prices in significant earnings erosion that won't materialize — 45X credits are safe through 2032, and the new FEOC rules actually *strengthen* FSLR's competitive position by penalizing Chinese-sourced competitors. The global PV demand decline is irrelevant to FSLR — their market is US utility-scale, where 43.4 GW is planned for 2026 (+60%) and modules are sold out. The transition from heavy capex ($1.5B in 2024) to maintenance levels ($0.8-1.0B in 2026) means FCF will reach $1.5-2.0B, representing a 7-10% FCF yield on a net-cash balance sheet. FSLR has already transferred $2B+ in 45X credits — this is real, monetizable cash flow.
-- **Trigger:** Q1 2026 earnings (April 23) confirming bookings strength and margin resilience; FEOC enforcement tightening that advantages domestic manufacturers; new large-scale utility/data center contract announcements.
+- **Consensus view:** Sell-side rates "Buy" (mean target $243 vs. $233 spot — only 4% upside; 27 analysts; high $310 / low $150). The view: high-quality manufacturer with great Q1, but 45X policy overhang and tapering backlog growth (gross bookings of only 1.7 GW in Q1 against backlog burn) caps the multiple. Short interest 9.4% reflects the policy hedge.
+- **Our view:** The market is pricing 45X as if it has a meaningful repeal probability inside the next 12 months. We think repeal-by-statute is structurally hard (Alabama, Louisiana, Ohio, South Carolina are red-state factory hosts whose Republican delegations have publicly defended 45X) and the larger risk is enforcement narrowing of eligibility, not headline repeal. With the Q1 47% gross margin print and $14.4 billion backlog, 2026–2027 earnings are essentially locked in. At 15× trailing PE on $14.21 of 2025 EPS, the stock is pricing roughly flat 2026 earnings — but the guide implies $14–16+ EPS continuing. GBM forward-return models cluster fair value at $348–$436 (76–121% upside); even haircutting for policy risk leaves substantial asymmetry.
+- **Trigger:** (1) Q2 2026 earnings (late July) confirming H2 acceleration with Louisiana ramp commercialization; (2) any Treasury guidance clarifying 45X enforcement that does NOT narrow eligibility; (3) Section 232 polysilicon tariff resolution removing customer-decision overhang.
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $5.22B (2025) | +25.8% CAGR (2022-2025) |
-| Net Income | $1.53B (2025) | Loss in 2022 → $1.53B (massive turnaround) |
-| EBITDA | $2.15B (2025) | $291M → $1.21B → $1.87B → $2.15B |
-| FCF | $1.19B (2025) | Turned positive (from -$785M in 2023) |
-| ROE | 17.5% | Improving (from loss in 2022) |
-| D/E | 6.9% | Very low, net cash ~$2.15B |
-| FCF Yield | 5.8% | First positive year |
-| Gross Margin | 40.6% | 2.7% → 39.2% → 44.2% → 40.6% |
-| Operating Margin | 32.6% | Stable at elevated levels |
-
-**Revenue CAGR (3yr):** 25.8% ($2.6B → $5.2B)
-**Earnings CAGR (2yr, from first profitable year):** 35.6% ($831M → $1.53B)
-**Net debt/EBITDA:** Net cash position (-0.99x)
-
-**Key calculation:** Forward P/E of 7.7x implies ~$24.7 EPS expected. At 2025 EBITDA run-rate ($2.15B) minus lower capex ($0.8-1.0B), normalized FCF = $1.5-1.8B, or 7-9% FCF yield. This is value territory for a company growing 10%+ with a monopoly-like market position.
+| Revenue (2025) | $5.22B | ~26% CAGR (from $2.62B in 2022) |
+| Net Income (2025) | $1.53B | Inflected from $-44M loss in 2022 |
+| FCF (2025) | $1.19B | Inflected positive in 2025 (was $-308M in 2024) |
+| Operating Margin | 33.1% | Massive expansion from negative in 2022 |
+| Gross Margin (Q1 2026) | 47% | Up ~6 pp YoY |
+| ROE | 18.4% | Steadily rising |
+| Debt/Equity | 5.9% | Underleveraged |
+| Cash | $2.80B | Up from $1.62B in 2024 |
+| FCF Yield | 4.7% | Now meaningful |
 
 ## Valuation Models
 
-| Model | Fair Value | Upside (from $190) | Confidence |
-|-------|-----------|---------------------|------------|
-| gbm_lite_3y | $436.56 | +130% | 0.96 |
-| gbm_opportunistic_1y | $403.68 | +112% | 0.96 |
-| gbm_opportunistic_3y | $379.41 | +99% | 0.94 |
-| gbm_3y | $348.30 | +83% | 0.95 |
-| gbm_1y | $245.59 | +29% | 0.95 |
-| simple_ratios | $256.82 | +35% | — |
-| autoresearch | $251.11 | +32% | 0.79 |
-| gbm_lite_1y | $235.21 | +24% | 0.71 |
-| growth_dcf | $195.11 | +3% | — |
-| rim | $163.80 | -14% | — |
-| dcf / multi_stage_dcf | $132.16 | -31% | — |
-| dcf_enhanced | $23.00 | -88% | — |
+| Model | Fair Value | Upside (vs $233.64) | Confidence | Run Date |
+|-------|-----------|---------------------|------------|----------|
+| gbm_lite_3y | $435.83 | +86.5% | 0.96 | 2026-05-18 |
+| gbm_opportunistic_1y | $403.01 | +72.5% | 0.96 | 2026-05-18 |
+| gbm_opportunistic_3y | $378.78 | +62.1% | 0.94 | 2026-05-18 |
+| gbm_3y | $347.72 | +48.8% | 0.95 | 2026-05-18 |
+| simple_ratios | $278.53 | +19.2% | 0.85 | 2026-05-18 |
+| gbm_1y | $260.99 | +11.7% | 0.95 | 2026-05-18 |
+| autoresearch | $251.72 | +7.7% | 0.80 | 2026-05-18 |
+| gbm_lite_1y | $234.06 | +0.2% | 0.73 | 2026-05-18 |
+| DCF family | n/a | (cyclical / negative-history skew) | — | 2026-05-18 |
 
-**Analyst consensus:** 30 analysts, "Buy", mean target $255.87 (range $150-$347). 34% upside to consensus.
+*Models ran with stale price $197.48; live price is now $233.64 (+18%). Upside percentages above recalculated against the current $233.64.*
 
-**Model consensus:** Overwhelmingly bullish. All GBM models (most reliable) show +24% to +130% upside with very high confidence (0.71-0.96). Autoresearch concurs at +32%. DCF models are bearish — likely penalizing high capex years and not properly valuing 45X credit monetization. The dcf_enhanced result ($23) is clearly broken. **Model consensus fair value ~$250-350.**
+**Model consensus:** GBM (Geometric Brownian Motion forward-return simulations) cluster firmly bullish — multiyear fair values $348–$436 imply 49–87% upside even after the recent rally. Static ratio-based models are mid-teens upside. DCF family returns nothing because the 2022 loss + cyclical capex make trailing inputs unstable. Net read: forward-looking models are bullish; backward-looking earnings-based models are constructive but more modest.
 
 ## Business Quality (20/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 5/5 | Only US thin-film manufacturer at scale; vertically integrated CdTe avoids polysilicon supply chain; IRA domestic content bonus creates structural demand advantage; tariff + FEOC protections; modules sold out through 2026 |
-| Management | 4/5 | Strong capital allocation: built 4 US factories during capex cycle, hit 2025 guidance, monetized $2B+ in 45X credits. Insider ownership 5.5%. Accurate forecasting track record. |
-| Profitability | 4/5 | 40.6% gross margin (49.5% including 45X credits), 32.6% operating margin — well above solar peers. ROE 17.5% and improving. Capital intensity now declining. |
-| Balance Sheet | 5/5 | Fortress: net cash $2.15B, D/E 6.9%, current ratio 2.68. Guided $1.7-2.3B year-end net cash. No financial distress risk whatsoever. |
-| Growth | 2/5 | 2026 guidance flat ($4.9-5.2B vs $5.2B in 2025). Capacity expanding to 25 GW but near-term volume growth limited by permitting/interconnection bottlenecks. TAM is enormous (43.4 GW US utility-scale demand in 2026) but FSLR capturing share depends on capacity ramp. Upgraded from prior 2/5 would require positive 2026 guidance revision. |
+| Moat | 4/5 | Only major non-Chinese, non-silicon utility-scale module maker; protected by US tariffs and 45X; CdTe IP. Moat is partly policy-derived, hence not a 5. |
+| Management | 4/5 | Excellent capital allocation — built $2.8B cash pile, sold 45X credits opportunistically, expanded capacity ahead of demand. Forecast accuracy strong (held 2026 guide through Q1). |
+| Profitability | 5/5 | 47% gross margin Q1 2026, 33% operating margin, 18% ROE — best-in-class in solar manufacturing globally. |
+| Balance Sheet | 5/5 | $2.8B cash, $655M debt, 5.9% D/E, current ratio 2.6. Net-cash position. |
+| Growth Runway | 2/5 | Backlog visibility through 2028 is excellent, but nameplate capacity caps shipments at ~17.7 GW by 2027 and the 45X phase-down creates a hard post-2029 margin step-down. Not a long-runway growth story. |
+
+**Total: 20/25** — High-quality cyclical with a policy-dependent margin profile.
 
 ## Inflection Point
 
-**Yes — FCF inflection, and it's happening NOW.** This is the most important part of the thesis:
-
-- FCF trajectory: -$30M (2022) → -$785M (2023) → -$308M (2024) → **+$1,187M (2025)**
-- Capex trajectory: $904M (2022) → $1,387M (2023) → $1,526M (2024) → **$870M (2025)**
-- 2026 capex guided at $0.8-1.0B, down from peak of $1.5B. South Carolina finishing facility opens H2 2026 (reduces freight costs, increases domestic content).
-- At $2.15B EBITDA and $0.8B capex, normalized FCF = $1.35B+. As capex declines further to maintenance (~$500M), FCF could reach $1.5-2.0B by 2027.
-
-**Observable evidence:** FCF already turned positive. This isn't a prediction — it's happening. The market is still valuing FSLR based on the investment phase (hence 7.7x forward P/E) rather than the harvest phase.
-
-**Additional inflection — FEOC regulations:** Starting 2026, competitors using Chinese components (most of the industry) face increasing restrictions under OBBBA's Foreign Entity of Concern rules. FSLR's US supply chain makes it the cleanest option. This is a structural competitive advantage that widens over time as FEOC thresholds tighten (50% in 2026 → 85% by 2030).
+Multiple inflections already underway: (a) FCF turned positive in 2025 ($1.2B) after years of capex burn; (b) Louisiana 3.5 GW factory commercializes in late 2026, driving the H2 margin acceleration management has guided; (c) CuRe technology launched in Perrysburg in early 2026 raises module efficiency. The stock has not re-rated because policy uncertainty is overshadowing operational delivery. Buying after observable Q1 confirmation is "after the inflection starts" per the timing principle, not pre-inflection speculation.
 
 ## Bull Case
 
-- Forward P/E of 7.7x is absurdly cheap for a company with $1.5B+ annual FCF, net cash balance sheet, and policy moat
-- 45X credits ($2.1-2.2B annually) locked in until **2032** — 6+ years of guaranteed margin support
-- FEOC restrictions increasingly penalize Chinese-sourced competitors, widening FSLR's moat each year (thresholds tighten from 50% in 2026 to 85% by 2030)
-- US utility-scale solar demand +60% in 2026 (43.4 GW planned); data center power needs accelerating
-- Modules sold out through year-end 2026 — demand exceeds supply
-- Capex cycle ending: FCF could reach $2B+ by 2027, enabling aggressive buybacks
-- 9.3% short interest provides squeeze potential on any positive catalyst
-- Section 201 tariff phase-out (Feb 2026) hurts cell-importing competitors more than FSLR
-- **Supply chain is uniquely clean**: CdTe thin-film technology doesn't use polysilicon at all — avoids Xinjiang forced labor exposure that taints 95% of silicon-based panels globally. This is both a moral and legal advantage under UFLPA (Uyghur Forced Labor Prevention Act), which bans imports of goods made with Xinjiang forced labor. Competitors using silicon must prove their supply chain is clean — a difficult and costly burden.
+- 45X manufacturing credits survive intact through their 2029 phase-down schedule; red-state factory politics (Alabama, Louisiana, Ohio, South Carolina Republican delegations) make repeal politically expensive.
+- Louisiana 3.5 GW ramp in H2 2026 lifts full-year volume to upper end of 17.0–18.2 GW guide; 2027 nameplate reaches 17.7 GW with margin tailwind from 45X on full US production.
+- Section 232 polysilicon tariffs resolve in First Solar's favor — Chinese silicon stays effectively excluded from US utility-scale, ASPs hold $0.30+/watt.
+- Series 7 + CuRe energy-yield advantage (claimed 8% lifetime) lets First Solar price at a premium even as Chinese silicon costs fall globally.
 
 ## Bear Case
 
-- 2026 guidance genuinely flat: revenue $4.9-5.2B vs $5.2B in 2025; market wants growth
-- Global PV demand to decline in 2026 for first time in a decade — could dampen sentiment
-- Permitting/interconnection delays under Trump slow utility-scale project starts
-- Clerical loophole discovered that could let SE Asian panels dodge antidumping duties — monitor closely
-- High beta (1.65) means heavy selling in any broad market downturn
-- Chinese module oversupply (206 GW exported in 9 months of 2025) depresses global panel pricing; if tariff enforcement weakens, FSLR's pricing power erodes
-- Series 7 module warranty issues: $35-75M potential future losses, $50M liability recorded, active litigation underway
-
-## Deep Dive: 45X Credit Risk (the #1 risk)
-
-### What are 45X credits?
-Section 45X of the Internal Revenue Code (created by the IRA in 2022) pays US manufacturers a tax credit for every solar component produced domestically — roughly $17-20 per panel. For FSLR, this adds up to **~$2.1-2.2B/year**, which is enormous: without 45X credits, gross margin drops from 49.5% to just ~7%. Nearly half of FSLR's profitability comes from this single government subsidy.
-
-### Why do they exist?
-Chinese solar manufacturers (especially in Xinjiang, which produces ~35% of global polysilicon) benefit from state subsidies, near-free land, cheap coal power, and forced labor — with over 1 million Uyghurs interned in "vocational training centers" where many work in polysilicon production. Chinese manufacturers can sell panels below true cost, making it impossible for US manufacturers to compete on price alone. The 45X credit levels the playing field. AD/CVD tariffs of up to 143% on Chinese/SE Asian panels serve the same purpose.
-
-### The "integrated panel" rule (OBBBA change)
-After Dec 31, 2026, the OBBBA says 45X credits won't apply to *fully assembled solar panels* ("integrated" secondary components) unless:
-1. The primary components (cells) are made **in the same facility** as the module
-2. At least **65% of direct material costs** come from US-made primary components
-3. The module is sold to an unrelated party
-
-### Can FSLR meet these requirements?
-FSLR is **better positioned than almost anyone** to comply:
-- They make cells AND modules in the same US factories (same-facility requirement: likely met)
-- CdTe thin-film doesn't use Chinese polysilicon — no foreign supply chain dependency
-- Vertically integrated manufacturing means high US content share
-- FSLR literally lobbied for many of these rules — they were written with FSLR's supply chain in mind
-
-### Risk probability assessment
-
-| Outcome | Probability | Impact on FSLR |
-|---------|------------|----------------|
-| FSLR keeps full credits (meets all requirements) | ~55% | Thesis intact, stock re-rates to $250+ |
-| Partial credit loss (cell credits ok, module credits reduced) | ~30% | ~$500M-1B annual impact, stock $140-170 |
-| Full credit loss (modules ruled "integrated") | ~15% | Catastrophic — ~$2B/yr margin loss, stock $80-100 |
-
-### Why full loss is unlikely
-- FSLR's vertical integration is *exactly* what the law rewards
-- Killing 45X for domestic manufacturers would shut down US solar manufacturing entirely — the opposite of stated policy goals
-- Treasury's Feb 2026 guidance (Notice 2026-15) focused on FEOC definitions, not redefining integrated panels — not signaling hostile intent
-- Bipartisan support for "don't let China control our energy supply chain" — both parties have reasons to keep domestic manufacturing alive
-
-### Why it's still a real risk
-- Treasury hasn't issued final guidance yet (deadline Dec 31, 2026) — uncertainty persists all year
-- Management themselves admitted 7% core gross margin without credits — they know this is existential
-- The 65% domestic content threshold may be harder to meet than expected if certain raw materials (glass, encapsulants) are sourced internationally
-- Political winds can shift — what one administration protects, another can redefine
-
-### Key monitoring dates
-- **April 23, 2026:** Q1 earnings — watch for management commentary on 45X/integrated panel guidance expectations
-- **Throughout 2026:** Treasury/IRS rulemaking on integrated component definitions
-- **Dec 31, 2026:** Treasury deadline to issue final FEOC/integrated panel guidance
-- $125-135M in tariff charges on imported components already baked into 2026 guidance
+- **Underweighted by news (from primary source):** International factories (Malaysia/Vietnam) at "significantly reduced utilization" — management disclosed this on the Q1 call but headlines focused on policy. If those plants don't return to economic operation, the 11+ GW global non-US capacity becomes a long-lived margin drag and impairment candidate.
+- Treasury enforcement narrows 45X eligibility (e.g., domestic-content requirements tightened beyond what current factories satisfy), cutting effective per-watt subsidy by 30–50% without a headline "repeal".
+- Customer safe-harbor reversals: developers who pre-bought modules to lock in IRA tax treatment cancel or push deliveries if project economics deteriorate under new regulations; the 47.9 GW backlog includes some safe-harbor volume vulnerable to this.
+- Section 232 polysilicon decision goes the wrong way (tariffs lifted), reopening US utility-scale to Chinese silicon at half the ASP — Q2/Q3 customer paralysis turns into actual lost bookings.
+- Post-2029 cliff: with 45X phasing down 25% per year from 2030, the terminal margin is sub-20% gross unless silicon parity is achieved on a pre-credit basis — that's far from current state.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | EPS $28-30: 45X + volume ramp + lower capex; 2027 revenue >$6B; FEOC forces competitors out | Re-rates to 16x forward as market recognizes FCF machine + policy moat | $450 | +137% |
-| **Base** | 50% | EPS $22-25: flat 2026 per guidance, then modest 2027 growth; FCF $1.5-1.8B | Multiple expands to 12x forward as capex cliff proves out | $280 | +47% |
-| **Bear** | 25% | EPS $16-18: permitting delays, tariff loopholes compress volumes/margins | Stays at 8-10x forward on persistent policy fear | $150 | -21% |
+| Bull | 35% | 2026 EPS at high end of guide $15+; 2027 EPS $18+ with Louisiana fully ramped and 45X intact | Re-rate to 18× on policy clarity | $380 | +63% |
+| Base | 45% | 2026 EPS ~$14.50 in line with guide; 2027 EPS $16; 45X intact but no upside surprise | Hold at 16× | $285 | +22% |
+| Bear | 20% | Treasury narrows 45X eligibility OR Section 232 reopens silicon; 2027 EPS $9–10 | De-rate to 11× | $135 | -42% |
 
-**Expected value: +52.5%**
-- Bull: 25% × 137% = 34.3%
-- Base: 50% × 47% = 23.5%
-- Bear: 25% × -21% = -5.3%
+**Expected value: +23.6%** (0.35×63 + 0.45×22 + 0.20×-42)
 
-**Thesis breaks if:** Treasury rules FSLR modules are "integrated panels" (killing 45X after 2026); 45X credits repealed or phase-out accelerated; revenue drops below $4.5B; management cuts 2026 guidance further; FEOC rules weakened or not enforced; SE Asian tariff loophole exploited at scale.
+**Thesis breaks if:** (a) Treasury issues guidance materially narrowing 45X eligibility before 2027; (b) gross margins compress below 35% on the next quarterly print (signaling Series 7 economics broken); (c) backlog falls below 40 GW with bookings under 1 GW per quarter sustained.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Moderate — 99.6% institutional (quasi-index stock for clean energy), but selling pressure suggests de-risking |
-| Short interest | **9.3%** — elevated, potential squeeze catalyst on earnings beat |
-| Technical position | **Deeply oversold**: 33% below 52w high ($286), 13% below 50-day ($218), 13% below 200-day ($218) |
-| Next catalyst | **Q1 2026 earnings — April 23, 2026 (after close, confirmed)** |
-| Recent price action | Continued drift lower to $190; below all key moving averages; capitulation-like selling |
+| Crowdedness | Moderate — 94.6% institutional ownership; not a crowded hedge-fund long but widely held by long-only |
+| Short interest | 9.4% of float — elevated, reflects policy hedge; squeeze potential on positive policy news |
+| Technical position | 18% below 52w high ($286); range $183–$286; closer to mid-range; not overbought |
+| Next catalyst | Q2 2026 earnings late July; Section 232 polysilicon decision Q2/early Q3; Louisiana commercialization H2 2026 |
+| Recent price action | Has not run; flat/down despite Q1 beat — suggests policy overhang priced in |
 
-**Timing assessment:** This is one of the best setups I've seen — deeply oversold, near-term catalyst (April 23 earnings), 9.3% short interest for squeeze potential, and the stock is trading at a massive discount to both model consensus and analyst consensus. The risk is if Q1 earnings disappoint — but guidance was already set conservatively at $4.9-5.2B.
+Favors buying now: uncrowded relative to mega-cap tech, dateable catalyst within 90 days (Q2 earnings + Section 232), observable inflection already underway (Q1 47% gross margin, $1.04B revenue), stock hasn't run.
 
 ## Verdict
 
-**BUY** — Conviction: HIGH
+**BUY** — Conviction: MEDIUM
 
-First Solar at $190 is a compelling value + quality + catalyst setup. You're buying the only US solar manufacturer with a policy-protected moat at 7.7x forward earnings, with a net cash fortress balance sheet, at the exact moment FCF is inflecting from negative to $1.5B+. The market is pricing in policy destruction that has already been legislatively resolved (45X safe until 2032, FEOC rules widening FSLR's advantage). The 9.3% short interest and deeply oversold technicals create asymmetric upside on any positive catalyst, with Q1 earnings just 4 weeks away.
+First Solar offers a clear variant-perception trade: the market is pricing 45X repeal risk more aggressively than the political and statutory mechanics support, while operating execution (47% gross margin, 47.9 GW backlog, Louisiana ramp on track) is firing. Quality is high (20/25), the inflection has visible evidence (FCF positive, margin expansion, capacity coming online), and the Q2 print + Section 232 decision provide near-term catalysts. The medium (not high) conviction reflects genuine asymmetric downside if Treasury enforcement narrows 45X — a real, not hypothetical, risk.
 
-**Entry:** Scale in at current levels ($185-200); add aggressively below $175 if market volatility provides
-**Position size:** Full position warranted given quality (20/25), conviction, and FCF inflection
-**Thesis-break:** Exit below $140 or if 45X credit repeal legislation advances; reassess if Q1 earnings miss guidance or management guides down
+**If BUY:** Entry below $240 (current $233.64 acceptable; ideal scale-in zone $215–235). Add on Section 232 favorable resolution. Thesis-break at $180 (signals market pricing 45X impairment).
+**Existing holders:** Hold full position; consider trimming 10–20% on any pop above $300 ahead of post-2029 cliff visibility.

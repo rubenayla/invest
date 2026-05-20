@@ -1,115 +1,127 @@
-# Lam Research (LRCX)
+# Lam Research Corporation (LRCX)
 
 **Sector:** Technology | **Industry:** Semiconductor Equipment & Materials
-**Price:** $219.40 | **Market Cap:** $275.6B
-**Analysis Date:** 2026-03-17
+**Price:** $273.38 (2026-05-19) | **Market Cap:** $341.9B
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** Lam Research builds the giant industrial machines that semiconductor manufacturers use to turn a blank silicon wafer into a finished chip. Two product families dominate revenue. The first is **etch**: machines that precisely remove material from a wafer to carve out circuit patterns. Inside a Lam etch tool, plasma (an electrically charged gas) chemically dissolves silicon, silicon dioxide, or metal atoms one atomic layer at a time, with sub-nanometer accuracy. The second is **deposition**: machines that lay down ultra-thin films of material onto the wafer in controlled layers — think spray-painting a wall, except the "paint" is one atom thick and the wall is the size of a fingernail. Customers are the world's chip manufacturers: Samsung, SK Hynix, Micron, TSMC, Intel, YMTC, SMIC, plus most of the second-tier fabs. Tools sell for roughly $5M–$30M each, and a single new fab buys hundreds of them. Revenue splits roughly into Systems (the new tools, ~64% of sales) and Customer Support Business Group, or CSBG (spare parts, upgrades, refurbishments, and service contracts on the installed base — ~36% and a record $2.1B last quarter). Geographically, Korea (Samsung/SK Hynix) and Taiwan (TSMC) are now the largest end markets after China's contribution was capped by U.S. export rules.
+
+**Why customers choose them (the value proposition).** Modern chips are not flat — they are increasingly 3D structures, and the geometry has become the binding constraint on what Lam's tools have to do. The clearest example is 3D NAND flash memory: instead of laying memory cells side by side, manufacturers now stack 200+ layers vertically and then drill straight holes down through the entire stack to wire them together. Those holes are roughly 100 nanometers wide and ~10 micrometers deep — an aspect ratio of 100:1, which is geometrically equivalent to drilling a perfectly straight, perfectly cylindrical 1-meter-deep hole that is only 1 centimeter wide, except the "drill bit" is a plasma plume and the hole must hit a target 100 picometers off-center across hundreds of millions of holes per chip. Lam's High Aspect Ratio (HAR) etch tools are the only commercial tools today that can drill these holes at production yield. The alternative for a NAND maker is to accept dramatically lower yields (i.e., throw away most of the wafer), which destroys the per-bit cost economics of the entire product. Similar story on the deposition side: for cutting-edge logic chips (TSMC's 2-nanometer Gate-All-Around transistors, the upcoming backside-power-delivery nodes) and for High-Bandwidth Memory (HBM) DRAM used in AI accelerators, Lam's atomic-layer deposition and selective-etch tools place individual atomic layers with the precision required to make the transistor work at all. A Samsung or SK Hynix engineer choosing whether to buy a Lam tool or a competitor's tool is not weighing "premium vs. value" — they are choosing between a yield curve that hits 90%+ and one that may not exceed 50%. At $5–30M per tool and a fab running thousands of wafers a day, a few points of yield is worth more than the entire tool. That is why customers pay, and why the same customers then keep paying Lam every year for spares, recipe upgrades, and chamber overhauls (the CSBG line) — once a tool is qualified into a production process, swapping vendors means re-qualifying the entire process, which can take 12–18 months and cost hundreds of millions in lost output.
+
+**Where they want to grow.** Management's explicit bets are: (1) ride the 3D-NAND vertical-stacking roadmap — the industry is moving toward 400+ layer NAND, and each layer added is more etch and deposition steps per wafer, so Lam's dollar content per wafer grows even if wafer volume is flat; (2) capture the leading-edge logic transitions — Gate-All-Around (the new transistor architecture replacing FinFET at 2nm) and backside power delivery both add new selective-etch and atomic-layer-deposition steps where Lam is best-positioned; (3) advanced packaging — the wiring/stacking technology behind HBM and chiplets, which management expects to grow 40-50% in 2026 as AI accelerator demand pulls HBM3E/HBM4 volumes higher; (4) grow CSBG into a larger and more predictable annuity by selling productivity upgrades on the installed base; (5) offset the China revenue cap (from 43% of sales toward <30% in 2026 due to U.S. export controls) with stronger Korea/Taiwan/U.S. demand. Success in 3-5 years looks like $25B+ revenue, gross margin holding near 50%, CSBG above $9B annual run-rate, and meaningful share gains in foundry-logic dielectric etch.
+
+**What could go wrong (business risks).** First, memory is cyclical — when NAND or DRAM oversupplies, fabs delay equipment orders and Lam's systems revenue can drop 30%+ in a single year. Second, the China export rules can tighten further; the current ~$600M 2026 revenue impact assumes the current rules hold, and a deeper restriction (or, conversely, a thaw) materially moves the print. Third, customer concentration is genuine: the top five customers account for the majority of systems revenue, and a roadmap delay at Samsung or SK Hynix shows up directly in Lam's order book. Fourth, technology disruption — if a competitor (Applied Materials, Tokyo Electron, or a Chinese SMEE-style local champion) closes the HAR etch gap or wins the next big logic transition, the moat narrows. Fifth, U.S./China geopolitical escalation could push Chinese fabs to qualify domestic etch tools faster than expected, eroding the installed base over a decade. Sixth, the stock has run hard (~3.4× off 52-week lows of $79) into a multi-year cyclical peak — even with the business performing well, a cyclical down-leg in memory capex could compress the multiple at the same time earnings dip.
+
+**How to think about it.** Lam is the etch-and-deposition leg of the WFE (wafer fabrication equipment) oligopoly — alongside ASML (lithography), Applied Materials (the broader equipment generalist), and Tokyo Electron — riding the structural tailwind of more process steps per chip every node, with a high-quality recurring services attach (CSBG) on a multi-decade installed base. The right comparison set is AMAT and TEL for cyclicality and KLA for margin quality; the right framing is "concentrated tool maker with pricing power on critical steps, but cyclical revenue and concentrated customers."
 
 ## Situation Summary
 
-Lam Research is riding a powerful semiconductor equipment upcycle driven by AI-related memory and foundry capex. The company just reported Q2 FY2026 (Dec 2025 quarter) with revenue of $5.34B and EPS of $1.27, beating consensus by 8.5% -- the eighth consecutive quarterly beat. Management guided Q3 FY2026 revenue to $5.7B (+7% QoQ) and raised the 2026 WFE forecast to $135B (up 23% YoY). However, the stock has already surged ~185% over the past year as the market priced in the upcycle. New China export restrictions are expected to reduce China revenue from ~40% to below 30% of the mix in 2026, creating a ~$600M annual headwind. The stock currently trades at 32x forward earnings, a premium valuation that requires continued execution on accelerating growth.
+LRCX just printed a record March 2026 quarter: $5.84B revenue (+24% YoY, +9% QoQ), 49.8% GAAP gross margin, 35.0% operating margin, $1.45 GAAP EPS / $1.47 non-GAAP (beat). CSBG hit its first $2.1B quarter. June-quarter guidance is $6.60B ± $0.40B revenue, 50.5% ± 1% gross margin, $1.65 ± $0.15 EPS — implying ~13% sequential acceleration. Management raised the 2026 industry WFE forecast to $140B (from $135B, with upward bias), citing AI-driven foundry/logic and HBM investments. The variant news is China revenue cap (43% → <30% of total in 2026, ~$600M revenue impact) and a $300M drop in customer down payments to a four-year low, concentrated in smaller China-based customers — the Korea/Taiwan/U.S. strength is more than compensating, but down-payment weakness is an under-discussed leading indicator. Morgan Stanley upgraded to Overweight on 2026-05-12; price targets cluster $311 mean / $385 high / $220 low.
 
 ## Variant Perception
 
-- **Consensus view:** Strong Buy (24 buy / 3 hold / 0 sell). The market sees LRCX as a prime AI capex beneficiary with a multi-year WFE supercycle ahead. Analyst targets cluster around $275, implying ~25% upside. The consensus narrative is straightforward: memory + foundry spending accelerates through 2027, and Lam's etch/deposition share gains compound returns.
-- **Our view:** The consensus is largely correct on direction but may be underestimating two risks: (1) China revenue normalization is a genuine headwind that could compress margins as the mix shifts from high-margin legacy China sales to lower-margin leading-edge foundry work, and (2) the stock at 32x forward PE already prices in strong execution through FY2027. The 185% run-up leaves limited margin of safety. The variant perception here is weak -- this is a "consensus long" with the crowd already positioned. The real opportunity would come on a pullback to 25x forward earnings (~$173) where the risk/reward rebalances.
-- **Trigger:** Q3 FY2026 earnings (April 2026) -- if the $5.7B revenue guide is met/beat and gross margins hold at ~49% despite China mix normalization, the stock re-rates higher. Conversely, any margin miss on China headwinds could cause a meaningful pullback.
+- **Consensus view:** Lam is a clear AI-leverage winner — HBM/advanced packaging tailwinds plus 3D NAND vertical stacking accelerate per-wafer dollar content. Stock has been re-rated, consensus is "buy at any pullback."
+- **Our view:** Two things diverge. (1) The cycle position is later than headlines suggest. Customer down payments hitting a four-year low while shipments hit records is the classic late-cycle signature in semicap — backlog is being burned, not built. The June guide is fine, but the order book underneath looks softer than the income statement. (2) The China cap is being treated as fully absorbed, yet management explicitly guided China revenue "to decline from these levels" — meaning the mix shift is still in progress, not complete. Both effects argue for trimming multiple expectations even if 2026 numbers print as expected. The stock at ~52× trailing P/E and 15.8× P/S is pricing in continued acceleration; we think a flat-to-mid-teens revenue growth year in 2027 is more likely than the consensus high-teens.
+- **Trigger:** Either (a) a Q1 2027 (calendar) bookings/down-payment miss showing the order book has rolled, or (b) clarity on China rules — easing would re-rate up sharply, tightening (MATCH Act-style escalation) would re-rate down. Either event likely lands in the next 6–9 months.
 
 ## Financial Snapshot
 
-| Metric | Value | 3yr Trend |
-|--------|-------|-----------|
-| Revenue | $18.4B (FY25) | +2.3% CAGR (cyclical trough in FY24 distorts; exiting at $21B+ run rate) |
-| Net Income | $5.4B | +5.2% CAGR |
-| FCF | $5.4B | Strong and growing |
-| ROE | 54.3% | Expanding (was ~73% in FY22 on lower equity base) |
-| D/E | 0.45 | Declining (was 0.80 in FY22) |
-| FCF Yield | 2.0% | Low due to elevated valuation |
-| Net Cash | $1.9B | Net cash position, fortress balance sheet |
+| Metric | Value (FY25 = Jun-25) | 3yr Trend |
+|--------|-----------------------|-----------|
+| Revenue | $18.4B | +2.3% CAGR (FY22→FY25, cyclical trough in FY24) |
+| Net Income | $5.36B | +5.2% CAGR |
+| FCF | $5.41B | +28% CAGR (FY22 was capex-heavy trough) |
+| ROE | 66.8% | High, asset-light |
+| D/E | 0.45 (Total Debt $4.5B / Equity $9.9B) | Declining |
+| FCF Yield | ~1.6% (on $341B mcap) | Compressed by run |
+| Gross Margin | 49.98% (TTM, expanding) | +260bps vs FY22 |
+| Operating Margin | 35.0% (TTM) | Near peak |
 
-**Note on 3yr CAGR:** The low 3yr CAGR is misleading. FY2024 was a deep cyclical trough ($14.9B revenue). The exit rate is $21B+ annualized (Q2 FY26) accelerating to $23B+ (Q3 FY26 guide), representing 40%+ YoY growth. This is a classic semiconductor equipment cycle -- the business is inflecting sharply upward.
+Net cash position: ~$6.4B cash vs. $4.5B debt → $1.9B net cash. Returning 139% of FCF in the March quarter ($800M buybacks at ~$211/share + $750M debt retirement + $326M dividends).
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence |
-|-------|-----------|--------|------------|
-| autoresearch | $371.71 | +75.2% | 0.96 |
-| gbm_lite_3y | $370.46 | +85.9% | 0.86 |
-| gbm_opportunistic_3y | $293.71 | +47.3% | 0.78 |
-| gbm_opportunistic_1y | $288.47 | +44.7% | 0.74 |
-| rim | $282.19 | +41.6% | -- |
-| gbm_lite_1y | $270.55 | +35.7% | 0.90 |
-| gbm_1y | $270.09 | +35.5% | 0.96 |
-| gbm_3y | $213.66 | +7.2% | 0.62 |
-| simple_ratios | $66.48 | -66.6% | high |
-| growth_dcf | $58.24 | -70.8% | -- |
-| dcf | $45.47 | -77.2% | -- |
-| multi_stage_dcf | $45.47 | -77.2% | -- |
-| dcf_enhanced | $40.34 | -79.8% | -- |
+| Model | Fair Value | Upside | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| RIM | $533 | +95% | 0.70 | 2026-05-18 |
+| GBM Lite 3y | $499 | +83% | 0.87 | 2026-05-18 |
+| GBM Opportunistic 1y | $467 | +71% | 0.92 | 2026-05-18 |
+| GBM 3y | $448 | +64% | 0.95 | 2026-05-18 |
+| GBM 1y | $357 | +31% | 0.99 | 2026-05-18 |
+| GBM Opportunistic 3y | $351 | +29% | 0.74 | 2026-05-18 |
+| Autoresearch | $342 | +25% | 0.82 | 2026-05-18 |
+| GBM Lite 1y | $310 | +13% | 0.69 | 2026-05-18 |
+| Simple Ratios | $77 | -72% | 0.85 | 2026-05-18 |
+| DCF Enhanced | $35 | -87% | 0.70 | 2026-05-18 |
+| Growth DCF | $26 | -91% | 0.70 | 2026-05-18 |
+| DCF | $23 | -92% | 0.70 | 2026-05-18 |
+| Multi-Stage DCF | $22 | -92% | 0.70 | 2026-05-18 |
 
-**Model consensus:** Extreme divergence between GBM/autoresearch models (bullish, $270-$372) and DCF/ratio models (bearish, $40-$66). The DCF models are likely broken for LRCX because they anchor on historical average earnings through a cyclical trough -- they dramatically undervalue a company that is in the early-to-mid innings of a major upcycle. The GBM models, which incorporate momentum and forward-looking signals, are more appropriate for a cyclical inflection. RIM at $282 is unusually bullish for that model, suggesting book value growth is strong enough to overcome its usual anti-growth bias. The reliable models (GBM, autoresearch) cluster around $270-$370, suggesting 35-75% upside -- though this range is wide and reflects high uncertainty.
+*Models ran 2026-05-18 at $259.47; today's price is $273.38 (+5.4%). Recalculating against today's price: GBM 1y upside is ~+31% (not +37%), Autoresearch ~+25% (not +32%). DCF model cluster is broken on cyclical semis at peak earnings — ignore. RIM at $533 likely high on asset-light/high-ROE bias. Simple Ratios at $77 is using cycle-low peer comps — also unreliable.*
 
-**Key complaint:** The DCF models are clearly failing here. A $40-66 fair value for a company earning $5.4B net income with a net cash balance sheet and 50% gross margins is nonsensical. These models are using trough-cycle inputs and should be discounted entirely.
+**Model consensus:** Cluster of reliable models (GBM 1y, GBM 3y, GBM opportunistic 3y, Autoresearch) target $342–$447 fair value, +25% to +64% upside. Median ~$400, ~+45%. DCF cluster is structurally broken on cyclical semicap and should be discarded.
 
-## Business Quality (20/25)
+## Business Quality (22/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 5/5 | Dominant in etch and deposition (45%+ market share in conductor etch). Extreme switching costs -- fabs cannot easily swap equipment vendors mid-process. Only 3-4 credible competitors globally (ASML, AMAT, TEL). Technology barriers are massive. |
-| Management | 4/5 | Strong execution -- 8 consecutive quarterly beats. Capital allocation is disciplined: net cash position, consistent buybacks ($2B+ annually), growing dividend. CEO Tim Archer is well-regarded. Slight ding for heavy insider selling (~$30M in 90 days), though this appears to be routine RSU liquidation. |
-| Profitability | 5/5 | 50% gross margins, 34% operating margins, 54% ROE. Among the best in semis. Margins expanding as revenue scales. FCF conversion excellent. |
-| Balance Sheet | 4/5 | Net cash of $1.9B. D/E of 0.45 and declining. Current ratio 2.3x. Only ding is that $4.5B gross debt exists, though it's well-covered and being paid down. |
-| Growth | 2/5 | This is the weak spot. WFE is inherently cyclical -- the current upcycle will eventually peak (likely 2027-2028). 3yr revenue CAGR is only 2.3% through the cycle. Secular AI demand provides a structural floor higher than past cycles, but Lam is not a compounder -- it's a cyclical beneficiary. China share loss is a real headwind. |
+| Moat | 5/5 | HAR etch dominance in 3D NAND, sticky CSBG annuity on installed base, qualification costs make swapping vendors economically irrational, oligopoly market structure (LRCX/AMAT/TEL/ASML/KLA) |
+| Management | 5/5 | 139% FCF return, opportunistic buybacks at $211 (now $273), debt retirement, transparent on China headwind, accurate forecasting (June guide raised) |
+| Profitability | 5/5 | 50% gross / 35% operating / 31% net margins; 67% ROE; expanding in absolute terms |
+| Balance Sheet | 5/5 | Net cash $1.9B, current ratio 2.54, $6.4B cash, conservatively levered |
+| Growth Runway | 2/5 | Cyclical — WFE TAM growing but in waves; revenue grew only 2.3% CAGR over last 3 years through cycle; AI tailwind real but priced in; China cap removes ~$2-3B of addressable market |
 
 ## Inflection Point
 
-Yes -- LRCX is in the early-to-mid stages of a major WFE upcycle. The inflection is already well underway (revenue accelerating from $14.9B trough to $21B+ run rate). The question is how much upside remains from here. WFE is projected at $135B in 2026 (up 23% YoY) and could reach $150B+ in 2027 if AI capex continues. Lam's etch/deposition share gains in advanced packaging and gate-all-around (GAA) transistor architectures provide incremental growth on top of the cycle.
-
-However, this inflection is NOT hidden -- the stock is up 185% in 12 months precisely because the market sees it. The easy money has been made.
+Less of a classic inflection setup — Lam is mid-cycle on an upswing, not at a turning point. The closest thing to an inflection is the CSBG line crossing $2B/quarter and growing 25% YoY, which is shifting the revenue mix toward annuity (less cyclical) earnings. If CSBG continues to grow at ~20% while systems normalizes, the through-cycle earnings power and multiple could re-rate. But the inflection is not happening at the current price — it would be a several-year compounding effect. Static-basis: the stock is not cheap on any historical multiple, so this is more a "quality at fair price near cyclical peak" setup than a deep-value or turnaround idea.
 
 ## Bull Case
 
-- WFE supercycle extends through 2028 driven by AI/HBM/advanced packaging demand, reaching $150B+
-- Lam gains share in etch and deposition at leading-edge nodes (GAA, backside power delivery)
-- Gross margins expand to 51-52% as product mix improves and operating leverage kicks in
-- Forward EPS reaches $8-9 by FY2027, and the market assigns a premium 30x+ multiple for sustained growth visibility
-- China headwind is fully offset by explosive DRAM/HBM capex from Samsung, SK Hynix, and Micron
+- **AI capex inflection extends 2-3 more years:** HBM3E → HBM4 transition, 2nm GAA logic ramp, advanced packaging growing 40-50% in 2026 alone — Lam's per-wafer content rises every node transition.
+- **CSBG annuity hits escape velocity:** $2.1B/quarter and growing 25% YoY toward $10B+ annual run-rate, smoothing cyclicality and supporting multiple expansion.
+- **China thaw:** Even a partial easing of export rules would unlock $600M+ in deferred revenue and re-rate the multiple.
+- **NAND $40B conversion compressed into 2026-2027:** Management flagged acceleration vs. prior multi-year guide — could mean a near-term systems revenue spike.
+- **Capital return:** $800M/quarter buyback at peak earnings + dividend growth supports the price floor.
 
 ## Bear Case
 
-- WFE cycle peaks earlier than expected (2026 instead of 2027-2028) as hyperscaler capex rationalizes
-- China revenue decline is steeper than guided (export controls tighten further, domestic Chinese equipment displaces Lam in mature nodes)
-- Gross margins compress below 48% as customer mix shifts away from high-margin China legacy business
-- Memory capex spending gets pulled forward, creating an air pocket in 2027-2028
-- At 32x forward PE, any growth deceleration triggers a violent de-rating (semi equipment stocks have historically traded at 15-20x)
+- **Cyclical peak risk:** 50% gross margin and 35% operating margin are near all-time-cycle highs for semicap. Mean reversion alone (without a recession) takes earnings down 15-25%.
+- **Customer down payments at 4-year low (under-covered in news):** Management disclosed this on the Q3 call but it has not been a headline. Down payments are the leading indicator of future systems orders; a low print at peak shipments is the classic late-cycle signal. If this rolls through into 2027 bookings, the consensus revenue growth misses badly.
+- **China revenue further declines from current levels:** Management explicitly guided this. The cap may not be fully reflected in 2027 estimates if rules tighten (MATCH Act watch).
+- **Multiple compression:** 51.8× trailing P/E vs. historical 15-25× through-cycle; even holding earnings flat, a return to a normal multiple is -50% downside.
+- **Customer concentration:** A capex pause at Samsung or SK Hynix shows up directly in Lam's print within one quarter.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| Bull | 25% | FY27 EPS $8.50 on $24B+ rev, margin expansion to 51% GM | Re-rates to 33x on sustained cycle narrative | $280 | +28% |
-| Base | 50% | FY27 EPS $7.50 on $22B rev, margins stable at 49% GM | Multiple compresses slightly to 28x as cycle matures | $210 | -4% |
-| Bear | 25% | FY27 EPS $6.00 on $19B rev, cycle peaks, China drag worse | De-rates to 22x as market prices cycle peak | $132 | -40% |
+| Bull | 25% | 2027 revenue +18% to ~$26B, NTM EPS ~$8.00 on AI/HBM acceleration + NAND $40B conversion compression | Re-rates to 45× on AI-leverage narrative, China easing | $380 | +39% |
+| Base | 50% | 2027 revenue +12% to ~$24B, NTM EPS ~$7.20, CSBG continues compounding | Multiple compresses modestly to 42× as cycle peaks | $300 | +10% |
+| Bear | 25% | Memory pause + China tightening, 2027 revenue flat or -8%, EPS to $5.50 | De-rates to 28× through-cycle multiple | $155 | -43% |
 
-**Expected value: +3%**
-**Thesis breaks if:** Gross margins fall below 47% for two consecutive quarters (signals China mix headwind is structural), or WFE forecasts get revised below $120B for 2027 (signals cycle is peaking).
+**Expected value:** 0.25 × 39 + 0.50 × 10 + 0.25 × (-43) = **+4.0%**
+**Thesis breaks if:** Customer down payments stay below $1B for two consecutive quarters AND China revenue prints below 25% of total — both indicate cycle has rolled.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Crowded -- 88.8% institutional ownership, consensus Strong Buy, 0 sell ratings. This is a hedge fund consensus long. |
-| Short interest | 2.3% -- low and declining (down 20.7% recently). No squeeze potential, no meaningful bearish positioning. |
-| Technical position | Trading at $219, ~15% below 52-week high of $256.68. 50-day avg $222.70 (essentially at average). 200-day avg $148.80 (well above, reflecting the massive run). Not oversold but not stretched either. |
-| Next catalyst | Q3 FY2026 earnings (late April 2026) -- revenue guide of $5.7B is key. |
-| Recent price action | Pulled back ~15% from highs. After a 185% run, this is a normal consolidation, not a dislocation. |
+| Crowdedness | Crowded — 88% institutional ownership, multiple recent hedge-fund buys, Morgan Stanley upgrade 2026-05-12 |
+| Short interest | 2.55% of float — low, no squeeze setup |
+| Technical position | Near 52w high ($302) — within 10% of top, 3.4× off lows of $79 |
+| Next catalyst | July 2026 earnings (Q4 FY26 + initial FY27 commentary) |
+| Recent price action | +244% from 52w low; significant run already priced in |
+
+Setup leans **unfavorable** for fresh entry: crowded, technically extended, multiple at cyclical highs, next catalyst is "either confirm or break" rather than asymmetric.
 
 ## Verdict
 
-**WATCH** -- Conviction: MEDIUM
+**WATCH** — Conviction: MEDIUM
 
-Lam Research is a best-in-class semiconductor equipment company riding a genuine AI-driven upcycle, with dominant market share, excellent profitability, and a fortress balance sheet (quality score 20/25). However, the variant perception is weak: the market already sees everything we see, the stock has run 185% in 12 months, and at 32x forward PE with only a 2% FCF yield, the valuation prices in near-perfect execution. The expected value from our scenario table is only +3%, which does not compensate for the cyclical risk inherent in semiconductor equipment. The reliable GBM models suggest 35-75% upside, but these models may be momentum-chasing after the massive run.
+Lam is a top-tier business (22/25 quality) with genuine AI tailwinds and a strengthening recurring-revenue annuity, but the stock has run 244% off lows and trades at multiples that price in continued acceleration through 2027. The expected value of +4% is *positive* but not asymmetric — the bear case (-43%) is roughly symmetrical with the bull case (+39%) and the under-discussed risk (customer down payments at a four-year low while shipments hit records) is a classic late-cycle signal. The reliable GBM/autoresearch models cluster $342–$447, which sits well above today's $273 and suggests the broader market also sees upside — so we're going against the model cluster slightly on cycle-position concerns.
 
-**Would upgrade to BUY on:** A pullback to $170-180 (25x forward PE on $6.90 consensus), which would provide a meaningful margin of safety and shift the expected value to +15-20%. Alternatively, if Q3 FY2026 earnings show gross margins expanding above 50% despite China normalization, that would signal structural improvement worth paying up for.
+**If WATCH:** Would upgrade to BUY on (a) pullback to **$220-$230** (below worst analyst target, near forward-PE = 28× line) which would create asymmetric +60% upside to base case, OR (b) confirmation that customer down payments inflect back above $1.2B in the next quarter (cycle re-acceleration confirmed). Would PASS / trim if (c) the stock pushes above $310 without commensurate 2027 estimate raises — pure multiple expansion on a cyclical at peak.
 
-**Entry price (if forced):** $180 for a half position, $165 for a full position.
-**Thesis-break:** Gross margins below 47% for 2 quarters, or WFE revised below $120B for 2027.
+<!-- Public file — generic research only. No personal position data here. -->

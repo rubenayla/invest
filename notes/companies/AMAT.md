@@ -1,122 +1,126 @@
-# Applied Materials (AMAT)
+# Applied Materials, Inc. (AMAT)
 
 **Sector:** Technology | **Industry:** Semiconductor Equipment & Materials
-**Price:** $346.18 | **Market Cap:** $275B | **EV:** $273B
-**Analysis Date:** 2026-03-17
+**Price:** $413.57 (2026-05-19) | **Market Cap:** $328.2B
+**Analysis Date:** 2026-05-19
+
+## Business Primer
+
+**What they do today.** Applied Materials is the broadest semiconductor wafer-fabrication equipment (WFE) toolmaker on the planet — but, importantly, *not* a lithography vendor. Roughly 75% of revenue is **Semiconductor Systems**: machines that deposit thin films (chemical vapor deposition, physical vapor deposition, epitaxy), etch patterns into them, polish wafers flat (chemical mechanical planarization, or CMP), implant ions for doping, and inspect/measure features. The customers are a tiny set of chipmakers — Taiwan Semiconductor Manufacturing (TSMC), Samsung, Intel, Micron, SK Hynix, SMIC, and a handful of Chinese fabs — who buy these tools by the dozen to build new fabs and upgrade existing ones. About 20% of revenue is **Applied Global Services (AGS)**: spare parts, service contracts, and refurbishments on the installed base (~50,000+ tools in the field), which is recurring and higher-margin. A small remainder is **Display** (equipment for OLED and large-area screens) and **Imaging/Corporate**. In Q2 FY2026 (April quarter) the company posted record revenue of $7.91B, with China at 27%, Taiwan 27%, Korea 20% — leading-edge logic, DRAM/HBM (high-bandwidth memory), and mature-node China the three big buckets paying the bills.
+
+**Where they want to grow.** Three explicit bets. First, **leading-edge logic transitions** — every node shrink (currently TSMC's 2nm and incoming 1.6nm with gate-all-around (GAA) transistors and backside power delivery) sharply increases the dollar content of Applied's tools per wafer because deposition, etch, and selective processing steps proliferate even when lithography step count is flat. Management says Applied gains share at every node transition. Second, **HBM and advanced packaging** — AI accelerators need stacked DRAM glued via through-silicon vias (TSVs) and hybrid bonding, both of which use deposition/etch/CMP tools that Applied dominates; management guided advanced packaging revenue +50% in calendar year (CY) 2026. Third, **AGS as recurring annuity** — pushing more long-term service contracts to smooth the cyclicality. Success in 3-5 years looks like growing total WFE share from ~20% toward 25%, with services >$8B annual run-rate and ~50% gross margins holding through the cycle.
+
+**What could go wrong (business risks).** WFE is structurally cyclical — fab capex swings 20-30% peak-to-trough, and AMAT's earnings swing harder. **Customer concentration** is extreme: TSMC, Samsung, Intel, and a few Chinese fabs are most of the book; a single customer push-out moves the quarter. **China is the single biggest moving variable** — China was 27% of Q2 revenue, and tightening U.S. Bureau of Industry and Security (BIS) export controls cost the company a $600M revenue headwind in FY2026 plus a $252.5M BIS settlement in February 2026. If China indigenous-fab demand collapses (already guided down for 2026) or U.S. controls tighten further, a chunk of the installed base goes dark for upgrades. **ASML lithography concentration risk** matters indirectly — every fab built has to buy extreme-ultraviolet (EUV) lithography from ASML first, and if ASML pushes out shipments, AMAT's tools queue behind. **Competition** is real: Lam Research dominates etch and is encroaching on deposition; Tokyo Electron is co-leader in coat/develop and gaining in etch; KLA owns inspection. Finally, **memory cyclicality** — DRAM/NAND capex is the most volatile segment and currently riding an AI-HBM peak.
+
+**How to think about it.** AMAT is the broadest, most diversified semi-equipment toolmaker — not the lithography monopoly (that's ASML), but the picks-and-shovels vendor levered to every leading-edge process transition (GAA, backside power, advanced packaging) and every memory cycle (HBM, DDR5). Treat it as a cyclical compounder: top of the cycle right now on AI-driven HBM and leading-edge logic, with China indigenous demand and export-control politics as the two-sided wildcard. Buy weakness in cyclical downturns, trim into peak-earnings DCF mirages.
 
 ## Situation Summary
 
-Applied Materials is riding the AI semiconductor equipment super-cycle, with Q1 FY2026 (Jan 2026) revenue of $7.01B beating estimates and Q2 guidance of $7.65B signaling acceleration. Management expects its semiconductor equipment business to grow >20% in calendar 2026, driven by leading-edge foundry/logic, HBM DRAM, and advanced packaging for AI. However, the stock has already surged ~140% over the past year (from ~$124 lows) and recently pulled back 15% from its $396 high. The key overhang is a $600-710M revenue headwind from expanded U.S. export controls on China, with China revenue dropping from ~40% to mid-20% of total. The stock is a consensus institutional long with 28 of 32 analysts at Buy, trading at 25x forward earnings -- not cheap but not extreme for a cyclical at the start of a potential multi-year upcycle.
+AMAT just delivered a record Q2 FY2026 (April quarter): $7.91B revenue (beat $7.68B consensus), non-GAAP EPS $2.86 (beat $2.68), gross margin 49%+, and Q3 guidance of $8.95B ± $500M — implying acceleration into the back half. Management raised CY2026 semi-equipment industry growth from "more than 20%" (Feb) to **"more than 30%"**, citing HBM visibility "through multiple quarters" and Gate-All-Around at TSMC's 2nm node driving leading-edge intensity. The stock has tripled off the April 2025 lows (52w range $153–$448) and sits at $413.57, ~92% of its 52w high. The narrative two-sider: AI-memory capex and GAA transitions are real, durable, and accelerating — but China indigenous WFE demand is guided **down** for CY2026 on tighter U.S. export controls, and the company paid a $252.5M BIS settlement in February. Consensus has caught up: 35 analysts, "strong buy" recommendation, mean PT $505.91 (+22% from spot).
 
 ## Variant Perception
 
-- **Consensus view:** AMAT is a premier AI infrastructure play benefiting from the semiconductor equipment super-cycle. Wall Street sees ~20% equipment revenue growth in CY2026, offset partially by China headwinds. Mean price target $411, implying ~19% upside. The market views this as a solid but fully valued cyclical growth story.
-
-- **Our view:** The consensus is broadly correct on direction but potentially underestimates the duration and magnitude of the advanced packaging/HBM opportunity. AMAT captures >50% of the equipment value in HBM stacking steps (15 of 19 extra steps), and HBM capacity is still woefully short of AI demand through 2027+. The real variant is that the market prices this as a typical semi equipment cycle (peak in 2026-2027, then down), when the AI buildout could sustain elevated spending for 3-5 years -- more structural than cyclical. However, we must be honest: this is a WEAK variant perception. The stock has already re-rated massively, the AI-equipment thesis is widely known, and the forward P/E of 25x already embeds significant growth. We do not have a strong contrarian edge here.
-
-- **Trigger:** Q2 FY2026 earnings (May 2026) -- if guidance for FY2026 second half implies >25% growth and China headwind is better than feared, the stock re-rates toward $400+. Longer-term, the trigger is evidence that CY2027 equipment spending remains elevated rather than rolling over cyclically.
+- **Consensus view:** "Best-positioned WFE name into the AI-memory + GAA capex cycle, deserves a re-rate." Sell-side largely chasing — mean PT $506 (+22%), with high $575 — after the stock already ran 170% in CY2025.
+- **Our view:** Consensus is *directionally* right (HBM, GAA, advanced packaging are real multi-year tailwinds) but **the easy money has been made**. At ~26x forward earnings and 11.3x sales with operating margins already at 31.9% (near cycle highs), the stock now requires CY2027 numbers to keep grinding higher to justify the multiple. DCF/multi-stage DCF models all show negative upside (-75% to -84%) because they correctly flag peak-cyclical earnings. GBM (geometric Brownian motion / statistical) models and consensus brokers see momentum continuation. **The variant perception is sequencing**: this is a great business at a full price near the cycle peak — strong CY2026 setup, but reward/risk is poor versus 12 months ago. The next obvious entry is the inevitable inventory and capex digestion air-pocket (most likely H2 CY2027 if HBM oversupply materializes), not chasing here.
+- **Trigger:** Two-sided. **Up:** CY2027 WFE forecast raise on Intel 18A/14A capex re-acceleration or a second leg of HBM4 capacity announcements. **Down:** Any single major customer (Samsung memory, Intel, or a Chinese fab cluster) pushing out 2-3 quarters of orders, or a fresh tightening of BIS controls on mature-node China.
 
 ## Financial Snapshot
 
-| Metric | Value | 3yr Trend |
+| Metric | Value (FY2025, ended Oct) | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $28.4B (FY2025) | 3.2% CAGR |
-| Net Income | $7.0B | 2.4% CAGR |
-| FCF | $5.7B | Declining (from $7.6B peak in FY2023) |
-| ROE | 34.3% | Stable-high |
-| D/E | 0.35x | Low, essentially net cash |
-| FCF Yield | 2.1% | Low -- reflects premium valuation |
-| Gross Margin | 48.7% | Stable |
-| Operating Margin | 29.9% | Improving (from 28.9% FY2024) |
+| Revenue | $28.4B | +3.3% CAGR (cycle-muted) |
+| Net Income | $7.0B | +2.4% CAGR |
+| FCF | $5.7B | Declining from $7.6B peak (capex up) |
+| Operating Margin | 31.9% | Expanding (was 30% in FY2022) |
+| Gross Margin | 49.0% | Expanding (was 46.5%) |
+| ROE | 39.7% | Elevated (cycle-driven) |
+| Total Debt / Equity | 0.27 | De-leveraging continues |
+| FCF Yield (FCF/MC) | 1.7% | Compressed by re-rating |
+| Net Debt | -$0.19B | Net cash |
 
-**Note on FCF:** FCF declined in FY2025 primarily due to capex nearly doubling ($2.3B vs $1.2B) as AMAT invests in capacity for the upcycle. Operating cash flow was $8.0B, still strong. This is investment-driven FCF compression, not operational weakness.
-
-**Forward trajectory:** Q2 FY2026 guidance of $7.65B revenue implies ~$31B+ run-rate. If the 20%+ equipment growth target holds, FY2026 revenue could reach $32-34B with EPS in the $11.50-12.50 range.
+Recent revenue growth +11.4% YoY, earnings +33.5% YoY (Q2 beat). Trailing P/E 39x, forward P/E 26x, P/S 11.3x — meaningfully above the 10yr median (~17x forward).
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence | Notes |
-|-------|-----------|--------|------------|-------|
-| autoresearch | $590 | +70% | 0.99 | Very bullish, likely extrapolating AI growth |
-| gbm_lite_3y | $726 | +110% | 0.93 | Extreme -- likely overfitting momentum |
-| gbm_opportunistic_3y | $710 | +105% | 0.95 | Same concern |
-| gbm_opportunistic_1y | $628 | +81% | 0.93 | Bullish but less extreme |
-| gbm_lite_1y | $427 | +23% | 0.57 | More reasonable, low confidence |
-| gbm_1y | $394 | +14% | 0.94 | Closest to analyst consensus |
-| gbm_3y | $342 | -1% | 0.73 | Essentially fairly valued |
-| rim | $238 | -27% | -- | RIM bias: undervalues asset-light/high-ROE |
-| simple_ratios | $146 | -55% | -- | Likely comparing to wrong peer set |
-| growth_dcf | $115 | -65% | -- | DCF broken: doesn't capture cyclical ramp |
-| dcf_enhanced | $89 | -73% | -- | Same issue |
-| dcf / multi_stage_dcf | $73 | -78% | -- | Same issue |
+| Model | Fair Value | Upside | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| gbm_lite_3y | $848.83 | +110% | 0.93 | 2026-05-18 |
+| gbm_opportunistic_3y | $830.04 | +105% | 0.96 | 2026-05-18 |
+| gbm_opportunistic_1y | $734.55 | +81% | 0.93 | 2026-05-18 |
+| autoresearch | $688.62 | +70% | 0.99 | 2026-05-18 |
+| rim | $521.94 | +29% | 0.70 | 2026-05-18 |
+| gbm_lite_1y | $499.71 | +23% | 0.57 | 2026-05-18 |
+| gbm_1y | $460.71 | +14% | 0.94 | 2026-05-18 |
+| gbm_3y | $400.54 | -1% | 0.73 | 2026-05-18 |
+| simple_ratios | $161.45 | -60% | 0.85 | 2026-05-18 |
+| dcf_enhanced | $100.18 | -75% | 0.70 | 2026-05-18 |
+| growth_dcf | $70.13 | -83% | 0.70 | 2026-05-18 |
+| dcf | $68.94 | -83% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | $65.65 | -84% | 0.70 | 2026-05-18 |
 
-**Model consensus:** Massive divergence (>180pp spread). The GBM models (which are historically the most reliable) range from fair-value to +110%, with the 1-year models clustering around $394-427 (+14-23%). The DCF models are clearly broken for AMAT -- they anchor on trailing FCF which was depressed by heavy capex, and fail to capture the cyclical revenue acceleration ahead. The RIM model undervalues as expected for a high-ROE, asset-light-ish business. **Trustworthy range: $390-430, implying +13-24% upside.** The autoresearch and 3-year GBM models are extrapolating too aggressively.
+**Model consensus:** Extreme bimodal split. **Statistical/momentum models** (GBM family, autoresearch) all bullish $460–$849 reflecting trend continuation. **Fundamental cash-flow models** (DCF, multi-stage DCF, growth DCF, simple ratios) all deeply bearish $66–$162, flagging peak-cyclical earnings and unsustainable margins. RIM splits the difference at $522 (+29%). The DCFs are correctly skeptical of cycle-peak free cash flow being extrapolated. The GBMs are correctly reading the momentum/breakout. Truth is in between — likely $450–$550 fair value if we believe FY2027 EPS lands in the $11–13 range at a normalized 22x multiple.
 
-## Business Quality (20/25)
+## Business Quality (22/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 4/5 | Dominant position in deposition, etch, and CMP. High switching costs (tools integrated into fab process flows). But not a monopoly like ASML in EUV -- faces competition from Lam, KLA, TEL in most segments. |
-| Management | 4/5 | Gary Dickerson has led effectively since 2013. ROIC consistently >WACC. Capital allocation strong: 15% dividend increase, steady buybacks, disciplined M&A (Kokusai Electric acquisition added CVD capability). Insider selling is routine option exercises, not a red flag. |
-| Profitability | 5/5 | 49% gross margins, 30% operating margins, 34% ROE. Best-in-class for diversified semi equipment. Services business (AGS) at 28% operating margin provides recurring revenue base. |
-| Balance Sheet | 4/5 | Net cash position (cash $7.2B vs debt $7.1B). Interest coverage >20x. Ample flexibility. Only ding: capex is ramping aggressively ($2.3B in FY2025 vs $0.8B in FY2022). |
-| Growth | 3/5 | TAM expanding via AI/HBM/advanced packaging. But revenue CAGR was only 3.2% over 3 years (FY2022-2025), and AMAT is the largest equipment company -- law of large numbers applies. The 20%+ CY2026 growth is real but partially cyclical recovery, not all structural. |
+| Moat | 5/5 | Broadest WFE toolset (deposition, etch, CMP, ion implant, materials engineering); ~50,000 installed tools generate sticky service revenue; deep IP in selective-deposition and integrated solutions where competitors only sell point tools |
+| Management | 4/5 | Gary Dickerson disciplined operator since 2013; strong capital return ($2-3B buybacks/yr + growing dividend); BIS export-control settlement ($252.5M in Feb 2026) and 2024 Korean office raid suggest some compliance friction |
+| Profitability | 5/5 | 49% gross margin, 32% operating margin, 40% ROE — all top-quartile in semi-equipment; AGS provides counter-cyclical buffer |
+| Balance Sheet | 4/5 | Net cash position ($7.2B cash vs $7.1B debt), 2.5x current ratio, easy interest coverage; only deduction is the slow buildup of debt (was net cash $4B in 2022) |
+| Growth Runway | 4/5 | GAA, backside power delivery, HBM4, advanced packaging are real multi-year tailwinds; China export controls cap one segment but global ex-China fab buildouts continue; only ding is that semi-equipment is still cyclical |
 
 ## Inflection Point
 
-**Yes -- early-to-mid innings of an AI-driven equipment super-cycle.** The inflection is already underway and visible:
-- Advanced Packaging revenue grew 90% YoY in Q1 FY2026, with 80% of backlog tied to HBM
-- Q2 guidance implies meaningful sequential acceleration ($7.65B vs $7.01B)
-- Partnerships with Micron and SK hynix on next-gen HBM/DRAM signal multi-year demand
-- SEMI forecasts global equipment sales reaching $156B by 2027 (vs ~$110B in 2024)
-
-However, the market already knows this. The stock has re-rated from ~18x forward to 25x forward. The inflection is priced. The question is whether the DURATION of the cycle is underestimated.
+**No fresh inflection** — AMAT is **mid-to-late in an up-cycle that began in late CY2024**. The stock already inflected (170% rally in CY2025). What's left is the duration of the current cycle: CY2026 is now guided >30% industry growth, momentum extending into CY2027. The next observable inflection will be the *down* leg — either an HBM oversupply event, an Intel/Samsung capex push-out, or a fresh China clampdown. Without a forward inflection to play, this is a quality-at-full-price story, not a turnaround.
 
 ## Bull Case
 
-- AI capex cycle is structural, not cyclical -- hyperscaler spending sustains through 2028+ as inference demand follows training demand
-- HBM equipment revenue reaches $2-3B annually by FY2027, a segment that barely existed 3 years ago
-- China headwind proves manageable as non-China demand (TSMC, Samsung, Intel, Micron) more than compensates
-- Operating leverage kicks in: revenue growth of 20%+ on a relatively fixed cost base could push operating margins toward 33-35%
-- Services (AGS) continues compounding at mid-teens growth, providing earnings ballast
+- HBM4/HBM5 capex extends visibility through CY2027–2028 as AI accelerator unit volumes scale; Applied's deposition and etch tool content per HBM stack rises with every generation.
+- GAA at TSMC's 2nm and 1.6nm, plus backside power delivery, drives deposition step intensity 20-30% higher per wafer versus FinFET — pure share-of-wallet expansion for AMAT without any new customer wins.
+- AGS service revenue >$1.7B/quarter and growing — provides 20%+ of revenue at higher margins and lower cyclicality, structurally lifting through-cycle Return on Invested Capital.
+- Intel 18A/14A ramp + U.S. CHIPS Act fabs (TSMC Arizona, Samsung Texas, Intel Ohio) re-accelerate ex-China WFE demand even if China weakens.
+- Capital return: $10B buyback authorization in place, dividend yield ~0.5% growing high-single-digits.
 
 ## Bear Case
 
-- This IS the cycle peak: CY2026-2027 represents peak equipment spending, followed by the classic 20-30% downturn in CY2028
-- China revenue erosion accelerates if export controls tighten further or Chinese domestic equipment makers (NAURA, AMEC) gain share in mature nodes
-- HBM growth decelerates if AI spending moderates or memory oversupply returns
-- Capex ramp ($2.3B+) compresses FCF and ROIC if the revenue acceleration disappoints
-- Multiple compression: at 25x forward, any earnings miss or guidance cut triggers a sharp de-rating (semi equipment stocks routinely trade at 12-18x at cycle troughs)
+- **At ~26x forward earnings and 11.3x sales, the stock is priced for the current cycle to extend at least two more years** — any sequential WFE growth miss in late CY2026 or early CY2027 leads to multiple de-rating to historical 17-19x forward.
+- **DCF and multi-stage DCF cluster at $65-$100 fair value** — this is the math telling us current free cash flow is unsustainable. If 2027 FCF normalizes back to $5.5B (versus $7B+ peak), the stock has 30-40% of downside in a re-rating scenario.
+- **China is structurally shrinking, not just guided down for CY2026.** Management disclosed (under-covered by headlines): expanded BIS export rules in late 2025 cost roughly $600M in FY2026 revenue, and AGS service revenue from China-resident tools is at risk if those tools cannot be serviced or upgraded under new licensing — the *recurring* book is more exposed than the news framing suggests.
+- Customer concentration: a single push-out from TSMC (delaying 2nm volume) or Samsung memory (pacing HBM4 ramp) can move a full quarter — AMAT has shipped near-perfectly to current schedule, but the bar is high.
+- Lam Research deposition encroachment and Tokyo Electron etch share gains continue eroding AMAT's "broadest portfolio" pricing power at the margin.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | FY2027 EPS $14+ on 20%+ revenue growth sustained through CY2027; HBM/packaging ramp exceeds expectations | Re-rates to 28x forward on "structural growth" narrative | $390 | +13% |
-| **Base** | 50% | FY2026 EPS $11.50-12.00; growth normalizes to 10-12% in FY2027 as cycle matures | Multiple holds at 24-25x; market gives credit for AI exposure | $285 | -18% |
-| **Bear** | 25% | FY2026 EPS $10.50 on China headwinds worse than guided; CY2027 spending flattens | De-rates to 20x as cycle peak fears dominate | $210 | -39% |
+| Bull | 25% | FY2027 EPS $14 (+25% from FY2026e $11.2), HBM4 + GAA + advanced packaging accelerating, China stabilizes | Multiple holds 28x on continued AI capex narrative | $560 | +35% |
+| Base | 50% | FY2027 EPS $11.5–12 (mid-single-digit growth), cycle plateaus | Multiple compresses to 22x as growth slows | $510 | +23% |
+| Bear | 25% | FY2027 EPS $9 (-20%), HBM oversupply + China sharper-than-expected decline + memory air-pocket | De-rate to 18x cyclical trough multiple | $260 | -37% |
 
-**Expected value: -11%**
+**Expected value:** 0.25 × 35% + 0.50 × 23% + 0.25 × (-37%) = **+11.0%**
 
-**Thesis breaks if:** (1) China revenue drops below 15% of total AND non-China demand fails to offset, (2) HBM capacity buildout stalls or shifts to equipment suppliers where AMAT has weaker share, (3) management guides below $30B for FY2026, or (4) semi equipment cycle peaks in CY2026 rather than extending through CY2027.
+**Thesis breaks if:** (a) management cuts CY2027 WFE outlook in Aug or Nov 2026 earnings, OR (b) a top-3 customer (Samsung memory, TSMC logic, Intel) announces a capex push-out of 2+ quarters, OR (c) BIS issues a new control affecting >$1B of AMAT's annualized China revenue.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | **Crowded** -- 85.5% institutional ownership, consensus Buy (28/32 analysts), top hedge fund holding. This is a consensus long. |
-| Short interest | 1.7% -- negligible, no squeeze potential, confirms consensus bullish view |
-| Technical position | Trading at $346, 13% below 52-week high of $396. 50-day MA $333, 200-day MA $237. Above both MAs but off highs. Neutral-to-slightly-extended. |
-| Next catalyst | Q2 FY2026 earnings (~May 2026) |
-| Recent price action | Up ~140% in 12 months. Recent 15% pullback from highs provides some mean reversion, but the stock has had a massive run. |
+| Crowdedness | **Crowded** — institutional ownership 85.2%, "strong buy" consensus across 35 analysts, sell-side price targets all chasing |
+| Short interest | **Low** — 2.0% of float, no contrarian setup |
+| Technical position | **Near 52w high** — $413 vs $448 high (-7.8%), $153 low (+170%); RSI elevated; uptrend intact but extended |
+| Next catalyst | **Q3 FY2026 earnings ~Aug 14, 2026** (guidance check on the >30% CY2026 raise); SEMICON West late July |
+| Recent price action | Up ~170% over 12 months; has consolidated $400–$448 for ~6 weeks |
+
+Crowded + extended + catalyst 3 months out + already ahead of consensus price targets = **classic "favor waiting" setup** per the timing playbook.
 
 ## Verdict
 
-**WATCH** -- Conviction: MEDIUM
+**WATCH** — Conviction: **MEDIUM**
 
-Applied Materials is a genuinely high-quality business (20/25) riding a real secular tailwind in AI semiconductor equipment demand. The problem is entirely about price and positioning. At $346 and 25x forward earnings, the market already prices in robust growth. The variant perception is weak -- every institutional investor knows the AI/HBM story. The expected value from our scenario analysis is negative (-11%), driven by the asymmetric risk that cycle-peak multiple compression could erase a lot of value quickly. Semi equipment stocks are notoriously cyclical, and buying at 25x forward in the middle of a recognized boom is exactly the setup that produces mediocre 2-3 year returns.
+Excellent business (22/25 quality), genuine multi-year tailwinds (HBM, GAA, advanced packaging), but the stock has already absorbed the easy gains — up 170% in 12 months, sitting at 26x forward and 7.8% below its 52w high, with sell-side and institutional positioning crowded. Statistical models cheer momentum continuation; cash-flow models flag peak-cyclical earnings. Expected value is positive (+11%) but skewed: 25% probability of a -37% drawdown is too much downside for a +23% base case. Better risk/reward exists elsewhere in semi-equipment, or wait for AMAT to digest.
 
-**Would upgrade to BUY on:** (1) A pullback to $270-290 range (20-22x forward), which would provide a genuine margin of safety, (2) Evidence that CY2027 equipment spending will grow (not just sustain), giving confidence the cycle extends, or (3) A meaningful positive surprise on China -- if export controls are relaxed or China revenue stabilizes above 25%.
+**If WATCH:** Would upgrade to **BUY at $320–$340** (~5% off pre-AI-bubble multiples on FY2027e EPS of $11.5), which corresponds to a CY2026 H2 capex digestion air-pocket or a China-control negative surprise. Would upgrade earlier to **BUY at $370** if Q3 FY2026 (Aug 2026) earnings include another raise of CY2027 WFE outlook with HBM4 customer commitments named. **Thesis-break short signal at $480** in a parabolic blow-off without earnings confirmation.
 
-**Entry price if forced:** $280 (20x forward on ~$14 FY2027E EPS)
-**Thesis-break price:** Below $200 (implies cycle has peaked and structural de-rating)
+<!-- Public-file generic research only. Personal position context, share counts,
+     cost basis, and P&L belong in ~/vault/finance/notes/positions/AMAT.md. -->

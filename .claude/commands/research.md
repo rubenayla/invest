@@ -28,9 +28,31 @@ If this fails (SSL error, rate limit), proceed anyway — the analysis can use e
 
 ---
 
-## STEP 0: Research the Situation (PRIMARY SOURCES FIRST, THEN NARRATIVE)
+## STEP 0: Understand the Business & Situation (PRIMER FIRST, THEN PRIMARY SOURCES, THEN NARRATIVE)
 
-**This step comes FIRST. Before touching any numbers, understand what's actually happening — from the company itself, not from reporters.**
+**This step comes FIRST. Before touching any numbers, understand what the business actually does, what's happening with it, and how the news fits — from the company itself, not from reporters.**
+
+### STEP 0 — FIRST: Business Primer (Plain English)
+
+Before any earnings reading, before any ratios, write a plain-English primer of the company as if explaining it to a smart friend who has never heard of it. **This is non-optional and must be written for every research run, even for well-known names.** Numbers without this context are noise.
+
+Structure it as **five** short paragraphs (no jargon, no acronyms without spelling them out the first time):
+
+1. **Core business today** — what they actually sell, who pays them, how they make money. Concrete examples of products/services and customers. If revenue is split between segments, name the biggest 2-3 and explain each.
+
+2. **Why customers choose them (the value proposition)** — what specific problem does the product solve, and why does the customer pick it over the next-best alternative? Compare directly to the alternatives ("open surgery vs robotic", "Postgres vs Oracle DB", "cash vs credit card", "Word vs Google Docs"). Describe the *concrete improvement* the customer gets in terms a non-customer would understand: "incisions go from 20 cm to 1 cm, recovery from 6 weeks to 2", "query 10× faster at 1/3 the compute cost", "tracks 200 metrics the legacy system can't see". If the product is technical, explain what it *does* mechanically — wristed instruments inside the body, motion-scaling, tremor filtering, etc. — not just that it's "premium" or "better." A reader should finish this paragraph and understand why a rational customer would pay for the product instead of the cheaper/older alternative.
+
+3. **Where they want to grow** — the explicit strategic bets management is making. New products, new geographies, new customer types, M&A direction. What does success look like in 3-5 years?
+
+4. **What could go wrong (the business risks, not the stock risks)** — competitive threats, structural industry shifts, customer concentration, execution risks on the growth bets, regulatory or technology disruption. These are the things that would damage the *business*, separate from valuation.
+
+5. **How to think about it vs. peers/category** — one or two sentences situating the company. *This* is where investor-shorthand belongs ("razor-and-blade compounder", "infrastructure vs data SaaS", "growth challenger eating share") — but only as a label for everything you just explained above, not as a substitute for explaining.
+
+**Rule 1 — Explain the product, don't label it.** Phrases like "razor-and-blade installed-base compounder", "high-quality compounder", "asset-light SaaS", "moat", "platform business" are *investor labels* that summarize a business after you already understand it. They do **not** explain it. In paragraphs 1–2, describe the actual product, the actual customer behavior, and the actual reason the product wins, in terms a smart non-investor friend would understand. Save the labels for paragraph 5.
+
+**Rule 2 — Value proposition is mandatory.** If a reader cannot answer **both** "what does this company DO" *and* "why would a customer pick this over the alternative" in one sentence each after reading the primer, it failed. Rewrite. Most failure modes are skipping the *why customers buy* part — describing the product's features without explaining the concrete benefit that drives adoption.
+
+This primer goes at the **top** of the output file under a `## Business Primer` heading, before Situation Summary.
 
 ### STEP 0a (MANDATORY): Read the Primary Source
 
@@ -263,6 +285,18 @@ Template:
 **Sector:** {sector} | **Industry:** {industry}
 **Price:** ${price} ({YYYY-MM-DD}) | **Market Cap:** ${cap}
 **Analysis Date:** {YYYY-MM-DD}
+
+## Business Primer
+
+**What they do today.** {Plain-English description of the core business — what they sell, who pays them, how revenue is split across the biggest segments. Concrete products and customers. No jargon, spell out acronyms on first use.}
+
+**Why customers choose them (the value proposition).** {What concrete problem does the product solve, compared to the next-best alternative? Describe the actual mechanism — what the product *does* that makes the customer prefer it. E.g., "open surgery → 20cm incision and 6-week recovery; da Vinci → 1cm incisions, 3D vision with 10× magnification, wristed instruments that can suture inside the body, 1-week recovery." Avoid investor-shorthand here ("moat", "compounder", "high-quality") — say what the product actually does that makes customers pay.}
+
+**Where they want to grow.** {The explicit strategic bets — new products, new geographies, new customer types, M&A direction. What success looks like in 3-5 years.}
+
+**What could go wrong (business risks).** {Competitive threats, structural industry shifts, customer concentration, execution risks on the growth bets, regulatory or tech disruption. The things that damage the *business*, separate from valuation.}
+
+**How to think about it.** {One or two sentences situating the company in its category — "infrastructure vs. data SaaS riding on infrastructure", "legacy incumbent in a turnaround vs. growth challenger eating share", etc. Frames everything that follows.}
 
 ## Situation Summary
 {3-5 sentences: what's happening with this company RIGHT NOW. Recent news, narrative, sector dynamics.}

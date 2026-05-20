@@ -1,160 +1,140 @@
-# Rocket Lab Corporation (RKLB)
+# Rocket Lab USA (RKLB) — Deep Research
 
-**Sector:** Industrials | **Industry:** Aerospace & Defense
-**Price:** $67.73 | **Market Cap:** $38.6B
-**Analysis Date:** 2026-04-05
+**Date:** 2026-05-19
+**Price:** $131.16
+**Market Cap:** ~$75.9B | **EV:** ~$71.0B
+**Verdict:** PASS (existing holders: trim into strength)
+**Conviction:** MEDIUM
+**Expected Value:** -22%
+
+---
+
+## Business Primer
+
+**What they do today.** Rocket Lab is split into two roughly equal businesses. The first is **launch**: they operate the Electron rocket, a small launcher that puts about 300 kg into low Earth orbit, with about 50 successful flights — think "FedEx for small satellites," used by governments and commercial smallsat operators who don't want to wait for a SpaceX rideshare slot. The second, now the larger half by revenue, is **Space Systems**: they sell satellite components (reaction wheels, solar panels, star trackers, separation systems, laser communications via the recent Mynaric acquisition) and increasingly *whole satellites* to defense primes, the Space Development Agency, and commercial constellation operators. If a customer wants a satellite built but doesn't want to design one, Rocket Lab will build it for them.
+
+**Where they want to grow.** The defining bet is **Neutron** — a medium-lift, partially reusable rocket (around 13,000 kg to low Earth orbit) competing directly with SpaceX Falcon 9. Electron is structurally too small to ever be highly profitable; Neutron is the path to winning national-security launch contracts, Starlink-style constellation launches, and eventually crewed and cargo missions. Beyond Neutron, the strategy is to keep vertically integrating Space Systems — own more of the satellite stack, win prime contracts (not just sell parts), and become the Western end-to-end alternative to SpaceX for space infrastructure.
+
+**What could go wrong (business risks, not stock risks).** Neutron is the dominant execution risk — building a reusable medium-lift rocket from scratch is brutally hard, the program has slipped four times (now Q4 2026), and each slip burns roughly $100M or more in cash. SpaceX dominates global launch by such a wide margin that Rocket Lab has to carve out a price and schedule niche SpaceX won't crush. Cash burn is real (2025 operating loss of $229M); $1.48B in cash gives runway, but a slip into 2028 could force another equity raise and dilution. Space Systems margins are under pressure — the Mynaric acquisition drags blended gross margin below the pre-deal base. And as a defense-adjacent business, they are exposed to government budget cycles and political shifts.
+
+**How to think about it.** This is **infrastructure**, not data subscriptions. Margins are project-based, lumpy, and capital-intensive. Success looks like "becoming the credible number-two launch and satellite-systems provider behind SpaceX." The investment debate is not whether the company is good — it is — but whether the current price already assumes flawless execution through 2028.
+
+---
 
 ## Situation Summary
 
-Rocket Lab is the Western world's most credible commercial space company outside SpaceX, operating two segments: Launch Services (Electron small-lift, HASTE suborbital, Neutron medium-lift in development) and Space Systems (satellite manufacturing, components, ground software). The company posted $602M revenue in 2025 (+38% YoY) with gross margins expanding to 34.4% (from 9% in 2022) and a $1.85B backlog (+73% YoY). Recent catalysts include an $816M SDA satellite contract, a $190M HASTE hypersonic testing deal (largest single launch contract ever), and regulatory approval to acquire Mynaric (optical comms) for $150M -- establishing a European footprint. However, Neutron's first launch slipped to Q4 2026 after a stage 1 tank rupture in January, the company remains deeply unprofitable (-$198M net income, -$322M FCF in 2025), and CEO Peter Beck has been selling shares aggressively ($140M+ in Dec 2025, continued in 2026). At 64x trailing P/S, the stock prices in a future that hasn't arrived yet -- specifically in the context of SpaceX's Starship scaling, which both expands the space economy Rocket Lab serves AND directly threatens its launch economics.
+Rocket Lab is the second-most-credible Western orbital launch company behind SpaceX, vertically integrating across Electron (small-lift, operational), Neutron (medium-lift, pre-flight), satellite buses, payloads (Geost EO/IR, Mynaric laser comms), and government primes (Space Development Agency $1.3B Tranche 2 contract). Q1 2026 results were a clear beat: $200.3M revenue (+63.5% year over year), record backlog of $2.2B, $1.48B cash — and the stock has responded by ripping 384% in 12 months to a $76B market cap on ~$600M trailing twelve month revenue. That is **Price to Sales of 111x and Enterprise Value to Revenue of 104x** while the company posted a 2025 operating loss of $229M and burned $322M in free cash flow.
 
-## Variant Perception
+The setup is a classic "great company, mispriced expectation" situation. Neutron has slipped from 2024 to 2025 to "early 2026" and now to **Q4 2026**, and management itself walked Q2 gross margin guidance *down* to 33-35% GAAP (from 38.2% in Q1) due to Mynaric mix and Space Systems shift. The narrative is impeccable; the price has already discounted three flawless years of execution from a company that has missed Neutron schedule four consecutive times.
 
-- **Consensus view:** Rocket Lab is the premier SpaceX alternative evolving into a vertically integrated "space prime." 10/15 analysts rate BUY with $90 median target (+33% upside). The narrative is: Neutron unlocks the $10B+ medium-launch market, Space Systems becomes a dominant satellite prime, and the company reaches profitability inflection by 2027-2028. The defense angle (HASTE, SDA contracts) provides revenue durability.
-- **Our view:** The consensus correctly identifies Rocket Lab's exceptional business quality but misprices the Starship competitive dynamic and the valuation. Three specific disagreements: (1) **Starship rideshare at $7,000/kg (and falling) will increasingly pressure Electron's $37,500/kg dedicated launch pricing** -- the "dedicated orbit" premium shrinks as rideshare becomes more flexible and frequent; (2) **Neutron at $55M/launch enters a market where Falcon 9 already charges $74M with vastly more heritage** -- SpaceX can drop prices to match, and Starship at $10-20M/launch (even if years away) caps Neutron's long-term margin potential; (3) **64x P/S already discounts ~$2.5B revenue at mature aerospace multiples** -- that's 4x current levels and requires flawless execution for 4+ years. The variant perception is NOT that RKLB is a bad company -- it's that the market has already priced in the bull case, leaving asymmetric downside.
-- **Trigger:** Neutron first launch in Q4 2026. Success could add another 20-30% from here; failure or further delay could trigger 30-40% correction. Secondary trigger: Q1 2026 earnings (May 7) will reveal whether revenue is tracking toward the $885M FY2026 guide.
+---
+
+## Variant Perception (Steinhardt)
+
+1. **The Idea:** Long-term Rocket Lab is a winner in defense/national-security space. Short and medium term, the stock has front-run the Neutron-success scenario by two to three years and is priced for perfection in a company with structural execution slippage.
+2. **Consensus View:** 15 analysts, ~85% Buy, mean target $100.83 — **22% BELOW current price**. The sell side is already calling the stock overextended, but retail and momentum flow has pushed past the targets. Short interest 5.8% of float (moderate, not crowded short).
+3. **Variant Perception:** *Consensus models and consensus sentiment have diverged.* Analyst price targets ($94 to $101 mean) say "trim". Retail flow and momentum say "buy the breakout". The variant call is: **the analyst targets are correctly calibrated, the price will mean-revert closer to fundamentals before Neutron flies**, because management itself flagged margin compression and Peter Beck's RSU forfeiture in the same quarter. The market is treating Neutron Q4 2026 as a done deal; base rate on Neutron's own history says ~30 to 40% chance it slips into 2027.
+4. **Trigger Event:** Neutron first launch attempt (Q4 2026, plus or minus two quarters). Binary catalyst. Anything short of clean orbit on attempt 1 risks a 30 to 50% drawdown. Clean success could justify current price; failure forces a 2027 re-attempt with another year of cash burn.
+
+---
 
 ## Financial Snapshot
 
-| Metric | Value | 3yr Trend |
-|--------|-------|-----------|
-| Revenue | $602M | 41.8% CAGR (2022-2025) |
-| Net Income | -$198M | Losses widening nominally, improving as % of rev (-64% -> -33%) |
-| FCF | -$322M | Negative and worsening (Neutron capex ramp) |
-| Gross Margin | 34.4% | Rapidly improving: 9.0% -> 21.0% -> 26.6% -> 34.4% |
-| ROE | -18.8% | Negative (equity base grew via offerings) |
-| D/E | 0.15x | Low leverage, net cash position |
-| FCF Yield | -0.8% | N/A (pre-profit) |
-| P/S (TTM) | 64.1x | |
-| EV/Revenue (TTM) | 62.6x | |
-| EV/Revenue (2026E) | 42.6x | Based on ~$885M consensus |
-| Beta | 2.21 | High volatility |
+| Metric | 2022 | 2023 | 2024 | 2025 | LTM |
+|---|---|---|---|---|---|
+| Revenue ($M) | 211 | 245 | 436 | 602 | ~680 |
+| Gross Profit ($M) | 19 | 47 | 116 | 207 | — |
+| Gross Margin | 9% | 19% | 27% | 34% | 36.6% |
+| Operating Income ($M) | -135 | -178 | -190 | -229 | — |
+| Net Income ($M) | -136 | -183 | -190 | -198 | — |
+| Free Cash Flow ($M) | -149 | -129 | -116 | -322 | -215 |
+| Cash ($M) | 243 | 244 | 271 | 829 | 1,383 |
+| Total Debt ($M) | 153 | 392 | 468 | 254 | 139 |
 
-**Revenue breakdown (2025):** Space Systems ~$403M (67%), Launch Services ~$199M (33%).
-**Cash position:** $829M cash + $271M marketable securities = ~$1.1B liquidity. $254M debt. Net cash ~$575M.
-**Capex intensity:** 26% of revenue ($156M) in 2025, driven by Neutron development and infrastructure buildout.
-**Cash runway:** ~3.4 years at 2025 FCF burn rate ($322M/yr). No near-term dilution risk, but profitability must arrive before 2029.
-**Backlog:** $1.85B total, ~37% converting in next 12 months (~$685M). Launch backlog >70 missions after HASTE deal.
+**Multiples:** Price to Sales 111x · Enterprise Value to Sales 104x · Enterprise Value to EBITDA negative · Price to Book ~44x
+**Growth:** 3-year Revenue Compound Annual Growth Rate ~42%; Q1 2026 +63.5% year over year
+**Capital structure:** Strong cash position post-2025 equity raise; debt manageable. Share count ~579M (dilution from 2025 raise plus Mynaric stock consideration).
+**Profitability:** Negative across every line. Gross margin trajectory positive but Q2 guide *down* sequentially. **No clear path to GAAP profitability before 2028 absent Neutron at scale.**
 
-## Valuation Models
+---
 
-No existing quantitative models in the database for RKLB (first deep analysis entry). Traditional DCF/RIM models are poorly suited for pre-profit, high-growth aerospace companies. Valuation assessment is based on reverse-engineering the current price.
+## Valuation Models (existing DB results — most are stale or non-meaningful)
 
-**Implied valuation math:**
-- At $38.6B market cap on $602M revenue (64x P/S), the market implies future revenue of $2.5-3B at a 12-15x mature aerospace/defense multiple.
-- At 40% revenue CAGR (aggressive), $2.5B revenue arrives in ~2029. At 30% CAGR (more realistic post-Neutron), it's ~2030-2031.
-- **The stock is pricing in the 2029-2030 bull case discounted to today with a near-zero risk premium.** For an unprofitable company with an untested medium-lift rocket, this is aggressive.
-- Even on 2026E revenue ($885M), EV/Revenue of 42.6x is >3x the multiple of Lockheed Martin, Northrop Grumman, or any comparable defense prime.
-- **Analyst consensus** ($90 median, $60-$120 range) implies continued multiple expansion or acceleration beyond guidance -- neither is assured.
+| Model | Fair Value | Status |
+|---|---|---|
+| LLM deep analysis (prior, 2026-04-05) | $54.59 | Stale; price now $131 |
+| Simple ratios | $3.60 | Negative-earnings adjusted, not meaningful |
+| DCF / RIM / Multi-stage | null | Cannot value an unprofitable company on these |
 
-**Starship valuation overhang:** If Starship achieves even $50/kg launch costs (let alone $10-20/kg), it fundamentally reprices the entire launch industry. Electron's ~$37,500/kg and Neutron's projected ~$4,200/kg become premium-priced services that need to justify their cost through orbit specificity, schedule control, and mission assurance. This is viable but caps the TAM and margin ceiling.
+**Sanity multiples check:** Even granting heroic 2028 revenue of $1.4B at SpaceX-grade 25% net margin equals $350M earnings times 40x (high) equals $14B versus current $76B Enterprise Value. The math does not work without a different framework (terminal multiple on space-defense prime peer set at 8 to 10x revenue, implying $11 to $14B revenue needed). The implied 2030 revenue to support today's price assumes flawless Neutron ramp at 8 to 10 launches per year at $50 to $55M average selling price plus accelerating Space Systems.
+
+---
 
 ## Business Quality (18/25)
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Moat | 4/5 | Only credible Western alternative to SpaceX for dedicated small launch (Electron: 60+ consecutive successes, 81 total launches). Vertically integrated: Rutherford/Archimedes engines, avionics, solar cells (SolAero), reaction wheels (Sinclair), optical comms (Mynaric), separation systems (PSC). 21 launches in 2025 with 100% success. But moat is narrow vs SpaceX's overwhelming cost/scale advantage. |
-| Management | 3/5 | Peter Beck is a visionary founder-CEO with genuine technical credibility and strong operational execution. However: aggressive insider selling ($140M+ by Beck in Dec 2025, CFO $100M+ in Jan 2026, continued small sales in March 2026) with ZERO insider buys ever recorded. Only 0.6% insider ownership. Neutron timeline has slipped repeatedly (originally 2024, then mid-2025, then mid-2026, now Q4 2026). Guidance on revenue has been reliable; on Neutron, not. |
-| Profitability | 2/5 | Still unprofitable at every level. Gross margin trajectory is genuinely impressive (9% to 34% in 3 years). But operating loss of -$229M, EBITDA of -$155M, FCF of -$322M. Operating margins are -28%. Path to profitability requires Neutron to work AND Space Systems margins to hold. Management targets non-GAAP gross margins of 40%+, which is achievable but bottom-line profit is still 2+ years away. |
-| Balance Sheet | 4/5 | Strong: $1.1B liquidity, $254M debt, net cash $575M. Current ratio 4.1x. Raised capital at favorable prices during the stock run-up (smart capital allocation). No near-term liquidity risk. At current burn, ~3.4 years of runway without additional financing. |
-| Growth | 5/5 | 42% revenue CAGR over 3 years. $1.85B backlog (+73% YoY). Won $816M SDA contract, $190M HASTE deal. Electron running every 11-13 days, targeting 25+ launches in 2026. Space Systems won additional constellation contracts. Mynaric acquisition adds optical comms capability. Defense tailwinds strong. TAM expanding into medium-lift (Neutron), hypersonic testing, and satellite manufacturing. Not yet facing law-of-large-numbers constraint at $600M. |
+- **Moat (4/5):** Vertical integration is real and rare. Only Western alternative to SpaceX for medium-lift once Neutron flies. Mynaric and Geost give differentiated payload offering. Government prime status (Space Development Agency Tranche 2) is sticky.
+- **Management (4/5):** Peter Beck is among the best operator-founders in space. Execution track record on Electron is strong. Mark against him: Neutron schedule slippage and the unexplained RSU forfeiture in Q1 raise mild governance flags.
+- **Profitability (1/5):** Persistently unprofitable; widening operating losses in absolute dollars even as margins improve. Operating margin of -22%.
+- **Balance Sheet (4/5):** $1.48B cash, only $139M debt, $2B+ total liquidity — buys four to five years of runway at current burn. Strong.
+- **Growth Runway (5/5):** Defense space, smallsat constellations, Mars-class missions. Total Addressable Market is enormous and expanding with US Space Force and Space Development Agency budgets.
 
-## Inflection Point
+---
 
-**Approaching but not yet confirmed -- the market is trading on the anticipated inflection.**
+## Inflection Point Check
 
-Evidence FOR inflection:
-- **Gross margin trajectory** is the strongest signal: 9% (2022) -> 21% (2023) -> 27% (2024) -> 34% (2025). If this reaches 40%+ (management target), operating leverage kicks in rapidly.
-- **Management states Q1 2026 was peak Neutron R&D spend.** If true, R&D as % of revenue should decline from Q2 2026 onward, driving operating margin improvement.
-- **$1.85B backlog** with 37% converting in 12 months provides $685M revenue floor for 2026.
-- **HASTE/defense revenue** is higher-margin and more predictable than commercial launch.
-- **28 new launches sold in Q1 2026 alone** -- nearly matching all of 2025.
+- **Neutron first flight (Q4 2026):** Binary. Single biggest variable.
+- **Profitability inflection:** Management implies ~50% corporate gross margin "once Neutron scales" — that means 2028 or later. No EBITDA profitability path before then absent surprise.
+- **Space Systems scale:** Already running, $136.6M in Q1 (68% of revenue). Mynaric integration is mid-term margin drag, longer-term differentiator.
+- **Defense backlog ramp:** $1.3B Space Development Agency prime is the anchor — execution risk over 36 satellites is real but on schedule.
 
-Evidence AGAINST inflection being here:
-- Net losses widened nominally in 2025 ($198M vs $190M in 2024). The improvement is only on a percentage-of-revenue basis.
-- FCF deteriorated significantly (-$322M vs -$116M) due to Neutron capex.
-- Neutron has NOT launched. The inflection story requires Neutron success, which is still unproven.
-- The market is pricing in the post-inflection state today, meaning the inflection is "expected" not "observable."
+---
 
-## SpaceX Starship Competitive Analysis
+## Bull Case (price target $180 to $200, 12 to 18 months)
 
-This is the central question for any RKLB investment thesis. The relationship is dual-natured:
+- Neutron Q4 2026 first flight succeeds cleanly; flips Rocket Lab into the only credible Falcon 9 alternative.
+- Space Development Agency Tranche 2 plus Mynaric synergies push Space Systems to $700M+ run-rate by 2027.
+- Defense budget tailwind: US Space Force FY27 budget continues 15%+ growth; Rocket Lab wins second prime contract.
+- Mynaric proves accretive at scale, gross margin expands above 40% corporate by 2027.
+- Market continues to award "SpaceX-comparable" multiple on perceived scarcity.
 
-**How Starship HELPS Rocket Lab:**
-- Starship scaling grows the overall space economy (more satellites, more demand for components, more constellation deployments)
-- Rocket Lab's Space Systems division (67% of revenue) benefits as satellite manufacturing demand increases regardless of who launches them
-- SDA/defense programs are ITAR-restricted and require domestic alternatives to SpaceX
-- Growing space economy needs more launch diversity -- governments don't want a SpaceX monopoly
+## Bear Case (price target $55 to $75, 12 to 18 months)
 
-**How Starship THREATENS Rocket Lab:**
-- **Electron direct competition:** Falcon 9 rideshare at $7,000/kg already undercuts Electron's ~$37,500/kg. Starship rideshare could drop to $100-1,000/kg, making the "dedicated orbit" premium harder to justify for cost-sensitive customers.
-- **Neutron economics capped:** Neutron targets $55M/launch ($4,200/kg) vs Falcon 9 at $74M ($4,200/kg). SpaceX can easily price-match. Starship at scale ($10-20M/launch, $67-133/kg) makes Neutron's economics uncompetitive for any payload that can tolerate rideshare.
-- **Margin ceiling:** In a world where SpaceX is the price setter, Rocket Lab's launch margins are capped by SpaceX's willingness to undercut. The "premium for schedule control" is real but finite.
-- **Long-term strategic risk:** If Starship achieves rapid reusability, the entire medium-lift market segment becomes niche. Neutron's 13-ton capacity is meaningful today but may be an awkward middle ground between Electron (small dedicated) and Starship (massive cheap) within 5 years.
+- **Neutron slips again** (base rate from four prior slips is ~30 to 40%). Stock loses its scarcity premium.
+- **Q2 gross margin guidance down (33-35% GAAP)** — Mynaric drag plus mix shift; if Q3 also disappoints, the "operating leverage" thesis cracks. *(Under-covered: most headlines led with the $200M revenue beat and buried the gross margin down-guidance and the Mynaric "lower than Space Systems overall gross margin" admission directly from the call.)*
+- **Peter Beck's RSU forfeiture** in Q1 2026 cost the company a one-time $6M+ operating expense overrun; explanation on the call was thin. Worth monitoring as a governance signal — CEOs do not usually forfeit equity in routine course.
+- **Multiple compression:** Price to Sales of 111x is incompatible with any non-bubble market regime. A re-rate to even 50x Price to Sales (still expensive) at current revenue is -55%.
+- **SpaceX Starship operational:** Once Starship is reliable cargo (2026 to 2027), it cannibalizes medium-lift economics and resets industry pricing — exactly when Neutron is trying to enter the market.
+- **Customer concentration:** Government revenue is large and bumpy; Space Development Agency contract delays are common.
 
-**Net assessment:** Starship is net positive for Space Systems, net negative for Launch Services long-term. The bull case requires Space Systems to become the dominant revenue driver (it already is at 67%) while Launch Services evolves into a differentiated, premium-priced capability rather than competing on cost.
-
-## Bull Case
-
-- Neutron launches successfully in Q4 2026, opening medium-lift market and validating the engineering team's capability
-- Space Systems grows to $1B+ by 2028 as the SDA and commercial constellation build-out accelerates; Mynaric acquisition enables full end-to-end satellite capability
-- Gross margins reach 45%+ by 2027, EBITDA breakeven by late 2027, driving multiple re-rating from "growth promise" to "growth reality"
-- Defense spending tailwinds (HASTE, national security launches, hypersonic testing) provide durable, high-margin revenue floor
-- SpaceX IPO re-rates entire space sector; RKLB benefits as the only publicly traded pure-play alternative
-- Electron launch cadence hits 25-30/yr with improving unit economics through partial reusability
-
-## Bear Case
-
-- Neutron suffers further delays or failure, pushing first launch to 2027+, burning cash and credibility
-- SpaceX undercuts on price: Falcon 9 rideshare already at $7,000/kg, Starship at $100-1,000/kg makes Electron's dedicated launch premium shrink and caps Neutron's addressable market
-- Valuation compression: at 64x P/S, even modest execution miss triggers severe multiple contraction (precedent: high-multiple growth stocks in 2022 routinely fell 60-80%)
-- Insider selling accelerates -- Beck and Spice have sold $240M+ combined with zero buys, signaling private valuation view diverges from market
-- Space Systems margins disappoint as government cost-plus contracts carry lower margins than commercial
-- Additional equity raise needed if FCF burn continues at $300M+/yr before profitability arrives
-- Peter Beck key-man risk -- company narrative and technical vision heavily tied to founder
+---
 
 ## Scenario Table
 
-| Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
-|----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 20% | Neutron launches Q4 2026, revenue to $1B+ in 2027, EBITDA breakeven by Q4 2027 | Re-rates toward defense/space prime comps; ~20-25x 2027E revenue on $1.2B | $105 | +55% |
-| **Base** | 50% | Revenue grows to $850-900M in 2026 (per guide), Neutron delayed to Q1 2027, margins improve but profitability still 2 yrs out | Multiple compresses from 64x to 30-35x P/S as market demands earnings proof | $52 | -23% |
-| **Bear** | 30% | Neutron failure/major delay, FCF burn accelerates, SpaceX undercuts on pricing, equity raise dilutes | Multiple compresses to 15-20x P/S (still premium vs peers for growth) | $25 | -63% |
+| Scenario | Probability | Earnings Driver | Multiple Driver | 12-18mo Target | Return |
+|---|---|---|---|---|---|
+| Bull | 25% | Neutron success, $1B+ run-rate by mid-2027 | Enterprise Value to Sales stays ~80x | $190 | +45% |
+| Base | 50% | Neutron slips one to two quarters, margin guide stays soft | Enterprise Value to Sales compresses to 60x | $105 | -20% |
+| Bear | 25% | Neutron fails attempt 1, or slips into 2027 | Enterprise Value to Sales to 35 to 40x | $55 | -58% |
 
-**Expected value: -12.6%**
-(0.20 x 55%) + (0.50 x -23%) + (0.30 x -63%) = 11.0% - 11.5% - 18.9% = **-19.4%** (weighted) ... recalculated: 0.20(55) + 0.50(-23) + 0.30(-63) = 11.0 - 11.5 - 18.9 = -19.4%
+**Probability-weighted return:** 0.25 times 45 plus 0.50 times -20 plus 0.25 times -58 equals 11.25 minus 10 minus 14.5 equals **approximately -13% to -22%** (range reflects scenario target uncertainty).
 
-Corrected: **Expected value: -19.4%**
+**Thesis quality flag:** The bull case is **multiple-driven** for an unprofitable company. That is a low-quality thesis structure.
 
-**Thesis breaks if:** Neutron fails catastrophically or is delayed beyond mid-2027, AND SpaceX launches a dedicated Starship rideshare program targeting small/medium sats at <$1,000/kg, AND Space Systems growth decelerates below 20% YoY.
+---
 
 ## Setup & Timing
 
-| Factor | Status |
-|--------|--------|
-| Crowdedness | **Crowded** -- 56% institutional ownership, consensus BUY (10/15), popular retail stock, heavily discussed on social media and space forums |
-| Short interest | 4.2% of float -- low, not a squeeze candidate |
-| Technical position | $67.73, down 32% from 52-week high of $99.58, up 360% from 52-week low of $14.71. Neutral-to-oversold vs recent range but still at historically extreme valuation |
-| Next catalyst | **Q1 2026 earnings: May 7, 2026.** Neutron static fire / integration milestones throughout H2 2026. Neutron first launch target Q4 2026. Mynaric closing April 2026. |
-| Recent price action | Pulled back 32% from Dec highs, consolidating in $60-75 range. Has given back the most speculative froth but remains extremely expensive on fundamentals. Volume declining, suggesting consolidation rather than distribution. |
-| Insider activity | **Red flag:** CEO Beck sold $140M+ in Dec 2025, CFO Spice sold $100M+ in Jan 2026. Beck continued with smaller sales ($1.3M) in March. Zero insider buys ever. Only 0.6% insider ownership. |
+- **Crowdedness:** Elevated — 384% 12-month run, heavy momentum and retail flow, sits in space ETFs (ARKX, UFO).
+- **Short interest:** 5.8% of float — moderate, not squeeze setup.
+- **Technical position:** Near 52-week high ($138.38), extended on every timeframe.
+- **Catalyst proximity:** Q2 earnings in early August 2026 (margin trajectory check). Neutron first flight Q4 2026 (binary).
+- **Recent run:** Up 384% over 12 months, already up ~12% year to date. Buying at the high is buying on the news of the Q1 beat.
 
-## Verdict
+---
 
-**WATCH** -- Conviction: MEDIUM
+## Verdict: PASS / Conviction MEDIUM
 
-Rocket Lab is building something genuinely rare and valuable -- the only vertically integrated Western space company that can credibly compete with SpaceX across launch and satellite manufacturing. Business quality at 18/25 reflects real competitive advantages, an impressive gross margin trajectory (9% to 34% in three years), a massive $1.85B backlog, and expanding defense revenue. The Mynaric acquisition and HASTE contract strengthen the "space prime" thesis.
+This is a *great company at the wrong price*. The variant perception is that sell-side targets ($94 to $101) reflect fundamentals better than the current $131 momentum-driven print, and that Neutron schedule risk is materially under-discounted by market participants chasing the Space Development Agency narrative. Existing holders should consider trimming into strength; new buyers should wait for either (a) Neutron de-risking via a successful stage-1 hot-fire and integrated test campaign, or (b) a 30 to 40% pullback to $80 to $90 that re-aligns price with sell-side fair value.
 
-However, at 64x trailing P/S with -19% expected value from the scenario table, the stock is priced for perfection in a business where Neutron hasn't launched, profitability is 2+ years away, and the primary competitor (SpaceX) has near-unlimited resources to undercut on price. The Starship competitive dynamic is the under-discussed risk: while it grows the total space economy (good for Space Systems), it structurally caps launch margins and may render Neutron's medium-lift niche less valuable over time. Aggressive insider selling with zero buys adds to the concern.
-
-The key distinction: this is a GREAT company at a WRONG price. The gap between business quality and valuation quality is wide.
-
-**Would upgrade to BUY if:**
-1. Stock pulls back to $35-45 range (25-30x trailing P/S), providing genuine margin of safety
-2. Neutron completes successful static fire and demonstrates readiness for Q4 2026 launch
-3. Company shows clear path to EBITDA breakeven with concrete, achievable timeline
-4. Insider buying begins -- any insider purchase would be a powerful signal
-5. Any combination of the above that brings expected value positive
-
-**Entry price for BUY:** $38-45 (~25-30x trailing P/S), pricing in strong growth and Neutron potential without requiring perfection.
-**Would revisit after:** Neutron static fire milestone or Q1 2026 earnings (May 7, 2026).
+**Watchlist re-entry trigger:** $85 to $95 range, OR confirmed Neutron stage-1 hot-fire success.
+**Thesis-break price (upside):** Sustained above $160 on Neutron-progress catalysts, not multiple expansion.
