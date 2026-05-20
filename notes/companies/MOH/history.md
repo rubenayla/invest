@@ -1,6 +1,37 @@
 # MOH history
 
-Dated log: catalysts hit, surprises, thesis revisions. Newest first.
+Dated log: catalysts hit, surprises, thesis revisions. Chronological (oldest first), append at the end.
+
+## 2026-04-06 — CMS CY2027 MA Final Rate Notice: +2.48%
+
+- Net rate +2.48% (~$13B), vs +0.09% advance notice from Feb 2026.
+- CMS did not adopt full risk-model changes.
+- Less direct relevance for MOH (exiting MAPD by 2027), but signals
+  regulator is responding to industry pressure — read-through positive
+  for the broader managed-care rate cycle.
+- Sources: AHA news; Crowell client alert.
+
+---
+
+## 2026-04-23 — Q1 2026 earnings: thesis on track
+
+- Adj EPS $2.35 (beat $2.17 cons). Stock +11% on day, +17% intra-week.
+- Consolidated MCR 91.1%; Medicaid 92.0%; Medicare 89.8%; Marketplace 84.0%
+  (~79.5% ex-prior-year items).
+- 250bps better than Q4 2025's 94.6%. Well below the 93% thesis-break
+  threshold for Q1.
+- Reaffirmed $42B premium / $5+ EPS guide.
+- One smudge: Medicaid attrition guide raised from 2% → 6% (continuing
+  redetermination headwind), offset on cost this quarter.
+- Sell-side moves post-print:
+  - Morgan Stanley → PT $146 (EW), 2027E EPS lifted to $9.00
+  - Mizuho → PT $195
+  - Barclays → PT $161 (still UW, 12x 2027E)
+  - Consensus PT still ~$144 — Street has not capitulated to the bull case.
+- Sources: investors.molinahealthcare.com Q1 2026 release; Investing.com
+  earnings call transcript; IBTimes / Yahoo coverage of stock reaction.
+
+---
 
 ## 2026-04-28 — Risks/opportunities cataloged from MCR research
 
@@ -37,33 +68,6 @@ Opportunities (lag → mispricing):
   5. Q3 2026 earnings — when the market actually believes it.
 - Most of the price move happens between #3 and #5. Currently between #1
   and #3.
-
-## 2026-04-23 — Q1 2026 earnings: thesis on track
-
-- Adj EPS $2.35 (beat $2.17 cons). Stock +11% on day, +17% intra-week.
-- Consolidated MCR 91.1%; Medicaid 92.0%; Medicare 89.8%; Marketplace 84.0%
-  (~79.5% ex-prior-year items).
-- 250bps better than Q4 2025's 94.6%. Well below the 93% thesis-break
-  threshold for Q1.
-- Reaffirmed $42B premium / $5+ EPS guide.
-- One smudge: Medicaid attrition guide raised from 2% → 6% (continuing
-  redetermination headwind), offset on cost this quarter.
-- Sell-side moves post-print:
-  - Morgan Stanley → PT $146 (EW), 2027E EPS lifted to $9.00
-  - Mizuho → PT $195
-  - Barclays → PT $161 (still UW, 12x 2027E)
-  - Consensus PT still ~$144 — Street has not capitulated to the bull case.
-- Sources: investors.molinahealthcare.com Q1 2026 release; Investing.com
-  earnings call transcript; IBTimes / Yahoo coverage of stock reaction.
-
-## 2026-04-06 — CMS CY2027 MA Final Rate Notice: +2.48%
-
-- Net rate +2.48% (~$13B), vs +0.09% advance notice from Feb 2026.
-- CMS did not adopt full risk-model changes.
-- Less direct relevance for MOH (exiting MAPD by 2027), but signals
-  regulator is responding to industry pressure — read-through positive
-  for the broader managed-care rate cycle.
-- Sources: AHA news; Crowell client alert.
 
 ## Upcoming catalysts (watch list)
 
