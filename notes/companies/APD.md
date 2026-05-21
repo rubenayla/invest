@@ -1,118 +1,126 @@
 # Air Products and Chemicals, Inc. (APD)
 
 **Sector:** Basic Materials | **Industry:** Specialty Chemicals (Industrial Gases)
-**Price:** $293.55 | **Market Cap:** $65B | **EV:** $85B
-**Analysis Date:** 2026-04-05
+**Price:** $288.81 (2026-05-21) | **Market Cap:** ~$64.3B
+**Analysis Date:** 2026-05-21
+
+## Business Primer
+
+**What they do today.** Air Products is one of the three big global industrial-gas companies (alongside Linde and Air Liquide). They take ordinary air, separate it into its components — oxygen, nitrogen, argon — and also produce hydrogen and helium, then sell those gases to factories. The classic deal: Air Products builds a gas plant right next to a customer's site (a steel mill, a refinery, a semiconductor fab, a hospital-products maker) and signs a 15-20 year contract where the customer pays a fixed fee plus a charge that passes energy costs straight through. That "on-site" business is the bulk of profit and is extremely sticky — once the plant is built on your fence line and piped into your process, you do not switch suppliers. They also deliver gases by truck/cylinder ("merchant" sales) to smaller buyers. Revenue is about $12B/year, split roughly evenly across three regions: Americas (~$1.38B/quarter, ~43%), Asia (~$0.83B, ~26%), and Europe (~$0.79B, ~25%), plus a small Middle East/India equity-income line and a Corporate segment.
+
+**Why customers choose them (the value proposition).** A semiconductor fab or a refinery needs a guaranteed, uninterrupted supply of ultra-pure oxygen, nitrogen, or hydrogen — running out for even an hour can wreck a production batch worth millions or shut a furnace. Building and running your own air-separation unit is capital-intensive and off-mission, so the customer outsources it: Air Products finances, builds, and operates the plant on a long-term take-or-pay contract, the customer just pays a predictable monthly bill and never thinks about gas supply again. Compared to the next-best alternative (a competitor's plant, or self-build), the moat is physical and contractual: the plant is on the customer's property, the pipe is already in the ground, the contract has a decade-plus left, and energy-cost pass-through means Air Products carries little commodity risk. Switching means building a new plant from scratch — nobody does it.
+
+**Where they want to grow.** Under new CEO Eduardo Menezes (installed February 2025 after activist Mantle Ridge won a board fight), the strategy is a hard reset back to the core. The previous CEO had committed roughly $5B+/year of capital to speculative "energy transition" mega-projects — green hydrogen, blue hydrogen, sustainable aviation fuel — many without firm customers. Menezes is canceling/de-risking those and redirecting capital to high-return industrial-gas contracts with signed offtake, especially electronics/semiconductors (e.g., a Samsung fab supply project, a new air-separation unit in Cocoa, Florida for the space industry). Success in 3-5 years looks like: capex down from $5.1B (FY25) to ~$4.0B (FY26) to ~$2.5B (~FY28); operating margins climbing; net debt falling back toward an A credit rating; and the company throwing off real free cash flow for dividends and buybacks instead of burning it on mega-projects.
+
+**What could go wrong (the business risks).** (1) The two giant legacy projects — NEOM green hydrogen in Saudi Arabia (>90% built, ~one-third APD-owned, 2027 startup) and the paused Louisiana blue-hydrogen complex — could still produce gas with no profitable home if green/blue hydrogen demand stays weak; APD took up to a ~$3.1B pre-tax write-down on US projects in FQ2 2025 and could take more. (2) Helium pricing is soft and is a recurring drag on margins. (3) Industrial gas demand is cyclical with manufacturing; a global slowdown hits volumes. (4) Execution risk on the turnaround — Menezes is new and inherited a "bloated cost structure" he is still cutting (~$250M targeted). (5) Net debt is elevated (~$16.5B, ~2.2x EBITDA) after years of mega-project spend.
+
+**How to think about it.** A high-quality, wide-moat industrial-gas oligopolist that the prior CEO turned into a speculative-hydrogen capital sink — now an activist-driven, self-help turnaround where the value comes from *stopping the bleeding* (capex discipline, write-offs behind it, margins and free cash flow inflecting up), not from any new growth story.
 
 ## Situation Summary
 
-Air Products is in the early innings of a strategic reset under new CEO Eduardo Menezes (appointed Feb 2025 after activist Mantle Ridge ousted Seifi Ghasemi). The company took a $3.7B pre-tax impairment in FY2025 to exit three unprofitable U.S. clean energy projects (World Energy SAF, Massena green hydrogen, Texas CO project), signaling a decisive pivot back to core industrial gas discipline. Q1 FY2026 beat expectations (adj. EPS $3.16, +10% YoY; revenue $3.1B, +6%) and management maintained full-year guidance of $12.85-$13.15 adj. EPS while reducing FY2026 capex by ~$1B to ~$4B. The stock is at its 52-week high ($293.55) after rallying 29% from the December low of $228, pricing in turnaround optimism. The NEOM green hydrogen megaproject in Saudi Arabia (>90% complete, commercial production mid-2027) remains the largest swing factor.
+Air Products reported a strong fiscal Q2 2026 (quarter ended March 31, 2026) on April 30: adjusted EPS $3.20, up 19% year-over-year, sales $3.2B (+9%), and adjusted operating margin of 23.7%, up 210 basis points. Management *raised* full-year FY2026 adjusted EPS guidance to $13.00-$13.25 (8-10% growth) and reaffirmed the plan to cut capex by ~$1B this year to ~$4.0B, on a path to ~$2.5B annual capex by ~FY2028. The big news under the surface is the Louisiana Clean Energy Complex: the CFO stated the *base case is no-go* — APD will only proceed if EPC construction bids meet risk-adjusted return hurdles, with a decision due by mid-2026. NEOM green hydrogen is progressing (substation energized, Yara ammonia marketing agreement on track, unaffected by Middle East events). The market narrative is "activist turnaround working" — the stock is a consensus Buy (21 analysts, mean target ~$328) but trades only ~6% below its 52-week high after a +10% one-year run.
 
 ## Variant Perception
 
-- **Consensus view:** Street sees APD as a turnaround story under credible new management. Menezes (ex-Praxair) is bringing capital discipline, the worst write-offs are behind, and the core industrial gas business is stable. Analyst consensus target ~$325, rating "Buy." The narrative is "back to basics + NEOM upside."
-- **Our view:** The consensus is directionally right but underestimates two things: (1) the magnitude of capex normalization ahead -- with NEOM completing and U.S. projects cancelled, capex should drop from $7B to $3-4B by FY2027, dramatically improving FCF; (2) the balance sheet strain is real at 3.2x Net Debt/EBITDA and rising -- if NEOM stumbles or hydrogen offtake contracts disappoint, the leveraged balance sheet becomes a problem rather than a bridge. The stock at 21x forward P/E already prices in execution. The real opportunity would be a pullback to $260-$270 where you get the turnaround for cheaper with margin of safety.
-- **Trigger:** (1) NEOM commercial production start (mid-2027) -- proof that the megaproject works; (2) Yara ammonia offtake agreement (expected H1 2026) -- de-risks NEOM revenue; (3) FY2026 capex undershoot demonstrating Menezes's discipline; (4) Helium price recovery boosting high-margin segment.
+- **Consensus view:** The turnaround is real and broadly priced in. Analysts rate it Buy with ~$328 mean target (~13% upside); the market accepts capex discipline and margin recovery, but treats it as a "show-me" mid-single-digit EPS grower with two unresolved hydrogen overhangs (Louisiana, NEOM).
+- **Our view:** The variant is on *free cash flow timing and magnitude*, not the EPS line. The market is anchored on the visible EPS recovery but is underweighting that FCF has been deeply negative (FY25 FCF -$3.8B against ~$7B capex). As capex steps down $5.1B → $4.0B → ~$2.5B while operating cash flow holds at ~$3.5-4B, APD swings from burning ~$3-4B/year to generating ~$1-1.5B+ of real FCF within ~2-3 years — that is a balance-sheet deleveraging and capital-return inflection the static P/E does not capture. A formal Louisiana *no-go* (the stated base case) would *remove* a capital sink and is a positive de-risking event the market may reflexively read as a negative headline.
+- **Trigger:** The Louisiana go/no-go decision by **mid-2026 (calendar Q2-Q3)**, then FQ3 FY2026 earnings (early August 2026) showing the capex step-down and FCF turning, plus any first buyback authorization or A-rating-path commentary.
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $12.0B | -1.8% CAGR (flat to slightly declining) |
-| Adj. EPS | $12.61 | +6.6% CAGR |
-| Operating Income | $2.9B | +6.2% CAGR |
-| OCF | $3.3B | Stable (~$3.2-3.6B range) |
-| FCF | -$3.8B | Deeply negative (massive capex cycle) |
-| ROE (normalized) | 16.1% | Distorted by impairments |
-| D/E | 102 | Rising sharply (was 63 in FY2022) |
-| Net Debt/EBITDA | 3.2x | Elevated; was ~1.5x in FY2022 |
-| FCF Yield | Negative | Capex peak; should normalize FY2027+ |
-| Dividend Yield | 2.5% | 44th consecutive annual increase |
-| Payout (adj. EPS) | 57% | Sustainable on adjusted basis |
-
-**Key insight:** Revenue has been flat-to-declining as the legacy business is mature, but operating margins have expanded from 19% to 24% over 3 years through pricing power and mix. The negative FCF is entirely driven by the $7B capex cycle (NEOM + other projects) -- OCF remains robust at $3.3B. As capex normalizes to ~$3-4B, FCF should swing to $0-1B positive.
+| Revenue | $12.04B (FY25) | -1.8% CAGR (FY22→FY25; flat/declining) |
+| Net Income | -$0.39B (FY25 GAAP, write-down hit); ~$2.1B TTM recovering | Distorted by FQ2'25 charge & FY24 one-off gains |
+| Adjusted EPS | FY26 guide $13.00-$13.25 (+8-10%) | Inflecting up after reset |
+| FCF | -$3.77B (FY25) | Negative, but capex peaking — inflection ahead |
+| Operating Margin | 23.7% (FQ2'26, +210bps) | Improving |
+| ROE | 12.4% | Depressed by FY25 charge; normalizing |
+| ROCE | 11.4% | Stable, +40bps QoQ |
+| Net Debt/EBITDA | ~2.2x | Elevated; targeting A/A2 rating |
+| Div Yield | 2.5% ($1.81/qtr) | Dividend aristocrat, growing |
+| Forward P/E | ~22x on FY26 guide ($13.12); ~20x on fwd EPS | — |
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence | Notes |
-|-------|-----------|--------|------------|-------|
-| gbm_lite_3y | $507 | +73% | 0.77 | Very bullish; regression-based |
-| gbm_lite_1y | $364 | +25% | 0.64 | Moderate upside |
-| gbm_opportunistic_1y | $357 | +22% | 0.61 | |
-| autoresearch | $348 | +19% | 0.60 | Composite model |
-| gbm_1y | $347 | +19% | 0.73 | Most reliable short-term |
-| gbm_3y | $328 | +12% | 0.52 | Most reliable long-term |
-| gbm_opportunistic_3y | $313 | +7% | 0.70 | Conservative |
-| simple_ratios | $120 | -59% | 0.00 | Broken (GAAP loss distorts) |
-| DCF models | $0 | N/A | 0.00 | All broken (negative FCF/earnings) |
+| Model | Fair Value | Upside | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| gbm_lite_3y | $535.21 | +85% (vs $288.81) | 0.79 | 2026-05-18 |
+| gbm_lite_1y | $378.46 | +31% | 0.66 | 2026-05-18 |
+| gbm_opportunistic_1y | $374.07 | +30% | 0.57 | 2026-05-18 |
+| autoresearch | $360.15 | +25% | 0.60 | 2026-05-18 |
+| gbm_1y | $359.11 | +24% | 0.73 | 2026-05-18 |
+| gbm_3y | $339.17 | +17% | 0.52 | 2026-05-18 |
+| gbm_opportunistic_3y | $323.24 | +12% | 0.70 | 2026-05-18 |
+| rim | $123.01 | -57% | 0.70 | 2026-05-18 |
+| simple_ratios | $106.73 | -63% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | -$12.69 | n/m | 0.70 | 2026-05-18 |
+| dcf | -$12.97 | n/m | 0.70 | 2026-05-18 |
 
-**Model consensus:** The GBM models (most reliable per project conventions) unanimously see 7-73% upside. The DCF and ratio-based models are broken because FY2025 GAAP earnings are negative due to the $3.7B impairment, and FCF is negative from the capex cycle. These are NOT signals of business distress -- they reflect one-time write-downs and a peak investment period. The reliable GBM models point to a fair value of $313-$348, suggesting 7-19% upside from current levels. The consensus analyst target of $325 aligns with this range.
+*Models from 2026-05-18 used current_price $302.38 vs today's $288.81 (~4.5% lower, within tolerance — upside % understated by ~4-5pp, directionally intact).*
 
-## Business Quality (19/25)
+**Model consensus:** Sharp split. The GBM family (most reliable for return prediction per project notes) clusters bullish at +12% to +31% on 1-3yr horizons; gbm_lite_3y is an outlier at +85%. The DCF and RIM models are deeply negative-to-impossible — but these are exactly the models the project flags as broken for this profile: DCF produces negative fair values because FY25 free cash flow is negative (capex-peak distortion — a single trailing negative-FCF data point breaks the discounting), and RIM's anti-growth/book-value anchor plus the write-down hit to equity crushes it. **Discount DCF and RIM here; weight GBM.** GBM-centered consensus is ~+20-25% over 1-3 years, broadly consistent with the analyst mean target (~$328, +13%) plus the FCF-inflection optionality analysts under-model.
+
+## Business Quality (20/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 4/5 | Oligopoly (top 3 control ~80% of market). 49% of revenue from 15-20yr take-or-pay contracts with energy cost pass-throughs. Extremely high switching costs for on-site supply. Air separation is capital-intensive with 10-15yr payback, creating massive barriers. Not a 5 because no network effects or brand premium. |
-| Management | 4/5 | Menezes (ex-Praxair, ran $8B business) is highly credible. Board now includes Reilley (former Praxair CEO) and Mantle Ridge's Hilal. Early actions (project cancellations, capex discipline, strategic review) are exactly right. Deducting a point because track record is only ~14 months; still unproven on NEOM execution. |
-| Profitability | 4/5 | Op margin 24.3% vs Linde 28.2% and Air Liquide 19.5% -- middle of the pack but improving. Gross margin 31.6%. Cost pass-through contracts protect margins. ROIC has been strong historically (~12-14%). Adjusted EPS growing 6-7% annually. Not a 5 because margin gap to Linde suggests room for improvement. |
-| Balance Sheet | 3/5 | The weakest dimension. D/E 102 (vs Linde 71, Air Liquide 51). Net Debt/EBITDA 3.2x -- elevated for an industrial. Interest coverage adequate but debt grew from $8.3B to $18.4B in 3 years. Cash position thinning ($1.9B vs $3.0B a year ago). Rating agencies still investment grade (A-/A3). Capex reduction should stem the deterioration, but leverage needs to come down. |
-| Growth | 4/5 | NEOM alone adds ~$1B+ in annual revenue when fully operational (2027-2028). NASA contracts ($140M), Yara ammonia partnerships, and helium price recovery provide organic growth vectors. Global industrial gas market growing at 5% CAGR. Hydrogen/energy transition is a real secular tailwind. But: core revenue has been flat, and growth depends heavily on megaproject execution. |
+| Moat | 5/5 | On-site plants physically on customer property, 15-20yr take-or-pay contracts, energy pass-through, three-player global oligopoly. As durable a moat as exists in industrials. |
+| Management | 3/5 | NEW regime (Menezes from Feb 2025, ex-Linde/Praxair) installed by activist Mantle Ridge after the prior CEO destroyed capital on speculative hydrogen. Right strategy (capex discipline, refocus on core), but unproven here and inheriting a damaged balance sheet — score reflects the prior regime's poor allocation plus execution risk on the reset. Upside if the reset delivers. |
+| Profitability | 4/5 | 23.7% operating margin and rising; ROCE 11.4%. Best-in-class gas economics, currently dinged by soft helium and write-down noise. |
+| Balance Sheet | 3/5 | Net debt ~$16.5B, ~2.2x EBITDA, D/E ~102%. Elevated after mega-project spend; deleveraging is the whole thesis but it is not yet an A-rated balance sheet. |
+| Growth | 3/5 | Revenue flat-to-down 3yr; growth runway is real (electronics/semis, on-site demand) but modest — mid-to-high-single-digit EPS, not a top-line grower. This is a margin/FCF self-help story. |
+
+**Total: 20/25** — Strong-quality business; the deductions are entirely about the leveraged balance sheet and the unproven new management, not the underlying franchise.
 
 ## Inflection Point
 
-**Yes -- this is a classic activist-driven turnaround inflection.** The company is at a genuine turning point:
-
-1. **New management with a clear mandate:** Menezes + Reilley (both ex-Praxair) are applying proven industrial gas operational discipline. The board overhaul is complete.
-2. **Capex peak is behind:** FY2025 capex was $7B. FY2026 guided at $4B. FY2027+ should normalize to $2-3B as NEOM completes and cancelled projects roll off. This will be transformative for FCF.
-3. **Write-downs are done:** The $3.7B impairment clears the decks. No more zombie projects dragging on returns.
-4. **NEOM approaching commercialization:** 90%+ complete, production starting mid-2027. This shifts from "speculative capex drag" to "revenue-generating asset."
-
-**Evidence the inflection has begun:** Q1 FY2026 beat on both revenue and EPS. Capex already declining. Stock up 29% from Dec low. Analyst upgrades (JPMorgan to Overweight, Mizuho raised target). The early recovery phase is underway.
+**Yes — a clear, multi-pronged inflection, and the evidence has already begun.** This is the textbook setup the protocol favors: an activist installed new management with an explicit, correctable plan; the worst write-downs are in the rear-view (FQ2'25 -$1.73B net loss quarter); margins are visibly up (+210bps); guidance is being *raised*; and capex is stepping down on a stated path ($5.1B → $4.0B → ~$2.5B). The not-yet-visible leg is the FCF swing — operating cash flow ~$3.5-4B against falling capex flips FCF positive and large within ~2-3 years. Buying now is buying *after* the recovery has started (EPS +19%, guide raised) but *before* the FCF/deleveraging payoff shows in the numbers — exactly trading some upside for far lower value-trap risk.
 
 ## Bull Case
 
-- NEOM starts on time (mid-2027), Yara offtake deal signed, generating $1B+ annual revenue with attractive margins
-- Capex drops to $2.5-3B by FY2028, FCF swings to $1.5-2B, enabling deleveraging and buybacks
-- Menezes applies Praxair-style operational efficiency, closing the margin gap with Linde (24% -> 27%+ op margin)
-- Helium prices recover, boosting high-margin segment earnings
-- Multiple re-rates from ~21x to 24-25x as market rewards capital discipline and FCF generation
+- Capex discipline executes: $5.1B → $4.0B → ~$2.5B by ~FY28 while OCF holds ~$3.5-4B, generating $1-1.5B+ annual FCF and funding deleveraging + buybacks the market isn't modeling.
+- Operating margins continue the +200bps trajectory toward best-in-class (Linde-like high-20s%) on productivity, cost cuts (~$250M target) and electronics mix.
+- Louisiana formally killed/de-risked, removing the largest remaining capital-sink overhang; capital redeployed to high-return on-site contracts (Samsung, electronics).
+- Net debt falls back toward A/A2; lower interest cost + buybacks compound EPS above the mid-single-digit guide.
 
 ## Bear Case
 
-- NEOM delayed or hydrogen offtake contracts fail to materialize at expected pricing (green hydrogen economics still unproven at scale)
-- Leverage remains elevated (3.2x) if capex doesn't decline as expected; credit downgrade risk
-- Global industrial slowdown reduces on-site volumes (take-or-pay floors may not fully protect)
-- Tariffs increase equipment costs for remaining projects, compressing returns on invested capital
-- Stock is already at 52-week highs; turnaround optimism is mostly priced in at $294
+- **Under-covered primary-source risk:** management explicitly stated the Louisiana go/no-go hinges on EPC *construction bids* meeting return hurdles, decision by mid-2026 — but if APD instead chooses to *proceed* (bids come in acceptable), it re-commits billions to a still-speculative blue-hydrogen complex, blowing up the capex-reduction thesis the stock now relies on. Headlines treat "paused" as settled de-risking; the company has *not* foreclosed restarting it. This is the asymmetric tail the news under-covers.
+- NEOM green hydrogen (~$8.4B project, one-third APD) starts up in 2027 into a weak green-hydrogen demand market; offtake/ammonia economics could disappoint and trigger further impairment.
+- Helium pricing stays soft, capping the Americas margin recovery (already -140bps YoY there).
+- Industrial/manufacturing cyclical downturn hits on-site and merchant volumes.
+- Multiple is full: ~22x FY26 guide EPS leaves little room if the FCF inflection slips a year.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | NEOM on-schedule + Linde-like margins. FY2028E adj EPS $15.50 | Re-rate to 24x as FCF materializes | $372 | +27% |
-| **Base** | 50% | Steady 7-8% adj EPS growth. FY2027E adj EPS $14.00 | Maintain 21-22x forward P/E | $301 | +3% |
-| **Bear** | 25% | NEOM delays, macro slowdown. FY2027E adj EPS $12.50 | De-rate to 18x on leverage concerns | $225 | -23% |
+| Bull | 30% | FY28 EPS ~$15-16 on margin + buyback compounding; FCF inflects to $1.5B+ | Re-rate to ~24x as FCF/deleveraging is validated and A-rating path clears | $385 | +33% |
+| Base | 50% | EPS grows ~8-10%/yr per guide; capex steps to ~$4.0B then ~$2.5B; Louisiana killed, no new sink | Stable ~21-22x | $330 | +14% |
+| Bear | 20% | APD *restarts* Louisiana or NEOM disappoints → fresh impairment + capex re-commit; cyclical volume hit | De-rate to ~18x on broken capex thesis | $235 | -19% |
 
-**Expected value: +3.5%**
+**Expected value: +13.5%** (0.30 × 33% + 0.50 × 14% + 0.20 × −19%)
 
-**Thesis breaks if:** (1) NEOM production delayed beyond 2028; (2) Net Debt/EBITDA rises above 4.0x; (3) Menezes departs or strategic review reverses course; (4) Adj. EPS growth decelerates below 4% for two consecutive quarters.
+**Thesis breaks if:** APD re-commits major capital to Louisiana (or another speculative hydrogen project) and FY27/FY28 capex guidance rises back above ~$4B, OR FY26 free cash flow fails to show a clear improving trajectory toward positive. Either signals the capital-discipline story has failed.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Moderately crowded -- 93% institutional, Viking Global is top-10 holder. Mantle Ridge trimmed 43% of stake post-victory. Not extreme. |
-| Short interest | 2.0% -- low, no squeeze dynamics |
-| Technical position | At 52-week high ($293.55). Up 29% from Dec low, 18% in 3 months, 7% in 1 month. Technically overbought near-term. |
-| Next catalyst | Yara ammonia deal (H1 2026), Q2 FY2026 earnings (~May 2026), capex guidance update |
-| Recent price action | Strong rally already pricing in turnaround. JPMorgan upgrade + Q1 beat drove momentum. |
+| Crowdedness | Crowded long — 93% institutional, consensus Buy (21 analysts, 0 sells), activist story well-known |
+| Short interest | Low (~1.6% of float) — no squeeze setup, confirms consensus-positive |
+| Technical position | Neutral-to-oversold: RSI ~37, ~6% below 52w high, above 200-day ($272) but below 50-day ($294); pulled back from highs |
+| Next catalyst | Louisiana go/no-go decision by mid-2026 (calendar Q2-Q3); FQ3 FY2026 earnings ~early August 2026; NEOM/Yara ammonia agreement targeted H1 2026 |
+| Recent price action | +10% over 1 year, modest ~6% pullback from highs after the Q2 beat — has NOT run far ahead of the next catalyst |
 
 ## Verdict
 
-**WATCH** -- Conviction: MEDIUM
+**WATCH** — Conviction: MEDIUM
 
-Air Products is a high-quality industrial gas franchise (19/25) undergoing a credible activist-driven turnaround with an identifiable inflection point. The new Praxair-pedigree management team is doing exactly the right things: cancelling bad projects, reducing capex, and refocusing on core industrial gas operations. The NEOM megaproject is a genuine catalyst that could drive significant earnings growth in 2027-2028.
+Genuinely high-quality wide-moat franchise in a real, evidence-backed activist turnaround, with the right strategy (capex discipline, refocus on core gases) and an inflection that has visibly begun — but the variant (the FCF/deleveraging swing) only earns a ~+13.5% expected value because the stock already trades near 52-week highs at ~22x guided EPS, the long is crowded, and the single biggest catalyst (Louisiana) is genuinely two-sided: a *restart* would break the thesis. The reward is good but not exceptional at $289; the asymmetry improves materially on a pullback or after the Louisiana decision confirms no-go.
 
-However, the stock has already rallied 29% and sits at its 52-week high at 21x forward earnings, pricing in much of the turnaround. The expected value at current price is only +3.5%, which doesn't compensate for the balance sheet risk (3.2x leverage, negative FCF). The right entry is on a pullback.
+**If WATCH:** Upgrade to BUY on (a) a confirmed Louisiana *no-go* / de-risking that locks the capex-reduction path, paired with the first concrete FCF improvement in FQ3 numbers, or (b) a pullback to ~$255-265 (sub-20x FY26 guide), which would push expected value comfortably above +25%. Existing holders: hold; the turnaround is intact and the dividend is safe — add on weakness, not at the highs.
 
-**Would upgrade to BUY at:** $260-$270 (~18-19x forward P/E), which would provide a margin of safety against NEOM execution risk and bring expected value above +15%. Key upgrades: (1) confirmation of Yara ammonia offtake deal, (2) FY2026 capex coming in below $4B, (3) any macro-driven pullback that brings the stock back to early-2026 levels without fundamental deterioration.
+<!-- Personal position size, cost basis, P&L, and share counts (if any) belong in
+     ~/vault/finance/notes/positions/APD.md, NOT in this public research file. -->

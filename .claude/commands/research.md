@@ -453,3 +453,19 @@ print(f'Saved {ticker} llm_deep_analysis: verdict={verdict}, EV={expected_value_
 ```
 
 **This step is MANDATORY.** Every deep analysis must be persisted to the database so the dashboard and other tools can access it.
+
+---
+
+## STEP 10: Sync the Watchlist (MANDATORY if the ticker is on it)
+
+`notes/portfolio/watchlist.md` is a curated summary that goes stale the moment a deep analysis changes a verdict. After saving the note + DB row, check whether `{TICKER}` already has a line in the watchlist:
+
+```bash
+grep -n "companies/{TICKER}.md" notes/portfolio/watchlist.md
+```
+
+- **If a line exists**, update it in place to match the new verdict, conviction, quality score, EV %, and entry/thesis-break prices from this run. Preserve the thesis hook prose; only refresh the data fields and the verdict label. If the verdict flipped (e.g. WATCH→BUY), append a short `*(was WATCH on YYYY-MM-DD — upgraded.)*` note so the change is visible.
+- **If no line exists** but the verdict is BUY or a notable WATCH, add a line in the appropriate section.
+- Bump the file-level `Last updated YYYY-MM-DD` stamp at the top whenever you touch it.
+
+The watchlist must never contradict the company note. A BUY in `notes/companies/{TICKER}.md` that still reads WATCH on the watchlist is a bug.

@@ -1,128 +1,125 @@
-# Marvell Technology (MRVL)
+# Marvell Technology, Inc. (MRVL)
 
 **Sector:** Technology | **Industry:** Semiconductors
-**Price:** $91.58 | **Market Cap:** $80B
-**Analysis Date:** 2026-03-16
+**Price:** $189.00 (2026-05-21) | **Market Cap:** ~$166B
+**Analysis Date:** 2026-05-21
+
+## Business Primer
+
+**What they do today.** Marvell designs chips that move and process data inside data centers — it does not run factories, it designs the silicon and contracts manufacturing out (mostly to TSMC). In fiscal 2026 (year ended 2026-01-31) it did $8.2 billion of revenue, and roughly three-quarters of that ($6.0B+) came from one end market: the **Data Center**. Inside data centers it sells three kinds of things. (1) **Custom silicon** — it co-designs the actual AI accelerator chip ("XPU", the brain that does the math) for a hyperscaler like a cloud company that wants its own chip instead of buying Nvidia GPUs; this was a ~$1.5B business in FY2026 and doubled year-over-year. (2) **Interconnect / electro-optics** — the chips and optical modules (800-gigabit and 1.6-terabit "DSPs") that let tens of thousands of those accelerators talk to each other at light speed across a data center; Marvell is the merchant leader here. (3) **Switching and storage** — the networking switch chips and the controllers that read/write data to drives. The remaining ~26% ("Communications and Other") is older enterprise networking, telecom carrier, and consumer chips that are flat-to-declining and increasingly irrelevant to the story.
+
+**Why customers choose them (the value proposition).** Two distinct buys. For **custom silicon**: a cloud company (Amazon, Microsoft, Google, Meta) building its own AI chip has two options — staff a thousand-person chip team and build it in-house (years, enormous risk), or hand the hardest parts (the high-speed input/output, the chip-to-chip links, the physical layout in a leading-edge TSMC process) to a partner who has done it dozens of times. Marvell is that partner. The concrete benefit: a hyperscaler gets a chip tuned exactly to its own AI software, at a fraction of what it pays Nvidia per unit, in ~2 years instead of 4, with Marvell's proven high-speed-interface building blocks ("SerDes") that the customer would otherwise spend years getting wrong. For **optics/interconnect**: when you wire 100,000 accelerators together, the bottleneck is the links between them, not the chips themselves. Marvell's 1.6T DSP is the first to ship 200-gigabit-per-lane technology — it moves twice the data per fiber pair of the previous generation, which directly lets the customer build a bigger AI cluster with less cabling, power, and latency. The alternative (Broadcom, or staying on slower 800G) means a smaller or slower cluster.
+
+**Where they want to grow.** Management's explicit bet is that the AI infrastructure build-out is a "once-in-a-lifetime episodic" event and Marvell rides it on two legs. (1) **Win more custom XPU programs** — they claim 20+ design sockets entering production through FY2028-2029, a "lead XPU program" plus a "new Tier 1 program" ramping to high volume in FY2028, and they target ~20% share of a ~$15B custom-XPU-attach market by calendar 2028 (~$3B). (2) **Stay ahead in interconnect** — guide FY2027 interconnect revenue up 50%+, switching past $600M, and they bought **Celestial AI** and **XConn** to attack the emerging "scale-up" / co-packaged-optics opportunity (a TAM they peg above $10B by 2030). Success in 3-5 years = data center revenue exiting FY2027 at a >$3B/quarter run-rate and approaching an ~$18B annual data-center business by calendar 2028.
+
+**What could go wrong (the business risks).** The whole thesis is concentrated in a handful of customers: the top-four US hyperscalers spend the bulk of AI capex, so losing or being designed out of even one custom socket is material. This is not hypothetical — in late 2025 a credible analyst (Benchmark) argued Marvell **lost the Amazon Trainium3/Trainium4 sockets to competitor Alchip** after execution stumbles on Trainium2, and there were reports Microsoft was co-designing future Azure silicon with Broadcom. Custom programs are also "lumpy": revenue arrives in big steps tied to a single customer's product cycle, and a delay or a customer building in-house can dent a year. Optics is competitive (Broadcom) and the 800G→1.6T transition could compress pricing. And the entire AI-capex cycle could slow, in which case a 60x-trailing-earnings stock corrects hard.
+
+**How to think about it.** Marvell is a **merchant arms-dealer to the AI build-out** — it sells the picks and shovels (custom chips + the optical/networking plumbing) to whoever is mining, rather than betting on one AI winner. It is the clear #2 custom-silicon house behind Broadcom, with a genuine technology lead in electro-optics. The investment question is not "is the business good" (it is) but "is a now-priced-for-perfection cyclical, fresh off a 143% three-month rally, about to confirm or deny the custom-socket-loss fear at its May 27 earnings."
 
 ## Situation Summary
 
-Marvell just reported record FY2026 results (ended Jan 2026): revenue of $8.195B (+42% YoY), GAAP EPS $3.07, non-GAAP EPS $2.84 (+81% YoY). The company guided FY2027 revenue to ~$11B (>30% growth), with Q4 FY2027 expected to exceed $3B quarterly run rate. The stock trades at ~$91, well below its 52-week high of $102.77, having consolidated in the $80-90 range since early 2026. Marvell has cemented itself as the #2 custom AI silicon (XPU) player behind Broadcom, with 18 XPU design wins in production and a $75B lifetime revenue pipeline. Two strategic acquisitions -- Celestial AI (photonic interconnect) and XConn Technologies (PCIe/CXL switching) -- strengthen its optical and scale-up networking moats. The macro narrative is "AI infrastructure spend continues but investors are rotating to cheaper names amid tariff/rate uncertainty."
+Marvell closed fiscal 2026 (Jan 2026) with record results: $8.2B revenue (+42% YoY), data center >$6B (+46%), custom silicon ~$1.5B (doubled), GAAP EPS $3.07 (+81%), non-GAAP gross margin 59.5%. It guided Q1 FY2027 to $2.40B (+8% sequential, ~27% YoY) and told investors FY2027 data-center revenue should grow ~40% with bookings "accelerating at a record pace." The stock's recent history is wild: it cratered to a ~$58-60 low in late 2025 when Benchmark downgraded on conviction that Marvell lost the AWS Trainium3/4 custom sockets to Alchip, plus fears Microsoft would move Azure silicon to Broadcom. It has since rallied ~143% in three months to a fresh 52-week high of $189, as strong Q4 results and management's claim of "purchase orders covering the entirety of this fiscal year for this next-generation program" reassured the market. The next, decisive event is **Q1 FY2027 earnings on 2026-05-27** (consensus ~$0.79 non-GAAP EPS, ~$2.40B revenue).
 
 ## Variant Perception
 
-- **Consensus view:** Strong Buy across 32-40 analysts (avg target ~$120-131). The market sees Marvell as a clear AI infrastructure beneficiary but prices it as a "second derivative" play behind NVDA/AVGO. The forward PE of ~17x on consensus implies the market believes growth decelerates sharply after FY2027 and margins plateau. Analysts are uniformly bullish but the stock has not re-rated to match Broadcom's premium (AVGO trades at ~30x forward). The market is pricing "good growth, but Broadcom wins the war."
-
-- **Our view:** The market is underestimating (a) the stickiness and margin expansion of custom XPU programs once in production, (b) the optical interconnect TAM expansion as AI clusters scale beyond 100K GPUs where Marvell's 1.6T DSP and Celestial AI photonics become critical, and (c) the compounding nature of multi-generational ASIC design wins -- once Amazon/Microsoft/Google commit to Marvell's architecture for 3nm, the switching cost for 2nm is enormous. The forward PEG of 0.56x on guided 30%+ growth is cheap for a company with this design win visibility. However, the risk is real: Broadcom's scale advantage (60% custom ASIC share), execution risk on integrating two acquisitions simultaneously, and customer concentration (AWS is estimated 40%+ of custom silicon revenue).
-
-- **Trigger:** Q1 FY2027 earnings (late May/early June 2026) confirming the $2.4B revenue guide and showing data center revenue mix >75%. Secondary trigger: any announcement of a new hyperscaler custom XPU win beyond the current Amazon/Microsoft/Google base. FY2028 guidance of ~$15B would be a major re-rating catalyst.
+- **Consensus view:** Strong Buy (40 analysts, mean target ~$148 — note this lags the rally; high target $225). The market has swung from late-2025 "Marvell lost AWS, custom is structurally impaired" to mid-2026 "the socket-loss fear was overblown, AI build-out re-accelerating, custom doubling." The 143% three-month run says consensus is now firmly in the bull camp again.
+- **Our view:** We are **not** more bullish than consensus on the stock here — we largely agree on the *business* but the *price* has already round-tripped the entire fear-and-recovery arc. The real variant question is whether the Trainium3/4 loss is genuinely refuted or merely *deferred* in the numbers. Management has POs "for the entirety of this fiscal year" on the next-gen program — that covers FY2027 (Trainium3 production), but says nothing definitive about Trainium4 / FY2028+, exactly the sockets Benchmark flagged. The FY2028 "at least double" custom guide leans on unnamed new Tier 1 programs, not on AWS continuity. So the stock at a 52-week high prices in *both* near-term Trainium3 revenue *and* a clean long-term socket position — and only one of those is actually confirmed.
+- **Trigger:** May 27 earnings. A beat-and-raise with explicit custom-backlog color (or a named multi-generation hyperscaler win) re-rates it higher; any hint of a custom air-pocket in FY2028 or a soft FY2027 data-center reiteration de-rates a stock priced for perfection.
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue (FY2026) | $8.2B | +11.4% CAGR (FY23-26), accelerating: +42% YoY |
-| GAAP Net Income (FY2026) | $2.67B | Turned positive after 2 years of GAAP losses |
-| Non-GAAP EPS (FY2026) | $2.84 | +81% YoY |
-| FCF (TTM approx) | ~$1.6B | Growing: $0.63B -> $1.07B -> $1.39B -> ~$1.6B+ |
-| ROE | 19.3% | Improving (was negative on GAAP basis in FY24-25) |
-| D/E | 33.5% | Stable, deleveraging |
-| FCF Yield | ~2.0% | Low, reflects growth premium |
-| Net Debt | ~$3.4B | Manageable at <1.5x run-rate EBITDA |
+| Revenue | $8.20B (FY26) | +11.5% CAGR (FY23 $5.92B → FY26 $8.20B), but +42% YoY in FY26 — AI inflection |
+| Net Income (GAAP) | $2.67B (FY26) | Turned positive: −$163M (FY23) → −$885M (FY25) → +$2.67B (FY26) |
+| FCF | $1.39B (FY26) | Steady ~$1.0-1.4B; lags net income (heavy R&D/capex) |
+| ROE | ~19% | Inflected positive with FY26 GAAP profitability |
+| D/E | 0.33 | Conservative; net debt ~$1.8B |
+| FCF Yield | ~0.8% | Very low — priced for growth, not cash today |
 
-**Key observations:**
-- Revenue trajectory is the real story: FY2023 $5.9B -> FY2024 $5.5B (dip from inventory correction) -> FY2025 $5.8B -> FY2026 $8.2B. The AI inflection is real and accelerating.
-- GAAP net income was negative for FY2024 and FY2025 due to large amortization of acquired intangibles (Inphi acquisition). FY2026 turned massively positive at $2.67B due to a $1.9B gain in Q3 (likely related to investment/divestiture). Non-GAAP is the better guide.
-- FCF generation is strong and growing: $1.39B in FY2025, tracking higher in FY2026.
-- Gross margins at 51% with operating margins at 18.7% (GAAP) -- there is significant room for margin expansion as revenue scales through fixed costs and mix shifts to higher-margin custom silicon.
+*FY26 GAAP net income/EBITDA are flattered by one-time items (incl. a large deferred-tax benefit); non-GAAP EPS was $2.84 vs GAAP $3.07. Use non-GAAP for run-rate.*
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence | Notes |
-|-------|-----------|--------|------------|-------|
-| gbm_opportunistic_3y | $202.90 | +137% | 97.3% | Most bullish, high confidence |
-| gbm_lite_3y | $174.35 | +104% | 91.7% | Strong multi-year signal |
-| gbm_opportunistic_1y | $165.27 | +93% | 96.2% | Near-term momentum signal |
-| autoresearch | $151.73 | +77% | 98.1% | Highest confidence model, very bullish |
-| gbm_lite_1y | $108.96 | +27% | 72.7% | Moderate upside |
-| gbm_1y | $97.22 | +14% | 89.1% | Conservative 1yr target |
-| gbm_3y | $85.96 | +0.4% | 75.9% | Essentially fair value |
-| simple_ratios | $38.80 | -55% | high | **Broken**: ratio-based models hate high-growth semis |
-| dcf / multi_stage_dcf | $12.40 | -86% | N/A | **Broken**: known DCF outlier issue |
-| dcf_enhanced | $9.71 | -89% | N/A | **Broken**: same issue |
-| rim | N/A | N/A | N/A | Failed to compute |
-| growth_dcf | N/A | N/A | N/A | Failed to compute |
+Live price $189; most models below stored `current_price=176.89` (2026-05-18), so the **DB upside % is overstated by ~7pp** — recomputed against $189.
 
-**Model consensus:** Massive divergence. The GBM and autoresearch models (which are the most reliable per project notes) are uniformly bullish with $97-$203 fair value range. The DCF models are completely broken for MRVL -- they produce absurd sub-$15 values because (a) GAAP earnings were negative for 2 of the last 4 years due to acquisition-related charges, and (b) DCF models fail on high-growth companies with front-loaded capex. Simple_ratios also fails because it compares MRVL's high P/S and P/E against broad market averages without adjusting for growth rate. **Ignore the DCF and ratio models entirely.** The reliable models cluster around $100-175 fair value, suggesting 10-90% upside from current levels. The autoresearch model at $151.73 with 98% confidence is particularly notable.
+| Model | Fair Value | Upside @ $189 | Confidence | Run Date |
+|-------|-----------|--------------|------------|----------|
+| gbm_opportunistic_1y | $376.83 | +99% | 0.98 | 2026-05-18 |
+| gbm_lite_3y | $367.71 | +95% | 0.92 | 2026-05-18 |
+| gbm_3y | $326.18 | +73% | 0.96 | 2026-05-18 |
+| gbm_opportunistic_3y | $300.38 | +59% | 0.90 | 2026-05-18 |
+| autoresearch | $241.59 | +28% | 0.86 | 2026-05-18 |
+| gbm_1y | $228.03 | +21% | 0.90 | 2026-05-18 |
+| gbm_lite_1y | $219.40 | +16% | 0.60 | 2026-05-18 |
+| simple_ratios | $55.94 | −70% | 0.85 | 2026-05-18 |
+| dcf_enhanced | $25.82 | −86% | 0.70 | 2026-05-18 |
+| dcf | $23.51 | −88% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | $19.04 | −90% | 0.70 | 2026-05-18 |
 
-## Business Quality (19/25)
+*Models older than 7 days use a $176.89 base; upside recomputed against today's $189. Old `llm_deep_analysis` row (2026-03-16, price $85.61) is stale and overwritten by this run.*
+
+**Model consensus:** Bimodal and nearly useless at face value. GBM/autoresearch (the historically reliable return models) cluster bullish ($219-377, +16% to +99%) because they extrapolate the realized AI-driven momentum and revenue inflection. The DCF family ($19-26, −86% to −90%) and simple_ratios ($56, −70%) are **broken here** — they anchor on trailing GAAP cash flows and a ~60x trailing P/E and conclude the stock is 85%+ overvalued, the classic DCF failure on a high-growth semi at the start of an earnings ramp (it can't see the FY27-29 custom/optics step-up). Per project guidance (GBM > DCF for return prediction), weight the momentum models, but heavily discount their +99% tail — they have no view on the custom-socket binary risk. Net: the trustworthy models say "still upside if the AI ramp holds," not "screaming cheap."
+
+## Business Quality (20/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 4/5 | Strong switching costs in custom ASIC (multi-year design cycles, IP integration into customer architectures). Duopoly with Broadcom in high-end custom silicon. Deep IP portfolio in SerDes, DSPs, optical. Weaker than AVGO due to smaller scale and narrower product breadth. |
-| Management | 4/5 | CEO Matt Murphy has executed a remarkable transformation since 2016 -- pivoted from consumer/storage to data center/AI. Inphi acquisition ($10B, 2021) was prescient and created the optical DSP franchise. Celestial AI and XConn acquisitions are strategically sound. Capital allocation disciplined: low dividend payout (8%), debt reduction, R&D focus. Insider ownership low at 0.35% is a minor negative. |
-| Profitability | 3/5 | Non-GAAP margins are respectable (gross ~62% non-GAAP, operating ~37% non-GAAP in Q4). GAAP margins muddied by amortization. Margins trail Broadcom (65%+ gross, 45%+ operating). Significant operating leverage as revenue scales -- FY2027 should show meaningful expansion. Still proving it can sustain high profitability at scale. |
-| Balance Sheet | 4/5 | Moderate leverage (D/E 33.5%, net debt ~$3.4B) very manageable against $1.6B+ FCF. Current ratio 2.0x is solid. Debt maturity is well-laddered. Two recent acquisitions add integration risk but were likely funded partly by cash/equity, not excessive debt. No red flags. |
-| Growth | 4/5 | Extraordinary near-term growth: 42% FY2026, guided >30% FY2027, and management targets ~$15B for FY2028 (40% growth). Custom silicon pipeline of $75B lifetime value. Data center now >73% of revenue and growing faster than total. Risks: customer concentration (AWS heavy), law of large numbers as base grows, potential AI spending slowdown. |
+| Moat | 4/5 | Genuine tech leadership in electro-optics (first to 200G/lane, 1.6T) and #2 custom-silicon design house with deep SerDes IP. Switching costs are real once a custom program ramps. But the Trainium3 socket loss proves the moat is contestable — these are won/lost program by program, not durable like a tollbooth. |
+| Management | 4/5 | Strong execution on the AI pivot; disciplined capital allocation (divested auto Ethernet at a high multiple, bought Celestial AI/XConn for scale-up CPO, returned $2.2B in FY26). Custom programs partly de-risked via customer-funded NRE (non-recurring engineering). Knock: the Trainium2 execution stumbles (RDL interposer delays) that reportedly cost the Trainium3 socket are a real ding. |
+| Profitability | 4/5 | Non-GAAP gross margin ~59%, non-GAAP operating margin ~35% — strong for a fabless networking semi. GAAP only just turned solidly positive. Custom silicon dilutes blended gross margin vs. optics, a structural drag as custom mixes up. |
+| Balance Sheet | 4/5 | Net debt ~$1.8B, D/E 0.33, current ratio 2.0 — comfortably manageable against $1.4B+ FCF. Carries goodwill from Inphi/acquisitions but no leverage concern. |
+| Growth | 4/5 | Enormous runway: ~40% FY27 data-center growth guided, custom "at least doubling" FY28, multi-billion TAM expansion (XPU attach $15B by '28, CPO $10B+ by 2030). Tempered by single-customer lumpiness and dependence on continued hyperscaler capex. |
+
+**Total: 20/25** — high-quality business riding a real secular wave; the missing 5 points are the contestable (program-by-program) moat and customer concentration.
 
 ## Inflection Point
 
-**Yes -- Marvell is in the middle of a major profitability and revenue inflection.** The company is transitioning from a diversified semi company with low margins and cyclical businesses (storage, carrier, enterprise networking) into a focused AI data center infrastructure provider. Key evidence:
-
-1. **Revenue mix shift:** Data center was ~50% of revenue 2 years ago; it exceeded $6B (73%+) in FY2026 and is growing faster than the total. The lower-margin legacy businesses (carrier, consumer, auto Ethernet -- which was divested) are being pruned.
-2. **Operating leverage:** As data center revenue scales through fixed R&D costs, margins are expanding quarter over quarter. Q4 FY2026 non-GAAP operating margin likely exceeded 38%.
-3. **Custom silicon maturation:** Design wins from 2-3 years ago are entering volume production, which carries higher margins than standard products. The 18 XPU wins announced represent years of future revenue.
-4. **Acquisition integration:** Celestial AI (photonic fabric) addresses the next bottleneck in AI infrastructure -- optical interconnect bandwidth -- positioning Marvell for the 2027-2028 buildout cycle.
-
-The inflection has BEGUN (revenue is already accelerating) but has NOT BEEN FULLY PRICED (stock trades at 17x forward vs. Broadcom at ~30x).
+Yes — and it has **already substantially played out in both fundamentals and price**. The fundamental inflection is unambiguous: FY26 flipped from a −$885M loss to +$2.67B profit, revenue +42%, custom silicon doubling, GAAP gross margin from 41% to 51%. That is a textbook profitability/demand inflection. But the *stock* inflection (the $58→$189 round trip) has captured it. The remaining question is whether a *second* leg exists (FY28 custom doubling on new Tier 1 wins) — that is forward-looking and unconfirmed, not yet observable evidence. So this is no longer "buy the early evidence of a turn"; the turn is recognized and priced. New buyers are paying for the *next* inflection, sight unseen.
 
 ## Bull Case
 
-- **Custom ASIC share gain:** Marvell captures 30%+ of custom silicon TAM (from ~25% today) as hyperscalers diversify away from Broadcom. New customer wins announced at next earnings.
-- **Optical interconnect supercycle:** 1.6T transition drives massive DSP volume; Celestial AI photonic technology becomes industry standard for >100K GPU clusters, creating a new multi-billion revenue stream by FY2028.
-- **Margin expansion:** Non-GAAP operating margins expand from ~37% to 42%+ as data center mix rises and custom silicon programs mature. FY2028 non-GAAP EPS reaches $7+.
-- **Multiple re-rating:** Market recognizes Marvell's growth visibility is comparable to Broadcom's and narrows the valuation gap. Forward PE expands from 17x to 25x+.
-- **FY2028 revenue of $15B+ confirmed**, validating the multi-year growth trajectory.
+- AI infrastructure build-out is early-innings; Marvell guides FY27 data center +40%, interconnect +50%, exiting the year at >$3B/quarter — a credible path to ~$18B data-center revenue by CY2028.
+- Custom silicon doubled in FY26 and management has POs covering all of FY27 for the next-gen program, plus 20+ sockets and a new Tier 1 program ramping to high volume in FY28 ("at least double").
+- Clear electro-optics technology lead — first to ship 200G/lane and 1.6T DSP, with "very strong bookings from multiple Tier 1 customers"; optics is higher-margin than custom.
+- If GBM/autoresearch models are right, fair value is $220-300+ even from here.
 
 ## Bear Case
 
-- **Customer concentration blowup:** AWS delays or downsizes its custom XPU program, cutting Marvell's largest custom silicon revenue stream. A single customer loss could take 15-20% of data center revenue.
-- **Broadcom dominance:** Broadcom's scale (6 custom chip customers including new OpenAI win) and broader product portfolio allow it to bundle pricing, squeezing Marvell's margins and win rate.
-- **AI capex slowdown:** Hyperscalers pull back on AI infrastructure spending due to recession, ROI concerns, or model efficiency gains reducing compute needs. FY2027 revenue misses the >30% growth guide.
-- **Integration risk:** Celestial AI and XConn acquisitions distract management, and photonic technology takes longer to commercialize than expected.
-- **Multiple compression:** If growth decelerates to 15-20% by FY2028, the forward PE contracts to 12-15x, creating significant downside even with earnings growth.
+- **[Under-covered, primary-source] Custom is structurally lumpy and the FY28 "double" leans on UNNAMED new Tier 1 programs, not AWS continuity.** The press release itself lists "dependence on a few customers" and "AI's impact on business model" as risks, and management's reassurance ("POs for the entirety of this fiscal year") explicitly covers only FY27 — it does not refute the Benchmark thesis that Trainium3/4 (FY28+) went to Alchip. The market is treating a near-term PO as if it settled the long-term socket question. It didn't.
+- Valuation is priced for perfection: ~60x trailing P/E, ~35x forward, ~20x sales, 0.8% FCF yield, at a fresh 52-week high after a 143% three-month rally — into earnings.
+- Microsoft reportedly exploring Broadcom for future Azure silicon; Broadcom is the dominant custom-silicon incumbent and a relentless optics competitor.
+- The whole thesis depends on sustained top-four-hyperscaler AI capex; any capex digestion pause hits a high-beta (β 2.25) name disproportionately.
+- DCF/ratio models scream 70-90% overvalued — wrong in *magnitude* (they can't price the ramp) but directionally a flag that no margin of safety exists at $189.
 
 ## Scenario Table
 
-| Scenario | Prob | Earnings Driver | Multiple Driver | Target (12mo) | Return |
+| Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | FY2027 revenue $11.5B+, non-GAAP EPS $4.50+; new hyperscaler XPU win announced | Re-rating toward AVGO: forward PE expands to 28x on FY28 EPS | $150 | +64% |
-| **Base** | 50% | FY2027 revenue $11B (in-line), non-GAAP EPS ~$4.00; steady execution | Forward PE stable at 20-22x on FY28 consensus ~$5.50 | $115 | +26% |
-| **Bear** | 25% | FY2027 revenue $10B (miss), margin compression from mix shift / competition; AI capex slows | Forward PE compresses to 15x on lower growth expectations | $65 | -29% |
+| Bull | 30% | Beat-and-raise on May 27; FY27 data center >40%, custom backlog color confirms multi-gen hyperscaler win; FY28 custom doubling de-risked | Multiple holds ~35x fwd as earnings compound; AI leadership premium intact | $300 | +59% |
+| Base | 45% | In-line to modest beat; FY27 ramp proceeds as guided (~27% YoY rev), custom +20%, optics strong; no new socket clarity | Slight de-rate as growth normalizes off a 60x trailing base | $225 | +19% |
+| Bear | 25% | Trainium3/4 socket loss surfaces in FY28 outlook OR hyperscaler capex digestion; custom air-pocket guided | Sharp de-rate of a priced-for-perfection, high-beta name back toward ~25x fwd | $120 | −37% |
 
-**Expected value: +21%** (0.25 x 64% + 0.50 x 26% + 0.25 x -29%)
-
-**Thesis breaks if:** (1) FY2027 Q1 revenue comes in below $2.3B (missing guide meaningfully), (2) data center revenue growth decelerates below 25% YoY for two consecutive quarters, (3) a major custom XPU customer defects to Broadcom or in-house, or (4) gross margins decline below 48% GAAP, signaling pricing pressure.
+**Expected value: +17.1%** (implied fair value ~$221)
+**Thesis breaks if:** Marvell guides FY28 custom silicon flat-to-down, or explicitly concedes a lost flagship hyperscaler XPU socket, or hyperscaler AI capex commentary turns to "digestion." Any of those, at this price, is a sell signal.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | **Moderately crowded** -- 83% institutional ownership, consensus Strong Buy (32+ analysts). However, stock has pulled back from highs and is NOT at all-time highs, which reduces crowding risk. Not a contrarian play, but not dangerously overcrowded either. |
-| Short interest | **Low** -- 4.4% of float. No significant short thesis. Modest squeeze potential. |
-| Technical position | **Neutral-to-positive** -- Trading at $91.58, above 50-day MA ($82) and 200-day MA ($79.64). 52-week range $47.09 - $102.77. Has consolidated in $80-92 range for ~2 months. Not overbought. Relative strength improving. |
-| Next catalyst | **Q1 FY2027 earnings: late May / early June 2026.** Also: OFC 2026 conference (March 2026) for optical product showcase. |
-| Recent price action | Rallied from ~$61 (mid-2025 low) to $102+ (late 2025), pulled back and consolidated around $82-92. Recent bounce to $91 on strong Q4 results. Has NOT run away -- still 11% below 52-week high. |
+| Crowdedness | Crowded — 85% institutional, Strong Buy consensus (40 analysts), back in favor after the rally |
+| Short interest | Low — 3.8% of float (no squeeze setup; consensus is long) |
+| Technical position | RSI 63 (not yet overbought) but at the exact 52-week high ($189), ~40% above 50-day MA, ~98% above 200-day MA — extended |
+| Next catalyst | **2026-05-27** Q1 FY2027 earnings (consensus ~$0.79 non-GAAP EPS, ~$2.40B rev) |
+| Recent price action | +143% in 3 months, +14% in the last month — has run hard directly into the catalyst |
 
 ## Verdict
 
-**BUY** -- Conviction: **MEDIUM-HIGH**
+**WATCH** — Conviction: MEDIUM
 
-Marvell is a high-quality business (19/25) at a genuine inflection point, with extraordinary revenue visibility (guided >30% growth into FY2027 and targeting ~40% into FY2028), a durable competitive position as the #2 custom AI silicon player, and a forward PEG of 0.56x that looks cheap relative to growth. The reliable valuation models (GBM, autoresearch) unanimously point to significant upside. The variant perception -- that the market is underpricing Marvell's custom silicon stickiness and optical interconnect TAM -- is credible but not yet proven. Conviction is medium-high rather than high because: (a) customer concentration risk is real, (b) Broadcom is a formidable competitor with scale advantages, and (c) the stock is not deeply undervalued on a static basis (2% FCF yield) -- the thesis depends on continued hypergrowth execution.
+The business is genuinely good (20/25) and the AI/custom-silicon/optics secular tailwind is real and confirmed in the FY26 numbers. But there is no margin of safety and no clean variant edge at $189: the stock has already round-tripped the entire late-2025 socket-loss fear and rallied 143% to a 52-week high *into* a binary earnings event, with the reliable models implying only modest-to-decent upside and the unresolved Trainium3/4 long-term socket question still hanging over the FY28 custom "double." Positive expected value (+17%) but bear-case downside is severe (−37%) and the timing (extended, crowded, pre-earnings) is unfavorable for fresh entry.
 
-**Entry:** Scale in around $85-92 (current range). Full position below $85. The stock has been consolidating here for 2 months post-earnings, which is a reasonable entry zone.
-**Thesis-break signal:** Two consecutive quarters of data center revenue growth below 25% YoY, or FY2027 revenue tracking below $10B pace. Exit immediately if a major XPU customer cancellation is announced.
-**Price target:** $115 (base, 12-month), $150 (bull, 18-month).
+**Would upgrade to BUY on:** (a) a post-May-27 pullback to ~$150-160 (back toward the 50-day MA / ~28x forward) *with* the FY27 ramp intact, OR (b) explicit management confirmation of a multi-generation flagship hyperscaler XPU win that removes the Trainium-loss overhang. Existing holders: this is a "let it run but tighten" situation — consider trimming into the May 27 print given the run-up, and define your sell on the thesis-break conditions above.
 
----
-
-*Sources: Marvell Q4 FY2026 earnings (March 5, 2026), yfinance, internal valuation models (stock_data.db, as of March 9-15, 2026), analyst consensus data.*
+<!-- Personal position size, cost basis, P&L, share counts go to
+     ~/vault/finance/notes/positions/MRVL.md — NOT this public file. -->

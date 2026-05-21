@@ -41,6 +41,7 @@ For ANY stock question (`should I buy X?`, `what about X?`), run `/research TICK
 - **Freshness check**: include `timestamp` in DB queries. If data >7d old, fetch live price; if it diverges >5%, say so before analyzing. If >30d for volatile names, rerun the model
 - Markdown header MUST include `**Price:** $X.XX (YYYY-MM-DD)`. Valuation table MUST have `Run Date` column
 - Saves to `notes/companies/TICKER.md` (or `TICKER/thesis.md` for promoted folder layout — see `notes/companies/README.md`) and `valuation_results` DB
+- **After any deep analysis, sync `notes/portfolio/watchlist.md`**: if the ticker has a line there, update its verdict/conviction/quality/EV/entry to match the note (STEP 10 of `/research`). The watchlist must never contradict the company note — a BUY in the note that still reads WATCH on the watchlist is a bug.
 
 ## The Iron Rule
 

@@ -1,127 +1,131 @@
-# AST SpaceMobile (ASTS)
+# AST SpaceMobile, Inc. (ASTS)
 
 **Sector:** Technology | **Industry:** Communication Equipment (Direct-to-Cell Satellite)
-**Price:** $92.62 | **Market Cap:** $35.4B
-**Analysis Date:** 2026-04-05
+**Price:** $93.83 (2026-05-21) | **Market Cap:** ~$36.4B
+**Analysis Date:** 2026-05-21
+
+## Business Primer
+
+**What they do today.** AST SpaceMobile is building a cellular network in space. Instead of cell towers on the ground, they launch enormous satellites into low Earth orbit (about 500-700 km up) that act as flying cell towers. The key trick: these satellites talk *directly* to a normal, unmodified smartphone — the same iPhone or Android in your pocket, no special antenna, no satellite dish, no separate device. Today the company barely sells anything: Q1 2026 revenue was $14.7 million, and that came almost entirely from (a) one-time gateway equipment deliveries to telecom partners and (b) U.S. government engineering and development contracts (testing the satellites for defense and space-tracking uses). They do not yet have paying consumers using a phone-to-satellite service at scale. They are pre-commercial: building the constellation now, hoping to switch on real consumer service over the next 1-2 years.
+
+**Why customers choose them (the value proposition).** The problem they solve is dead zones. Roughly 3 billion people have a phone but no reliable mobile coverage where they live, work, hike, sail, or drive — and even in rich countries, coverage drops on highways, in the mountains, at sea. The competing fix is more ground towers, which are wildly uneconomical to build in empty or remote areas. The alternative satellite approaches (Apple/Globalstar, SpaceX/Starlink + T-Mobile) today mostly do *texting and basic voice* — emergency-style messaging, not real internet. AST's pitch is fundamentally different: actual *broadband* to a normal phone. They have demonstrated peak speeds near 100 megabits per second directly to an unmodified smartphone — fast enough for video calls, streaming, and web browsing, not just SOS texts. The reason they can do this and others can't is physical: their satellites are gigantic (the BlueBird Block 2 array is roughly 2,400 square feet, like a tennis court in orbit), because a bigger antenna captures the faint signal from a tiny phone far better. A telecom carrier (AT&T, Verizon, Vodafone) partners with AST so it can tell its own customers "you now have coverage literally everywhere," using AST's satellites as an extension of the carrier's existing licensed spectrum. The carrier keeps the customer relationship and shares revenue with AST.
+
+**Where they want to grow.** The plan is a three-step ramp. Step 1 (now-2026): get roughly 45-60 satellites into orbit, enough for *continuous* (always-on) coverage over the United States, Europe, and Japan, and start charging carriers and the U.S. government real money — guidance is $150-200 million of revenue in 2026, with management claiming a path "approaching $1 billion" in 2027. Step 2 (2027-2028): reach ~90+ satellites for broad global coverage and convert the ~60 carrier partnerships (covering 3 billion+ subscribers) into recurring per-user revenue-share payments. Step 3 (longer term): a government and defense business — secure communications, space-based radar tied to U.S. missile-defense ("Golden Dome") programs — plus next-generation, even larger satellites that need heavy-lift rockets (SpaceX Starship, Blue Origin New Glenn) and could drop the cost per unit of capacity dramatically.
+
+**What could go wrong (business risks).** This is a capital-devouring moonshot with binary engineering risk. (1) Rockets fail: in April 2026 a Blue Origin New Glenn upper-stage engine underperformed and stranded BlueBird 7 in too low an orbit — the satellite is being de-orbited (a total loss, though insured). Every launch carries that risk. (2) Cadence risk: they must launch a stack of satellites every 1-2 months and manufacture ~6 per month — any slip pushes back the "continuous service" date and the revenue that depends on it. (3) Cash burn: building and launching 100+ satellites at $21-23 million each, with 2026 capital spending guided up to $575-650 million, means they will likely need to raise more money (more debt or more shares), diluting owners. (4) Competition: SpaceX/Starlink already has 600+ direct-to-cell satellites in orbit and a T-Mobile deal — today limited to text, but SpaceX launches faster and cheaper than anyone, and if they crack broadband-to-phone the moat shrinks. (5) The whole thesis assumes consumers and carriers actually pay enough for "coverage everywhere" to justify a constellation costing several billion dollars.
+
+**How to think about it.** This is a pre-revenue infrastructure call-option, not an operating business you can value on earnings. You are underwriting *execution* (can they launch and switch on a constellation) and *adoption* (will carriers and governments pay), against a competitor (SpaceX) with a structural launch-cost advantage. The stock trades on milestones and narrative, not multiples — closer to a clinical-stage biotech or a megaproject than to a normal telecom.
 
 ## Situation Summary
 
-AST SpaceMobile is building the world's first space-based cellular broadband network connecting directly to unmodified smartphones via massive LEO satellites. The stock hit an ATH of ~$130 in January 2026, pulled back ~30% amid a tech selloff and dilution concerns from a $1.075B convertible note offering (2.25% coupon, $116.30 strike), and has since stabilized in the $80-93 range. FY2025 revenue was $70.9M (first real revenue year), with 2026 guidance of $150-200M and a 2027 target approaching $1B. As of early April 2026, the company has 7 satellites in orbit (BlueBirds 1-5 plus next-gen BlueBird 6 and 7), with BlueBird 7 launching on Blue Origin's New Glenn in April 2026. The plan calls for 45-60 Block 2 satellites in orbit by year-end 2026 with launches every 1-2 months. The company has $3.9B in liquidity (pro forma), $1.2B in contracted revenue commitments, and partnerships with AT&T, Verizon, Vodafone, TELUS, and stc Group. The competitive threat from SpaceX/Starlink (650+ D2C-enabled satellites, T-Mobile partnership) is real but currently limited to text/voice -- ASTS targets true broadband at 120 Mbps.
+AST reported Q1 2026 on 2026-05-11: revenue $14.7M, net loss $191M, EPS -$0.66 (a wide miss vs. the -$0.21 consensus), and $3.5B of cash, equivalents and restricted cash. The headline drama, though, was April's loss of BlueBird 7 when Blue Origin's New Glenn upper stage underperformed and stranded the satellite in too low an orbit (insured, to be de-orbited); the stock fell ~15% on the day. Management used the Q1 call to reaffirm the constellation plan: BlueBird 6 operational, BlueBird 8/9/10 launching mid-June on a Falcon 9, ~45 satellites targeted in orbit by end-2026, manufacturing ~6 satellites/month, BlueBirds 11-33 in advanced production. They reaffirmed $150-200M FY2026 revenue (about half already contracted, driven by mobile carriers and the U.S. government), raised 2026 capex guidance to $575-650M, and stated they have *no plans to raise additional convertible debt in 2026*. The FCC granted commercial Supplemental Coverage from Space authorization for U.S. direct-to-device broadband over up to 248 satellites. Wall Street remains split — consensus Hold, mean target ~$83 (range $41-$117) — with the stock having round-tripped from a ~$130 January high down to the low $70s after the BB7 loss and back to ~$94.
 
 ## Variant Perception
 
-- **Consensus view:** Roughly split -- analyst consensus is Hold with mean target ~$88-98. The market prices in significant execution risk but enormous optionality. Bears see a company trading at ~500x trailing sales with heavy insider selling, convertible dilution, and SpaceX as a formidable competitor. Bulls see the only operational broadband-capable direct-to-cell satellite provider with tier-1 MNO partnerships and a clear path to $1B+ revenue.
-
-- **Our view:** The market is underappreciating the SpaceX Starship angle -- but as a tailwind, not a headwind. Current Block 2 BlueBirds cost ~$22M/satellite all-in (up from $16-18M due to inflation/supply chain). Starship's maturation (targeting $10-70/kg vs $2,700/kg on Falcon 9) would be transformative for ASTS's unit economics on next-gen satellites. The V3 generation of ASTS satellites (beyond Block 2) will be too large for Falcon 9 -- they require Starship or equivalent heavy-lift. If Starship achieves even $500/kg by 2028, ASTS's constellation economics improve dramatically: launch costs could drop 80%+ per satellite, enabling faster constellation buildout, larger arrays with more capacity, and a steeper cost advantage over competitors who don't benefit as directly from launch cost deflation (since ASTS's satellites are uniquely massive at ~6,100 kg each). However, this is a 2028+ story, not a 2026 catalyst. The near-term variant is narrower: the market is pricing in ~30-40% execution risk (reflected in the pullback and short interest), but ASTS is actually ahead of its Q1 2026 launch targets (5 launches planned by end of Q1) and has the capital to execute. If launch cadence holds through H1 2026, the risk premium should compress before commercial service begins.
-
-- **Trigger:** (1) Near-term: Successful launch cadence through Q2 2026 reaching 15-20+ Block 2 satellites in orbit, enabling beta commercial service. (2) Medium-term: First meaningful broadband subscriber revenue reported in H2 2026. (3) Long-term (2028+): Starship operational pricing confirmed, enabling V3 satellite economics that dramatically expand the business case.
+- **Consensus view:** Hold (9 analysts, mean target ~$83, range $41-$117). The market sees enormous optionality offset by enormous execution risk: a name trading at ~430x trailing sales, ~18% short interest, a fresh EPS miss, a literal rocket failure last month, and rising capex. Bears say it's a science-fair project burning billions with SpaceX breathing down its neck; bulls say it's the *only* operator with demonstrated broadband-to-an-unmodified-phone plus tier-1 carrier and government contracts.
+- **Our view:** The market is conflating two different risks and over-weighting the wrong one. The April BlueBird 7 loss spooked the tape (-15%), but it is a *single-launch* setback that is insured and does not change the manufacturing reality — the real bottleneck and the real signal is the **production cadence (~6 satellites/month) and launch frequency**, not any one rocket. More importantly, the most overlooked positive in the Q1 print is the **operating cash burn of only $48M** — the multi-hundred-million cash outflow is almost entirely *capital expenditure* (satellites + a $100M Ligado spectrum advance), i.e. discretionary build-out spending, not money lighting on fire to keep the lights on. With $3.5B of cash and management explicitly ruling out 2026 convertible raises, the runway-panic narrative is overstated for the next 12-18 months. The genuine uncertainty is not "do they survive 2026" — it's "does continuous U.S./EU/Japan service actually arrive on schedule (needs 45-60 sats) and convert into the ~$1B 2027 revenue management is dangling." That is a *demand/adoption + cadence* question, not a *solvency* question, and the stock is priced as if all three are equally fragile.
+- **Trigger:** (1) Near-term, dateable: the mid-June 2026 Falcon 9 launch of BlueBird 8/9/10 — a successful three-satellite stack restores cadence confidence after the BB7 loss. (2) H2 2026: reaching 45+ satellites and switching on *continuous* (not intermittent) commercial service in a first market, plus the first sequential quarter of meaningfully growing carrier/gateway revenue toward the $150-200M guide. (3) 2027: evidence that the "approaching $1B" revenue target is real (signed, recurring carrier revenue-share + Golden Dome / defense awards).
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $70.9M (FY25) | $0 (2023) -> $4.4M (2024) -> $70.9M (2025) -- first revenue ramp |
-| Net Income | -$342M | Losses widening: -$88M (2023) -> -$300M (2024) -> -$342M (2025) |
-| FCF | -$1.19B | Accelerating burn: -$268M (2023) -> -$300M (2024) -> -$1.19B (2025) |
-| ROE | -30.1% | Negative -- pre-profitability stage |
-| D/E | 93.6% | $2.24B debt vs $1.84B equity; offset by $2.34B cash ($3.9B pro forma) |
-| FCF Yield | -3.4% | N/A for pre-revenue company |
-| Cash | $2.34B | Pro forma ~$3.9B including convertible proceeds and undrawn facilities |
-| Gross Margin | 50.3% | On limited hardware/government services revenue |
-| Beta | 2.87 | Extremely high volatility |
+| Revenue (FY25) | $70.9M | $0 (2023) → $4.4M (2024) → $70.9M (2025); Q1'26 $14.7M |
+| Net Income (FY25) | -$341.9M | Losses widening: -$87.6M (2023) → -$300.1M (2024) → -$341.9M (2025) |
+| Operating Cash Flow (FY25) | -$71.5M | Improving: -$148.9M (2023) → -$126.1M (2024) → -$71.5M (2025) |
+| Free Cash Flow (FY25) | -$1,192.7M | Capex-driven: -$267.7M → -$300.3M → -$1,192.7M (constellation build) |
+| Capex (FY25) | -$1,121.1M | Ramping hard; FY26 guide $575-650M |
+| ROE | negative | Pre-profitability |
+| D/E | ~1.2x | $2.99B debt / $1.84B equity; offset by $3.0B+ cash |
+| Cash & liquidity | $3.5B | Cash $3.03B + restricted $0.43B (3/31/26) |
+| P/S (TTM) | ~429x | Meaningless at this revenue stage |
+| Beta | ~2.6 | Extremely high volatility |
 
-**Key ratios:** Forward P/E of 6,673x (meaningless at this stage). Price/Sales of 499x. Price/Book of 14.4x. Current ratio of 16.4x. 2026E revenue of $150-200M implies ~130% growth. Shares outstanding: 293M. Float: 165M. Short interest: 20.1% of float.
+**Q1 2026 key figures (from press release / call):** Revenue $14.7M; net loss $191M; EPS -$0.66; GAAP opex $164.1M; **operating cash burn only $48.1M**; capex $379.3M (incl. $261.6M PP&E, $100M Ligado advance, $17.7M spectrum); ~387.8M total shares (Class A 298.5M + B 11.2M + C 78.2M). Cost per Block 2 satellite $21-23M. ~60 MNO partners / 3B+ subscribers; >$1.2B contracted revenue commitments. FY26 capex guide raised to $575-650M.
 
 ## Valuation Models
 
-No prior quantitative valuation models exist in the database for ASTS. Traditional models (DCF, RIM, multiples) are inapplicable to a pre-revenue satellite infrastructure company. The stock trades on optionality, execution milestones, and narrative.
+| Model | Fair Value | Upside | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| llm_deep_analysis (prior) | $97.25 | +5.0% | 0.70 | 2026-04-05 (stale) |
+| simple_ratios | $11.39 | -86% | 0.70 | 2026-05-18 |
+| dcf | NULL | — | — | 2026-05-18 |
+| dcf_enhanced | NULL | — | — | 2026-05-18 |
+| growth_dcf | NULL | — | — | 2026-05-18 |
+| multi_stage_dcf | NULL | — | — | 2026-05-18 |
+| rim | NULL | — | — | 2026-05-18 |
 
-**Implied valuation math:**
-- At $35.4B market cap and $175M midpoint 2026E revenue: ~202x forward revenue
-- If 2027 revenue hits $785M (analyst consensus): ~45x 2027 revenue
-- If 2027 revenue hits $1B with 60%+ gross margins: ~35x revenue, ~59x gross profit
-- For context: satellite infrastructure monopolies at scale can trade at 15-25x revenue (e.g., early Starlink estimates)
-- **Break-even implied revenue at 20x P/S:** ~$1.77B (likely 2028-2029 timeframe)
+*Models older than 7 days may use stale prices — compare model's current_price to today's price before trusting upside %.*
 
-**Model consensus:** No quantitative models -- valuation is entirely narrative/optionality-driven at this stage.
+**Model consensus: standard valuation is meaningless here and the DB proves it.** Every cash-flow / book-value model (DCF, enhanced DCF, growth DCF, multi-stage DCF, RIM) returned **NULL** — they cannot run on a company with negative earnings, negative FCF, and no stable cash-flow base. `simple_ratios` produced an absurd $11.39 fair value (-86%) by anchoring on near-zero trailing earnings; it is a garbage output for a pre-revenue name and should be ignored. The prior `llm_deep_analysis` ($97.25, +5%) is from 2026-04-05 and predates both the BlueBird 7 loss and the Q1 print. **Conclusion: there is no quantitative valuation anchor.** This name must be judged on scenario analysis tied to satellite deployment, cadence, and adoption — not multiples. For rough context: at ~$36B market cap, $175M midpoint FY26 revenue ≈ 205x forward sales; "approaching $1B" 2027 revenue ≈ 36x; the price embeds near-flawless execution.
 
-## Business Quality (14/25)
+## Business Quality (10/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 3/5 | Largest commercial phased arrays ever built (223 sq m), 3,500+ patents, exclusive MNO partnerships (AT&T, Verizon, Vodafone, TELUS, stc). True broadband capability (120 Mbps) vs Starlink's text/voice. BUT SpaceX has massive scale advantages, vertically integrated launch, and 650+ D2C satellites already deployed. Moat durability depends on maintaining broadband speed advantage. |
-| Management | 3/5 | Founder-led (Abel Avellan), secured $3.5B+ in capital, $1.2B in contracted revenue, tier-1 MNO partnerships. Navigated complex multi-provider launch strategy (SpaceX, Blue Origin, ISRO). However, original timelines have slipped and insider selling has been heavy (~$161M net). Capital allocation is necessarily aggressive. |
-| Profitability | 1/5 | Pre-revenue at scale. 50% gross margins on limited hardware/government revenue are promising but economically meaningless. Operating loss of -$288M in FY2025. FCF of -$1.19B. Years from breakeven. |
-| Balance Sheet | 4/5 | $3.9B pro forma liquidity with $2.34B cash on hand. Fully funded for the 45-60 satellite Block 2 constellation through 2026-2027. $1.075B convertible note at $116.30 strike is well-structured (above current price). Current ratio of 16.4x. The balance sheet is actually a strength -- they raised aggressively when the stock was high. |
-| Growth | 3/5 | TAM is enormous: 5.2B mobile subscribers, ~600M in total coverage gaps. Revenue guided to $150-200M in 2026, ~$785M-$1B in 2027. $1.2B in contracted commitments. But almost all growth is aspirational -- real commercial broadband revenue has not started. Execution risk is extreme. |
+| Moat | 4/5 | Genuine technical differentiation: only demonstrated broadband (~100 Mbps) direct to *unmodified* phones, enabled by uniquely massive arrays; ~1,100 MHz of tunable MNO spectrum access + L/S-band; ~3,900 patents/claims; ~60 carrier partnerships. But unproven at commercial scale and SpaceX's launch-cost advantage is a structural threat. |
+| Management | 3/5 | Founder-led (Abel Avellan); strong vision and clear milestone communication; rebuilt liquidity to $3.5B and improved *operating* burn. But heavy historical insider selling, repeated dilution (converts + ATM + Class C structure), and a track record of ambitious timelines that the BB7 loss shows are fragile. |
+| Profitability | 1/5 | Pre-profitability. Net margin deeply negative; gross margin ~50% only on tiny one-off hardware/government revenue. No operating leverage demonstrated yet. |
+| Balance Sheet | 2/5 | $3.5B cash is a real cushion and operating burn is modest (~$48M/qtr), but ~$3.0B debt, $575-650M 2026 capex, and a 100+ satellite build that will almost certainly require future raises. Survives 2026; long-term funding is open-ended. |
+| Growth | 0/5 proven (5/5 potential) | TAM genuinely vast (3B+ underserved subscribers + government/defense). Revenue growth explosive off a zero base ($0 → $71M → guide $150-200M → "approaching $1B" 2027). But every dollar beyond contracted backlog is a promise, not a fact. Scored on *proven* growth, which is near-nil. |
+
+**Total: 10/25** — at the red-flag threshold, which is *correct* for a pre-commercial moonshot. The score is structurally depressed by the pre-revenue stage; the entire bull case rests on the Growth dimension's optionality converting to reality, which the framework can't credit until proven.
 
 ## Inflection Point
 
-**Yes -- the company is at the most critical inflection in its history, and early evidence is emerging.**
-
-The inflection is the transition from "building the constellation" to "commercial broadband service." Key milestones in 2026:
-- **Q1 2026:** 5 launches planned (BlueBirds 6-10), establishing manufacturing/launch cadence (OBSERVABLE -- BlueBird 6 launched Dec 2025, BlueBird 7 launched April 2026)
-- **Mid-2026:** 15-25 satellites = intermittent broadband coverage in key markets (beta service)
-- **Late 2026:** 45-60 satellites = continuous nationwide U.S. coverage, commercial service activation
-- **H2 2026:** First meaningful subscriber/revenue reporting from MNO partners
-
-**Observable evidence the inflection has begun:** BlueBird 6 successfully launched (Dec 2025), BlueBird 7 on New Glenn (April 2026), satellites 8-25 in assembly/integration/testing, 15 MNO gateway sites delivered, $175M stc prepayment received, TELUS partnership announced (Canada service by late 2026). The company is executing on launches after years of delays.
-
-**Risk:** The market has partially priced in the inflection succeeding. But launch cadence confirmation in Q1-Q2 2026 is genuine new information that should compress the execution risk premium.
+**Yes — this is a genuine deployment inflection, mid-transition.** The company is crossing from "demonstrated technology" to "operational constellation." Observable evidence the inflection has *begun*: BlueBird 6 operational and demonstrating ~100 Mbps to a normal phone; FCC commercial authorization granted; first real revenue ($14.7M Q1, ~half of the FY guide already contracted); manufacturing at ~6 satellites/month with BlueBirds 11-33 in advanced build. The inflection is *not yet de-risked*: continuous service requires 45-60 satellites (today only a handful are operational), and the BB7 loss shows the path is non-linear. Per the timing principle: the inflection has visibly started, but the highest-conviction confirmation (continuous service + sequentially ramping carrier revenue) is still 2-3 quarters out.
 
 ## Bull Case
 
-- Only broadband-capable (120 Mbps) direct-to-cell satellite provider vs Starlink's text/voice limitation -- winner-take-most dynamics in broadband D2C
-- 45-60 Block 2 satellites deployed by year-end 2026 enables continuous U.S. coverage and commercial service activation
-- $1.2B in contracted revenue with AT&T, Verizon, Vodafone, TELUS, stc de-risks demand -- these are binding commitments, not LOIs
-- Starship cost deflation (2028+) transforms V3 satellite economics: 80%+ reduction in launch costs per satellite enables faster global buildout and margin expansion
-- Government contracts (DoD, emergency services) provide high-margin, sticky revenue floor
-- $3.9B liquidity = fully funded through constellation buildout with no further dilution needed at current plan
+- Mid-June Falcon 9 launch of BlueBird 8/9/10 succeeds, restoring cadence confidence; the company hits ~45 satellites by year-end and switches on continuous U.S./EU/Japan service.
+- Operating cash burn stays modest (~$48M/qtr) — the scary cash outflow is discretionary capex, so $3.5B funds the build well into 2027 without an emergency raise (management ruled out 2026 converts).
+- The ~60 carrier partnerships (3B+ subscribers) and >$1.2B contracted commitments begin converting to recurring revenue-share; FY26 lands in/above the $150-200M guide and the "approaching $1B" 2027 number gains credibility.
+- Government/defense leg (Space Development Agency HALO, Golden Dome space-based radar RFPs) becomes a second, less-cyclical revenue pillar.
+- Unique broadband-to-unmodified-phone capability + spectrum + ~3,900 patents proves durable while SpaceX stays stuck at text/voice.
 
 ## Bear Case
 
-- Launch cadence slips below target -- 45-60 satellites in one year is extremely ambitious with multiple launch providers (SpaceX, Blue Origin, ISRO) and any vehicle failure creates cascading delays
-- SpaceX achieves broadband-capable direct-to-cell with next-gen Starlink V3 (which requires Starship -- ironic dual dependency), erasing ASTS's technology moat
-- Revenue ramp slower than guided -- MNOs cautious on uptake, subscriber activation slower than contracted commitments imply, $1B 2027 target proves aspirational
-- Convertible dilution: $1.075B convertible at $116.30 strike = ~9.2M shares if converted, plus potential for additional raises if constellation costs escalate
-- Heavy insider selling (-$161M net) signals insiders de-risking at current valuations
-- Satellite reliability at scale is unproven -- massive phased arrays in LEO face thermal, debris, and component degradation risks
-- 20% short interest reflects deep institutional skepticism
+- **Cadence/milestone risk (the under-covered primary-source risk).** Management itself flagged on the call that quarterly revenue "will likely vary significantly depending on achievement of milestones and timing of customer activities," and that cost per satellite is "subject to fluctuations based on dynamic geopolitical factors." The news leads with the BB7 *loss*; the bigger structural risk management actually disclosed is that the *entire revenue plan is milestone-contingent* — any production or launch slip cascades into the 45-60 satellite continuous-service threshold and torpedoes the 2026/2027 revenue ramp.
+- Launch failures recur (BB7 already lost on New Glenn); a Falcon 9 stack loss would be far more damaging than a single satellite.
+- Capex guidance was *raised* to $575-650M; the 100+ satellite endgame will require additional dilutive raises despite the 2026 reassurance — open-ended funding need.
+- SpaceX/Starlink's launch-cost and cadence advantage lets it iterate toward broadband faster and cheaper, compressing AST's window.
+- Valuation (~430x sales, $36B cap) prices in near-flawless execution; an EPS miss already happened, and any disappointment de-rates a story stock hard (it fell from $130 to $73 on one bad launch).
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | 45+ Block 2 satellites deployed, commercial broadband service live H2 2026, 2027 revenue tracking $800M-$1B, government contracts expand, Starship cost deflation narrative accelerates | Re-rates to 30x 2027E revenue on visibility to scale + Starship optionality | $170 | +83% |
-| **Base** | 45% | 25-40 satellites deployed, commercial service begins late 2026 with modest initial uptake, 2026 revenue $150M (low-end guidance), 2027 revenue $500-650M | Multiple stable as execution progress offsets residual risk | $95 | +3% |
-| **Bear** | 30% | Significant launch delays (<20 Block 2 satellites by year-end), SpaceX demonstrates broadband D2C progress, revenue misses guidance, additional capital raise at lower price | De-rates to 12x 2027E revenue on competition/execution fears | $40 | -57% |
+| Bull | 30% | June launch succeeds + cadence holds; ~45 sats EOY; continuous US/EU/Japan service live; FY26 rev at/above $200M; 2027 "approaching $1B" credible | Story re-rates on de-risked execution + government optionality | $165 | +76% |
+| Base | 45% | Some slippage but constellation broadly on track; FY26 rev ~$150-175M; continuous service in first market by early 2027; one more dilutive raise | Range-bound; market waits for proof of recurring carrier revenue | $100 | +7% |
+| Bear | 25% | Launch failure or cadence slip; 45-sat target missed; continuous service pushed to late 2027; FY26 rev light; emergency raise | Story-stock de-rating; optionality discount widens | $48 | -49% |
 
-**Expected value: 25% x 83% + 45% x 3% + 30% x (-57%) = 20.75% + 1.35% - 17.1% = +5.0%**
+**Expected value: +15%** (0.30×76 + 0.45×7 + 0.25×-49 ≈ +13.7%; rounded to +15% acknowledging the asymmetric optionality). **The distribution is barbell-shaped, not normal** — this is a high-variance call option (bull +76% / bear -49%), not a steady compounder. The upside depends on *both* earnings (revenue ramp) and multiple (re-rating), so it is not a pure multiple-expansion thesis, but it is entirely dependent on un-proven execution.
 
-**Modest positive expected value, but risk-adjusted return is marginal given beta of 2.87.** The upside is meaningful but requires near-perfect execution, while the downside is severe.
-
-**Thesis breaks if:** (1) Fewer than 20 Block 2 satellites in orbit by end of 2026, (2) SpaceX demonstrates broadband D2C capability with Starlink V3, or (3) ASTS announces a dilutive capital raise below $70.
+**Thesis breaks if:** the mid-June Falcon 9 launch fails, OR the company misses the ~45-satellite end-2026 target by a wide margin (cadence collapse), OR operating cash burn (ex-capex) accelerates materially (signaling the business model, not just the build, is broken), OR SpaceX demonstrates true broadband-to-unmodified-phone at scale.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Moderate -- 41.8% institutional, well-known among retail/growth investors, not a hedge fund consensus long |
-| Short interest | 20.1% of float -- elevated, reflects significant skepticism. Squeeze potential if launches execute on schedule |
-| Technical position | Down ~29% from ATH ($130). Trading near 50-day MA ($93.36). 5x above 52-week low ($18.22). Up 32% from 200-day MA ($70.08) |
-| Next catalyst | BlueBird 7 New Glenn launch (April 2026), ongoing satellite launches Q2 2026, next earnings ~May 2026 |
-| Recent price action | Bounced from ~$76 low in March, recovered to $93. Deutsche Bank raised PT to $139. Positive momentum but not overextended |
+| Crowdedness | Moderate — ~47% institutional, ~8% insiders; retail-heavy, story-stock attention high |
+| Short interest | ~18.1% of float (~54M shares) — high; squeeze potential on good news, also consensus skepticism |
+| Technical position | Neutral — $93.83 vs 52w range $22.47-$129.89; recovered from post-BB7 low ($51-73) but ~28% below January high; below 6mo high of $122 |
+| Next catalyst | **Mid-June 2026 Falcon 9 launch of BlueBird 8/9/10** (dateable, ~3-4 weeks out) |
+| Recent price action | Round-tripped: $130 (Jan) → ~$73 (post-BB7, April) → ~$94 now. Already bounced ~30% off the lows ahead of the June launch |
+
+**Read:** uncrowded by hedge-fund standards but heavily shorted and retail-watched; a clear dateable near-term catalyst (mid-June launch); the inflection is observable; *but* the stock has already run ~30% off the BB7 lows into that catalyst, so some good news is priced in.
 
 ## Verdict
 
-**WATCH** -- Conviction: MEDIUM
+**WATCH** — Conviction: MEDIUM
 
-The Starship angle is real but is a 2028+ story, not a near-term catalyst. ASTS's V3 satellites will require Starship-class vehicles, and a 10-50x reduction in launch costs would transform the economics of building massive phased-array constellations -- making ASTS potentially the single biggest public-market beneficiary of Starship scaling. However, the current stock price ($92.62, $35.4B market cap) already prices in successful execution of the Block 2 constellation and the start of commercial service. The expected value of +5% is positive but marginal for a stock with a beta of 2.87 and 20% short interest. The risk/reward is not compelling enough to buy at current levels.
+The variant perception is real and defensible: the market is fixated on the BB7 launch loss and a runway-panic narrative, while the Q1 print actually shows modest *operating* burn (~$48M), $3.5B of cash, management ruling out 2026 raises, and an intact ~6-satellites/month production line — so the true question is cadence-and-adoption, not solvency. But this is an unvaluable pre-commercial moonshot (every DCF/RIM model returned NULL; simple_ratios is garbage at -86%), the business-quality score is 10/25, the return distribution is barbell-shaped (bull +76% / bear -49%), and the stock has already bounced ~30% into the June catalyst. Genuine edge but binary risk, no valuation anchor, and a partly-priced-in catalyst = WATCH, not BUY.
 
-**Would upgrade to BUY on:**
-1. **Price pullback to $55-70 range** -- improves risk/reward significantly (EV would jump to +25-40%)
-2. **Confirmed launch cadence of 15+ Block 2 satellites in orbit by mid-2026** -- de-risks the most important execution variable
-3. **First commercial broadband revenue reported** -- proves the technology works at scale with real subscribers
-4. **Starship achieves operational commercial pricing** -- transforms the V3 constellation economics narrative from speculative to concrete
+**If WATCH:** Would upgrade to BUY on (a) a successful mid-June Falcon 9 launch of BlueBird 8/9/10 *with* a pullback toward the $75-80 zone (better risk/reward into the H2 cadence ramp), or (b) hard evidence in the Q2/Q3 prints that continuous commercial service is live and carrier/gateway revenue is ramping sequentially toward the $150-200M guide. Existing holders: a successful June launch + reaffirmed cadence supports holding; size for the -49% bear tail, since a Falcon 9 stack loss or a missed 45-satellite target would break the thesis. Avoid chasing strength immediately ahead of the binary June launch.
 
-The ideal entry is after launch cadence is confirmed (mid-2026) but before commercial revenue ramp is fully priced in -- or on any significant pullback driven by market-wide risk-off rather than ASTS-specific bad news. The Starship optionality makes this a stock worth monitoring closely as the space launch cost curve bends.
+<!-- Do NOT add a "Position Context" / "Personal Position" / "My Holding"
+     section here. The public file is generic research only. Personal
+     position size, cost basis, P&L, and share counts go to
+     ~/vault/finance/notes/positions/{TICKER}.md (or are tracked in
+     portfolio.md / journal/transactions/). See the Public-vs-private
+     content rule in STEP 8. -->

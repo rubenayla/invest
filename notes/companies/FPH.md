@@ -1,122 +1,126 @@
 # Five Point Holdings, LLC (FPH)
 
 **Sector:** Real Estate | **Industry:** Real Estate - Development
-**Price:** $4.90 | **Market Cap:** $349M
-**Analysis Date:** 2026-04-08
+**Price:** $4.96 (2026-05-21) | **Market Cap:** ~$736M (consolidated, incl. Class B)
+**Analysis Date:** 2026-05-21
+
+## Business Primer
+
+**What they do today.** Five Point is a California land developer. It owns a handful of enormous parcels of land near big cities, spends years getting them "entitled" (legal permission to build, plus roads, sewers, water, power, and graded lots), then sells finished home-ready lots to production homebuilders like Lennar, Toll Brothers, and others. The builders put up the houses and sell them to families; Five Point gets paid for the dirt. It has three communities: the Great Park Neighborhoods in Irvine (Orange County), Valencia in Los Angeles County, and Candlestick Point / The San Francisco Shipyard in San Francisco. Combined, these are entitled for roughly 40,000 homes and 20 million square feet of commercial space — a multi-decade pipeline. There is now a fourth business: Hearthstone, a fee-earning asset manager that runs "land-banking" funds for other homebuilders. Builders don't want to tie up cash owning raw land for years, so Hearthstone funds buy and hold the land and the builder pays to draw lots down over time; Hearthstone collects management fees. It oversees about $3.4 billion in assets across 30,000+ home sites, 13 builders, and 16 states.
+
+**Why customers choose them (the value proposition).** A homebuilder needs a steady supply of build-ready lots in places people want to live, but getting raw California land entitled is a 10-to-20-year regulatory marathon involving city councils, environmental review, water rights, and infrastructure that few builders want to undertake. Five Point sells the builder a shortcut: a fully permitted, graded, utility-served lot inside a master-planned community with schools, parks, and amenities already designed in — the builder shows up, builds houses, and starts selling within months instead of waiting a decade. In coastal California, where almost no new large-scale entitled land comes to market, that finished-lot inventory is genuinely scarce, which is why builders keep coming back. For the Hearthstone side, the pitch to a builder is capital efficiency: instead of sinking $100M of its own balance sheet into land it won't build on for three years, the builder pays Hearthstone a fee to hold it, freeing that capital to build more houses now and boosting the builder's return on equity.
+
+**Where they want to grow.** Two bets. First, monetize the existing communities on schedule: keep selling Great Park and Valencia lots to builders (about 28.5 acres across five new programs are slated to close by end of 2026), and eventually unlock the next Valencia phases (Entrada South, Valencia Commerce Center — first land sales projected for 2028) and the long-dormant San Francisco Candlestick site once final permits arrive. Second, and increasingly the strategic centerpiece, scale Hearthstone into a large third-party fee-based asset manager. In Q1 2026 alone Hearthstone closed two new funds raising $600M of equity (enabling ~$1B of land-buying power). Success in 3-5 years looks like: steady high-margin land sales funding a growing recurring fee stream, with the stock re-rating off a deep discount to book value as the fee business proves it deserves an asset-manager multiple rather than a lumpy-developer one.
+
+**What could go wrong (business risks).** The core business is brutally cyclical and lumpy — revenue depends on the timing of a few large land deals, so any quarter (like Q1 2026) can show a loss simply because nothing closed. California housing demand is rate-sensitive; if mortgage rates stay high or a recession hits, builders slow lot purchases and Five Point's sales push out. Entitlement and permitting risk is real (Candlestick has been stalled for years waiting on permits). The Hearthstone fee stream includes deferred performance fees that management explicitly flags as volatile. And the capital structure is genuinely opaque: large noncontrolling interests (Lennar and other partners hold units of the operating company and the San Francisco venture worth ~$1.5B of the $2.3B total capital) plus a $182M tax-receivable-agreement liability sit between consolidated results and what actually accrues to common shareholders.
+
+**How to think about it.** This is a deep-discount-to-net-asset-value California land bank with an emerging fee-management business bolted on — a lumpy, cyclical, illiquid developer that the market prices as if its irreplaceable entitled land will never be worth book value, while management is using a fortress balance sheet (net debt-to-cap of 4.8%) and a brand-new $40M buyback to compound per-share value at ~0.42x book.
 
 ## Situation Summary
 
-Five Point Holdings is a California land developer that owns and manages three massive master-planned communities: Great Park Neighborhoods (Irvine), Valencia (Santa Clarita), and the San Francisco Shipyard/Candlestick Point. The company posted record consolidated net income of $183.5M in 2025, but 2026 guidance calls for ~$100M due to lighter land sale timing. In February 2026, FPH announced a transformative $1.7B land-banking partnership with Blue Owl Capital via its Hearthstone Residential platform, signaling a strategic pivot toward fee-based asset management beyond its own communities. The stock trades at $4.90 — a staggering 59% discount to book value ($11.86/share) and 54% discount to tangible book ($10.63). Insider selling has been notable (VP McWilliams sold $580K in March), and 2026 will be back-loaded with a small Q1 loss expected.
+Five Point reported a deliberately quiet Q1 2026 on April 23: consolidated revenue of $13.6M and a $5.0M net loss ($2.2M attributable to the company, -$0.03/share), because no meaningful residential land closed in the quarter — entirely by design, as management front-loads nothing and expects 2026 earnings "weighted heavily to the second half." It reaffirmed full-year guidance of ~$100M consolidated net income (down from 2025's record $183.5M, which was inflated by a one-time burst of equity earnings from the Great Park venture). The headline news is a newly authorized $40M share repurchase — the company explicitly buying its own stock because it trades "at a significant discount to book value." The under-the-radar story is Hearthstone scaling fast: it now manages ~$3.4B AUM (about $2.8B fee-paying) across 30,000+ home sites in 16 states, having closed two new funds raising $600M of equity in Q1. The stock sits at $4.96 versus book value of ~$11.86/share — a ~58% discount — with almost no short interest (0.7% of float) and thin Wall Street coverage, i.e. neglected rather than hated.
 
 ## Variant Perception
 
-- **Consensus view:** FPH is a low-liquidity, hard-to-value land developer with lumpy earnings tied to California housing cycles. The dual-class structure with large noncontrolling interests (Lennar, others owning ~63% of the operating company) makes valuation opaque. Most investors see it as a sleepy real estate holding company trading at a deserved NAV discount because there is no catalyst to close the gap, and earnings are about to step down in 2026.
-- **Our view:** The market is drastically undervaluing FPH's land inventory ($2.4B carried at cost on the balance sheet) in supply-constrained California markets where entitled land is appreciating. The Blue Owl/Hearthstone partnership is a potential game-changer — it transforms FPH from a pure land-seller into a fee-generating asset manager that can monetize its expertise without selling its own land. Net debt has been slashed from $489M (2022) to just $18M, creating optionality. At 0.41x P/B, the market is pricing in permanent value destruction, yet the company is compounding book value at 11%/year.
-- **Trigger:** (1) Successful ramp of Hearthstone/Blue Owl partnership with first $500M capital deployment milestone (unlocks warrant vesting and validates the platform model); (2) Large land sales in H2 2026 (20 acres Valencia + 50 acres Great Park) that prove the 2025 record wasn't a one-off; (3) Potential entitlement approval for additional 1,300 homes at Great Park, expanding the development pipeline.
+- **Consensus view:** A low-liquidity, hard-to-value California land developer with lumpy, unpredictable earnings tied to the housing cycle. The dual-class structure and ~$1.5B of noncontrolling interests make the equity opaque, so the market assigns a "deserved" deep NAV discount with no catalyst to close it — and 2026 earnings are stepping down hard from the 2025 record, reinforcing the "nothing to see here" view.
+- **Our view:** The market is conflating *timing lumpiness* with *value impairment*. The land carries at ~$2.48B cost in supply-constrained coastal California where comparable entitled land is worth far more; book value has compounded ~11%/yr; net debt is a trivial 4.8% of capital; and Hearthstone is quietly becoming a real recurring-fee asset manager ($2.8B fee-paying AUM, two new funds in one quarter) that deserves a higher multiple than a pure developer. The new $40M buyback at 0.42x book is one of the most accretive uses of cash available — every dollar spent buys ~$2.40 of book value — and signals the board agrees the stock is mispriced. The market is pricing permanent value destruction into an entity that is actively shrinking its share count below liquidation value.
+- **Trigger:** (1) H2 2026 land closings actually executing — ~28.5 acres across five Great Park builder programs slated by year-end, plus Valencia builder programs, proving the ~$100M guidance and that 2025 wasn't a one-off; (2) visible buyback execution shrinking the share count at <0.5x book; (3) continued Hearthstone fund formation / AUM growth reframing the equity story from "lumpy developer" toward "fee manager + land bank." Less dateable but high-impact: Candlestick permit issuance unlocking the dormant San Francisco optionality.
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $110M (2025) | Lumpy: $43M→$212M→$238M→$110M |
-| Net Income (attr. to FPH) | $71M | $-15M→$55M→$68M→$71M (improving) |
-| Consolidated Net Income | $183.5M (record) | Growing, 2026 guided ~$100M |
-| FCF | $105M | Positive 3 consecutive years |
-| ROE | 8.9% | Improving from negative (2022) |
-| D/E | 0.22 (net) | Dramatically improved from 0.79 |
-| FCF Yield | 30.2% | Very high |
-| Book Value/Share | $11.86 | CAGR +10.9% (3yr) |
-| P/B | 0.41x | Deep discount |
-| Inventory (land) | $2.44B | Growing steadily |
-| Cash | $426M | Liquidity: $643M total |
+| Total Revenue | $110M (FY2025) | Lumpy: $42.7M → $211.7M → $237.9M → $110.0M |
+| Net Income (attr. to FPH) | $71.0M (FY2025) | -$15.4M → $55.4M → $68.3M → $71.0M (improving) |
+| Consolidated Net Income | $183.5M (FY2025, record) | Boosted by Great Park equity earnings; 2026 guided ~$100M |
+| Operating Cash Flow / FCF | $105M (FY2025) | +$154M → +$116M → +$105M (3 yrs positive) |
+| Inventory (land at cost) | $2.48B (Q1 2026) | $2.24B → $2.21B → $2.30B → $2.44B → $2.48B (growing) |
+| Cash | $332.6M (Q1 2026) | Drew down $93M in Q1 (paid related-party liabilities, dev spend) |
+| Total Liquidity | $550.1M (Q1 2026) | Cash + $217.5M undrawn revolver |
+| Net Debt | $117M | Slashed from ~$500M (2022) |
+| Net Debt / Total Cap | 4.8% (Q1 2026) | Fortress balance sheet |
+| Book Value / Share | $11.86 | CAGR ~+11% (3yr) |
+| P/B | 0.42x | Deep discount (~58%) |
+| ROE | ~5–9% | Adequate; understates because book is at cost |
 
-**Note on revenue lumpiness:** FPH's revenue depends entirely on timing of large land parcel sales. Quarterly and annual revenue swings are enormous — this is structural, not a sign of deterioration. The correct metric to track is book value growth and cumulative land monetization over multi-year periods.
+**Note on lumpiness:** Revenue and earnings swing enormously with the timing of a few large land parcel sales. Q1 2026's $13.6M revenue / $5M loss is *structural*, not deterioration. The right metrics are book-value growth, cumulative land monetization over multi-year windows, and the growing Hearthstone fee annuity — not quarterly PE.
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence | Date |
-|-------|-----------|--------|------------|------|
-| DCF | $15.20 | +195% | — | 2026-03-17 |
-| Multi-stage DCF | $15.20 | +195% | — | 2026-03-17 |
-| DCF Enhanced | $15.20 | +195% | — | 2026-03-17 |
-| Simple Ratios | $13.80 | +167% | — | 2026-03-17 |
-| RIM | $8.02 | +55% | — | 2026-03-17 |
-| GBM Lite 3Y | $7.00 | +47% | 0.56 | 2026-03-27 |
-| Autoresearch | $5.95 | +25% | 0.78 | 2026-03-28 |
-| GBM Lite 1Y | $5.93 | +24% | 0.63 | 2026-03-28 |
-| GBM Opportunistic 1Y | $5.76 | +21% | 0.64 | 2026-03-27 |
-| GBM 1Y | $5.68 | +19% | 0.69 | 2026-03-28 |
-| GBM Opportunistic 3Y | $4.90 | +3% | 0.80 | 2026-03-28 |
-| GBM 3Y | $4.84 | +1% | 0.68 | 2026-03-28 |
+| Model | Fair Value | Upside (vs live $4.96) | Confidence | Run Date |
+|-------|-----------|------------------------|------------|----------|
+| Simple Ratios | $11.21 | +126% | 0.85 | 2026-05-18 |
+| GBM Lite 3Y | $6.84 | +38% | 0.59 | 2026-05-18 |
+| GBM Lite 1Y | $5.85 | +18% | 0.62 | 2026-05-18 |
+| Autoresearch | $5.83 | +18% | 0.77 | 2026-05-18 |
+| GBM Opportunistic 1Y | $5.69 | +15% | 0.64 | 2026-05-18 |
+| GBM 1Y | $5.61 | +13% | 0.69 | 2026-05-18 |
+| GBM Opportunistic 3Y | $4.81 | -3% | 0.81 | 2026-05-18 |
+| GBM 3Y | $4.76 | -4% | 0.69 | 2026-05-18 |
+| DCF / Multi-stage / Growth / Enhanced / RIM | null | — | — | 2026-05-18 (failed) |
 
-**Model consensus:** Every model shows FPH as undervalued, ranging from +1% (GBM 3Y) to +195% (DCF). The DCF models are likely inflated due to the lumpy cash flow profile — take with a grain of salt. The GBM models (most reliable) cluster around +1% to +47%, suggesting modest upside on a statistical basis. RIM at +55% is notable because it anchors on book value, and FPH's book is genuinely understated (land carried at cost, not market). The autoresearch model at +25% with high confidence (0.78) is the best single estimate.
+*Models are 3 days old and were run at current_price $4.71 vs today's $4.96 (~5% higher) — upsides above are recomputed against the live price. DCF-family and RIM produced null fair values this run (lumpy/negative interim cash flows break the models — a known failure mode for land developers).*
+
+**Model consensus:** The reliable GBM/autoresearch cluster spans roughly -4% to +38%, centering on ~+15-18% on a 1-year statistical basis — modest but positive. Simple Ratios (+126%, anchored to book/asset value) flags the deep NAV gap but overstates near-term realizability. The longer GBM 3Y models are roughly flat, reflecting that statistical models can't see the catalyst-driven NAV closure. The honest read: statistical models say "cheap, modest expected return"; the asset-value case says "very cheap if the gap ever closes." The thesis rests on the latter, which is why catalyst execution matters more than the model average.
 
 ## Business Quality (16/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 3/5 | Irreplaceable entitled land in supply-constrained CA markets (Great Park, Valencia). Entitlements take 10-20 years — this IS the moat. But no pricing power beyond market rates for land parcels. |
-| Management | 3/5 | Net debt reduction from $489M to $18M is excellent capital allocation. Hearthstone acquisition and Blue Owl partnership show strategic vision. But insider selling (not buying) at these depressed levels is a yellow flag. Only 90 employees — lean operation. |
-| Profitability | 3/5 | Lumpy by nature. Gross margins ~48%, but operating income went negative in 2025 ($-7M) due to timing of land sales vs. overhead. When land sells, margins are high. ROE at 8.9% is adequate given the asset-heavy model. |
-| Balance Sheet | 4/5 | Near-fortress balance sheet: $426M cash, $443M debt = net debt of only $18M against $2.4B of land inventory and $843M equity. Current ratio of 82x. Credit recently upgraded. $643M total liquidity. |
-| Growth | 3/5 | 40,000 homes + 23M sqft commercial represents decades of development runway. Blue Owl partnership opens new TAM (managing land for others). But growth is constrained by CA permitting timelines and housing cycle. |
+| Moat | 4/5 | Irreplaceable, fully entitled land in supply-constrained coastal California (Great Park, Valencia, SF). Entitlements take 10-20 years — competitors literally cannot replicate the inventory. Hearthstone adds switching-cost-light but sticky fee relationships with 13 builders. Capped at 4 because Five Point is still a price-taker on land sold at market. |
+| Management | 3/5 | Excellent balance-sheet stewardship (net debt ~$500M → $117M; net debt/cap 4.8%). Strategically astute Hearthstone build-out and now a buyback at 0.42x book — textbook accretive capital allocation. Held back by: opaque NCI/TRA structure, no open-market insider *buying* at these depressed levels (only routine grants and tax-related sales), and a 2025 "record" that was partly one-time equity earnings. |
+| Profitability | 3/5 | Lumpy by design; gross margins on land are high when parcels close, but Q1 2026 operating income negative on overhead with no closings. Growing Hearthstone management-services revenue ($13.0M in Q1, fee margins improving) adds a steadier, higher-quality earnings layer. ROE understated because land sits at cost. |
+| Balance Sheet | 5/5 | Among the strongest in the sector: $550M liquidity, $217.5M undrawn revolver fully available, net debt only 4.8% of total cap, no near-term maturity pressure. This is the foundation that lets management wait out a soft market and buy back stock. |
+| Growth | 3/5 | Multi-decade entitled pipeline (~40,000 homes) plus a fast-scaling fee business (Hearthstone +$600M equity raised in one quarter). But near-term growth is back-half-2026-dependent and the next big Valencia leg (Entrada South) is a 2028 event; Candlestick is permit-gated with no firm date. Lumpy realization, not steady compounding. |
 
 ## Inflection Point
 
-**Yes — early stage.** Two inflections are underway:
-
-1. **Business model transformation:** The Hearthstone acquisition (2025) and Blue Owl $1.7B partnership (Feb 2026) pivot FPH from "sell your own land" to "manage land investments for institutions." This creates recurring fee income, reduces balance sheet intensity, and should eventually command a higher multiple than a pure land developer.
-
-2. **Balance sheet inflection already complete:** Net debt went from $489M (2022) to $18M (2025). The company now has optionality — it can fund development, acquire platforms (like Hearthstone), or return capital.
-
-The risk is that the Hearthstone/Blue Owl partnership is unproven at scale. But the observable evidence (Blue Owl committing up to $1.7B) validates the platform.
+Partial / emerging, not yet confirmed. The inflection thesis has three legs: (1) **business-model shift** — Hearthstone turning Five Point from a pure cyclical land-seller into a land bank *plus* a recurring-fee asset manager, with observable evidence (two funds, $600M equity, $2.8B fee-paying AUM); (2) **capital-return inflection** — the first-ever $40M buyback at a steep discount to book, a structural change in how the company returns value; (3) **earnings cadence** — H2 2026 land closings should restore visible profitability after a loss-making Q1. The first two are observable *now*; the third is the dateable proof point still to come. This is a value-plus-emerging-catalyst situation, not a clean turnaround.
 
 ## Bull Case
 
-- **NAV closure:** Land carried at $2.4B cost is worth significantly more at market — entitled California land has appreciated 30-50% in recent years. True NAV could be $15-20/share, implying 3-4x upside.
-- **Fee-based income ramp:** If Hearthstone/Blue Owl deploys $1B+ and FPH earns 1-2% management fees + promotes, that's $10-20M in recurring, high-margin, capital-light revenue — transforming the earnings profile.
-- **H2 2026 land sales:** 20 acres Valencia + 50 acres Great Park could generate $200M+ in revenue, pushing 2026 earnings above guidance.
-- **Great Park entitlement expansion:** Additional 1,300 homes would add ~$500M+ to land pipeline value.
-- **California housing supply shortage is structural** — persistent underbuilding supports long-term land values.
+- H2 2026 land sales execute as guided (~28.5 Great Park acres + Valencia builder programs), delivering ~$100M consolidated net income and proving 2025 was a trajectory, not a peak.
+- Hearthstone keeps compounding AUM and fee income, and the market starts valuing the recurring-fee stream at an asset-manager multiple — re-rating the whole equity off "lumpy developer."
+- The $40M buyback (and potential follow-ons) shrinks the share count meaningfully at ~0.42x book, mechanically lifting per-share book value and signaling board conviction.
+- California's chronic housing undersupply + eventual rate relief reaccelerates builder lot demand; entitled land scarcity gives Five Point pricing leverage.
+- Candlestick permits finally issue, putting a long-written-off San Francisco asset back into the value equation.
 
 ## Bear Case
 
-- **Chronic illiquidity:** Only ~63M float shares, very low volume. Institutional investors avoid it. The P/B discount may persist indefinitely because nobody can build a meaningful position.
-- **Dual-class structure and minority interests:** FPH shareholders own only ~38% of consolidated earnings. The complex ownership structure with Lennar and GFFP Holdings creates governance risk and opacity.
-- **2026 earnings step-down:** Guided $100M consolidated (vs. $183.5M in 2025) — the "record year" may have pulled forward demand.
-- **California regulatory/political risk:** Housing policy changes, environmental regulation, and Mello-Roos district dynamics could slow development.
-- **Insider selling at depressed prices:** If management doesn't believe in the stock at 0.4x book, why should you?
-- **Interest rate sensitivity:** Higher-for-longer rates slow housing demand and increase carrying costs for land inventory.
+- **Hearthstone fee volatility (under-covered in headlines, flagged by management):** a meaningful slice of Hearthstone economics is *deferred performance fees* that management explicitly warned can be volatile — so the "steady fee annuity" thesis is less steady than the AUM headline suggests, and a soft housing year could suppress these fees just when land sales also slip.
+- **2028 air-pocket at Valencia:** the next major Valencia growth phase (Entrada South / Commerce Center) doesn't produce first land sales until 2028, so beyond the back-half-2026 closings the organic pipeline has a multi-year lull that the buyback alone won't fill.
+- Higher-for-longer mortgage rates / California recession slows builder absorption (Q1 already showed "hesitant" demand); land sales push from H2 2026 into 2027, making guidance a miss and extending the NAV discount indefinitely.
+- The NAV discount is structural and *never closes* — value-trap risk. Opaque NCI (~$1.5B) and the $182M tax-receivable-agreement liability mean common holders may capture less of the gross asset value than book implies.
+- Cash burned ~$93M in Q1 (to $333M); sustained no-closing quarters plus buyback plus dev spend could pressure liquidity faster than expected if H2 sales disappoint.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | Hearthstone fee ramp + strong H2 land sales push 2026 NI attr. to $50M+; 2027 NI $60M+ | P/B re-rates from 0.41x to 0.65x as fee income de-risks the model | $7.70 | +57% |
-| **Base** | 50% | 2026 plays out as guided (~$39M NI attr. to FPH); Hearthstone progresses slowly; Great Park entitlement approved | P/B remains at 0.45-0.50x; slow grind toward book value | $5.50 | +12% |
-| **Bear** | 25% | Housing cycle turns; Blue Owl partnership underperforms; land values stagnate; 2026 NI below guidance | P/B compresses to 0.35x on further pessimism and illiquidity discount | $4.15 | -15% |
+| Bull | 30% | H2 2026 land sales hit ~$100M NI; Hearthstone AUM/fees keep scaling; buyback shrinks share count | Re-rates from 0.42x toward ~0.72x book as fee business earns an asset-manager multiple | $8.50 | +72% |
+| Base | 50% | Guidance roughly met; book compounds ~10%/yr; buyback modestly accretive; lumpy but intact | Partial discount narrowing to ~0.50x book | $6.00 | +21% |
+| Bear | 20% | Rate-driven demand slump pushes land sales into 2027; Hearthstone performance fees soft; guidance missed | De-rates further toward ~0.30x book; value-trap perception hardens | $3.60 | -27% |
 
-**Expected value: +17%**
-
-**Thesis breaks if:** (1) Blue Owl partnership is terminated or Blue Owl fails to deploy capital; (2) California housing market enters a sustained downturn with land price declines >20%; (3) Book value per share declines for two consecutive years (would signal land impairments).
+**Expected value: +26.5%**
+**Thesis breaks if:** H2 2026 land closings (especially the ~28.5 Great Park acres) slip materially into 2027 *and* Hearthstone fund formation stalls — i.e., both the cyclical land engine and the secular fee engine fail to deliver in the same window, confirming the discount as permanent rather than timing-driven. A break below ~$4.00 on a confirmed guidance cut would be the "I was wrong" signal.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Very uncrowded — micro-cap, off most radars, no analyst coverage on yfinance |
-| Short interest | 0.55% of float — negligible |
-| Technical position | Near 52-week low ($4.58 low, $6.64 high). Currently $4.90 — 26% below 52w high |
-| Next catalyst | Q1 2026 earnings: April 23, 2026 (small loss expected — low bar to beat) |
-| Recent price action | Declined from $6.64 → $4.90 (-26%) since mid-2025, likely on 2026 guidance disappointment |
-| Beta | 1.39 — moves with market but more volatile |
-
-**Setup assessment:** Favorable for patient investors. Stock is uncrowded, near 52-week lows, and the upcoming earnings on April 23 has very low expectations (guided for a small loss). Any positive surprise or Blue Owl partnership update could be a catalyst. The main risk is illiquidity — this is a position-size-limited opportunity.
+| Crowdedness | Uncrowded — thin coverage, illiquid, niche value/real-estate holders (Robotti, Third Avenue, Private Management Group); not a consensus hedge-fund long |
+| Short interest | Very low — ~0.7% of float (not a consensus short either; simply neglected) |
+| Technical position | Near 52-week low ($4.60 low / $6.64 high); ~25% below the high; depressed, not yet bouncing |
+| Next catalyst | H2 2026 land closings (Q3/Q4 prints) + ongoing $40M buyback execution; Q2 2026 earnings (~late July 2026) is the next dateable report |
+| Recent price action | Languishing near the lows; the buyback announcement has not yet produced a sustained re-rate — stock has NOT run ahead of the catalyst |
 
 ## Verdict
 
-**WATCH** — Conviction: MEDIUM
+**WATCH (leaning BUY)** — Conviction: MEDIUM
 
-FPH presents a genuine deep-value opportunity trading at 0.41x book value with a near-fortress balance sheet and $2.4B of entitled California land. The Blue Owl/Hearthstone partnership is a credible catalyst for business model transformation. However, the chronic illiquidity (micro-cap, ~$349M market cap, low volume), complex ownership structure with large noncontrolling interests, insider selling, and lumpy earnings profile make it difficult to size meaningfully. The expected value of +17% is attractive but not extraordinary given the illiquidity risk.
+The variant perception is clear and defensible: the market prices Five Point as a permanently impaired lumpy developer at 0.42x book, while it is actually a fortress-balance-sheet California land bank now compounding per-share value via a newly accretive buyback and a fast-growing third-party fee manager (Hearthstone) that the market isn't yet valuing as such. Quality is solid-but-not-exceptional (16/25, anchored by a 5/5 balance sheet and a genuine entitlement moat, dragged by lumpiness and an opaque NCI/TRA structure). The expected value (+26.5%) is attractive and the setup is favorable — uncrowded, near 52-week lows, hasn't run, with a real dateable catalyst (H2 2026 closings) inside six months. It stops short of an outright BUY only because the entire base/bull case hinges on land sales actually executing in a "hesitant," rate-sensitive H2 — execution that has historically slipped — and the NAV discount has persisted for years without closing, so the value-trap risk is non-trivial.
 
-**Would upgrade to BUY on:** (1) Blue Owl partnership deploying first $500M (validates platform); (2) Price below $4.25 (0.36x book) where risk/reward becomes compelling even for a small position; (3) Evidence of insider buying — if management starts buying at these levels, that changes the conviction calculus significantly.
+**If WATCH:** Upgrade to BUY on observable evidence the H2 2026 land sales are closing on schedule (Q3 print showing meaningful land revenue and reaffirmed/exceeded ~$100M guidance), and/or visible buyback execution shrinking the share count at <0.5x book. Existing holders: the deep discount, fortress balance sheet, and accretive buyback justify holding; with EV +26.5% and a dateable catalyst, scaling in near the lows is defensible for those comfortable with the illiquidity and lumpiness. Avoid sizing large given low liquidity and the structural NAV-discount risk.
+
+<!-- Do NOT add a "Position Context" / "Personal Position" / "My Holding"
+     section here. The public file is generic research only. -->
