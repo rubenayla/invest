@@ -167,3 +167,6 @@ models/autoresearch/catboost_info/
 models/autoresearch/run.log
 catboost_info/
 run.log
+
+# Playwright MCP output (now redirected to /tmp/playwright-mcp; guard in case of cwd-relative fallback)
+.playwright-mcp/
