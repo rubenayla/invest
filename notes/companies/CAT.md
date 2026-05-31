@@ -1,119 +1,132 @@
 # Caterpillar Inc. (CAT)
 
 **Sector:** Industrials | **Industry:** Farm & Heavy Construction Machinery
-**Price:** $693.62 | **Market Cap:** $324.6B | **EV:** $361.4B
-**Analysis Date:** 2026-03-18
+**Price:** $875.87 (2026-05-31) | **Market Cap:** $403.4B | **EV:** $443.2B
+**Analysis Date:** 2026-05-31 *(refresh of 2026-05-28 deep dive — no material change; price -1.5%, no new earnings/news)*
+
+## Business Primer
+
+**What they do today.** Caterpillar builds the big yellow machines that move earth, dig mines, and generate power. When a contractor needs to grade a road, a copper miner needs to haul 300 tons of ore out of a pit, or a data center needs backup electricity, they often buy a Caterpillar machine. Revenue (~$71B trailing) splits across three roughly equal segments: **Construction Industries** (excavators, backhoes, compactors, skid-steers sold to builders and rental fleets), **Resource Industries** (giant mining trucks, draglines, and the autonomous haulage systems that run them), and **Energy & Transportation** — now branded **Power & Energy** — which sells diesel and gas engines, turbines, and generator sets (the Cat and Solar Turbines brands) for oil & gas, marine, rail, and increasingly for electricity generation. A fourth piece, **Cat Financial**, is an in-house bank that lends customers the money to buy the equipment, the way a car company runs an auto-loan arm. A large and growing slice of profit comes not from selling new machines but from selling **parts and service** to the millions of Cat machines already working in the field.
+
+**Why customers choose them (the value proposition).** A mining truck or excavator that breaks down costs the owner thousands of dollars per hour in lost production. Caterpillar's edge is not that the machine is cheaper — it usually isn't — but that **the machine almost never stays broken.** Cat runs ~2,700 dealer locations worldwide, so a contractor in rural Chile or Wyoming can get a replacement hydraulic pump and a trained technician on-site within hours, not days. A competing brand with no local dealer means the machine sits idle. On top of that, Cat sells autonomy: its mining trucks can run 24/7 with no driver, and its dealer-installed telematics tell the owner exactly when a part is about to fail so it gets swapped during scheduled downtime instead of mid-shift. For a customer whose entire business is uptime, paying more upfront for a machine that is supported everywhere and that predicts its own failures is the rational choice over a cheaper machine that strands them.
+
+**Where they want to grow.** The headline bet is **electricity for AI data centers.** Hyperscalers building data centers need enormous amounts of always-on power, and the grid can't connect them fast enough, so they buy large reciprocating engines and generator sets to run "behind the meter." Caterpillar is tripling its large-engine manufacturing capacity (to ~3x 2024 levels, roughly +15 GW of annual capacity by 2027-2029) to chase this, and at Q1 2026 disclosed six separate data-center power agreements each exceeding 1 gigawatt. Management lifted its 2030 enterprise sales growth target to 6-9% per year and expects power-generation sales to **more than triple by 2030.** Secondary bets: autonomy/services revenue (high margin, sticky), the mining super-cycle tied to copper and energy-transition metals, and a U.S. construction recovery as rates ease.
+
+**What could go wrong (business risks).** Caterpillar is deeply **cyclical** — roughly two-thirds of revenue rides construction and mining capital budgets that collapse in recessions. A construction downturn or a mining-capex pullback would hit volumes hard regardless of the data-center story. The data-center power boom could prove faddish: if AI compute efficiency improves sharply or hyperscaler capex pauses, the 15 GW capacity expansion becomes expensive idle factory space carrying depreciation. Tariffs remain a live cost (~$600M in Q1 2026, guided $2.2-2.4B for the year) and trade policy is fluid. Resource Industries margins already buckled ~700 bps in Q1, ~500 bps of that tariffs. Geographic softness in Europe/Africa/Middle East persists.
+
+**How to think about it.** Caterpillar is the dominant late-cycle industrial incumbent — a dealer-network-and-installed-base compounder — that the market is currently re-rating as a **secular AI-power growth story.** The whole investment question is whether the data-center power vector is large and durable enough to justify paying a growth multiple for what has historically been a cyclical machine maker.
 
 ## Situation Summary
 
-Caterpillar just posted record FY2025 revenue of $67.6B (+4% YoY), with Q4 setting a single-quarter record at $19.1B (+18% QoQ). However, profitability deteriorated significantly: FY2025 net income fell 18% to $8.9B (EPS $18.90 vs $22.17 in 2024) as tariff costs ballooned — management expects $2.6B in incremental tariff costs in 2026, up $800M from 2025. The stock has rallied ~30% YTD (from ~$530 year-end) to $694, making it the largest contributor to the Dow, driven by excitement over CAT's new data center power business: the Hunt Energy partnership (1 GW, first energization May 2026) and the American Intelligence & Power/Boyd CAT alliance (2 GW for hyperscale AI, deliveries Sep 2026 through Aug 2027). Management guided for 2026 revenue growth at the top of the 5-7% CAGR target, with $51B backlog, but warned margins will remain near the bottom of the target range due to tariffs. Analysts rate it "Buy" with a $736 mean target, but Morgan Stanley flagged that CAT has shown "little to no ability to pass through tariffs."
+Caterpillar's narrative has flipped bullish since the March analysis. Q1 2026 (reported 2026-04-30) was a "resounding" beat: revenue +22% YoY to $17.4B, adjusted EPS $5.54 (+30% YoY) vs $4.64 expected (+19% surprise), and a **record $63B backlog** (+$27.7B YoY, +$11.5B sequentially), led by power generation (+48% retail) and construction (+30% sales). Critically, the tariff fear that dominated the prior thesis eased: Q1 tariff cost came in at ~$600M vs an $800M estimate, and full-year tariff guidance was cut to $2.2-2.4B from $2.6B. Management RAISED full-year 2026 revenue guidance to low-double-digit growth and lifted the 2030 sales CAGR target to 6-9% with power-gen >3x by 2030. The stock responded by running another ~28% (from $694 in March to ~$890), hitting fresh all-time highs near $931. JPMorgan ($1,125) and Evercore ($1,103) hiked targets sharply. The earnings recovery and tariff pass-through that the March thesis flagged as *unproven* have now visibly happened — but the price moved even faster than the fundamentals.
 
 ## Variant Perception
 
-- **Consensus view:** CAT is a "picks and shovels" AI power play with a massive $51B backlog, construction recovery ahead as rates decline, and a resilient services business. The 30% YTD rally reflects enthusiasm for the data center pivot. Analysts see ~6% upside to $736 mean target. The market is treating CAT as a secular growth story, not a cyclical industrial — hence the 37x trailing PE and 25x forward PE, both well above historical averages (~15-18x).
-- **Our view:** The market is pricing in a best-case scenario while ignoring near-term margin erosion. Gross margins fell from 36.0% (2024) to 31.8% (2025) — a 420bps compression driven by tariffs and manufacturing cost inflation. Operating margins dropped from 20.2% to 16.5%. The $2.6B tariff headwind in 2026 is not fully offset by the ~2% price realization. The data center power opportunity is real but small relative to the $68B revenue base: 3 GW of gas generators (Hunt + AIP) might represent $2-4B in cumulative revenue over 2-3 years, not a game-changer. At 25x forward PE and 25x EV/EBITDA, the stock prices in flawless execution on data centers, tariff mitigation, construction recovery, AND mining cycle extension — simultaneously. The risk/reward is skewed negatively at current levels.
-- **Trigger:** Q1 2026 earnings (late April) will be the first test of whether CAT can manage the $2.6B tariff impact. If margins compress further and guidance softens, the 37x trailing PE will look unsustainable. Conversely, if tariff pass-through works, the stock could re-rate higher.
+- **Consensus view:** CAT is the premier "picks-and-shovels" beneficiary of the AI data-center buildout, with a record $63B backlog, demonstrated tariff resilience, accelerating Power & Energy growth (+48% power gen), and a raised 2030 growth algorithm (6-9% CAGR). Sell-side is broadly Buy (mean target ~$920-932; bulls at $1,103-1,125). The market now treats CAT as a secular-growth industrial, awarding ~44x trailing / ~30x forward earnings — multiples roughly double its historical 15-18x.
+- **Our view:** The fundamentals genuinely improved — this is no longer the "margins compressing, tariffs un-passed" story of March. But the *re-rating outran the re-acceleration.* At 30x forward earnings, the price requires the data-center power boom to be both large AND durable AND multi-year, on top of a construction recovery and mining strength, with no cyclical air pocket. For a company whose revenue still rides construction/mining capex budgets, paying a secular-growth multiple removes the margin of safety that cyclicals demand precisely because their peak earnings are not the trend. We do not have a *contrarian* edge here — we agree the business is better; we disagree that 30x forward / 44x trailing leaves attractive risk/reward. The edge is discipline, not insight: this is a great business at a price that prices in flawless multi-year execution.
+- **Trigger:** A construction or mining-capex deceleration, or any sign that hyperscaler power orders are lumpy/pulled-forward (a backlog that stops growing sequentially), would expose the cyclical-at-peak-multiple risk and compress the multiple back toward 20-22x. Conversely, continued sequential backlog growth + power-gen execution would validate the secular re-rate. Next read: Q2 2026 earnings (2026-08-04).
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $67.6B | +4.4% CAGR (2022-2025); grew but lumpy: $59.4B -> $67.1B -> $64.8B -> $67.6B |
-| Net Income | $8.9B | +9.8% CAGR (2022-2025); but peaked in 2024 at $10.8B, declined 18% in 2025 |
-| EBITDA | $14.3B | Peaked at $16.0B in 2024; declined 11% in 2025 |
-| FCF | $7.5B | Declining from $9.8B (2023) as CapEx rose 33% to $4.3B |
-| ROE | 43.5% | High but inflated by leverage (D/E 2.1x); was ~42% in 2023-2024 |
-| D/E | 2.03x | Stable; net debt $33.4B |
-| Net Debt/EBITDA | 2.3x | Manageable for an industrial with Cat Financial |
-| FCF Yield | 2.3% | Very low — reflects premium valuation |
-| EPS | $18.90 | Down from $22.17 peak (2024); forward consensus ~$27.7 implies major recovery |
-| Gross Margin | 31.8% | Compressing: 29.5% -> 34.7% -> 36.0% -> 31.8% (tariff-driven decline) |
-| Operating Margin | 16.5% | Down from 20.2% in 2024 — 370bps compression |
+| Revenue (FY25 / TTM) | $67.6B / $70.8B | +4.4% CAGR (22-25); TTM re-accelerating (+22% YoY in Q1'26) |
+| Net Income (FY25 / TTM) | $8.9B / $9.4B | Peaked $10.8B in 2024, dipped 18% in 2025, now recovering |
+| FCF | $7.5B | Declining from $8.8B (2024) as CapEx rose to $4.3B (capacity build) |
+| Gross Margin (TTM) | 31.5% | 29.5% → 34.7% → 36.0% → 31.8% (FY25) — tariff trough, stabilizing |
+| Operating Margin (TTM) | 16.5% | Down from 20.2% (2024); Q1'26 adj op margin 18.0% (+30bps YoY) |
+| ROE | ~51% | Very high but leverage-inflated (D/E 2.3x) |
+| D/E | 2.31x | Stable; net debt ~$33.3B |
+| Net Debt/EBITDA | 2.3x | Manageable with captive Cat Financial |
+| FCF Yield | 1.8% | Very low — reflects premium valuation + capex build |
+| Trailing PE | 44x | Roughly double historical 15-18x |
+| Forward PE | 29.8x | Implies FY26 EPS ~$29.8 (vs TTM ~$20.3) — ~47% jump priced in |
 
-**Critical observation:** The forward PE of 25x implies FY2026 EPS of ~$27.7, which would require a 47% jump from FY2025's $18.90. This demands both revenue growth AND margin recovery, in the face of $2.6B in tariff costs. This is an aggressive assumption.
+**Critical observation (IRON RULE check):** The earnings recovery is REAL and verified — quarterly net income climbed five straight quarters ($2.00B → $2.18B → $2.30B → $2.40B → $2.55B). Q1'26 EPS $5.54 beat by 19%. So the March worry ("can they earn the forward number?") is being answered yes. BUT the forward PE of ~30x still requires FY26 EPS ~$29.8, a ~47% leap over TTM $20.3 — achievable only if the back half accelerates further. The valuation, not the business, is the problem now.
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence | Notes |
-|-------|-----------|--------|------------|-------|
-| gbm_opportunistic_3y | $1,271 | +83% | 0.92 | Most bullish; momentum-driven |
-| gbm_opportunistic_1y | $1,137 | +64% | 0.86 | |
-| autoresearch | $1,088 | +57% | 0.97 | Highest confidence; consensus model |
-| gbm_lite_3y | $945 | +36% | 0.76 | |
-| gbm_1y | $785 | +13% | 0.98 | Most conservative GBM |
-| gbm_lite_1y | $777 | +12% | 0.97 | |
-| rim | $721 | +4% | — | Close to current price; book-value anchored |
-| gbm_3y | $669 | -4% | 0.83 | Only bearish GBM model |
-| simple_ratios | $223 | -68% | high | Sector-relative P/E says massively overvalued |
-| dcf_enhanced | $118 | -83% | — | Very bearish |
-| dcf | $91 | -87% | — | |
-| multi_stage_dcf | $91 | -87% | — | Same as DCF |
+| Model | Fair Value | Upside vs $889.52 | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| gbm_opportunistic_3y | $1,431 | +60.8% | 0.91 | 2026-05-18 |
+| gbm_opportunistic_1y | $1,383 | +55.5% | 0.88 | 2026-05-18 |
+| autoresearch | $1,304 | +46.6% | 0.97 | 2026-05-18 |
+| gbm_lite_3y | $1,119 | +25.8% | 0.76 | 2026-05-18 |
+| gbm_1y | $1,013 | +13.8% | 0.98 | 2026-05-28 |
+| gbm_lite_1y | $920 | +3.4% | 0.97 | 2026-05-18 |
+| gbm_3y | $868 | -2.5% | 0.83 | 2026-05-28 |
+| rim | $559 | -37.2% | 0.70 | 2026-05-18 |
+| simple_ratios | $213 | -76.1% | 0.85 | 2026-05-18 |
+| dcf_enhanced | $170 | -80.9% | 0.70 | 2026-05-18 |
+| dcf | $88 | -90.1% | 0.70 | 2026-05-18 |
+| multi_stage_dcf | $79 | -91.1% | 0.70 | 2026-05-18 |
 
-**Model consensus:** Sharp divergence. The GBM/autoresearch models (momentum/ML-based) are strongly bullish, seeing 12-83% upside — these models capture the trend and narrative momentum. The classic valuation models (DCF, RIM, simple_ratios) are deeply bearish, all suggesting the stock is 4-87% overvalued. The DCF models are not "broken" here as with some growth stocks — they are reflecting a real tension: CAT's trailing earnings ($18.90 EPS) do not support a $694 price. The current price only works if you believe in the $27.7 forward EPS consensus. **Simple_ratios at $223 fair value is a loud alarm** — it means CAT trades at roughly 3x its peer-appropriate PE ratio. The RIM model at $721 is the most balanced, sitting near current price. **My read: the GBM models are right that momentum is strong, but the DCF/ratio models are flagging that fundamental value is far below the price.** This is a classic late-cycle momentum vs. value tension.
+*Models dated 2026-05-18 used current_price $828.79; today's price is $889.52 (+7.3%), so their listed upside %s are overstated by ~7pp — recomputed above against $889.52.*
 
-## Business Quality (17/25)
+**Model consensus:** The same momentum-vs-value tension as March, now wider. Momentum/ML models (GBM-opportunistic, autoresearch) see +46-61% as they extrapolate the trend and backlog narrative. Classic valuation models (DCF, RIM, simple_ratios) say the stock is 37-91% overvalued on trailing fundamentals — and at 44x trailing earnings they are mechanically correct that current earnings don't support the price. **simple_ratios at $213 and RIM at $559** are loud alarms that, on a peer-relative and book-value basis, this is priced as a secular grower not a cyclical. The DCF cluster ($79-170) is unusable here — it cannot model a step-change in the power-gen TAM — but its message ("you are paying for years of growth you haven't seen yet") is the right warning for a cyclical at peak multiple. My read: the GBM models capture that momentum is intact and could persist; the value models capture that there is no margin of safety. For a cyclical near peak, weight the value warning more heavily.
+
+## Business Quality (18/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 4/5 | Dominant global dealer network (2,700+ locations), unmatched parts/service infrastructure. 50%+ share in large mining trucks. Cat Financial creates a sticky ecosystem. Autonomy push (CONEXPO 2026: first autonomous soil compactor, Cat AI Assistant) deepens switching costs. Data center power is new but leverages existing gas engine/turbine expertise. |
-| Management | 3/5 | CEO Joe Creed (appointed early 2025) is executing on the data center pivot. Capital allocation is disciplined: $7.6B in buybacks + $3.3B in dividends in 2024. However, insider selling is notable: CFO Bonfield sold $5.8M in Jan 2026, Group Presidents sold $10.9M combined in Feb 2026, CEO sold shares in Mar 2026. Total insider selling of $25.6M in last 3 months with no buys is a negative signal. Tariff guidance accuracy will be tested in Q1. |
-| Profitability | 4/5 | Historically best-in-class industrial margins: operating margin peaked at 20.2% in 2024. ROE of 43.5% is excellent (though leverage-boosted). But 2025 showed vulnerability — gross margin dropped 420bps and operating margin dropped 370bps from tariff costs. If this is temporary (tariffs get resolved/passed through), profitability rebounds. If it persists, margins are structurally lower. |
-| Balance Sheet | 3/5 | Net debt/EBITDA of 2.3x is reasonable for an industrial with a captive financing arm (Cat Financial). Total debt of $43.3B is high in absolute terms but much of it is Cat Financial receivables-backed. Cash of $10.0B is ample. Interest coverage ~4.5x is adequate but not generous. Current ratio 1.44x. The balance sheet is functional but not a fortress. |
-| Growth | 3/5 | Revenue CAGR of 4.4% over 3 years is modest for a $325B market cap company. Data center power is a genuine new growth vector but relatively small vs. the base. Services revenue (~22% of total) is growing and high-margin. Construction depends on rate cycle; mining depends on commodity prices. $51B backlog provides 12-month visibility. Autonomy/AI could extend moat but monetization is years away. Not a high-growth story at this size. |
+| Moat | 4/5 | Dominant global dealer network (~2,700 locations), unmatched parts/service infrastructure, ~50%+ share in large mining trucks, sticky Cat Financial ecosystem, and a growing autonomy/telematics lock-in. Data-center power leverages existing engine/turbine expertise. Durable, but cyclicality caps it below a 5. |
+| Management | 3/5 | CEO Joe Creed executing well on the power pivot; disciplined capital allocation (consistent buybacks + dividends, ~30% payout). BUT insider selling continues — a Group President sold $11.4M on 2026-05-14, on top of the ~$25.6M of 3-month sales flagged in March, with no insider buying. Selling into all-time highs is a yellow flag on management's own valuation read. |
+| Profitability | 4/5 | Best-in-class industrial margins; Q1'26 adj op margin 18.0% (+30bps YoY) shows margin recovery underway even with tariffs. ROE ~51% (leverage-aided). Resource Industries margin fell ~700bps (~500bps tariffs) — a soft spot. |
+| Balance Sheet | 3/5 | Net debt/EBITDA ~2.3x, reasonable with captive finance arm; $43.3B total debt much of it receivables-backed; $10.0B cash; current ratio 1.35x. Functional, not a fortress; capacity build will pressure FCF near-term. |
+| Growth | 4/5 | Upgraded from 3/5: record $63B backlog (+79% YoY), raised 2030 CAGR target to 6-9%, power-gen guided >3x by 2030, six 1GW+ data-center deals. Genuine new growth vector now materializing in orders, not just slides. Still anchored to cyclical construction/mining for ~2/3 of revenue. |
 
 ## Inflection Point
 
-**Partial — data center power is a legitimate new growth vector, but not yet material.** The Hunt Energy (1 GW, May 2026 start) and AIP/Boyd CAT (2 GW, Sep 2026-Aug 2027 delivery) partnerships represent CAT's entry into behind-the-meter power for AI data centers — a genuine inflection in TAM expansion. Caterpillar's existing gas engine/turbine portfolio and dealer network give it a credible advantage in distributed power generation.
-
-However, this inflection is in its earliest stages. The 3 GW contracted so far represents perhaps $2-4B in cumulative equipment revenue (spread over 2-3 years), against a $68B annual revenue base. Energy & Transportation segment revenue is growing but construction (the largest segment) is still cycling. The inflection narrative is real but already priced in at 37x trailing PE. **The observable evidence of inflection has begun (signed contracts, first deliveries in Q2 2026), but the stock has already run 30% YTD pricing it in.**
+**Yes — the data-center power inflection has moved from "signed contracts" to "visible in the financials."** Versus March, the evidence strengthened materially: Power & Energy retail sales +32% (power-gen applications +48%), the backlog jumped to $63B (+$27.7B YoY), six 1GW+ data-center agreements are disclosed, and management is committing capital to triple large-engine capacity. This is no longer speculative TAM expansion — it is booked demand. The inflection is real and observable. The problem for the *stock* is that the market identified the same inflection and bid the multiple to ~30x forward, so the inflection is now thoroughly priced. The investing lesson holds: enter after the inflection is observable — but not after the price has already discounted three more years of it.
 
 ## Bull Case
 
-- Data center power demand accelerates: CAT signs additional multi-GW partnerships, Energy & Transportation becomes a $25B+ segment (vs ~$23B today) with higher margins
-- Tariff costs prove temporary: resolved through trade deals, passed through to customers, or mitigated by supply chain restructuring; gross margins recover to 34%+
-- Construction cycle turns: rate cuts in 2026 stimulate non-residential and infrastructure investment, driving volume growth in the largest segment
-- Mining super-cycle: energy transition metals (copper, lithium), gold, and iron ore demand drives sustained CapEx from mining customers
-- Autonomy premium: Cat's autonomous fleet and AI assistant create software/services revenue stream with 80%+ margins
+- Data-center power demand proves structural and durable: backlog keeps growing sequentially, Power & Energy becomes a $30B+ secular-growth segment, and the 15 GW capacity expansion fills at strong pricing — justifying the growth multiple.
+- Margin recovery continues: Q1's +30bps op-margin gain extends as tariffs are passed through/mitigated; gross margin rebuilds toward 34%+, lifting EPS above the $29.8 forward bar.
+- Construction cycle turns up: U.S. rate cuts + infrastructure spending drive volume in the largest segment, adding cyclical tailwind on top of the secular power story.
+- Mining super-cycle: copper/energy-transition metals demand sustains mining capex and autonomous-fleet upgrades.
+- Autonomy/services flywheel: high-margin parts, telematics, and autonomous-haulage software grow the stickiest, highest-margin revenue.
 
 ## Bear Case
 
-- Tariff headwinds persist and margins compress further: $2.6B tariff cost in 2026 cannot be passed through (Morgan Stanley's concern); operating margin falls below 15%
-- Data center power hype fades: AI efficiency gains (DeepSeek-type breakthroughs) reduce near-term power demand; 3 GW pipeline stalls or delays
-- Construction downturn: if rate cuts are slower than expected, or commercial real estate weakness spreads, CAT's largest segment contracts
-- Multiple compression: the market realizes 37x trailing PE / 25x forward PE is unsustainable for a cyclical industrial; re-rating to 18-20x forward PE implies 25-30% downside
-- Insider selling accelerates: $25.6M in executive sales over 3 months at elevated prices is a concerning pattern
+- **Cyclical air pocket at a secular multiple:** ~2/3 of revenue still rides construction/mining capex; any macro slowdown shrinks volumes and the market re-rates a cyclical back to 18-22x — implying 25-40% downside from 30x forward, even if earnings hold.
+- **Resource Industries margin damage is under-covered in the bull narrative:** RI operating margin fell ~700bps in Q1 (~500bps tariffs, plus "lower-than-expected volume" and timing delays) — a primary-source weak spot the celebratory headlines glossed over. If RI volume softness persists, segment mix drags consolidated margin.
+- **Data-center orders could be lumpy / pulled-forward:** the $63B backlog is a snapshot; if hyperscaler power orders pause or AI compute efficiency improves, the tripled-capacity factories carry depreciation against idle capacity (management itself flags this as a margin drag).
+- **Insider selling into all-time highs:** a Group President sold $11.4M on 2026-05-14, continuing a multi-quarter pattern with zero buys — management isn't accumulating at these prices.
+- **Tariffs remain fluid:** $2.2-2.4B 2026 cost; "the situation remains fluid" — a re-escalation reverses the margin tailwind.
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 20% | Data center + construction recovery drive revenue to $75B+; tariff mitigation restores margins; FY2026 EPS reaches $28-30 | Market awards 28x PE for secular growth narrative | $840 | +21% |
-| **Base** | 50% | Revenue grows 5-7% per guidance; tariffs cap margins near 2025 levels; FY2026 EPS $22-24 (below consensus) | Multiple compresses to 30x trailing / 22x fwd as margin reality sets in | $700 | +1% |
-| **Bear** | 30% | Tariffs crush margins further; construction weakens; FY2026 EPS $18-20 flat with 2025; data center timeline slips | Re-rating to 22-24x trailing PE as market prices it as cyclical again | $440 | -37% |
+| **Bull** | 25% | Power-gen + construction both accelerate; backlog keeps growing; FY26 EPS ~$30 and FY27 visibility to $33+; margins rebuild | Market sustains ~33x fwd as secular-growth narrative cements | $1,090 | +22.5% |
+| **Base** | 45% | Guidance delivered (low-double-digit growth); FY26 EPS ~$29-30; power-gen strong but construction/mining merely steady; margins near low end of range | Multiple drifts to ~27-28x fwd as cyclicality is acknowledged | $920 | +3.4% |
+| **Bear** | 30% | Construction/mining capex decelerates OR data-center orders pause; RI margin weakness spreads; FY26 EPS stalls ~$27 | Re-rating toward 20-22x fwd as market re-prices CAT as cyclical | $590 | -33.7% |
 
-**Expected value: -3.4%**
-(0.20 x 21%) + (0.50 x 1%) + (0.30 x -37%) = 4.2% + 0.5% + (-11.1%) = **-6.4%**
+**Expected value:** (0.25 × 22.5%) + (0.45 × 3.4%) + (0.30 × -33.7%) = 5.6% + 1.5% - 10.1% = **-3.0%**
 
-**Thesis breaks if:** Tariffs are fully resolved AND data center power revenue exceeds $5B annually, which would justify the premium multiple. We would be wrong if management demonstrates ability to pass through tariffs in Q1 2026 earnings AND signs additional GW-scale data center deals.
+**Thesis breaks if (bull confirmation):** backlog continues growing sequentially through 2026 AND power-gen revenue runs >$30B annualized with stable/expanding margins — that would validate the secular re-rate and justify holding/adding. **Bear confirmation:** sequential backlog declines two quarters running, or Resource Industries volume weakness spreads to Construction Industries.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Crowded — 72.6% institutional ownership, consensus "Buy" from 26 analysts, stock is largest Dow contributor YTD. Positioned as a momentum/narrative trade. |
-| Short interest | 1.8% — very low, no squeeze setup, minimal bearish positioning |
-| Technical position | At $694, near 50-day MA ($694), well above 200-day MA ($529). 12% below 52-week high of $790. RSI neutral after strong YTD run. |
-| Next catalyst | Q1 2026 earnings (late April); Hunt Energy 1st energization (May 2026); AIP 2GW deliveries start (Sep 2026) |
-| Recent price action | Up ~30% YTD from ~$530. The data center narrative and Q4 revenue beat drove the rally. Stock has consolidated around $690-700 for the past 2 weeks. |
+| Crowdedness | Crowded — 72.9% institutional ownership, consensus Buy from ~26-28 analysts, largest/most-watched industrial; positioned as the AI-power industrial trade. |
+| Short interest | ~2.0% of float — very low; no squeeze, minimal bearish positioning. |
+| Technical position | $889.52, just ~4.5% below 52-week high ($931); well above 50-day ($807) and 200-day ($631) averages. Strong uptrend, extended. |
+| Next catalyst | Q2 2026 earnings 2026-08-04; ongoing data-center power energizations through 2026-2027. |
+| Recent price action | Up ~28% since the March analysis ($694 → $890) and ~162% off the 52-week low ($339.5). Has run hard into and past the catalysts. |
 
-**Timing assessment:** The stock has already run significantly into the catalysts. The Q1 earnings report in late April will be critical — it's the first quarter with full $2.6B annualized tariff impact. Buying here means buying after a 30% run, at 37x trailing PE, with margin compression in progress and insider selling. This is a "buy high, hope for higher" setup.
+**Timing assessment:** The stock has already discounted the good news. Buying here means paying ~30x forward / 44x trailing for a cyclical, ~28% above March levels, near all-time highs, with insiders selling. The fundamentals improved, but the entry is poor — this is "buy high into a confirmed-but-priced inflection."
 
 ## Verdict
 
-**PASS** — Conviction: **MEDIUM-HIGH**
+**PASS** — Conviction: **MEDIUM**
 
-CAT is an excellent business (17/25 quality) with a genuine data center power inflection, but the stock is priced for perfection at 37x trailing PE and 25x forward PE — multiples that require simultaneous tariff resolution, margin recovery to 2024 peaks, construction cycle upturn, and data center revenue acceleration. The reality is that FY2025 margins compressed 370-420bps, insiders sold $25.6M in 3 months, and the forward EPS consensus of $27.7 demands a 47% jump from $18.90 actual — an aggressive expectation with $2.6B in tariff headwinds. The GBM models see momentum upside but the classic valuation models unanimously say the stock is 68-87% overvalued on fundamentals. Expected value is approximately -3% to -6% from here. The data center story is real but small (3 GW = $2-4B cumulative vs $68B annual revenue) and already priced in after a 30% YTD run.
+The business thesis improved markedly versus March: the tariff fear eased ($600M Q1 vs $800M feared, FY guide cut to $2.2-2.4B), margins are recovering (+30bps op margin), and the data-center power inflection is now visible in a record $63B backlog rather than just in slides. This is genuinely a better, faster-growing company than it looked two months ago. But the stock re-rated ~28% to ~30x forward / 44x trailing earnings — pricing a cyclical industrial as a secular grower with no margin of safety. We have no contrarian edge (we agree the business is better); our discipline call is that risk/reward is roughly flat-to-negative (EV ~-3%) because a single cyclical air pocket re-rates it 25-40% lower. The value models (RIM $559, simple_ratios $213) and the bear scenario carry the day for a cyclical at peak multiple.
 
-**Would upgrade to WATCH at:** $550-600 (20-22x forward PE), which would offer a margin of safety if the forward EPS consensus is roughly right.
-**Would upgrade to BUY at:** $475-500 (17-18x forward PE), which prices in tariff-impaired earnings and provides genuine upside from data center optionality.
-**Re-evaluate if:** Q1 2026 earnings show tariff pass-through success (gross margins stabilize at 33%+) and additional GW-scale data center contracts are signed.
+**Would upgrade to WATCH at:** ~$700-750 (≈24-25x forward), restoring some margin of safety if the power-gen growth algorithm holds.
+**Would upgrade to BUY at:** ~$600-650 (≈20-22x forward), which prices CAT as the cyclical it fundamentally is while giving the data-center optionality for free.
+**Re-evaluate if:** Q2 2026 (2026-08-04) shows continued sequential backlog growth AND power-gen margin expansion — that would strengthen the case for paying up; conversely, two quarters of declining backlog or spreading Resource Industries volume weakness confirms the bear.
+
+<!-- Public file = generic research only. No personal position size / cost basis / P&L here. -->
