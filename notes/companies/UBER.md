@@ -26,6 +26,18 @@ Uber closed 2025 above $101 and then spent the first half of 2026 giving it all 
 - **Our view:** AVs are *supply*, and the scarce asset in robotaxi economics is **demand aggregation and fleet utilization**, not the car. A robotaxi only earns money when it has a passenger; idle time kills unit economics. Uber's 170M+ users, dispatch/routing engine, surge balancing, and Uber One base are exactly what fills those seats — which is why Waymo already routes ~250k rides/week through Uber and 30+ AV makers have signed on. Meanwhile **~half of bookings is Delivery, which is essentially AV-immune**, advertising is a fast-growing 50%+ margin layer on top, and the company is buying back ~14% of its market cap ($20B authorization). The market is pricing the disruption case while ignoring that the same technology lowers Uber's biggest cost (driver pay) on the trips it aggregates.
 - **Trigger:** Each quarter that AV trips compound on the platform without a measurable hit to mobility take rate (next print ~early Aug 2026), plus visible progress signing Tesla-or-equivalent supply onto the network, forces the "disintermediation" multiple back toward a "toll-on-AV-miles" multiple. The $20B buyback shrinks the share count into the fear.
 
+### Stress-test (2026-06-03): how strong is the moat, really?
+
+Pushed on the bull case, the demand-aggregation moat is **weaker than first written**, and the thesis should be held at its *narrower* form:
+
+1. **The matching/routing/surge software is commoditizable** — it is not a hard problem and does not, by itself, justify the market cap. The real moat is **liquidity + distribution** (170M installed users, payment-on-file, habit, enough supply for short wait times) — a customer-acquisition-cost asset that took ~$25B of cumulative losses to build, not a software asset.
+2. **That moat is weak against Tesla *specifically*.** A no-name entrant cannot cheaply buy 170M users; Tesla can (brand, hype, existing owner base) — and it *owns its supply*, so it has no structural need to aggregate. Against a generic entrant the moat is real; against the one competitor that actually matters it is thin.
+3. **Uber's mobility survival partly depends on Tesla's *choice*, not Uber's moat.** In the Tesla-wins case, Uber endures only if Tesla elects to integrate (list Cybercabs in the Uber app) rather than run its own consumer network. Depending on a competitor's strategic decision is a genuine vulnerability the original write-up glossed over.
+
+**What still holds:** downloads ≠ city-by-city supply density (Tesla must physically deploy, market by market, through each regulator, for years); Uber durably aggregates *everyone who isn't Tesla* (Waymo + 30+ fleets + the long tail); **~half the business — Delivery + advertising — is AV-immune**; and the stock has already de-rated ~30%, so you are paying ~15x free cash flow for a ~$10B-FCF cash machine, half of it untouched by this debate.
+
+**Reframed thesis:** not "great moat, AV is a tailwind," but **"a cheap, half-AV-immune cash machine buying back ~14% of itself, where mobility is a contested multi-year coin-flip that is already de-rated 30%."** The realistic bear outcome is *margin and multiple compression on the mobility half — not zero.* That gap between "impaired" and "extinct" is the trade; it caps the bull case's probability rather than killing the position, and it argues for a **small, scaled-in** holding, not a full one.
+
 ## Financial Snapshot
 
 | Metric | Value (FY2025) | 3yr Trend |
@@ -58,11 +70,11 @@ Capex was just $0.34B on $52B revenue — the business is almost purely asset-li
 
 **Model consensus:** The reliable GBM/autoresearch/simple_ratios cluster spans **$76–$121, median ~+25%**, biased bullish; the 1-year GBMs are most bullish (+25–65%), the 3-year GBMs more muted (+6–10%) reflecting AV uncertainty. The DCF trio ($1.77–$58.92) is the **known-broken DCF-outlier problem** flagged in repo memory — pure DCF chokes on Uber's cash-flow/share-count profile and should be ignored; dcf_enhanced at −20% is the only bearish read worth noting and reflects a haircut-everything stance. Sell-side: 50 analysts, mean target ~$104 (+47%), strong-buy, range $70–$150. Models and the street agree the stock is undervalued; they disagree only on magnitude.
 
-## Business Quality (20/25)
+## Business Quality (19/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 4/5 | Two-sided liquidity network effects, 170M+ MAPCs, Uber One (50M) switching cost, routing/data scale, cross-sell. Capped at 4: rider switching cost is low and AV could in theory disintermediate. |
+| Moat | 3/5 | Real asset is **liquidity + distribution** (170M+ MAPCs, Uber One 50M, multi-fleet aggregation, cross-sell) — NOT the matching software, which is commoditizable. Strong vs a generic entrant (the liquidity took ~$25B of losses to build); **thin vs Tesla specifically**, which buys downloads cheaply and owns its supply, so need not aggregate. Downgraded 4→3 on 2026-06-03 after stress-testing the moat (see Variant Perception). |
 | Management | 4/5 | Khosrowshahi engineered the burn→$10B-FCF turnaround; disciplined capital allocation, $20B buyback, exited its own money-losing AV program in 2020 (right call). Insider ownership low (0.4%). |
 | Profitability | 4/5 | 35% ROE, 40% gross margin, 14.6% operating margin and rising, $9.8B FCF on $0.3B capex. Capital-light cash machine. |
 | Balance Sheet | 4/5 | Net debt ~$5B vs ~$10B annual FCF; $7B cash. Easily serviced. |
@@ -114,8 +126,8 @@ Horizon ~2 years (to mid-2028). Decomposed into FCF growth + multiple.
 
 ## Verdict
 
-**BUY (scale-in)** — Conviction: **MEDIUM-HIGH**
+**BUY (scale-in)** — Conviction: **MEDIUM** *(cut from MEDIUM-HIGH on 2026-06-03 after the moat stress-test)*
 
-A capital-light marketplace throwing off ~$10B FCF, growing bookings 20%+, with a 35% ROE and a $20B buyback, trading at ~16x forward earnings near its 52-week low — because the market is pricing autonomous vehicles as an existential threat rather than the cheaper supply Uber is already aggregating ($10x AV trips, Waymo 250k/week via the app, ~half the business in AV-immune Delivery). The variant perception is clear and the risk/reward is asymmetric (~+50% EV, downside bounded near −18%). It's MEDIUM-HIGH not HIGH because the bear case (Tesla building a scaled owned network) is genuinely plausible, not a strawman, and the timeline is multi-year and uncertain.
+A capital-light marketplace throwing off ~$10B FCF, growing bookings 20%+, with a 35% ROE and a $20B buyback, trading at ~16x forward earnings near its 52-week low — because the market is pricing autonomous vehicles as an existential threat rather than the cheaper supply Uber is already aggregating (AV trips +10x, Waymo 250k/week via the app, ~half the business in AV-immune Delivery). But the defensible version of the thesis is *narrow*: the demand-aggregation moat is commoditizable software wrapped around expensive liquidity, and it is **thin against Tesla specifically** — so the bet is not "great moat compounds" but "**cheap, half-AV-immune cash machine, de-rated 30%, buying back 14%, where the bear outcome is margin/multiple compression rather than zero.**" Conviction is MEDIUM, not higher, because the central risk (Tesla scaling an owned network) is genuinely plausible, multi-year, and partly hinges on a competitor's strategic choice — not a strawman. Size small and scale in; do not treat the +50% EV bull as the base case.
 
 **If BUY:** Entry $66–73 (start now near $71, add on any dip toward the $68 low). Scale in over 2–3 tranches rather than one shot, given AV-headline volatility. Thesis-break ~$62 with decelerating bookings. Re-rate target $110 base / $150 bull over ~2 years.
