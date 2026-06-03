@@ -138,4 +138,22 @@ A high-quality medtech compounder with category leadership in pulsed-field ablat
 
 **If WATCH:** Would downgrade to WATCH if Q2 2026 prints any EP growth below 18% YoY without an offsetting margin or WATCHMAN positive.
 
+---
+
+## Update 2026-06-03 — Thesis-break price breached; new FDA Class I recall not in the original thesis
+
+**Price:** $47.68 (2026-06-03) vs $55.92 at the 2026-05-19 analysis — **−14.7% in 15 days.** The watchlist thesis-break level ($48) is now breached.
+
+**What changed since the 2026-05-19 note:**
+
+1. **2026-05-27: shares fell ~12% to a fresh 52-week low** after management *reiterated* that standalone WATCHMAN demand is weak — guiding **flat-to-declining sequential WATCHMAN dollar growth through Q3 2026**. This matters because the original variant perception was "the market is *over-extrapolating* one weak WATCHMAN quarter." Management itself now telegraphs continued WATCHMAN softness, pushing toward this note's own listed thesis-break condition ("a second standalone WATCHMAN quarterly decline"). The bull case got weaker, not merely the price cheaper.
+
+2. **FDA Class I recall on ACCOLADE-family pacemakers / CRT-Ps** (software/battery issue) — the most-serious recall class, linked as of 2026-03-18 to **4 deaths and ~2,557 serious injuries**; a separate **Class I recall hit the AXIOS stent**. This safety/liability vector is *absent from the 2026-05-19 thesis*. Plaintiff-side and secondary sources also report **new securities class-action suits and a reported federal inquiry into disclosures** (not independently confirmed — treat as an overhang, not a fact).
+
+3. **Models refreshed 2026-06-03 (fresh):** wide spread. The most-reliable **gbm_3y flipped to −7.2%** (fv $44.23). gbm_1y +12%, gbm_lite_1y +16%, autoresearch +61% (high conf, bullish). DCF/RIM distorted low as usual (Penumbra adds ~$11B new debt → optical margin/ROE drag). The earlier llm_deep_analysis ($69.96, +25%) is **stale — computed pre-drop off $55.92.**
+
+**Internal inconsistency flagged:** this note's scale-in plan called $48–50 a "deeper-drawdown **add** zone," while the watchlist set $48 as the **thesis-break**. Those conflict. Resolving it honestly: the $48–50 print arrived **together with a new FDA Class I safety leg and reiterated WATCHMAN weakness** — i.e. it is *not* the "clean overshoot dip" the add-zone language assumed. Do **not** mechanically add here.
+
+**Revised stance: downgrade BUY → WATCH (reassess at Q2).** The compounder-mispricing thesis isn't dead — FARAPULSE still grew ~24% in Q1 and Heart Rhythm 2026 data was positive — but the bet now carries an un-modeled pacemaker-recall/litigation leg, and the catalyst meant to confirm stabilization (Q2, late July) hasn't happened yet. Re-engage on (a) Q2 showing EP growth ≥20% **and** WATCHMAN sequential stabilization, **and** (b) clarity/quantification on the ACCOLADE recall liability. Avoid adding into the $48–50 zone until both clear. (Note: Penumbra $14.5B acquisition was announced 2026-01-15 — it predates this drop and is not a new driver, but it is the reason the balance sheet now carries ~$11B incremental debt.)
+
 <!-- Public-only research file. Personal position size, cost basis, P&L, and share counts belong in ~/vault/finance/notes/positions/BSX.md (or portfolio.md / journal/transactions/). See the Public-vs-private content rule in the research skill. -->
