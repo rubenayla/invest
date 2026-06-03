@@ -1,8 +1,44 @@
 # The Cigna Group (CI)
 
 **Sector:** Healthcare | **Industry:** Healthcare Plans (Managed Care / PBM)
-**Price:** $265 | **Market Cap:** $71B
-**Analysis Date:** 2026-03-19
+**Price:** $273 (2026-06-03) | **Market Cap:** $72B
+**Analysis Date:** 2026-03-19 — **updated 2026-06-03 (see top section)**
+
+---
+
+## Update — 2026-06-03: Q1 trigger fired POSITIVELY, stock still hasn't re-rated
+
+**Price:** ~$273 (essentially flat vs the $265 March note; 52w range $242–$329, lower third).
+**Verdict:** **BUY (MEDIUM)** — reaffirmed and de-risked. The single biggest uncertainty in the March thesis (does the rebate-free Express Scripts model preserve Evernorth's profit pool?) has now resolved in the bull's favor, and the discount is still fully intact.
+
+**What the March note set as the trigger:** *"If Evernorth pre-tax income tracks toward the $6.9B+ guide, it proves the model transition works and the stock re-rates."*
+
+**What Q1 2026 actually delivered (reported ~2026-05-01):**
+- Adjusted EPS **$7.79, +16% YoY** — a clean beat.
+- **FY26 adj-EPS guidance raised to ≥$30.35** (from ≥$30.25).
+- Evernorth revenue +9% to $58.4B; **pretax adjusted earnings $1.5B, slightly ahead**; FY Evernorth income reaffirmed **≥$6.9B** — i.e. the exact thesis-confirmation threshold was met.
+- Specialty & Care Services pretax earnings **+20% YoY**.
+- Further de-risking: **exiting the individual ACA exchange** business at year-end + **strategic review of eviCore** (the utilization-management unit that draws the most political heat).
+
+**The setup is now better than in March, not worse.** The catalyst the BUY hinged on has passed *favorably*, removing the "what if Q1 disappoints" tail — yet the stock is down ~4% over 3 months and sits at ~9x forward EPS while the rest of managed care re-rated hard off the 2025 lows: **UNH +30%, ELV +34%, CNC +33%, HUM +76% over 3 months — CI −4%.** Cigna is the laggard despite having the cleanest book in the group (no Medicare Advantage, exiting exchanges, PBM model already restructured ahead of reform, guidance *raised*).
+
+**Why it's still cheap (the live bear case):** the 2026 PBM-reform law (Consolidated Appropriations Act, signed 2026-02-03) plus the FTC–Express Scripts settlement (2026-02-04) impose 100% rebate pass-through and Part D fee-only economics, but these phase in **2028–2029**. The market is discounting future Evernorth earnings erosion that Q1's rebate-free results suggest is overstated — the new model trades opaque rebate margin for stickier fee-based, transparent revenue, and Q1 shows the profit pool holding. The reform largely codifies a shift Cigna already led. That's the crux of the disagreement.
+
+**Refreshed scenario table (px ~$273, FY26 adj EPS ≥$30.35 ⇒ ~9.0x; 2027E ~$33–34):**
+
+| Scenario | Prob | Driver | Multiple | Target | Return |
+|----------|------|--------|----------|--------|--------|
+| Bull | 30% | PBM-reform fear fades, Evernorth durability proven through 2027, buybacks compound | re-rate to 12x on 2027E $34 | $410 | +50% |
+| Base | 45% | Steady low-double-digit EPS growth, modest re-rate as peers' premium looks stretched | 10x on 2027E $33 | $330 | +21% |
+| Bear | 25% | 2028–29 reform erodes Evernorth economics harder than Q1 implies; eviCore writedown | stays 8x on flat ~$30 | $215 | −21% |
+
+**Expected value ≈ +20%.** Asymmetry improved vs March because the Q1 risk is retired.
+
+**Entry:** $255–275 (current). **Thesis-break:** Evernorth FY adj-income guide cut below $6.9B, OR forced PBM-divestiture legislation advances to a Senate vote, OR material Express Scripts client defections, OR an eviCore-review writedown that dents adj EPS — price-wise, a break below the $240 52-week low on fundamental (not tape) deterioration.
+
+**Action for the owner:** CI is a BUY in this note but was **missing from the watchlist** (now added) — re-engage. The thesis is no longer "wait for Q1 to confirm"; Q1 confirmed. This is now a confirmed-thesis laggard, not a hope trade.
+
+---
 
 ## Situation Summary
 
