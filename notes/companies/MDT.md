@@ -1,8 +1,74 @@
 # Medtronic (MDT)
 
 **Sector:** Healthcare | **Industry:** Medical Devices
-**Price:** $87.21 | **Market Cap:** $112B | **EV:** $132B
-**Analysis Date:** 2026-03-19
+**Price:** $77.46 (2026-06-03) | **Market Cap:** ~$99B | **EV:** ~$119B
+**Analysis Date:** 2026-06-03 (refresh) · original 2026-03-19
+
+> **Live verdict (2026-06-03): WATCH → BUY (small), Conviction MEDIUM.** Q4 FY26 reported
+> this morning was a beat-and-raise and the FY27 guide came in *above* what the March note's
+> base case assumed — yet the stock is 11% cheaper ($87 → $77) and just one day off a
+> 52-week low ($73.75 on 2026-06-02, +5% pop today). Same/better thesis, lower price. See the
+> 2026-06-03 Refresh section directly below; the original March analysis follows unchanged.
+
+## 2026-06-03 Refresh — Q4 FY26 beat-and-raise; trigger fired positive, stock still at lows
+
+**What happened.** Medtronic reported Q4 + full-year FY26 on the morning of 2026-06-03 (fiscal
+year ended 2026-04-24):
+- **Q4 revenue $9.8B, +9.9% reported / +6.6% organic**, ~90 bps ahead of implied guidance;
+  **Q4 non-GAAP EPS $1.55**, ahead of guidance.
+- **FY26 revenue $36.4B, +8.4% reported / +5.8% organic — the highest annual growth in 10 years.**
+  FY26 non-GAAP EPS $5.53 (+0.7%); GAAP EPS $3.73 (+3.3%).
+- **FY27 guidance: organic revenue +6.75% to +7.25%; non-GAAP EPS $5.90–$6.00 (+6.7% to +8.5%).**
+  Includes a 53rd week, full-year consolidation of the Diabetes business, tariffs, interest and
+  tax drag, and a neutral-to-+1% FX tailwind.
+- **Dividend raised to $0.72/qtr ($2.88/yr)** — 48th consecutive annual increase, but only +1.4%.
+
+**Why this matters vs. the March note.** The March WATCH explicitly set the trigger as *"Q4 FY26
+earnings confirming guidance and FY27 outlook above 5% organic growth."* That trigger has now
+fired clearly to the upside: FY27 organic guide of **6.75–7.25% sits above the March base case's
+5% assumption and at/above the bull case's 6%.** The reacceleration thesis (PFA + Hugo + international)
+is no longer a forecast — it printed, and management is guiding the *next* year higher still. The
+stock, meanwhile, slid from $87 (March) to a $73.75 low on 2026-06-02 and popped ~5% to $77.46 on
+the print. **The single biggest open question in the March note got answered favorably while the
+price moved the wrong way.** Forward P/E is now ~13.0x on the $5.95 FY27 EPS midpoint vs. 14.3x in
+March — cheaper despite better growth. 3.7% dividend yield at the current price.
+
+**The honest bear point (what kept this a WATCH, not a high-conviction BUY).** FY27 EPS growth of
+6.7–8.5% roughly *matches* revenue growth of ~7% — i.e. **no margin leverage.** Tariffs (~$300M+
+in FY27), interest expense, tax, and the full consolidation of the lower-margin Diabetes business
+absorb the operating leverage you'd hope to see from 7% top-line growth. So this is a
+*growth-reacceleration + multiple-rerating* story, **not** a margin-expansion story. Two corroborating
+flags: (1) the dividend hike was a token +1.4%, and (2) the dividend (~$3.7B/yr) now eats ~90% of
+FCF (~$4.1B), so dividend growth stays slow and buyback capacity is thin until margins or FCF inflect.
+Also note **Diabetes was carved out via a partial IPO (priced $20, below the $25–28 range) but
+retained and still consolidated** — not the clean spin the March note implied; the value-unlock /
+de-overhang catalyst is slower than expected.
+
+**Updated scenario table (entry $77.46, ~12–18 month horizon, FY27 EPS ~$5.95):**
+
+| Scenario | Prob | Earnings driver | Multiple | Target | Price return | +Div |
+|----------|------|-----------------|----------|--------|--------------|------|
+| Bull | 25% | Organic ≥7% holds; PFA/Hugo compound; FY28 EPS ~$6.45 | Re-rate to 16–17x on durable mid-single-digit+ growth | $105–110 | +37% | +3.7% |
+| Base | 50% | Organic ~6.5%; EPS lands $5.95–6.20; flat margins | Hold ~14x | $86–90 | +14% | +3.7% |
+| Bear | 25% | Growth fades to 4–5%; tariffs/mix bite; EPS stalls ~$5.80 | De-rate to ~12x | $70 | -10% | +3.7% |
+
+**Expected value ≈ +14% price + ~3.7% yield ≈ +18% total return** (0.25·37 + 0.50·14 + 0.25·(−10) = +14.3%),
+up from the March note's +8.6%, with **downside cushioned** by the 3.7% yield, the just-printed
+beat-and-raise momentum, and a price already one day off the 52-week low. Asymmetry has improved:
+roughly +37% / −10% on price.
+
+**Entry:** ≤ $78 (current $77.46). **Add** below $74 (retest of the 52w low post-pop).
+**Thesis-break / exit:** (1) organic revenue growth back below 4% for two consecutive quarters,
+(2) PFA share visibly ceded to BSX FARAPULSE / JNJ, (3) net debt/EBITDA > 3.0x, or
+(4) a FY27 guide cut. Price stop reference: a sustained close below **$70** (below the pre-print
+base and the bear target) says the market is pricing structural deceleration, not a cheap compounder.
+
+**What would change my mind (toward more bullish):** evidence of margin inflection (gross margin
+back above 66%, tariff offsets landing), Hugo securing general-surgery / gynecology indications in
+CY2026, or a faster Diabetes separation that de-overhangs the multiple. Any of those flips this from
+"cheap mid-single-digit grower" to "re-rating candidate" and pushes fair value toward the bull case.
+
+---
 
 ## Situation Summary
 
@@ -114,7 +180,11 @@ The risk is that this inflection is already partially priced in with the stock r
 
 ## Verdict
 
-**WATCH** -- Conviction: MEDIUM
+> **Superseded 2026-06-03 — see the refresh section at the top of this note. The Q4 FY26 trigger
+> fired positive and the verdict is upgraded WATCH → BUY (small), MEDIUM conviction, entry ≤ $78.**
+> The March WATCH below is retained for history.
+
+**WATCH** -- Conviction: MEDIUM _(as of 2026-03-19)_
 
 MDT is a turnaround story showing real signs of life. The PFA franchise is genuinely impressive (80% growth, 30%+ market share), Hugo opens a new growth vector in robotic surgery, and the MiniMed spinoff simplifies the portfolio. At 14.3x forward non-GAAP P/E and 4.8% FCF yield, the stock is cheap relative to medtech peers (ISRG 42x, BSX 30x, ABT 22x). The trusted ML models see 14-55% upside, and the scenario table yields +8.6% expected value -- positive but not compelling enough for a high-conviction BUY.
 
