@@ -4,6 +4,25 @@
 **Price:** $255.64 (2026-05-19) | **Market Cap:** $103.3B
 **Analysis Date:** 2026-05-19
 
+> **Update 2026-06-16 (post-earnings re-check — verdict reaffirmed BUY, EV widened to ~+70%):** Q2 FY2026 (reported 2026-06-11 after close) was a **beat-and-raise that confirmed the bull thesis** — yet the stock **fell ~13% to $206.36** on a governance scare, the cleanest "thesis confirmed, price cheaper" setup the note anticipated. The print, verified against the 8-K/press release:
+> - **Record revenue $6.62B (+13% YoY)**, beating the ~$6.45B consensus and the company's own $6.43-6.48B guide; **non-GAAP EPS $5.96 (+18% YoY)**, above the $5.85-5.90 guide.
+> - **Total ARR $27.10B** (vs $26.1B in Q1); **AI-first ARR tripled YoY and now exceeds $500M**; **Firefly ending ARR approaching $300M (~+50% QoQ)**; Creative freemium MAU crossed 90M (+70% YoY).
+> - Segment detail: creative+marketing subscription revenue **+13% to $4.54B**; business/consumer subscription **+16% to $1.85B** — **no Creative Cloud seat erosion**.
+> - **FY2026 guidance raised**: revenue $26.5-26.6B, non-GAAP EPS **$24.35-24.45**.
+> - **None of the three thesis-break conditions fired** (no sub-9% ARR, no seat erosion, no growth reset). The thesis ("AI fear overdone — Adobe monetizes AI, not killed by it") is now empirically *stronger*.
+>
+> **Why it dropped anyway:** CFO **Dan Durn announced his departure effective 2026-06-15 to become CFO of Marvell** — a normal poaching for a bigger role, *not* a departure for cause or any accounting issue. It became a *second* C-suite vacancy alongside the ongoing CEO search, and on an "elevated-expectations" AI-momentum name the market sold the headline (~−7% on the day, ~−13% from the pre-print $238). A 20-year Adobe finance veteran, **Steve Day, is interim CFO**, reporting to Chair/CEO Narayen. Read: **temporary sentiment/governance overhang, not fundamental deterioration.**
+>
+> **At $206.36 the stock now trades at ~8.5x the raised FY26 EPS guide ($24.40) and ~12% FCF yield — cheaper than the note's prior "historical low ex-2008" of 9.7x, and below the note's own $220-240 add zone.** Revised scenarios off $206.36 (FY27 EPS targets/exit multiples unchanged from the May note; bear probability raised to 25% to respect the exec-turnover overhang):
+>
+> | Scenario | Prob | FY27 EPS × multiple | Target | Return |
+> |---|---|---|---|---|
+> | Bull | 30% | $30 × 17x | $510 | +147% |
+> | Base | 45% | $28 × 13x | $365 | +77% |
+> | Bear | 25% | $24 × ~7.3x | $175 | −15% |
+>
+> **Expected value ≈ +70%** (0.30×147 + 0.45×77 + 0.25×−15 = 44 + 34.7 − 3.75). Downside is genuinely bounded: at 8.5x forward already, the bear case is only ~15% below price. **Verdict: BUY (MEDIUM-HIGH) reaffirmed — best risk/reward in the universe at this price.** Entry now (~$206); the prior $255 entry / $220-240 add zone are stale (price gapped through both). **Revised price thesis-break to $175** (fundamental triggers unchanged and primary: two consecutive sub-9% ARR quarters, or actual Creative Cloud seat erosion, or a CEO-led mid-single-digit growth reset). Next watch items: permanent CFO appointment, CEO successor naming, Q3 FY2026 print (~mid-Sep). See [proposals/2026-06-16](../proposals/2026-06-16.md).
+
 > **Update 2026-06-10 (nightly re-check):** ADBE $237.88, down ~7% on the week in a broad enterprise-software selloff (CRM −8%, NOW −9%, MSFT −6% same week — sector AI-disruption repricing, not company-specific). That puts it squarely in the note's **"adds on weakness to $220-240" zone** and ~7% below the $255 scale-in entry. **Catalyst is now imminent: Q2 FY2026 earnings tomorrow, 2026-06-11, after the close.** Company guide: revenue $6.43-6.48B, non-GAAP EPS $5.85-5.90. This print is the direct test of the bull thesis ("AI fear overdone — Adobe is monetizing AI, not being killed by it"): watch Digital Media ARR growth (thesis-break if sub-9%), Firefly/AI-first ARR trajectory, and Creative Cloud net seat count (thesis-break on actual seat *erosion*, not just slowdown). Binary event — a starter here risks a gap toward the $190 thesis-break on a bad print, while a clean ARR/Firefly print + FY guide raise likely starts the re-rate. Verdict unchanged: **BUY (MEDIUM-HIGH), EV +46%.** See [proposals/2026-06-10](../proposals/2026-06-10.md).
 
 ## Business Primer
