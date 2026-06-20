@@ -119,15 +119,9 @@ def get_known_accessions(conn, ticker: str) -> Set[str]:
         return set()
 
 
-def compute_insider_signal(conn, ticker: str,
-                           lookback_days: int = 180) -> Dict[str, Any]:
-    """
-    Compute aggregate insider activity signal for a ticker.
-
-    Returns dict with: net_buy_pct, cluster_score, recency_days,
-    dollar_conviction, buy_count, sell_count, has_data.
-    """
-    no_data = {
+def _no_insider_data() -> Dict[str, Any]:
+    """Fresh "no insider activity" signal dict (one per ticker, never shared)."""
+    return {
         "has_data": False,
         "net_buy_pct": 0.0,
         "cluster_score": 0,
@@ -139,30 +133,16 @@ def compute_insider_signal(conn, ticker: str,
         "buy_trend": None,
     }
 
-    # Check table exists
-    try:
-        cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
-        cur.execute("SELECT 1 FROM insider_transactions LIMIT 1")
-    except Exception:
-        conn.rollback()
-        return no_data
 
-    cutoff = (datetime.utcnow() - timedelta(days=lookback_days)).strftime("%Y-%m-%d")
+def _aggregate_insider_rows(rows) -> Dict[str, Any]:
+    """
+    Aggregate one ticker's recent open-market rows into a signal dict
+    (without the historical sell/buy trends, which the caller fills in).
 
-    # Use a plain cursor (not dict) since we unpack by position below
-    cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
-    cur.execute("""
-        SELECT transaction_type, shares, price_per_share, transaction_date,
-               reporter_name, is_open_market
-        FROM insider_transactions
-        WHERE ticker = %s AND transaction_date >= %s AND is_open_market = 1
-        ORDER BY transaction_date DESC
-    """, (ticker, cutoff))
-    rows = cur.fetchall()
-
-    if not rows:
-        return no_data
-
+    `rows` are tuples of (transaction_type, shares, price_per_share,
+    transaction_date, reporter_name, is_open_market) ordered by date DESC.
+    Assumes `rows` is non-empty.
+    """
     buy_shares = 0.0
     sell_shares = 0.0
     buy_dollars = 0.0
@@ -200,11 +180,6 @@ def compute_insider_signal(conn, ticker: str,
         except ValueError:
             pass
 
-    # Compute sell/buy trend vs historical baseline
-    sell_trend, buy_trend = _compute_activity_trends(
-        conn, ticker, lookback_days
-    )
-
     return {
         "has_data": True,
         "net_buy_pct": round(net_buy_pct, 2),
@@ -213,9 +188,167 @@ def compute_insider_signal(conn, ticker: str,
         "dollar_conviction": round(buy_dollars, 2),
         "buy_count": buy_count,
         "sell_count": sell_count,
-        "sell_trend": sell_trend,
-        "buy_trend": buy_trend,
+        "sell_trend": None,
+        "buy_trend": None,
     }
+
+
+def _trends_from_aggregates(earliest_date_str, total_count,
+                            recent_sells, recent_buys, prior_sells, prior_buys,
+                            lookback_days, now) -> tuple:
+    """
+    Pure trend math shared by the single-ticker and batch paths.
+
+    Returns (sell_trend, buy_trend), each a ratio vs the historical average
+    rate (0.5 = half normal, 2.0 = double), or None when there is not enough
+    history to form a baseline.
+    """
+    if not earliest_date_str or total_count < 3:
+        return None, None
+    try:
+        earliest_date = datetime.strptime(earliest_date_str, "%Y-%m-%d")
+    except (ValueError, TypeError):
+        return None, None
+
+    total_history_days = (now - earliest_date).days
+    # Need at least 1.5x the lookback period to have a meaningful baseline
+    if total_history_days < lookback_days * 1.5:
+        return None, None
+
+    prior_days = max(total_history_days - lookback_days, 1)
+
+    sell_trend = None
+    if prior_sells > 0:
+        prior_sell_rate = prior_sells / prior_days * lookback_days
+        sell_trend = round(recent_sells / prior_sell_rate, 2) if prior_sell_rate > 0 else None
+
+    buy_trend = None
+    if prior_buys > 0:
+        prior_buy_rate = prior_buys / prior_days * lookback_days
+        buy_trend = round(recent_buys / prior_buy_rate, 2) if prior_buy_rate > 0 else None
+
+    return sell_trend, buy_trend
+
+
+def compute_insider_signal(conn, ticker: str,
+                           lookback_days: int = 180) -> Dict[str, Any]:
+    """
+    Compute aggregate insider activity signal for a ticker.
+
+    Returns dict with: net_buy_pct, cluster_score, recency_days,
+    dollar_conviction, buy_count, sell_count, has_data.
+    """
+    # Check table exists
+    try:
+        cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
+        cur.execute("SELECT 1 FROM insider_transactions LIMIT 1")
+    except Exception:
+        conn.rollback()
+        return _no_insider_data()
+
+    cutoff = (datetime.utcnow() - timedelta(days=lookback_days)).strftime("%Y-%m-%d")
+
+    # Use a plain cursor (not dict) since we unpack by position below
+    cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
+    cur.execute("""
+        SELECT transaction_type, shares, price_per_share, transaction_date,
+               reporter_name, is_open_market
+        FROM insider_transactions
+        WHERE ticker = %s AND transaction_date >= %s AND is_open_market = 1
+        ORDER BY transaction_date DESC
+    """, (ticker, cutoff))
+    rows = cur.fetchall()
+
+    if not rows:
+        return _no_insider_data()
+
+    signal = _aggregate_insider_rows(rows)
+    sell_trend, buy_trend = _compute_activity_trends(conn, ticker, lookback_days)
+    signal["sell_trend"] = sell_trend
+    signal["buy_trend"] = buy_trend
+    return signal
+
+
+def compute_all_insider_signals(conn, lookback_days: int = 180) -> Dict[str, Dict[str, Any]]:
+    """
+    Batch equivalent of compute_insider_signal for every ticker in one pass.
+
+    Replaces ~4 queries-per-ticker with 3 total queries, returning
+    {ticker: signal_dict}. Tickers with no recent open-market activity are
+    omitted; callers should default those to _no_insider_data().
+    """
+    try:
+        cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
+        cur.execute("SELECT 1 FROM insider_transactions LIMIT 1")
+    except Exception:
+        conn.rollback()
+        return {}
+
+    now = datetime.utcnow()
+    cutoff = (now - timedelta(days=lookback_days)).strftime("%Y-%m-%d")
+
+    # 1) Recent open-market rows for all tickers (drives main aggregation).
+    cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
+    cur.execute("""
+        SELECT ticker, transaction_type, shares, price_per_share, transaction_date,
+               reporter_name, is_open_market
+        FROM insider_transactions
+        WHERE transaction_date >= %s AND is_open_market = 1
+        ORDER BY ticker, transaction_date DESC
+    """, (cutoff,))
+    rows_by_ticker: Dict[str, list] = {}
+    for r in cur.fetchall():
+        rows_by_ticker.setdefault(r[0], []).append(r[1:])
+
+    # 2) Full-history earliest date + count per ticker (trend baseline gate).
+    cur.execute("""
+        SELECT ticker, MIN(transaction_date), COUNT(*)
+        FROM insider_transactions
+        WHERE is_open_market = 1
+        GROUP BY ticker
+    """)
+    history = {r[0]: (r[1], r[2]) for r in cur.fetchall()}
+
+    # 3) Full-history recent-vs-prior buy/sell counts per ticker.
+    cur.execute("""
+        SELECT ticker, transaction_type,
+               CASE WHEN transaction_date >= %s THEN 'recent' ELSE 'prior' END AS period,
+               COUNT(*) AS cnt
+        FROM insider_transactions
+        WHERE is_open_market = 1
+        GROUP BY ticker, transaction_type, period
+    """, (cutoff,))
+    trend_counts: Dict[str, Dict[str, int]] = {}
+    for tk, tx_type, period, cnt in cur.fetchall():
+        d = trend_counts.setdefault(
+            tk, {"recent_sells": 0, "recent_buys": 0, "prior_sells": 0, "prior_buys": 0}
+        )
+        if period == "recent":
+            if tx_type == "S":
+                d["recent_sells"] = cnt
+            elif tx_type == "P":
+                d["recent_buys"] = cnt
+        else:
+            if tx_type == "S":
+                d["prior_sells"] = cnt
+            elif tx_type == "P":
+                d["prior_buys"] = cnt
+
+    signals: Dict[str, Dict[str, Any]] = {}
+    for ticker, rows in rows_by_ticker.items():
+        signal = _aggregate_insider_rows(rows)
+        earliest_date_str, total_count = history.get(ticker, (None, 0))
+        tc = trend_counts.get(ticker, {})
+        sell_trend, buy_trend = _trends_from_aggregates(
+            earliest_date_str, total_count,
+            tc.get("recent_sells", 0), tc.get("recent_buys", 0),
+            tc.get("prior_sells", 0), tc.get("prior_buys", 0),
+            lookback_days, now,
+        )
+        signal["sell_trend"] = sell_trend
+        signal["buy_trend"] = buy_trend
+        signals[ticker] = signal
+    return signals
 
 
 def _compute_activity_trends(conn, ticker: str, lookback_days: int) -> tuple:
@@ -242,15 +375,7 @@ def _compute_activity_trends(conn, ticker: str, lookback_days: int) -> tuple:
         return None, None
 
     earliest_date_str = row[0]
-    try:
-        earliest_date = datetime.strptime(earliest_date_str, "%Y-%m-%d")
-    except ValueError:
-        return None, None
-
-    total_history_days = (now - earliest_date).days
-    # Need at least 1.5x the lookback period to have a meaningful baseline
-    if total_history_days < lookback_days * 1.5:
-        return None, None
+    total_count = row[1]
 
     # Count sells and buys in recent period vs all prior history
     cur.execute("""
@@ -280,20 +405,11 @@ def _compute_activity_trends(conn, ticker: str, lookback_days: int) -> tuple:
             elif tx_type == "P":
                 prior_buys = cnt
 
-    prior_days = max((now - earliest_date).days - lookback_days, 1)
-
-    # Normalize to per-period rate and compute ratio
-    sell_trend = None
-    if prior_sells > 0:
-        prior_sell_rate = prior_sells / prior_days * lookback_days
-        sell_trend = round(recent_sells / prior_sell_rate, 2) if prior_sell_rate > 0 else None
-
-    buy_trend = None
-    if prior_buys > 0:
-        prior_buy_rate = prior_buys / prior_days * lookback_days
-        buy_trend = round(recent_buys / prior_buy_rate, 2) if prior_buy_rate > 0 else None
-
-    return sell_trend, buy_trend
+    return _trends_from_aggregates(
+        earliest_date_str, total_count,
+        recent_sells, recent_buys, prior_sells, prior_buys,
+        lookback_days, now,
+    )
 
 
 def _compute_cluster_score(buy_events: List[Dict[str, Any]]) -> int:

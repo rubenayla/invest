@@ -216,18 +216,9 @@ def log_doc(
     conn.commit()
 
 
-def compute_politician_signal(
-    conn,
-    ticker: str,
-    lookback_days: int = 180,
-) -> Dict[str, Any]:
-    """
-    Compute aggregate politician-trade signal for a ticker.
-
-    Returns dict with: buy_count, sell_count, weighted_score (positive=net
-    buying weighted by politician), top_politicians, recency_days, has_data.
-    """
-    no_data = {
+def _no_politician_data() -> Dict[str, Any]:
+    """Fresh "no politician activity" signal dict (one per ticker, never shared)."""
+    return {
         'has_data': False,
         'buy_count': 0,
         'sell_count': 0,
@@ -236,27 +227,14 @@ def compute_politician_signal(
         'recency_days': None,
     }
 
-    try:
-        cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
-        cur.execute('SELECT 1 FROM politician_trades LIMIT 1')
-    except Exception:
-        conn.rollback()
-        return no_data
 
-    cutoff = (datetime.utcnow() - timedelta(days=lookback_days)).strftime('%Y-%m-%d')
-    cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
-    cur.execute("""
-        SELECT politician_name, transaction_type, transaction_date,
-               amount_min, amount_max
-        FROM politician_trades
-        WHERE ticker = %s AND transaction_date >= %s
-        ORDER BY transaction_date DESC
-    """, (ticker, cutoff))
-    rows = cur.fetchall()
+def _aggregate_politician_rows(rows) -> Dict[str, Any]:
+    """
+    Aggregate one ticker's trade rows into a politician signal dict.
 
-    if not rows:
-        return no_data
-
+    `rows` are tuples of (politician_name, transaction_type, transaction_date,
+    amount_min, amount_max) ordered by date DESC. Assumes `rows` is non-empty.
+    """
     buy_count = 0
     sell_count = 0
     weighted_score = 0.0
@@ -314,6 +292,74 @@ def compute_politician_signal(
         'top_politicians': top_politicians,
         'recency_days': recency_days,
     }
+
+
+def compute_politician_signal(
+    conn,
+    ticker: str,
+    lookback_days: int = 180,
+) -> Dict[str, Any]:
+    """
+    Compute aggregate politician-trade signal for a ticker.
+
+    Returns dict with: buy_count, sell_count, weighted_score (positive=net
+    buying weighted by politician), top_politicians, recency_days, has_data.
+    """
+    try:
+        cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
+        cur.execute('SELECT 1 FROM politician_trades LIMIT 1')
+    except Exception:
+        conn.rollback()
+        return _no_politician_data()
+
+    cutoff = (datetime.utcnow() - timedelta(days=lookback_days)).strftime('%Y-%m-%d')
+    cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
+    cur.execute("""
+        SELECT politician_name, transaction_type, transaction_date,
+               amount_min, amount_max
+        FROM politician_trades
+        WHERE ticker = %s AND transaction_date >= %s
+        ORDER BY transaction_date DESC
+    """, (ticker, cutoff))
+    rows = cur.fetchall()
+
+    if not rows:
+        return _no_politician_data()
+
+    return _aggregate_politician_rows(rows)
+
+
+def compute_all_politician_signals(
+    conn,
+    lookback_days: int = 180,
+) -> Dict[str, Dict[str, Any]]:
+    """
+    Batch equivalent of compute_politician_signal for every ticker in one query.
+
+    Returns {ticker: signal_dict}. Tickers with no recent trades are omitted;
+    callers should default those to _no_politician_data().
+    """
+    try:
+        cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
+        cur.execute('SELECT 1 FROM politician_trades LIMIT 1')
+    except Exception:
+        conn.rollback()
+        return {}
+
+    cutoff = (datetime.utcnow() - timedelta(days=lookback_days)).strftime('%Y-%m-%d')
+    cur = conn.cursor(cursor_factory=psycopg2.extensions.cursor)
+    cur.execute("""
+        SELECT ticker, politician_name, transaction_type, transaction_date,
+               amount_min, amount_max
+        FROM politician_trades
+        WHERE transaction_date >= %s
+        ORDER BY ticker, transaction_date DESC
+    """, (cutoff,))
+    rows_by_ticker: Dict[str, list] = {}
+    for r in cur.fetchall():
+        rows_by_ticker.setdefault(r[0], []).append(r[1:])
+
+    return {tk: _aggregate_politician_rows(rows) for tk, rows in rows_by_ticker.items()}
 
 
 def _amount_size_factor(amt_min: float | None, amt_max: float | None) -> float:

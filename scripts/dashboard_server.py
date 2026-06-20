@@ -129,6 +129,12 @@ class UpdateManager:
             if self._exit_code == 0:
                 self._status = "completed"
                 self._phase = "done"
+                # Fresh data landed — rebuild the snapshot so it shows without
+                # waiting for the next scheduled refresh.
+                try:
+                    snapshot_cache.refresh()
+                except Exception as exc:
+                    logger.error("Post-update snapshot refresh failed: %s", exc)
             else:
                 self._status = "failed"
                 self._error = f"Process exited with code {self._exit_code}"
@@ -377,18 +383,84 @@ def get_db_health() -> dict:
     return health
 
 
+# ── Data snapshot cache ──────────────────────────────────────────────────
+
+# Loading all stocks + valuations + insider/politician signals from the DB
+# takes ~1-2s. Doing it on every request made pages take 8-15s. Instead we
+# hold one shared snapshot, refreshed by a background thread, so no user
+# request ever pays the load cost.
+REFRESH_INTERVAL = int(os.environ.get("DASHBOARD_REFRESH_INTERVAL", "300"))  # seconds
+
+
+class SnapshotCache:
+    """Thread-safe holder for the latest loaded stocks_data + health."""
+
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._refresh_lock = threading.Lock()
+        self._stocks_data: dict | None = None
+        self._health: dict | None = None
+        self._generated_at: str | None = None
+
+    def _load(self):
+        sys.path.insert(0, str(REPO_ROOT / "scripts"))
+        from dashboard import load_stocks_from_database
+
+        stocks_data = load_stocks_from_database()
+        health = get_db_health()
+        return stocks_data, health
+
+    def refresh(self) -> bool:
+        """Rebuild the snapshot. Keeps the previous one on failure.
+
+        Serialized via _refresh_lock so concurrent triggers don't double-load.
+        """
+        with self._refresh_lock:
+            try:
+                stocks_data, health = self._load()
+            except Exception as exc:
+                logger.error("Snapshot refresh failed: %s", exc)
+                return False
+            with self._lock:
+                self._stocks_data = stocks_data
+                self._health = health
+                self._generated_at = _now_iso()
+            return True
+
+    def get(self):
+        """Return (stocks_data, health, generated_at), loading synchronously
+        on the very first call if the snapshot isn't warm yet."""
+        with self._lock:
+            warm = self._stocks_data is not None
+        if not warm:
+            self.refresh()
+        with self._lock:
+            return (
+                self._stocks_data or {},
+                self._health or {},
+                self._generated_at or _now_iso(),
+            )
+
+    def start_background_refresh(self):
+        def _run():
+            while True:
+                time.sleep(REFRESH_INTERVAL)
+                self.refresh()
+
+        threading.Thread(target=_run, daemon=True).start()
+
+
+snapshot_cache = SnapshotCache()
+
+
 # ── Route handlers ───────────────────────────────────────────────────────
 
 async def index(request: Request) -> HTMLResponse:
-    """Serve the dashboard HTML, regenerated from DB on each request."""
+    """Serve the dashboard HTML, rendered from the cached data snapshot."""
     _touch_activity()
     from invest.dashboard_components.html_generator import HTMLGenerator
 
-    # Import the loading function from the existing dashboard script
-    sys.path.insert(0, str(REPO_ROOT / "scripts"))
-    from dashboard import load_stocks_from_database
-
-    stocks_data = load_stocks_from_database()
+    stocks_data, health, generated_at = snapshot_cache.get()
 
     generator = HTMLGenerator()
     progress_data = {
@@ -396,9 +468,8 @@ async def index(request: Request) -> HTMLResponse:
         "successful": len(stocks_data),
         "failed": 0,
     }
-    health = get_db_health()
     metadata = {
-        "last_updated": _now_iso(),
+        "last_updated": generated_at,
         "server_mode": True,
         "health": health,
         "update_status": update_manager.status_dict,
@@ -412,10 +483,7 @@ async def mobile_index(request: Request) -> HTMLResponse:
     _touch_activity()
     from invest.dashboard_components.html_generator import HTMLGenerator
 
-    sys.path.insert(0, str(REPO_ROOT / "scripts"))
-    from dashboard import load_stocks_from_database
-
-    stocks_data = load_stocks_from_database()
+    stocks_data, _, _ = snapshot_cache.get()
     generator = HTMLGenerator()
     html = generator.generate_mobile_html(stocks_data)
     return HTMLResponse(html, headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0"})
@@ -426,10 +494,7 @@ async def feed_index(request: Request) -> HTMLResponse:
     _touch_activity()
     from invest.dashboard_components.html_generator import HTMLGenerator
 
-    sys.path.insert(0, str(REPO_ROOT / "scripts"))
-    from dashboard import load_stocks_from_database
-
-    stocks_data = load_stocks_from_database()
+    stocks_data, _, _ = snapshot_cache.get()
 
     # Load Polymarket Trump-policy markets if the table exists.
     # DB-down or table-missing is non-fatal — feed renders without that section.
@@ -455,10 +520,7 @@ async def feed_index(request: Request) -> HTMLResponse:
 async def api_stocks(request: Request) -> JSONResponse:
     """Return all stock data as JSON for mobile dashboard refresh."""
     _touch_activity()
-    sys.path.insert(0, str(REPO_ROOT / "scripts"))
-    from dashboard import load_stocks_from_database
-
-    stocks_data = load_stocks_from_database()
+    stocks_data, _, _ = snapshot_cache.get()
 
     # Slim down for JSON: keep only what the mobile dashboard needs
     slim = {}
@@ -481,8 +543,9 @@ async def api_stocks(request: Request) -> JSONResponse:
 
 
 async def api_health(request: Request) -> JSONResponse:
-    """Return database health/freshness data."""
-    return JSONResponse(_json_safe(get_db_health()))
+    """Return database health/freshness data (from the cached snapshot)."""
+    _, health, _ = snapshot_cache.get()
+    return JSONResponse(_json_safe(health))
 
 
 async def api_update_start(request: Request) -> JSONResponse:
@@ -893,6 +956,13 @@ def main():
 
     # Start alarm checker (polls every 60s)
     alarm_checker.start()
+
+    # Warm the data snapshot before serving so the first request is fast,
+    # then keep it fresh in the background.
+    print("  Warming data snapshot...")
+    snapshot_cache.refresh()
+    snapshot_cache.start_background_refresh()
+    print(f"  Snapshot warm; refreshing every {REFRESH_INTERVAL}s\n")
 
     global _server_ref
     config = uvicorn.Config(app, host=args.host, port=args.port, log_level="info")

@@ -176,24 +176,26 @@ def load_stocks_from_database() -> dict:
     for ticker, price_data in latest_price_by_ticker.items():
         stocks[ticker]['current_price'] = price_data['price']
 
-    # Load insider signals
+    # Load insider signals (single batched query set instead of N+1 per ticker)
     insider_count = 0
     try:
-        from invest.data.insider_db import compute_insider_signal
+        from invest.data.insider_db import compute_all_insider_signals, _no_insider_data
+        insider_signals = compute_all_insider_signals(conn)
         for ticker in stocks:
-            signal = compute_insider_signal(conn, ticker)
+            signal = insider_signals.get(ticker) or _no_insider_data()
             stocks[ticker]['insider'] = signal
             if signal.get('has_data'):
                 insider_count += 1
     except Exception as exc:
         print(f'  Insider data not available: {exc}')
 
-    # Load politician signals
+    # Load politician signals (single batched query instead of N+1 per ticker)
     politician_count = 0
     try:
-        from invest.data.politician_db import compute_politician_signal
+        from invest.data.politician_db import compute_all_politician_signals, _no_politician_data
+        politician_signals = compute_all_politician_signals(conn)
         for ticker in stocks:
-            signal = compute_politician_signal(conn, ticker)
+            signal = politician_signals.get(ticker) or _no_politician_data()
             stocks[ticker]['politician'] = signal
             if signal.get('has_data'):
                 politician_count += 1
