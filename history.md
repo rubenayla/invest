@@ -384,3 +384,15 @@ Surfaced during the 15-name stale-note refresh batch. SoFi's 2026-03-17 note was
 5. **Sell-side targets can be wildly disconnected** ("strong buy," ~$351 mean) when a stock is really a leveraged commodity proxy — the targets embed a bitcoin price and a re-rating to premium that may not return. Don't anchor on them.
 
 **Re-engage triggers:** upgrade toward BUY only if bitcoin reclaims ~$75k (cost basis) AND mNAV stabilizes ≥0.9× (flywheel can restart); or a deep-value discount blowout to <0.6× mNAV with the $2.25B reserve and STRC coverage intact. Avoid the 0.8–0.95× dead zone with bitcoin below cost — that's where per-share bitcoin quietly bleeds.
+
+## 2026-06-20 — Dashboard load time: 9–15s → <1s (N+1 + no caching)
+
+**Found:** The live dashboard (`invest.rubenayla.xyz`) took 9–15s per page (`/m` 12–14s, even the 137KB `/feed` 8s). Root cause, timed on the Hetzner box: every request re-ran `load_stocks_from_database()` (~7.8s) with no caching anywhere (`Cache-Control: no-store` → Cloudflare `DYNAMIC`, origin hit every time). The 7.8s was an **N+1**: for each of 1807 tickers it called `compute_insider_signal` (~4 queries) and `compute_politician_signal` (~2 queries) in a Python loop ≈ ~10,000 DB round-trips. HTML generation was only 0.29s; wire size was a red herring (Cloudflare already brotli-compresses the 6.7MB HTML to ~321KB). All three routes share the loader — why the tiny feed page was also slow.
+
+**Fixed** (commit `3e42e8c`):
+1. Added `compute_all_insider_signals` / `compute_all_politician_signals` (batched `GROUP BY` queries) in `insider_db.py` / `politician_db.py`; loader uses them. Insider 3.84s→0.96s, politician 1.97s→0.16s. The single-ticker `compute_*_signal` APIs were kept (other callers + tests depend on them); shared aggregation extracted into `_aggregate_*_rows` / `_trends_from_aggregates` helpers so batch and single paths give identical output (verified 0 mismatches on 60 sampled tickers).
+2. Added a thread-safe in-process snapshot in `dashboard_server.py` (`SnapshotCache`): warmed at startup, refreshed every `DASHBOARD_REFRESH_INTERVAL`s (default 300) in a background thread + immediately on update completion. All routes (`/`, `/m`, `/feed`, `/api/stocks`, `/api/health`) serve from it, so no request pays the load.
+
+Result (prod, incl. network): `/` 0.66s, `/m` 0.96s, `/feed` 0.56s, `/api/health` 0.08s.
+
+**Lesson (transferable):** before optimizing payload/transfer, time the server-side phases separately — a tiny endpoint that's still slow points at shared backend work, not bytes. The classic killer is an N+1 hidden behind an innocent-looking `for ticker in stocks:` loop; batch into `GROUP BY` queries. And for any per-request DB rebuild of data that only changes nightly, a warm in-process snapshot (refreshed in the background, invalidated on write) beats per-request loading by orders of magnitude.

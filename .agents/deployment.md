@@ -14,9 +14,12 @@ SSH only when CI itself fails, or for diagnostics the production endpoint can't 
 
 ## Architecture
 
-- **Hetzner server**: hosts PostgreSQL (source of truth), fetches data (Yahoo + SEC), serves dashboard at `invest.rubenayla.xyz`
+- **Hetzner server**: hosts PostgreSQL (source of truth), fetches data (Yahoo + SEC), serves dashboard at `invest.rubenayla.xyz`. Generally up but can fail occasionally.
 - **Mac**: connects to same Postgres via SSH tunnel, runs heavy ML models (GBM, autoresearch, neural nets)
+- **Y540 laptop** (added 2026-05): additional model-running machine for investing models, alongside Hetzner.
 - **No file syncing** — both read/write the same Postgres database
+
+> **DB connection refused on `localhost:5433`?** That means the SSH tunnel to Hetzner is not running — it is NOT Postgres being down. Start it with `ssh -N hetzner-db` (see Database section) before any local DB read/write. Without the tunnel, scripts that save to the DB (e.g. `/research` Step 9) fail; either start the tunnel or re-run the save server-side.
 
 ## Database
 
@@ -82,6 +85,6 @@ Located at `/etc/nginx/sites-enabled/invest.rubenayla.xyz`. Uses same SSL cert a
 
 - `Nice=19` on all invest processes — Partle app gets CPU priority
 - `--no-auto-shutdown` flag disables the 2h idle timeout for systemd
-- Dashboard regenerates HTML from DB on each request (no static files to sync)
+- Dashboard renders HTML per request from a cached in-process data snapshot (no static files to sync). The expensive DB load (`load_stocks_from_database`) runs once at startup and refreshes every `DASHBOARD_REFRESH_INTERVAL` seconds (default 300) in a background thread, plus immediately after an update completes — so requests don't each pay the ~2s load. Insider/politician signals use batched `compute_all_*_signals` queries (not per-ticker N+1).
 - The "Live Server" button uses relative URL `/` (works behind nginx)
 - DB_URL is set in the systemd service file and in `~/.invest_db_url`
