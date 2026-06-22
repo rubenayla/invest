@@ -87,7 +87,7 @@ For one-shot earnings-day or catalyst-day analysis, prefer scheduling Claude Cod
 - **Default fire time: 04:00–05:00 Europe/Madrid** (= 02:00–03:00 UTC). Off-peak Claude usage caps + user is asleep, so the analysis is ready by morning. Use this unless a hard external constraint forces otherwise.
 - **Tokyo earnings exception**: Japan companies (e.g. 8001.T, 8002.T) typically publish at Tokyo close ~15:00 JST = 08:00 Madrid. Schedule **the next morning at 04:00–05:00 Madrid** to ensure the press release is fully out and analyst commentary has caught up.
 - **Output convention**: routines write a markdown file to `notes/journal/transactions/YYYY-MM-DD_<ticker>_<event>_review.md`. Don't open PRs or commit — the user reviews and decides.
-- **Notification**: results land in the **Routines** tab of the Claude desktop app (and at `claude.ai/code/routines`). No email/push by default.
+- **Notification**: results appear at `claude.ai/code/routines` (web) or under **Scheduled** in the Cowork sidebar / **Code** tab of the desktop app. No email/push by default.
 - **Manage**: list/update/run via the `/schedule` skill, or directly at `claude.ai/code/routines`. Deletion is web-only.
 
 ## Root scratch files

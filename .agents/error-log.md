@@ -248,3 +248,22 @@ I cited Iran war as the headline risk because the news aggregators (CNBC, Benzin
 - **Always use total portfolio value as the `--budget` parameter for Kelly sizing**, not just available cash. The budget represents the full capital base that position limits (15% max) are calculated against.
 - Available cash only determines whether you *can* fill the recommended size, not the size itself.
 - This error can directly cost money (undersized winners, oversized losers). Double-check the budget input on every sizing call.
+
+## 2026-05-29 — Gave FSLR hold/trim advice on a stale (prior-day) price
+
+**What happened:** Advised "hold, set a trim trigger at $290-300" for FSLR while quoting the price as $273.67. That figure was the *prior day's* close (2026-05-27) returned by yfinance `info['currentPrice']` / the fetched snapshot — the stock had already run to $303.38 (2026-05-28 close), so the proposed trigger was already blown through. User caught it.
+**Root cause:** Treated yfinance `info['currentPrice']` (and the cached fetch snapshot) as a live quote. That field commonly lags by a session. Did not cross-check against the latest daily close / `fast_info.last_price` / intraday before basing actionable price advice on it.
+**Prevention added:**
+- Before giving any price-level advice (entry/trim/stop), verify the quote against `fast_info.last_price` AND the most recent daily-close bar (and pre/post-market if relevant). If they disagree >1-2%, the snapshot is stale — use the freshest.
+- Never present `info['currentPrice']` as "current" without this cross-check. State the as-of timestamp when quoting a price in advice.
+- Reinforces existing memory `feedback_check_data_freshness` — same failure mode (stale price → wrong conclusion), now seen on FSLR as well as SQM.
+
+## 2026-06-02 — Proposed an SSH config fix for a failure I hadn't diagnosed
+
+**What happened:** A `git push` over SSH to github.com timed out once (during the prior session). Without diagnosing it, I assumed a persistent port-22 firewall block on the local network and twice offered to add an `ssh.github.com:443` workaround to `~/.ssh/config`. When the user finally said "find the issue," a 30-second test (`ssh -T git@github.com` + `nc -z github.com 22/443`, `ssh.github.com 443`) showed **all ports open and SSH auth working** — the original timeout had been a one-off transient network blip, already cleared. The config change would have "fixed" a problem that didn't exist.
+**Root cause:** Jumped from a single transient symptom straight to a confident root-cause story (and a remedy) without running the cheap diagnostic that would have falsified it. A timeout is ambiguous (transient vs. persistent); I treated it as persistent because that fit a tidy explanation. Classic fixing-before-understanding.
+**Prevention added:**
+- **Diagnose before proposing a fix.** When something fails, run the cheapest test that distinguishes the candidate causes *first*. Don't offer remedies for an undiagnosed failure.
+- A **single** transient failure is not evidence of a persistent condition. Reproduce it before theorizing a permanent cause.
+- For network reachability specifically: `nc -z host port` per port + the actual auth handshake takes seconds and settles transient-vs-blocked immediately.
+- Reinforces the global rule "Never state as fact what you haven't verified" — applies to proposed fixes, not just claims.

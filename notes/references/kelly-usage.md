@@ -26,6 +26,26 @@ Weights are relative; only ratios matter. When `llm_deep_analysis` exists for a 
 
 Each stock gets its own answer as if that bet were the only thing you'd do.
 
+## Why over-betting destroys you (the intuition)
+
+The asymmetry that makes Kelly cap out at a specific fraction (and turn punishing above it) lives in one fact: **a percentage gain and an equal percentage loss are not inverse operations.**
+
+After a 20% loss from $1,000, you sit at $800. The $200 you just lost is 25% of where you now stand, not 20%. To climb back you need a 25% gain on $800, not a 20% gain. The bet that took the dollars away was 20% of the larger base; the bet that needs to give them back is on a smaller base, so the same dollars are now a bigger percentage of your pile. That's where the asymmetry sneaks in.
+
+Generalising: one win-loss pair at fraction `f` multiplies your wealth by `(1+f)(1-f) = 1 - f²`. Always less than 1 for any nonzero `f`, and gets *quadratically* worse as `f` grows. At `f = 0.05` you lose ~0.25% per round-trip pair; at `f = 0.50` you lose 25% per pair; at `f = 0.90` you lose 81%. With an edge, the win-rate advantage grows like `f` (linear) and pushes back against this drag (quadratic). Kelly is the size where those two forces balance — the peak. Beyond it, the quadratic drag overtakes the linear edge.
+
+**Important corollary — the "fixed stake" escape doesn't work.** A tempting reaction to the f² penalty is: "I'll just bet a constant dollar amount and avoid it." That avoids the penalty by also forfeiting the prize. Fixed-stake betting gives **linear** growth: wealth after N bets is roughly `W₀ + N · edge · stake`. Kelly betting gives **exponential** growth: roughly `W₀ · e^(N · g)`, where `g` is the per-flip log-growth rate at the peak. For long enough N, exponential always beats linear, no matter how big the linear slope. The lesson isn't "retreat to fixed stakes to dodge the penalty"; it's "ride at Kelly (or below), where the penalty is paid in exchange for unlocking the exponential."
+
+Shape, end to end:
+- Far below Kelly (or fixed-stake limit): linear, safe, slow.
+- At Kelly: exponential at the maximum rate the bet allows.
+- Above Kelly: f² drag overtakes the win-rate edge; exponential *decay* even on a winning bet.
+- At `f = 1`: drag infinite; ruined on the first loss, regardless of edge.
+
+This is also why the sizer halves Kelly by default and caps positions at 15% — the f² curve is steep on the right side, and the cost of accidentally landing past the peak (from noisy `p` and `b` estimates) is far worse than the cost of landing short of it.
+
+See `/tmp/kelly_paths.py` for a simulator that plots wealth trajectories at different fractions for a 60/40 coin — the visual makes the shape concrete.
+
 ## What Kelly is good for
 
 ### 1. Ranking two specific bets against each other
