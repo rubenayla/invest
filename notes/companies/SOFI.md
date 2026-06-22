@@ -1,118 +1,126 @@
 # SoFi Technologies (SOFI)
 
 **Sector:** Financial Services | **Industry:** Credit Services / Fintech
-**Price:** $17.63 | **Market Cap:** $22.5B
-**Analysis Date:** 2026-03-17
+**Price:** $16.29 (2026-05-28) | **Market Cap:** $20.9B
+**Analysis Date:** 2026-05-28
+
+## Business Primer
+
+**What they do today.** SoFi is a digital-only bank (it holds a US national bank charter) built for younger, higher-income customers who do their banking entirely on a phone app. It makes money three ways. (1) **Lending** (~57% of revenue): it originates personal loans, student-loan refinancing, and home loans, earning interest on loans it keeps plus gains on loans it sells to partners. (2) **Financial Services** (~39%): checking/savings accounts, a stock-and-crypto brokerage, a credit card, and "buy now pay later"-style products — SoFi earns deposit-funding spread, debit interchange (a cut of every card swipe), and brokerage fees. (3) **Technology Platform** (~7%): SoFi owns Galileo and Technisys, the back-end "plumbing" (account ledgers, card issuing, payment processing) that other fintechs and banks rent to run their own apps. In Q1 2026 SoFi did $1.10B revenue (+41% YoY), $167M net income, and 14.7M members (+35% YoY).
+
+**Why customers choose them (the value proposition).** A traditional bank makes you keep separate apps and relationships for checking, a brokerage, a loan, and a credit card — each with fees, branch visits, and slow approvals. SoFi puts all of it in one app: you can open a high-yield savings account in minutes, refinance a student loan, buy stocks, and get a personal loan approved same-day, all from the same login, with no branch and no monthly fee. The concrete pull is convenience plus price — direct deposit unlocks a savings rate well above what big banks pay, and because SoFi owns the charter it funds those loans with cheap insured deposits (now ~96% deposit-funded) instead of expensive wholesale money, so it can undercut on loan rates while still profiting. For Galileo's clients, the value is "don't build a bank-ledger system from scratch" — rent SoFi's proven rails and launch a card product in weeks instead of years.
+
+**Where they want to grow.** Management's plan is the "financial services productivity loop": acquire a member cheaply with one product (often a high-yield account), then cross-sell loans, cards, and investing so revenue per member climbs while acquisition cost stays fixed. The explicit bets: keep adding ~1M members a quarter, scale the capital-light **loan platform** model (originate loans then sell them to partners for a fee rather than holding the credit risk — $3.6B of new partner commitments signed in Q1 2026), and re-accelerate the Technology Platform by signing large banks and brands rather than fragile startups. Success in 3-5 years looks like a ~$7-8B-revenue digital bank with 25M+ members and a high-margin, recurring tech-platform business attached.
+
+**What could go wrong (business risks).** The loan book is mostly **unsecured consumer credit** (personal loans), so a recession that lifts unemployment drives charge-offs and provisions straight into earnings — the single biggest structural risk. Growth is decelerating off a bigger base, so a revenue miss compresses the multiple fast. The Technology Platform just lost a large customer (revenue only +12% "like-for-like" after the exit), showing that segment's concentration risk. Big incumbents (JPMorgan, Robinhood, Apple, Chime) target the same affluent-millennial demographic with deeper pockets. And heavy stock-based compensation keeps the ~1.28B share count rising, diluting per-share gains.
+
+**How to think about it.** This is a **growth challenger digital bank crossing from "prove profitability" to "compound profitably,"** now 10 quarters GAAP-profitable, with an optional high-multiple software business (Galileo) buried inside a bank valuation. The bank charter is a genuine regulatory moat as regulators squeeze rent-a-bank fintech models — but the equity still trades like a high-beta growth stock, not a bank.
 
 ## Situation Summary
 
-SoFi just crossed the $1B quarterly revenue threshold in Q4 2025, beating estimates with $1.01B revenue (+37% YoY) and GAAP EPS of $0.13. The stock has pulled back sharply from its 52-week high of $32.73 to $17.63 (-46%), driven by a broader fintech selloff, director share sales (~94K shares by Freiberg), and Bank of America cutting its target to $20 citing stretched valuation. Management guided 2026 aggressively: $4.655B adjusted revenue (+30%), $1.6B EBITDA (34% margin), and $0.60 adj EPS. The bank charter continues to be a structural differentiator as regulators crack down on sponsor-bank fintech models, and SoFi's vertical integration (bank + Galileo + Technisys) is increasingly rare. The stock trades at 29x 2026E adj EPS after the pullback, which is reasonable for 30%+ growth but not cheap.
+SoFi reported a strong Q1 2026 on 2026-04-29: record $1.10B revenue (+41% YoY), $167M net income (10th straight profitable quarter, profit roughly doubled YoY), $340M adjusted EBITDA (+62%), 1.1M new members, record $12.2B loan originations, and improving credit (personal-loan net charge-offs 4.4%, down ~40bps YoY; deposits >$40B). Despite beating its own guide, the stock FELL — it now trades $16.29 versus $17.63 at the prior 2026-03-17 analysis, and is down ~50% from its $32.73 52-week high. Critically, the May 4 Q1-earnings catalyst that the prior BUY thesis was waiting for has already happened, results were good, and the re-rating did NOT occur. Instead, multiple analysts CUT targets in May 2026 (Mizuho $38→$29, Citigroup $37→$30, Truist initiated/held at $17). Full-year guidance was held (~$4.655B revenue, ~$1.6B EBITDA, ~$0.60 adj EPS), not raised. The market is treating SoFi as fairly-to-richly valued at ~21x forward EPS and is unwilling to pay a growth premium in a higher-rate, credit-cautious tape.
 
 ## Variant Perception
 
-- **Consensus view:** Hold. Wall Street sees SoFi as a high-growth fintech that delivered on profitability but trades at a premium to both traditional banks (10-12x earnings) and mature fintechs. The 13-analyst consensus is Hold with a $26.50 mean target. Bears point to negative GAAP FCF (bank model), high beta (2.26), and execution risk on the ambitious 30% revenue CAGR guidance through 2028.
-- **Our view:** The market is underappreciating two things: (1) the regulatory moat from the bank charter is widening as FDIC/OCC squeeze sponsor-bank fintechs — SoFi will capture displaced demand, and (2) the Technology Platform (Galileo/Technisys) is transitioning from serving startups to tier-one banks, which could inflect revenue and margins in that segment. The negative FCF is misleading — it reflects loan portfolio growth on the balance sheet, not operational cash burn. At $17.63, the stock prices in only ~15% annual EPS growth, well below the guided 38-42% EPS CAGR through 2028.
-- **Trigger:** Q1 2026 earnings (May 4, 2026) — if SoFi hits or beats the $1.04B revenue guide and shows Galileo/Tech Platform revenue accelerating toward the 20%+ growth target, the stock should re-rate back toward the $25+ range. S&P 500 inclusion remains a possible catalyst if profitability sustains for 4+ consecutive quarters.
+- **Consensus view:** Hold. 20 analysts, mean target ~$21 (range $12–$31), recommendationKey "hold." Street acknowledges excellent execution and profitability but won't pay up: it sees a high-beta (2.13) consumer lender with an unsecured loan book heading into a late-cycle credit environment, decelerating growth off a larger base, and persistent dilution. The May target cuts after a beat say it all — good numbers, lower price targets.
+- **Our view (downgraded from prior):** The prior note argued the market under-priced (1) a widening bank-charter moat and (2) a Galileo tier-one inflection, expecting Q1 to trigger a re-rate to $25+. Q1 was strong AND the stock fell, and the Galileo thesis weakened (large customer exit, +12% like-for-like). The remaining genuine edge is narrower: the capital-light **loan-platform** model ($3.6B new partner commitments, demand exceeding obligations) lets SoFi grow lending revenue without taking balance-sheet credit risk — a structurally higher-quality, less-cyclical earnings stream the market still lumps in with on-balance-sheet lending risk. That is real but no longer enough to support HIGH conviction or a near-term re-rate thesis. The variant perception is now WEAK.
+- **Trigger:** No clean near-term catalyst. Next earnings 2026-07-28 (Q2). A guidance RAISE (vs the held FY guide) on Q2, or visible loan-platform fee revenue scaling, would be the re-rate trigger. Absent that, the stock likely range-trades. S&P 500 inclusion remains a possible passive-flow catalyst given sustained profitability, but is not dateable.
 
 ## Financial Snapshot
 
 | Metric | Value | 3yr Trend |
 |--------|-------|-----------|
-| Revenue | $3.61B | 31.9% CAGR (2022-2025) |
-| Net Income | $481M | Turned profitable in 2024 ($499M), sustained in 2025 |
-| FCF | -$3.99B | Negative (bank model — loan originations, not burn) |
-| ROE | 4.6% | First full positive year; improving from deep losses |
-| D/E | 0.18 | Dramatically improved from 1.02 (2022) — debt paydown + equity growth |
-| FCF Yield | N/A (bank) | Traditional FCF not meaningful for bank model |
+| Revenue | $3.61B (2025); $1.10B Q1'26 | ~32% CAGR (2022→2025) |
+| Net Income | $481M (2025); $167M Q1'26 | Turned profitable 2024 ($499M); flat→up; Q1'26 ~2x YoY |
+| FCF | -$3.99B (2025) | Negative by design (bank — loan originations flow through CFO, not cash burn) |
+| ROE | 6.6% | Improving from 4.6%; still below mature banks (12-15%) |
+| D/E | 0.18 | Excellent deleveraging from 1.02 (2022); debt $5.6B→$1.9B |
+| FCF Yield | N/A (bank model) | Use net income / pre-provision profit instead |
 
-**Note on FCF:** SoFi is a chartered bank. Its "operating cash flow" is heavily negative because loan originations (an asset-building activity) flow through CFO. The correct profitability metric is net income or pre-provision operating profit, both of which are solidly positive and growing.
-
-**Additional metrics:**
-- Cash: $4.93B | Total Debt: $1.93B | **Net cash: $3.0B**
-- Total Assets: $50.7B (up 40% YoY — deposit-funded loan growth)
-- Gross Margin: 83% | Operating Margin: 18.2%
-- Forward P/E (2026 adj EPS $0.60): 29.4x
-- P/S (2026 guide): 4.8x
-- Beta: 2.26
+**Additional:** Cash $4.93B, Total Debt $1.93B (net cash ~$3.0B). Total Assets $50.7B (+40% YoY, deposit-funded). Gross margin 83%, operating margin 18.3%, net margin 14.8%. Forward P/E ~21x (FY26 $0.60 adj EPS). P/S 5.3x. Price/tangible-book 2.2x (TBV/share $7.21). Beta 2.13. Personal-loan NCO 4.4%; student-loan 90-day delinquency 10bps. Deposits >$40B (~96% of funding).
 
 ## Valuation Models
 
-| Model | Fair Value | Upside | Confidence |
-|-------|-----------|--------|------------|
-| autoresearch | $30.21 | +71.4% | 0.99 |
-| gbm_opportunistic_1y | $30.41 | +72.5% | 0.91 |
-| gbm_lite_3y | $30.35 | +72.1% | 0.76 |
-| gbm_3y | $24.15 | +37.0% | 0.82 |
-| gbm_1y | $21.98 | +24.7% | 0.72 |
-| gbm_opportunistic_3y | $20.81 | +18.0% | 0.52 |
-| gbm_lite_1y | $20.40 | +15.7% | 0.86 |
+| Model | Fair Value | Upside | Confidence | Run Date |
+|-------|-----------|--------|------------|----------|
+| autoresearch | $27.55 | +69% | 0.99 | 2026-05-18 |
+| gbm_opportunistic_1y | $26.92 | +65% | 0.90 | 2026-05-18 |
+| gbm_lite_3y | $26.87 | +65% | 0.76 | 2026-05-18 |
+| gbm_3y | $22.15 | +36% | 0.83 | 2026-05-28 |
+| gbm_1y | $20.16 | +24% | 0.72 | 2026-05-28 |
+| gbm_opportunistic_3y | $18.42 | +13% | 0.52 | 2026-05-18 |
+| gbm_lite_1y | $18.06 | +11% | 0.86 | 2026-05-18 |
+| simple_ratios | $7.02 | -57% | 0.85 | 2026-05-18 |
+| DCF / RIM / growth_dcf / multi_stage_dcf / dcf_enhanced | NULL (no output) | — | — | 2026-05-18 |
 
-**Model consensus:** All 7 models are bullish, ranging from +16% to +72% upside. The highest-confidence models (autoresearch at 0.99, gbm_opportunistic_1y at 0.91) cluster around $30, implying ~70% upside. Even the most conservative model (gbm_lite_1y) sees +16%. There is no DCF or RIM model present, which means no offsetting bearish valuation anchor. The strong model agreement with high confidence scores is notable — this is one of the more unanimous signals in the database. Weighted average fair value (by confidence): ~$26.
+*Models older than 7 days used current_price ~$15.61 vs today's $16.29 (+4%, within tolerance — upside %s roughly valid, slightly overstated).*
+
+**Model consensus:** The GBM/autoresearch cluster (momentum/return models) remains bullish, $18–$28, mean ~$23. BUT `simple_ratios` is sharply bearish at $7.02 (-57%) — it anchors on bank-like multiples and flags SOFI as expensive on book/earnings versus traditional banks. The 5 DCF/RIM models failed to produce a value (NULL), so there is no cash-flow-based anchor — unsurprising for a balance-sheet-growing bank where FCF is structurally negative. Net read: return-momentum models say upside, fundamental-ratio models say overvalued. This divergence (a ~$20 spread, $7 to $28) is itself a signal that the stock is contested and fairly valued, not obviously cheap.
 
 ## Business Quality (17/25)
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Moat | 4/5 | Bank charter is a genuine regulatory moat that is widening. Vertical integration (bank + Galileo payments + Technisys core) is unique. Network effects from 10M+ members create cross-sell flywheel. Switching costs moderate (deposits are sticky, but loans are commoditized). Deducted 1 for brand not yet at tier-1 trust level vs JPM/Schwab. |
-| Management | 3/5 | Anthony Noto has executed well on revenue growth and profitability milestones. 2026 guidance is aggressive but credible given track record of beating estimates. Mixed insider signals (small buys from GC/EVP, larger sales from directors). Forecasting accuracy has been good — consistently beat quarterly guidance. Deducted for aggressive stock-based compensation and some director selling. |
-| Profitability | 3/5 | Just crossed into sustained GAAP profitability. Operating margin 18.2% is good for a bank/fintech hybrid. Gross margin 83% reflects platform economics. But ROE only 4.6% — well below mature banks (12-15%). Profitability is real but early-stage; margin expansion story still needs to play out. |
-| Balance Sheet | 4/5 | Net cash position of $3.0B. Debt reduced from $5.6B (2022) to $1.9B (2025) — excellent deleveraging. Total assets $50.7B funded primarily by deposits (low-cost). Bank charter gives access to cheapest funding (FDIC-insured deposits). Only concern: rapid asset growth ($14B YoY) needs to be monitored for credit quality. |
-| Growth | 3/5 | 32% revenue CAGR is exceptional. Guiding 30% through 2028. Three growth engines: Lending (23% guide), Financial Services (40%+ guide), Tech Platform (20%+ guide). TAM is massive (US consumer banking). But law of large numbers applies — maintaining 30% on a $4.6B base gets harder each year. Competition from incumbents with deeper pockets (JPM, Goldman Marcus) is real. |
+| Moat | 4/5 | Bank charter is a real regulatory moat, widening as regulators squeeze rent-a-bank fintechs. Vertical integration (charter + Galileo + Technisys) is genuinely rare. 14.7M-member cross-sell flywheel + sticky deposits. -1: brand not yet tier-1 trust; loans are commoditized. |
+| Management | 3/5 | Noto has hit every profitability milestone and consistently beat guidance; capital-light loan-platform pivot is smart. -2: heavy SBC drives share-count creep (~1.28B), director selling, ROE still low. |
+| Profitability | 3/5 | 10 straight profitable quarters, EBITDA margin marching to 34%, 83% gross margin. -2: ROE only 6.6% (below mature banks), net margin still mid-teens, profitability young. |
+| Balance Sheet | 4/5 | Net cash ~$3.0B, D/E 0.18, debt cut 66% since 2022, 96% deposit-funded (cheapest funding). -1: $14B+ annual asset growth in an unsecured book needs constant credit-quality watch. |
+| Growth | 3/5 | ~32% revenue CAGR, guiding ~30% for 2026. Three engines + capital-light platform. -2: law of large numbers (decelerating), Tech Platform lost a large customer, heavy incumbent competition. |
 
 ## Inflection Point
 
-**Yes — SoFi is at a profitability inflection.** The company crossed from cumulative losses to sustained GAAP profitability in 2024, and 2025 confirmed it was not a one-off. This is the classic "operating leverage kicking in" inflection: revenue growing 30%+ while costs grow slower, driving rapid margin expansion. The 2026 EBITDA margin guide of 34% (up from ~28% in 2025) suggests the inflection is accelerating, not plateauing.
-
-The secondary inflection is the Technology Platform (Galileo/Technisys). This segment is transitioning from serving fintech startups (many of which are struggling) to serving established banks — a much larger, stickier revenue pool. If Galileo lands tier-one bank clients, it becomes a recurring-revenue SaaS business embedded inside a bank, which would warrant a very different multiple on that segment alone.
-
-**Observable evidence:** Four consecutive quarters of GAAP profitability, accelerating EBITDA margins, 1M new members in Q4 alone, and management confident enough to issue a 3-year CAGR target. The inflection has begun.
+The **profitability inflection is now confirmed, not pending** — 10 straight GAAP-profitable quarters, EBITDA margin rising toward 34%, profit doubling YoY. That is no longer the edge; it is priced in. The *unproven* inflection is the **capital-light loan platform** (originate-and-sell for fees, $3.6B new commitments in Q1, partner demand exceeding obligations): if fee revenue from this scales materially, SoFi's earnings get less cyclical and higher-quality, which could justify a higher multiple. The Galileo tier-one inflection that the prior note leaned on has STALLED (large customer exit, +12% like-for-like). Net: the easy inflection already happened and re-rated nothing; the next one is real but not yet observable in the numbers.
 
 ## Bull Case
 
-- Revenue compounds at 30%+ through 2028 as guided; EBITDA margin expands to 35%+ as operating leverage plays out, driving adj EPS to $1.00+ by 2028
-- Galileo/Technisys wins tier-one bank clients, re-rating the Tech Platform segment to SaaS multiples (5-10x revenue) — currently buried inside a bank valuation
-- Bank charter moat widens further as regulatory pressure forces more fintechs to partner with or lose to chartered competitors like SoFi
-- S&P 500 inclusion triggers passive fund buying and institutional re-rating
-- Credit quality holds up — SoFi's member base skews high-income (avg 750+ FICO), providing a buffer in a downturn
+- Capital-light loan platform scales: fee revenue from selling originations to partners grows fast, de-risking earnings from the credit cycle and earning a higher-quality multiple
+- Member growth (~1M/quarter) keeps compounding the cross-sell loop; Financial Services revenue (+41% YoY) and interchange (+54%) keep outgrowing lending
+- Credit holds or improves — personal-loan NCO already declining (4.4%, -40bps YoY), high-FICO member base provides a downturn buffer
+- A guidance RAISE on Q2 (2026-07-28) finally forces the Street to pay a growth premium; S&P 500 inclusion adds passive flows
+- EBITDA margin reaches 34%+ and adj EPS pushes toward $0.80-1.00 by 2027-28 on operating leverage
 
 ## Bear Case
 
-- Credit cycle turns: SoFi's loan book ($30B+) is concentrated in personal loans and student refi — both unsecured/consumer. A recession drives charge-offs higher and provisions eat into profits
-- Growth decelerates faster than expected — 30% CAGR on $4.6B base requires adding $1.4B+ revenue annually; any miss craters the multiple
-- Stock-based compensation dilutes shareholders — ~1.28B shares outstanding is already high; continued SBC at current levels suppresses EPS
-- Galileo/Tech Platform fails to break through to tier-one banks and remains a slow-growth segment serving struggling fintechs
-- Competition intensifies: Apple savings/credit, Marcus, Robinhood Gold all attacking the same affluent millennial demographic
+- **Tech Platform customer concentration (under-covered):** the segment grew only +12% "like-for-like" because a LARGE customer exited — a primary-source risk the bullish headlines glossed over. This is the same segment the prior thesis counted on for a SaaS-multiple re-rate; the concentration cuts both ways and the tier-one transition is unproven
+- Unsecured consumer credit + late-cycle: any uptick in unemployment lifts charge-offs/provisions straight into earnings; the loan book is the dominant risk
+- The catalyst already fired and failed: a strong Q1 beat produced analyst target CUTS (Mizuho, Citi) and a lower stock — the market is unwilling to re-rate, signaling the multiple is full at ~21x forward
+- Persistent dilution from stock-based compensation suppresses per-share growth even as the business compounds
+- Growth deceleration off a $4.66B base; a single revenue miss craters a high-beta (2.13) stock
 
 ## Scenario Table
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| **Bull** | 25% | 2026 adj EPS $0.65+ (beat guide), 2027E $0.90+ visible; Galileo wins major bank client | Re-rate to 35x+ forward (growth premium restored) | $32 | +81% |
-| **Base** | 50% | 2026 adj EPS $0.58-0.62 (meets guide); steady execution on all three segments | Modest re-rate to 30x forward as confidence builds | $18-20 | +5-13% |
-| **Bear** | 25% | Credit deterioration forces higher provisions; revenue growth slows to 20%; EPS $0.40 | De-rate to 20x forward (growth discount) | $8-10 | -43 to -55% |
+| Bull | 25% | Q2 guide raised; loan-platform fees scale; FY26 EPS $0.62+, 2027E ~$0.85 visible; NCO keeps falling | Re-rate to ~30x forward as growth premium returns | $26 | +60% |
+| Base | 50% | Meets ~$4.655B / $0.60 EPS guide; steady execution; credit stable; no Galileo breakthrough | Range-bound multiple ~20-22x; market keeps treating it as a fairly-valued growth bank | $17 | +4% |
+| Bear | 25% | Credit deteriorates (NCO >5.5%), provisions rise; growth slows toward 20%; Tech Platform stays weak; EPS ~$0.45 | De-rate to ~14-16x | $9 | -45% |
 
-**Expected value: +10.5%**
-(0.25 x 81%) + (0.50 x 9%) + (0.25 x -49%) = +12.5%
+**Expected value: +6.0%**
+(0.25 × 60%) + (0.50 × 4%) + (0.25 × -45%) = +15% + 2% − 11.25% = +5.75% ≈ +6%
 
-**Thesis breaks if:** (1) Net charge-off rate on personal loans exceeds 5% for two consecutive quarters, (2) revenue growth decelerates below 20% YoY, or (3) management lowers the 2026 EBITDA guide below $1.4B. Any of these signals the growth-to-profitability story is broken.
+**Thesis breaks if:** (1) personal-loan net charge-offs exceed 5.5% for two consecutive quarters, (2) revenue growth decelerates below 20% YoY, or (3) Q2/Q3 guidance is cut. Any signals the growth-to-quality story has stalled.
 
 ## Setup & Timing
 
 | Factor | Status |
 |--------|--------|
-| Crowdedness | Moderate — 56% institutional, not a hedge fund hotel. Vanguard/BlackRock are top holders (index-like). Not crowded. |
-| Short interest | 10.2% — elevated but not extreme. Enough for a squeeze on positive catalysts but also reflects real skepticism. |
-| Technical position | Oversold — stock at $17.63 vs 50-day avg $22.27 and 200-day avg $23.65. Down 46% from 52-week high. RSI likely in oversold territory. |
-| Next catalyst | Q1 2026 earnings — May 4, 2026 (confirmed). ~7 weeks away. |
-| Recent price action | Sharp selloff from $32 to $17 over recent months. Has NOT rallied ahead of earnings — setup is clean. |
+| Crowdedness | Uncrowded — 56.6% institutional (index-heavy: Vanguard/BlackRock), 1.5% insiders. Not a hedge-fund hotel. |
+| Short interest | 13.7% of float — elevated; squeeze fuel on a positive surprise but reflects real skepticism. |
+| Technical position | Neutral-to-weak. $16.29 vs 50-day $16.70 (just below), 200-day $23.27 (well below). Down ~50% from $32.73 high; near $12.86 low. Not oversold like March. |
+| Next catalyst | Q2 2026 earnings — 2026-07-28 (~9 weeks out). |
+| Recent price action | Fell THROUGH a strong Q1 beat (April) and kept sliding into May despite good fundamentals — a bearish tape signal. Has not rallied; setup is "cheap but no momentum." |
 
 ## Verdict
 
-**BUY** — Conviction: MEDIUM
+**WATCH** — Conviction: LOW *(downgraded from BUY / MEDIUM on 2026-03-17)*
 
-SoFi is a high-quality fintech at a profitability inflection, trading at a significant discount to both its model consensus fair value (~$26) and its own fundamental trajectory. The 46% drawdown from highs has created an entry point where you are paying 29x 2026E earnings for a company guiding 30% revenue growth and 38-42% EPS CAGR — that is a reasonable price, though not a screaming bargain. The variant perception (regulatory moat widening + Galileo tier-one transition) is credible but not yet proven, which keeps conviction at MEDIUM rather than HIGH. The near-term catalyst (Q1 earnings May 4) is close enough to be actionable.
+The prior BUY thesis hinged on a Q1-earnings re-rate driven by a widening charter moat and a Galileo tier-one inflection. Q1 delivered strong fundamentals (+41% revenue, doubling profit, improving credit) — yet the stock FELL and analysts CUT targets, and the Galileo leg weakened (large customer exit). When a clean positive catalyst fires and the stock declines anyway, the variant perception is largely disproven: the market is not mis-pricing the growth, it is declining to pay a premium for unsecured-consumer-credit cyclicality at ~21x forward. With model consensus contested ($7 to $28), a +6% expected value, and no near-term re-rate catalyst, this is a hold-and-watch, not a buy. The business quality is genuinely good (17/25); the price simply offers no edge today.
 
-The key risk is credit quality in a slowing economy. SoFi's high-FICO member base provides some buffer, but the loan book is largely unsecured consumer credit. Position sizing should reflect the high beta (2.26) and binary nature of the growth story.
+**If WATCH:** Would upgrade to BUY on either (a) a pullback toward ~$13 (closer to ~2.0x tangible book and the bear-case floor, restoring margin of safety), OR (b) a Q2 guidance RAISE on 2026-07-28 with visible loan-platform fee acceleration and NCO holding <4.5% — evidence the capital-light, less-cyclical earnings mix is actually inflecting. Thesis-break / avoid below: confirmation of NCO >5.5% or a guidance cut.
 
-**Entry:** $17-18 (current levels). Scale in: buy 50% now, add 50% on confirmation at Q1 earnings if revenue beats $1.04B guide and EBITDA margin holds >28%.
-**Thesis-break stop:** $10 (implies credit deterioration or severe growth miss).
+<!-- Do NOT add a "Position Context" / "Personal Position" / "My Holding"
+     section here. The public file is generic research only. Personal
+     position size, cost basis, P&L, and share counts go to
+     ~/vault/finance/notes/positions/SOFI.md (or are tracked in
+     portfolio.md / journal/transactions/). See the Public-vs-private
+     content rule in STEP 8. -->
