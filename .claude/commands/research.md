@@ -274,7 +274,7 @@ the two leak into each other.
 ## OUTPUT FORMAT
 
 **Save to `notes/companies/{TICKER}.md`** — this is the SINGLE source of truth for each company's analysis.
-If the file already exists, OVERWRITE it with the new analysis (the old version is in git history).
+If the file already exists, **read the prior `Verdict` and `Conviction` first** (you need them for STEP 11), then OVERWRITE it with the new analysis (the old version is in git history).
 If the ticker has supplementary files, they live in `notes/companies/{TICKER}/` (subdirectory) — don't touch those.
 
 Template:
@@ -469,3 +469,35 @@ grep -n "companies/{TICKER}.md" notes/portfolio/watchlist.md
 - Bump the file-level `Last updated YYYY-MM-DD` stamp at the top whenever you touch it.
 
 The watchlist must never contradict the company note. A BUY in `notes/companies/{TICKER}.md` that still reads WATCH on the watchlist is a bug.
+
+---
+
+## STEP 11: Log to history.md (whenever the run produced something worth remembering)
+
+Company notes get OVERWRITTEN each run, so the *reasoning* behind a call is lost (it survives only in git, which isn't browsable as a learning corpus). `history.md` is the durable, browsable record. Append a dated entry whenever this run produced a takeaway a future session would want — that includes **first looks at notable names**, **thesis changes**, and **transferable insights** (sector dynamics, valuation methods, market mechanics). It already holds all three kinds; keep it that way.
+
+**Log when any of these is true:**
+- **Thesis change** — verdict flips (BUY ↔ WATCH ↔ PASS), conviction moves a full step, or a prior "Thesis breaks if…" signal actually triggered.
+- **First look** — a name not previously covered, where the analysis surfaced a transferable lesson (how to value the category, a structural trap, a mispricing pattern) — not just "here's another BUY."
+- **Insight** — anything cross-cutting you learned this run that generalizes beyond the one ticker.
+
+**The only thing NOT worth logging:** a routine refresh that leaves the call unchanged AND taught you nothing new. Skipping those keeps the file a learning log, not a changelog. When in doubt, err toward logging — a slightly noisy history beats a lost lesson. The **Lesson** line is always the point: make it transferable to other names.
+
+**Append to the end of repo-root `history.md`** (newest last). Use one of these title conventions so entries pull with a simple grep:
+
+```markdown
+## YYYY-MM-DD — Thesis change: {TICKER} {OLD_VERDICT}→{NEW_VERDICT} (conviction {OLD}→{NEW})
+## YYYY-MM-DD — First look: {TICKER} ({Name}) — {VERDICT}/{CONVICTION}, {one-line hook}
+## YYYY-MM-DD — Insight: {topic} (surfaced via {TICKER})
+```
+
+For a thesis change, use this body (it's the highest-value shape):
+
+```markdown
+**Believed (prior variant perception):** {what the old thesis bet on, and the trigger it was waiting for}
+**Happened:** {what actually occurred — the facts that forced the change}
+**Lesson (transferable):** {the generalizable takeaway — what to weigh differently next time, not just "we were wrong"}
+**Surviving edge / re-upgrade triggers:** {what, if anything, still holds; what would flip the call back}
+```
+
+For first looks and insights, a tighter **Found/decided** + **Lesson (transferable)** + **Re-engage triggers** is fine. This is the same file used for all cross-cutting investigations; no separate file.

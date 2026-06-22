@@ -371,3 +371,16 @@ Surfaced during the 15-name stale-note refresh batch. SoFi's 2026-03-17 note was
 - **Don't forecast the pump — let strength trigger sells.** Laddered GTC limits above market fill only if froth materializes; if it doesn't, you keep the positions. No timing required. Decouple genuine overbought-discipline trims (e.g. RSI-extended names at weight caps) from the IPO date — do those on their own signal.
 
 **Lesson (transferable):** the actionable response to a *predictable* sentiment event is to pre-stage conditional sells into strength, not to position the book on a directional forecast. And reverse the assumed causation: froth enables IPOs more than IPOs create froth — so a hyped IPO calendar is a reason to *raise* trim discipline, not chase.
+
+## 2026-06-22 — First look: MSTR (Strategy) — WATCH/LOW, and how to value a leveraged bitcoin-treasury vehicle
+
+**Found/decided:** MSTR at $112.53 trades at a ~20% *discount* to its bitcoin (mNAV — modified net asset value — 0.74× basic / 0.80× diluted, June 15). Bitcoin (~$64k) is below Strategy's $75,537 average cost basis, and on the Q1 2026 call management broke the "never sell bitcoin" pledge, then actually sold 32 BTC in late May to fund the STRC preferred dividend. Verdict WATCH (lean PASS), LOW conviction — scenario EV +23% but it's purely a leveraged bitcoin-direction bet with negative carry, not a company-specific edge.
+
+**Lesson (transferable — applies to any bitcoin/crypto treasury company: MSTR, BMNR, Strive, etc.):**
+1. **The mNAV premium is the entire engine, and it only runs in one direction.** Above 1.0× mNAV, selling stock to buy bitcoin is *accretive* (raises bitcoin-per-share) — the flywheel. Below 1.0×, the same action *dilutes* bitcoin-per-share. So crossing below parity isn't a quote change, it's a regime change: the growth model inverts. Check mNAV before anything else.
+2. **A discount to NAV is not automatically a bargain.** Senior claims (here ~$8.25B converts + ~$10.3B preferred) sit ahead of the common, and ~$800–900M/yr of fixed dividend/interest obligations must be funded by a company with negative operating cash flow. The discount is the market correctly pricing per-share bitcoin *leakage* (forced selling to pay carry) + subordination, not a free lunch.
+3. **Ignore the GAAP P&L entirely.** Under fair-value accounting (ASU 2023-08) net income is dominated by non-cash bitcoin remeasurement (-$3.85B FY25). Value = bitcoin × price − senior claims − capitalized cost of preferred carry, then a market premium/discount. Standard DCF/RIM/GBM are meaningless — don't even run them.
+4. **A broken load-bearing pledge re-rates the multiple, maybe permanently.** "Never sell bitcoin" was the narrative that sustained the cult premium; abandoning it is a structural signal, not a one-off.
+5. **Sell-side targets can be wildly disconnected** ("strong buy," ~$351 mean) when a stock is really a leveraged commodity proxy — the targets embed a bitcoin price and a re-rating to premium that may not return. Don't anchor on them.
+
+**Re-engage triggers:** upgrade toward BUY only if bitcoin reclaims ~$75k (cost basis) AND mNAV stabilizes ≥0.9× (flywheel can restart); or a deep-value discount blowout to <0.6× mNAV with the $2.25B reserve and STRC coverage intact. Avoid the 0.8–0.95× dead zone with bitcoin below cost — that's where per-share bitcoin quietly bleeds.
