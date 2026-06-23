@@ -4,6 +4,18 @@
 **Price:** $423.54 (2026-05-19) | **Market Cap:** $3.15T
 **Analysis Date:** 2026-05-19
 
+> **Update 2026-06-22 (nightly thesis re-check — verdict reaffirmed BUY, entry trigger fired):** MSFT **$367.34**, down **−13.3%** since the note (−23.7% YTD), now ~3% above its 52-week low ($356.28) and just above the note's **$360 thesis-break signal**. Critically, **no new fundamentals** drove the drop — the last print (fiscal Q3, 2026-04-29) was a beat (Azure +40% accelerating, commercial RPO +99% to $627B, AI run-rate $37B +123%) and the next earnings (fiscal Q4, ~late July) is still ~5 weeks out. The decline is **sentiment/macro**: AI-capex fear over the guided ~$190B infra spend, the U.S. FTC broadening its probe into Microsoft's cloud / AI / software-bundling, a Copilot outage (2026-06-01), and a broad momentum unwind (six-session losing streak in mid-June, longest since March 2020).
+>
+> **The note's own scale-in plan ("half now, half on any pullback below $400") has triggered** — at $367 the add-leg fires, and price now sits in a narrow band above the $360 "no-add" line. Revised scenarios off **$367.34** (targets/probabilities unchanged from the May note):
+>
+> | Scenario | Prob | Target | Return off $367 |
+> |---|---|---|---|
+> | Bull | 35% | $640 | +74% |
+> | Base | 45% | $500 | +36% |
+> | Bear | 20% | $310 | −16% |
+>
+> **Expected value ≈ +39%** (was +20.4% at $423) — the entire improvement is the 13% lower entry on unchanged fundamentals; bear-case downside is now bounded to ~−16%. Most-reliable **gbm_3y** FV $413 → +12.6%; **rim** $405 → +10% (models are 2026-05-18 vintage, run against $423 — DCF/RIM fair values are largely price-independent so upsides recompute cleanly; GBM family is partly momentum-fed and would likely cut somewhat after a 13% drop, so treat the GBM upsides as a ceiling). **Verdict: BUY (MEDIUM-HIGH) reaffirmed.** Actionable band: **add $360–385**; **below $360, wait for the Azure Q4 print** rather than catch the falling knife (the $360 line encodes the bad-print scenario). Thesis-break remains *fundamental and dateable*: Azure <35% growth in fiscal Q4 **AND** RPO growth <50% YoY (late July). See [proposals/2026-06-22](../proposals/2026-06-22.md).
+
 ## Business Primer
 
 **What they do today.** Microsoft sells enterprise and consumer software, cloud infrastructure, and AI services. Revenue splits across three reported segments. (1) Productivity & Business Processes ($35.0B in fiscal Q3 2026, ~42% of revenue) is the Office and Microsoft 365 franchise — Word, Excel, Outlook, Teams sold mostly as subscriptions to enterprises and consumers — plus LinkedIn (the professional social network and recruiting marketplace) and Dynamics 365 (enterprise resource planning and customer relationship management software competing with SAP and Salesforce). (2) Intelligent Cloud ($34.7B, ~42%) is Azure (the cloud computing platform competing with Amazon Web Services and Google Cloud) plus server licensing, GitHub, and enterprise support. (3) More Personal Computing ($13.2B, ~16%) is Windows licensing to PC makers, Xbox gaming hardware and software including Activision Blizzard content, the Surface device line, and Bing search advertising. Customers are roughly two-thirds large enterprises buying multi-year commitments, the remainder small businesses, governments, developers, and consumers.
