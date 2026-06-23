@@ -1,8 +1,10 @@
 # The Estée Lauder Companies (EL)
 
 **Sector:** Consumer Defensive | **Industry:** Household & Personal Products
-**Price:** $79.31 (2026-05-21) | **Market Cap:** ~$28.7B
-**Analysis Date:** 2026-05-21
+**Price:** $84.53 (2026-06-22) | **Market Cap:** ~$30.6B | **Enterprise Value:** ~$36.8B
+**Analysis Date:** 2026-06-22 (refresh of 2026-05-21 base note)
+
+> **2026-06-22 refresh (TL;DR):** No new earnings since the 2026-05-01 Q3 beat (next print ~August 2026). Stock has drifted **+6.6% ($79.31 → $84.53)** on no fresh fundamental news, mechanically **compressing the scenario EV from +21.6% to ~+12%** against the same absolute targets (Bull $120 / Base $96 / Bear $62). Now ~35x FY26 ($2.42) and ~26x FY27 ($3.18) consensus EPS — the recovery is increasingly *priced*. The upgrade trigger (pullback to $68–72) is moving **further away**, not closer. **Verdict unchanged: WATCH, MEDIUM conviction** — quality franchise, real turnaround, but no edge and a thinning margin of safety at $84.53. No action; the patient move is to wait for the August FY27-margin confirmation or a better entry. Full base-note analysis below is intact.
 
 ## Business Primer
 
@@ -92,11 +94,11 @@ Iron Rule check: revenue is genuinely *down* over 3 years (verified: -6.9% CAGR)
 
 | Scenario | Prob | Earnings Driver | Multiple Driver | Target | Return |
 |----------|------|----------------|-----------------|--------|--------|
-| Bull | 30% | PRGP savings fully land; FY27 OM hits 13%+ and trends to mid-teens; organic 4-5%; EPS steps to ~$3.25+ | Re-rate toward 16x EV/EBITDA (its 2-yr historical) as turnaround confirmed | $120 | +51% |
-| Base | 45% | FY27 OM ~12.5-13% per guide; organic ~3%; EPS ~$2.90-3.10; recovery on track but not spectacular | Holds ~12-13x EV/EBITDA; modest re-rate | $96 | +21% |
-| Bear | 25% | Legacy channel decline outruns digital; organic stalls ~0%; margin recovery caps near 11%; beauty-advisor cuts hurt sales; EPS stuck ~$2.40 | De-rate to ~10x as turnaround stalls | $62 | -22% |
+| Bull | 30% | PRGP savings fully land; FY27 OM hits 13%+ and trends to mid-teens; organic 4-5%; EPS steps to ~$3.25+ | Re-rate toward 16x EV/EBITDA (its 2-yr historical) as turnaround confirmed | $120 | +42% |
+| Base | 45% | FY27 OM ~12.5-13% per guide; organic ~3%; EPS ~$2.90-3.10; recovery on track but not spectacular | Holds ~12-13x EV/EBITDA; modest re-rate | $96 | +14% |
+| Bear | 25% | Legacy channel decline outruns digital; organic stalls ~0%; margin recovery caps near 11%; beauty-advisor cuts hurt sales; EPS stuck ~$2.40 | De-rate to ~10x as turnaround stalls | $62 | -27% |
 
-**Expected value: +21.6%**
+**Expected value: ~+12%** (was +21.6% at $79.31 on 2026-05-21; compressed purely by the +6.6% price move against unchanged absolute targets — the thesis has not improved, the entry has worsened)
 **Thesis breaks if:** two consecutive quarters of organic sales back into decline AND/OR FY27 operating margin guidance is walked back below ~11.5% — that would mean the cost savings are being eaten by top-line erosion (the beauty-advisor-cut feedback loop) and the inflection has failed.
 
 ## Setup & Timing
