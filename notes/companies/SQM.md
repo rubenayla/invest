@@ -1,8 +1,13 @@
 # Sociedad Quimica y Minera de Chile (SQM)
 
 **Sector:** Basic Materials | **Industry:** Specialty Chemicals
-**Price:** $82.66 (2026-05-19) | **Market Cap:** $23.6B
-**Analysis Date:** 2026-05-19
+**Price:** $69.28 (2026-06-29) | **Market Cap:** ~$19.8B
+**Analysis Date:** 2026-05-19 (body below; **header price refreshed 2026-06-30 — body NOT re-run**)
+
+> ⚠️ The analysis body below is from 2026-05-19 and is stale: it predates the Q1 2026 print
+> (realized lithium **$18/kg** vs the ~$11 base case) and the subsequent lithium-spot correction
+> that took the stock from ~$95 (mid-May) to $69. See **`SQM/history.md`** for the forecast
+> track record and what actually happened. Re-run `/research SQM` for a fresh body + models.
 
 ## Business Primer
 

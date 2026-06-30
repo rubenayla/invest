@@ -274,8 +274,8 @@ the two leak into each other.
 ## OUTPUT FORMAT
 
 **Save to `notes/companies/{TICKER}.md`** — this is the SINGLE source of truth for each company's analysis.
-If the file already exists, **read the prior `Verdict` and `Conviction` first** (you need them for STEP 11), then OVERWRITE it with the new analysis (the old version is in git history).
-If the ticker has supplementary files, they live in `notes/companies/{TICKER}/` (subdirectory) — don't touch those.
+If the file already exists, **read the prior `Verdict`, `Conviction`, scenario targets, and "Thesis breaks if…" lines first** (you need them for STEP 11A — append the reconciliation entry to `{TICKER}/history.md` BEFORE you overwrite, since the prior call is what you're grading), then OVERWRITE the thesis with the new analysis (the old version is in git history).
+If the ticker has supplementary files, they live in `notes/companies/{TICKER}/` (subdirectory) — don't touch those except `history.md`, which STEP 11A appends to.
 
 Template:
 
@@ -472,9 +472,37 @@ The watchlist must never contradict the company note. A BUY in `notes/companies/
 
 ---
 
-## STEP 11: Log to history.md (whenever the run produced something worth remembering)
+## STEP 11A: Per-ticker forecast track record (MANDATORY — do this BEFORE overwriting the note)
 
-Company notes get OVERWRITTEN each run, so the *reasoning* behind a call is lost (it survives only in git, which isn't browsable as a learning corpus). `history.md` is the durable, browsable record. Append a dated entry whenever this run produced a takeaway a future session would want — that includes **first looks at notable names**, **thesis changes**, and **transferable insights** (sector dynamics, valuation methods, market mechanics). It already holds all three kinds; keep it that way.
+Every name you form a real, actionable view on keeps a `notes/companies/{TICKER}/history.md` — an append-only **forecast track record** (oldest first, newest appended at the end). This is the standard, not an opt-in. Its purpose is calibration: record what we predicted, what actually happened, and what the gap says about how *we* forecast — so we stop being wrong the same way twice. `SQM/history.md` is the reference shape.
+
+**Do this before the OVERWRITE in the OUTPUT FORMAT step**, because the prior call is the thing you're grading:
+
+1. **Capture the prior call.** From the existing `{TICKER}.md` / `{TICKER}/thesis.md`, read the prior verdict, conviction, scenario targets, and the explicit "Thesis breaks if…" / upgrade-trigger lines. (You already read these in the OUTPUT FORMAT step.)
+2. **Promote to folder layout if still flat:** `git mv notes/companies/{TICKER}.md notes/companies/{TICKER}/thesis.md`, then create `history.md`. (Skip if already a folder.)
+3. **Append a reconciliation entry** using this shape:
+
+```markdown
+## YYYY-MM-DD — Reconciliation: {one-line what changed}. ${price}
+
+**What actually happened.** {The facts since the prior call — earnings prints, realized vs. predicted numbers, catalysts hit/missed, price move with dates.}
+
+**Scorecard.** Fundamental call: {right/wrong, how decisively}. Near-term stock call: {right/wrong}. Net: {one line}.
+
+**Self-pattern (the reason this file exists).** {What the hit/miss reveals about *our* process — not just "we were wrong." Is this a repeat of an earlier error family? What should we weigh differently for names like this? Make it transferable.}
+
+**Current expectation (to reconcile next time).** {The new call, restated as a falsifiable prediction with dated/numeric triggers and thesis-break lines — so the next entry has something concrete to grade.}
+```
+
+If this is the **first** entry for a brand-new name (no prior call to grade), still create the file and log the initial call: the verdict, the falsifiable triggers, and a "Current expectation (to reconcile next time)" block. The grading starts next run.
+
+**Only skip 11A** when the run is a routine refresh that left the verdict, conviction, and triggers unchanged AND nothing material happened since the last entry. When in doubt, append — a slightly noisy track record beats a lost data point on our own calibration.
+
+---
+
+## STEP 11B: Repo-root history.md — cross-cutting insights (when the lesson generalizes beyond this one ticker)
+
+Where 11A is the per-name track record, repo-root `history.md` is the cross-ticker learning corpus. Append a dated entry whenever this run produced a takeaway a future session would want regardless of the ticker — that includes **first looks at notable names**, **thesis changes**, and **transferable insights** (sector dynamics, valuation methods, market mechanics). It already holds all three kinds; keep it that way.
 
 **Log when any of these is true:**
 - **Thesis change** — verdict flips (BUY ↔ WATCH ↔ PASS), conviction moves a full step, or a prior "Thesis breaks if…" signal actually triggered.
