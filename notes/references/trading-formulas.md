@@ -1,6 +1,8 @@
 # Trading & Position Sizing Formulas
 
-Quick reference for the quantitative framework behind `scripts/run_position_sizer.py`.
+> **⚠️ The automated sizer this doc described was removed 2026-07-07 as mis-specified.** The Kelly section below is textbook-correct as *general finance*, but the way it was wired into `run_position_sizer.py` was wrong: a ratio-of-price-moves `b` (`upside / historical_VaR`) was fed into the **binary-bet** formula `f* = (pb − q)/b`, whose `b` must be gambling odds on a total-loss bet — mismatched definitions. Combined with point-estimate model edges and no uncertainty haircut, it emitted raw single-name fractions of 66–84% for nearly every stock (a book summing to >400%), which the 15% cap silently clipped. Do **not** rebuild a sizer straight from these formulas. If rebuilding: use continuous Kelly `f* = (pW − qL)/(WL)`, shrink to ≤¼-Kelly with edge discounted for model disagreement, and use a realistic tail downside (CVaR / actual max-DD). Full diagnosis: `.agents/error-log.md` (2026-07-07).
+
+General quantitative reference (formulas only — no live tool implements this anymore).
 
 ## Edge Detection
 

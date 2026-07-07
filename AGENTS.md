@@ -8,7 +8,7 @@
 - `data-conventions.md` — ratio storage, yfinance quirks
 
 **Reference** (read when relevant):
-- `architecture.md` — system design (DB, pipeline, scoring, Kelly sizer)
+- `architecture.md` — system design (DB, pipeline, scoring)
 - `deployment.md` — Hetzner server, SSH, systemd, nginx, cron
 - `solutions.md` — recurring fixes
 

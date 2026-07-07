@@ -25,25 +25,13 @@ The easiest way to run the full pipeline (data fetch, valuations, dashboard):
 /update_db --universe europe   # Different universe
 /brief                         # Portfolio intelligence — sell signals, buy opportunities
 /research TICKER               # Deep dive one company — news, scenarios, verdict
-/size TICKER                   # Kelly criterion position sizing
 ```
 
 `/update_db` fetches data, runs all models (GBM + classic valuations), generates the dashboard, and starts a live server at http://localhost:8080.
 
-### Position Sizing (Kelly Criterion)
+### Position Sizing
 
-```bash
-# How much to buy of specific stocks
-uv run python scripts/run_position_sizer.py AAPL MSFT --portfolio-value 50000 --verbose
-
-# Build optimal portfolio from all ~700 stocks
-uv run python scripts/run_position_sizer.py --portfolio --budget 30000 --max-positions 10
-
-# Quarter-Kelly (more conservative)
-uv run python scripts/run_position_sizer.py --fraction 0.25 AAPL
-```
-
-Uses GBM 3-year predictions for expected return, 3-model agreement for win probability, and rolling 1-year returns for downside. See `notes/references/trading-formulas.md` for the math.
+There is no automated position sizer. The Kelly-Criterion sizer was removed 2026-07-07 as mis-specified (it produced raw single-name bet fractions of 66–84% for nearly every stock, which the 15% cap silently clipped — see `.agents/error-log.md`). Size positions by conviction under fixed rules: 15% single-name cap, 35% sector cap, event risk (earnings) handled manually. Read the raw model upside from the `valuation_results` table (AutoResearch first, then GBM) rather than a formula.
 
 ### Manual Commands
 

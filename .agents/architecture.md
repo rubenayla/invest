@@ -34,12 +34,11 @@ Phase 3: Consumers (independent, need Phase 2)
   - run_opportunity_scan.py → scanner scores
 ```
 
-## Kelly Position Sizer (`src/invest/sizing/kelly.py`)
+## Position Sizing
 
-Trusted models (`_TRUSTED_MODELS`): `gbm_3y`, `gbm_lite_3y`, `gbm_opportunistic_3y`, `autoresearch`.
-- Expected return is **confidence-weighted** across all trusted models (upside capped at 100%)
-- `autoresearch` has high confidence (~0.99) and covers ~700 stocks — it's a first-class signal, not optional
-- DCF, RIM, simple_ratios are **excluded** — known biases on asset-light/acquisition-heavy companies
+There is no automated position sizer. A Kelly-Criterion sizer (`src/invest/sizing/`, `scripts/run_position_sizer.py`, `/size` skill) was **removed 2026-07-07** — it was mis-specified: it fed a ratio-of-moves `b` into the binary-bet Kelly formula and point-estimate model edges into Kelly with no uncertainty haircut, producing raw single-name fractions of 66–84% for nearly every stock (a book of them summing to >400%). The 15% cap silently clipped every absurd value to ~15%, so the cap did all the sizing and the tool couldn't rank. See `.agents/error-log.md` (2026-07-07) for the full diagnosis.
+
+**Size positions by conviction under fixed rules, not a formula:** 15% single-name cap, 35% sector cap; a single-name compounder sits below the cap (~10%); overlay event risk (e.g. earnings) manually. The trustworthy inputs are the raw model predictions in `valuation_results` (AutoResearch first, then GBM) and their dispersion — read those directly.
 
 ## Scoring Engine
 

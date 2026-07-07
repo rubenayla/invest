@@ -78,7 +78,7 @@ For each holding in `notes/portfolio/portfolio.md`, run parallel subagents to an
    - **Thesis broken?** Compare original thesis catalysts/assumptions vs current data. Flag if key assumptions no longer hold.
    - **Models say overvalued?** If AutoResearch AND majority of GBM models show negative upside, flag it.
    - **Stop-loss hit?** If current price is >25% below purchase price or thesis invalidation price.
-   - **Better opportunity?** If the position's Kelly edge is near zero while watchlist stocks have strong edge.
+   - **Better opportunity?** If the position's model upside (AutoResearch + GBM) is near zero while watchlist stocks show strong upside.
    - **Concentration risk?** If position is >20% of portfolio.
 
 4. Return a **one-paragraph verdict**: HOLD / TRIM / SELL / ADD, with the key reason.
@@ -151,7 +151,7 @@ Present the final output as a single, dense message. Format:
 
 ## SUGGESTED ACTIONS
 1. Numbered list of concrete actions: "Sell X shares of TICKER at ~$PRICE" or "Buy $AMOUNT of TICKER"
-   Include Kelly sizing if relevant (run position sizer for buy candidates).
+   Size buys by conviction under the portfolio rules (15% single-name cap, 35% sector cap), not a formula.
 ```
 
 ## Important Rules
