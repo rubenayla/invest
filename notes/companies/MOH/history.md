@@ -69,6 +69,21 @@ Opportunities (lag → mispricing):
 - Most of the price move happens between #3 and #5. Currently between #1
   and #3.
 
+## 2026-07-04 — Reconciliation: rate-cycle trigger firing, stock ~doubled. $229.87
+
+**What actually happened.** MOH ran from ~$143 (early April) to **$229.87 (2026-07-02), +67% in 90 days, +27% in the last 30** — a textbook trough-to-recovery move on the Medicaid rate cycle we laid out.
+- **The July 1, 2026 state rate resets — our stated primary trigger — are arriving.** Market is front-running the earnings recovery ahead of the Q2/Q3 prints, exactly the "most of the move happens between preliminary rate notices and Q3 earnings" call.
+- **CMS 2025 risk-adjustment figures came in higher than expected** → favorable payments to Molina. A regulatory/actuarial tailwind on top of the rate resets, not a negotiated one.
+- **Q1 2026 print (Apr 23) confirmed it:** MCR 91.1%, well under the 93% thesis-break line. Stock +11% on the day (logged above).
+- **Sell-side capitulated:** BofA (Fischbeck) upgraded *Underperform → Buy*, PT **$250 from $152**, on "Medicaid margins bottoming in 2026."
+- Technical footnote: MOH was dropped from the S&P 500 to small-cap indices during the 2025 collapse (forced index selling into the lows); part of the rebound is that washout unwinding.
+
+**Scorecard.** Thesis call: **right, and on the timeline we specified** — the rate-lag mechanism, the ~$4.50 EPS per 100bps MCR operating leverage, and the "100%+ historical recovery move" all played out. This is the counter-example to the SQM entry: a case where anchoring conviction to a *mechanical, forecastable* driver (rate resets lag claims by 12-18 months by construction) paid off, because the driver wasn't a market-priced spot commodity but a regulatory schedule.
+
+**Self-pattern.** When the recovery driver is **structurally forecastable** (rate cycle, contract schedule, regulatory formula), leaning in early works — the market chronically treats trough earnings as run-rate. Contrast SQM, where the driver was forward commodity spot the market had already moved on. The transferable rule: *distinguish forecastable-mechanism recoveries from already-priced-momentum recoveries before sizing conviction.*
+
+**Current expectation (to reconcile next time).** The easy 2x (trough→normalization) is largely captured; from here it's an earnings-delivery story, not a re-rating story. **Watch:** late-July Q2 2026 print for sequential MCR improvement and 2027 framing; the Q3 print (Oct/Nov) is where the market fully believes. **Would turn cautious if** Q2 MCR fails to improve sequentially, or the federal Medicaid funding cuts (OBBB/FMAP) start showing up in enrollment/rate guidance. *Prediction to grade later: after a 67% run, is chasing here late — has the forecastable-mechanism edge already been paid out?*
+
 ## Upcoming catalysts (watch list)
 
 - **May-June 2026** — Some states publish preliminary Medicaid rate
