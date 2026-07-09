@@ -4,6 +4,8 @@
 
 Prioritized by combined signals: scanner score, insider buying, activist stakes (13D/13G), smart money holdings (13F). **Verdicts/EV/quality synced to latest `notes/companies/*.md` deep-analysis. Last updated 2026-05-22.** Dated subsections below reflect their original screen date for narrative, but the verdict/EV figures are current. Last updated 2026-06-03.
 
+- ABT
+- PNG.V
 - [FSLR](../companies/FSLR.md) (First Solar) - **BUY**. Only US thin-film solar manufacturer — tariff beneficiary, 45X credits safe til 2030. 7.7x fwd PE, 32.6% op margins, net cash, FCF inflection as capex winds down. Quality 20/25. EV +23.6%. Entry $235, thesis-break $180.
 - [ETN](../companies/ETN.md) (Eaton Corp) - WATCH. Grid/electrification/data-center power. Great business but consensus-priced. Quality 21/25. EV +14.1%. Buy at $340.
 - [CEG](../companies/CEG.md) (Constellation Energy) - WATCH. Largest US power producer, nuclear + AI power demand. Quality 19/25. EV +18.6%. Buy at $250.

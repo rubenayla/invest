@@ -84,6 +84,19 @@ Opportunities (lag → mispricing):
 
 **Current expectation (to reconcile next time).** The easy 2x (trough→normalization) is largely captured; from here it's an earnings-delivery story, not a re-rating story. **Watch:** late-July Q2 2026 print for sequential MCR improvement and 2027 framing; the Q3 print (Oct/Nov) is where the market fully believes. **Would turn cautious if** Q2 MCR fails to improve sequentially, or the federal Medicaid funding cuts (OBBB/FMAP) start showing up in enrollment/rate guidance. *Prediction to grade later: after a 67% run, is chasing here late — has the forecastable-mechanism edge already been paid out?*
 
+## 2026-07-07 — Forward view: re-rating spent, delivery from here. $233
+
+**Where valuation sits after the run.** At ~$233 MOH trades ~14x 2027 consensus EPS (~$16) and ~9x the company's own 2029 adjusted-EPS target midpoint (**$25**, guided $20–30). No longer the ~7x-on-trough falling knife it was at $143. The 7x→14x re-rating IS the +67% move — it can't be collected twice.
+
+**The tell.** 1-year sell-side average target is **~$193 — below spot.** Only the bulls (BofA $250, fair-value ~$259) sit above. The crowd thinks it has run past 12-month fair value; further upside now depends on *earnings delivery*, not multiple expansion.
+
+**Forward call (to grade later).**
+- **New entry: late.** The asymmetric, mispricing-driven edge (trough-as-run-rate, forced index selling) has largely corrected — this is now a fairly-valued quality compounder, not a dislocation. Buying here is paying up for execution.
+- **Existing holders: the trim case is strong** — not because the thesis broke, but because a position that ran +67% is oversized vs. its now-symmetric risk/reward. Generic discipline: trim back toward target weight, keep a runner for the multi-year $25-EPS-2029 story.
+- **Multi-year hold still works** *if* it delivers: $25 adj EPS in 2029 at a normal 13–15x managed-care multiple → ~$325–375, meaningful from $233 but 2–3 years out and delivery-dependent.
+
+**Grades the prior "chasing here late?" question:** forming answer = **yes, late for a new buy; a hold-with-trim for existing.** Watch Q2 (late July) sequential MCR + Q3 (Oct/Nov, first quarter under new July rates) — the delivery proof points. Turn cautious if cost trend re-accelerates, July rate resets under-credit trend, or OBBB/FMAP Medicaid cuts hit enrollment.
+
 ## Upcoming catalysts (watch list)
 
 - **May-June 2026** — Some states publish preliminary Medicaid rate
