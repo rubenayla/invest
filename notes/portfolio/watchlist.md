@@ -50,7 +50,7 @@ Prioritized by combined signals: scanner score, insider buying, activist stakes 
 - [META](../companies/META.md) (Meta) - **BUY** (MEDIUM-HIGH). Revenue +40%, FCF $54B; GBM models strongly bullish. Quality 22/25. EV +21.4%. Entry $600, thesis-break $480.
 - [NVDA](../companies/NVDA.md) (Nvidia) - WATCH. Extreme valuation but ML sees AI dominance. Quality 24/25. EV +18.4%. Buy at $185.
 - [LULU](../companies/LULU.md) (Lululemon) - WATCH (lean BUY starter). Americas decline self-inflicted (stale assortment), not structural; Intl 20%+ + ~$1.2B/yr buybacks compound. Quality 19/25. EV +28.0%. Buy at $115. Catalyst: Q1 ~early June, Chip Wilson proxy vote 2026-06-25.
-- [BRK.B](../companies/BRK.B.md) (Berkshire Hathaway) — no deep-analysis row yet.
+- [BRK.B](../companies/BRK.B.md) (Berkshire Hathaway) — WATCH. **Sold the stub 2026-07-15 @ ~$491** (cleanup, no edge above the $450 re-buy trigger). Re-buy interest at ~$450 (P/B ~1.30x), or on a second >$5B Abel acquisition / buybacks scaling >$1.5B/qtr. No deep-analysis row yet.
 - [SMFG](../companies/SMFG.md) (Sumitomo Mitsui) - Improving fundamentals, rate-sensitive. No deep-analysis row yet.
 - [NE](../companies/NE.md) (Noble Corporation) - P/E 15.2, P/TBV 0.99. No deep-analysis row yet.
 - [NEM](../companies/NEM.md) (Newmont) - WATCH. Defensive gold, P/E 13.5, P/B 1.0. Quality 17/25. EV +6.0%. Buy at $92.
