@@ -1,14 +1,40 @@
 # SpaceX (SPCX)
 
 **Sector:** Industrials / Communication Services (aerospace + satellite connectivity) | **Industry:** Space launch + satellite broadband (Starlink)
-**Status:** **PRE-IPO** — S-1 filed 2026-05-20 | Expected list **2026-06-12 on Nasdaq as SPCX**
-**Offer:** raising up to **$75B** at a targeted **$1.75T–$2T** valuation (largest IPO in history, past Aramco's $35.4B / 2019)
-**Analysis Date:** 2026-05-31
+**Status:** **LISTED 2026-06-11 on Nasdaq (SPCX)** — IPO priced at **$135**, raised ~$75B at a ~$1.75–2T valuation (largest IPO in history, past Aramco's $35.4B / 2019)
+**Price:** $133.47 (2026-07-15) | **Market Cap:** ~$1.78T | **Trading BELOW the $135 IPO price for the first time**
+**Analysis Date:** 2026-05-31 (pre-IPO) · **Updated:** 2026-07-15 (post-IPO)
 
-> **Note on this file.** SpaceX is not yet trading. There is no price history, so the
-> repo's ML/DCF models cannot be run against it (they need a ticker with market data).
-> This is a fundamental + IPO-mechanics analysis built from the S-1 and reporting,
-> written to be ready the moment SPCX lists. Update price/valuation rows on the open.
+> **Note on this file.** The pre-IPO analysis below (business primer, IPO mechanics,
+> scenario table) is preserved because its central call played out — see the
+> **Post-IPO Update** immediately below for current price, the now-known staggered
+> lockup schedule, and the current stance. The repo's ML/DCF models still have **no
+> coverage** of SPCX: no fundamentals or `valuation_results` rows are loaded in the
+> database as of 2026-07-15 (it's <2 months listed), so there is no model signal yet —
+> this remains a qualitative read.
+
+## Post-IPO Update (2026-07-15)
+
+**The pre-IPO base case played out.** The "brief pop, then fade below the offer" scenario (rated 45% below) is what happened: SPCX listed 2026-06-11 at $135, spiked to an all-time high of **$225.64 on 2026-06-16** (~$3T market cap), then round-tripped ~40% over a month and on **2026-07-15 traded below the $135 IPO price for the first time** (~$133). The huge float capped the pop and the rich multiple is now unwinding, exactly as the mechanics predicted.
+
+**Current valuation (Yahoo Finance, 2026-07-15):** ~$1.78T market cap, **~92× sales**, ~52× book, ~94× EV/revenue; still deeply unprofitable — TTM net loss ~**−$9.36B**, −45% margin, EPS −$0.67. Analyst 1-yr target average ~$242 (bullish); at least one Sell rating carries a **$64 target**.
+
+**Now-known lockup schedule (refines the pre-IPO "~Sep–Dec 2026" estimate — it's staggered and starts EARLIER):**
+
+| Event | Detail |
+|---|---|
+| First unlock (~20% of insider shares) | Frees in the window **following the first (Q2 2026) earnings report** — the earliest supply-driven dip risk. |
+| Early +10% trigger | Releases early **only if** SPCX closes **≥$175.50** (30% above the $135 IPO) on **≥5 of the 10 trading days ending on the Q2 earnings date**. At ~$133 this needs ~+32% in ~2 weeks — **effectively off the table**, so that 10% likely rolls into later tranches (never applied to Musk's shares). |
+| Aug/Sep/Oct tranches | ~7% each. |
+| Q3 earnings | A larger time-based release. |
+| Full 180-day lockup | Clears **2026-12-08**. |
+| Musk's ~6.4B shares | Locked until **2027-06-12** — the largest overhang, a year out. |
+
+**Q2 2026 earnings date is NOT officially confirmed** as of 2026-07-15 (no SpaceX 8-K). Best estimate ~**Aug 6, 2026** (Investing.com, unlabeled placeholder); other sources say early-to-mid August or late July. Watch for the official announcement (~1–2 weeks prior) before treating any date as firm. The first ~20% unlock lands ~2 days after that print.
+
+**Also pressuring sentiment:** a **reported data-center lawsuit** (turbines allegedly running without permits, said to threaten a large AI contract). ⚠️ The circulating specifics ("Colossus 2," a "$45B Anthropic deal") look **conflated across Musk entities** — Colossus is xAI's supercomputer, not SpaceX's — and could not be cleanly verified. Treat as unconfirmed.
+
+**Current stance — WATCH, no position, no rush.** The wait-for-the-dip thesis is working, but it is not done working: insider unlocks step through H2 2026 (first ~20% after Q2 earnings ~early Aug, more Aug/Sep/Oct, 180-day clear in December, Musk mid-2027), and each tranche is fresh selling pressure into an already-weak, below-IPO tape. **The price may well grind lower as more shares are liberated** — so there is no urgency to act on the current below-IPO level. Re-assess once the bulk of the H2-2026 unlock supply has been absorbed and/or the valuation compresses materially and there are real fundamentals to model. Near-term dates to watch: the Q2 print (est. early Aug) and the ~20% unlock ~2 days after it.
 
 ## Business Primer
 
