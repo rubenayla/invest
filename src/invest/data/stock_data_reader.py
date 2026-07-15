@@ -9,6 +9,8 @@ import logging
 from datetime import date, datetime
 from typing import Any, Dict, List, Optional
 
+from psycopg2.extras import RealDictCursor
+
 from .db import get_connection
 
 logger = logging.getLogger(__name__)
@@ -24,16 +26,27 @@ class StockDataReader:
     def _conn(self, dict_cursor=False):
         return get_connection(dict_cursor=dict_cursor)
 
-    def get_stock_data(self, ticker: str) -> Optional[Dict[str, Any]]:
-        """Get stock data for a single ticker."""
-        conn = self._conn(dict_cursor=True)
-        cursor = conn.cursor()
+    def get_stock_data(self, ticker: str, conn=None) -> Optional[Dict[str, Any]]:
+        """Get stock data for a single ticker.
 
+        If ``conn`` is provided the caller owns its lifecycle and it is reused
+        for the main row *and* every sub-signal lookup, instead of opening a
+        fresh connection per call. Scoring a whole universe otherwise opens ~7
+        connections per ticker, which stalls over a slow (SSH-tunnelled) link.
+        The connection must be tuple-default (the sub-signal helpers expect
+        tuple rows); the main row is read with an explicit dict cursor.
+        """
+        own = conn is None
+        if own:
+            conn = self._conn()
+        cursor = conn.cursor(cursor_factory=RealDictCursor)
         cursor.execute('SELECT * FROM current_stock_data WHERE ticker = %s', (ticker,))
         row = cursor.fetchone()
-        conn.close()
+        cursor.close()
 
         if not row:
+            if own:
+                conn.close()
             return None
 
         # JSONB columns come back as Python objects (no json.loads needed)
@@ -112,13 +125,15 @@ class StockDataReader:
             'balance_sheet': balance_sheet_data,
             'income': income_data,
             'fetch_timestamp': row['fetch_timestamp'],
-            'insider': self.get_insider_signal(ticker),
-            'activist': self.get_activist_signal(ticker),
-            'holdings': self.get_holdings_signal(ticker),
-            'japan_stakes': self.get_japan_signal(ticker),
-            'politician': self.get_politician_signal(ticker),
+            'insider': self.get_insider_signal(ticker, conn=conn),
+            'activist': self.get_activist_signal(ticker, conn=conn),
+            'holdings': self.get_holdings_signal(ticker, conn=conn),
+            'japan_stakes': self.get_japan_signal(ticker, conn=conn),
+            'politician': self.get_politician_signal(ticker, conn=conn),
         }
 
+        if own:
+            conn.close()
         return data
 
     def get_all_tickers(self) -> List[str]:
@@ -411,67 +426,98 @@ class StockDataReader:
             'rate_is_fresh': rate_is_fresh,
         }
 
-    def get_insider_signal(self, ticker: str) -> Dict[str, Any]:
-        """Get insider activity signal for a ticker."""
+    def get_insider_signal(self, ticker: str, conn=None) -> Dict[str, Any]:
+        """Get insider activity signal for a ticker.
+
+        If ``conn`` is provided it is reused (caller owns its lifecycle);
+        otherwise a fresh connection is opened and closed here.
+        """
         no_data = {'has_data': False}
         try:
             from .insider_db import compute_insider_signal
-            conn = self._conn()
+            own = conn is None
+            if own:
+                conn = self._conn()
             try:
                 return compute_insider_signal(conn, ticker)
             finally:
-                conn.close()
+                if own:
+                    conn.close()
         except Exception:
             return no_data
 
-    def get_activist_signal(self, ticker: str) -> Dict[str, Any]:
-        """Get activist/passive large-stake signal (13D/13G) for a ticker."""
+    def get_activist_signal(self, ticker: str, conn=None) -> Dict[str, Any]:
+        """Get activist/passive large-stake signal (13D/13G) for a ticker.
+
+        If ``conn`` is provided it is reused (caller owns its lifecycle).
+        """
         no_data = {'has_data': False}
         try:
             from .activist_db import compute_activist_signal
-            conn = self._conn()
+            own = conn is None
+            if own:
+                conn = self._conn()
             try:
                 return compute_activist_signal(conn, ticker)
             finally:
-                conn.close()
+                if own:
+                    conn.close()
         except Exception:
             return no_data
 
-    def get_holdings_signal(self, ticker: str) -> Dict[str, Any]:
-        """Get smart money institutional holdings signal (13F) for a ticker."""
+    def get_holdings_signal(self, ticker: str, conn=None) -> Dict[str, Any]:
+        """Get smart money institutional holdings signal (13F) for a ticker.
+
+        If ``conn`` is provided it is reused (caller owns its lifecycle).
+        """
         no_data = {'has_data': False}
         try:
             from .holdings_db import compute_holdings_signal
-            conn = self._conn()
+            own = conn is None
+            if own:
+                conn = self._conn()
             try:
                 return compute_holdings_signal(conn, ticker)
             finally:
-                conn.close()
+                if own:
+                    conn.close()
         except Exception:
             return no_data
 
-    def get_japan_signal(self, ticker: str) -> Dict[str, Any]:
-        """Get Japan large shareholding signal (EDINET) for a ticker."""
+    def get_japan_signal(self, ticker: str, conn=None) -> Dict[str, Any]:
+        """Get Japan large shareholding signal (EDINET) for a ticker.
+
+        If ``conn`` is provided it is reused (caller owns its lifecycle).
+        """
         no_data = {'has_data': False}
         try:
             from .edinet_db import compute_japan_signal
-            conn = self._conn()
+            own = conn is None
+            if own:
+                conn = self._conn()
             try:
                 return compute_japan_signal(conn, ticker)
             finally:
-                conn.close()
+                if own:
+                    conn.close()
         except Exception:
             return no_data
 
-    def get_politician_signal(self, ticker: str) -> Dict[str, Any]:
-        """Get House PTR politician-trade signal for a ticker."""
+    def get_politician_signal(self, ticker: str, conn=None) -> Dict[str, Any]:
+        """Get House PTR politician-trade signal for a ticker.
+
+        If ``conn`` is provided it is reused (caller owns its lifecycle).
+        """
         no_data = {'has_data': False}
         try:
             from .politician_db import compute_politician_signal
-            conn = self._conn()
+            own = conn is None
+            if own:
+                conn = self._conn()
             try:
                 return compute_politician_signal(conn, ticker)
             finally:
-                conn.close()
+                if own:
+                    conn.close()
         except Exception:
             return no_data

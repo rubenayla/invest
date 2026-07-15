@@ -5,12 +5,15 @@ Uses continuous scoring functions (sigmoid-like curves) instead of pass/fail che
 A stock with P/E=19 isn't discarded - it just scores slightly lower than P/E=17.
 """
 
+import logging
 import math
 from dataclasses import dataclass, field
 from typing import Dict, Any, Optional, List
 
 from ..data.stock_data_reader import StockDataReader
 from ..valuation.db_utils import get_db_connection, get_latest_predictions
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -620,7 +623,7 @@ class ScoringEngine:
         details['recent_holder'] = japan.get('recent_holder_name')
         return final, details
 
-    def score_stock(self, ticker: str) -> Optional[OpportunityScore]:
+    def score_stock(self, ticker: str, conn=None) -> Optional[OpportunityScore]:
         """
         Calculate complete opportunity score for a stock.
 
@@ -628,20 +631,31 @@ class ScoringEngine:
         ----------
         ticker : str
             Stock ticker symbol
+        conn : optional
+            An open DB connection to reuse for this ticker's reads. If None, a
+            fresh connection is opened and closed here. Passing one shared
+            connection (see ``score_universe``) avoids ~7 connection handshakes
+            per ticker, which otherwise stalls a full scan over the SSH tunnel.
 
         Returns
         -------
         OpportunityScore or None if data not available
         """
-        # Load stock data
-        data = self.reader.get_stock_data(ticker)
+        own_conn = conn is None
+        if own_conn:
+            conn = get_db_connection()
+
+        # Load stock data (reuse conn for the row + all sub-signal lookups)
+        data = self.reader.get_stock_data(ticker, conn=conn)
         if not data:
+            if own_conn:
+                conn.close()
             return None
 
         # Get valuation predictions
-        conn = get_db_connection()
         valuations = get_latest_predictions(conn, ticker)
-        conn.close()
+        if own_conn:
+            conn.close()
 
         # Calculate component scores
         quality_score, quality_details = self.score_quality(data)
@@ -726,10 +740,23 @@ class ScoringEngine:
             Sorted list of OpportunityScore objects (highest first)
         """
         scores = []
-        for ticker in tickers:
-            score = self.score_stock(ticker)
-            if score:
-                scores.append(score)
+        # One shared connection for the whole universe instead of ~7 per ticker.
+        # autocommit=True keeps every read in its own statement, so a failure on
+        # one ticker can't poison the connection for the rest and no long-lived
+        # transaction is held open across the scan.
+        conn = get_db_connection()
+        conn.autocommit = True
+        try:
+            for ticker in tickers:
+                try:
+                    score = self.score_stock(ticker, conn=conn)
+                except Exception as e:
+                    logger.warning(f"Scoring failed for {ticker}: {e}")
+                    continue
+                if score:
+                    scores.append(score)
+        finally:
+            conn.close()
 
         # Sort by opportunity score (highest first)
         scores.sort(key=lambda x: x.opportunity_score, reverse=True)

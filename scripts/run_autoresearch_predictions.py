@@ -16,13 +16,13 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import psycopg2.extras
 
 sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent / 'models' / 'autoresearch'))
 
 from invest.data.db import get_connection, get_engine
-from invest.data.stock_data_reader import StockDataReader
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -323,22 +323,26 @@ def save_predictions(predict_df, predicted_returns, confidences):
     cursor.execute("DELETE FROM valuation_results WHERE model_name = %s", (MODEL_NAME,))
     logger.info(f'Deleted {cursor.rowcount} existing {MODEL_NAME} predictions')
 
-    reader = StockDataReader()
-    inserted = 0
-    skipped = 0
+    # One query for all current prices (was: StockDataReader.get_stock_data per
+    # ticker, which opens ~7 connections/ticker over the SSH tunnel — ~42 min to
+    # save ~760 rows), plus a single batched INSERT instead of one per row.
+    tickers = [str(t) for t in predict_df['ticker'].tolist()]
+    cursor.execute(
+        "SELECT ticker, current_price FROM current_stock_data WHERE ticker = ANY(%s)",
+        (tickers,),
+    )
+    price_map = {r[0]: r[1] for r in cursor.fetchall()}
 
+    rows = []
+    skipped = 0
     for i, (_, row) in enumerate(predict_df.iterrows()):
         ticker = row['ticker']
-        stock_data = reader.get_stock_data(ticker)
-        if not stock_data or 'info' not in stock_data:
+        current_price = price_map.get(ticker)
+        if not current_price or float(current_price) == 0:
             skipped += 1
             continue
 
-        current_price = stock_data['info'].get('currentPrice', 0)
-        if not current_price or current_price == 0:
-            skipped += 1
-            continue
-
+        current_price = float(current_price)
         predicted_return = float(predicted_returns[i])
         fair_value = current_price * (1 + predicted_return)
         upside_pct = predicted_return * 100
@@ -350,21 +354,26 @@ def save_predictions(predict_df, predicted_returns, confidences):
             'model': '5-model rank ensemble (LGB DART + CatBoost + KNN15 + KNN100 + BaggingDT)',
         }
 
-        cursor.execute('''
-            INSERT INTO valuation_results
-            (ticker, model_name, fair_value, current_price, margin_of_safety,
-             upside_pct, suitable, confidence, details_json)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        ''', (
-            ticker, MODEL_NAME, float(fair_value), float(current_price),
+        rows.append((
+            ticker, MODEL_NAME, float(fair_value), current_price,
             float(margin_of_safety), float(upside_pct), True,
             float(confidences[i]), json.dumps(details),
         ))
-        inserted += 1
+
+    psycopg2.extras.execute_values(
+        cursor,
+        '''
+        INSERT INTO valuation_results
+        (ticker, model_name, fair_value, current_price, margin_of_safety,
+         upside_pct, suitable, confidence, details_json)
+        VALUES %s
+        ''',
+        rows,
+    )
 
     conn.commit()
     conn.close()
-    logger.info(f'Inserted {inserted} {MODEL_NAME} predictions (skipped {skipped})')
+    logger.info(f'Inserted {len(rows)} {MODEL_NAME} predictions (skipped {skipped})')
 
 
 def main():

@@ -343,67 +343,46 @@ def save_to_database(
     metadata: dict
 ):
     """Save predictions to valuation_results table."""
+    import psycopg2.extras
     conn = get_connection()
     cursor = conn.cursor()
 
     model_name = metadata['model_name']
     horizon = metadata['horizon']
 
-    # Delete existing predictions
     cursor.execute("DELETE FROM valuation_results WHERE model_name = %s", (model_name,))
     logger.info(f'Deleted {cursor.rowcount} existing {model_name} predictions')
 
-    # Initialize StockDataReader for current price lookup
-    reader = StockDataReader()
+    # One query for all current prices (was: per-row StockDataReader.get_stock_data,
+    # which opened a fresh psycopg2 connection per call — ~660ms x N rows over the SSH tunnel,
+    # plus N more round-trips for the per-row INSERTs below).
+    tickers = [str(t) for t in df['ticker'].tolist()]
+    cursor.execute(
+        "SELECT ticker, current_price FROM current_stock_data WHERE ticker = ANY(%s)",
+        (tickers,),
+    )
+    price_map = {r[0]: r[1] for r in cursor.fetchall()}
 
-    # Insert new predictions
-    inserted = 0
+    rows = []
     skipped = 0
-
+    n = len(predictions)
     for i, (idx, row) in enumerate(df.iterrows()):
         ticker = row['ticker']
-
-        # Get current price from current_stock_data table
-        stock_data = reader.get_stock_data(ticker)
-        if not stock_data or 'info' not in stock_data:
-            logger.warning(f'Skipping {ticker}: no data in current_stock_data')
-            skipped += 1
-            continue
-
-        current_price = stock_data['info'].get('currentPrice', 0)
+        current_price = price_map.get(ticker)
         if not current_price or current_price == 0:
-            logger.warning(f'Skipping {ticker}: no valid current price in current_stock_data')
             skipped += 1
             continue
 
-        # GBM predicts return over horizon
         predicted_return = predictions[i]
-
-        # Calculate "fair value" as current price * (1 + predicted_return)
         fair_value = current_price * (1 + predicted_return)
-
-        # Upside is the predicted return
         upside_pct = predicted_return * 100
-
-        # Margin of safety (use predicted return)
         margin_of_safety = predicted_return
-
-        # Ranking percentile
-        all_predictions = predictions.copy()
-        percentile = (all_predictions < predicted_return).sum() / len(all_predictions) * 100
-
-        # Details JSON
+        percentile = float((predictions < predicted_return).sum() / n * 100)
         details = {
             f'predicted_return_{horizon}': float(predicted_return),
-            'ranking_percentile': float(percentile)
+            'ranking_percentile': percentile,
         }
-
-        cursor.execute('''
-            INSERT INTO valuation_results
-            (ticker, model_name, fair_value, current_price, margin_of_safety,
-             upside_pct, suitable, confidence, details_json)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        ''', (
+        rows.append((
             ticker,
             model_name,
             float(fair_value),
@@ -412,14 +391,23 @@ def save_to_database(
             float(upside_pct),
             True,  # suitable
             float(confidences[i]),
-            json.dumps(details)
+            json.dumps(details),
         ))
-        inserted += 1
+
+    # Single batched insert (was: one INSERT per row)
+    psycopg2.extras.execute_values(
+        cursor,
+        '''INSERT INTO valuation_results
+           (ticker, model_name, fair_value, current_price, margin_of_safety,
+            upside_pct, suitable, confidence, details_json)
+           VALUES %s''',
+        rows,
+    )
 
     conn.commit()
     conn.close()
 
-    logger.info(f'Inserted {inserted} {model_name} predictions into database')
+    logger.info(f'Inserted {len(rows)} {model_name} predictions into database')
     if skipped > 0:
         logger.info(f'Skipped {skipped} stocks (no current price)')
 
