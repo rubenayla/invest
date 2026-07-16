@@ -3,7 +3,6 @@
 ## .agents/ files
 
 **Read at session start** (small, always-relevant):
-- `tasks.md` — kanban (TODO / In Progress / Done). Claim before working. Skip if claimed.
 - `coding-standards.md` — style + testing
 - `data-conventions.md` — ratio storage, yfinance quirks
 
@@ -17,6 +16,7 @@
 - `notes.md` — research notes by topic
 
 **Repo root files (NOT in `.agents/`)**:
+- `tasks.md` — kanban (TODO / In Progress / Done). Read at session start. Claim before working; skip if claimed. Lives at the **repo root**, not in `.agents/`. One `tasks.md` per repo — there is no `.agents/tasks.md`.
 - `history.md` — accumulating record of cross-cutting decisions, investigations, surprising findings (dated, oldest first). Lives at the **repo root**, not in `.agents/`. After non-trivial work, **append here** so the reasoning survives context expiration. Also the overflow target for AGENTS.md.
 
 ## Repo Scope vs Personal Data
